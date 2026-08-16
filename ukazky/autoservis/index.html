@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOX 7 — autoservis a pneuservis</title>
+<meta name="description" content="BOX 7 — ukážkový web autoservisu a pneuservisu: servis, pneuservis, diagnostika, klimatizácia a príprava na STK, s objednaním termínu online. Ukážka práce od apoliak.online.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#16181c">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="BOX 7 — autoservis a pneuservis (ukážkový web)">
+<meta property="og:description" content="Servis, pneuservis, diagnostika, klimatizácia a príprava na STK s objednaním termínu online. Ukážkový web vymysleného podniku — takýto web na mieru spraví aj vám Alex Poliak, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316181c'/%3E%3Cg stroke='%23ffb020' stroke-width='3' fill='none'%3E%3Ccircle cx='16' cy='16' r='9'/%3E%3Cpath d='M16 2v28M2 16h28'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='3.4' fill='%23ffb020'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   BOX 7 — ukážkový web autoservisu
+   Paleta: grafit / oceľ + signálna jantárová
+   Bez externých zdrojov, všetka grafika je CSS + inline SVG
+   ============================================================ */
+
+:root{
+  --ink:        #101216;
+  --steel-900:  #16181c;
+  --steel-800:  #1b1e23;
+  --steel-700:  #22262c;
+  --steel-600:  #2b3037;
+  --steel-500:  #3a4048;
+  --line:       #333941;
+  --text:       #dfe3e8;
+  --text-dim:   #a4acb5;
+  --amber:      #ffb020;
+  --amber-dim:  #c98708;
+  --rust:       #ff7a1a;
+  --ok:         #7bd88f;
+
+  --bar-h: 40px;
+  --head-h: 62px;
+
+  /* kondenzovaný nadpisový stack: Windows / macOS / iOS / Android / Linux + poistka font-stretch */
+  --font-head: "Arial Narrow", "Helvetica Neue Condensed", "HelveticaNeue-CondensedBold",
+               "Avenir Next Condensed", "SF Compact Display", "Roboto Condensed",
+               "Liberation Sans Narrow", "Franklin Gothic Medium", "Segoe UI", system-ui, Arial, sans-serif;
+  --font-body: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, "DejaVu Sans Mono", monospace;
+
+  --brushed: repeating-linear-gradient(90deg,
+      rgba(255,255,255,.030) 0 1px,
+      rgba(255,255,255,0)    1px 3px,
+      rgba(0,0,0,.10)        3px 4px,
+      rgba(255,255,255,0)    4px 8px);
+
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:calc(var(--bar-h) + var(--head-h) + 12px);
+  -webkit-text-size-adjust:100%;
+}
+body{
+  margin:0;
+  background:var(--steel-900);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:17px;
+  line-height:1.62;
+  overflow-x:hidden;
+}
+img,svg{max-width:100%}
+a{color:var(--amber);text-underline-offset:3px}
+a:hover{color:#ffc659}
+
+h1,h2,h3,h4,.cond{
+  font-family:var(--font-head);
+  font-stretch:condensed;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  line-height:1.04;
+  font-weight:700;
+  margin:0;
+}
+p{margin:0 0 1em}
+.mono{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}
+
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+@media (max-width:600px){ .wrap{width:min(1180px,100% - 28px)} }
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--amber);color:var(--ink);padding:10px 18px;font-weight:700;
+}
+.skip:focus{left:8px;top:8px}
+
+:where(a,button,input,select,textarea,label,summary):focus-visible{
+  outline:3px solid var(--amber);
+  outline-offset:2px;
+}
+
+/* ---------- pásik ukážky ---------- */
+.demo-bar{
+  position:sticky;top:0;z-index:60;
+  min-height:var(--bar-h);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  flex-wrap:wrap;
+  padding:7px 16px;
+  background:var(--amber);
+  color:#14161a;
+  border-bottom:2px solid #7a5200;
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  text-align:center;
+}
+.demo-bar strong{font-weight:800}
+.demo-bar a{
+  color:#14161a;font-weight:800;text-decoration:underline;
+  text-decoration-thickness:2px;white-space:nowrap;
+}
+.demo-bar a:hover{color:#000}
+.demo-bar .dot{
+  width:9px;height:9px;background:#14161a;flex:none;
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+}
+.demo-bar .sep{opacity:.75}
+@media (max-width:560px){
+  /* na úzkych displejoch ostáva len to najdôležitejšie, pásik nenarastie */
+  .demo-bar{gap:8px;padding:7px 10px;font-size:11.5px;letter-spacing:.06em}
+  .demo-bar .bar-long,.demo-bar .bar-tel,.demo-bar .sep{display:none}
+}
+
+/* ---------- hlavička ---------- */
+.site-head{
+  position:sticky;top:var(--bar-h);z-index:55;
+  background:rgba(20,22,26,.97);
+  border-bottom:1px solid var(--line);
+}
+.head-in{
+  min-height:var(--head-h);
+  display:flex;align-items:center;gap:18px;
+  padding:8px 0;
+}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text);margin-right:auto;min-width:0}
+.logo-mark{
+  width:40px;height:40px;flex:none;
+  background:var(--amber);
+  display:grid;place-items:center;
+  clip-path:polygon(14% 0,100% 0,86% 100%,0 100%);
+}
+.logo-mark svg{width:24px;height:24px;display:block}
+.logo-txt{display:flex;flex-direction:column;line-height:1;min-width:0}
+.logo-txt b,.logo-txt span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logo-txt b{font-family:var(--font-head);font-stretch:condensed;font-size:22px;letter-spacing:.06em;text-transform:uppercase}
+.logo-txt span{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.18em;color:var(--text-dim);text-transform:uppercase;margin-top:3px}
+
+.nav-check{position:absolute;opacity:0;width:44px;height:44px;margin:0;right:16px;cursor:pointer;z-index:2}
+.nav-btn{
+  display:none;width:44px;height:44px;place-items:center;
+  border:1px solid var(--line);background:var(--steel-700);cursor:pointer;
+}
+.nav-btn svg{width:20px;height:20px;stroke:var(--text)}
+.nav-check:focus-visible + .nav-btn{outline:3px solid var(--amber);outline-offset:2px}
+
+.nav{display:flex;align-items:center;gap:4px}
+.nav a{
+  font-family:var(--font-head);font-stretch:condensed;text-transform:uppercase;
+  letter-spacing:.07em;font-size:16px;font-weight:700;
+  color:var(--text);text-decoration:none;padding:9px 12px;
+  border-bottom:2px solid transparent;
+}
+.nav a:hover{color:var(--amber);border-bottom-color:var(--amber)}
+.nav .nav-cta{
+  background:var(--amber);color:var(--ink);border-bottom:none;
+  padding:11px 18px;margin-left:8px;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+}
+.nav .nav-cta:hover{background:#ffc250;color:var(--ink)}
+
+.tel-head{
+  display:inline-flex;align-items:center;gap:9px;flex:none;
+  border:1px solid var(--steel-500);background:var(--steel-800);
+  padding:7px 12px;min-height:44px;
+  font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;
+  color:var(--text);white-space:nowrap;
+}
+.tel-head svg{width:17px;height:17px;flex:none;stroke:var(--amber);fill:none;stroke-width:1.8}
+.tel-head .tel-sub{color:var(--text-dim);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+
+@media (max-width:980px){
+  .nav-btn{display:grid;order:2}
+  .nav{
+    position:absolute;left:0;right:0;top:100%;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--steel-800);border-bottom:2px solid var(--amber);
+    max-height:0;overflow:hidden;visibility:hidden;
+  }
+  .nav a{padding:15px 20px;border-bottom:1px solid var(--line)}
+  .nav .nav-cta{clip-path:none;margin:12px 20px 18px;text-align:center}
+  .nav-check:checked ~ .nav{max-height:70vh;overflow:auto;visibility:visible}
+  /* telefón ostáva v hlavičke aj na mobile, len sa presunie pred tlačidlo menu,
+     aby ho neprekrýval neviditeľný checkbox */
+  .tel-head{order:1;font-size:12px;padding:7px 10px;gap:7px}
+  .tel-head .tel-sub{display:none}
+}
+@media (max-width:560px){
+  .head-in{gap:10px}
+  .logo-txt span{display:none}
+  .tel-head{font-size:11px;padding:7px 9px;gap:6px}
+  .tel-head svg{width:16px;height:16px}
+}
+
+/* ---------- pruh nebezpečenstva ---------- */
+.stripe{
+  height:9px;
+  background:repeating-linear-gradient(135deg,var(--amber) 0 16px,#14161a 16px 32px);
+  opacity:.9;
+}
+
+/* ---------- sekcie ---------- */
+section{padding:88px 0;position:relative}
+@media (max-width:700px){ section{padding:60px 0} }
+
+.sec-head{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:38px}
+.sec-num{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;color:var(--amber);
+  border:1px solid var(--amber-dim);padding:5px 10px;
+}
+.sec-head h2{font-size:clamp(32px,5vw,52px)}
+.sec-head p{margin:0;color:var(--text-dim);max-width:52ch;flex:1 1 320px}
+
+/* ---------- hero ---------- */
+.hero{
+  padding:0;
+  background:
+    radial-gradient(1100px 620px at 78% 12%, rgba(255,176,32,.10), transparent 62%),
+    linear-gradient(180deg,#1a1d22 0%,#141619 100%);
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:var(--brushed);
+  opacity:.7;pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background-image:var(--grain);
+  opacity:.05;pointer-events:none;mix-blend-mode:overlay;
+}
+.hero-in{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center;
+  padding:76px 0 0;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--amber);border-left:3px solid var(--amber);padding-left:12px;margin-bottom:22px;
+}
+.hero h1{
+  font-size:clamp(42px,7.6vw,88px);
+  margin-bottom:20px;
+}
+.hero h1 em{font-style:normal;color:var(--amber);display:block}
+.hero-lead{font-size:clamp(17px,2vw,20px);color:var(--text-dim);max-width:46ch}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin:30px 0 34px}
+
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-head);font-stretch:condensed;text-transform:uppercase;letter-spacing:.08em;
+  font-size:17px;font-weight:700;
+  padding:15px 26px;border:2px solid transparent;cursor:pointer;text-decoration:none;
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+}
+.btn svg{width:17px;height:17px;flex:none}
+.btn-primary{background:var(--amber);color:var(--ink)}
+.btn-primary:hover{background:#ffc250;color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--steel-500);clip-path:none}
+.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+
+.hero-facts{
+  display:flex;flex-wrap:wrap;gap:0;
+  border-top:1px solid var(--line);
+  margin-bottom:0;
+}
+.hero-facts div{
+  flex:1 1 150px;padding:18px 20px 22px 0;
+}
+.hero-facts dt{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-dim);text-transform:uppercase}
+.hero-facts dd{margin:6px 0 0;font-family:var(--font-head);font-stretch:condensed;font-size:23px;text-transform:uppercase;letter-spacing:.03em}
+
+/* hero grafika */
+.hero-art{position:relative;align-self:stretch;display:grid;place-items:center;padding:20px 0 40px}
+.hero-art svg{width:100%;max-width:480px;height:auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rotor-holes{transform-origin:220px 220px;animation:spin 26s linear infinite}
+.rotor-vents{transform-origin:220px 220px;animation:spin 40s linear infinite reverse}
+
+@media (max-width:940px){
+  .hero-in{grid-template-columns:1fr;gap:8px;padding-top:52px}
+  .hero-art{order:-1;padding:8px 0 0}
+  .hero-art svg{max-width:340px}
+}
+
+/* ---------- služby ---------- */
+.services{background:var(--steel-900)}
+.svc-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.svc{
+  grid-column:span 2;
+  background:var(--steel-800);
+  padding:32px 28px 34px;
+  position:relative;
+  transition:background .18s ease;
+}
+.svc:nth-child(1),.svc:nth-child(2){grid-column:span 3}
+.svc:hover{background:var(--steel-700)}
+.svc-ico{width:46px;height:46px;stroke:var(--amber);fill:none;stroke-width:1.6;margin-bottom:18px;display:block}
+.svc h3{font-size:26px;margin-bottom:10px}
+.svc p{color:var(--text-dim);font-size:15.5px;margin:0 0 16px}
+.svc ul{list-style:none;margin:0;padding:0;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.09em;color:var(--text-dim);text-transform:uppercase}
+.svc li{padding:5px 0 5px 16px;position:relative;border-top:1px solid var(--steel-600)}
+.svc li::before{content:"";position:absolute;left:0;top:12px;width:6px;height:6px;background:var(--amber)}
+.svc-tag{
+  position:absolute;top:0;right:0;
+  background:var(--amber);color:var(--ink);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;padding:5px 10px;text-transform:uppercase;font-weight:700;
+}
+@media (max-width:900px){
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .svc,.svc:nth-child(1),.svc:nth-child(2){grid-column:span 1}
+  .svc:last-child{grid-column:span 2}
+}
+@media (max-width:620px){
+  .svc-grid{grid-template-columns:1fr}
+  .svc,.svc:last-child{grid-column:span 1;padding:26px 22px 28px}
+}
+
+/* ---------- cenník ---------- */
+.pricing{background:linear-gradient(180deg,#141619,#191c21)}
+.tbl-wrap{border:1px solid var(--line);background:var(--steel-800)}
+table.price{width:100%;border-collapse:collapse;font-size:16px}
+table.price caption{text-align:left;padding:18px 22px;color:var(--text-dim);font-size:14px;border-bottom:1px solid var(--line)}
+table.price th,table.price td{padding:14px 22px;text-align:left;border-bottom:1px solid var(--steel-600)}
+table.price thead th{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-dim);background:var(--steel-700);border-bottom:1px solid var(--line);
+}
+table.price tbody tr:last-child th,table.price tbody tr:last-child td{border-bottom:none}
+table.price tbody tr:hover{background:var(--steel-700)}
+table.price tbody th{font-weight:600;font-family:var(--font-body);color:var(--text);font-size:16px}
+table.price td.num{font-family:var(--font-mono);font-size:15px;color:var(--amber);white-space:nowrap;text-align:right}
+table.price td.dur{font-family:var(--font-mono);font-size:13px;color:var(--text-dim);white-space:nowrap}
+.price-note{margin-top:16px;color:var(--text-dim);font-size:14px}
+@media (max-width:700px){
+  /* mobilné zobrazenie: hlavička tabuľky sa skryje, popis stĺpca preto nesie každý riadok */
+  table.price thead{position:absolute;left:-9999px}
+  table.price tbody tr{display:block;padding:16px 18px 18px;border-bottom:1px solid var(--steel-600)}
+  table.price tbody tr:last-child{border-bottom:none}
+  table.price tbody th{display:block;padding:0 0 10px;border:none;font-size:18px;line-height:1.35}
+  table.price tbody td{
+    display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+    padding:5px 0;border:none;text-align:left;
+  }
+  table.price tbody td::before{
+    content:attr(data-label);
+    font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-dim);flex:none;
+  }
+  table.price tbody td.num{text-align:right}
+}
+
+/* ---------- postup ---------- */
+.steps{background:var(--steel-900)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
+.step{position:relative;padding-top:30px;border-top:2px solid var(--steel-600)}
+.step::before{
+  content:"";position:absolute;top:-7px;left:0;width:12px;height:12px;background:var(--amber);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+}
+.step-n{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--amber);display:block;margin-bottom:10px}
+.step h3{font-size:22px;margin-bottom:10px}
+.step p{color:var(--text-dim);font-size:15.5px;margin:0}
+@media (max-width:900px){ .steps-grid{grid-template-columns:repeat(2,1fr);gap:28px} }
+@media (max-width:520px){ .steps-grid{grid-template-columns:1fr} }
+
+/* ---------- prečo my ---------- */
+.why{background:linear-gradient(180deg,#191c21,#141619);position:relative}
+.why-in{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.why h2{font-size:clamp(30px,4.4vw,46px);margin-bottom:18px}
+.why-lead{color:var(--text-dim)}
+.why-panel{border:1px solid var(--line);background:var(--steel-800);padding:8px 26px}
+.why-list{list-style:none;margin:0;padding:0}
+.why-list li{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--steel-600)}
+.why-list li:last-child{border-bottom:none}
+.why-list svg{width:22px;height:22px;flex:none;stroke:var(--amber);fill:none;stroke-width:2;margin-top:3px}
+.why-list b{display:block;font-family:var(--font-head);font-stretch:condensed;text-transform:uppercase;letter-spacing:.04em;font-size:19px;margin-bottom:2px}
+.why-list span{color:var(--text-dim);font-size:15.5px}
+.plate{
+  margin-top:26px;border:1px solid var(--steel-500);background:var(--steel-700);
+  padding:18px 22px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+}
+.plate .mono{color:var(--text-dim)}
+.lift{margin:26px 0 0;border:1px solid var(--line);background:#171a1e}
+.lift svg{display:block;width:100%;height:auto}
+.lift figcaption{
+  border-top:1px solid var(--line);background:var(--steel-800);
+  padding:12px 18px;color:var(--text-dim);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+}
+.plate strong{font-family:var(--font-head);font-stretch:condensed;font-size:24px;text-transform:uppercase;letter-spacing:.04em}
+@media (max-width:900px){ .why-in{grid-template-columns:1fr;gap:32px} }
+
+/* ---------- hodiny ---------- */
+.hours{background:var(--steel-900)}
+.hours-in{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.hours-tbl{width:100%;border-collapse:collapse;border:1px solid var(--line)}
+.hours-tbl th,.hours-tbl td{padding:14px 20px;border-bottom:1px solid var(--steel-600);text-align:left}
+.hours-tbl tr:last-child th,.hours-tbl tr:last-child td{border-bottom:none}
+.hours-tbl th{font-weight:600;background:var(--steel-800)}
+.hours-tbl td{font-family:var(--font-mono);font-size:14.5px;text-align:right;background:var(--steel-800)}
+.hours-tbl tr.today th,.hours-tbl tr.today td{background:var(--steel-600);color:#fff}
+.hours-tbl tr.today th::after{content:" — dnes";color:var(--amber);font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.hours-tbl td.closed{color:var(--text-dim)}
+.status{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--steel-500);background:var(--steel-700);
+  padding:10px 16px;margin-bottom:18px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+}
+.status .led{width:10px;height:10px;border-radius:50%;background:var(--text-dim);flex:none}
+.status.open .led{background:var(--ok);box-shadow:0 0 0 4px rgba(123,216,143,.18)}
+.status.shut .led{background:var(--rust);box-shadow:0 0 0 4px rgba(255,122,26,.16)}
+.hours-note{color:var(--text-dim);font-size:15px}
+.season{
+  margin-top:26px;border-left:3px solid var(--amber);background:var(--steel-800);
+  padding:16px 20px;
+}
+.season .mono{color:var(--amber);display:block;margin-bottom:6px}
+.season p{margin:0;color:var(--text-dim);font-size:15px}
+@media (max-width:820px){ .hours-in{grid-template-columns:1fr;gap:28px} }
+
+/* ---------- objednanie ---------- */
+.booking{background:linear-gradient(180deg,#141619,#1a1d22);border-top:1px solid var(--line)}
+.book-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:36px;align-items:start}
+.book-grid > *{min-width:0}
+
+fieldset{border:none;margin:0 0 30px;padding:0;min-width:0}
+legend{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--amber);padding:0 0 12px;width:100%;border-bottom:1px solid var(--line);margin-bottom:18px;
+}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.chip{position:relative}
+.chip input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip > span{
+  display:flex;flex-direction:column;gap:3px;
+  border:1px solid var(--steel-500);background:var(--steel-800);
+  padding:13px 16px;cursor:pointer;transition:border-color .15s, background .15s;
+}
+.chip .t{font-family:var(--font-head);font-stretch:condensed;text-transform:uppercase;letter-spacing:.04em;font-size:18px;line-height:1.15}
+.chip .p{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);letter-spacing:.06em}
+.chip input:checked + span{border-color:var(--amber);background:var(--steel-600)}
+.chip input:checked + span .p{color:var(--amber)}
+.chip input:focus-visible + span{outline:3px solid var(--amber);outline-offset:2px}
+
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:thin;max-width:100%}
+.day{
+  flex:0 0 auto;min-width:78px;text-align:center;cursor:pointer;
+  border:1px solid var(--steel-500);background:var(--steel-800);color:var(--text);
+  padding:10px 12px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;line-height:1.5;
+}
+.day b{display:block;font-family:var(--font-head);font-stretch:condensed;font-size:22px;letter-spacing:.02em}
+.day small{display:block;color:var(--text-dim);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.day[aria-pressed="true"]{border-color:var(--amber);background:var(--steel-600)}
+.day[aria-pressed="true"] small{color:var(--amber)}
+.day:disabled{opacity:.42;cursor:not-allowed}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.slot{
+  border:1px solid var(--steel-500);background:var(--steel-800);color:var(--text);
+  padding:11px 6px;font-family:var(--font-mono);font-size:14px;cursor:pointer;letter-spacing:.04em;
+}
+.slot:hover:not(:disabled){border-color:var(--amber);color:var(--amber)}
+.slot[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:700}
+.slot:disabled{color:#7d858e;background:var(--steel-900);cursor:not-allowed;text-decoration:line-through}
+
+.fl{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:7px}
+.field{margin-bottom:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+input[type=text],input[type=tel],input[type=email],input[type=date],select,textarea{
+  width:100%;background:var(--steel-900);color:var(--text);
+  border:1px solid var(--steel-500);padding:13px 14px;font:inherit;font-size:16px;
+}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--amber) 50%),linear-gradient(135deg,var(--amber) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 22px,calc(100% - 14px) 22px;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:44px}
+input:focus,select:focus,textarea:focus{border-color:var(--amber);outline:none}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+textarea{min-height:96px;resize:vertical}
+::placeholder{color:#8e969f;opacity:1}
+.hint{color:var(--text-dim);font-size:13.5px;margin-top:8px}
+.nojs-date{display:block}
+
+/* sumár */
+.summary{
+  border:1px solid var(--line);background:var(--steel-800);
+  position:sticky;top:calc(var(--bar-h) + var(--head-h) + 16px);
+}
+.summary-top{
+  background:var(--steel-700);border-bottom:1px solid var(--line);
+  padding:16px 22px;display:flex;align-items:center;gap:12px;
+}
+.summary-top svg{width:20px;height:20px;stroke:var(--amber);fill:none;stroke-width:1.8}
+.summary-top h3{font-size:20px}
+.summary dl{margin:0;padding:20px 22px}
+.summary dl div{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px dashed var(--steel-600)}
+.summary dt{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);padding-top:3px}
+.summary dd{margin:0;text-align:right;font-weight:600}
+.summary .total{border-bottom:none;padding-top:18px}
+.summary .total dt{color:var(--text)}
+.summary .total dd{font-family:var(--font-head);font-stretch:condensed;font-size:30px;color:var(--amber);letter-spacing:.02em}
+.summary-foot{padding:0 22px 22px}
+.summary-foot .btn{width:100%;justify-content:center}
+.summary-foot p{margin:14px 0 0;font-size:13px;color:var(--text-dim)}
+.summary-foot p.err{
+  color:#ff9147;border-left:3px solid #ff9147;padding-left:12px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;
+}
+
+.callbox{
+  display:flex;gap:14px;align-items:flex-start;
+  border-top:1px solid var(--line);background:var(--steel-700);
+  padding:20px 22px;
+}
+.callbox svg{width:22px;height:22px;flex:none;color:var(--amber);margin-top:3px}
+.callbox b{
+  display:block;font-family:var(--font-head);font-stretch:condensed;text-transform:uppercase;
+  letter-spacing:.05em;font-size:18px;margin-bottom:4px;
+}
+.callbox span{color:var(--text-dim);font-size:14.5px;line-height:1.55}
+.callbox a{white-space:nowrap;font-family:var(--font-mono);font-size:14px}
+
+.done{
+  border:1px solid var(--amber);background:var(--steel-800);padding:34px 30px;
+}
+.done-badge{
+  width:56px;height:56px;background:var(--amber);display:grid;place-items:center;margin-bottom:20px;
+  clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);
+}
+.done-badge svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:2.6}
+.done h3{font-size:28px;margin-bottom:12px}
+.done ul{list-style:none;margin:18px 0;padding:18px 0;border-top:1px solid var(--steel-600);border-bottom:1px solid var(--steel-600)}
+.done li{display:flex;justify-content:space-between;gap:16px;padding:7px 0}
+.done li b{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);font-weight:400}
+[hidden]{display:none !important}
+
+@media (max-width:960px){
+  .book-grid{grid-template-columns:1fr}
+  .summary{position:static}
+}
+@media (max-width:520px){ .two{grid-template-columns:1fr} }
+
+/* ---------- kontakt ---------- */
+.contact{background:var(--steel-900);border-top:1px solid var(--line)}
+.contact-in{display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:start}
+.contact-list{list-style:none;margin:0 0 26px;padding:0}
+.contact-list li{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--steel-600)}
+.contact-list svg{width:22px;height:22px;flex:none;stroke:var(--amber);fill:none;stroke-width:1.7;margin-top:4px}
+.contact-list .k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim);display:block}
+.contact-list .v{font-size:17px}
+.contact-list a{text-decoration:none}
+.map-box{border:1px solid var(--line);background:#1a1d21;padding:0;overflow:hidden}
+.map-box svg{display:block;width:100%;height:auto}
+.map-cap{padding:14px 20px;border-top:1px solid var(--line);color:var(--text-dim);font-size:13.5px;background:var(--steel-800)}
+@media (max-width:860px){ .contact-in{grid-template-columns:1fr;gap:30px} }
+
+/* ---------- autor ukážky (skutočné údaje, nie vymyslený podnik) ---------- */
+.author{background:#0c0e11;border-top:1px solid var(--line);padding:66px 0 70px}
+@media (max-width:700px){ .author{padding:48px 0 52px} }
+.author-in{
+  border:1px solid var(--steel-500);border-left:4px solid var(--amber);
+  background:linear-gradient(180deg,#1c2026,#15181c);
+  padding:34px 34px 36px;
+  display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:start;
+}
+.author-in > *{min-width:0}
+.author-tag{
+  display:inline-block;margin-bottom:16px;
+  border:1px solid var(--amber-dim);color:var(--amber);
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  padding:6px 10px;
+}
+.author h2{font-size:clamp(28px,4.2vw,44px);margin-bottom:16px}
+.author-lead{color:var(--text-dim);margin-bottom:18px}
+.author-claim{
+  margin:0;border-top:1px solid var(--steel-600);padding-top:18px;
+  font-family:var(--font-head);font-stretch:condensed;text-transform:uppercase;
+  letter-spacing:.04em;font-size:21px;line-height:1.2;color:var(--text);
+}
+.author-card{border:1px solid var(--line);background:var(--steel-900);padding:22px 24px 24px}
+.author-card > .mono{color:var(--amber);display:block;margin-bottom:12px}
+.author-name{
+  margin:0 0 14px;font-family:var(--font-head);font-stretch:condensed;text-transform:uppercase;
+  letter-spacing:.04em;font-size:26px;line-height:1.15;
+}
+.author-name span{
+  display:block;margin-top:4px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--text-dim);
+}
+.author-list{list-style:none;margin:0;padding:0}
+.author-list li{display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--steel-600)}
+.author-list svg{width:20px;height:20px;flex:none;stroke:var(--amber);fill:none;stroke-width:1.7;margin-top:3px}
+.author-list .k{
+  display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:2px;
+}
+.author-list a{text-decoration:none;overflow-wrap:anywhere}
+.author-list a:hover{text-decoration:underline}
+.author-list .sep{color:var(--text-dim);padding:0 4px}
+@media (max-width:860px){ .author-in{grid-template-columns:1fr;gap:28px} }
+@media (max-width:520px){ .author-in{padding:26px 22px 28px} }
+
+/* ---------- päta ---------- */
+footer{background:#101216;border-top:1px solid var(--line);padding:44px 0 60px}
+.foot-in{display:flex;gap:26px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.foot-in p{margin:0;color:var(--text-dim);font-size:14px}
+.foot-links{display:flex;gap:18px;flex-wrap:wrap}
+.foot-links a{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none}
+.foot-note{
+  margin-top:26px;padding-top:20px;border-top:1px solid var(--steel-600);
+  color:var(--text-dim);font-size:13.5px;max-width:80ch;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ============ pásik ukážky ============ -->
+<div class="demo-bar" role="note">
+  <span class="dot" aria-hidden="true"></span>
+  <span><strong>Ukážkový web</strong><span class="bar-long"> — takýto web pre vás spravím.</span></span>
+  <a class="bar-tel" href="tel:+421902464022">0902 464 022</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+</div>
+
+<!-- ============ hlavička ============ -->
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="logo" href="#hero" aria-label="BOX 7, autoservis a pneuservis, domovská sekcia">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#101216" stroke-width="2" stroke-linecap="square">
+          <path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="4.4" fill="#101216" stroke="none"/>
+        </svg>
+      </span>
+      <span class="logo-txt"><b>BOX 7</b><span>Autoservis / Pneuservis</span></span>
+    </a>
+
+    <input type="checkbox" class="nav-check" id="navCheck" aria-label="Otvoriť alebo zavrieť menu">
+    <span class="nav-btn" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="square"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </span>
+
+    <nav class="nav" id="hlavnaNav" aria-label="Hlavná navigácia">
+      <a href="#sluzby">Služby</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#postup">Ako to prebieha</a>
+      <a href="#hodiny">Hodiny</a>
+      <a href="#kontakt">Kontakt</a>
+      <a class="nav-cta" href="#objednanie">Objednať termín</a>
+    </nav>
+
+    <span class="tel-head">
+      <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.2 2 2 0 0 1 5 3z"/></svg>
+      <span>09XX XXX XXX</span>
+      <span class="tel-sub">(doplní sa)</span>
+    </span>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ============ hero ============ -->
+<section class="hero" id="hero" aria-labelledby="h1">
+  <div class="wrap hero-in">
+    <div>
+      <span class="eyebrow">Dielňa pre osobné vozidlá a dodávky</span>
+      <h1 id="h1">Opravíme to<em>poriadne. Na prvýkrát.</em></h1>
+      <p class="hero-lead">Servis, pneuservis, diagnostika a klimatizácia na jednom mieste. Cenu poviete skôr, než sa čokoľvek rozoberie. Termín si viete zarezervovať priamo tu, bez telefonátov.</p>
+
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#objednanie">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M7 3v4M17 3v4M3 9h18M4 5h16v16H4z"/></svg>
+          Objednať termín
+        </a>
+        <a class="btn btn-ghost" href="#cennik">Pozrieť cenník</a>
+      </div>
+
+      <dl class="hero-facts">
+        <div><dt>Servisné boxy</dt><dd>4 stojiská</dd></div>
+        <div><dt>Vybavenie</dt><dd>3D geometria</dd></div>
+        <div><dt>Bežný úkon</dt><dd>Do 90 minút</dd></div>
+        <div><dt>Cena vopred</dt><dd>Vždy písomne</dd></div>
+      </dl>
+    </div>
+
+    <!-- miesto pre reálnu fotografiu klienta: záber do dielne alebo detail na brzdový kotúč -->
+    <div class="hero-art">
+      <svg viewBox="0 0 440 460" role="img" aria-labelledby="artT artD">
+        <title id="artT">Technický nákres brzdového kotúča so strmeňom</title>
+        <desc id="artD">Ilustračná schéma vetraného brzdového kotúča s vŕtanými otvormi, strmeňom a kótou priemeru.</desc>
+        <defs>
+          <linearGradient id="rot" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3d434b"/><stop offset=".45" stop-color="#2a2f36"/><stop offset="1" stop-color="#171a1e"/>
+          </linearGradient>
+          <linearGradient id="hub" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4a5158"/><stop offset="1" stop-color="#23272d"/>
+          </linearGradient>
+          <linearGradient id="cal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffc44d"/><stop offset="1" stop-color="#d38f0d"/>
+          </linearGradient>
+        </defs>
+
+        <!-- rohové značky -->
+        <g stroke="#4b525a" stroke-width="1.4" fill="none">
+          <path d="M14 44V14h30M396 14h30v30M426 416v30h-30M44 446H14v-30"/>
+        </g>
+
+        <!-- kotúč -->
+        <circle cx="220" cy="220" r="168" fill="url(#rot)" stroke="#4d545c" stroke-width="2"/>
+        <circle cx="220" cy="220" r="152" fill="none" stroke="#5a626b" stroke-width="1"/>
+        <circle cx="220" cy="220" r="86" fill="none" stroke="#5a626b" stroke-width="1"/>
+
+        <!-- brúsené vetracie ryhy -->
+        <g class="rotor-vents" stroke="#565e67" stroke-width="1" opacity=".55">
+          <path d="M220 68v34M220 338v34M68 220h34M338 220h34M113 113l24 24M303 303l24 24M327 113l-24 24M137 303l-24 24"/>
+        </g>
+
+        <!-- vŕtané otvory -->
+        <g class="rotor-holes" fill="#14171b" stroke="#5f676f" stroke-width="1">
+          <circle cx="220" cy="100" r="7"/><circle cx="280" cy="116" r="7"/><circle cx="324" cy="160" r="7"/>
+          <circle cx="340" cy="220" r="7"/><circle cx="324" cy="280" r="7"/><circle cx="280" cy="324" r="7"/>
+          <circle cx="220" cy="340" r="7"/><circle cx="160" cy="324" r="7"/><circle cx="116" cy="280" r="7"/>
+          <circle cx="100" cy="220" r="7"/><circle cx="116" cy="160" r="7"/><circle cx="160" cy="116" r="7"/>
+          <circle cx="252" cy="146" r="5"/><circle cx="294" cy="188" r="5"/><circle cx="294" cy="252" r="5"/>
+          <circle cx="252" cy="294" r="5"/><circle cx="188" cy="294" r="5"/><circle cx="146" cy="252" r="5"/>
+          <circle cx="146" cy="188" r="5"/><circle cx="188" cy="146" r="5"/>
+        </g>
+
+        <!-- náboj -->
+        <circle cx="220" cy="220" r="62" fill="url(#hub)" stroke="#666e77" stroke-width="1.6"/>
+        <circle cx="220" cy="220" r="26" fill="#14171b" stroke="#666e77" stroke-width="1.4"/>
+        <g fill="#14171b" stroke="#727a83" stroke-width="1.4">
+          <circle cx="220" cy="176" r="9"/><circle cx="262" cy="207" r="9"/><circle cx="246" cy="256" r="9"/>
+          <circle cx="194" cy="256" r="9"/><circle cx="178" cy="207" r="9"/>
+        </g>
+
+        <!-- strmeň -->
+        <g>
+          <path d="M352 158h44a10 10 0 0 1 10 10v104a10 10 0 0 1-10 10h-44z" fill="url(#cal)" stroke="#8a5c00" stroke-width="1.5"/>
+          <rect x="336" y="172" width="18" height="96" fill="#2c3138" stroke="#6a727b" stroke-width="1.2"/>
+          <path d="M366 186h30M366 202h30M366 218h30" stroke="#8a5c00" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+
+        <!-- kóta -->
+        <g stroke="#7e868f" stroke-width="1.2" fill="none">
+          <path d="M52 412h336M52 404v16M388 404v16"/>
+        </g>
+        <text x="220" y="440" text-anchor="middle" fill="#a4acb5" font-family="ui-monospace, Consolas, monospace" font-size="15" letter-spacing="3">Ø 320 MM</text>
+        <text x="52" y="46" fill="#ffb020" font-family="ui-monospace, Consolas, monospace" font-size="13" letter-spacing="3">BRZDY / KONTROLA</text>
+      </svg>
+    </div>
+  </div>
+  <div class="stripe" aria-hidden="true"></div>
+</section>
+
+<!-- ============ služby ============ -->
+<section class="services" id="sluzby" aria-labelledby="h-sluzby">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01 / Služby</span>
+      <h2 id="h-sluzby">Čo v dielni robíme</h2>
+      <p>Bežnú údržbu aj poruchy, ktoré iní radšej pošlú ďalej. Ak na niečo nemáme vybavenie, povieme vám to hneď a neúčtujeme za to.</p>
+    </div>
+
+    <div class="svc-grid">
+      <article class="svc">
+        <span class="svc-tag">Najčastejšie</span>
+        <svg class="svc-ico" viewBox="0 0 32 32" aria-hidden="true" stroke-linecap="square">
+          <path d="M20.5 4.5a7 7 0 0 0-8.4 9.1L4 21.7 7.3 25l8.1-8.1a7 7 0 0 0 9.1-8.4l-4 4-3.6-.9-.9-3.6z"/>
+        </svg>
+        <h3>Mechanický servis</h3>
+        <p>Od výmeny oleja po rozvody a spojku. Diely vyberáme podľa toho, ako dlho vám má auto ešte slúžiť, nie podľa toho, čo máme v regáli.</p>
+        <ul>
+          <li>Servisná prehliadka a výmena kvapalín</li>
+          <li>Brzdy, tlmiče, výfuk, podvozok</li>
+          <li>Rozvody, spojka, vodné čerpadlo</li>
+        </ul>
+      </article>
+
+      <article class="svc">
+        <svg class="svc-ico" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="5"/>
+          <path d="M16 4v7M16 21v7M4 16h7M21 16h7M7.5 7.5l5 5M19.5 19.5l5 5M24.5 7.5l-5 5M12.5 19.5l-5 5"/>
+        </svg>
+        <h3>Pneuservis</h3>
+        <p>Prezúvanie, vyvažovanie aj oprava defektu na počkanie. Sezónne pneumatiky vám odložíme v sklade, aby ste ich nemali v pivnici.</p>
+        <ul>
+          <li>Prezutie a vyváženie 13" až 20"</li>
+          <li>Oprava defektu a kontrola ventilov</li>
+          <li>Uskladnenie kompletov cez sezónu</li>
+        </ul>
+      </article>
+
+      <article class="svc">
+        <svg class="svc-ico" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M3 20h5l3-9 4 16 3.5-11 2.5 4h8"/><rect x="2" y="5" width="28" height="22" rx="1"/>
+        </svg>
+        <h3>Diagnostika</h3>
+        <p>Nesvieti kontrolka náhodne. Načítame chybové kódy, premeriame reálne hodnoty a poruchu vám vysvetlíme rečou, ktorej rozumiete.</p>
+        <ul>
+          <li>Čítanie a mazanie chybových kódov</li>
+          <li>Meranie v prevádzke, tlak, emisie</li>
+          <li>Hľadanie skratov a chýb elektro</li>
+        </ul>
+      </article>
+
+      <article class="svc">
+        <svg class="svc-ico" viewBox="0 0 32 32" aria-hidden="true" stroke-linecap="square">
+          <path d="M16 2v28M4.5 8.5l23 15M27.5 8.5l-23 15M16 8l-4-4M16 8l4-4M16 24l-4 4M16 24l4 4"/>
+        </svg>
+        <h3>Klimatizácia</h3>
+        <p>Plnenie chladiva R134a aj R1234yf, kontrola tesnosti a dezinfekcia systému. Ak klíma nechladí, najprv hľadáme netesnosť.</p>
+        <ul>
+          <li>Kontrola tlaku a doplnenie chladiva</li>
+          <li>Detekcia úniku, výmena filtra</li>
+          <li>Dezinfekcia proti zápachu</li>
+        </ul>
+      </article>
+
+      <article class="svc">
+        <svg class="svc-ico" viewBox="0 0 32 32" aria-hidden="true" stroke-linecap="square">
+          <path d="M7 3h18v26H7z"/><path d="M11 11l2.5 2.5L18 9M11 20l2.5 2.5L18 18"/>
+        </svg>
+        <h3>Príprava na STK</h3>
+        <p>Prejdeme vozidlo podľa toho, čo sa na kontrole naozaj hodnotí. Nájdené chyby opravíme a na technickú aj emisnú kontrolu vozidlo dovezieme.</p>
+        <ul>
+          <li>Kontrola pred technickou a emisnou</li>
+          <li>Nastavenie svetiel a geometria</li>
+          <li>Odvoz na stanicu po dohode</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ cenník ============ -->
+<section class="pricing" id="cennik" aria-labelledby="h-cennik">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02 / Cenník</span>
+      <h2 id="h-cennik">Bežné úkony a čas</h2>
+      <p>Ceny sú za prácu vrátane DPH, bez ceny dielov a materiálu. Konečnú sumu vám potvrdíme po prehliadke vozidla a bez vášho súhlasu ju neprekročíme.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="price">
+        <caption>Orientačný cenník práce pre osobné vozidlá. Ukážkové hodnoty.</caption>
+        <thead>
+          <tr><th scope="col">Úkon</th><th scope="col">Čas v dielni</th><th scope="col">Cena od</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Výmena motorového oleja a filtra</th><td class="dur" data-label="Čas v dielni">30 min</td><td class="num" data-label="Cena od">25 €</td></tr>
+          <tr><th scope="row">Servisná prehliadka pred cestou</th><td class="dur" data-label="Čas v dielni">45 min</td><td class="num" data-label="Cena od">35 €</td></tr>
+          <tr><th scope="row">Prezutie a vyváženie, 4 kolesá</th><td class="dur" data-label="Čas v dielni">45 min</td><td class="num" data-label="Cena od">44 €</td></tr>
+          <tr><th scope="row">Oprava defektu, 1 koleso</th><td class="dur" data-label="Čas v dielni">20 min</td><td class="num" data-label="Cena od">15 €</td></tr>
+          <tr><th scope="row">Výmena brzdových platničiek, jedna náprava</th><td class="dur" data-label="Čas v dielni">60 min</td><td class="num" data-label="Cena od">45 €</td></tr>
+          <tr><th scope="row">Počítačová diagnostika a vyhodnotenie</th><td class="dur" data-label="Čas v dielni">45 min</td><td class="num" data-label="Cena od">39 €</td></tr>
+          <tr><th scope="row">Plnenie klimatizácie vrátane kontroly</th><td class="dur" data-label="Čas v dielni">60 min</td><td class="num" data-label="Cena od">59 €</td></tr>
+          <tr><th scope="row">Nastavenie geometrie 3D, náprava</th><td class="dur" data-label="Čas v dielni">75 min</td><td class="num" data-label="Cena od">55 €</td></tr>
+          <tr><th scope="row">Príprava a odvoz na STK</th><td class="dur" data-label="Čas v dielni">90 min</td><td class="num" data-label="Cena od">49 €</td></tr>
+          <tr><th scope="row">Uskladnenie kompletu pneumatík, sezóna</th><td class="dur" data-label="Čas v dielni">bez čakania</td><td class="num" data-label="Cena od">29 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="price-note">Pri vozidlách triedy SUV, 4x4 a pri dodávkach sa cena práce zvyšuje podľa náročnosti. Presnú sumu vám povieme vopred.</p>
+  </div>
+</section>
+
+<!-- ============ postup ============ -->
+<section class="steps" id="postup" aria-labelledby="h-postup">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03 / Postup</span>
+      <h2 id="h-postup">Ako to u nás prebieha</h2>
+      <p>Štyri kroky, žiadne prekvapenia na konci.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step">
+        <span class="step-n">Krok 01</span>
+        <h3>Termín</h3>
+        <p>Rezerváciu si spravíte tu na stránke alebo telefonicky. Potvrdenie dostanete v ten istý deň.</p>
+      </div>
+      <div class="step">
+        <span class="step-n">Krok 02</span>
+        <h3>Prehliadka a cena</h3>
+        <p>Vozidlo zdvihneme, poruchu si overíme a až potom vám pošleme cenu. Do práce sa púšťame po vašom súhlase.</p>
+      </div>
+      <div class="step">
+        <span class="step-n">Krok 03</span>
+        <h3>Práca v boxe</h3>
+        <p>Ak sa počas opravy ukáže niečo navyše, voláme vám skôr, než to spravíme. Vymenené diely odkladáme.</p>
+      </div>
+      <div class="step">
+        <span class="step-n">Krok 04</span>
+        <h3>Odovzdanie</h3>
+        <p>Na doklade nájdete, čo bolo urobené a aké diely sme použili. Povieme vám aj to, čo vydrží ešte jednu sezónu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ prečo my ============ -->
+<section class="why" id="preco" aria-labelledby="h-preco">
+  <div class="wrap why-in">
+    <div>
+      <span class="sec-num" style="display:inline-block;margin-bottom:16px">04 / Prečo my</span>
+      <h2 id="h-preco">Dielňa, kde sa nehádate o faktúru</h2>
+      <p class="why-lead">Väčšina zlých skúseností s autoservisom nie je o skrutkách, ale o komunikácii. Preto máme jasné pravidlá a držíme sa ich pri každom vozidle.</p>
+      <div class="plate">
+        <span class="mono">Prevádzka</span>
+        <strong>Box 1 – 4</strong>
+        <span class="mono">osobné vozidlá a dodávky do 3,5 t</span>
+      </div>
+
+      <!-- miesto pre reálnu fotografiu klienta: záber na vozidlo na zdviháku v dielni -->
+      <figure class="lift">
+        <svg viewBox="0 0 520 300" role="img" aria-labelledby="liftT liftD">
+          <title id="liftT">Nákres vozidla na dvojstĺpovom zdviháku</title>
+          <desc id="liftD">Technická ilustrácia: osobné vozidlo zdvihnuté na dvojstĺpovom zdviháku v servisnom boxe.</desc>
+
+          <g stroke="#262b31" stroke-width="1">
+            <path d="M0 40h520M0 80h520M0 120h520M0 160h520M0 200h520M0 240h520"/>
+            <path d="M40 0v300M120 0v300M200 0v300M280 0v300M360 0v300M440 0v300"/>
+          </g>
+
+          <!-- podlaha -->
+          <path d="M0 268h520" stroke="#5c646d" stroke-width="2"/>
+          <path d="M0 276h520" stroke="#31373e" stroke-width="6" stroke-dasharray="18 12"/>
+
+          <!-- stĺpy zdviháka -->
+          <g fill="#262b32" stroke="#4d545c" stroke-width="1.5">
+            <rect x="74" y="70" width="20" height="198"/>
+            <rect x="426" y="70" width="20" height="198"/>
+            <rect x="60" y="258" width="48" height="12"/>
+            <rect x="412" y="258" width="48" height="12"/>
+          </g>
+          <path d="M74 96h372" stroke="#3d444c" stroke-width="6"/>
+
+          <!-- ramená -->
+          <g stroke="#ffb020" stroke-width="7" stroke-linecap="round" fill="none">
+            <path d="M94 196h72M354 196h72"/>
+          </g>
+          <g fill="#ffb020">
+            <rect x="160" y="186" width="14" height="20" rx="2"/>
+            <rect x="346" y="186" width="14" height="20" rx="2"/>
+          </g>
+
+          <!-- vozidlo -->
+          <path d="M148 190v-22c0-11 7-17 20-19l40-4 26-30c7-8 15-11 26-11h52c11 0 20 4 26 12l20 29 22 5c11 2 16 8 16 18v22z"
+                fill="#252a31" stroke="#79818b" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M222 140l22-26c4-5 9-7 16-7h26v33z" fill="#1a1e23" stroke="#5f6873" stroke-width="1.6"/>
+          <path d="M296 140v-33h28c8 0 14 3 18 9l16 24z" fill="#1a1e23" stroke="#5f6873" stroke-width="1.6"/>
+          <path d="M148 176h250" stroke="#3c434b" stroke-width="1.4"/>
+          <rect x="150" y="158" width="16" height="9" fill="#ffb020"/>
+          <rect x="378" y="158" width="14" height="9" fill="#b33b1e"/>
+
+          <!-- kolesá -->
+          <g fill="#15181c" stroke="#79818b" stroke-width="2">
+            <circle cx="196" cy="190" r="26"/><circle cx="352" cy="190" r="26"/>
+          </g>
+          <g fill="none" stroke="#4f575f" stroke-width="1.5">
+            <circle cx="196" cy="190" r="11"/><circle cx="352" cy="190" r="11"/>
+          </g>
+
+          <!-- kóty -->
+          <g stroke="#666e77" stroke-width="1.2" fill="none">
+            <path d="M40 196v72M34 196h12M34 268h12"/>
+          </g>
+          <text x="52" y="240" fill="#a4acb5" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="2">ZDVIH</text>
+          <text x="472" y="60" text-anchor="end" fill="#ffb020" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="3">BOX 03</text>
+        </svg>
+        <figcaption>Dvojstĺpový zdvihák, box č. 3. Ilustračný nákres.</figcaption>
+      </figure>
+    </div>
+
+    <div class="why-panel">
+      <ul class="why-list">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M4 12l5 5L20 6"/></svg>
+          <div><b>Cena skôr, než sa niečo rozoberie</b><span>Rozpočet dostanete písomne. Ak sa v priebehu opravy ukáže niečo navyše, ozveme sa a čakáme na vaše áno.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M4 12l5 5L20 6"/></svg>
+          <div><b>Staré diely vám ukážeme</b><span>Vymenené diely odkladáme do prevzatia vozidla. Chceme, aby ste videli, za čo ste zaplatili.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M4 12l5 5L20 6"/></svg>
+          <div><b>Fotky z priebehu opravy</b><span>Pri väčších zásahoch fotíme stav pred prácou aj po nej a pošleme vám ich správou.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M4 12l5 5L20 6"/></svg>
+          <div><b>Vlastný diel je v poriadku</b><span>Ak si diel prinesiete, namontujeme ho. Poctivo vám povieme, čo si o jeho kvalite myslíme.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M4 12l5 5L20 6"/></svg>
+          <div><b>Náhradné vozidlo po dohode</b><span>Pri dlhších opravách vieme dohodnúť náhradné vozidlo, aby ste sa nemuseli riešiť odvoz.</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ hodiny ============ -->
+<section class="hours" id="hodiny" aria-labelledby="h-hodiny">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05 / Prevádzka</span>
+      <h2 id="h-hodiny">Otváracie hodiny</h2>
+    </div>
+
+    <div class="hours-in">
+      <div>
+        <div class="status" id="stavPrevadzky" role="status">
+          <span class="led" aria-hidden="true"></span>
+          <span id="stavText">Otváracie hodiny nájdete v tabuľke</span>
+        </div>
+        <p class="hours-note">Príjem vozidiel končí 45 minút pred zatvorením. Odovzdanie kľúčov mimo hodín si viete dohodnúť vopred, kľúč vhodíte do schránky pri vstupe do dielne.</p>
+        <p class="hours-note">Rýchle úkony ako oprava defektu alebo doplnenie kvapalín riešime aj bez objednania, ak je voľný box.</p>
+
+        <div class="season">
+          <span class="mono">Sezóna prezúvania</span>
+          <p>Od marca do apríla a od októbra do novembra býva pneuservis obsadený aj týždeň dopredu. Ak viete, že budete prezúvať, ozvite sa nám radšej skôr.</p>
+        </div>
+      </div>
+
+      <table class="hours-tbl" id="tabHodiny">
+        <caption class="mono" style="text-align:left;padding:0 0 12px;color:var(--text-dim)">Prevádzkový čas dielne</caption>
+        <tbody>
+          <tr data-d="1"><th scope="row">Pondelok</th><td>07:30 – 17:00</td></tr>
+          <tr data-d="2"><th scope="row">Utorok</th><td>07:30 – 17:00</td></tr>
+          <tr data-d="3"><th scope="row">Streda</th><td>07:30 – 17:00</td></tr>
+          <tr data-d="4"><th scope="row">Štvrtok</th><td>07:30 – 17:00</td></tr>
+          <tr data-d="5"><th scope="row">Piatok</th><td>07:30 – 16:00</td></tr>
+          <tr data-d="6"><th scope="row">Sobota</th><td>08:00 – 12:00</td></tr>
+          <tr data-d="0"><th scope="row">Nedeľa</th><td class="closed">Zatvorené</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ objednanie ============ -->
+<section class="booking" id="objednanie" aria-labelledby="h-obj">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">06 / Rezervácia</span>
+      <h2 id="h-obj">Objednanie termínu</h2>
+      <p>Vyberte si úkon, deň a čas. Vpravo hneď uvidíte, ako dlho bude vozidlo v dielni a koľko to orientačne stojí.</p>
+    </div>
+
+    <form class="book-grid" id="formObj" action="#objednanie" method="post" novalidate>
+
+      <div>
+        <fieldset>
+          <legend>1 / Čo potrebujete</legend>
+          <div class="chips" role="radiogroup" aria-label="Výber služby">
+            <label class="chip"><input type="radio" name="sluzba" value="servis" data-cena="35" data-min="45" data-nazov="Servisná prehliadka" checked><span><span class="t">Servisná prehliadka</span><span class="p">od 35 € / 45 min</span></span></label>
+            <label class="chip"><input type="radio" name="sluzba" value="olej" data-cena="25" data-min="30" data-nazov="Výmena oleja a filtra"><span><span class="t">Výmena oleja</span><span class="p">od 25 € / 30 min</span></span></label>
+            <label class="chip"><input type="radio" name="sluzba" value="pneu" data-cena="44" data-min="45" data-nazov="Prezutie a vyváženie kolies"><span><span class="t">Prezutie kolies</span><span class="p">od 44 € / 45 min</span></span></label>
+            <label class="chip"><input type="radio" name="sluzba" value="brzdy" data-cena="45" data-min="60" data-nazov="Brzdy, jedna náprava"><span><span class="t">Brzdy</span><span class="p">od 45 € / 60 min</span></span></label>
+            <label class="chip"><input type="radio" name="sluzba" value="diag" data-cena="39" data-min="45" data-nazov="Počítačová diagnostika"><span><span class="t">Diagnostika</span><span class="p">od 39 € / 45 min</span></span></label>
+            <label class="chip"><input type="radio" name="sluzba" value="klima" data-cena="59" data-min="60" data-nazov="Servis klimatizácie"><span><span class="t">Klimatizácia</span><span class="p">od 59 € / 60 min</span></span></label>
+            <label class="chip"><input type="radio" name="sluzba" value="geo" data-cena="55" data-min="75" data-nazov="Geometria 3D, náprava"><span><span class="t">Geometria 3D</span><span class="p">od 55 € / 75 min</span></span></label>
+            <label class="chip"><input type="radio" name="sluzba" value="stk" data-cena="49" data-min="90" data-nazov="Príprava na STK"><span><span class="t">Príprava na STK</span><span class="p">od 49 € / 90 min</span></span></label>
+          </div>
+
+          <div class="field" style="margin-top:20px;max-width:340px">
+            <label class="fl" for="trieda">Trieda vozidla</label>
+            <select id="trieda" name="trieda">
+              <option value="1" data-nazov="Osobné vozidlo" selected>Osobné vozidlo</option>
+              <option value="1.15" data-nazov="SUV alebo 4x4">SUV alebo 4x4</option>
+              <option value="1.3" data-nazov="Dodávka do 3,5 t">Dodávka do 3,5 t</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>2 / Kedy sa vám hodí</legend>
+
+          <div class="days" id="pasDni" role="group" aria-label="Rýchly výber dňa"></div>
+
+          <div class="field nojs-date" style="max-width:260px">
+            <label class="fl" for="datum">Dátum</label>
+            <input type="date" id="datum" name="datum" required>
+          </div>
+
+          <div class="field">
+            <span class="fl" id="lblCas">Voľné časy</span>
+            <div class="slots" id="mriezkaCasov" role="group" aria-labelledby="lblCas"></div>
+            <div id="zalozniCas">
+              <label class="fl" for="cas" style="margin-top:14px">Čas príchodu</label>
+              <select id="cas" name="cas" required style="max-width:260px">
+                <option value="">Vyberte čas</option>
+                <option>07:30</option><option>08:00</option><option>08:30</option><option>09:00</option>
+                <option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option>
+                <option>11:30</option><option>13:00</option><option>13:30</option><option>14:00</option>
+                <option>14:30</option><option>15:00</option><option>15:30</option>
+              </select>
+            </div>
+            <p class="hint" id="hintCasy">Časy s prečiarknutím sú už obsadené. V nedeľu máme zatvorené.</p>
+            <p class="hint">Obsadenosť termínov je v tejto ukážke iba znázornená. V ostrej verzii sa dostupnosť napája na reálny diár prevádzky, takže sa ponúkajú len naozaj voľné časy.</p>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>3 / Vozidlo a kontakt</legend>
+          <div class="two">
+            <div class="field">
+              <label class="fl" for="meno">Meno a priezvisko</label>
+              <input type="text" id="meno" name="meno" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label class="fl" for="tel">Telefón</label>
+              <input type="tel" id="tel" name="tel" autocomplete="tel" required>
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label class="fl" for="vozidlo">Značka a model</label>
+              <input type="text" id="vozidlo" name="vozidlo" placeholder="napríklad kombi, rok 2016" required>
+            </div>
+            <div class="field">
+              <label class="fl" for="km">Najazdené km</label>
+              <input type="text" id="km" name="km" inputmode="numeric" placeholder="napríklad 145 000">
+            </div>
+          </div>
+          <div class="field">
+            <label class="fl" for="popis">Čo vozidlo robí</label>
+            <textarea id="popis" name="popis" placeholder="Krátko opíšte problém alebo zvuk, ktorý počujete. Pomôže nám to pripraviť si diely."></textarea>
+          </div>
+          <p class="hint"><strong>Toto je ukážkový formulár.</strong> Meno, telefón ani ostatné údaje sa nikam neodosielajú a nikde sa neukladajú.</p>
+        </fieldset>
+      </div>
+
+      <aside class="summary" aria-label="Prehľad rezervácie">
+        <div class="summary-top">
+          <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></svg>
+          <h3>Prehľad objednávky</h3>
+        </div>
+        <dl id="prehlad" aria-live="polite">
+          <div><dt>Úkon</dt><dd id="sPolozka">Servisná prehliadka</dd></div>
+          <div><dt>Vozidlo</dt><dd id="sTrieda">Osobné vozidlo</dd></div>
+          <div><dt>Termín</dt><dd id="sTermin">Zatiaľ nevybraný</dd></div>
+          <div><dt>Čas v dielni</dt><dd id="sCas">45 minút</dd></div>
+          <div class="total"><dt>Orientačne</dt><dd id="sCena">od 35 €</dd></div>
+        </dl>
+        <div class="summary-foot">
+          <button class="btn btn-primary" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>
+            Odoslať rezerváciu
+          </button>
+          <p class="err" id="chybaHlaska" role="alert" hidden></p>
+          <p>Cena je orientačná, za prácu a bez dielov. Presnú sumu potvrdíme po prehliadke vozidla.</p>
+          <p><strong>Ukážkový formulár. Nič sa neodosiela a nikde sa neukladá.</strong></p>
+        </div>
+
+        <div class="callbox">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.2 2 2 0 0 1 5 3z"/></svg>
+          <div>
+            <b>Radšej telefonicky?</b>
+            <span>Na skutočnom webe by tu bolo číslo dielne — <strong>09XX XXX XXX (doplní sa)</strong> — a termín by ste dohodli za minútu. Pri poruche, s ktorou sa bojíte jazdiť, voláme späť do hodiny.</span>
+          </div>
+        </div>
+      </aside>
+    </form>
+
+    <div class="done" id="hotovo" hidden tabindex="-1" role="status">
+      <div class="done-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>
+      </div>
+      <h3>Toto je ukážka, rezervácia sa neodoslala</h3>
+      <p>Na skutočnom webe by vám v tejto chvíli prišlo potvrdenie na telefón a objednávka by pristála v kalendári dielne. Tu sa nič neodoslalo a žiadne údaje sa neuložili.</p>
+      <ul id="rekap"></ul>
+      <p>Chcete taký web pre svoju prevádzku? Pozrite si <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+      <button class="btn btn-ghost" type="button" id="spat">Späť na formulár</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ kontakt ============ -->
+<section class="contact" id="kontakt" aria-labelledby="h-kontakt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">07 / Kontakt</span>
+      <h2 id="h-kontakt">Kde nás nájdete</h2>
+      <p>Vjazd je z bočnej ulice, za budovou skladu. Parkovanie pred dielňou je voľné.</p>
+    </div>
+
+    <div class="contact-in">
+      <div>
+        <ul class="contact-list">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M12 22s8-6.4 8-12a8 8 0 1 0-16 0c0 5.6 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div><span class="k">Adresa</span><span class="v">Priemyselná 7, Vzorové Mesto</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.2 2 2 0 0 1 5 3z"/></svg>
+            <div><span class="k">Telefón</span><span class="v">09XX XXX XXX <span style="color:var(--text-dim);font-size:14px">(telefón podniku sa doplní)</span></span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/></svg>
+            <div><span class="k">E-mail</span><span class="v"><a href="mailto:dielna@box7.example">dielna@box7.example</a></span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.5l3.5 2"/></svg>
+            <div><span class="k">Príjem vozidiel</span><span class="v">Pondelok až piatok od 07:30, sobota od 08:00</span></div>
+          </li>
+        </ul>
+        <p class="hints" style="color:var(--text-dim);font-size:14px">Kontaktné údaje aj adresa sú ilustratívne, slúžia len na ukážku rozloženia stránky.</p>
+      </div>
+
+      <div class="map-box">
+        <!-- miesto pre reálnu fotografiu klienta alebo mapu prevádzky -->
+        <svg viewBox="0 0 720 440" role="img" aria-labelledby="mapT mapD">
+          <title id="mapT">Nakreslená mapka okolia dielne</title>
+          <desc id="mapD">Zjednodušený plán: hlavná cesta vedie zhora nadol, Priemyselná ulica odbočuje doprava, dielňa je označená značkou za budovou skladu, vedľa je parkovisko.</desc>
+
+          <rect width="720" height="440" fill="#1a1d21"/>
+          <g stroke="#22262b" stroke-width="1">
+            <path d="M0 40h720M0 80h720M0 120h720M0 160h720M0 200h720M0 240h720M0 280h720M0 320h720M0 360h720M0 400h720"/>
+            <path d="M40 0v440M80 0v440M120 0v440M160 0v440M200 0v440M240 0v440M280 0v440M320 0v440M360 0v440M400 0v440M440 0v440M480 0v440M520 0v440M560 0v440M600 0v440M640 0v440M680 0v440"/>
+          </g>
+
+          <!-- zeleň -->
+          <path d="M0 340h180l40 40v60H0z" fill="#1e2a22"/>
+          <g stroke="#2f4636" stroke-width="2" fill="none">
+            <path d="M30 400v-22M60 414v-26M92 396v-20"/>
+          </g>
+
+          <!-- hlavná cesta -->
+          <path d="M150 -10 L150 250 L720 250" stroke="#31363d" stroke-width="46" fill="none" stroke-linejoin="round"/>
+          <path d="M150 -10 L150 250 L720 250" stroke="#5b636c" stroke-width="2" fill="none" stroke-dasharray="16 14" stroke-linejoin="round"/>
+
+          <!-- priemyselná ulica -->
+          <path d="M150 130 L560 130 L560 60" stroke="#2b3037" stroke-width="30" fill="none" stroke-linejoin="round"/>
+          <path d="M150 130 L560 130 L560 60" stroke="#4d545c" stroke-width="1.6" fill="none" stroke-dasharray="10 12" stroke-linejoin="round"/>
+
+          <!-- vjazd k dielni -->
+          <path d="M430 130 L430 200" stroke="#2b3037" stroke-width="20" fill="none"/>
+
+          <!-- budovy -->
+          <g fill="#232830" stroke="#3a414a" stroke-width="1.5">
+            <rect x="200" y="60" width="120" height="52"/>
+            <rect x="340" y="52" width="70" height="60"/>
+            <rect x="600" y="150" width="90" height="70"/>
+            <rect x="200" y="290" width="110" height="60"/>
+          </g>
+          <text x="260" y="92" text-anchor="middle" fill="#7d858e" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="2">SKLAD</text>
+          <text x="645" y="192" text-anchor="middle" fill="#7d858e" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="2">ČERPACIA</text>
+          <text x="255" y="326" text-anchor="middle" fill="#7d858e" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="2">PREDAJŇA</text>
+
+          <!-- parkovisko -->
+          <rect x="330" y="185" width="80" height="70" fill="#20242a" stroke="#3a414a" stroke-width="1.5"/>
+          <g stroke="#3f4650" stroke-width="1.5">
+            <path d="M330 205h80M330 225h80M330 245h80"/>
+          </g>
+          <text x="370" y="272" text-anchor="middle" fill="#7d858e" font-family="ui-monospace, Consolas, monospace" font-size="11" letter-spacing="2">PARKOVANIE</text>
+
+          <!-- dielňa -->
+          <g>
+            <rect x="440" y="170" width="130" height="96" fill="#2b3037" stroke="#ffb020" stroke-width="2.5"/>
+            <g fill="#1c2026" stroke="#5d656e" stroke-width="1.2">
+              <rect x="452" y="212" width="32" height="46"/><rect x="490" y="212" width="32" height="46"/><rect x="528" y="212" width="30" height="46"/>
+            </g>
+            <path d="M440 196h130" stroke="#ffb020" stroke-width="1.2" stroke-dasharray="6 6"/>
+            <text x="505" y="190" text-anchor="middle" fill="#ffb020" font-family="ui-monospace, Consolas, monospace" font-size="13" letter-spacing="3" font-weight="bold">BOX 7</text>
+          </g>
+
+          <!-- značka -->
+          <g transform="translate(505 138)">
+            <path d="M0 26c0 0-15-14-15-24a15 15 0 1 1 30 0c0 10-15 24-15 24z" fill="#ffb020" stroke="#8a5c00" stroke-width="1.4"/>
+            <circle cx="0" cy="1" r="5.5" fill="#14161a"/>
+          </g>
+
+          <!-- popisy ulíc -->
+          <text x="118" y="200" fill="#a4acb5" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="2" transform="rotate(-90 118 200)">HLAVNÁ CESTA</text>
+          <text x="250" y="122" fill="#a4acb5" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="2">PRIEMYSELNÁ ULICA</text>
+          <text x="600" y="242" fill="#a4acb5" font-family="ui-monospace, Consolas, monospace" font-size="12" letter-spacing="2">SMER OBCHVAT</text>
+
+          <!-- kompas -->
+          <g transform="translate(668 386)">
+            <circle r="26" fill="#181b1f" stroke="#3a414a" stroke-width="1.4"/>
+            <path d="M0 -17 L7 6 L0 1 L-7 6 Z" fill="#ffb020"/>
+            <text x="0" y="-20" text-anchor="middle" fill="#a4acb5" font-family="ui-monospace, Consolas, monospace" font-size="10">S</text>
+          </g>
+        </svg>
+        <p class="map-cap">Vjazd do dielne je z Priemyselnej ulice, hneď za budovou skladu. Mapka je ilustračná.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ autor ukážky — skutočné kontaktné údaje ============ -->
+<aside class="author" id="autor" aria-labelledby="h-autor">
+  <div class="wrap">
+    <div class="author-in">
+      <div>
+        <span class="author-tag">Autor ukážky — nie je súčasť podniku BOX 7</span>
+        <h2 id="h-autor">Páči sa vám tento web?</h2>
+        <p class="author-lead">Tento web je ukážka, ktorú navrhol a naprogramoval Alex Poliak. Podobný web spravím aj vám — s vaším cenníkom, vašimi fotkami a objednávkovým formulárom, ktorý naozaj funguje.</p>
+        <p class="author-claim">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      </div>
+
+      <div class="author-card">
+        <span class="mono">Kontakt na autora</span>
+        <p class="author-name">Alex Poliak<span>Bratislava</span></p>
+        <ul class="author-list">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/></svg>
+            <div><span class="k">E-mail</span><a href="mailto:info@apoliak.online">info@apoliak.online</a></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.2 2 2 0 0 1 5 3z"/></svg>
+            <div><span class="k">Telefón</span><a href="tel:+421902464022">0902 464 022</a><span class="sep" aria-hidden="true">·</span><a href="sms:+421902464022">poslať SMS</a></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="square"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/></svg>
+            <div><span class="k">Web</span><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="stripe" aria-hidden="true"></div>
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <p><strong style="font-family:var(--font-head);font-stretch:condensed;font-size:20px;text-transform:uppercase;letter-spacing:.05em">BOX 7</strong> &nbsp; autoservis a pneuservis</p>
+      <nav class="foot-links" aria-label="Pätičková navigácia">
+        <a href="#sluzby">Služby</a>
+        <a href="#cennik">Cenník</a>
+        <a href="#objednanie">Objednanie</a>
+        <a href="#kontakt">Kontakt</a>
+        <a href="#autor">Autor ukážky</a>
+        <a href="#hero">Hore</a>
+      </nav>
+    </div>
+    <p class="foot-note">BOX 7 je vymyslený podnik. Táto stránka je ukážka práce, nie web existujúcej firmy. Ceny, hodiny, adresa aj kontakty podniku sú ilustratívne a telefónne číslo je len zástupné. Ukážku navrhol a naprogramoval Alex Poliak, Bratislava — <a href="mailto:info@apoliak.online">info@apoliak.online</a>, <a href="tel:+421902464022">0902 464 022</a>, <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  var DNI      = ["Nedeľa","Pondelok","Utorok","Streda","Štvrtok","Piatok","Sobota"];
+  var DNI_SKR  = ["Ne","Po","Ut","St","Št","Pi","So"];
+  var MESIACE  = ["januára","februára","marca","apríla","mája","júna","júla","augusta","septembra","októbra","novembra","decembra"];
+
+  /* ---------- mobilné menu ---------- */
+  var navCheck = $("#navCheck");
+  if (navCheck) {
+    $$("#hlavnaNav a").forEach(function (a) {
+      a.addEventListener("click", function () { navCheck.checked = false; });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { navCheck.checked = false; }
+    });
+  }
+
+  /* ---------- stav prevádzky ---------- */
+  var HODINY = {
+    1: [450, 1020], 2: [450, 1020], 3: [450, 1020],
+    4: [450, 1020], 5: [450, 960],  6: [480, 720], 0: null
+  };
+
+  (function stav() {
+    var box = $("#stavPrevadzky");
+    var txt = $("#stavText");
+    if (!box || !txt) { return; }
+
+    var now = new Date();
+    var d = now.getDay();
+    var m = now.getHours() * 60 + now.getMinutes();
+    var dnes = HODINY[d];
+
+    var riadok = $('#tabHodiny tr[data-d="' + d + '"]');
+    if (riadok) { riadok.classList.add("today"); }
+
+    function fmt(min) {
+      var h = Math.floor(min / 60), mi = min % 60;
+      return (h < 10 ? "0" : "") + h + ":" + (mi < 10 ? "0" : "") + mi;
+    }
+
+    if (dnes && m >= dnes[0] && m < dnes[1]) {
+      box.classList.add("open");
+      txt.textContent = "Práve otvorené, dnes do " + fmt(dnes[1]);
+    } else {
+      box.classList.add("shut");
+      var i = 1, dalsi = null, den = d;
+      while (i <= 7) {
+        den = (d + i) % 7;
+        if (HODINY[den]) { dalsi = HODINY[den]; break; }
+        i++;
+      }
+      if (dnes && m < dnes[0]) {
+        txt.textContent = "Zatvorené, dnes otvárame o " + fmt(dnes[0]);
+      } else if (dalsi) {
+        txt.textContent = "Zatvorené, otvárame " + (i === 1 ? "zajtra" : DNI[den].toLowerCase()) + " o " + fmt(dalsi[0]);
+      } else {
+        txt.textContent = "Zatvorené";
+      }
+    }
+  })();
+
+  /* ---------- objednávanie ---------- */
+  var form   = $("#formObj");
+  if (!form) { return; }
+
+  var inpDatum = $("#datum");
+  var selCas   = $("#cas");
+  var pasDni   = $("#pasDni");
+  var mriezka  = $("#mriezkaCasov");
+  var zalozny  = $("#zalozniCas");
+  var hotovo   = $("#hotovo");
+  var rekap    = $("#rekap");
+
+  // s JavaScriptom nahrádzame natívne polia peknejším výberom,
+  // bez neho ostávajú viditeľné a plne funkčné
+  var poleDatum = inpDatum ? inpDatum.closest(".field") : null;
+  if (poleDatum) { poleDatum.style.display = "none"; }
+  if (zalozny)   { zalozny.style.display = "none"; }
+  if (selCas)    { selCas.removeAttribute("required"); }
+
+  var vybranyDatum = null;
+  var vybranyCas   = "";
+
+  function iso(d) {
+    return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+  }
+
+  function seed(str) {
+    var h = 0;
+    for (var i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) % 100003; }
+    return h;
+  }
+
+  function slotyPreDen(d) {
+    var h = HODINY[d.getDay()];
+    if (!h) { return []; }
+    var out = [];
+    for (var m = h[0]; m <= h[1] - 60; m += 30) {
+      if (m >= 720 && m < 780) { continue; } // obedná prestávka
+      out.push(("0" + Math.floor(m / 60)).slice(-2) + ":" + ("0" + (m % 60)).slice(-2));
+    }
+    return out;
+  }
+
+  function obsadeny(datum, cas) {
+    var s = seed(datum + cas);
+    return (s % 10) < 3;
+  }
+
+  var DNES_ISO = iso(new Date());
+
+  // dnes už neponúkame časy, ktoré sú za nami alebo tesne pred nami
+  function uzPrelsCas(datum, cas) {
+    if (datum !== DNES_ISO) { return false; }
+    var n = new Date();
+    var p = cas.split(":");
+    return (+p[0] * 60 + +p[1]) < (n.getHours() * 60 + n.getMinutes() + 60);
+  }
+
+  function stavCasov(isoStr) {
+    var p = isoStr.split("-");
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return slotyPreDen(d).map(function (cas) {
+      return { cas: cas, busy: obsadeny(isoStr, cas) || uzPrelsCas(isoStr, cas) };
+    });
+  }
+
+  function maVolno(isoStr) {
+    return stavCasov(isoStr).some(function (s) { return !s.busy; });
+  }
+
+  /* pás dní */
+  function postavDni() {
+    if (!pasDni) { return; }
+    pasDni.innerHTML = "";
+    var dnes = new Date();
+    var prvy = null;
+
+    for (var i = 0; i < 14; i++) {
+      var d = new Date(dnes.getFullYear(), dnes.getMonth(), dnes.getDate() + i);
+      var zatvorene = !HODINY[d.getDay()];
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "day";
+      b.dataset.iso = iso(d);
+      b.disabled = zatvorene;
+      b.setAttribute("aria-pressed", "false");
+      b.setAttribute("aria-label", DNI[d.getDay()] + " " + d.getDate() + ". " + MESIACE[d.getMonth()] + (zatvorene ? ", zatvorené" : ""));
+      b.innerHTML = "<small>" + DNI_SKR[d.getDay()] + "</small><b>" + d.getDate() + "</b><small>" + (d.getMonth() + 1) + ". mes.</small>";
+      pasDni.appendChild(b);
+      if (!zatvorene && !prvy && maVolno(b.dataset.iso)) { prvy = b; }
+    }
+
+    pasDni.addEventListener("click", function (e) {
+      var b = e.target.closest(".day");
+      if (!b || b.disabled) { return; }
+      zvolDen(b);
+    });
+
+    if (prvy) { zvolDen(prvy); }
+  }
+
+  function zvolDen(btn) {
+    $$(".day", pasDni).forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+    btn.setAttribute("aria-pressed", "true");
+    vybranyDatum = btn.dataset.iso;
+    if (inpDatum) { inpDatum.value = vybranyDatum; }
+    vybranyCas = "";
+    postavCasy();
+    prepocitaj();
+  }
+
+  function postavCasy() {
+    if (!mriezka) { return; }
+    mriezka.innerHTML = "";
+    if (!vybranyDatum) { return; }
+
+    var zoznam = stavCasov(vybranyDatum);
+    var volnych = 0;
+
+    zoznam.forEach(function (s) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "slot";
+      b.textContent = s.cas;
+      b.disabled = s.busy;
+      b.setAttribute("aria-pressed", "false");
+      b.setAttribute("aria-label", s.cas + (s.busy ? ", obsadené" : ", voľné"));
+      b.addEventListener("click", function () {
+        $$(".slot", mriezka).forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
+        vybranyCas = s.cas;
+        if (selCas) { selCas.value = s.cas; }
+        prepocitaj();
+      });
+      mriezka.appendChild(b);
+      if (!s.busy) { volnych++; }
+    });
+
+    var hint = $("#hintCasy");
+    if (hint) {
+      hint.textContent = volnych
+        ? "Voľných termínov v tento deň: " + volnych + ". Prečiarknuté časy sú už obsadené."
+        : "V tento deň už máme plno. Skúste prosím iný deň.";
+    }
+  }
+
+  /* prehľad */
+  function sluzba() { return form.querySelector('input[name="sluzba"]:checked'); }
+
+  function formatDatum(isoStr) {
+    if (!isoStr) { return null; }
+    var p = isoStr.split("-");
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return DNI[d.getDay()] + " " + d.getDate() + ". " + MESIACE[d.getMonth()];
+  }
+
+  function prepocitaj() {
+    var s = sluzba();
+    if (!s) { return; }
+    var sel = $("#trieda");
+    var nas = parseFloat(sel.value) || 1;
+    var triedaNazov = sel.options[sel.selectedIndex].dataset.nazov;
+
+    var zaklad = parseFloat(s.dataset.cena);
+    var trvanie = parseInt(s.dataset.min, 10);
+    var cena = nas === 1 ? zaklad : Math.round(zaklad * nas);
+    var min  = nas === 1 ? trvanie : Math.round((trvanie * nas) / 5) * 5;
+
+    $("#sPolozka").textContent = s.dataset.nazov;
+    $("#sTrieda").textContent  = triedaNazov;
+    $("#sCas").textContent     = min >= 60
+      ? (Math.floor(min / 60) + " h " + (min % 60 ? (min % 60) + " min" : "").trim()).trim()
+      : min + " minút";
+    $("#sCena").textContent    = "od " + cena + " €";
+
+    var dt = formatDatum(vybranyDatum || (inpDatum && inpDatum.value));
+    var cas = vybranyCas || (selCas && selCas.value) || "";
+    $("#sTermin").textContent = dt ? (dt + (cas ? ", " + cas : ", vyberte čas")) : "Zatiaľ nevybraný";
+  }
+
+  form.addEventListener("change", prepocitaj);
+
+  /* odoslanie */
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var hlaska = $("#chybaHlaska");
+    var chyba = null, terc = null;
+
+    if (!vybranyDatum && !(inpDatum && inpDatum.value)) {
+      chyba = "Vyberte prosím deň v kalendári."; terc = $(".day:not(:disabled)", pasDni);
+    } else if (!vybranyCas && !(selCas && selCas.value)) {
+      chyba = "Vyberte prosím voľný čas."; terc = $(".slot:not(:disabled)", mriezka);
+    } else if (!$("#meno").value.trim()) {
+      chyba = "Doplňte prosím meno."; terc = $("#meno");
+    } else if (!$("#tel").value.trim()) {
+      chyba = "Doplňte prosím telefón."; terc = $("#tel");
+    }
+
+    if (chyba) {
+      if (hlaska) { hlaska.textContent = chyba; hlaska.hidden = false; }
+      if (terc) { terc.focus(); }
+      return;
+    }
+    if (hlaska) { hlaska.hidden = true; }
+
+    var polozky = [
+      ["Úkon",     $("#sPolozka").textContent],
+      ["Vozidlo",  $("#sTrieda").textContent + ($("#vozidlo").value.trim() ? ", " + $("#vozidlo").value.trim() : "")],
+      ["Termín",   $("#sTermin").textContent],
+      ["V dielni", $("#sCas").textContent],
+      ["Orientačne", $("#sCena").textContent],
+      ["Kontakt",  $("#meno").value.trim() + ", " + $("#tel").value.trim()]
+    ];
+
+    rekap.innerHTML = "";
+    polozky.forEach(function (p) {
+      var li = document.createElement("li");
+      li.innerHTML = "<b></b><span></span>";
+      li.firstChild.textContent = p[0];
+      li.lastChild.textContent = p[1];
+      rekap.appendChild(li);
+    });
+
+    form.hidden = true;
+    hotovo.hidden = false;
+    hotovo.focus();
+    hotovo.scrollIntoView({ block: "center", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
+
+  var spat = $("#spat");
+  if (spat) {
+    spat.addEventListener("click", function () {
+      hotovo.hidden = true;
+      form.hidden = false;
+      form.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    });
+  }
+
+  postavDni();
+  prepocitaj();
+})();
+</script>
+</body>
+</html>

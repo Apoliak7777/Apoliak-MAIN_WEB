@@ -1,67 +1,100 @@
-(() => {
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+/* ============================================================
+   apoliak.online — spoločný skript
+   Stránka je plne čitateľná aj bez tohto súboru.
+   ============================================================ */
+(function () {
+  "use strict";
 
-  // Year in footer
-  const yearEl = $("#year");
-  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+  var redukovanyPohyb = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Mobile menu
-  const btn = $(".nav-btn");
-  const scrim = $("[data-scrim]");
+  /* ---------- 01 · rok v pätičke ---------- */
+  var rok = document.getElementById("rok");
+  if (rok) { rok.textContent = String(new Date().getFullYear()); }
 
-  const closeMenu = () => {
-    document.body.classList.remove("menu-open");
-    if (btn) btn.setAttribute("aria-expanded", "false");
-  };
+  /* ---------- 02 · odhalenie sekcií pri scrollovaní ---------- */
+  var prvky = document.querySelectorAll(".rv");
+  if (prvky.length) {
+    if (!("IntersectionObserver" in window) || redukovanyPohyb) {
+      for (var i = 0; i < prvky.length; i++) { prvky[i].classList.add("in"); }
+    } else {
+      var io = new IntersectionObserver(function (zaznamy) {
+        zaznamy.forEach(function (z) {
+          if (z.isIntersecting) { z.target.classList.add("in"); io.unobserve(z.target); }
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+      Array.prototype.forEach.call(prvky, function (el) { io.observe(el); });
 
-  if (btn) {
-    btn.addEventListener("click", () => {
-      const open = document.body.classList.toggle("menu-open");
-      btn.setAttribute("aria-expanded", String(open));
+      /* poistka: keby observer z akéhokoľvek dôvodu nezabral, obsah odkryjeme */
+      setTimeout(function () {
+        Array.prototype.forEach.call(document.querySelectorAll(".rv:not(.in)"), function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight) { el.classList.add("in"); }
+        });
+      }, 1400);
+    }
+  }
+
+  /* ---------- 03 · filtrovanie ukážok v galérii ---------- */
+  var filtre = document.querySelector(".filtre");
+  if (filtre) {
+    var tlacidla = filtre.querySelectorAll(".filt");
+    var karty = document.querySelectorAll(".uk-grid .uk");
+    var info = document.getElementById("filt-info");
+
+    var filtruj = function (kluc) {
+      var viditelnych = 0;
+      Array.prototype.forEach.call(karty, function (karta) {
+        var kat = " " + (karta.getAttribute("data-kat") || "") + " ";
+        var zobrazit = kluc === "vsetky" || kat.indexOf(" " + kluc + " ") !== -1;
+        if (zobrazit) { karta.removeAttribute("hidden"); viditelnych++; }
+        else { karta.setAttribute("hidden", "hidden"); }
+      });
+      Array.prototype.forEach.call(tlacidla, function (t) {
+        t.setAttribute("aria-pressed", t.getAttribute("data-f") === kluc ? "true" : "false");
+      });
+      if (info) {
+        info.textContent = viditelnych === 10
+          ? "Zobrazených všetkých 10 ukážok"
+          : "Zobrazené ukážky: " + viditelnych + " z 10";
+      }
+    };
+
+    Array.prototype.forEach.call(tlacidla, function (t) {
+      t.addEventListener("click", function () { filtruj(t.getAttribute("data-f")); });
+    });
+    filtruj("vsetky");
+  }
+
+  /* ---------- 04 · kontaktný formulár (otvorí e-mailový program) ---------- */
+  var form = document.getElementById("dopyt");
+  if (form) {
+    var stav = document.getElementById("form-stav");
+    form.addEventListener("submit", function (e) {
+      if (typeof form.reportValidity === "function" && !form.reportValidity()) { e.preventDefault(); return; }
+      e.preventDefault();
+
+      var hodnota = function (id) {
+        var pole = document.getElementById(id);
+        return pole ? pole.value.trim() : "";
+      };
+      var meno = hodnota("meno");
+      var kontakt = hodnota("kontakt-udaj");
+      var typ = hodnota("typ");
+      var sprava = hodnota("sprava");
+
+      var predmet = "Dopyt na web — " + (typ || "podnik") + (meno ? " — " + meno : "");
+      var telo =
+        "Meno: " + meno + "\n" +
+        "Kontakt: " + kontakt + "\n" +
+        "Typ podniku: " + typ + "\n\n" +
+        "Správa:\n" + sprava + "\n";
+
+      window.location.href = "mailto:info@apoliak.online" +
+        "?subject=" + encodeURIComponent(predmet) +
+        "&body=" + encodeURIComponent(telo);
+
+      if (stav) {
+        stav.textContent = "Otváram váš e-mailový program s vyplnenou správou. Ak sa neotvoril, napíšte mi priamo na info@apoliak.online.";
+      }
     });
   }
-
-  if (scrim) scrim.addEventListener("click", closeMenu);
-  $$(".menu a").forEach((a) => a.addEventListener("click", closeMenu));
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
-  });
-
-  // Menu is desktop-only above 900px, drop the open state when we cross back
-  const wide = window.matchMedia("(min-width: 901px)");
-  wide.addEventListener("change", (e) => {
-    if (e.matches) closeMenu();
-  });
-
-  // Reveal on scroll
-  const items = $$(".rise");
-  if (!items.length) return;
-
-  if (!("IntersectionObserver" in window)) {
-    items.forEach((el) => el.classList.add("in"));
-    return;
-  }
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add("in");
-        io.unobserve(entry.target);
-      }
-    },
-    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-  );
-
-  items.forEach((el) => io.observe(el));
-
-  // Safety net: if the observer never reports anything, show everything anyway
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      if (document.querySelector(".rise.in")) return;
-      items.forEach((el) => el.classList.add("in"));
-    }, 1200);
-  });
 })();

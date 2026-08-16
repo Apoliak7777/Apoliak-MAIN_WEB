@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smreková sieň — moderná slovenská kuchyňa</title>
+<meta name="description" content="Smreková sieň — ukážkový web reštaurácie: moderná slovenská kuchyňa, jedálny lístok, denné menu a rezervácia stola. Ukážka práce od apoliak.online.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Smreková sieň — ukážkový web reštaurácie">
+<meta property="og:description" content="Moderná slovenská kuchyňa, jedálny lístok, denné menu a rezervácia stola. Ukážkový web vymysleného podniku od Alexa Poliaka — apoliak.online.">
+<meta name="theme-color" content="#0E1310">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230E1310'/%3E%3Cpath%20d='M16%206.5L21.6%2016H18.6L23.6%2025.5H8.4L13.4%2016H10.4Z'%20fill='none'%20stroke='%23E2B87C'%20stroke-width='1.8'%20stroke-linejoin='round'/%3E%3Cpath%20d='M16%2025.5V28.8'%20stroke='%23C98A4B'%20stroke-width='1.8'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* ============================================================
+   TOKENY
+   ============================================================ */
+:root{
+  --ink:#0E1310;
+  --ink-2:#131A15;
+  --ink-3:#19221B;
+  --ink-4:#202B22;
+  --cream:#F3EEE4;
+  --muted:#B7B1A4;
+  --muted-2:#9C968A;
+  --copper:#C98A4B;
+  --gold:#E2B87C;
+  --gold-soft:rgba(226,184,124,.22);
+  --line:rgba(226,213,190,.14);
+  --line-2:rgba(226,213,190,.26);
+  --dark-on-gold:#170F06;
+  --bar:46px;
+  --nav:74px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","Hoefler Text",Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --maxw:1180px;
+  --r:4px;
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body,h1,h2,h3,h4,p,figure,ul,ol,dl,dd,blockquote{margin:0}
+ul,ol{padding:0;list-style:none}
+img,svg{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+
+@media (prefers-reduced-motion: no-preference){
+  html{scroll-behavior:smooth}
+}
+
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  padding-top:var(--bar);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+::selection{background:var(--copper);color:var(--dark-on-gold)}
+
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+/* zrnitá textúra cez celú stránku */
+.grain{
+  position:fixed;inset:0;width:100%;height:100%;
+  opacity:.05;pointer-events:none;z-index:60;mix-blend-mode:soft-light;
+}
+
+/* ============================================================
+   PÁSIK UKÁŽKY
+   ============================================================ */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  min-height:var(--bar);
+  display:flex;align-items:center;justify-content:center;gap:.6em;
+  text-align:center;
+  padding:6px 14px;
+  background:linear-gradient(96deg,#B87940 0%,#D9A25E 45%,#B87940 100%);
+  color:var(--dark-on-gold);
+  text-decoration:none;
+  font-family:var(--sans);
+  font-size:13.5px;
+  font-weight:700;
+  letter-spacing:.04em;
+  line-height:1.3;
+  box-shadow:0 1px 0 rgba(0,0,0,.5), 0 10px 30px -18px rgba(0,0,0,.9);
+}
+.demobar a{
+  color:inherit;text-decoration:underline;text-underline-offset:3px;
+  white-space:nowrap;font-weight:800;
+}
+.demobar a:hover{text-decoration-thickness:2px}
+.demobar a:focus-visible{outline:2px solid var(--dark-on-gold);outline-offset:2px}
+.demobar .dot{width:6px;height:6px;border-radius:50%;background:var(--dark-on-gold);flex:none;opacity:.7}
+.demobar .db-short{display:none}
+
+/* ============================================================
+   HLAVIČKA
+   ============================================================ */
+.site-head{
+  position:sticky;top:var(--bar);z-index:90;
+  background:rgba(14,19,16,.94);
+  border-bottom:1px solid var(--line);
+}
+.head-in{
+  max-width:var(--maxw);margin:0 auto;padding:0 22px;
+  min-height:var(--nav);
+  display:flex;align-items:center;gap:20px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;flex:none}
+.brand svg{width:30px;height:30px;flex:none}
+.brand b{
+  font-family:var(--serif);font-size:19px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;line-height:1;
+}
+.brand small{
+  display:block;font-family:var(--sans);font-size:9.5px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--muted-2);margin-top:5px;font-weight:600;
+}
+.nav{margin-left:auto;display:flex;align-items:center;gap:26px}
+.nav a{
+  text-decoration:none;font-size:14px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;padding:6px 0;position:relative;
+}
+.nav a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;
+  background:var(--gold);transition:right .35s ease;
+}
+.nav a:hover{color:var(--cream)}
+.nav a:hover::after{right:0}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:13px 24px;border-radius:var(--r);border:1px solid transparent;
+  font-size:13.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;background:none;
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease,transform .3s ease;
+}
+.btn-solid{background:linear-gradient(180deg,#D3924F,#B57937);color:var(--dark-on-gold);box-shadow:0 12px 26px -18px #000}
+.btn-solid:hover{background:linear-gradient(180deg,#E0A05C,#C08440)}
+.btn-ghost{border-color:var(--line-2);color:var(--cream)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:11px 18px;font-size:12.5px}
+
+.nav-toggle{
+  display:none;margin-left:auto;width:46px;height:42px;
+  border:1px solid var(--line-2);border-radius:var(--r);background:none;cursor:pointer;
+  align-items:center;justify-content:center;
+}
+.nav-toggle svg{width:20px;height:20px}
+.nav-toggle .close-i{display:none}
+.nav-toggle[aria-expanded="true"] .open-i{display:none}
+.nav-toggle[aria-expanded="true"] .close-i{display:block}
+html:not(.js) .nav-toggle{display:none}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+section{scroll-margin-top:calc(var(--bar) + var(--nav) + 10px)}
+.band{padding:clamp(70px,9vw,130px) 0;position:relative}
+.band + .band{border-top:1px solid var(--line)}
+.band-dark{background:var(--ink-2)}
+
+.eyebrow{
+  display:flex;align-items:center;gap:14px;
+  font-size:11.5px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:22px;
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--copper);flex:none}
+
+h2.sec{
+  font-family:var(--serif);
+  font-size:clamp(2.1rem,4.4vw,3.5rem);
+  line-height:1.08;letter-spacing:-.015em;font-weight:500;
+  margin-bottom:20px;max-width:16ch;
+}
+.lead{font-size:clamp(1.02rem,1.5vw,1.2rem);color:var(--muted);max-width:60ch}
+.lead strong{color:var(--cream);font-weight:600}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 78% 12%, rgba(201,138,75,.20), transparent 58%),
+    radial-gradient(80% 60% at 8% 92%, rgba(226,184,124,.08), transparent 60%),
+    linear-gradient(180deg,#0D120F 0%,#121913 60%,#0E1310 100%);
+}
+.hero::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);
+}
+.hero-in{
+  max-width:var(--maxw);margin:0 auto;padding:clamp(56px,7vw,96px) 22px clamp(56px,6vw,90px);
+  display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,70px);align-items:center;
+}
+.hero-kicker{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700;
+  margin-bottom:26px;
+}
+.hero-kicker span.sep{width:5px;height:5px;border-radius:50%;background:var(--copper)}
+h1{
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(3.05rem,10.5vw,7.1rem);
+  line-height:.92;letter-spacing:-.03em;
+  margin-bottom:26px;
+}
+h1 em{display:block;font-style:normal;color:var(--gold)}
+.hero p.lead{margin-bottom:36px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:40px}
+.hero-facts{
+  display:flex;flex-wrap:wrap;gap:14px 34px;
+  padding-top:26px;border-top:1px solid var(--line);
+}
+.fact{min-width:130px}
+.fact dt{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted-2);font-weight:700;margin-bottom:6px}
+.fact dd{font-family:var(--serif);font-size:1.18rem;color:var(--cream)}
+.hero-art{position:relative}
+.hero-art svg{width:100%;height:auto}
+
+/* ============================================================
+   O NÁS
+   ============================================================ */
+.about-grid{
+  display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
+  gap:clamp(34px,5vw,72px);align-items:center;
+}
+.about-copy p + p{margin-top:18px}
+.about-copy p{color:var(--muted)}
+.pill-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.pill{
+  border:1px solid var(--line-2);border-radius:100px;padding:8px 16px;
+  font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;
+}
+.about-art svg{width:100%;height:auto}
+
+/* ============================================================
+   JEDÁLNY LÍSTOK
+   ============================================================ */
+.menu-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:40px}
+.menu-note{font-size:14px;color:var(--muted-2);max-width:32ch;line-height:1.6}
+
+.menu-tabs{
+  display:none;flex-wrap:wrap;gap:8px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:12px 0;margin-bottom:44px;
+}
+.js .menu-tabs{display:flex}
+.mtab{
+  border:1px solid transparent;border-radius:100px;padding:11px 22px;cursor:pointer;
+  font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);background:none;transition:color .25s ease,background-color .25s ease,border-color .25s ease;
+}
+.mtab:hover{color:var(--cream);border-color:var(--line-2)}
+.mtab[aria-selected="true"]{background:var(--gold);color:var(--dark-on-gold);border-color:var(--gold)}
+
+.js .mpanel:not(.is-active){display:none}
+.mpanel + .mpanel{margin-top:56px}
+.mpanel-head{margin-bottom:30px}
+.mpanel-head h3{
+  font-family:var(--serif);font-size:1.75rem;font-weight:500;letter-spacing:.01em;
+}
+.mpanel-head p{font-size:14.5px;color:var(--muted-2);margin-top:6px}
+
+.dishes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 60px}
+.dish-line{display:flex;align-items:baseline;gap:12px}
+.dish-name{font-family:var(--serif);font-size:1.24rem;font-weight:500;line-height:1.25}
+.dots{flex:1 1 auto;min-width:18px;border-bottom:1px dotted rgba(226,213,190,.34);transform:translateY(-4px)}
+.price{font-family:var(--serif);font-size:1.16rem;color:var(--gold);white-space:nowrap}
+.dish-desc{color:var(--muted);font-size:15px;margin-top:7px;max-width:46ch}
+.tag{
+  display:inline-block;margin-top:10px;margin-right:6px;
+  border:1px solid var(--gold-soft);border-radius:100px;padding:3px 11px;
+  font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;
+}
+.menu-foot{
+  margin-top:52px;padding-top:22px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:12px 34px;font-size:13.5px;color:var(--muted-2);
+}
+
+/* ============================================================
+   DENNÉ MENU
+   ============================================================ */
+.daily-top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:44px}
+.daily-price{
+  border:1px solid var(--line-2);border-radius:var(--r);padding:18px 26px;text-align:center;flex:none;
+}
+.daily-price b{display:block;font-family:var(--serif);font-size:2rem;color:var(--gold);line-height:1}
+.daily-price span{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:700}
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.day{background:var(--ink);padding:26px 22px;display:flex;flex-direction:column;gap:14px}
+.day.is-today{background:var(--ink-3);box-shadow:inset 0 2px 0 var(--copper)}
+.day h3{
+  font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;
+  display:flex;align-items:center;gap:8px;
+}
+.day .today-chip{
+  font-size:9.5px;letter-spacing:.14em;background:var(--copper);color:var(--dark-on-gold);
+  border-radius:100px;padding:2px 8px;font-weight:700;
+}
+.day .course{font-family:var(--serif);font-size:1.05rem;line-height:1.35}
+.day .course span{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2);margin-bottom:4px;font-weight:700}
+
+/* ============================================================
+   GALÉRIA
+   ============================================================ */
+.gal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;margin-top:44px}
+.tile{
+  position:relative;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--ink-3);
+}
+.tile svg{width:100%;height:100%;display:block}
+.tile figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:34px 20px 16px;
+  background:linear-gradient(180deg,transparent,rgba(9,12,10,.92));
+  font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);font-weight:600;
+}
+.t-a{grid-column:span 3;aspect-ratio:4/3}
+.t-b{grid-column:span 3;aspect-ratio:4/3}
+.t-c{grid-column:span 2;aspect-ratio:1/1}
+.t-d{grid-column:span 2;aspect-ratio:1/1}
+.t-e{grid-column:span 2;aspect-ratio:1/1}
+
+/* ============================================================
+   HODINY
+   ============================================================ */
+.hours-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(34px,5vw,70px);align-items:center}
+.hours-list{border-top:1px solid var(--line)}
+.hours-list li{
+  display:flex;align-items:baseline;gap:14px;
+  padding:17px 4px;border-bottom:1px solid var(--line);
+}
+.hours-list .d{font-family:var(--serif);font-size:1.18rem;min-width:150px}
+.hours-list .t{font-family:var(--serif);font-size:1.18rem;color:var(--gold);margin-left:auto;white-space:nowrap}
+.hours-list li.is-today{background:linear-gradient(90deg,rgba(201,138,75,.14),transparent);box-shadow:inset 2px 0 0 var(--copper)}
+.hours-list li.is-today .d::after{
+  content:"dnes";margin-left:12px;font-family:var(--sans);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dark-on-gold);background:var(--copper);border-radius:100px;padding:2px 8px;font-weight:700;
+  vertical-align:2px;
+}
+.hours-note{margin-top:24px;font-size:14px;color:var(--muted-2);max-width:46ch}
+.hours-art svg{width:100%;height:auto}
+
+/* ============================================================
+   REZERVÁCIA
+   ============================================================ */
+.res-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(34px,5vw,64px);align-items:start}
+.res-card{
+  background:var(--ink);border:1px solid var(--line-2);border-radius:var(--r);
+  padding:clamp(24px,3.4vw,42px);
+  box-shadow:0 40px 80px -60px #000;
+}
+.field{margin-bottom:22px}
+.field > label,.legend{
+  display:block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted-2);font-weight:700;margin-bottom:9px;
+}
+input[type=text],input[type=tel],input[type=email],input[type=date],input[type=number],textarea,select{
+  width:100%;background:var(--ink-3);border:1px solid var(--line-2);border-radius:var(--r);
+  padding:13px 15px;color:var(--cream);font-size:16px;font-family:var(--sans);
+  transition:border-color .25s ease,background-color .25s ease;
+}
+input:hover,textarea:hover,select:hover{border-color:rgba(226,213,190,.4)}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);outline:none;background:var(--ink-4)}
+textarea{resize:vertical;min-height:92px;line-height:1.5}
+input::placeholder,textarea::placeholder{color:#8E8879}
+fieldset{border:0;padding:0;margin:0 0 22px}
+
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{position:relative;cursor:pointer}
+.chip input{position:absolute;opacity:0;width:1px;height:1px}
+.chip span{
+  display:block;border:1px solid var(--line-2);border-radius:100px;padding:9px 17px;
+  font-size:14px;font-variant-numeric:tabular-nums;color:var(--muted);
+  transition:all .22s ease;
+}
+.chip:hover span{border-color:var(--gold);color:var(--cream)}
+.chip input:checked + span{background:var(--gold);border-color:var(--gold);color:var(--dark-on-gold);font-weight:700}
+.chip input:focus-visible + span{outline:2px solid var(--gold);outline-offset:3px}
+
+.stepper{display:flex;align-items:center;gap:12px}
+.stepper button{
+  width:46px;height:46px;border:1px solid var(--line-2);background:var(--ink-3);border-radius:var(--r);
+  cursor:pointer;font-size:22px;line-height:1;color:var(--cream);
+  display:flex;align-items:center;justify-content:center;transition:all .22s ease;
+}
+.stepper button:hover{border-color:var(--gold);color:var(--gold)}
+.stepper input{width:82px;text-align:center;font-family:var(--serif);font-size:1.2rem}
+.stepper .hint{font-size:13.5px;color:var(--muted-2)}
+html:not(.js) .stepper button{display:none}
+
+.zones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.zone{cursor:pointer;position:relative}
+.zone input{position:absolute;opacity:0;width:1px;height:1px}
+.zone .box{
+  display:flex;align-items:center;gap:11px;
+  border:1px solid var(--line-2);border-radius:var(--r);padding:12px 14px;
+  font-size:14.5px;color:var(--muted);transition:all .22s ease;height:100%;
+}
+.zone .box svg{width:20px;height:20px;flex:none;opacity:.85}
+.zone:hover .box{border-color:var(--gold);color:var(--cream)}
+.zone input:checked + .box{border-color:var(--gold);background:rgba(226,184,124,.1);color:var(--cream)}
+.zone input:focus-visible + .box{outline:2px solid var(--gold);outline-offset:3px}
+
+.res-summary{
+  margin:26px 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);
+  background:linear-gradient(180deg,rgba(201,138,75,.1),transparent);
+}
+.res-summary dt{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:700;margin-bottom:8px}
+.res-summary dd{font-family:var(--serif);font-size:1.2rem;line-height:1.45}
+.res-fine{font-size:13px;color:var(--muted-2);margin-top:16px;line-height:1.55}
+
+.res-done{
+  border:1px solid var(--gold);border-radius:var(--r);padding:clamp(26px,3.4vw,42px);
+  background:linear-gradient(180deg,rgba(226,184,124,.12),rgba(226,184,124,.02));
+}
+.res-done svg{width:44px;height:44px;margin-bottom:18px}
+.res-done h3{font-family:var(--serif);font-size:1.8rem;font-weight:500;margin-bottom:14px}
+.res-done p{color:var(--muted);margin-bottom:12px}
+.res-done p strong{color:var(--cream)}
+.res-done .rec{font-family:var(--serif);color:var(--gold);font-size:1.15rem;margin:18px 0}
+[hidden]{display:none !important}
+
+.plan-wrap{position:sticky;top:calc(var(--bar) + var(--nav) + 26px)}
+.plan-wrap h3{font-family:var(--serif);font-size:1.45rem;font-weight:500;margin-bottom:6px}
+.plan-wrap p.sub{font-size:14px;color:var(--muted-2);margin-bottom:20px}
+.plan svg{width:100%;height:auto}
+.plan .zone-g{cursor:pointer}
+.plan .zone-g .tbl{transition:fill .3s ease,stroke .3s ease}
+.plan .zone-g .halo{opacity:0;transition:opacity .35s ease}
+.plan .zone-g:hover .halo{opacity:.45}
+.plan[data-zone="okno"] #z-okno .halo,
+.plan[data-zone="krb"] #z-krb .halo,
+.plan[data-zone="sala"] #z-sala .halo,
+.plan[data-zone="terasa"] #z-terasa .halo{opacity:1}
+.plan[data-zone="okno"] #z-okno .tbl,
+.plan[data-zone="krb"] #z-krb .tbl,
+.plan[data-zone="sala"] #z-sala .tbl,
+.plan[data-zone="terasa"] #z-terasa .tbl{fill:var(--gold);stroke:var(--gold)}
+
+/* ============================================================
+   KONTAKT
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:clamp(34px,5vw,64px);align-items:start}
+.cinfo{border-top:1px solid var(--line)}
+.cinfo div{padding:20px 0;border-bottom:1px solid var(--line)}
+.cinfo dt{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:700;margin-bottom:7px}
+.cinfo dd{font-family:var(--serif);font-size:1.2rem;line-height:1.5}
+.cinfo a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-soft)}
+.cinfo a:hover{border-bottom-color:var(--gold)}
+.ph-note{
+  display:inline-block;vertical-align:3px;margin-left:6px;
+  font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted-2);border:1px solid var(--line-2);border-radius:100px;padding:2px 10px;
+}
+
+/* ============================================================
+   AUTOR UKÁŽKY (nie je súčasťou vymysleného podniku)
+   ============================================================ */
+.author-band{
+  background:var(--ink-2);border-top:1px solid var(--line);
+  padding:clamp(60px,8vw,110px) 0;
+}
+.author-card{
+  border:1px solid var(--line-2);border-radius:var(--r);
+  padding:clamp(26px,4vw,52px);
+  background:
+    radial-gradient(90% 130% at 100% 0%, rgba(201,138,75,.17), transparent 62%),
+    var(--ink);
+  box-shadow:0 40px 90px -60px #000;
+}
+.author-flag{
+  display:inline-block;margin-bottom:22px;
+  border:1px solid var(--gold-soft);border-radius:100px;padding:5px 15px;
+  font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+}
+.author-card h2.sec{max-width:20ch}
+.author-info{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px 34px;
+  margin-top:34px;padding-top:26px;border-top:1px solid var(--line);
+}
+.author-info dt{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:700;margin-bottom:7px}
+.author-info dd{font-family:var(--serif);font-size:1.15rem;line-height:1.45;overflow-wrap:anywhere}
+.author-info a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-soft)}
+.author-info a:hover{border-bottom-color:var(--gold)}
+.author-info .sms{font-family:var(--sans);font-size:13.5px;color:var(--muted-2)}
+.author-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.author-price{margin-top:22px;font-size:14px;color:var(--muted-2)}
+.map{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2)}
+.map svg{width:100%;height:auto;display:block}
+.map-legend{
+  display:flex;flex-wrap:wrap;gap:8px 22px;padding:14px 18px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--muted-2);
+}
+.map-legend b{color:var(--cream);font-weight:600}
+
+/* ============================================================
+   PÄTA
+   ============================================================ */
+.foot{background:var(--ink-2);border-top:1px solid var(--line);padding:56px 0 30px}
+.foot-in{display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between;align-items:flex-start}
+.foot .brand b{font-size:17px}
+.foot-nav{display:flex;flex-wrap:wrap;gap:10px 26px}
+.foot-nav a{font-size:13.5px;color:var(--muted);text-decoration:none;letter-spacing:.06em}
+.foot-nav a:hover{color:var(--gold)}
+.foot-bottom{
+  margin-top:40px;padding-top:22px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;
+  font-size:12.5px;color:var(--muted-2);
+}
+.foot-bottom a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference){
+  .js .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
+  .js .reveal.in{opacity:1;transform:none}
+}
+
+/* ============================================================
+   RESPONZÍVNE
+   ============================================================ */
+@media (max-width:1080px){
+  .hero-in{grid-template-columns:1fr}
+  .hero-art{max-width:440px;margin:0 auto}
+  .about-grid,.hours-grid,.res-grid,.contact-grid{grid-template-columns:1fr}
+  .plan-wrap{position:static}
+  .days{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  :root{--nav:64px}
+  .nav{
+    position:absolute;left:0;right:0;top:100%;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--ink-2);border-bottom:1px solid var(--line);
+    padding:10px 22px 20px;margin-left:0;
+  }
+  html:not(.js) .head-in{flex-wrap:wrap;padding-bottom:10px}
+  html:not(.js) .nav{position:static;background:none;border:0;padding:6px 0 12px;width:100%}
+  .js .nav{display:none}
+  .js .nav.is-open{display:flex}
+  .nav a{padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .nav a::after{display:none}
+  .nav .btn{margin-top:16px}
+  .dishes{grid-template-columns:1fr;gap:28px}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .t-a,.t-b,.t-c,.t-d,.t-e{grid-column:span 1;aspect-ratio:1/1}
+  .t-a{grid-column:span 2;aspect-ratio:4/3}
+}
+@media (max-width:560px){
+  :root{--bar:56px}
+  body{font-size:16px}
+  .demobar{font-size:12px;letter-spacing:.02em;gap:.4em}
+  .demobar .db-long,.demobar .dtel,.demobar .dot-2{display:none}
+  .demobar .db-short{display:inline}
+  .head-in{padding:0 16px}
+  .wrap,.hero-in{padding-left:16px;padding-right:16px}
+  .brand b{font-size:16px;letter-spacing:.12em}
+  .days{grid-template-columns:1fr}
+  .zones{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr}
+  .t-a,.t-b,.t-c,.t-d,.t-e{grid-column:span 1;aspect-ratio:4/3}
+  .hours-list .d{min-width:0}
+  .hero-facts{gap:18px}
+  .btn{width:100%}
+  .hero-cta{gap:10px}
+  .foot-nav{flex-direction:column;gap:8px}
+}
+@media (max-width:380px){
+  .demobar{font-size:11.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== PÁSIK UKÁŽKY ===================== -->
+<div class="demobar">
+  <span class="db-long">UKÁŽKOVÝ WEB - takýto web pre vás spravím.</span>
+  <span class="db-short">UKÁŽKOVÝ WEB</span>
+  <span class="dot" aria-hidden="true"></span>
+  <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+  <span class="dot dot-2" aria-hidden="true"></span>
+  <a class="dtel" href="tel:+421902464022">0902 464 022</a>
+</div>
+
+<!-- ===================== HLAVIČKA ===================== -->
+<header class="site-head">
+  <div class="head-in">
+    <a class="brand" href="#uvod">
+      <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="#C98A4B" stroke-width="1"/>
+        <path d="M20 9 L26 20 L23 20 L28 29 L12 29 L17 20 L14 20 Z" fill="none" stroke="#E2B87C" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M20 29 L20 33" stroke="#E2B87C" stroke-width="1.2"/>
+      </svg>
+      <span>
+        <b>Smreková sieň</b>
+        <small>Moderná slovenská kuchyňa</small>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
+      <span class="sr-only">Otvoriť menu</span>
+      <svg class="open-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg class="close-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+
+    <nav class="nav" id="hlavne-menu" aria-label="Hlavná navigácia">
+      <a href="#o-nas">O reštaurácii</a>
+      <a href="#menu">Jedálny lístok</a>
+      <a href="#denne">Denné menu</a>
+      <a href="#galeria">Galéria</a>
+      <a href="#kontakt">Kontakt</a>
+      <a class="btn btn-solid btn-sm" href="#rezervacia">Rezervovať stôl</a>
+    </nav>
+  </div>
+</header>
+
+<main id="uvod">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-labelledby="h1">
+  <div class="hero-in">
+    <div>
+      <p class="hero-kicker">
+        <span>Večere od 17.00</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span>Sezónne suroviny</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span>28 miest v sále</span>
+      </p>
+      <h1 id="h1">Smreková<em>sieň</em></h1>
+      <p class="lead">
+        Kuchyňa, ktorá vychádza zo starých receptúr nášho kraja a podáva ich pokojne, presne a bez ozdôb navyše.
+        Varíme zo <strong>surovín od domácich pestovateľov</strong>, denne pečieme kváskový chlieb a menu meníme podľa toho,
+        čo práve dozrelo.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="#rezervacia">Rezervovať stôl</a>
+        <a class="btn btn-ghost" href="#menu">Pozrieť jedálny lístok</a>
+      </div>
+      <dl class="hero-facts">
+        <div class="fact"><dt>Otvorené dnes</dt><dd id="fact-hours">11.00 – 22.00</dd></div>
+        <div class="fact"><dt>Večerný lístok</dt><dd>Od 17.00 do 21.30</dd></div>
+        <div class="fact"><dt>Kde nás nájdete</dt><dd>Lipová 12, Bratislava</dd></div>
+      </dl>
+    </div>
+
+    <!-- miesto pre reálnu fotografiu klienta -->
+    <div class="hero-art">
+      <svg viewBox="0 0 520 640" role="img" aria-label="Kresba oblúkového výklenku s prestretým tanierom a sviečkami">
+        <defs>
+          <linearGradient id="archG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#24301F"/>
+            <stop offset="55%" stop-color="#161E17"/>
+            <stop offset="100%" stop-color="#0F1512"/>
+          </linearGradient>
+          <radialGradient id="glowG" cx="50%" cy="42%" r="55%">
+            <stop offset="0" stop-color="#E2B87C" stop-opacity=".38"/>
+            <stop offset="60%" stop-color="#C98A4B" stop-opacity=".10"/>
+            <stop offset="100%" stop-color="#C98A4B" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="plateG" cx="42%" cy="34%" r="70%">
+            <stop offset="0" stop-color="#F3EEE4" stop-opacity=".20"/>
+            <stop offset="100%" stop-color="#F3EEE4" stop-opacity=".04"/>
+          </radialGradient>
+          <radialGradient id="flameG" cx="50%" cy="60%" r="60%">
+            <stop offset="0" stop-color="#FFE3B0"/>
+            <stop offset="100%" stop-color="#C98A4B" stop-opacity=".2"/>
+          </radialGradient>
+          <clipPath id="archClip">
+            <path d="M40 620 L40 240 A220 220 0 0 1 480 240 L480 620 Z"/>
+          </clipPath>
+        </defs>
+
+        <path d="M40 620 L40 240 A220 220 0 0 1 480 240 L480 620 Z" fill="url(#archG)"/>
+        <g clip-path="url(#archClip)">
+          <circle cx="260" cy="300" r="250" fill="url(#glowG)"/>
+          <!-- obkladové línie steny -->
+          <g stroke="#E2B87C" stroke-opacity=".08" stroke-width="1">
+            <path d="M120 620 L120 190"/><path d="M200 620 L200 140"/>
+            <path d="M320 620 L320 140"/><path d="M400 620 L400 190"/>
+          </g>
+          <!-- tanier zhora -->
+          <g transform="translate(260 352)">
+            <circle r="146" fill="none" stroke="#F3EEE4" stroke-opacity=".10" stroke-width="1"/>
+            <circle r="126" fill="url(#plateG)" stroke="#F3EEE4" stroke-opacity=".22" stroke-width="1.2"/>
+            <circle r="98" fill="none" stroke="#F3EEE4" stroke-opacity=".12" stroke-width="1"/>
+            <!-- výpek rozotretý na jednu stranu -->
+            <path d="M-88 18 C-66 52 -18 68 20 54 C44 45 62 28 80 14 C70 40 52 62 22 72 C-16 86 -70 60 -88 18 Z"
+                  fill="#C98A4B" fill-opacity=".40"/>
+            <!-- plátky mäsa, poukladané do uhla -->
+            <g transform="rotate(-16)">
+              <rect x="-74" y="-24" width="50" height="29" rx="13" fill="#B5752F" fill-opacity=".55" stroke="#E2B87C" stroke-opacity=".45"/>
+              <rect x="-49" y="-33" width="50" height="29" rx="13" fill="#B5752F" fill-opacity=".62" stroke="#E2B87C" stroke-opacity=".45"/>
+              <rect x="-24" y="-42" width="50" height="29" rx="13" fill="#B5752F" fill-opacity=".7" stroke="#E2B87C" stroke-opacity=".5"/>
+            </g>
+            <!-- kvenelka z pyré -->
+            <path d="M32 -70 C58 -76 78 -60 71 -41 C64 -24 38 -18 26 -31 C15 -43 18 -66 32 -70 Z"
+                  fill="#E2B87C" fill-opacity=".30" stroke="#E2B87C" stroke-opacity=".5"/>
+            <!-- pečená mrkva -->
+            <g stroke="#C98A4B" stroke-opacity=".85" stroke-linecap="round" fill="none">
+              <path d="M38 16 L72 38" stroke-width="9"/>
+              <path d="M44 32 L78 44" stroke-width="7"/>
+              <path d="M32 42 L62 64" stroke-width="6"/>
+            </g>
+            <!-- vetvička byliniek -->
+            <g stroke="#9BB08A" stroke-opacity=".7" fill="none" stroke-linecap="round">
+              <path d="M-72 -56 C-56 -68 -38 -70 -24 -64" stroke-width="2.4"/>
+              <path d="M-60 -62 l-5 -12 M-46 -66 l-3 -12 M-32 -66 l-1 -11" stroke-width="2"/>
+            </g>
+            <circle cx="-82" cy="-8" r="3.4" fill="#E2B87C" fill-opacity=".75"/>
+            <circle cx="-68" cy="8" r="2.4" fill="#E2B87C" fill-opacity=".55"/>
+            <circle cx="-86" cy="16" r="1.8" fill="#E2B87C" fill-opacity=".45"/>
+          </g>
+          <!-- príbor -->
+          <g stroke="#F3EEE4" stroke-opacity=".3" stroke-width="2" fill="none" stroke-linecap="round">
+            <path d="M84 300 L84 404"/><path d="M76 300 L76 336 q8 8 8 0"/><path d="M92 300 L92 336"/>
+            <path d="M436 300 L436 404"/><path d="M436 300 q16 26 0 52"/>
+          </g>
+          <!-- sviečky -->
+          <g>
+            <rect x="150" y="500" width="18" height="76" rx="4" fill="#F3EEE4" fill-opacity=".14" stroke="#F3EEE4" stroke-opacity=".22"/>
+            <circle cx="159" cy="492" r="16" fill="url(#flameG)" opacity=".7"/>
+            <path d="M159 480 q7 9 0 16 q-7 -7 0 -16z" fill="#FFDDA6"/>
+            <rect x="356" y="514" width="14" height="62" rx="4" fill="#F3EEE4" fill-opacity=".12" stroke="#F3EEE4" stroke-opacity=".2"/>
+            <circle cx="363" cy="508" r="13" fill="url(#flameG)" opacity=".6"/>
+            <path d="M363 498 q6 7 0 13 q-6 -6 0 -13z" fill="#FFDDA6"/>
+          </g>
+          <path d="M0 576 L520 576" stroke="#E2B87C" stroke-opacity=".2" stroke-width="1.5"/>
+        </g>
+        <path d="M40 620 L40 240 A220 220 0 0 1 480 240 L480 620" fill="none" stroke="#E2B87C" stroke-opacity=".45" stroke-width="1.5"/>
+        <path d="M62 620 L62 248 A198 198 0 0 1 458 248 L458 620" fill="none" stroke="#E2B87C" stroke-opacity=".16" stroke-width="1"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== O NÁS ===================== -->
+<section class="band" id="o-nas" aria-labelledby="h-onas">
+  <div class="wrap about-grid">
+    <div class="about-copy reveal">
+      <p class="eyebrow">O reštaurácii</p>
+      <h2 class="sec" id="h-onas">Pokojný večer, poctivé suroviny</h2>
+      <p>
+        Sála má dvadsaťosem miest, vysoké oblúkové okná a otvorený krb. Chceli sme miesto, kde sa nikam neponáhľate:
+        obsluha vám dá čas, jedlá prichádzajú v pokojnom slede a hudba nikdy neprekričí rozhovor.
+      </p>
+      <p>
+        Základ kuchyne tvoria suroviny z okolia do dvoch hodín cesty. Mäso berieme od jedného mäsiara, syry z troch salašov,
+        zeleninu podľa sezóny. Čo nepríde v dobrej kvalite, to v ten deň jednoducho nevaríme.
+      </p>
+      <p>
+        Kváskový chlieb pečieme každé ráno, zaváranie a fermentovanie robíme sami. Vinná karta je krátka a takmer celá
+        slovenská, aby sme ku každej fľaši vedeli povedať, odkiaľ je.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Sezónne menu</span>
+        <span class="pill">Vlastný kvások</span>
+        <span class="pill">Slovenské vína</span>
+        <span class="pill">Bezlepkové varianty</span>
+      </div>
+    </div>
+
+    <!-- miesto pre reálnu fotografiu klienta -->
+    <div class="about-art reveal">
+      <svg viewBox="0 0 560 460" role="img" aria-label="Kresba interiéru s oblúkovými oknami, krbom a stolmi">
+        <defs>
+          <linearGradient id="roomG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1D2719"/><stop offset="100%" stop-color="#111710"/>
+          </linearGradient>
+          <linearGradient id="winG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#E2B87C" stop-opacity=".34"/><stop offset="100%" stop-color="#C98A4B" stop-opacity=".05"/>
+          </linearGradient>
+        </defs>
+        <rect width="560" height="460" rx="4" fill="url(#roomG)"/>
+        <g>
+          <path d="M70 300 L70 150 A45 45 0 0 1 160 150 L160 300 Z" fill="url(#winG)" stroke="#E2B87C" stroke-opacity=".4"/>
+          <path d="M115 105 L115 300 M70 190 L160 190" stroke="#E2B87C" stroke-opacity=".28"/>
+          <path d="M235 300 L235 150 A45 45 0 0 1 325 150 L325 300 Z" fill="url(#winG)" stroke="#E2B87C" stroke-opacity=".4"/>
+          <path d="M280 105 L280 300 M235 190 L325 190" stroke="#E2B87C" stroke-opacity=".28"/>
+          <path d="M400 300 L400 150 A45 45 0 0 1 490 150 L490 300 Z" fill="url(#winG)" stroke="#E2B87C" stroke-opacity=".4"/>
+          <path d="M445 105 L445 300 M400 190 L490 190" stroke="#E2B87C" stroke-opacity=".28"/>
+        </g>
+        <path d="M0 300 L560 300" stroke="#E2B87C" stroke-opacity=".22"/>
+        <g fill="none" stroke="#F3EEE4" stroke-opacity=".22" stroke-width="1.4">
+          <rect x="60" y="336" width="130" height="10" rx="5" fill="#F3EEE4" fill-opacity=".07"/>
+          <path d="M78 346 L78 396 M172 346 L172 396"/>
+          <rect x="225" y="352" width="150" height="10" rx="5" fill="#F3EEE4" fill-opacity=".07"/>
+          <path d="M246 362 L246 414 M354 362 L354 414"/>
+          <rect x="404" y="336" width="120" height="10" rx="5" fill="#F3EEE4" fill-opacity=".07"/>
+          <path d="M420 346 L420 396 M508 346 L508 396"/>
+        </g>
+        <g>
+          <circle cx="125" cy="322" r="12" fill="#E2B87C" fill-opacity=".16"/>
+          <path d="M125 312 q5 7 0 12 q-5 -5 0 -12z" fill="#FFDDA6"/>
+          <circle cx="300" cy="338" r="10" fill="#E2B87C" fill-opacity=".14"/>
+          <path d="M300 330 q4 6 0 10 q-4 -4 0 -10z" fill="#FFDDA6"/>
+          <circle cx="464" cy="322" r="10" fill="#E2B87C" fill-opacity=".14"/>
+          <path d="M464 314 q4 6 0 10 q-4 -4 0 -10z" fill="#FFDDA6"/>
+        </g>
+        <g transform="translate(0 0)">
+          <rect x="0" y="0" width="560" height="460" fill="none" stroke="#E2B87C" stroke-opacity=".18"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== JEDÁLNY LÍSTOK ===================== -->
+<section class="band band-dark" id="menu" aria-labelledby="h-menu">
+  <div class="wrap">
+    <div class="menu-head reveal">
+      <div>
+        <p class="eyebrow">Jedálny lístok</p>
+        <h2 class="sec" id="h-menu">Lístok, ktorý sa mení so sezónou</h2>
+      </div>
+      <p class="menu-note">Ceny sú konečné, vrátane DPH. Zoznam alergénov nájdete pri každom jedle v tlačenom lístku.</p>
+    </div>
+
+    <div class="menu-tabs" role="tablist" aria-label="Kategórie jedálneho lístka">
+      <button class="mtab" type="button" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">Predjedlá</button>
+      <button class="mtab" type="button" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">Hlavné jedlá</button>
+      <button class="mtab" type="button" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1">Dezerty</button>
+      <button class="mtab" type="button" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1">Nápoje</button>
+    </div>
+
+    <!-- PREDJEDLÁ -->
+    <div class="mpanel is-active" id="panel-1" role="tabpanel" aria-labelledby="tab-1" tabindex="0">
+      <div class="mpanel-head">
+        <h3>Predjedlá a polievky</h3>
+        <p>Menšie chody na začiatok večera, podávame ich s kváskovým chlebom.</p>
+      </div>
+      <ul class="dishes">
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Tatarák z hovädzej sviečkovice</h4><span class="dots" aria-hidden="true"></span><span class="price">16,50 €</span></div>
+          <p class="dish-desc">kvasený cesnak, žĺtková emulzia, hrianky z kváskového chleba</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Bryndzová pena a pečená cvikla</h4><span class="dots" aria-hidden="true"></span><span class="price">11,90 €</span></div>
+          <p class="dish-desc">medovníkový drobenec, olej z tekvicových semien</p>
+          <span class="tag">Vegetariánske</span>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Údený pstruh</h4><span class="dots" aria-hidden="true"></span><span class="price">13,50 €</span></div>
+          <p class="dish-desc">chren, kyslé jablko, kôprový olej, ražný krekr</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Kvasená kapusta so slivkou</h4><span class="dots" aria-hidden="true"></span><span class="price">9,80 €</span></div>
+          <p class="dish-desc">chrumkavá slanina, opekané tekvicové semiačka, majoránka</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Polievka z pečenej tekvice</h4><span class="dots" aria-hidden="true"></span><span class="price">7,50 €</span></div>
+          <p class="dish-desc">zázvor, pražené semienka, olej z pažítky</p>
+          <span class="tag">Vegánske</span>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Hovädzí vývar</h4><span class="dots" aria-hidden="true"></span><span class="price">7,90 €</span></div>
+          <p class="dish-desc">domáce rezance, koreňová zelenina, petržlenová vňať</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- HLAVNÉ -->
+    <div class="mpanel" id="panel-2" role="tabpanel" aria-labelledby="tab-2" tabindex="0">
+      <div class="mpanel-head">
+        <h3>Hlavné jedlá</h3>
+        <p>Mäso pripravujeme na objednávku, väčšina jedál potrebuje 20 až 30 minút.</p>
+      </div>
+      <ul class="dishes">
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Pomaly pečené jahňacie plece</h4><span class="dots" aria-hidden="true"></span><span class="price">27,50 €</span></div>
+          <p class="dish-desc">zemiakové pyré s maslom, mladá mrkva, výpek s rozmarínom</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Kačacie prsia</h4><span class="dots" aria-hidden="true"></span><span class="price">24,90 €</span></div>
+          <p class="dish-desc">dusená kapusta s medom, zemiakové lokše, redukcia z jablčného muštu</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Sviečková na smotane</h4><span class="dots" aria-hidden="true"></span><span class="price">21,90 €</span></div>
+          <p class="dish-desc">domáca knedľa, brusnice, šľahaná smotana — podľa receptu z rodinného zošita</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Bravčová panenka v slanine</h4><span class="dots" aria-hidden="true"></span><span class="price">22,50 €</span></div>
+          <p class="dish-desc">pečený zeler, jablkové čatní, horčicová omáčka</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Pstruh na masle</h4><span class="dots" aria-hidden="true"></span><span class="price">21,50 €</span></div>
+          <p class="dish-desc">restované zemiaky s cibuľkou, citrón, petržlenová vňať</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Halušky s bryndzou</h4><span class="dots" aria-hidden="true"></span><span class="price">13,90 €</span></div>
+          <p class="dish-desc">pretlačený cesnak, chrumkavá slanina, kyslé mlieko</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Pečený koreňový zeler</h4><span class="dots" aria-hidden="true"></span><span class="price">17,90 €</span></div>
+          <p class="dish-desc">orechové maslo, kyslá smotana, pečená hruška</p>
+          <span class="tag">Vegetariánske</span>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Šošovica s údeným mäsom</h4><span class="dots" aria-hidden="true"></span><span class="price">16,50 €</span></div>
+          <p class="dish-desc">nakladaná cibuľka, volské oko, pažítka</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- DEZERTY -->
+    <div class="mpanel" id="panel-3" role="tabpanel" aria-labelledby="tab-3" tabindex="0">
+      <div class="mpanel-head">
+        <h3>Dezerty</h3>
+        <p>Všetko pečieme u nás, denne v obmedzenom počte.</p>
+      </div>
+      <ul class="dishes">
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Makový krém</h4><span class="dots" aria-hidden="true"></span><span class="price">8,90 €</span></div>
+          <p class="dish-desc">hruška varená v bielom víne, medovníkové drobky</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Tvarohový koláč</h4><span class="dots" aria-hidden="true"></span><span class="price">7,90 €</span></div>
+          <p class="dish-desc">slivkový lekvár, kyslá smotana, pražené vlašské orechy</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Šúľance s makom</h4><span class="dots" aria-hidden="true"></span><span class="price">7,50 €</span></div>
+          <p class="dish-desc">pražené maslo, práškový cukor, kompót z čerešní</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Čokoládový fondán</h4><span class="dots" aria-hidden="true"></span><span class="price">9,50 €</span></div>
+          <p class="dish-desc">višňový sorbet, kakaový drobenec</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Výber slovenských syrov</h4><span class="dots" aria-hidden="true"></span><span class="price">12,90 €</span></div>
+          <p class="dish-desc">tri druhy zo salašov, agátový med, orechy, hrozno</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Zmrzlina z domácej smotany</h4><span class="dots" aria-hidden="true"></span><span class="price">5,50 €</span></div>
+          <p class="dish-desc">dva kopčeky, podľa dennej ponuky</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- NÁPOJE -->
+    <div class="mpanel" id="panel-4" role="tabpanel" aria-labelledby="tab-4" tabindex="0">
+      <div class="mpanel-head">
+        <h3>Nápoje</h3>
+        <p>Krátka vinná karta, takmer celá slovenská. Rada vám poradí obsluha.</p>
+      </div>
+      <ul class="dishes">
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Rizling rýnsky, výber z hrozna</h4><span class="dots" aria-hidden="true"></span><span class="price">4,80 €</span></div>
+          <p class="dish-desc">Malokarpatská oblasť, suché, pohár 0,15 l</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Frankovka modrá, barrique</h4><span class="dots" aria-hidden="true"></span><span class="price">5,60 €</span></div>
+          <p class="dish-desc">Južnoslovenská oblasť, suché, pohár 0,15 l</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Rulandské šedé, fľaša</h4><span class="dots" aria-hidden="true"></span><span class="price">26,00 €</span></div>
+          <p class="dish-desc">polosuché, 0,75 l</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Domáca limonáda</h4><span class="dots" aria-hidden="true"></span><span class="price">4,50 €</span></div>
+          <p class="dish-desc">baza a citrón alebo mäta a uhorka, 0,4 l</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Čaj z horských byliniek</h4><span class="dots" aria-hidden="true"></span><span class="price">3,20 €</span></div>
+          <p class="dish-desc">materina dúška, medovka, lipový kvet</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Espresso / Flat white</h4><span class="dots" aria-hidden="true"></span><span class="price">2,60 / 3,60 €</span></div>
+          <p class="dish-desc">výberová káva, praženie z malej pražiarne</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Slivovica, hruškovica</h4><span class="dots" aria-hidden="true"></span><span class="price">3,80 €</span></div>
+          <p class="dish-desc">pálené v okolí, 0,04 l</p>
+        </li>
+        <li>
+          <div class="dish-line"><h4 class="dish-name">Nefiltrované pivo z malého pivovaru</h4><span class="dots" aria-hidden="true"></span><span class="price">3,20 €</span></div>
+          <p class="dish-desc">svetlý ležiak, 0,5 l</p>
+        </li>
+      </ul>
+    </div>
+
+    <p class="menu-foot">
+      <span>Kuchyňa varí do 21.30</span>
+      <span>Detské porcie na požiadanie</span>
+      <span>Bezlepkové a vegánske varianty pripravíme po dohode</span>
+    </p>
+  </div>
+</section>
+
+<!-- ===================== DENNÉ MENU ===================== -->
+<section class="band" id="denne" aria-labelledby="h-denne">
+  <div class="wrap">
+    <div class="daily-top reveal">
+      <div>
+        <p class="eyebrow">Obedové menu</p>
+        <h2 class="sec" id="h-denne">Denné menu, pondelok až piatok</h2>
+        <p class="lead">Polievka a hlavné jedlo za 9,90 €, podávame od 11.00 do 14.30. Menu vešiame ráno aj na dvere, tu ho nájdete na celý týždeň.</p>
+      </div>
+      <p class="daily-price"><b>9,90 €</b><span>Polievka + hlavné</span></p>
+    </div>
+
+    <ul class="days reveal" id="days">
+      <li class="day" data-day="1">
+        <h3>Pondelok</h3>
+        <p class="course"><span>Polievka</span>Fazuľová s údeným mäsom</p>
+        <p class="course"><span>Hlavné jedlo</span>Kuracie prsia na tymiáne, dusená ryža, uhorkový šalát</p>
+      </li>
+      <li class="day" data-day="2">
+        <h3>Utorok</h3>
+        <p class="course"><span>Polievka</span>Krémová z brokolice</p>
+        <p class="course"><span>Hlavné jedlo</span>Bravčové na kmíne, varené zemiaky, kvasená uhorka</p>
+      </li>
+      <li class="day" data-day="3">
+        <h3>Streda</h3>
+        <p class="course"><span>Polievka</span>Hovädzí vývar s rezancami</p>
+        <p class="course"><span>Hlavné jedlo</span>Halušky s bryndzou a slaninou</p>
+      </li>
+      <li class="day" data-day="4">
+        <h3>Štvrtok</h3>
+        <p class="course"><span>Polievka</span>Šošovicová s klobásou</p>
+        <p class="course"><span>Hlavné jedlo</span>Pečené kuracie stehno, zemiaková kaša, dusená mrkva</p>
+      </li>
+      <li class="day" data-day="5">
+        <h3>Piatok</h3>
+        <p class="course"><span>Polievka</span>Paradajková s bazalkou</p>
+        <p class="course"><span>Hlavné jedlo</span>Pstruh na masle, opekané zemiaky, citrón</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== GALÉRIA ===================== -->
+<section class="band band-dark" id="galeria" aria-labelledby="h-gal">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Galéria</p>
+      <h2 class="sec" id="h-gal">Ako to u nás vyzerá</h2>
+      <p class="lead">Sála, krb, tanier aj chlieb z rannej pece. V ostrej verzii webu sú tu fotografie z vášho podniku.</p>
+    </div>
+
+    <div class="gal reveal">
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile t-a">
+        <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Kresba hlavnej sály s krbom a stolmi pri okne">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#24301F"/><stop offset="100%" stop-color="#10160F"/></linearGradient>
+            <radialGradient id="g1b" cx="30%" cy="30%" r="60%"><stop offset="0" stop-color="#E2B87C" stop-opacity=".3"/><stop offset="100%" stop-color="#E2B87C" stop-opacity="0"/></radialGradient>
+          </defs>
+          <rect width="640" height="480" fill="url(#g1)"/>
+          <rect width="640" height="480" fill="url(#g1b)"/>
+          <path d="M60 330 L60 170 A50 50 0 0 1 160 170 L160 330 Z" fill="#E2B87C" fill-opacity=".14" stroke="#E2B87C" stroke-opacity=".4"/>
+          <path d="M110 120 L110 330 M60 220 L160 220" stroke="#E2B87C" stroke-opacity=".25"/>
+          <path d="M250 330 L250 170 A50 50 0 0 1 350 170 L350 330 Z" fill="#E2B87C" fill-opacity=".1" stroke="#E2B87C" stroke-opacity=".32"/>
+          <path d="M300 120 L300 330 M250 220 L350 220" stroke="#E2B87C" stroke-opacity=".2"/>
+          <g fill="none" stroke="#F3EEE4" stroke-opacity=".2">
+            <rect x="420" y="230" width="170" height="130" rx="6" fill="#0E1310" fill-opacity=".6"/>
+            <path d="M440 250 h130" stroke-opacity=".3"/>
+          </g>
+          <path d="M470 330 q22 -46 44 0 q-22 -18 -44 0z" fill="#E2B87C" fill-opacity=".55"/>
+          <path d="M488 330 q14 -30 28 0 q-14 -12 -28 0z" fill="#FFDDA6" fill-opacity=".8"/>
+          <path d="M0 360 L640 360" stroke="#E2B87C" stroke-opacity=".2"/>
+          <g stroke="#F3EEE4" stroke-opacity=".22" fill="#F3EEE4" fill-opacity=".06">
+            <rect x="70" y="380" width="150" height="10" rx="5"/><rect x="270" y="392" width="150" height="10" rx="5"/>
+          </g>
+        </svg>
+        <figcaption>Hlavná sála</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile t-b">
+        <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Kresba naservírovaného hlavného jedla na tanieri">
+          <defs>
+            <radialGradient id="g2" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#1F2A1D"/><stop offset="100%" stop-color="#0E1310"/></radialGradient>
+          </defs>
+          <rect width="640" height="480" fill="url(#g2)"/>
+          <g transform="translate(320 240)">
+            <circle r="180" fill="none" stroke="#F3EEE4" stroke-opacity=".08"/>
+            <circle r="150" fill="#F3EEE4" fill-opacity=".05" stroke="#F3EEE4" stroke-opacity=".2"/>
+            <circle r="110" fill="none" stroke="#F3EEE4" stroke-opacity=".12"/>
+            <g transform="scale(1.1) rotate(10)">
+              <path d="M-88 18 C-66 52 -18 68 20 54 C44 45 62 28 80 14 C70 40 52 62 22 72 C-16 86 -70 60 -88 18 Z"
+                    fill="#C98A4B" fill-opacity=".45"/>
+              <g transform="rotate(-16)">
+                <rect x="-74" y="-24" width="50" height="29" rx="13" fill="#B5752F" fill-opacity=".55" stroke="#E2B87C" stroke-opacity=".45"/>
+                <rect x="-49" y="-33" width="50" height="29" rx="13" fill="#B5752F" fill-opacity=".62" stroke="#E2B87C" stroke-opacity=".45"/>
+                <rect x="-24" y="-42" width="50" height="29" rx="13" fill="#B5752F" fill-opacity=".7" stroke="#E2B87C" stroke-opacity=".5"/>
+              </g>
+              <path d="M32 -70 C58 -76 78 -60 71 -41 C64 -24 38 -18 26 -31 C15 -43 18 -66 32 -70 Z"
+                    fill="#E2B87C" fill-opacity=".32" stroke="#E2B87C" stroke-opacity=".5"/>
+              <g stroke="#C98A4B" stroke-opacity=".85" stroke-linecap="round" fill="none">
+                <path d="M38 16 L72 38" stroke-width="9"/>
+                <path d="M44 32 L78 44" stroke-width="7"/>
+                <path d="M32 42 L62 64" stroke-width="6"/>
+              </g>
+              <g stroke="#9BB08A" stroke-opacity=".7" fill="none" stroke-linecap="round">
+                <path d="M-72 -56 C-56 -68 -38 -70 -24 -64" stroke-width="2.6"/>
+                <path d="M-60 -62 l-5 -12 M-46 -66 l-3 -12 M-32 -66 l-1 -11" stroke-width="2.2"/>
+              </g>
+              <circle cx="-82" cy="-8" r="3.6" fill="#E2B87C" fill-opacity=".75"/>
+              <circle cx="-68" cy="8" r="2.6" fill="#E2B87C" fill-opacity=".55"/>
+              <circle cx="-86" cy="16" r="2" fill="#E2B87C" fill-opacity=".45"/>
+            </g>
+          </g>
+        </svg>
+        <figcaption>Tanier z večerného lístka</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile t-c">
+        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Kresba pohára červeného vína">
+          <rect width="400" height="400" fill="#141C15"/>
+          <circle cx="200" cy="180" r="130" fill="#C98A4B" fill-opacity=".08"/>
+          <path d="M140 90 h120 q0 90 -52 108 v96 h40 v14 h-96 v-14 h40 v-96 q-52 -18 -52 -108z" fill="#F3EEE4" fill-opacity=".07" stroke="#F3EEE4" stroke-opacity=".3" stroke-width="2"/>
+          <path d="M146 128 h108 q-6 62 -54 76 q-48 -14 -54 -76z" fill="#8E3A2E" fill-opacity=".75"/>
+          <path d="M158 140 q42 12 84 -2" fill="none" stroke="#E2B87C" stroke-opacity=".4" stroke-width="2"/>
+        </svg>
+        <figcaption>Vinná karta</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile t-d">
+        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Kresba bochníka kváskového chleba">
+          <rect width="400" height="400" fill="#171E16"/>
+          <circle cx="200" cy="210" r="128" fill="#B5752F" fill-opacity=".35" stroke="#E2B87C" stroke-opacity=".45" stroke-width="2"/>
+          <circle cx="200" cy="210" r="98" fill="none" stroke="#E2B87C" stroke-opacity=".22"/>
+          <g stroke="#0E1310" stroke-opacity=".5" stroke-width="6" stroke-linecap="round">
+            <path d="M150 178 q50 -22 100 0"/><path d="M142 214 q58 -24 116 0"/><path d="M152 250 q48 -22 96 0"/>
+          </g>
+          <g fill="#E2B87C" fill-opacity=".5">
+            <circle cx="120" cy="120" r="4"/><circle cx="290" cy="132" r="3"/><circle cx="264" cy="96" r="2.4"/>
+          </g>
+        </svg>
+        <figcaption>Kváskový chlieb</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile t-e">
+        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Kresba otvoreného krbu s ohňom">
+          <rect width="400" height="400" fill="#12180F"/>
+          <path d="M90 320 L90 190 A110 110 0 0 1 310 190 L310 320 Z" fill="#0B0F0A" stroke="#E2B87C" stroke-opacity=".35" stroke-width="2"/>
+          <path d="M120 320 L120 200 A80 80 0 0 1 280 200 L280 320" fill="none" stroke="#E2B87C" stroke-opacity=".18"/>
+          <path d="M160 320 q40 -100 80 0 q-40 -40 -80 0z" fill="#C98A4B" fill-opacity=".8"/>
+          <path d="M180 320 q20 -64 40 0 q-20 -26 -40 0z" fill="#FFDDA6"/>
+          <g stroke="#7C6A54" stroke-width="8" stroke-linecap="round">
+            <path d="M144 318 L256 318"/><path d="M158 306 L238 306"/>
+          </g>
+          <path d="M60 340 L340 340" stroke="#E2B87C" stroke-opacity=".25" stroke-width="2"/>
+        </svg>
+        <figcaption>Otvorený krb</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HODINY ===================== -->
+<section class="band" id="hodiny" aria-labelledby="h-hod">
+  <div class="wrap hours-grid">
+    <div class="reveal">
+      <p class="eyebrow">Otváracie hodiny</p>
+      <h2 class="sec" id="h-hod">Kedy máme otvorené</h2>
+      <ul class="hours-list" id="hours">
+        <li data-day="1"><span class="d">Pondelok</span><span class="t">11.00 – 22.00</span></li>
+        <li data-day="2"><span class="d">Utorok</span><span class="t">11.00 – 22.00</span></li>
+        <li data-day="3"><span class="d">Streda</span><span class="t">11.00 – 22.00</span></li>
+        <li data-day="4"><span class="d">Štvrtok</span><span class="t">11.00 – 22.00</span></li>
+        <li data-day="5"><span class="d">Piatok</span><span class="t">11.00 – 23.00</span></li>
+        <li data-day="6"><span class="d">Sobota</span><span class="t">12.00 – 23.00</span></li>
+        <li data-day="0"><span class="d">Nedeľa</span><span class="t">12.00 – 21.00</span></li>
+      </ul>
+      <p class="hours-note">Kuchyňa prijíma posledné objednávky 30 minút pred zatvorením. Na sviatky a firemné večere sa hodiny môžu líšiť, informáciu vždy dávame na túto stránku.</p>
+    </div>
+
+    <div class="hours-art reveal">
+      <svg viewBox="0 0 480 380" role="img" aria-label="Kresba priebehu večera v reštaurácii od otvorenia po zatvorenie">
+        <defs>
+          <linearGradient id="tlG" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#C98A4B" stop-opacity=".15"/>
+            <stop offset="50%" stop-color="#E2B87C" stop-opacity=".55"/>
+            <stop offset="100%" stop-color="#C98A4B" stop-opacity=".15"/>
+          </linearGradient>
+        </defs>
+        <rect width="480" height="380" rx="4" fill="#141C16" stroke="#E2B87C" stroke-opacity=".16"/>
+        <path d="M40 300 q110 -190 200 -190 q90 0 200 190" fill="none" stroke="url(#tlG)" stroke-width="2"/>
+        <g font-family="Georgia, serif" fill="#F3EEE4" font-size="15">
+          <g>
+            <circle cx="70" cy="252" r="6" fill="#C98A4B"/>
+            <text x="88" y="248">11.00</text>
+            <text x="88" y="270" font-size="12.5" fill="#B7B1A4" font-family="Segoe UI, sans-serif">otvárame, obedové menu</text>
+          </g>
+          <g>
+            <circle cx="200" cy="128" r="6" fill="#E2B87C"/>
+            <text x="218" y="124">17.00</text>
+            <text x="218" y="146" font-size="12.5" fill="#B7B1A4" font-family="Segoe UI, sans-serif">začína večerný lístok</text>
+          </g>
+          <g>
+            <circle cx="330" cy="150" r="6" fill="#E2B87C"/>
+            <text x="348" y="146">19.00</text>
+            <text x="348" y="168" font-size="12.5" fill="#B7B1A4" font-family="Segoe UI, sans-serif">najžiadanejší čas,</text>
+            <text x="348" y="186" font-size="12.5" fill="#B7B1A4" font-family="Segoe UI, sans-serif">radšej s rezerváciou</text>
+          </g>
+          <g text-anchor="end">
+            <circle cx="424" cy="278" r="6" fill="#C98A4B"/>
+            <text x="410" y="316">21.30</text>
+            <text x="410" y="338" font-size="12.5" fill="#B7B1A4" font-family="Segoe UI, sans-serif">posledné objednávky</text>
+            <path d="M420 286 L412 300" stroke="#C98A4B" stroke-opacity=".35"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== REZERVÁCIA ===================== -->
+<section class="band band-dark" id="rezervacia" aria-labelledby="h-res">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:44px">
+      <p class="eyebrow">Rezervácia</p>
+      <h2 class="sec" id="h-res">Rezervujte si stôl</h2>
+      <p class="lead">Vyberte si deň, čas a miesto v sále. Rezerváciu potvrdzujeme telefonicky do jednej hodiny.</p>
+    </div>
+
+    <div class="res-grid">
+      <div class="res-card reveal">
+        <form id="res-form" novalidate>
+          <div class="field">
+            <label for="datum">Dátum</label>
+            <input type="date" id="datum" name="datum" required>
+          </div>
+
+          <fieldset>
+            <legend class="legend">Čas príchodu</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="cas" value="17.00"><span>17.00</span></label>
+              <label class="chip"><input type="radio" name="cas" value="17.30"><span>17.30</span></label>
+              <label class="chip"><input type="radio" name="cas" value="18.00"><span>18.00</span></label>
+              <label class="chip"><input type="radio" name="cas" value="18.30"><span>18.30</span></label>
+              <label class="chip"><input type="radio" name="cas" value="19.00" checked><span>19.00</span></label>
+              <label class="chip"><input type="radio" name="cas" value="19.30"><span>19.30</span></label>
+              <label class="chip"><input type="radio" name="cas" value="20.00"><span>20.00</span></label>
+              <label class="chip"><input type="radio" name="cas" value="20.30"><span>20.30</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="hostia">Počet hostí</label>
+            <div class="stepper">
+              <button type="button" id="minus" aria-label="Ubrať jedného hosťa">&minus;</button>
+              <input type="number" id="hostia" name="hostia" min="1" max="12" step="1" value="2" inputmode="numeric">
+              <button type="button" id="plus" aria-label="Pridať jedného hosťa">+</button>
+              <span class="hint">Pre viac ako 12 hostí nám, prosím, zavolajte.</span>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend class="legend">Miesto v sále</legend>
+            <div class="zones">
+              <label class="zone">
+                <input type="radio" name="zona" value="okno" checked>
+                <span class="box">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5 21V9a7 7 0 0 1 14 0v12M12 3v18M5 12h14"/></svg>
+                  Pri okne
+                </span>
+              </label>
+              <label class="zone">
+                <input type="radio" name="zona" value="krb">
+                <span class="box">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 3c3 4 5 6 5 9a5 5 0 0 1-10 0c0-2 1-3 2-4 .5 1.5 1.5 2 2 2 0-2-1-4 1-7z"/></svg>
+                  Pri krbe
+                </span>
+              </label>
+              <label class="zone">
+                <input type="radio" name="zona" value="sala">
+                <span class="box">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="6"/><path d="M12 18v3M4 8h16"/></svg>
+                  Hlavná sála
+                </span>
+              </label>
+              <label class="zone">
+                <input type="radio" name="zona" value="terasa">
+                <span class="box">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 11h18L12 4 3 11zM12 11v10M8 21h8"/></svg>
+                  Terasa (sezónne)
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <dl class="res-summary">
+            <dt>Zhrnutie rezervácie</dt>
+            <dd id="res-summary-text">Stôl pre 2 osoby, 19.00, pri okne</dd>
+          </dl>
+
+          <div class="field">
+            <label for="meno">Meno a priezvisko</label>
+            <input type="text" id="meno" name="meno" autocomplete="name" placeholder="Na koho stôl zapíšeme" required>
+          </div>
+          <div class="field">
+            <label for="telefon">Telefón</label>
+            <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="+421" required>
+          </div>
+          <div class="field">
+            <label for="email">E-mail (nepovinné)</label>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="pre potvrdenie e-mailom">
+          </div>
+          <div class="field">
+            <label for="poznamka">Poznámka pre kuchyňu</label>
+            <textarea id="poznamka" name="poznamka" placeholder="Alergie, oslava, detská stolička…"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-solid" style="width:100%">Odoslať rezerváciu</button>
+          <p class="res-fine">Ide o ukážkový web. Formulár nikam nič neodosiela a žiadne údaje sa neukladajú.</p>
+        </form>
+
+        <div class="res-done" id="res-done" hidden role="status" tabindex="-1">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#E2B87C" stroke-width="1.4" aria-hidden="true">
+            <circle cx="24" cy="24" r="22"/><path d="M15 24.5l6.5 6.5L33 18"/>
+          </svg>
+          <h3>Takto by vyzeralo potvrdenie</h3>
+          <p><strong>Toto je ukážkový web.</strong> Rezervácia sa nikam neodoslala, žiadny e-mail ani správa neodišli a nič sme si neuložili.</p>
+          <p class="rec" id="res-recap"></p>
+          <p>Na ostrom webe by sa v tejto chvíli objednávka zapísala do rezervačného systému a hosťovi aj reštaurácii by prišlo potvrdenie.</p>
+          <button type="button" class="btn btn-ghost" id="res-back">Späť na formulár</button>
+        </div>
+      </div>
+
+      <div class="plan-wrap reveal">
+        <h3>Plán sály</h3>
+        <p class="sub">Kliknutím na časť sály zmeníte výber vo formulári.</p>
+        <div class="plan" id="plan" data-zone="okno">
+          <svg viewBox="0 0 420 420" role="img" aria-label="Nakreslený plán sály so stolmi pri okne, pri krbe, v hlavnej sále a na terase">
+            <rect x="16" y="16" width="300" height="330" rx="6" fill="#141C16" stroke="#E2B87C" stroke-opacity=".3"/>
+            <rect x="326" y="120" width="78" height="150" rx="6" fill="#111811" stroke="#E2B87C" stroke-opacity=".2" stroke-dasharray="4 4"/>
+
+            <!-- okná hore -->
+            <g stroke="#E2B87C" stroke-opacity=".45" stroke-width="3">
+              <path d="M56 16 h60"/><path d="M146 16 h60"/><path d="M236 16 h50"/>
+            </g>
+            <!-- krb vľavo -->
+            <g>
+              <rect x="16" y="150" width="14" height="70" fill="#C98A4B" fill-opacity=".55"/>
+              <path d="M23 214 q10 -26 20 0 q-10 -10 -20 0z" fill="#FFDDA6" fill-opacity=".8"/>
+            </g>
+            <!-- bar dole -->
+            <rect x="70" y="308" width="190" height="22" rx="6" fill="#1F2A1D" stroke="#E2B87C" stroke-opacity=".3"/>
+            <text x="165" y="323" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="11" fill="#B7B1A4" letter-spacing="2">BAR</text>
+
+            <!-- zóna: pri okne -->
+            <g class="zone-g" id="z-okno" data-zone="okno" role="button" tabindex="-1" aria-label="Stoly pri okne">
+              <rect class="halo" x="40" y="42" width="256" height="66" rx="8" fill="#E2B87C" fill-opacity=".12" stroke="#E2B87C" stroke-opacity=".5"/>
+              <circle class="tbl" cx="86" cy="76" r="17" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+              <circle class="tbl" cx="166" cy="76" r="17" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+              <circle class="tbl" cx="246" cy="76" r="17" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+            </g>
+
+            <!-- zóna: pri krbe -->
+            <g class="zone-g" id="z-krb" data-zone="krb" role="button" tabindex="-1" aria-label="Stoly pri krbe">
+              <rect class="halo" x="40" y="140" width="94" height="94" rx="8" fill="#E2B87C" fill-opacity=".12" stroke="#E2B87C" stroke-opacity=".5"/>
+              <rect class="tbl" x="60" y="160" width="54" height="24" rx="6" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+              <rect class="tbl" x="60" y="196" width="54" height="24" rx="6" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+            </g>
+
+            <!-- zóna: hlavná sála -->
+            <g class="zone-g" id="z-sala" data-zone="sala" role="button" tabindex="-1" aria-label="Stoly v hlavnej sále">
+              <rect class="halo" x="152" y="132" width="146" height="146" rx="8" fill="#E2B87C" fill-opacity=".12" stroke="#E2B87C" stroke-opacity=".5"/>
+              <circle class="tbl" cx="192" cy="172" r="16" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+              <circle class="tbl" cx="258" cy="172" r="16" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+              <circle class="tbl" cx="192" cy="238" r="16" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+              <circle class="tbl" cx="258" cy="238" r="16" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+            </g>
+
+            <!-- zóna: terasa -->
+            <g class="zone-g" id="z-terasa" data-zone="terasa" role="button" tabindex="-1" aria-label="Stoly na terase">
+              <rect class="halo" x="332" y="126" width="66" height="138" rx="8" fill="#E2B87C" fill-opacity=".12" stroke="#E2B87C" stroke-opacity=".5"/>
+              <circle class="tbl" cx="365" cy="162" r="15" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+              <circle class="tbl" cx="365" cy="226" r="15" fill="#F3EEE4" fill-opacity=".18" stroke="#F3EEE4" stroke-opacity=".4"/>
+            </g>
+
+            <g font-family="Segoe UI, sans-serif" font-size="11" fill="#B7B1A4" letter-spacing="1.6">
+              <text x="168" y="36" text-anchor="middle">OKNÁ</text>
+              <text x="87" y="256" text-anchor="middle">KRB</text>
+              <text x="225" y="300" text-anchor="middle">HLAVNÁ SÁLA</text>
+              <text x="365" y="288" text-anchor="middle">TERASA</text>
+              <text x="166" y="372" text-anchor="middle" fill="#9C968A">VSTUP</text>
+            </g>
+            <path d="M146 346 h40" stroke="#E2B87C" stroke-opacity=".5" stroke-width="3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KONTAKT ===================== -->
+<section class="band" id="kontakt" aria-labelledby="h-kon">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:40px">
+      <p class="eyebrow">Kontakt</p>
+      <h2 class="sec" id="h-kon">Kde nás nájdete</h2>
+    </div>
+
+    <div class="contact-grid">
+      <dl class="cinfo reveal">
+        <div>
+          <dt>Adresa</dt>
+          <dd>Lipová 12<br>811 01 Bratislava</dd>
+        </div>
+        <div>
+          <dt>Rezervácie</dt>
+          <dd>09XX XXX XXX <span class="ph-note">telefón podniku sa doplní</span></dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:rezervacie@example.com">rezervacie@example.com</a></dd>
+        </div>
+        <div>
+          <dt>Parkovanie</dt>
+          <dd>Podzemné parkovisko na Krátkej ulici, 60 m od vchodu. Pre hostí prvé dve hodiny zdarma.</dd>
+        </div>
+        <div>
+          <dt>Doprava</dt>
+          <dd>Zastávka Námestie lipy, 3 minúty pešo.</dd>
+        </div>
+      </dl>
+
+      <div class="reveal">
+        <div class="map">
+          <svg viewBox="0 0 720 440" role="img" aria-label="Nakreslená mapa okolia: reštaurácia na Lipovej ulici pri parku, s parkoviskom na Krátkej ulici a zastávkou na námestí">
+            <rect width="720" height="440" fill="#101710"/>
+            <!-- park -->
+            <path d="M0 300 Q140 250 260 300 Q360 342 460 314 L720 340 L720 440 L0 440 Z" fill="#1B2A19"/>
+            <g fill="#25381F">
+              <circle cx="120" cy="366" r="26"/><circle cx="186" cy="392" r="20"/><circle cx="290" cy="372" r="24"/><circle cx="392" cy="396" r="18"/>
+            </g>
+            <text x="180" y="424" font-family="Segoe UI, sans-serif" font-size="13" fill="#8FA383" letter-spacing="2">MESTSKÝ PARK</text>
+
+            <!-- bloky -->
+            <g fill="#161E16" stroke="#E2B87C" stroke-opacity=".1">
+              <rect x="40" y="40" width="180" height="110" rx="4"/>
+              <rect x="300" y="40" width="150" height="110" rx="4"/>
+              <rect x="520" y="40" width="160" height="110" rx="4"/>
+              <rect x="40" y="210" width="180" height="60" rx="4"/>
+              <rect x="520" y="210" width="160" height="70" rx="4"/>
+            </g>
+
+            <!-- ulice -->
+            <g stroke="#212C21" stroke-width="30" stroke-linecap="round">
+              <path d="M0 180 L720 180"/>
+              <path d="M262 0 L262 300"/>
+              <path d="M492 0 L492 300"/>
+            </g>
+            <g stroke="#E2B87C" stroke-opacity=".22" stroke-width="1.6" stroke-dasharray="12 12">
+              <path d="M0 180 L720 180"/><path d="M262 0 L262 300"/><path d="M492 0 L492 300"/>
+            </g>
+
+            <!-- budova reštaurácie -->
+            <rect x="300" y="210" width="150" height="72" rx="4" fill="#2A3722" stroke="#E2B87C" stroke-opacity=".55" stroke-width="1.5"/>
+
+            <!-- marker -->
+            <g transform="translate(375 196)">
+              <circle r="26" fill="#C98A4B" fill-opacity=".18"/>
+              <path d="M0 22 C-14 4 -18 -2 -18 -10 A18 18 0 0 1 18 -10 C18 -2 14 4 0 22z" fill="#D9A25E" stroke="#170F06" stroke-opacity=".4"/>
+              <circle cy="-10" r="6.5" fill="#170F06"/>
+            </g>
+            <text x="375" y="262" text-anchor="middle" font-family="Georgia, serif" font-size="17" fill="#F3EEE4">Smreková sieň</text>
+
+            <!-- popisy ulíc -->
+            <g font-family="Segoe UI, sans-serif" font-size="12.5" fill="#B7B1A4" letter-spacing="2.4">
+              <text x="60" y="174">LIPOVÁ</text>
+              <text x="272" y="70" transform="rotate(90 272 70)">KRÁTKA</text>
+              <text x="502" y="70" transform="rotate(90 502 70)">ZÁHRADNÍCKA</text>
+            </g>
+
+            <!-- parkovanie -->
+            <g transform="translate(262 120)">
+              <rect x="-15" y="-15" width="30" height="30" rx="4" fill="#0E1310" stroke="#E2B87C" stroke-opacity=".5"/>
+              <text x="0" y="6" text-anchor="middle" font-family="Georgia, serif" font-size="17" fill="#E2B87C">P</text>
+            </g>
+            <!-- zastávka -->
+            <g transform="translate(560 180)">
+              <circle r="9" fill="#0E1310" stroke="#E2B87C" stroke-opacity=".6"/>
+              <circle r="3.4" fill="#E2B87C"/>
+              <text x="16" y="-14" font-family="Segoe UI, sans-serif" font-size="12" fill="#B7B1A4">Zastávka Námestie lipy</text>
+            </g>
+          </svg>
+          <p class="map-legend">
+            <span><b>Mapa</b> je nakreslená, slúži na orientáciu</span>
+            <span><b>P</b> parkovisko Krátka</span>
+            <span><b>60 m</b> od zastávky</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== AUTOR UKÁŽKY (nie je súčasť vymysleného podniku) ===================== -->
+<aside class="author-band" id="autor" aria-labelledby="h-autor">
+  <div class="wrap">
+    <div class="author-card">
+      <p class="author-flag">Autor ukážky — nie je súčasť reštaurácie</p>
+      <h2 class="sec" id="h-autor">Páči sa vám tento web?</h2>
+      <p class="lead">
+        Tento web je <strong>ukážka</strong>, ktorú navrhol a naprogramoval Alex Poliak. Smreková sieň je vymyslený podnik,
+        texty aj obrázky slúžia len na predvedenie. <strong>Podobný web spravím aj vám</strong> — na mieru vášmu podniku,
+        s vaším lístkom, vašimi fotografiami a vašimi kontaktmi.
+      </p>
+      <dl class="author-info">
+        <div>
+          <dt>Autor webu</dt>
+          <dd>Alex Poliak, Bratislava</dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:info@apoliak.online">info@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefón</dt>
+          <dd><a href="tel:+421902464022">0902 464 022</a> <span class="sms">alebo <a href="sms:+421902464022">SMS</a></span></dd>
+        </div>
+        <div>
+          <dt>Web</dt>
+          <dd><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+      </dl>
+      <div class="author-cta">
+        <a class="btn btn-solid" href="mailto:info@apoliak.online?subject=Z%C3%A1ujem%20o%20web">Napísať e-mail</a>
+        <a class="btn btn-ghost" href="tel:+421902464022">Zavolať 0902 464 022</a>
+        <a class="btn btn-ghost" href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+      </div>
+      <p class="author-price">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+    </div>
+  </div>
+</aside>
+
+<!-- ===================== PÄTA ===================== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <a class="brand" href="#uvod">
+        <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="#C98A4B" stroke-width="1"/>
+          <path d="M20 9 L26 20 L23 20 L28 29 L12 29 L17 20 L14 20 Z" fill="none" stroke="#E2B87C" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M20 29 L20 33" stroke="#E2B87C" stroke-width="1.2"/>
+        </svg>
+        <span><b>Smreková sieň</b><small>Lipová 12, Bratislava</small></span>
+      </a>
+      <nav class="foot-nav" aria-label="Navigácia v päte">
+        <a href="#o-nas">O reštaurácii</a>
+        <a href="#menu">Jedálny lístok</a>
+        <a href="#denne">Denné menu</a>
+        <a href="#galeria">Galéria</a>
+        <a href="#hodiny">Otváracie hodiny</a>
+        <a href="#rezervacia">Rezervácia</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>Smreková sieň je vymyslený podnik. Táto stránka je ukážka práce, nie web existujúcej reštaurácie.</span>
+      <span>Takýto web pre vás spravím — <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<svg class="grain" aria-hidden="true" focusable="false">
+  <filter id="grainF"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#grainF)"/>
+</svg>
+
+<script>
+(function(){
+  "use strict";
+  var d = document;
+
+  /* ---------- mobilné menu ---------- */
+  var toggle = d.querySelector('.nav-toggle');
+  var nav = d.getElementById('hlavne-menu');
+  function closeNav(){ nav.classList.remove('is-open'); toggle.setAttribute('aria-expanded','false'); }
+  toggle.addEventListener('click', function(){
+    var open = nav.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+  d.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeNav(); });
+  window.addEventListener('resize', function(){ if(window.innerWidth > 860) closeNav(); });
+
+  /* ---------- záložky jedálneho lístka ---------- */
+  var tabs = Array.prototype.slice.call(d.querySelectorAll('.mtab'));
+  var panels = Array.prototype.slice.call(d.querySelectorAll('.mpanel'));
+  function selectTab(i, focus){
+    tabs.forEach(function(t, j){
+      var on = i === j;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      panels[j].classList.toggle('is-active', on);
+    });
+    if(focus) tabs[i].focus();
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ selectTab(i, false); });
+    t.addEventListener('keydown', function(e){
+      var k = e.key, n = null;
+      if(k === 'ArrowRight' || k === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if(k === 'ArrowLeft' || k === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if(k === 'Home') n = 0;
+      else if(k === 'End') n = tabs.length - 1;
+      if(n !== null){ e.preventDefault(); selectTab(n, true); }
+    });
+  });
+  selectTab(0, false);
+
+  /* ---------- dnešný deň ---------- */
+  var today = new Date().getDay();
+  var todayRow = d.querySelector('#hours li[data-day="' + today + '"]');
+  if(todayRow){
+    todayRow.classList.add('is-today');
+    var t = todayRow.querySelector('.t');
+    var fh = d.getElementById('fact-hours');
+    if(t && fh) fh.textContent = t.textContent;
+  }
+  var todayDay = d.querySelector('#days .day[data-day="' + today + '"]');
+  if(todayDay){
+    todayDay.classList.add('is-today');
+    var chip = d.createElement('span');
+    chip.className = 'today-chip';
+    chip.textContent = 'dnes';
+    todayDay.querySelector('h3').appendChild(chip);
+  }
+
+  /* ---------- rezervačný formulár ---------- */
+  var form = d.getElementById('res-form');
+  var done = d.getElementById('res-done');
+  var datum = d.getElementById('datum');
+  var hostia = d.getElementById('hostia');
+  var sumText = d.getElementById('res-summary-text');
+  var plan = d.getElementById('plan');
+
+  var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+  var now = new Date();
+  var iso = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+  datum.min = iso;
+  if(!datum.value) datum.value = iso;
+
+  function val(name){
+    var el = form.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : '';
+  }
+  var zoneNames = { okno:'pri okne', krb:'pri krbe', sala:'v hlavnej sále', terasa:'na terase' };
+  function osoby(n){
+    n = parseInt(n, 10) || 1;
+    if(n === 1) return '1 osobu';
+    if(n < 5) return n + ' osoby';
+    return n + ' osôb';
+  }
+  function dateText(){
+    if(!datum.value) return '';
+    var parts = datum.value.split('-');
+    var dt = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+    try{
+      return dt.toLocaleDateString('sk-SK', { weekday:'long', day:'numeric', month:'long' });
+    }catch(err){
+      return parts[2] + '. ' + parts[1] + '. ' + parts[0];
+    }
+  }
+  function updateSummary(){
+    var zona = val('zona') || 'okno';
+    plan.setAttribute('data-zone', zona);
+    var txt = 'Stôl pre ' + osoby(hostia.value) + ', ' + (dateText() ? dateText() + ', ' : '') + val('cas') + ', ' + zoneNames[zona];
+    sumText.textContent = txt;
+    return txt;
+  }
+  form.addEventListener('change', updateSummary);
+  form.addEventListener('input', updateSummary);
+
+  d.getElementById('minus').addEventListener('click', function(){
+    hostia.value = Math.max(1, (parseInt(hostia.value, 10) || 1) - 1);
+    updateSummary();
+  });
+  d.getElementById('plus').addEventListener('click', function(){
+    hostia.value = Math.min(12, (parseInt(hostia.value, 10) || 1) + 1);
+    updateSummary();
+  });
+
+  /* plán sály -> výber zóny */
+  Array.prototype.forEach.call(d.querySelectorAll('.zone-g'), function(g){
+    g.addEventListener('click', function(){
+      var z = g.getAttribute('data-zone');
+      var input = form.querySelector('input[name="zona"][value="' + z + '"]');
+      if(input){ input.checked = true; updateSummary(); }
+    });
+  });
+
+  updateSummary();
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var meno = d.getElementById('meno');
+    var tel = d.getElementById('telefon');
+    if(!meno.value.trim()){ meno.focus(); meno.setAttribute('aria-invalid','true'); return; }
+    if(!tel.value.trim()){ tel.focus(); tel.setAttribute('aria-invalid','true'); return; }
+    d.getElementById('res-recap').textContent = updateSummary() + ' — ' + meno.value.trim();
+    form.hidden = true;
+    done.hidden = false;
+    done.focus();
+  });
+
+  d.getElementById('res-back').addEventListener('click', function(){
+    done.hidden = true;
+    form.hidden = false;
+    d.getElementById('datum').focus();
+  });
+
+  /* ---------- jemné odkrývanie sekcií ---------- */
+  var revealables = Array.prototype.slice.call(d.querySelectorAll('.reveal'));
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+    revealables.forEach(function(el){ io.observe(el); });
+  }else{
+    revealables.forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>

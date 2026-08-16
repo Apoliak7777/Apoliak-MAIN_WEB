@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kruh &amp; Zrno — kaviareň a pizzeria</title>
+<meta name="description" content="Kruh &amp; Zrno — ukážkový web susedskej kaviarne a pizzerie: ponuka, denné menu, konfigurátor pizze a rezervácia. Navrhol a naprogramoval Alex Poliak — apoliak.online.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kruh &amp; Zrno — ukážkový web kaviarne a pizzerie">
+<meta property="og:description" content="Vlastné praženie, cesto kysnuté 48 hodín, denné menu a konfigurátor pizze. Ukážkový web od Alexa Poliaka — apoliak.online.">
+<meta property="og:locale" content="sk_SK">
+<meta name="theme-color" content="#C4351C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Ccircle%20cx='24'%20cy='24'%20r='23'%20fill='%23C4351C'/%3E%3Ccircle%20cx='24'%20cy='24'%20r='15'%20fill='%23F0A93B'/%3E%3Cpath%20d='M24%209a15%2015%200%200%201%2015%2015H24z'%20fill='%23A9C979'/%3E%3Ccircle%20cx='18'%20cy='29'%20r='3.2'%20fill='%232A1C14'/%3E%3Ccircle%20cx='30'%20cy='31'%20r='2.6'%20fill='%232A1C14'/%3E%3Ccircle%20cx='30'%20cy='17'%20r='2.4'%20fill='%23FFF6E9'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   KRUH & ZRNO — ukážkový web (apoliak.online)
+   Celý vizuál je CSS + inline SVG. Nula externých požiadaviek.
+   ============================================================ */
+
+:root{
+  --cream:#FFF6E9;
+  --cream-2:#FBEADA;
+  --cream-3:#F6DFC4;
+  --paper:#FFFFFF;
+  --ink:#2A1C14;          /* 14:1 na kréme */
+  --ink-soft:#5A4436;     /* 8.5:1 na kréme */
+  --brick:#C4351C;        /* 5.4:1 s bielou */
+  --brick-dark:#9C2712;
+  --pist:#A9C979;
+  --pist-soft:#DCEBBF;
+  --pist-deep:#55702F;    /* 5.2:1 na kréme */
+  --honey:#F0A93B;
+  --honey-soft:#FBE0AE;
+
+  --r-s:10px;
+  --r-m:18px;
+  --r-l:28px;
+  --r-xl:44px;
+
+  --bar-min:46px;   /* minimálna výška pásika (nemeria sa) */
+  --bar-h:46px;     /* skutočná výška pásika — dopočíta JS */
+  --nav-h:66px;
+
+  --shadow-s:0 2px 0 rgba(42,28,20,.10);
+  --shadow-m:0 14px 30px -18px rgba(42,28,20,.45);
+  --shadow-l:0 30px 60px -34px rgba(42,28,20,.55);
+
+  --font:"Segoe UI","Helvetica Neue",Helvetica,Arial,system-ui,-apple-system,"Liberation Sans",sans-serif;
+  --wrap:1180px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:calc(var(--bar-h) + var(--head-h,var(--nav-h)) + 14px);
+  -webkit-text-size-adjust:100%;
+}
+/* pásik sa na malých displejoch zalomí do dvoch riadkov — hlavička musí sadnúť pod neho.
+   Presnú hodnotu dopočíta JS, toto je poistka bez JS. */
+@media (max-width:760px){ :root{--bar-h:70px} }
+/* pod 560 px je pásik znova jednoriadkový (skryje sa veta aj číslo) */
+@media (max-width:560px){ :root{--bar-h:46px} }
+
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:17px;
+  line-height:1.62;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{max-width:100%}
+svg{display:block}
+
+h1,h2,h3,h4{
+  margin:0;
+  font-weight:900;
+  letter-spacing:-.028em;
+  line-height:1.03;
+  text-wrap:balance;
+}
+h1{font-size:clamp(2.6rem,7.4vw,5.1rem)}
+h2{font-size:clamp(2rem,4.6vw,3.35rem)}
+h3{font-size:clamp(1.15rem,2.1vw,1.42rem);letter-spacing:-.02em}
+p{margin:0 0 1em}
+a{color:inherit}
+
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+@media (max-width:520px){ .wrap{width:min(100% - 28px,var(--wrap))} }
+
+.visually-hidden{
+  position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:3px solid var(--brick);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+/* ---------- UKÁŽKOVÝ PÁSIK ---------- */
+.demobar{
+  position:sticky;top:0;z-index:90;
+  background:var(--brick);
+  color:#fff;
+  border-bottom:2px solid var(--brick-dark);
+}
+.demobar__in{
+  min-height:var(--bar-min);
+  display:flex;align-items:center;justify-content:center;gap:.45rem .9rem;
+  flex-wrap:wrap;
+  padding:.42rem 0;
+  font-size:.885rem;
+  font-weight:800;
+  letter-spacing:.012em;
+  text-align:center;
+}
+.demobar__tag{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:#fff;color:var(--brick-dark);
+  padding:.14rem .6rem;border-radius:999px;
+  font-size:.76rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;
+  white-space:nowrap;
+}
+.demobar__tag::before{
+  content:"";width:.5rem;height:.5rem;border-radius:50%;
+  background:var(--brick);
+}
+.demobar__link{
+  color:#fff;font-weight:900;
+  text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;
+  white-space:nowrap;
+}
+.demobar__link:hover{color:var(--honey-soft)}
+.demobar__tel{font-variant-numeric:tabular-nums}
+/* na úzkych displejoch ostáva len značka a odkaz — pásik nesmie narásť */
+@media (max-width:560px){
+  .demobar__claim,.demobar__tel{display:none}
+}
+
+/* ---------- HLAVIČKA ---------- */
+.site-head{
+  position:sticky;top:var(--bar-h);z-index:80;
+  background:rgba(255,246,233,.97);
+  border-bottom:2px solid var(--cream-3);
+}
+.site-head__in{
+  min-height:var(--nav-h);
+  display:flex;align-items:center;gap:1rem;
+}
+.brand{
+  display:inline-flex;align-items:center;gap:.62rem;
+  text-decoration:none;font-weight:900;letter-spacing:-.03em;
+  font-size:1.24rem;line-height:1;flex:0 0 auto;
+}
+.brand__mark{width:40px;height:40px;flex:0 0 auto}
+.brand__name span{color:var(--brick)}
+.brand__sub{
+  display:block;font-size:.63rem;font-weight:800;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-soft);margin-top:.22rem;
+}
+
+.nav{margin-left:auto;display:flex;align-items:center;gap:.35rem}
+.nav-list{
+  list-style:none;margin:0;padding:0;
+  display:flex;align-items:center;gap:.1rem;flex-wrap:wrap;
+}
+.nav-list a{
+  display:block;padding:.5rem .68rem;border-radius:999px;
+  text-decoration:none;font-weight:700;font-size:.95rem;color:var(--ink);
+  transition:background .18s ease,color .18s ease;
+}
+.nav-list a:hover{background:var(--cream-2)}
+.nav-list a[aria-current="true"]{background:var(--ink);color:var(--cream)}
+
+.btn{
+  --btn-bg:var(--brick);--btn-fg:#fff;--btn-bd:var(--brick-dark);
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--btn-bg);color:var(--btn-fg);
+  border:2px solid var(--btn-bd);
+  border-radius:999px;
+  padding:.72rem 1.3rem;
+  font:inherit;font-weight:900;letter-spacing:-.01em;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 4px 0 var(--btn-bd);
+  transition:transform .12s ease,box-shadow .12s ease,background .18s ease;
+}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--btn-bd)}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--btn-bd)}
+.btn--ghost{--btn-bg:transparent;--btn-fg:var(--ink);--btn-bd:var(--ink)}
+.btn--pist{--btn-bg:var(--pist);--btn-fg:var(--ink);--btn-bd:var(--pist-deep)}
+.btn--ink{--btn-bg:var(--ink);--btn-fg:var(--cream);--btn-bd:#000}
+.btn--sm{padding:.5rem 1rem;font-size:.92rem}
+.btn--wide{width:100%}
+
+.nav-toggle{
+  display:none;
+  align-items:center;gap:.5rem;
+  background:var(--ink);color:var(--cream);
+  border:2px solid #000;border-radius:999px;
+  padding:.5rem .9rem;font:inherit;font-weight:900;cursor:pointer;
+}
+.nav-toggle svg{width:18px;height:18px}
+.js .nav-toggle[aria-expanded="true"] .ico-open{display:none}
+.nav-toggle .ico-close{display:none}
+.js .nav-toggle[aria-expanded="true"] .ico-close{display:block}
+
+@media (max-width:1080px){
+  .nav-list a{padding:.45rem .5rem;font-size:.9rem}
+}
+@media (max-width:960px){
+  .nav-toggle{display:inline-flex}
+  .js .nav{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--cream);
+    border-bottom:2px solid var(--cream-3);
+    box-shadow:var(--shadow-m);
+    padding:.7rem 20px 1.1rem;
+    margin:0;
+    display:none;
+  }
+  .js .site-head{position:sticky}
+  .js .site-head__in{position:relative}
+  .js .nav[data-open="true"]{display:block}
+  .nav-list{flex-direction:column;align-items:stretch;gap:.15rem}
+  .nav-list a{padding:.7rem .8rem;border-radius:var(--r-s);font-size:1.05rem}
+  .nav .btn{margin-top:.6rem;width:100%}
+  .site-head__in{gap:.6rem}
+  .nav-toggle{margin-left:auto}
+}
+
+/* ---------- SEKCIE ---------- */
+.section{padding:clamp(3.6rem,8vw,6.4rem) 0;position:relative}
+.section--pist{background:var(--pist-soft)}
+.section--cream2{background:var(--cream-2)}
+.section--ink{background:var(--ink);color:var(--cream)}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.76rem;font-weight:900;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--brick);
+  margin-bottom:1rem;
+}
+.eyebrow::before{
+  content:"";width:22px;height:4px;border-radius:999px;background:var(--brick);
+}
+.section--ink .eyebrow{color:var(--honey)}
+.section--ink .eyebrow::before{background:var(--honey)}
+.section--pist .eyebrow{color:#43601F}   /* tmavšia zelená kvôli kontrastu na pistáciovom podklade */
+.section--pist .eyebrow::before{background:#43601F}
+
+.lead{font-size:clamp(1.02rem,1.7vw,1.16rem);color:var(--ink-soft);max-width:56ch}
+.section--ink .lead{color:#E8D9C6}
+
+.head-row{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:1.6rem;flex-wrap:wrap;margin-bottom:2.6rem;
+}
+
+/* pásik so zúbkami */
+.scallop{
+  height:26px;
+  background:
+    radial-gradient(circle at 13px 26px, var(--cream) 13px, transparent 13.5px)
+    0 0/26px 26px repeat-x;
+}
+.scallop--onpist{background-color:var(--pist-soft)}
+.scallop--oncream2{background-color:var(--cream-2)}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  padding:clamp(2.4rem,5vw,4.2rem) 0 clamp(3rem,6vw,5rem);
+  background:
+    radial-gradient(120% 90% at 92% 8%, var(--honey-soft) 0%, rgba(251,224,174,0) 58%),
+    radial-gradient(100% 80% at 4% 96%, var(--pist-soft) 0%, rgba(220,235,191,0) 60%),
+    var(--cream);
+  overflow:hidden;
+}
+.hero__grid{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.6rem,4vw,3.4rem);
+  align-items:center;
+}
+.hero__kicker{
+  display:inline-flex;align-items:center;gap:.55rem;
+  background:var(--ink);color:var(--cream);
+  padding:.36rem .9rem .4rem;border-radius:999px;
+  font-size:.78rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;
+  margin-bottom:1.3rem;
+}
+.hero h1 .u{
+  color:var(--brick);
+  position:relative;white-space:nowrap;
+}
+.hero h1 .u::after{
+  content:"";position:absolute;left:0;right:0;bottom:-.06em;height:.14em;
+  background:var(--honey);border-radius:999px;z-index:-1;
+}
+.hero__text{max-width:44ch;margin:1.4rem 0 1.9rem;font-size:1.09rem;color:var(--ink-soft)}
+.hero__cta{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.hero__facts{
+  display:flex;gap:.5rem;flex-wrap:wrap;margin-top:2.1rem;
+  list-style:none;padding:0;
+}
+.hero__facts li{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:var(--paper);border:2px solid var(--cream-3);
+  border-radius:999px;padding:.36rem .85rem;
+  font-size:.85rem;font-weight:800;color:var(--ink);
+}
+.hero__facts svg{width:16px;height:16px;flex:0 0 auto}
+
+.hero__art{position:relative}
+.hero__stage{
+  position:relative;
+  border-radius:var(--r-xl);
+  background:
+    repeating-linear-gradient(135deg, rgba(196,53,28,.07) 0 12px, rgba(196,53,28,0) 12px 24px),
+    linear-gradient(160deg,#FFE8C4 0%, #FFD9B0 48%, #F8C58F 100%);
+  border:3px solid var(--ink);
+  box-shadow:var(--shadow-l);
+  padding:clamp(1rem,2.5vw,1.8rem);
+  overflow:hidden;
+}
+.hero__badge{
+  position:absolute;z-index:3;
+  right:-10px;top:-18px;
+  width:clamp(88px,12vw,118px);height:clamp(88px,12vw,118px);
+  animation:spin 26s linear infinite;
+}
+.hero__price-tag{
+  position:absolute;left:-14px;bottom:22px;z-index:3;
+  background:var(--ink);color:var(--cream);
+  border-radius:var(--r-m);padding:.6rem .95rem;
+  box-shadow:var(--shadow-m);
+  transform:rotate(-4deg);
+}
+.hero__price-tag b{display:block;font-size:1.35rem;line-height:1.1}
+.hero__price-tag span{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--honey)}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{50%{transform:translateY(-9px)}}
+.pizza-spin{animation:spin 46s linear infinite;transform-origin:50% 50%}
+.cup-float{animation:float 5.5s ease-in-out infinite}
+
+@media (max-width:900px){
+  .hero__grid{grid-template-columns:1fr;gap:2.4rem}
+  .hero__art{order:-1;max-width:520px;margin-inline:auto;width:100%}
+}
+@media (max-width:560px){
+  .hero__price-tag{left:0;bottom:14px}
+  .hero__badge{right:-4px;top:-12px}
+}
+
+/* ---------- TICKER ---------- */
+.ticker{
+  background:var(--brick);color:#fff;
+  border-block:3px solid var(--brick-dark);
+  overflow:hidden;padding:.62rem 0;
+}
+.ticker__track{
+  display:flex;width:max-content;gap:0;
+  animation:slide 34s linear infinite;
+}
+.ticker__group{display:flex;align-items:center;gap:2.2rem;padding-right:2.2rem}
+.ticker__item{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-weight:900;font-size:.92rem;letter-spacing:.06em;text-transform:uppercase;
+  white-space:nowrap;
+}
+.ticker__item::before{
+  content:"";width:9px;height:9px;border-radius:2px;background:var(--honey);
+  transform:rotate(45deg);
+}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- PONUKA / TABY ---------- */
+.tabs{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:2rem}
+.tab{
+  background:var(--paper);color:var(--ink);
+  border:2px solid var(--ink);border-radius:999px;
+  padding:.55rem 1.15rem;font:inherit;font-weight:900;cursor:pointer;
+  box-shadow:0 3px 0 var(--ink);
+  transition:transform .12s ease,box-shadow .12s ease,background .18s ease,color .18s ease;
+}
+.tab:hover{background:var(--cream-2)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--cream);transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
+
+.menu-panel{margin:0}
+.js .menu-panel[hidden]{display:none}
+.menu-panel > h3{margin-bottom:1.1rem}
+.no-js-only{display:none}
+html:not(.js) .no-js-only{display:block}
+
+.menu-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.2rem 3rem;
+}
+.menu-item{
+  display:grid;grid-template-columns:1fr auto;align-items:baseline;
+  gap:.4rem;
+  padding:.85rem 0;
+  border-bottom:2px dotted rgba(90,68,54,.32);
+}
+.menu-item__name{font-weight:800;font-size:1.04rem}
+.menu-item__desc{
+  display:block;font-weight:500;font-size:.9rem;color:var(--ink-soft);
+  letter-spacing:0;margin-top:.15rem;
+}
+.menu-item__price{font-weight:900;font-size:1.04rem;color:var(--brick);white-space:nowrap}
+.menu-item__tag{
+  display:inline-block;vertical-align:middle;
+  margin-left:.45rem;padding:.06rem .48rem .1rem;
+  border-radius:999px;background:var(--pist);color:var(--ink);
+  font-size:.66rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;
+}
+.menu-item__tag--hot{background:var(--brick);color:#fff}
+.menu-note{
+  margin-top:1.6rem;font-size:.92rem;color:var(--ink-soft);
+  background:var(--cream-2);border-left:5px solid var(--honey);
+  border-radius:0 var(--r-s) var(--r-s) 0;padding:.85rem 1.1rem;
+}
+@media (max-width:760px){ .menu-grid{grid-template-columns:1fr;gap:0} }
+
+/* ---------- DENNÉ MENU ---------- */
+.day-chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.chip{
+  background:var(--paper);border:2px solid var(--pist-deep);color:var(--ink);
+  border-radius:999px;padding:.42rem .95rem;font:inherit;font-weight:800;cursor:pointer;
+  transition:background .16s ease,color .16s ease;
+}
+.chip:hover{background:var(--pist-soft)}
+.chip[aria-selected="true"]{background:var(--pist-deep);color:#fff}
+.chip .chip__today{
+  font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
+  margin-left:.4rem;opacity:.9;
+}
+
+.day-card{
+  background:var(--paper);
+  border:3px solid var(--ink);
+  border-radius:var(--r-l);
+  box-shadow:var(--shadow-m);
+  padding:clamp(1.3rem,3vw,2.2rem);
+  display:grid;grid-template-columns:1fr auto;gap:1.4rem;align-items:center;
+}
+.js .day-card[hidden]{display:none}
+.day-card h3{margin-bottom:.55rem}
+.day-card__day{
+  font-size:.76rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--pist-deep);margin-bottom:.5rem;
+}
+.day-card__rows{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.day-card__rows li{display:flex;gap:.7rem;align-items:flex-start}
+.day-card__rows b{flex:0 0 5.4rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);padding-top:.24rem}
+.day-card__price{
+  text-align:center;background:var(--honey-soft);border:3px solid var(--ink);
+  border-radius:var(--r-m);padding:1rem 1.3rem;min-width:150px;
+}
+.day-card__price b{display:block;font-size:2rem;line-height:1;letter-spacing:-.04em}
+.day-card__price span{font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+@media (max-width:640px){
+  .day-card{grid-template-columns:1fr}
+  .day-card__rows b{flex-basis:4.6rem}
+}
+
+/* ---------- KONFIGURÁTOR ---------- */
+.config{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  gap:clamp(1.4rem,3.5vw,3rem);align-items:start;
+}
+.config__preview{
+  position:sticky;top:calc(var(--bar-h) + var(--nav-h) + 16px);
+  background:linear-gradient(165deg,#FFEFD6,#F7DCB6);
+  border:3px solid var(--ink);border-radius:var(--r-l);
+  padding:1.3rem;box-shadow:var(--shadow-m);
+  text-align:center;
+}
+.config__plate{width:100%;max-width:420px;margin-inline:auto}
+.config__size-label{
+  display:inline-block;margin-top:.6rem;
+  background:var(--ink);color:var(--cream);
+  border-radius:999px;padding:.25rem .85rem;
+  font-size:.78rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+}
+fieldset{border:0;margin:0 0 1.5rem;padding:0}
+legend{
+  font-weight:900;font-size:1.06rem;margin-bottom:.75rem;padding:0;
+  display:flex;align-items:center;gap:.5rem;
+}
+legend .num{
+  width:1.55rem;height:1.55rem;border-radius:50%;
+  background:var(--brick);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.85rem;
+}
+.opt-row{display:flex;gap:.55rem;flex-wrap:wrap}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
+.opt span{
+  display:flex;flex-direction:column;gap:.1rem;
+  background:var(--paper);border:2px solid var(--cream-3);border-radius:var(--r-m);
+  padding:.6rem 1rem;font-weight:800;line-height:1.25;
+  transition:border-color .16s ease,background .16s ease,transform .12s ease;
+}
+.opt span small{font-weight:700;font-size:.8rem;color:var(--ink-soft)}
+.opt input:hover + span{border-color:var(--ink)}
+.opt input:checked + span{border-color:var(--brick);background:#FFEDE6}
+.opt input:checked + span small{color:var(--brick)}
+.opt input:focus-visible + span{outline:3px solid var(--brick);outline-offset:3px}
+
+.tops{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.5rem;
+  list-style:none;margin:0;padding:0;
+}
+.top{position:relative}
+.top input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
+.top span{
+  display:flex;align-items:center;gap:.55rem;
+  background:var(--paper);border:2px solid var(--cream-3);border-radius:999px;
+  padding:.45rem .85rem .45rem .5rem;font-weight:800;font-size:.94rem;
+  transition:border-color .16s ease,background .16s ease;
+}
+.top span::before{
+  content:"";flex:0 0 auto;width:1.25rem;height:1.25rem;border-radius:50%;
+  border:2px solid var(--ink-soft);background:transparent;
+  transition:background .16s ease,border-color .16s ease;
+}
+.top input:checked + span{border-color:var(--pist-deep);background:var(--pist-soft)}
+.top input:checked + span::before{background:var(--pist-deep);border-color:var(--pist-deep)}
+.top input:focus-visible + span{outline:3px solid var(--brick);outline-offset:3px}
+.top .price{margin-left:auto;font-weight:900;color:var(--ink-soft);font-size:.88rem}
+
+.total{
+  background:var(--ink);color:var(--cream);
+  border-radius:var(--r-l);padding:1.2rem 1.4rem;
+  display:grid;gap:.85rem;
+}
+.total__row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.total__row span{color:#E0CFBB;font-size:.95rem}
+.total__row b{font-weight:900}
+.total__sum{
+  border-top:2px dashed rgba(255,246,233,.3);padding-top:.85rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+}
+.total__sum b{font-size:2rem;letter-spacing:-.04em;color:var(--honey)}
+.total__hint{font-size:.84rem;color:#E0CFBB;margin:0}
+
+@media (max-width:900px){
+  .config{grid-template-columns:1fr}
+  .config__preview{position:static}
+}
+
+/* ---------- O NÁS ---------- */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,3.4rem);align-items:center}
+.about__art{
+  border-radius:var(--r-l);border:3px solid var(--ink);
+  background:linear-gradient(150deg,#FFF3DF,#F3E0C0);
+  padding:1.2rem;box-shadow:var(--shadow-m);
+}
+.about__list{list-style:none;margin:1.8rem 0 0;padding:0;display:grid;gap:1rem}
+.about__list li{display:flex;gap:.9rem;align-items:flex-start}
+.about__ico{
+  flex:0 0 auto;width:44px;height:44px;border-radius:14px;
+  background:var(--pist);border:2px solid var(--ink);
+  display:grid;place-items:center;
+}
+.about__ico svg{width:22px;height:22px}
+.about__list b{display:block;font-size:1.02rem}
+.about__list p{margin:.15rem 0 0;font-size:.94rem;color:var(--ink-soft)}
+@media (max-width:860px){ .about{grid-template-columns:1fr} }
+
+/* ---------- GALÉRIA ---------- */
+.gallery{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:.9rem;
+}
+.tile{
+  position:relative;overflow:hidden;
+  border:3px solid var(--ink);border-radius:var(--r-l);
+  box-shadow:var(--shadow-m);
+  min-height:190px;
+  display:grid;
+}
+.tile svg{width:100%;height:100%;display:block}
+.tile__cap{
+  position:absolute;left:.7rem;bottom:.7rem;
+  background:var(--ink);color:var(--cream);
+  border-radius:999px;padding:.28rem .8rem;
+  font-size:.78rem;font-weight:800;letter-spacing:.02em;
+}
+.tile--a{grid-column:span 3;min-height:280px}
+.tile--b{grid-column:span 3;min-height:280px}
+.tile--c{grid-column:span 2}
+.tile--d{grid-column:span 2}
+.tile--e{grid-column:span 2}
+@media (max-width:820px){
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .tile--a,.tile--b,.tile--c,.tile--d,.tile--e{grid-column:span 1}
+  .tile--a,.tile--b{grid-column:span 2;min-height:230px}
+}
+@media (max-width:480px){
+  .tile{min-height:160px}
+}
+
+/* ---------- HODINY ---------- */
+.hours-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(1.4rem,3.5vw,3rem);align-items:start}
+.hours{
+  width:100%;border-collapse:collapse;
+  background:var(--paper);border:3px solid var(--ink);border-radius:var(--r-l);
+  overflow:hidden;box-shadow:var(--shadow-m);
+}
+.hours caption{
+  caption-side:top;text-align:left;padding:0 0 .9rem;
+  font-weight:800;color:var(--ink-soft);font-size:.95rem;
+}
+.hours th,.hours td{padding:.85rem 1.15rem;text-align:left;border-bottom:2px solid var(--cream-2)}
+.hours thead th{
+  background:var(--ink);color:var(--cream);
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+}
+.hours tbody th{font-weight:800}
+.hours td{font-variant-numeric:tabular-nums;font-weight:700}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:0}
+.hours tr[data-today="true"]{background:var(--honey-soft)}
+.hours tr[data-today="true"] th::after{
+  content:"dnes";margin-left:.55rem;
+  background:var(--ink);color:var(--cream);
+  border-radius:999px;padding:.1rem .5rem;
+  font-size:.64rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+}
+.status{
+  display:inline-flex;align-items:center;gap:.55rem;
+  background:var(--pist);border:3px solid var(--ink);border-radius:999px;
+  padding:.5rem 1.05rem;font-weight:900;margin-bottom:1.2rem;
+}
+.status[data-open="false"]{background:var(--cream-3)}
+.status__dot{width:.7rem;height:.7rem;border-radius:50%;background:var(--pist-deep)}
+.status[data-open="false"] .status__dot{background:var(--brick)}
+.info-card{
+  background:var(--pist-soft);border:3px solid var(--ink);border-radius:var(--r-l);
+  padding:1.4rem 1.5rem;
+}
+.info-card h3{margin-bottom:.7rem}
+.info-card ul{margin:0;padding-left:1.15rem;color:var(--ink-soft)}
+.info-card li{margin-bottom:.35rem}
+@media (max-width:860px){ .hours-wrap{grid-template-columns:1fr} }
+
+/* ---------- FORMULÁR ---------- */
+.order{display:grid;grid-template-columns:1fr .85fr;gap:clamp(1.6rem,4vw,3.2rem);align-items:start}
+.form-card{
+  background:var(--paper);border:3px solid var(--ink);border-radius:var(--r-l);
+  padding:clamp(1.3rem,3vw,2.2rem);box-shadow:var(--shadow-l);
+}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field--full{grid-column:1 / -1}
+.field label{font-weight:800;font-size:.92rem}
+.field label .req{color:var(--brick)}
+.field input,.field select,.field textarea{
+  font:inherit;color:var(--ink);
+  background:var(--cream);
+  border:2px solid var(--cream-3);border-radius:var(--r-s);
+  padding:.68rem .85rem;
+  transition:border-color .16s ease,background .16s ease;
+  width:100%;
+}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--ink-soft)}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--brick);background:var(--paper);outline:none;
+  box-shadow:0 0 0 3px rgba(196,53,28,.18);
+}
+.field textarea{resize:vertical;min-height:110px}
+.field__hint{font-size:.82rem;color:var(--ink-soft)}
+.form-foot{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1.4rem}
+.form-foot p{margin:0;font-size:.85rem;color:var(--ink-soft);max-width:34ch}
+
+.form-note{
+  margin-top:1.2rem;background:var(--pist-soft);
+  border:2px solid var(--pist-deep);border-radius:var(--r-m);
+  padding:1rem 1.15rem;display:none;
+}
+.form-note[data-shown="true"]{display:block;animation:pop .35s ease}
+.form-note h3{font-size:1.1rem;margin-bottom:.35rem;color:#43601F}
+.form-note p{margin:0;font-size:.95rem;color:var(--ink)}
+.form-note a{font-weight:900;color:var(--brick-dark)}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+
+.order__side{display:grid;gap:1rem}
+.side-card{
+  background:var(--honey-soft);border:3px solid var(--ink);border-radius:var(--r-l);
+  padding:1.4rem 1.5rem;
+}
+.side-card--ink{background:var(--ink);color:var(--cream)}
+.side-card--ink p{color:#E8D9C6}
+.side-card h3{margin-bottom:.6rem}
+.side-card p:last-child{margin-bottom:0}
+.side-card .big{font-size:1.5rem;font-weight:900;letter-spacing:-.03em;display:block;margin-bottom:.2rem}
+@media (max-width:860px){ .order{grid-template-columns:1fr} .field-grid{grid-template-columns:1fr} }
+
+/* ---------- KONTAKT ---------- */
+.contact{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(1.6rem,4vw,3.2rem);align-items:center}
+.contact__list{list-style:none;margin:0;padding:0;display:grid;gap:1.15rem}
+.contact__list li{display:flex;gap:.9rem;align-items:flex-start}
+.contact__list b{display:block;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--honey)}
+.contact__list a,.contact__list span{color:var(--cream);font-size:1.06rem;font-weight:700;text-decoration:none}
+.contact__list a:hover{text-decoration:underline}
+.contact__list .contact__note{
+  display:block;margin-top:.15rem;
+  font-size:.85rem;font-weight:600;color:#C9B7A3;
+}
+.contact__ico{
+  flex:0 0 auto;width:42px;height:42px;border-radius:13px;
+  background:rgba(255,246,233,.1);border:2px solid rgba(255,246,233,.35);
+  display:grid;place-items:center;
+}
+.contact__ico svg{width:20px;height:20px}
+.map{
+  border:3px solid var(--cream);border-radius:var(--r-l);overflow:hidden;
+  box-shadow:var(--shadow-l);
+}
+@media (max-width:860px){ .contact{grid-template-columns:1fr} }
+
+/* ---------- AUTOR UKÁŽKY (jediné skutočné kontakty na stránke) ---------- */
+.author{background:var(--cream-2);padding:clamp(3rem,6.5vw,5rem) 0}
+.author__card{
+  max-width:960px;margin-inline:auto;
+  background:var(--paper);
+  border:3px dashed var(--brick);
+  border-radius:var(--r-l);
+  box-shadow:var(--shadow-m);
+  padding:clamp(1.4rem,3.6vw,2.6rem);
+}
+.author__tag{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--brick);color:#fff;
+  border-radius:999px;padding:.3rem .95rem;
+  font-size:.72rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;
+  margin:0 0 1.1rem;
+}
+.author h2{font-size:clamp(1.75rem,3.8vw,2.6rem)}
+.author__lead{margin:.9rem 0 0;color:var(--ink-soft);max-width:64ch}
+.author__contacts{
+  list-style:none;margin:1.7rem 0 0;padding:0;
+  display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));
+}
+.author__contacts li{
+  display:flex;flex-direction:column;gap:.12rem;
+  background:var(--cream);border:2px solid var(--cream-3);border-radius:var(--r-m);
+  padding:.72rem .95rem;
+}
+.author__contacts b{
+  font-size:.7rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.author__contacts a,.author__contacts strong{
+  font-size:1.04rem;font-weight:900;line-height:1.3;
+  color:var(--brick-dark);text-decoration:none;overflow-wrap:anywhere;
+}
+.author__contacts strong{color:var(--ink)}
+.author__contacts a:hover{text-decoration:underline}
+.author__contacts a.author__sms{
+  font-size:.86rem;font-weight:800;color:var(--ink-soft);
+  text-decoration:underline;text-underline-offset:2px;
+}
+.author__price{
+  display:inline-block;margin:1.6rem 0 0;
+  background:var(--honey-soft);border:2px solid var(--ink);border-radius:999px;
+  padding:.52rem 1.15rem;font-weight:900;
+}
+
+/* ---------- PÄTA ---------- */
+.site-foot{background:var(--ink);color:#E8D9C6;padding:2.6rem 0 3.2rem;border-top:2px solid rgba(255,246,233,.14)}
+.foot-grid{display:flex;justify-content:space-between;gap:1.6rem;flex-wrap:wrap;align-items:flex-start}
+.foot-links{list-style:none;margin:0;padding:0;display:flex;gap:1.2rem;flex-wrap:wrap}
+.foot-links a{color:#E8D9C6;text-decoration:none;font-weight:700;font-size:.95rem}
+.foot-links a:hover{color:var(--honey);text-decoration:underline}
+.foot-note{
+  margin-top:2rem;padding-top:1.4rem;border-top:2px solid rgba(255,246,233,.14);
+  font-size:.86rem;color:#C9B7A3;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+}
+.foot-note a{color:var(--honey);font-weight:800}
+
+/* ---------- BEZ JAVASCRIPTU ----------
+   Celý obsah ostáva čitateľný: všetky panely ponuky aj všetkých päť denných menu
+   sa zobrazia pod sebou a ovládacie prvky, ktoré by nefungovali, sa skryjú. */
+html:not(.js) .nav-toggle,
+html:not(.js) .tabs,
+html:not(.js) .day-chips,
+html:not(.js) #toOrder,
+html:not(.js) .status{display:none}
+html:not(.js) .site-head{position:static}
+html:not(.js) .menu-panel{margin-bottom:2.6rem}
+html:not(.js) .day-card{margin-bottom:1rem}
+html:not(.js) .config__preview{position:static}
+
+/* ---------- REDUKOVANÝ POHYB ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+  }
+}
+
+/* ---------- TLAČ ---------- */
+@media print{
+  .demobar,.site-head,.ticker{position:static}
+  .btn,.nav-toggle{display:none}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<!-- ============ UKÁŽKOVÝ PÁSIK ============ -->
+<div class="demobar">
+  <div class="wrap demobar__in">
+    <span class="demobar__tag">Ukážkový web</span>
+    <span class="demobar__claim">Takýto web pre vás spravím.</span>
+    <a class="demobar__link demobar__tel" href="tel:+421902464022">0902 464 022</a>
+    <a class="demobar__link" href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+  </div>
+</div>
+
+<!-- ============ HLAVIČKA ============ -->
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="#top">
+      <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <circle cx="24" cy="24" r="22" fill="#C4351C"/>
+        <circle cx="24" cy="24" r="16" fill="#F0A93B"/>
+        <path d="M24 8a16 16 0 0 1 16 16H24z" fill="#A9C979"/>
+        <circle cx="17" cy="29" r="3" fill="#2A1C14"/>
+        <circle cx="30" cy="30" r="2.4" fill="#2A1C14"/>
+        <circle cx="29" cy="17" r="2.2" fill="#FFF6E9"/>
+      </svg>
+      <span class="brand__name">Kruh <span>&amp;</span> Zrno
+        <span class="brand__sub">Kaviareň a pizzeria</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mainnav">
+      <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      Menu
+    </button>
+
+    <nav class="nav" id="mainnav" aria-label="Hlavná navigácia">
+      <ul class="nav-list">
+        <li><a href="#ponuka">Ponuka</a></li>
+        <li><a href="#denne">Denné menu</a></li>
+        <li><a href="#konfigurator">Zlož si pizzu</a></li>
+        <li><a href="#o-nas">O nás</a></li>
+        <li><a href="#galeria">Galéria</a></li>
+        <li><a href="#hodiny">Hodiny</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a class="btn btn--sm" href="#objednavka">Rezervovať stôl</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <p class="hero__kicker">Otvorené od 7:30 · roh Lipovej a Sadovej</p>
+      <h1>Ráno na <span class="u">kávu</span>, večer na pizzu z pece.</h1>
+      <p class="hero__text">Malá susedská kaviareň, kde si zrno pražíme sami a cesto necháme kysnúť dva dni. Bez ponáhľania, bez zbytočností — len poriadna káva a pizza, ktorá vonia už pri dverách.</p>
+      <div class="hero__cta">
+        <a class="btn" href="#konfigurator">Zložiť si pizzu</a>
+        <a class="btn btn--ghost" href="#ponuka">Pozrieť ponuku</a>
+      </div>
+      <ul class="hero__facts">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="#C4351C" stroke-width="2.2"/><path d="M12 7v5.4l3.4 2" fill="none" stroke="#C4351C" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Cesto kysne 48 hodín
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c3.5 3 5 5.4 5 8a5 5 0 0 1-10 0c0-2.6 1.5-5 5-8z" fill="none" stroke="#55702F" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 21v-4" stroke="#55702F" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Pražíme každý utorok
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="6.5" width="13" height="11" rx="3" fill="none" stroke="#2A1C14" stroke-width="2.2"/><path d="M16.5 9.5h2.2a2.8 2.8 0 0 1 0 5.6h-2.2" fill="none" stroke="#2A1C14" stroke-width="2.2"/></svg>
+          Rastlinné mlieko bez príplatku do 10:00
+        </li>
+      </ul>
+    </div>
+
+    <div class="hero__art">
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <svg class="hero__badge" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+        <circle cx="60" cy="60" r="58" fill="#2A1C14"/>
+        <circle cx="60" cy="60" r="46" fill="#F0A93B"/>
+        <path id="badgePath" d="M60 60m-34 0a34 34 0 1 1 68 0a34 34 0 1 1 -68 0" fill="none"/>
+        <text font-size="9.4" font-weight="900" font-family="Segoe UI,Arial,sans-serif" fill="#2A1C14" letter-spacing="1">
+          <textPath href="#badgePath" startOffset="0">PEC · 380 °C · 90 SEKÚND · ČERSTVÉ ·&#160;</textPath>
+        </text>
+        <circle cx="60" cy="60" r="15" fill="#C4351C"/>
+        <circle cx="60" cy="60" r="7" fill="#FFF6E9"/>
+      </svg>
+
+      <div class="hero__stage">
+        <svg viewBox="0 0 520 460" role="img" aria-labelledby="heroArtTitle heroArtDesc">
+          <title id="heroArtTitle">Ilustrácia pizze a šálky kávy</title>
+          <desc id="heroArtDesc">Štylizovaná kresba pizze s bazalkou, šálky kávy s latte art a kávových zŕn.</desc>
+
+          <!-- podklad -->
+          <circle cx="250" cy="215" r="200" fill="#FFF6E9" opacity=".55"/>
+          <g fill="#C4351C" opacity=".18">
+            <circle cx="60" cy="60" r="5"/><circle cx="110" cy="40" r="4"/><circle cx="40" cy="120" r="4"/>
+            <circle cx="470" cy="380" r="5"/><circle cx="430" cy="425" r="4"/><circle cx="490" cy="320" r="4"/>
+          </g>
+
+          <!-- pizza -->
+          <g class="pizza-spin" style="transform-origin:250px 215px">
+            <circle cx="250" cy="215" r="172" fill="#E8B268"/>
+            <circle cx="250" cy="215" r="172" fill="none" stroke="#2A1C14" stroke-width="7"/>
+            <circle cx="250" cy="215" r="148" fill="#D9412A"/>
+            <circle cx="250" cy="215" r="148" fill="none" stroke="#B4562A" stroke-width="3" opacity=".5"/>
+            <!-- mozzarella -->
+            <g fill="#FFF4DC">
+              <ellipse cx="196" cy="160" rx="30" ry="25"/>
+              <ellipse cx="300" cy="150" rx="26" ry="22"/>
+              <ellipse cx="330" cy="248" rx="30" ry="24"/>
+              <ellipse cx="228" cy="286" rx="27" ry="23"/>
+              <ellipse cx="150" cy="238" rx="24" ry="21"/>
+              <ellipse cx="262" cy="212" rx="22" ry="19"/>
+            </g>
+            <!-- bazalka -->
+            <g fill="#55702F">
+              <path d="M170 300c14-16 32-18 42-10-4 16-20 26-42 10z"/>
+              <path d="M318 178c16-12 34-10 42 0-8 15-26 22-42 0z"/>
+              <path d="M240 116c8-18 25-25 36-20-2 17-15 30-36 20z"/>
+              <path d="M132 178c-2-19 10-33 22-34 6 16-1 33-22 34z"/>
+            </g>
+            <!-- cherry paradajky -->
+            <g fill="#A8261A">
+              <circle cx="352" cy="196" r="13"/><circle cx="196" cy="228" r="12"/>
+              <circle cx="286" cy="308" r="12"/><circle cx="160" cy="140" r="11"/>
+            </g>
+            <!-- kôrka - bubliny -->
+            <g fill="#C08A44" opacity=".8">
+              <circle cx="250" cy="52" r="7"/><circle cx="392" cy="130" r="6"/>
+              <circle cx="404" cy="300" r="7"/><circle cx="250" cy="378" r="6"/>
+              <circle cx="98" cy="300" r="7"/><circle cx="104" cy="126" r="6"/>
+            </g>
+          </g>
+
+          <!-- šálka kávy -->
+          <g class="cup-float">
+            <ellipse cx="404" cy="392" rx="92" ry="26" fill="#2A1C14" opacity=".14"/>
+            <path d="M330 316h146v42a58 58 0 0 1-58 58h-30a58 58 0 0 1-58-58z" fill="#FFF6E9" stroke="#2A1C14" stroke-width="7" stroke-linejoin="round"/>
+            <path d="M476 330h18a26 26 0 0 1 0 52h-18" fill="none" stroke="#2A1C14" stroke-width="7"/>
+            <ellipse cx="403" cy="316" rx="73" ry="19" fill="#7A4B2A" stroke="#2A1C14" stroke-width="7"/>
+            <path d="M403 302c22 0 34 8 34 8s-10 14-34 14-34-14-34-14 12-8 34-8z" fill="#FFF4DC"/>
+            <path d="M403 324c0 0-8 6-8 12" fill="none" stroke="#FFF4DC" stroke-width="5" stroke-linecap="round"/>
+          </g>
+
+          <!-- zrná -->
+          <g fill="#5A3418">
+            <g transform="translate(64,352) rotate(-24)">
+              <ellipse rx="15" ry="10"/><path d="M-13 0c6-6 20-6 26 0-6 6-20 6-26 0z" fill="#2A1C14"/>
+            </g>
+            <g transform="translate(112,398) rotate(16)">
+              <ellipse rx="13" ry="9"/><path d="M-11 0c5-5 17-5 22 0-5 5-17 5-22 0z" fill="#2A1C14"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="hero__price-tag">
+        <span>Espresso + croissant</span>
+        <b>3,40 €</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <div class="ticker__group">
+      <span class="ticker__item">Vlastná pražiareň</span>
+      <span class="ticker__item">Cesto 48 hodín</span>
+      <span class="ticker__item">Pec na 380 °C</span>
+      <span class="ticker__item">Denné menu do 14:30</span>
+      <span class="ticker__item">Terasa pre psíkov</span>
+      <span class="ticker__item">Filter dňa každý deň iný</span>
+    </div>
+    <div class="ticker__group">
+      <span class="ticker__item">Vlastná pražiareň</span>
+      <span class="ticker__item">Cesto 48 hodín</span>
+      <span class="ticker__item">Pec na 380 °C</span>
+      <span class="ticker__item">Denné menu do 14:30</span>
+      <span class="ticker__item">Terasa pre psíkov</span>
+      <span class="ticker__item">Filter dňa každý deň iný</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PONUKA ============ -->
+<section class="section" id="ponuka">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Stály lístok</p>
+        <h2>Káva, pizza a pár vecí navyše</h2>
+      </div>
+      <p class="lead" style="margin:0">Ceny sú konečné, vrátane obsluhy. Pizzu pečieme vo veľkosti 33 cm, na požiadanie aj 45 cm na zdieľanie.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Kategórie ponuky">
+      <button class="tab" role="tab" id="tab-kava" aria-controls="panel-kava" aria-selected="true" type="button">Káva a nápoje</button>
+      <button class="tab" role="tab" id="tab-pizza" aria-controls="panel-pizza" aria-selected="false" type="button">Pizza z pece</button>
+      <button class="tab" role="tab" id="tab-ine" aria-controls="panel-ine" aria-selected="false" type="button">Na chuť</button>
+    </div>
+
+    <div class="menu-panel" id="panel-kava" role="tabpanel" aria-labelledby="tab-kava" tabindex="0">
+      <h3 class="no-js-only">Káva a nápoje</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <span class="menu-item__name">Espresso
+            <span class="menu-item__desc">Zmes Brazília a Etiópia, praženie stredné</span>
+          </span>
+          <span class="menu-item__price">1,60 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Doppio
+            <span class="menu-item__desc">Dvojité espresso, keď to treba postaviť na nohy</span>
+          </span>
+          <span class="menu-item__price">2,10 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Cappuccino
+            <span class="menu-item__desc">Zamatová pena, 180 ml</span>
+          </span>
+          <span class="menu-item__price">2,70 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Flat white <span class="menu-item__tag">obľúbené</span>
+            <span class="menu-item__desc">Dvojité ristretto a mikropena</span>
+          </span>
+          <span class="menu-item__price">2,90 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Latte
+            <span class="menu-item__desc">Jemná káva do vysokého pohára</span>
+          </span>
+          <span class="menu-item__price">2,90 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Filter dňa
+            <span class="menu-item__desc">Prelievaná káva, každý deň iná várka</span>
+          </span>
+          <span class="menu-item__price">3,20 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Cold brew
+            <span class="menu-item__desc">Lúhované 16 hodín za studena</span>
+          </span>
+          <span class="menu-item__price">3,40 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Pistáciové kakao
+            <span class="menu-item__desc">Husté, s pravou pistáciovou pastou</span>
+          </span>
+          <span class="menu-item__price">3,50 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Domáca limonáda
+            <span class="menu-item__desc">Bazová alebo uhorka a mäta, 0,4 l</span>
+          </span>
+          <span class="menu-item__price">3,20 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Čaj sypaný
+            <span class="menu-item__desc">Šesť druhov, kanvička 0,5 l</span>
+          </span>
+          <span class="menu-item__price">2,60 €</span>
+        </div>
+      </div>
+      <p class="menu-note">Rastlinné mlieko (ovsené, mandľové, sójové) +0,40 €, sirup +0,30 €. Do 10:00 je rastlinné mlieko bez príplatku.</p>
+    </div>
+
+    <div class="menu-panel" id="panel-pizza" role="tabpanel" aria-labelledby="tab-pizza" tabindex="0">
+      <h3 class="no-js-only">Pizza z pece</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <span class="menu-item__name">Margherita
+            <span class="menu-item__desc">Paradajkový základ, mozzarella, čerstvá bazalka</span>
+          </span>
+          <span class="menu-item__price">7,20 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Salame piccante <span class="menu-item__tag menu-item__tag--hot">pálivá</span>
+            <span class="menu-item__desc">Pikantná saláma, chilli, oregano</span>
+          </span>
+          <span class="menu-item__price">9,40 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Pistacchio <span class="menu-item__tag">novinka</span>
+            <span class="menu-item__desc">Pistáciové pesto, mozzarella, ricotta, citrónová kôra</span>
+          </span>
+          <span class="menu-item__price">11,50 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Funghi
+            <span class="menu-item__desc">Šampiňóny, tymian, smotanový základ</span>
+          </span>
+          <span class="menu-item__price">8,90 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Quattro formaggi
+            <span class="menu-item__desc">Štyri syry, med na dochutenie</span>
+          </span>
+          <span class="menu-item__price">10,80 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Ortolana
+            <span class="menu-item__desc">Grilovaná zelenina, olivy, rukola — bez mäsa</span>
+          </span>
+          <span class="menu-item__price">9,20 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Prosciutto e rucola
+            <span class="menu-item__desc">Sušená šunka, rukola, parmezánové hobliny</span>
+          </span>
+          <span class="menu-item__price">10,90 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Bianca
+            <span class="menu-item__desc">Bez omáčky — ricotta, cesnak, rozmarín, olivový olej</span>
+          </span>
+          <span class="menu-item__price">8,40 €</span>
+        </div>
+      </div>
+      <p class="menu-note">Veľkosť 45 cm na zdieľanie: +3,20 € ku každej pizzi. Bezlepkové cesto +1,50 €. Chcete si zložiť vlastnú? <a href="#konfigurator" style="font-weight:900;color:var(--brick)">Skúste konfigurátor</a>.</p>
+    </div>
+
+    <div class="menu-panel" id="panel-ine" role="tabpanel" aria-labelledby="tab-ine" tabindex="0">
+      <h3 class="no-js-only">Na chuť</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <span class="menu-item__name">Focaccia s rozmarínom
+            <span class="menu-item__desc">Z toho istého cesta ako pizza, s morskou soľou</span>
+          </span>
+          <span class="menu-item__price">4,20 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Croissant maslový
+            <span class="menu-item__desc">Pečieme každé ráno na mieste</span>
+          </span>
+          <span class="menu-item__price">2,10 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Tiramisu
+            <span class="menu-item__desc">S naším espressom, bez alkoholu</span>
+          </span>
+          <span class="menu-item__price">4,50 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Ricottový cheesecake
+            <span class="menu-item__desc">S pečeným ovocím podľa sezóny</span>
+          </span>
+          <span class="menu-item__price">4,60 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Olivy a chlieb
+            <span class="menu-item__desc">Malé niečo k vínu</span>
+          </span>
+          <span class="menu-item__price">3,80 €</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item__name">Zrnková káva domov
+            <span class="menu-item__desc">Naša zmes, balenie 250 g</span>
+          </span>
+          <span class="menu-item__price">9,90 €</span>
+        </div>
+      </div>
+      <p class="menu-note">Zoznam alergénov nájdete pri každej položke v tlačenom lístku alebo vám ho radi povieme pri objednávke.</p>
+    </div>
+  </div>
+</section>
+
+<div class="scallop scallop--oncream2" aria-hidden="true"></div>
+
+<!-- ============ DENNÉ MENU ============ -->
+<section class="section section--cream2" id="denne">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Obed 11:00 – 14:30</p>
+        <h2>Denné menu</h2>
+      </div>
+      <p class="lead" style="margin:0">Polievka, hlavné jedlo a malá káva po obede. Cez týždeň, kým nám nedôjde — a to býva okolo druhej.</p>
+    </div>
+
+    <div class="day-chips" role="tablist" aria-label="Deň v týždni">
+      <button class="chip" role="tab" type="button" id="chip-po" aria-controls="day-po" aria-selected="true" data-day="1">Pondelok</button>
+      <button class="chip" role="tab" type="button" id="chip-ut" aria-controls="day-ut" aria-selected="false" data-day="2">Utorok</button>
+      <button class="chip" role="tab" type="button" id="chip-st" aria-controls="day-st" aria-selected="false" data-day="3">Streda</button>
+      <button class="chip" role="tab" type="button" id="chip-stv" aria-controls="day-stv" aria-selected="false" data-day="4">Štvrtok</button>
+      <button class="chip" role="tab" type="button" id="chip-pi" aria-controls="day-pi" aria-selected="false" data-day="5">Piatok</button>
+    </div>
+
+    <div class="day-card" id="day-po" role="tabpanel" aria-labelledby="chip-po" tabindex="0">
+      <div>
+        <p class="day-card__day">Pondelok</p>
+        <h3>Paradajková s bazalkou</h3>
+        <ul class="day-card__rows">
+          <li><b>Polievka</b><span>Pečená paradajková s bazalkovým olejom a krutónmi</span></li>
+          <li><b>Hlavné</b><span>Pizza dňa: Margherita s cherry paradajkami a burratou</span></li>
+          <li><b>Bonus</b><span>Malé espresso alebo domáca limonáda</span></li>
+        </ul>
+      </div>
+      <div class="day-card__price"><b>8,90 €</b><span>Celé menu</span></div>
+    </div>
+
+    <div class="day-card" id="day-ut" role="tabpanel" aria-labelledby="chip-ut" tabindex="0">
+      <div>
+        <p class="day-card__day">Utorok</p>
+        <h3>Cesnaková s tymianom</h3>
+        <ul class="day-card__rows">
+          <li><b>Polievka</b><span>Krémová cesnaková so syrom a tymianom</span></li>
+          <li><b>Hlavné</b><span>Pizza dňa: Funghi so smotanovým základom a pórom</span></li>
+          <li><b>Bonus</b><span>Malé espresso alebo domáca limonáda</span></li>
+        </ul>
+      </div>
+      <div class="day-card__price"><b>8,90 €</b><span>Celé menu</span></div>
+    </div>
+
+    <div class="day-card" id="day-st" role="tabpanel" aria-labelledby="chip-st" tabindex="0">
+      <div>
+        <p class="day-card__day">Streda</p>
+        <h3>Šošovicová s údeninou</h3>
+        <ul class="day-card__rows">
+          <li><b>Polievka</b><span>Hustá šošovicová s koreňovou zeleninou</span></li>
+          <li><b>Hlavné</b><span>Pizza dňa: Salame piccante s medovým chilli</span></li>
+          <li><b>Bonus</b><span>Malé espresso alebo domáca limonáda</span></li>
+        </ul>
+      </div>
+      <div class="day-card__price"><b>8,90 €</b><span>Celé menu</span></div>
+    </div>
+
+    <div class="day-card" id="day-stv" role="tabpanel" aria-labelledby="chip-stv" tabindex="0">
+      <div>
+        <p class="day-card__day">Štvrtok</p>
+        <h3>Hrášková s mätou</h3>
+        <ul class="day-card__rows">
+          <li><b>Polievka</b><span>Hrášková s mätou a kvapkou smotany</span></li>
+          <li><b>Hlavné</b><span>Pizza dňa: Ortolana s grilovanou cuketou a olivami</span></li>
+          <li><b>Bonus</b><span>Malé espresso alebo domáca limonáda</span></li>
+        </ul>
+      </div>
+      <div class="day-card__price"><b>8,90 €</b><span>Celé menu</span></div>
+    </div>
+
+    <div class="day-card" id="day-pi" role="tabpanel" aria-labelledby="chip-pi" tabindex="0">
+      <div>
+        <p class="day-card__day">Piatok</p>
+        <h3>Dyňová s pistáciou</h3>
+        <ul class="day-card__rows">
+          <li><b>Polievka</b><span>Dyňová s praženými pistáciami</span></li>
+          <li><b>Hlavné</b><span>Pizza dňa: Pistacchio s ricottou a citrónovou kôrou</span></li>
+          <li><b>Bonus</b><span>Malé espresso alebo domáca limonáda</span></li>
+        </ul>
+      </div>
+      <div class="day-card__price"><b>8,90 €</b><span>Celé menu</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONFIGURÁTOR ============ -->
+<section class="section" id="konfigurator">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Zlož si vlastnú</p>
+        <h2>Vaša pizza, vaše pravidlá</h2>
+      </div>
+      <p class="lead" style="margin:0">Vyskladajte si ju a cena sa počíta priebežne. Potom to jedným klikom prenesieme do objednávky.</p>
+    </div>
+
+    <form class="config" id="pizzaConfig" novalidate>
+      <div class="config__preview">
+        <!-- miesto pre reálnu fotografiu klienta -->
+        <svg class="config__plate" viewBox="0 0 400 400" role="img" aria-labelledby="plateTitle">
+          <title id="plateTitle">Náhľad vašej pizze</title>
+          <desc id="plateDesc">Ilustrácia sa mení podľa zvolenej veľkosti a prísad.</desc>
+          <circle cx="200" cy="200" r="182" fill="#FFFFFF" opacity=".55"/>
+          <circle cx="200" cy="200" r="182" fill="none" stroke="#2A1C14" stroke-width="3" stroke-dasharray="6 10" opacity=".35"/>
+          <g id="pizzaScale" style="transform-origin:200px 200px;transition:transform .35s cubic-bezier(.34,1.4,.5,1)">
+            <!-- kôrka -->
+            <circle cx="200" cy="200" r="160" fill="#E8B268" stroke="#2A1C14" stroke-width="6"/>
+            <!-- základ -->
+            <circle id="sauce" cx="200" cy="200" r="136" fill="#D9412A"/>
+            <circle cx="200" cy="200" r="136" fill="none" stroke="#2A1C14" stroke-width="2" opacity=".25"/>
+
+            <g id="t-mozzarella" fill="#FFF4DC" hidden>
+              <ellipse cx="160" cy="150" rx="28" ry="23"/><ellipse cx="252" cy="152" rx="24" ry="20"/>
+              <ellipse cx="268" cy="245" rx="27" ry="22"/><ellipse cx="150" cy="252" rx="25" ry="21"/>
+              <ellipse cx="205" cy="205" rx="21" ry="18"/>
+            </g>
+            <g id="t-cherry" fill="#A8261A" hidden>
+              <circle cx="284" cy="188" r="13"/><circle cx="146" cy="196" r="12"/>
+              <circle cx="214" cy="286" r="12"/><circle cx="196" cy="118" r="11"/>
+            </g>
+            <g id="t-sampiny" fill="#C9A87C" hidden>
+              <path d="M120 176c0-13 11-22 24-22s24 9 24 22z"/><rect x="134" y="176" width="20" height="14" rx="5"/>
+              <path d="M242 292c0-13 11-22 24-22s24 9 24 22z"/><rect x="256" y="292" width="20" height="14" rx="5"/>
+              <path d="M238 122c0-11 9-19 20-19s20 8 20 19z"/><rect x="249" y="122" width="17" height="12" rx="4"/>
+            </g>
+            <g id="t-salama" fill="#B12A1C" hidden>
+              <circle cx="176" cy="132" r="22"/><circle cx="268" cy="196" r="22"/>
+              <circle cx="176" cy="272" r="22"/><circle cx="122" cy="204" r="19"/>
+              <g fill="#8E1F14">
+                <circle cx="170" cy="126" r="3.4"/><circle cx="184" cy="140" r="3"/>
+                <circle cx="262" cy="190" r="3.4"/><circle cx="276" cy="204" r="3"/>
+                <circle cx="170" cy="266" r="3.4"/><circle cx="184" cy="280" r="3"/>
+              </g>
+            </g>
+            <g id="t-prosciutto" fill="#E8836F" hidden>
+              <path d="M112 232c26-24 54-14 62 2s-6 34-30 34-46-18-32-36z"/>
+              <path d="M226 118c28-20 56-6 60 12s-12 32-36 30-38-24-24-42z"/>
+              <path d="M256 268c26-16 50-2 50 16s-18 26-38 22-28-28-12-38z"/>
+            </g>
+            <g id="t-rukola" fill="#55702F" hidden>
+              <path d="M140 300c16-18 38-20 50-10-6 20-26 30-50 10z"/>
+              <path d="M276 148c18-14 40-10 48 2-10 18-32 24-48-2z"/>
+              <path d="M186 96c10-20 30-28 42-22-4 20-18 34-42 22z"/>
+              <path d="M104 158c-2-22 12-38 26-38 6 20 0 38-26 38z"/>
+            </g>
+            <g id="t-ricotta" fill="#FFFDF5" hidden>
+              <circle cx="198" cy="160" r="17"/><circle cx="256" cy="230" r="15"/>
+              <circle cx="150" cy="228" r="16"/><circle cx="216" cy="272" r="14"/>
+            </g>
+            <g id="t-olivy" fill="#3E3222" hidden>
+              <g><circle cx="232" cy="158" r="11"/><circle cx="232" cy="158" r="4.5" fill="#A9C979"/></g>
+              <g><circle cx="164" cy="228" r="11"/><circle cx="164" cy="228" r="4.5" fill="#A9C979"/></g>
+              <g><circle cx="252" cy="278" r="10"/><circle cx="252" cy="278" r="4" fill="#A9C979"/></g>
+              <g><circle cx="128" cy="152" r="10"/><circle cx="128" cy="152" r="4" fill="#A9C979"/></g>
+            </g>
+            <g id="t-pistacie" fill="#8AA84E" hidden>
+              <ellipse cx="188" cy="132" rx="9" ry="7" transform="rotate(20 188 132)"/>
+              <ellipse cx="248" cy="176" rx="9" ry="7" transform="rotate(-15 248 176)"/>
+              <ellipse cx="152" cy="196" rx="9" ry="7" transform="rotate(40 152 196)"/>
+              <ellipse cx="220" cy="248" rx="9" ry="7" transform="rotate(-30 220 248)"/>
+              <ellipse cx="164" cy="286" rx="9" ry="7" transform="rotate(10 164 286)"/>
+              <ellipse cx="276" cy="234" rx="9" ry="7" transform="rotate(55 276 234)"/>
+            </g>
+            <g id="t-chilli" fill="#B32112" hidden>
+              <path d="M118 264c14-6 26-2 30 6-8 8-24 8-30-6z"/>
+              <path d="M282 156c-14-6-26-2-30 6 8 8 24 8 30-6z"/>
+              <path d="M212 316c10-10 22-12 28-6-4 10-18 16-28 6z"/>
+            </g>
+            <g id="t-kukurica" fill="#F2C33C" hidden>
+              <circle cx="176" cy="176" r="6"/><circle cx="190" cy="188" r="6"/><circle cx="164" cy="192" r="6"/>
+              <circle cx="248" cy="212" r="6"/><circle cx="262" cy="224" r="6"/><circle cx="236" cy="228" r="6"/>
+              <circle cx="196" cy="252" r="6"/><circle cx="210" cy="264" r="6"/><circle cx="184" cy="268" r="6"/>
+            </g>
+            <g id="t-cibula" fill="#E7D5EA" stroke="#8E6E93" stroke-width="2.5" fill-opacity=".85" hidden>
+              <path d="M146 174a26 26 0 0 1 44 8" fill="none"/>
+              <path d="M232 254a26 26 0 0 1 44 8" fill="none"/>
+              <path d="M182 288a22 22 0 0 1 38 6" fill="none"/>
+              <path d="M240 128a22 22 0 0 1 38 6" fill="none"/>
+            </g>
+
+            <!-- bubliny na kôrke -->
+            <g fill="#C08A44" opacity=".75">
+              <circle cx="200" cy="52" r="6"/><circle cx="313" cy="110" r="5"/>
+              <circle cx="318" cy="290" r="6"/><circle cx="200" cy="348" r="5"/>
+              <circle cx="86" cy="286" r="6"/><circle cx="90" cy="112" r="5"/>
+            </g>
+          </g>
+        </svg>
+        <span class="config__size-label" id="sizeLabel">33 cm · klasika</span>
+      </div>
+
+      <div>
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">1</span> Veľkosť</legend>
+          <div class="opt-row">
+            <label class="opt">
+              <input type="radio" name="size" value="26" data-price="650" data-scale="0.82" data-mult="1" data-label="26 cm · malá">
+              <span>26 cm <small>malá — 6,50 €</small></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="size" value="33" data-price="820" data-scale="1" data-mult="1" data-label="33 cm · klasika" checked>
+              <span>33 cm <small>klasika — 8,20 €</small></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="size" value="45" data-price="1140" data-scale="1.14" data-mult="1.5" data-label="45 cm · na zdieľanie">
+              <span>45 cm <small>na zdieľanie — 11,40 €</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">2</span> Základ</legend>
+          <div class="opt-row">
+            <label class="opt">
+              <input type="radio" name="base" value="Paradajkový" data-price="0" data-color="#D9412A" checked>
+              <span>Paradajkový <small>v cene</small></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="base" value="Smotanový" data-price="40" data-color="#F3E3C8">
+              <span>Smotanový <small>+0,40 €</small></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="base" value="Pistáciové pesto" data-price="120" data-color="#93B25A">
+              <span>Pistáciové pesto <small>+1,20 €</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">3</span> Prísady <span style="font-weight:700;font-size:.86rem;color:var(--ink-soft)">(vyberte, koľko chcete)</span></legend>
+          <ul class="tops">
+            <li class="top"><label><input type="checkbox" name="top" value="Mozzarella" data-price="90" data-target="t-mozzarella"><span>Mozzarella <em class="price">0,90 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Cherry paradajky" data-price="80" data-target="t-cherry"><span>Cherry paradajky <em class="price">0,80 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Šampiňóny" data-price="80" data-target="t-sampiny"><span>Šampiňóny <em class="price">0,80 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Saláma piccante" data-price="130" data-target="t-salama"><span>Saláma piccante <em class="price">1,30 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Sušená šunka" data-price="160" data-target="t-prosciutto"><span>Sušená šunka <em class="price">1,60 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Rukola" data-price="70" data-target="t-rukola"><span>Rukola <em class="price">0,70 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Ricotta" data-price="110" data-target="t-ricotta"><span>Ricotta <em class="price">1,10 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Olivy" data-price="80" data-target="t-olivy"><span>Olivy <em class="price">0,80 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Pistácie" data-price="140" data-target="t-pistacie"><span>Pistácie <em class="price">1,40 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Chilli" data-price="40" data-target="t-chilli"><span>Chilli <em class="price">0,40 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Kukurica" data-price="60" data-target="t-kukurica"><span>Kukurica <em class="price">0,60 €</em></span></label></li>
+            <li class="top"><label><input type="checkbox" name="top" value="Červená cibuľa" data-price="50" data-target="t-cibula"><span>Červená cibuľa <em class="price">0,50 €</em></span></label></li>
+          </ul>
+        </fieldset>
+
+        <div class="total">
+          <div class="total__row"><span>Základ pizze</span><b id="sumBase">8,20 €</b></div>
+          <div class="total__row"><span id="sumTopsLabel">Prísady (0)</span><b id="sumTops">0,00 €</b></div>
+          <div class="total__sum">
+            <span style="font-weight:900;font-size:1.05rem">Spolu</span>
+            <b id="sumTotal">8,20 €</b>
+          </div>
+          <p class="total__hint" id="sumHint">Pri 45 cm sa prísady rátajú jedenapolnásobne — je na nej naozaj o polovicu viac.</p>
+          <p class="visually-hidden" role="status" aria-live="polite" id="liveTotal">Spolu 8,20 €</p>
+          <button class="btn btn--pist btn--wide" type="button" id="toOrder">Preniesť do objednávky</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<div class="scallop scallop--onpist" aria-hidden="true"></div>
+
+<!-- ============ O NÁS ============ -->
+<section class="section section--pist" id="o-nas">
+  <div class="wrap about">
+    <div>
+      <p class="eyebrow">Kto sme</p>
+      <h2>Dva stroje, jedna pec a celkom veľa trpezlivosti</h2>
+      <p class="lead">Kruh &amp; Zrno vznikol z jednoduchej myšlienky: mať na rohu miesto, kam sa dá prísť ráno po kávu aj večer na večeru, a v oboch prípadoch dostať niečo, čo stojí za to. Pražiareň máme vzadu za barom, pec vidíte z každého stola.</p>
+      <ul class="about__list">
+        <li>
+          <span class="about__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 18h16M6 18V9a6 6 0 0 1 12 0v9" fill="none" stroke="#2A1C14" stroke-width="2.2" stroke-linecap="round"/><path d="M9 14a3 3 0 0 1 6 0" fill="none" stroke="#2A1C14" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </span>
+          <div>
+            <b>Pec, ktorá nespí</b>
+            <p>Kamenná pec drží 380 °C. Pizza je vonku za deväťdesiat sekúnd — preto na ňu nikdy nečakáte dlho.</p>
+          </div>
+        </li>
+        <li>
+          <span class="about__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="5.5" fill="none" stroke="#2A1C14" stroke-width="2.2" transform="rotate(-30 12 12)"/><path d="M7 15c3-3.5 7-4.5 10-6" fill="none" stroke="#2A1C14" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </span>
+          <div>
+            <b>Zrno pražíme sami</b>
+            <p>Každý utorok pražíme malú várku. Čo sa nepredá do dvoch týždňov, ide do cold brew — nikdy nie do šálky.</p>
+          </div>
+        </li>
+        <li>
+          <span class="about__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18M5 8c0 3 3 4 7 4M19 16c0-3-3-4-7-4" fill="none" stroke="#2A1C14" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </span>
+          <div>
+            <b>Susedský podnik</b>
+            <p>Zeleninu berieme z trhu o dve ulice ďalej, syry od rodinnej mliekarne. Nie preto, že to dobre znie — proste je to bližšie a lepšie.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="about__art">
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <svg viewBox="0 0 480 420" role="img" aria-labelledby="aboutArtTitle">
+        <title id="aboutArtTitle">Ilustrácia interiéru s kamennou pecou a barom</title>
+        <rect x="0" y="0" width="480" height="420" fill="none"/>
+        <!-- stena -->
+        <g opacity=".5">
+          <rect x="24" y="24" width="432" height="372" rx="24" fill="#FFF6E9"/>
+          <g stroke="#E0C79E" stroke-width="2">
+            <path d="M24 96h432M24 156h432M24 216h432"/>
+            <path d="M96 36v60M192 36v60M288 36v60M384 36v60"/>
+            <path d="M48 96v60M144 96v60M240 96v60M336 96v60M432 96v60"/>
+            <path d="M96 156v60M192 156v60M288 156v60M384 156v60"/>
+          </g>
+        </g>
+        <!-- pec -->
+        <path d="M120 300V196a96 96 0 0 1 192 0v104z" fill="#C4351C" stroke="#2A1C14" stroke-width="6"/>
+        <path d="M120 300V196a96 96 0 0 1 192 0" fill="none" stroke="#9C2712" stroke-width="3" opacity=".6"/>
+        <path d="M168 300v-56a48 48 0 0 1 96 0v56z" fill="#2A1C14"/>
+        <path d="M182 300v-46a34 34 0 0 1 68 0v46z" fill="#F0A93B"/>
+        <path d="M196 300v-30a20 20 0 0 1 40 0v30z" fill="#FFF4DC"/>
+        <!-- dlaždice pece -->
+        <g fill="#9C2712" opacity=".55">
+          <circle cx="150" cy="216" r="7"/><circle cx="282" cy="216" r="7"/>
+          <circle cx="160" cy="264" r="6"/><circle cx="272" cy="264" r="6"/>
+          <circle cx="216" cy="152" r="7"/>
+        </g>
+        <!-- pult -->
+        <rect x="60" y="300" width="360" height="24" rx="10" fill="#7A4B2A" stroke="#2A1C14" stroke-width="6"/>
+        <rect x="84" y="324" width="312" height="60" rx="12" fill="#A9C979" stroke="#2A1C14" stroke-width="6"/>
+        <g stroke="#2A1C14" stroke-width="4" opacity=".45">
+          <path d="M168 330v48M240 330v48M312 330v48"/>
+        </g>
+        <!-- kávovar -->
+        <g>
+          <rect x="332" y="240" width="92" height="60" rx="12" fill="#FFF6E9" stroke="#2A1C14" stroke-width="6"/>
+          <rect x="348" y="256" width="28" height="18" rx="5" fill="#2A1C14"/>
+          <circle cx="400" cy="266" r="9" fill="#C4351C" stroke="#2A1C14" stroke-width="4"/>
+          <path d="M356 282v10" stroke="#2A1C14" stroke-width="6" stroke-linecap="round"/>
+        </g>
+        <!-- šálky -->
+        <g>
+          <rect x="72" y="272" width="26" height="20" rx="6" fill="#FFF6E9" stroke="#2A1C14" stroke-width="5"/>
+          <rect x="106" y="272" width="26" height="20" rx="6" fill="#F0A93B" stroke="#2A1C14" stroke-width="5"/>
+        </g>
+        <!-- rastlina -->
+        <g>
+          <path d="M440 300c-14-16-16-40-6-56 14 10 20 34 6 56z" fill="#55702F"/>
+          <path d="M440 300c14-12 22-32 16-48-16 6-26 26-16 48z" fill="#A9C979"/>
+          <rect x="424" y="298" width="34" height="26" rx="8" fill="#C4351C" stroke="#2A1C14" stroke-width="5"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="scallop scallop--onpist" style="transform:scaleY(-1)" aria-hidden="true"></div>
+
+<!-- ============ GALÉRIA ============ -->
+<section class="section" id="galeria">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Ako to u nás vyzerá</p>
+        <h2>Kúsok atmosféry</h2>
+      </div>
+      <p class="lead" style="margin:0">Terasa do dvora, dlhý stôl na spoločné sedenie a pec, ktorú počuť pracovať.</p>
+    </div>
+
+    <div class="gallery">
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile tile--a" style="margin:0">
+        <svg viewBox="0 0 400 260" role="img" aria-label="Šálka kávy s latte art zhora">
+          <rect width="400" height="260" fill="#F0A93B"/>
+          <g fill="#E09A2C">
+            <circle cx="40" cy="40" r="14"/><circle cx="360" cy="220" r="14"/>
+            <circle cx="360" cy="40" r="9"/><circle cx="40" cy="220" r="9"/>
+          </g>
+          <circle cx="200" cy="130" r="98" fill="#FFF6E9" stroke="#2A1C14" stroke-width="7"/>
+          <circle cx="200" cy="130" r="80" fill="#8A5A34"/>
+          <path d="M200 76c30 0 48 14 48 14s-18 26-48 26-48-26-48-26 18-14 48-14z" fill="#FFF4DC"/>
+          <path d="M200 116c-8 12-8 26-8 40M200 116c8 12 8 26 8 40" fill="none" stroke="#FFF4DC" stroke-width="9" stroke-linecap="round"/>
+          <path d="M172 138c10 10 18 24 20 40M228 138c-10 10-18 24-20 40" fill="none" stroke="#FFF4DC" stroke-width="7" stroke-linecap="round"/>
+          <path d="M298 118h22a24 24 0 0 1 0 48h-16" fill="none" stroke="#2A1C14" stroke-width="7"/>
+        </svg>
+        <figcaption class="tile__cap">Latte art každé ráno</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile tile--b" style="margin:0">
+        <svg viewBox="0 0 400 260" role="img" aria-label="Kus pizze s prísadami">
+          <rect width="400" height="260" fill="#55702F"/>
+          <g stroke="#6B8A3C" stroke-width="10">
+            <path d="M-20 40h440M-20 220h440"/>
+          </g>
+          <g transform="translate(200 132) rotate(-8)">
+            <path d="M0-108L92 78a12 12 0 0 1-11 17H-81a12 12 0 0 1-11-17z" fill="#E8B268" stroke="#2A1C14" stroke-width="7"/>
+            <path d="M0-84L78 74H-78z" fill="#D9412A"/>
+            <g fill="#FFF4DC">
+              <ellipse cx="-6" cy="-30" rx="22" ry="18"/><ellipse cx="34" cy="24" rx="20" ry="16"/>
+              <ellipse cx="-40" cy="30" rx="19" ry="15"/><ellipse cx="4" cy="52" rx="17" ry="14"/>
+            </g>
+            <g fill="#A8261A"><circle cx="-34" cy="-10" r="10"/><circle cx="40" cy="-6" r="9"/><circle cx="-4" cy="18" r="9"/></g>
+            <g fill="#3E5A22">
+              <path d="M12-58c8-12 22-16 30-12-2 14-14 22-30 12z"/>
+              <path d="M-56 54c10-12 24-14 32-8-4 14-18 20-32 8z"/>
+            </g>
+          </g>
+        </svg>
+        <figcaption class="tile__cap">Deväťdesiat sekúnd v peci</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile tile--c" style="margin:0">
+        <svg viewBox="0 0 260 220" role="img" aria-label="Kávové zrná v miske">
+          <rect width="260" height="220" fill="#FFF6E9"/>
+          <g fill="#FBEADA">
+            <rect x="0" y="0" width="130" height="110"/><rect x="130" y="110" width="130" height="110"/>
+          </g>
+          <path d="M40 120h180a90 90 0 0 1-180 0z" fill="#C4351C" stroke="#2A1C14" stroke-width="6"/>
+          <g fill="#5A3418">
+            <g transform="translate(84,104) rotate(-20)"><ellipse rx="18" ry="12"/><path d="M-15 0c6-7 24-7 30 0-6 7-24 7-30 0z" fill="#2A1C14"/></g>
+            <g transform="translate(130,96) rotate(14)"><ellipse rx="17" ry="11"/><path d="M-14 0c6-6 22-6 28 0-6 6-22 6-28 0z" fill="#2A1C14"/></g>
+            <g transform="translate(176,106) rotate(-6)"><ellipse rx="18" ry="12"/><path d="M-15 0c6-7 24-7 30 0-6 7-24 7-30 0z" fill="#2A1C14"/></g>
+            <g transform="translate(108,138) rotate(30)"><ellipse rx="16" ry="11"/><path d="M-13 0c5-6 21-6 26 0-5 6-21 6-26 0z" fill="#2A1C14"/></g>
+            <g transform="translate(156,142) rotate(-34)"><ellipse rx="16" ry="11"/><path d="M-13 0c5-6 21-6 26 0-5 6-21 6-26 0z" fill="#2A1C14"/></g>
+          </g>
+        </svg>
+        <figcaption class="tile__cap">Várka z utorka</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile tile--d" style="margin:0">
+        <svg viewBox="0 0 260 220" role="img" aria-label="Terasa so stolíkom pod markízou">
+          <rect width="260" height="220" fill="#DCEBBF"/>
+          <path d="M0 60h260l-16 34H16z" fill="#C4351C"/>
+          <g fill="#FFF6E9">
+            <path d="M22 60h34l-14 34H22z"/><path d="M90 60h34l-14 34H90z"/>
+            <path d="M158 60h34l-14 34h-34z"/><path d="M226 60h34l-16 34h-32z"/>
+          </g>
+          <rect x="60" y="140" width="140" height="14" rx="7" fill="#7A4B2A" stroke="#2A1C14" stroke-width="5"/>
+          <path d="M124 154v46M136 154v46" stroke="#2A1C14" stroke-width="7" stroke-linecap="round"/>
+          <path d="M104 200h52" stroke="#2A1C14" stroke-width="7" stroke-linecap="round"/>
+          <rect x="80" y="122" width="22" height="18" rx="6" fill="#FFF6E9" stroke="#2A1C14" stroke-width="5"/>
+          <circle cx="168" cy="130" r="12" fill="#F0A93B" stroke="#2A1C14" stroke-width="5"/>
+        </svg>
+        <figcaption class="tile__cap">Terasa do dvora</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile tile--e" style="margin:0">
+        <svg viewBox="0 0 260 220" role="img" aria-label="Cesto pripravené na spracovanie">
+          <rect width="260" height="220" fill="#2A1C14"/>
+          <g fill="#3B2A1E">
+            <circle cx="30" cy="30" r="10"/><circle cx="230" cy="190" r="10"/>
+            <circle cx="230" cy="34" r="6"/><circle cx="30" cy="188" r="6"/>
+          </g>
+          <ellipse cx="130" cy="128" rx="82" ry="58" fill="#F6E3C4"/>
+          <ellipse cx="130" cy="122" rx="82" ry="58" fill="#FFF1D8"/>
+          <g fill="#EAD6B4">
+            <circle cx="104" cy="112" r="9"/><circle cx="150" cy="102" r="7"/>
+            <circle cx="160" cy="140" r="8"/><circle cx="110" cy="146" r="6"/>
+          </g>
+          <g stroke="#FFF6E9" stroke-width="5" stroke-linecap="round" opacity=".8">
+            <path d="M46 62c8-6 18-8 26-4M188 62c8-6 18-8 26-4"/>
+          </g>
+          <text x="130" y="204" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="900" fill="#F0A93B" letter-spacing="3">48 HODÍN</text>
+        </svg>
+        <figcaption class="tile__cap">Cesto v pokoji</figcaption>
+      </figure>
+
+      <!-- miesto pre reálnu fotografiu klienta -->
+      <figure class="tile" style="margin:0;grid-column:span 2">
+        <svg viewBox="0 0 260 220" role="img" aria-label="Detail bazovej limonády s mätou">
+          <rect width="260" height="220" fill="#C4351C"/>
+          <g stroke="#A82C16" stroke-width="12" opacity=".7">
+            <path d="M-10 40h280M-10 100h280M-10 160h280"/>
+          </g>
+          <path d="M96 60h68l-10 128a14 14 0 0 1-14 12h-20a14 14 0 0 1-14-12z" fill="#FFF6E9" stroke="#2A1C14" stroke-width="6"/>
+          <path d="M102 104h56l-8 84a10 10 0 0 1-10 8h-20a10 10 0 0 1-10-8z" fill="#DCEBBF"/>
+          <g fill="#55702F">
+            <path d="M118 120c8-10 20-12 26-6-4 12-16 18-26 6z"/>
+            <path d="M136 152c8-8 18-8 22-2-4 10-14 14-22 2z"/>
+          </g>
+          <circle cx="130" cy="76" r="6" fill="#F0A93B"/>
+          <path d="M164 52l26-26" stroke="#FFF6E9" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+        <figcaption class="tile__cap">Bazová limonáda</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="scallop scallop--oncream2" aria-hidden="true"></div>
+
+<!-- ============ HODINY ============ -->
+<section class="section section--cream2" id="hodiny">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Kedy máme otvorené</p>
+        <h2>Otváracie hodiny</h2>
+      </div>
+      <p class="lead" style="margin:0">Kuchyňa berie posledné objednávky 45 minút pred zatvorením. Kávovar ide do konca.</p>
+    </div>
+
+    <div class="hours-wrap">
+      <div>
+        <p class="status" id="statusBadge" data-open="true">
+          <span class="status__dot" aria-hidden="true"></span>
+          <span id="statusText">Otváracie hodiny nájdete v tabuľke</span>
+        </p>
+        <table class="hours">
+          <caption>Sviatky a odstávky pece hlásime vopred na dverách.</caption>
+          <thead>
+            <tr><th scope="col">Deň</th><th scope="col">Kaviareň</th><th scope="col">Pec</th></tr>
+          </thead>
+          <tbody>
+            <tr data-dow="1"><th scope="row">Pondelok</th><td>7:30 – 22:00</td><td>11:00 – 21:15</td></tr>
+            <tr data-dow="2"><th scope="row">Utorok</th><td>7:30 – 22:00</td><td>11:00 – 21:15</td></tr>
+            <tr data-dow="3"><th scope="row">Streda</th><td>7:30 – 22:00</td><td>11:00 – 21:15</td></tr>
+            <tr data-dow="4"><th scope="row">Štvrtok</th><td>7:30 – 22:00</td><td>11:00 – 21:15</td></tr>
+            <tr data-dow="5"><th scope="row">Piatok</th><td>7:30 – 23:00</td><td>11:00 – 22:15</td></tr>
+            <tr data-dow="6"><th scope="row">Sobota</th><td>9:00 – 23:00</td><td>12:00 – 22:15</td></tr>
+            <tr data-dow="0"><th scope="row">Nedeľa</th><td>9:00 – 21:00</td><td>12:00 – 20:15</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-card">
+        <h3>Dobré vedieť</h3>
+        <ul>
+          <li>Denné menu točíme od 11:00, kým nám nedôjde.</li>
+          <li>Pizzu do ruky zabalíme aj so sebou — do desiatich minút.</li>
+          <li>Terasa je otvorená, kým to počasie dovolí, psíky vítané.</li>
+          <li>Väčšiu spoločnosť (nad 8 ľudí) si radšej rezervujte deň vopred.</li>
+          <li>Zaplatíte kartou aj hotovosťou, stravné karty berieme.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OBJEDNÁVKA ============ -->
+<section class="section" id="objednavka">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Rezervácia a objednávka</p>
+        <h2>Napíšte nám, čo a kedy</h2>
+      </div>
+      <p class="lead" style="margin:0">Ozveme sa do pár minút počas otváracích hodín. Pri objednávke na odber napíšte čas, na ktorý to má byť hotové.</p>
+    </div>
+
+    <div class="order">
+      <form class="form-card" id="orderForm" novalidate>
+        <div class="field-grid">
+          <div class="field field--full">
+            <label for="typ">Čo si prajete <span class="req" aria-hidden="true">*</span></label>
+            <select id="typ" name="typ" required>
+              <option value="Rezervácia stola">Rezervácia stola</option>
+              <option value="Objednávka na odber">Objednávka na odber</option>
+              <option value="Denné menu na obed">Denné menu na obed</option>
+              <option value="Väčšia spoločnosť">Väčšia spoločnosť (nad 8 ľudí)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="meno">Meno <span class="req" aria-hidden="true">*</span></label>
+            <input id="meno" name="meno" type="text" autocomplete="name" required placeholder="Na koho to napíšeme">
+          </div>
+
+          <div class="field">
+            <label for="tel">Telefón <span class="req" aria-hidden="true">*</span></label>
+            <input id="tel" name="tel" type="tel" autocomplete="tel" required placeholder="+421">
+          </div>
+
+          <div class="field">
+            <label for="datum">Dátum</label>
+            <input id="datum" name="datum" type="date">
+          </div>
+
+          <div class="field">
+            <label for="cas">Čas</label>
+            <input id="cas" name="cas" type="time" value="18:30">
+          </div>
+
+          <div class="field">
+            <label for="osoby">Počet osôb</label>
+            <select id="osoby" name="osoby">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9 a viac</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="miesto">Kde by ste sedeli</label>
+            <select id="miesto" name="miesto">
+              <option>Kdekoľvek</option>
+              <option>Vnútri</option>
+              <option>Na terase</option>
+              <option>Pri peci</option>
+            </select>
+          </div>
+
+          <div class="field field--full">
+            <label for="poznamka">Poznámka alebo objednávka</label>
+            <textarea id="poznamka" name="poznamka" placeholder="Napríklad zloženie pizze z konfigurátora, alergie alebo že prídete s kočíkom."></textarea>
+            <span class="field__hint">Zloženie z konfigurátora sa sem doplní samo, keď kliknete na „Preniesť do objednávky“.</span>
+          </div>
+        </div>
+
+        <div class="form-foot">
+          <button class="btn" type="submit">Odoslať dopyt</button>
+          <p>Toto je ukážkový formulár. Nikam sa nič neodošle a žiadne údaje sa neukladajú.</p>
+        </div>
+
+        <div class="form-note" id="formNote" role="status" aria-live="polite">
+          <h3>Formulár funguje, ale toto je ukážka</h3>
+          <p id="formNoteText">Vo funkčnej verzii by vám teraz prišlo potvrdenie na e‑mail a podnik by dostal správu. Tu sa nikam nič neodoslalo a žiadne údaje sa neukladajú. Takýto web (aj s reálnym odosielaním) vám spravím — <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+        </div>
+      </form>
+
+      <div class="order__side">
+        <div class="side-card">
+          <h3>Radšej zavoláte?</h3>
+          <p><span class="big">09XX XXX XXX</span>Číslo podniku sa doplní — Kruh &amp; Zrno je vymyslený. V ostrej verzii by ste sa počas otváracích hodín dovolali priamo k baru.</p>
+        </div>
+        <div class="side-card side-card--ink">
+          <h3>Odber do 10 minút</h3>
+          <p>Objednávku na odber vieme zvyčajne stihnúť do desiatich minút. Cez obed a v piatok večer rátajte s dvadsiatimi.</p>
+        </div>
+        <div class="side-card" style="background:var(--pist-soft)">
+          <h3>Firemné obedy</h3>
+          <p>Pravidelný obed pre kanceláriu vieme dohodnúť na mieru — napíšte nám do poznámky, koľko vás je.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section class="section section--ink" id="kontakt">
+  <div class="wrap contact">
+    <div>
+      <p class="eyebrow">Kde nás nájdete</p>
+      <h2>Na rohu Lipovej a Sadovej</h2>
+      <p class="lead">Vchod je z Lipovej, terasa vzadu vo dvore. Zastávka je tridsať metrov ďaleko, parkovanie na Sadovej býva voľné po šiestej.</p>
+      <ul class="contact__list">
+        <li>
+          <span class="contact__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z" fill="none" stroke="#FFF6E9" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="#FFF6E9" stroke-width="2.2"/></svg>
+          </span>
+          <div><b>Adresa</b><span>Lipová 8, 821 01 Bratislava</span></div>
+        </li>
+        <li>
+          <span class="contact__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.6 1.6a12 12 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1.1 1A16 16 0 0 1 4 5.1 1 1 0 0 1 5 4z" fill="none" stroke="#FFF6E9" stroke-width="2.2" stroke-linejoin="round"/></svg>
+          </span>
+          <div><b>Telefón</b><span>09XX XXX XXX</span><span class="contact__note">Telefón podniku sa doplní (ukážkový údaj).</span></div>
+        </li>
+        <li>
+          <span class="contact__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="#FFF6E9" stroke-width="2.2"/><path d="M4 7l8 6 8-6" fill="none" stroke="#FFF6E9" stroke-width="2.2" stroke-linejoin="round"/></svg>
+          </span>
+          <div><b>E-mail</b><a href="mailto:ahoj@kruhazrno.example">ahoj@kruhazrno.example</a></div>
+        </li>
+        <li>
+          <span class="contact__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#FFF6E9" stroke-width="2.2"/><path d="M12 7v5.4l3.4 2" fill="none" stroke="#FFF6E9" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </span>
+          <div><b>Dnes</b><span id="contactToday">Pozrite si otváracie hodiny vyššie</span></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="map">
+      <svg viewBox="0 0 520 380" role="img" aria-label="Štylizovaná mapka okolia s vyznačenou polohou podniku na rohu Lipovej a Sadovej">
+        <rect width="520" height="380" fill="#FFF6E9"/>
+        <g fill="#DCEBBF">
+          <rect x="0" y="0" width="180" height="130" rx="10"/>
+          <rect x="356" y="240" width="164" height="140" rx="10"/>
+        </g>
+        <g fill="#F6DFC4">
+          <rect x="210" y="0" width="140" height="130" rx="8"/>
+          <rect x="0" y="176" width="180" height="204" rx="8"/>
+          <rect x="210" y="176" width="140" height="70" rx="8"/>
+          <rect x="210" y="290" width="140" height="90" rx="8"/>
+          <rect x="400" y="0" width="120" height="130" rx="8"/>
+        </g>
+        <!-- cesty -->
+        <g stroke="#2A1C14" stroke-width="4" fill="none" opacity=".9">
+          <path d="M192 -10v400"/><path d="M368 -10v400"/>
+          <path d="M-10 150h540"/><path d="M-10 268h540"/>
+        </g>
+        <g stroke="#F0A93B" stroke-width="12" fill="none" opacity=".55">
+          <path d="M192 -10v400"/><path d="M-10 150h540"/>
+        </g>
+        <!-- názvy ulíc -->
+        <text x="200" y="336" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="800" fill="#5A4436" transform="rotate(-90 200 336)">Lipová</text>
+        <text x="230" y="142" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="800" fill="#5A4436">Sadová</text>
+        <!-- park -->
+        <g>
+          <circle cx="452" cy="316" r="26" fill="#A9C979"/>
+          <circle cx="470" cy="340" r="16" fill="#8AA84E"/>
+        </g>
+        <!-- pin -->
+        <g transform="translate(192 150)">
+          <circle r="46" fill="#C4351C" opacity=".16"/>
+          <circle r="30" fill="#C4351C" opacity=".22"/>
+          <path d="M0 22c0 0-19-17-19-30a19 19 0 1 1 38 0c0 13-19 30-19 30z" fill="#C4351C" stroke="#2A1C14" stroke-width="4"/>
+          <circle cy="-9" r="7" fill="#FFF6E9"/>
+        </g>
+        <g transform="translate(212 186)">
+          <rect x="0" y="0" width="150" height="34" rx="12" fill="#2A1C14"/>
+          <text x="14" y="23" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="900" fill="#FFF6E9">Kruh &amp; Zrno</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ AUTOR UKÁŽKY — JEDINÉ SKUTOČNÉ KONTAKTY ============ -->
+<aside class="author" id="autor" aria-labelledby="autorTitle">
+  <div class="wrap">
+    <div class="author__card">
+      <p class="author__tag">Autor ukážky</p>
+      <h2 id="autorTitle">Páči sa vám tento web?</h2>
+      <p class="author__lead">Kruh &amp; Zrno je vymyslený podnik — celá stránka je ukážka, ktorú navrhol a naprogramoval Alex Poliak. Podobný web spraví aj vám, na mieru tomu, čo robíte. Údaje v tomto rámiku sú na rozdiel od zvyšku stránky skutočné.</p>
+      <ul class="author__contacts">
+        <li><b>Autor webu</b><strong>Alex Poliak, Bratislava</strong></li>
+        <li><b>E-mail</b><a href="mailto:info@apoliak.online">info@apoliak.online</a></li>
+        <li><b>Telefón</b><a href="tel:+421902464022">0902 464 022</a><a class="author__sms" href="sms:+421902464022">alebo napíšte SMS</a></li>
+        <li><b>Web</b><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></li>
+      </ul>
+      <p class="author__price">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ PÄTA ============ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top" style="color:var(--cream)">
+          <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+            <circle cx="24" cy="24" r="22" fill="#C4351C"/>
+            <circle cx="24" cy="24" r="16" fill="#F0A93B"/>
+            <path d="M24 8a16 16 0 0 1 16 16H24z" fill="#A9C979"/>
+            <circle cx="17" cy="29" r="3" fill="#2A1C14"/>
+            <circle cx="30" cy="30" r="2.4" fill="#2A1C14"/>
+            <circle cx="29" cy="17" r="2.2" fill="#FFF6E9"/>
+          </svg>
+          <span class="brand__name">Kruh <span style="color:var(--honey)">&amp;</span> Zrno
+            <span class="brand__sub" style="color:#C9B7A3">Kaviareň a pizzeria</span>
+          </span>
+        </a>
+        <p style="margin-top:1rem;max-width:34ch;font-size:.95rem">Lipová 8, Bratislava. Ráno káva, večer pizza, cez deň oboje.</p>
+      </div>
+      <nav aria-label="Pätička">
+        <ul class="foot-links">
+          <li><a href="#ponuka">Ponuka</a></li>
+          <li><a href="#denne">Denné menu</a></li>
+          <li><a href="#konfigurator">Zlož si pizzu</a></li>
+          <li><a href="#hodiny">Otváracie hodiny</a></li>
+          <li><a href="#objednavka">Rezervácia</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="foot-note">
+      <span>Kruh &amp; Zrno je vymyslený podnik. Všetky údaje na tejto stránke sú ukážkové.</span>
+      <span>Ukážkový web navrhol a naprogramoval Alex Poliak — <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a> · <a href="tel:+421902464022">0902 464 022</a></span>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Presné odsadenie lepiacich pruhov ---------- */
+  var demobar = document.querySelector('.demobar');
+  var siteHead = document.querySelector('.site-head');
+  function syncOffsets(){
+    document.documentElement.style.setProperty('--bar-h', Math.ceil(demobar.getBoundingClientRect().height) + 'px');
+    document.documentElement.style.setProperty('--head-h', Math.ceil(siteHead.getBoundingClientRect().height) + 'px');
+  }
+  syncOffsets();
+  window.addEventListener('resize', syncOffsets);
+  window.addEventListener('load', syncOffsets);
+
+  /* ---------- Mobilné menu ---------- */
+  var navToggle = document.getElementById('navToggle');
+  var mainnav = document.getElementById('mainnav');
+  function closeNav(){
+    navToggle.setAttribute('aria-expanded','false');
+    mainnav.removeAttribute('data-open');
+  }
+  navToggle.addEventListener('click', function(){
+    var open = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!open));
+    if(open){ mainnav.removeAttribute('data-open'); }
+    else { mainnav.setAttribute('data-open','true'); }
+  });
+  mainnav.addEventListener('click', function(e){
+    if(e.target.closest('a')) closeNav();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeNav();
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 960) closeNav();
+  });
+
+  /* ---------- Taby ponuky ---------- */
+  function setupTabs(tablistSel, panelAttr){
+    var list = document.querySelector(tablistSel);
+    if(!list) return;
+    var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+    var panels = tabs.map(function(t){ return document.getElementById(t.getAttribute('aria-controls')); });
+
+    function select(i, focus){
+      tabs.forEach(function(t,k){
+        t.setAttribute('aria-selected', k === i ? 'true' : 'false');
+        t.setAttribute('tabindex', k === i ? '0' : '-1');
+        if(panels[k]){ if(k === i){ panels[k].removeAttribute('hidden'); } else { panels[k].setAttribute('hidden',''); } }
+      });
+      if(focus) tabs[i].focus();
+    }
+    tabs.forEach(function(t,i){
+      t.addEventListener('click', function(){ select(i,false); });
+      t.addEventListener('keydown', function(e){
+        var n = null;
+        if(e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i+1) % tabs.length;
+        if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i-1+tabs.length) % tabs.length;
+        if(e.key === 'Home') n = 0;
+        if(e.key === 'End') n = tabs.length-1;
+        if(n !== null){ e.preventDefault(); select(n,true); }
+      });
+    });
+    var start = tabs.findIndex(function(t){ return t.getAttribute('aria-selected') === 'true'; });
+    select(start < 0 ? 0 : start, false);
+    return { select: select, tabs: tabs };
+  }
+  setupTabs('[aria-label="Kategórie ponuky"]');
+  var dayTabs = setupTabs('[aria-label="Deň v týždni"]');
+
+  /* ---------- Dnešný deň v dennom menu ---------- */
+  var today = new Date().getDay(); // 0 = nedeľa
+  if(dayTabs){
+    var idx = dayTabs.tabs.findIndex(function(t){ return Number(t.dataset.day) === today; });
+    if(idx > -1){
+      dayTabs.select(idx, false);
+      var badge = document.createElement('span');
+      badge.className = 'chip__today';
+      badge.textContent = '· dnes';
+      dayTabs.tabs[idx].appendChild(badge);
+    }
+  }
+
+  /* ---------- Otvorené / zatvorené ---------- */
+  var OPEN = {
+    0:[540,1260], 1:[450,1320], 2:[450,1320], 3:[450,1320],
+    4:[450,1320], 5:[450,1380], 6:[540,1380]
+  };
+  var DAYNAMES = ['nedeľu','pondelok','utorok','stredu','štvrtok','piatok','sobotu'];
+  function hhmm(m){
+    var h = Math.floor(m/60), mm = m % 60;
+    return h + ':' + (mm < 10 ? '0'+mm : mm);
+  }
+  (function(){
+    var now = new Date();
+    var mins = now.getHours()*60 + now.getMinutes();
+    var span = OPEN[today];
+    var isOpen = mins >= span[0] && mins < span[1];
+    var badge = document.getElementById('statusBadge');
+    var text = document.getElementById('statusText');
+    badge.setAttribute('data-open', String(isOpen));
+    if(isOpen){
+      text.textContent = 'Práve máme otvorené — dnes do ' + hhmm(span[1]);
+    } else if(mins < span[0]){
+      text.textContent = 'Teraz zatvorené — otvárame dnes o ' + hhmm(span[0]);
+    } else {
+      var nx = (today+1) % 7;
+      text.textContent = 'Teraz zatvorené — otvárame v ' + DAYNAMES[nx] + ' o ' + hhmm(OPEN[nx][0]);
+    }
+    var row = document.querySelector('.hours tr[data-dow="'+today+'"]');
+    if(row) row.setAttribute('data-today','true');
+    var ct = document.getElementById('contactToday');
+    if(ct) ct.textContent = hhmm(span[0]) + ' – ' + hhmm(span[1]) + (isOpen ? ' · práve otvorené' : ' · práve zatvorené');
+  })();
+
+  /* ---------- Konfigurátor pizze ---------- */
+  var cfg = document.getElementById('pizzaConfig');
+  var scaleG = document.getElementById('pizzaScale');
+  var sauce = document.getElementById('sauce');
+  var sizeLabel = document.getElementById('sizeLabel');
+  var sumBase = document.getElementById('sumBase');
+  var sumTops = document.getElementById('sumTops');
+  var sumTopsLabel = document.getElementById('sumTopsLabel');
+  var sumTotal = document.getElementById('sumTotal');
+  var liveTotal = document.getElementById('liveTotal');
+  var sumHint = document.getElementById('sumHint');
+
+  function eur(cents){
+    return (cents/100).toFixed(2).replace('.', ',') + ' €';
+  }
+
+  function state(){
+    var size = cfg.querySelector('input[name="size"]:checked');
+    var base = cfg.querySelector('input[name="base"]:checked');
+    var tops = Array.prototype.slice.call(cfg.querySelectorAll('input[name="top"]:checked'));
+    return { size: size, base: base, tops: tops };
+  }
+
+  function render(){
+    var s = state();
+    var mult = parseFloat(s.size.dataset.mult);
+    var baseCents = Number(s.size.dataset.price) + Number(s.base.dataset.price);
+    var topsCents = 0;
+    s.tops.forEach(function(t){ topsCents += Math.round(Number(t.dataset.price) * mult); });
+
+    // náhľad
+    scaleG.style.transform = 'scale(' + s.size.dataset.scale + ')';
+    sauce.setAttribute('fill', s.base.dataset.color);
+    sizeLabel.textContent = s.size.dataset.label;
+
+    cfg.querySelectorAll('input[name="top"]').forEach(function(t){
+      var g = document.getElementById(t.dataset.target);
+      if(!g) return;
+      if(t.checked){ g.removeAttribute('hidden'); } else { g.setAttribute('hidden',''); }
+    });
+
+    // súčty
+    sumBase.textContent = eur(baseCents);
+    sumTopsLabel.textContent = 'Prísady (' + s.tops.length + ')';
+    sumTops.textContent = eur(topsCents);
+    sumTotal.textContent = eur(baseCents + topsCents);
+    liveTotal.textContent = 'Spolu ' + eur(baseCents + topsCents);
+    sumHint.textContent = mult > 1
+      ? 'Vybrali ste 45 cm — prísady sa rátajú jedenapolnásobne, lebo ich je na nej naozaj o polovicu viac.'
+      : 'Pri 45 cm sa prísady rátajú jedenapolnásobne — je na nej naozaj o polovicu viac.';
+  }
+
+  cfg.addEventListener('change', render);
+  cfg.addEventListener('submit', function(e){ e.preventDefault(); });
+  render();
+
+  /* ---------- Prenos do objednávky ---------- */
+  document.getElementById('toOrder').addEventListener('click', function(){
+    var s = state();
+    var mult = parseFloat(s.size.dataset.mult);
+    var baseCents = Number(s.size.dataset.price) + Number(s.base.dataset.price);
+    var topsCents = 0;
+    s.tops.forEach(function(t){ topsCents += Math.round(Number(t.dataset.price) * mult); });
+    var names = s.tops.map(function(t){ return t.value.toLowerCase(); });
+
+    var txt = 'Vlastná pizza ' + s.size.value + ' cm, základ ' + s.base.value.toLowerCase() + '. ';
+    txt += names.length ? 'Prísady: ' + names.join(', ') + '. ' : 'Bez ďalších prísad. ';
+    txt += 'Cena ' + eur(baseCents + topsCents) + '.';
+
+    var pozn = document.getElementById('poznamka');
+    pozn.value = txt;
+    document.getElementById('typ').value = 'Objednávka na odber';
+
+    var target = document.getElementById('objednavka');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    window.setTimeout(function(){ pozn.focus({ preventScroll: true }); }, reduce ? 0 : 650);
+  });
+
+  /* ---------- Formulár ---------- */
+  var form = document.getElementById('orderForm');
+  var note = document.getElementById('formNote');
+  var noteText = document.getElementById('formNoteText');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var meno = document.getElementById('meno');
+    var tel = document.getElementById('tel');
+    if(!meno.value.trim() || !tel.value.trim()){
+      note.setAttribute('data-shown','true');
+      noteText.innerHTML = 'Doplňte prosím meno a telefón — ostatné je nepovinné. (Aj tak sa nikam nič neodošle, je to ukážka.)';
+      (!meno.value.trim() ? meno : tel).focus();
+      return;
+    }
+    var typ = document.getElementById('typ').value;
+    note.setAttribute('data-shown','true');
+    noteText.innerHTML = 'Ďakujeme, ' + meno.value.trim().replace(/[<>&]/g,'') + '. Vo funkčnej verzii by teraz odišla správa podniku (' + typ.toLowerCase() +
+      ') a vám potvrdenie. Tu sa nikam nič neodoslalo a žiadne údaje sa neukladajú — je to ukážkový web. Takýto web vám spravím: ' +
+      '<a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.';
+    note.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+  });
+
+  /* ---------- Aktívna položka v navigácii ---------- */
+  if('IntersectionObserver' in window){
+    var links = {};
+    document.querySelectorAll('.nav-list a[href^="#"]').forEach(function(a){
+      links[a.getAttribute('href').slice(1)] = a;
+    });
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        var a = links[en.target.id];
+        if(!a) return;
+        if(en.isIntersecting){
+          Object.keys(links).forEach(function(k){ links[k].removeAttribute('aria-current'); });
+          a.setAttribute('aria-current','true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(links).forEach(function(id){
+      var sec = document.getElementById(id);
+      if(sec) obs.observe(sec);
+    });
+  }
+
+  /* ---------- Predvyplnený dátum ---------- */
+  (function(){
+    var d = new Date();
+    var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    var inp = document.getElementById('datum');
+    inp.value = iso;
+    inp.min = iso;
+  })();
+
+})();
+</script>
+</body>
+</html>
