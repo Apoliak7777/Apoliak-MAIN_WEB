@@ -2,63 +2,66 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  // Year
+  // Year in footer
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // Header elevation on scroll
-  const header = $(".site-header");
-  const setHeaderShadow = () => {
-    if (!header) return;
-    header.dataset.shadow = String(window.scrollY > 8);
-  };
-  setHeaderShadow();
-  window.addEventListener("scroll", setHeaderShadow, { passive: true });
+  // Mobile menu
+  const btn = $(".nav-btn");
+  const scrim = $("[data-scrim]");
 
-  // Mobile nav (class-based)
-  const toggleBtn = $(".nav-toggle");
-  const navPanel = $("#nav-panel");
-  const backdrop = $("[data-backdrop]");
-
-  const closeNav = () => {
-    document.body.classList.remove("nav-open");
-    if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+  const closeMenu = () => {
+    document.body.classList.remove("menu-open");
+    if (btn) btn.setAttribute("aria-expanded", "false");
   };
 
-  const openNav = () => {
-    document.body.classList.add("nav-open");
-    if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "true");
-  };
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      const isOpen = document.body.classList.contains("nav-open");
-      isOpen ? closeNav() : openNav();
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const open = document.body.classList.toggle("menu-open");
+      btn.setAttribute("aria-expanded", String(open));
     });
   }
 
-  if (backdrop) backdrop.addEventListener("click", closeNav);
+  if (scrim) scrim.addEventListener("click", closeMenu);
+  $$(".menu a").forEach((a) => a.addEventListener("click", closeMenu));
 
-  // Close on link click (mobile)
-  $$(".nav-link").forEach((a) => a.addEventListener("click", closeNav));
-
-  // Close with ESC
   window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeNav();
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Menu is desktop-only above 900px, drop the open state when we cross back
+  const wide = window.matchMedia("(min-width: 901px)");
+  wide.addEventListener("change", (e) => {
+    if (e.matches) closeMenu();
   });
 
   // Reveal on scroll
-  const revealEls = $$(".reveal");
+  const items = $$(".rise");
+  if (!items.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("in"));
+    return;
+  }
+
   const io = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          io.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add("in");
+        io.unobserve(entry.target);
       }
     },
-    { threshold: 0.12 }
+    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
   );
-  revealEls.forEach((el) => io.observe(el));
+
+  items.forEach((el) => io.observe(el));
+
+  // Safety net: if the observer never reports anything, show everything anyway
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      if (document.querySelector(".rise.in")) return;
+      items.forEach((el) => el.classList.add("in"));
+    }, 1200);
+  });
 })();
