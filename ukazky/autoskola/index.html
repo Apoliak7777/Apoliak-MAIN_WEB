@@ -1,0 +1,2106 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autoškola Rondel — vodičský kurz skupiny B v Nitre</title>
+<meta name="description" content="Ukážkový web autoškoly: kurz skupiny B za 890 € vrátane prvého termínu skúšky, 32 hodín teórie, 41 hodín jázd, termíny začiatkov a prihláška s prepočtom ceny. Návrh a kód Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#0D1116">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:site_name" content="Autoškola Rondel (ukážkový web)">
+<meta property="og:title" content="Autoškola Rondel — vodičský kurz skupiny B v Nitre">
+<meta property="og:description" content="Kurz skupiny B za 890 € vrátane prvého termínu skúšky, 32 hodín teórie a 41 hodín jázd. Ukážkový web od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%230D1116'/%3E%3Ccircle%20cx='32'%20cy='34'%20r='15'%20fill='none'%20stroke='%23C9962F'%20stroke-width='5'/%3E%3Crect%20x='29.5'%20y='7'%20width='5'%20height='15'%20fill='%23C9962F'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   TOKENY
+   ============================================================ */
+:root{
+  --bg:#0D1116;
+  --bg-2:#111721;
+  --bg-3:#151C25;
+  --bg-4:#1A222C;
+  --bg-deep:#090D11;
+
+  --line:#232C37;
+  --line-2:#323C49;
+
+  --fg:#E7EAEE;
+  --fg-2:#A7AFBA;
+  --fg-3:#7E8894;
+
+  --acc:#C9962F;
+  --acc-2:#E0B257;
+  --acc-deep:#6E4E12;
+  --on-acc:#12161B;
+
+  --paper:#F2F2EF;
+  --paper-2:#E6E6E1;
+  --paper-fg:#15181C;
+  --paper-fg-2:#5A616B;
+  --paper-line:#D8D8D1;
+
+  --serif:Georgia,"Iowan Old Style","Times New Roman",Times,serif;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:"Cascadia Mono",Consolas,"SF Mono",ui-monospace,"Roboto Mono","Courier New",monospace;
+
+  --wrap:1160px;
+  --r:2px;
+}
+
+/* ============================================================
+   ZÁKLAD
+   ============================================================ */
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.68;
+  -webkit-text-size-adjust:100%;
+  text-rendering:optimizeLegibility;
+}
+
+h1,h2,h3,h4{margin:0 0 .5em;font-weight:400}
+h1,h2{font-family:var(--serif);letter-spacing:-.015em}
+h1{font-size:clamp(2.3rem,5.6vw,4.05rem);line-height:1.03}
+h2{font-size:clamp(1.72rem,3.3vw,2.7rem);line-height:1.08}
+h3{font-family:var(--sans);font-weight:600;font-size:clamp(1.04rem,1.4vw,1.16rem);line-height:1.36;letter-spacing:-.005em}
+h4{font-family:var(--sans);font-weight:600;font-size:1rem;line-height:1.4}
+p{margin:0 0 1em;max-width:70ch}
+p:last-child{margin-bottom:0}
+ul,ol,dl{margin:0;padding:0;list-style:none}
+img,svg{max-width:100%}
+b,strong{font-weight:600}
+
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.sec--paper :focus-visible{outline-color:var(--acc-deep)}
+
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;z-index:300;background:var(--acc);color:var(--on-acc);padding:12px 18px;font-weight:700;text-decoration:none}
+.skip:focus{left:8px;top:8px}
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+section,.author{scroll-margin-top:calc(var(--top,104px) + 18px)}
+.sec{padding:clamp(66px,8.4vw,124px) 0;position:relative}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--paper{background:var(--paper);color:var(--paper-fg);border-block:1px solid var(--paper-line)}
+.sec--tight{padding:clamp(48px,5.4vw,78px) 0}
+
+/* ---- typografické drobnosti ---- */
+.eyebrow{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--fg-3);margin:0 0 16px;display:flex;align-items:center;gap:12px;max-width:none;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--acc);flex:none}
+.sec--paper .eyebrow{color:var(--paper-fg-2)}
+.lede{font-size:1.05rem;color:var(--fg-2);max-width:56ch}
+.sec--paper .lede{color:var(--paper-fg-2)}
+.note{font-size:.88rem;color:var(--fg-3);max-width:62ch}
+.sec--paper .note{color:var(--paper-fg-2)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lead-in{color:var(--fg-2);max-width:64ch}
+.sec--paper .lead-in{color:var(--paper-fg-2)}
+
+.sechead{
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:16px clamp(24px,5vw,68px);align-items:end;
+  padding-bottom:26px;border-bottom:1px solid var(--line);
+  margin-bottom:clamp(34px,4.6vw,58px);
+}
+.sec--paper .sechead{border-color:var(--paper-line)}
+.sechead h2,.sechead .lede{margin-bottom:0}
+
+.subhead{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg-3);margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);
+}
+.sec--paper .subhead{color:var(--paper-fg-2);border-color:var(--paper-line)}
+
+/* ============================================================
+   TLAČIDLÁ  (vysoká špecificita, aby ich neprebil odkazový štýl)
+   ============================================================ */
+.btn,a.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--sans);font-size:.94rem;font-weight:600;letter-spacing:.01em;line-height:1.2;
+  padding:14px 26px;border:1px solid transparent;border-radius:var(--r);
+  cursor:pointer;text-decoration:none;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn--sm,a.btn--sm{padding:10px 17px;font-size:.86rem}
+
+a.btn.btn--solid,.btn.btn--solid{background:var(--acc);color:var(--on-acc);border-color:var(--acc)}
+a.btn.btn--solid:hover,.btn.btn--solid:hover{background:var(--acc-2);border-color:var(--acc-2);color:var(--on-acc)}
+
+a.btn.btn--line,.btn.btn--line{background:transparent;color:var(--fg);border-color:var(--line-2)}
+a.btn.btn--line:hover,.btn.btn--line:hover{border-color:var(--acc);color:var(--acc-2)}
+.sec--paper a.btn.btn--line,.sec--paper .btn.btn--line{color:var(--paper-fg);border-color:#BEBEB6}
+.sec--paper a.btn.btn--line:hover,.sec--paper .btn.btn--line:hover{color:var(--acc-deep);border-color:var(--acc-deep)}
+
+
+.btnrow{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ============================================================
+   HORNÝ PÁS + HLAVIČKA
+   ============================================================ */
+.topbar{position:sticky;top:0;z-index:100}
+.demobar{background:var(--bg-4);border-bottom:1px solid var(--line);font-size:.85rem;line-height:1.45}
+.demobar__in{display:flex;flex-wrap:wrap;align-items:center;gap:5px 16px;padding:8px 0;color:var(--fg-2)}
+.demobar__tag{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--on-acc);background:var(--acc);padding:3px 9px;flex:none;font-weight:700;
+}
+.demobar__txt{flex:1 1 auto;min-width:0}
+.demobar a{color:var(--acc-2);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(224,178,87,.42);white-space:nowrap}
+.demobar a:hover{color:#EFC786;border-color:#EFC786}
+
+.site{background:var(--bg);border-bottom:1px solid var(--line)}
+.site__in{display:flex;align-items:center;gap:18px;min-height:66px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--fg);flex:none}
+.brand__mark{flex:none;display:block}
+.brand__name{font-family:var(--serif);font-size:1.1rem;letter-spacing:-.01em;line-height:1.1;display:block}
+.brand__sub{display:block;font-family:var(--mono);font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--fg-3);margin-top:3px}
+.menu{margin-left:auto;display:flex;align-items:center;gap:4px}
+.menu__list{display:flex;align-items:center;gap:2px}
+.menu__list a{
+  display:block;padding:9px 11px;text-decoration:none;color:var(--fg-2);
+  font-size:.88rem;font-weight:500;border-radius:var(--r);
+}
+.menu__list a:hover{color:var(--fg);background:var(--bg-3)}
+.menu .btn{margin-left:12px}
+.burger{
+  display:none;margin-left:auto;background:transparent;border:1px solid var(--line-2);
+  border-radius:var(--r);padding:9px 13px;cursor:pointer;color:var(--fg);
+  font-family:var(--sans);font-size:.84rem;font-weight:600;align-items:center;gap:10px;
+}
+.burger__ico{display:inline-flex;flex-direction:column;gap:3px;width:16px}
+.burger__ico i{display:block;height:1px;background:var(--acc)}
+
+@media (max-width:980px){
+  .burger{display:inline-flex}
+  .menu{
+    position:absolute;left:0;right:0;top:100%;
+    display:none;flex-direction:column;align-items:stretch;gap:0;
+    background:var(--bg-2);border-bottom:1px solid var(--line);
+    padding:8px 20px 20px;
+  }
+  .site{position:relative}
+  .site.is-open .menu{display:flex}
+  .menu__list{flex-direction:column;align-items:stretch;gap:0}
+  .menu__list a{padding:13px 4px;border-bottom:1px solid var(--line);font-size:.98rem}
+  .menu .btn{margin:16px 0 0}
+}
+
+/* ============================================================
+   PLOCHY
+   ============================================================ */
+.defs{position:absolute;width:0;height:0;overflow:hidden}
+.panel{position:relative;overflow:hidden;background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r)}
+.panel__art{position:absolute;inset:0;width:100%;height:100%;display:block}
+.grain{position:absolute;inset:0;width:100%;height:100%;opacity:.11;pointer-events:none}
+.panel__in{position:relative;z-index:2;padding:clamp(24px,3.2vw,38px);display:flex;flex-direction:column;height:100%}
+.panel--paper{background:var(--paper-2);border-color:var(--paper-line);color:var(--paper-fg)}
+
+.figure{
+  font-family:var(--mono);font-weight:700;letter-spacing:-.035em;line-height:.98;
+  font-size:clamp(2.7rem,7vw,4.4rem);color:var(--fg);font-variant-numeric:tabular-nums;margin:0;
+}
+.panel--paper .figure{color:var(--paper-fg)}
+.plabel{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--fg-2);margin:0;max-width:none;
+}
+.panel--paper .plabel{color:var(--paper-fg-2)}
+.pnote{margin:0;color:var(--fg-2);font-size:.92rem;max-width:34ch}
+.panel--paper .pnote{color:var(--paper-fg-2)}
+.prule{height:1px;background:var(--line-2);margin:18px 0}
+.panel--paper .prule{background:var(--paper-line)}
+
+/* ============================================================
+   HERO — zrkadlený split: panel vľavo, text vpravo
+   ============================================================ */
+.hero{padding:clamp(46px,5.6vw,88px) 0 clamp(58px,6.6vw,104px);position:relative;overflow:hidden}
+.hero__bg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero__in{
+  position:relative;z-index:2;display:grid;
+  grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+  gap:clamp(30px,4.6vw,68px);align-items:center;
+}
+.hero__text h1{margin-bottom:20px}
+.hero__text h1 em{font-style:normal;color:var(--acc-2)}
+.hero__lede{font-size:clamp(1.02rem,1.5vw,1.16rem);color:var(--fg-2);max-width:50ch}
+.hero__meta{
+  margin:26px 0 28px;padding-top:22px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:6px 26px;font-family:var(--mono);font-size:.78rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);max-width:none;
+}
+.hero__meta a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line-2)}
+.hero__meta a:hover{color:var(--acc-2);border-color:var(--acc-2)}
+
+.herocard{
+  position:relative;overflow:hidden;background:var(--bg-deep);
+  border:1px solid var(--line);border-left:2px solid var(--acc);border-radius:var(--r);
+}
+.herocard__in{position:relative;z-index:2;padding:clamp(26px,3vw,36px)}
+.herocard__top{display:flex;flex-direction:column;gap:10px;padding-bottom:22px;border-bottom:1px solid var(--line-2)}
+.herocard__price{font-family:var(--mono);font-weight:700;font-size:clamp(3rem,6.4vw,4.1rem);line-height:.98;letter-spacing:-.04em;color:var(--acc-2);font-variant-numeric:tabular-nums;margin:0}
+.data{display:grid;gap:0;margin:0}
+.data>div{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 18px;
+  padding:13px 0;border-bottom:1px solid var(--line);align-items:baseline;
+}
+.data>div:last-child{border-bottom:0}
+.data dt{margin:0;font-size:.9rem;color:var(--fg-2)}
+.data dd{margin:0;font-family:var(--mono);font-size:.94rem;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--fg)}
+.data dd.acc{color:var(--acc-2)}
+.herocard__foot{margin:20px 0 0;font-size:.86rem;color:var(--fg-3);max-width:40ch}
+
+/* ============================================================
+   MRIEŽKY A VLASOVÉ BUNKY
+   ============================================================ */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,4.6vw,66px);align-items:start}
+.split--wide{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.split--narrow{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+
+.cells{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.cells--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cells--4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cell{background:var(--bg);padding:clamp(24px,2.9vw,36px);display:flex;flex-direction:column}
+.sec--band .cells{background:var(--line)}
+.sec--band .cell{background:var(--bg-2)}
+.sec--paper .cells{background:var(--paper-line);border-color:var(--paper-line)}
+.sec--paper .cell{background:var(--paper)}
+
+.cell__code{
+  font-family:var(--mono);font-weight:700;font-size:clamp(1.7rem,3vw,2.15rem);line-height:1;
+  letter-spacing:-.03em;color:var(--acc-2);margin:0 0 18px;font-variant-numeric:tabular-nums;
+}
+.sec--paper .cell__code{color:var(--acc-deep)}
+.cell__tag{
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg-3);margin:0 0 14px;
+}
+.cell__price{
+  font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--fg);
+  margin:0 0 14px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.cell__price small{display:block;font-family:var(--mono);font-size:.66rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-3);margin-top:6px}
+.cell p{color:var(--fg-2);font-size:.95rem}
+.sec--paper .cell p{color:var(--paper-fg-2)}
+.cell h3{color:var(--fg)}
+.sec--paper .cell h3{color:var(--paper-fg)}
+.cell__foot{margin-top:auto;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sec--paper .cell__foot{border-color:var(--paper-line)}
+.cell__foot .mono{font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3)}
+
+.tick{margin:0 0 20px;display:grid;gap:9px;max-width:52ch}
+.tick li{position:relative;padding-left:22px;font-size:.93rem;color:var(--fg-2)}
+.tick li::before{content:"";position:absolute;left:0;top:.68em;width:12px;height:1px;background:var(--acc)}
+.sec--paper .tick li{color:var(--paper-fg-2)}
+.sec--paper .tick li::before{background:var(--acc-deep)}
+.tick--last{margin-bottom:0}
+
+/* ---- kroky ---- */
+.step__n{font-family:var(--mono);font-size:.7rem;letter-spacing:.24em;color:var(--acc);display:block;margin-bottom:16px}
+.sec--paper .step__n{color:var(--acc-deep)}
+.step__meta{margin:16px 0 0;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3)}
+
+/* ============================================================
+   POPISNÉ ZOZNAMY
+   ============================================================ */
+.rows{display:grid;gap:0;border-top:1px solid var(--line);margin:0}
+.rows>div{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 22px;
+  padding:15px 0;border-bottom:1px solid var(--line);align-items:baseline;
+}
+.rows dt{margin:0;font-weight:600;font-size:.98rem}
+.rows dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--fg-2);white-space:nowrap;font-size:.94rem}
+.rows small{display:block;font-family:var(--sans);font-weight:400;color:var(--fg-2);font-size:.88rem;margin-top:4px;max-width:52ch}
+.sec--paper .rows,.sec--paper .rows>div{border-color:var(--paper-line)}
+.sec--paper .rows dd,.sec--paper .rows small{color:var(--paper-fg-2)}
+
+.rows--flat>div{grid-template-columns:minmax(0,1fr) auto;padding:12px 0}
+.rows--flat dt{font-weight:400;font-size:.95rem}
+
+.deflist{display:grid;gap:0;border-top:1px solid var(--line);margin:0}
+.deflist>div{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:6px 24px;padding:14px 0;border-bottom:1px solid var(--line)}
+.deflist dt{margin:0;font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-3);padding-top:5px;min-width:104px}
+.deflist dd{margin:0;font-size:.95rem;color:var(--fg-2);overflow-wrap:anywhere;max-width:54ch}
+.sec--paper .deflist,.sec--paper .deflist>div{border-color:var(--paper-line)}
+.sec--paper .deflist dt{color:var(--paper-fg-2)}
+.sec--paper .deflist dd{color:var(--paper-fg)}
+
+.terms{display:grid;gap:0;border-top:1px solid var(--paper-line);margin:0}
+.terms>li{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:6px 24px;padding:15px 0;border-bottom:1px solid var(--paper-line)}
+.terms b{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;color:var(--acc-deep);white-space:nowrap;padding-top:3px;min-width:88px}
+.terms span{font-size:.95rem;color:var(--paper-fg-2)}
+.sec:not(.sec--paper) .terms,.sec:not(.sec--paper) .terms>li{border-color:var(--line)}
+.sec:not(.sec--paper) .terms b{color:var(--acc)}
+.sec:not(.sec--paper) .terms span{color:var(--fg-2)}
+
+.plain{display:grid;gap:11px;margin:0;max-width:52ch}
+.plain li{display:flex;gap:14px;align-items:baseline;font-size:.95rem;color:var(--fg-2)}
+.plain li::before{content:"";width:7px;height:7px;border:1px solid var(--acc);flex:none;transform:translateY(-1px)}
+.sec--paper .plain li{color:var(--paper-fg-2)}
+.sec--paper .plain li::before{border-color:var(--acc-deep)}
+
+/* ============================================================
+   TABUĽKY
+   ============================================================ */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--bg-2)}
+.sec--paper .tablewrap{border-color:var(--paper-line);background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+.tablewrap table{min-width:640px}
+caption{text-align:left;padding:15px 20px;color:var(--fg-3);font-size:.82rem;border-bottom:1px solid var(--line);font-family:var(--mono);letter-spacing:.08em}
+.sec--paper caption{color:var(--paper-fg-2);border-color:var(--paper-line)}
+th,td{text-align:left;padding:15px 20px;border-bottom:1px solid var(--line);vertical-align:middle}
+.sec--paper th,.sec--paper td{border-color:var(--paper-line)}
+thead th{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--fg-3);font-weight:600;background:var(--bg-3);
+}
+.sec--paper thead th{color:var(--paper-fg-2);background:var(--paper-2)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:last-child th{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.date{font-family:var(--mono);font-weight:700;color:var(--fg);white-space:nowrap}
+.sec--paper td.date{color:var(--paper-fg)}
+tfoot td{font-family:var(--mono);font-weight:700;background:var(--bg-3);border-bottom:0}
+.sec--paper tfoot td{background:var(--paper-2)}
+.free{font-family:var(--mono);font-size:.86rem;color:var(--fg-2);white-space:nowrap}
+.free b{color:var(--acc-2)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.chip{
+  font-family:var(--mono);font-size:.82rem;font-weight:600;letter-spacing:.08em;
+  background:transparent;color:var(--fg-2);border:1px solid var(--line-2);border-radius:var(--r);
+  padding:9px 15px;cursor:pointer;transition:color .15s ease,border-color .15s ease,background-color .15s ease;
+}
+.chip:hover{color:var(--fg);border-color:var(--fg-3)}
+.chip.is-on{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.linkbtn{
+  font-family:var(--sans);font-size:.83rem;font-weight:600;background:transparent;border:1px solid var(--line-2);
+  border-radius:var(--r);color:var(--fg);padding:8px 14px;cursor:pointer;white-space:nowrap;
+}
+.linkbtn:hover{border-color:var(--acc);color:var(--acc-2)}
+
+/* ============================================================
+   FORMULÁRE
+   ============================================================ */
+.form{display:grid;gap:26px}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg-3);padding:0 0 14px;
+}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field--full{grid-column:1 / -1}
+.field label{font-size:.87rem;font-weight:600;color:var(--fg-2)}
+input[type=text],input[type=tel],input[type=email],select,textarea{
+  font-family:var(--sans);font-size:.97rem;color:var(--fg);background:var(--bg-deep);
+  border:1px solid var(--line-2);border-radius:var(--r);padding:13px 14px;width:100%;
+}
+select{
+  appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--fg-3) 50%),linear-gradient(135deg,var(--fg-3) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 22px,calc(100% - 14px) 22px;background-size:6px 6px,6px 6px;
+  background-repeat:no-repeat;padding-right:42px;
+}
+textarea{resize:vertical;min-height:118px;line-height:1.6}
+input::placeholder,textarea::placeholder{color:#8C96A2}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);outline:none}
+
+.opts{display:grid;gap:9px}
+.opts--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{
+  display:flex;gap:12px;align-items:flex-start;padding:13px 15px;
+  border:1px solid var(--line-2);border-radius:var(--r);cursor:pointer;background:var(--bg-deep);
+  transition:border-color .15s ease,background-color .15s ease;
+}
+.opt:hover{border-color:var(--fg-3)}
+.opt:has(input:checked){border-color:var(--acc);background:#161D26}
+.opt input{margin:4px 0 0;accent-color:var(--acc);flex:none;width:16px;height:16px}
+.opt__t{display:block;font-weight:600;font-size:.93rem;line-height:1.4}
+.opt__s{display:block;font-size:.83rem;color:var(--fg-3);margin-top:3px}
+.opt__p{margin-left:auto;font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--acc-2);white-space:nowrap;padding-left:10px}
+.consent{display:flex;gap:12px;align-items:flex-start;font-size:.89rem;color:var(--fg-2)}
+.consent input{margin:5px 0 0;accent-color:var(--acc);flex:none;width:16px;height:16px}
+.formfoot{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding-top:4px}
+.status{
+  display:none;margin:0;padding:15px 17px;border:1px solid var(--acc);
+  border-left-width:3px;background:#161D26;color:var(--fg);font-size:.92rem;border-radius:var(--r);max-width:none;
+}
+.status.is-on{display:block}
+
+/* ---- súhrn ceny ---- */
+.sum{position:sticky;top:calc(var(--top,104px) + 18px);border:1px solid var(--line-2);border-radius:var(--r);background:var(--bg-3);overflow:hidden}
+.sum__head{padding:20px 24px;border-bottom:1px solid var(--line);background:var(--bg-4)}
+.sum__head p{margin:0}
+.sum__title{font-family:var(--serif);font-size:1.2rem;letter-spacing:-.01em}
+.sum__in{padding:20px 24px 24px}
+.sum__rows{display:grid;gap:0;margin:0 0 4px}
+.sum__rows>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:12px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.sum__rows dt{margin:0;font-size:.89rem;color:var(--fg-2)}
+.sum__rows dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.93rem;white-space:nowrap}
+.sum__total{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:20px 0 10px}
+.sum__total span{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-3)}
+.sum__total b{font-family:var(--mono);font-size:clamp(1.9rem,4vw,2.4rem);font-weight:700;color:var(--acc-2);letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1}
+.sum__pay{margin:0;padding:15px 0 0;border-top:1px solid var(--line);font-size:.89rem;color:var(--fg-2)}
+.sum__pay b{color:var(--fg);font-family:var(--mono)}
+
+/* ============================================================
+   OTÁZKY
+   ============================================================ */
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.faq details{background:var(--bg-2)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:21px 56px 21px 24px;position:relative;
+  font-weight:600;font-size:1rem;color:var(--fg);line-height:1.45;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after,.faq summary::before{content:"";position:absolute;right:24px;top:50%;background:var(--acc);transition:transform .18s ease,opacity .18s ease}
+.faq summary::before{width:13px;height:1px;margin-top:0}
+.faq summary::after{width:1px;height:13px;margin-top:-6px;right:30px}
+.faq details[open] summary::after{opacity:0;transform:rotate(90deg)}
+.faq summary:hover{color:var(--acc-2)}
+.faq__a{padding:0 56px 24px 24px;margin:0;color:var(--fg-2);font-size:.94rem}
+.faq__a p{margin:0 0 .75em;max-width:62ch}
+.faq__a p:last-child{margin-bottom:0}
+
+/* ============================================================
+   KARIÉRA
+   ============================================================ */
+.hire{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(26px,4vw,60px);align-items:center;
+  border:1px solid var(--line);border-left:2px solid var(--acc);border-radius:var(--r);
+  background:var(--bg-2);padding:clamp(28px,3.6vw,46px);
+}
+
+/* ============================================================
+   KONTAKT
+   ============================================================ */
+.hours{width:100%;min-width:0;font-size:.94rem}
+.hours th,.hours td{padding:12px 0;border-bottom:1px solid var(--line);background:transparent}
+.hours th{font-family:var(--sans);font-size:.94rem;letter-spacing:0;text-transform:none;color:var(--fg-2);font-weight:500}
+.hours td{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--fg)}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:0}
+.mappanel{aspect-ratio:4/3;min-height:320px}
+.phone{
+  font-family:var(--mono);font-size:clamp(1.4rem,3.2vw,1.9rem);font-weight:700;letter-spacing:-.02em;
+  color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line-2);white-space:nowrap;
+}
+.phone:hover{color:var(--acc-2);border-color:var(--acc-2)}
+
+/* ============================================================
+   AUTOR UKÁŽKY
+   ============================================================ */
+.author{background:var(--bg-4);border-top:2px solid var(--acc);padding:clamp(54px,6.4vw,92px) 0}
+.author__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,4.6vw,66px);align-items:start}
+.author h2{color:#F3F5F8}
+.author p{color:var(--fg-2);max-width:54ch}
+.author__price{border-left:2px solid var(--acc);padding-left:16px;margin-bottom:0;color:var(--fg);font-weight:600}
+.author__free{font-family:var(--mono);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc-2);margin:18px 0 0}
+.author__card{background:var(--bg);border:1px solid var(--line-2);border-radius:var(--r);padding:clamp(24px,3vw,32px)}
+.author__name{font-family:var(--serif);font-size:1.4rem;margin:0;letter-spacing:-.01em;color:#F3F5F8}
+.author__role{margin:6px 0 0;color:var(--fg-3);font-size:.88rem;font-family:var(--mono);letter-spacing:.06em}
+.author__list{margin:24px 0 0;border-top:1px solid var(--line)}
+.author__list>div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 18px;padding:14px 0;border-bottom:1px solid var(--line)}
+.author__list dt{margin:0;font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-3);padding-top:5px}
+.author__list dd{margin:0;overflow-wrap:anywhere;color:var(--fg)}
+.author__list a:not(.btn){color:var(--acc-2);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(224,178,87,.42)}
+.author__list a:not(.btn):hover{color:#EFC786}
+.author__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+
+/* ============================================================
+   PÄTIČKA
+   ============================================================ */
+.foot{background:var(--bg);border-top:1px solid var(--line);padding:52px 0 44px;font-size:.9rem;color:var(--fg-3)}
+.foot__in{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:32px}
+.foot h4{color:var(--fg-2);font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;margin:0 0 16px;font-weight:600}
+.foot p{margin:0 0 .45em;max-width:44ch}
+.foot ul{display:grid;gap:9px}
+.foot a:not(.btn){color:var(--fg-2);text-decoration:none}
+.foot a:not(.btn):hover{color:var(--acc-2)}
+.foot__bar{margin-top:38px;padding-top:22px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;font-size:.83rem}
+
+/* ============================================================
+   POSTUPNÉ ZOBRAZENIE
+   ============================================================ */
+.js .reveal{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}
+.js .reveal.is-in{opacity:1;transform:none}
+
+/* ============================================================
+   RESPONZÍVNE
+   ============================================================ */
+@media (max-width:1080px){
+  .cells--4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cells--3{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:980px){
+  body{font-size:16.5px}
+  .hero__in,.split,.split--wide,.split--narrow,.sechead,.author__in,.hire{grid-template-columns:minmax(0,1fr)}
+  .sechead{align-items:start}
+  .hero__text{order:-1}
+  .faq{grid-template-columns:minmax(0,1fr)}
+  .sum{position:static}
+  .mappanel{aspect-ratio:16/11;min-height:0}
+  .foot__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:660px){
+  .cells--3,.cells--4{grid-template-columns:minmax(0,1fr)}
+  .fields{grid-template-columns:minmax(0,1fr)}
+  .opts--2{grid-template-columns:minmax(0,1fr)}
+  .demobar__tag{display:none}
+  .demobar__in{font-size:.79rem;line-height:1.55;padding:7px 0;gap:2px 14px}
+  .deflist>div,.terms>li{grid-template-columns:minmax(0,1fr)}
+  .author__list>div{grid-template-columns:minmax(0,1fr)}
+  .author__actions .btn,.formfoot .btn{flex:1 1 auto}
+  .foot__in{grid-template-columns:minmax(0,1fr)}
+  .rows>div{grid-template-columns:minmax(0,1fr) auto}
+  .mappanel{aspect-ratio:auto;min-height:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  .js .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<svg class="defs" aria-hidden="true" focusable="false" width="0" height="0">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <pattern id="gridFine" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path d="M14 0H0v14" fill="none" stroke="#1B222B" stroke-width="1"/>
+    </pattern>
+    <pattern id="gridWide" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M34 0H0v34" fill="none" stroke="#222B36" stroke-width="1"/>
+    </pattern>
+    <pattern id="gridLight" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M34 0H0v34" fill="none" stroke="#DCDCD5" stroke-width="1"/>
+    </pattern>
+    <pattern id="dotsLight" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#CBCBC3"/>
+    </pattern>
+    <linearGradient id="gDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1B2530"/><stop offset="1" stop-color="#090D11"/>
+    </linearGradient>
+    <linearGradient id="gDeep" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#0B0F14"/><stop offset="1" stop-color="#18212B"/>
+    </linearGradient>
+    <linearGradient id="gLight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBFBF9"/><stop offset="1" stop-color="#DEDED7"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="topbar">
+  <div class="demobar">
+    <div class="wrap demobar__in">
+      <span class="demobar__tag">Ukážkový web</span>
+      <span class="demobar__txt">Takýto web pre vás spravím.</span>
+      <a href="https://apoliak.online">apoliak.online</a>
+      <a href="tel:+421902464022">0902 464 022</a>
+    </div>
+  </div>
+  <header class="site" id="hlavicka">
+    <div class="wrap site__in">
+      <a class="brand" href="#uvod">
+        <svg class="brand__mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <rect width="64" height="64" fill="#151C25" stroke="#232C37"/>
+          <circle cx="32" cy="35" r="14" fill="none" stroke="#C9962F" stroke-width="4"/>
+          <rect x="30" y="8" width="4" height="14" fill="#C9962F"/>
+        </svg>
+        <span><span class="brand__name">Autoškola Rondel</span><span class="brand__sub">Nitra · Skupiny B, A, BE</span></span>
+      </a>
+      <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="menu">
+        <span class="burger__ico" aria-hidden="true"><i></i><i></i><i></i></span>Menu
+      </button>
+      <nav class="menu" id="menu" aria-label="Hlavná navigácia">
+        <ul class="menu__list">
+          <li><a href="#kurzy">Kurzy</a></li>
+          <li><a href="#cena">Cena</a></li>
+          <li><a href="#rozsah">Rozsah</a></li>
+          <li><a href="#terminy">Termíny</a></li>
+          <li><a href="#skusky">Skúšky</a></li>
+          <li><a href="#faq">Otázky</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+        <a class="btn btn--solid btn--sm" href="#prihlaska">Prihláška</a>
+      </nav>
+    </div>
+  </header>
+</div>
+
+<main id="obsah">
+
+<!-- ============ 01 · ÚVOD ============ -->
+<section class="hero" id="uvod">
+  <svg class="hero__bg" viewBox="0 0 1440 660" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <rect width="1440" height="660" fill="#0D1116"/>
+    <rect width="1440" height="660" fill="url(#gridFine)" opacity=".6"/>
+    <g fill="none" stroke="#1C2530">
+      <circle cx="1250" cy="740" r="260"/><circle cx="1250" cy="740" r="400"/><circle cx="1250" cy="740" r="540"/>
+    </g>
+    <path d="M-60 720 L300 -60 L430 -60 L70 720 Z" fill="#101720"/>
+    <path d="M980 0 H981 V660 H980 Z" fill="#1C2530"/>
+  </svg>
+  <div class="wrap hero__in">
+
+    <aside class="herocard" aria-label="Základné údaje o kurze skupiny B">
+      <svg class="panel__art" viewBox="0 0 460 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <rect width="460" height="620" fill="url(#gDeep)"/>
+        <rect width="460" height="620" fill="url(#gridWide)" opacity=".5"/>
+        <g fill="none" stroke="#28323E">
+          <circle cx="460" cy="620" r="170"/><circle cx="460" cy="620" r="260"/><circle cx="460" cy="620" r="350"/>
+        </g>
+        <path d="M300 0 L460 0 L460 150 Z" fill="#C9962F" opacity=".12"/>
+      </svg>
+      <svg class="grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)"/></svg>
+      <div class="herocard__in">
+        <div class="herocard__top">
+          <p class="plabel">Kurz skupiny B — manuálna prevodovka</p>
+          <p class="herocard__price">890 €</p>
+          <p class="pnote">Cena celého kurzu vrátane prvého termínu skúšky.</p>
+        </div>
+        <dl class="data">
+          <div><dt>Teória v učebni</dt><dd>32 hodín</dd></div>
+          <div><dt>Praktické jazdy</dt><dd>41 hodín</dd></div>
+          <div><dt>Najbližší začiatok</dt><dd class="acc">2. 9. 2026</dd></div>
+          <div><dt>Voľné miesta v skupine</dt><dd>4 zo 14</dd></div>
+          <div><dt>Záloha pri zápise</dt><dd>150 €</dd></div>
+          <div><dt>Zvyšok v splátkach</dt><dd>3 × 246,67 €</dd></div>
+        </dl>
+        <p class="herocard__foot">Splátky sú bez navýšenia a bez tretej strany.</p>
+      </div>
+    </aside>
+
+    <div class="hero__text">
+      <p class="eyebrow">Autoškola Rondel · Nitra</p>
+      <h1>Vodičský kurz<br>skupiny B <em>v Nitre</em></h1>
+      <p class="hero__lede">Kurz vedieme v skupinách najviac po štrnástich ľuďoch. Teóriu odučíme za sedem týždňov, jazdy si plánujete sami v rezervačnom kalendári. Zápis prijímame priebežne až do dňa prvej prednášky.</p>
+      <p class="hero__meta">
+        <span>Kolárska 26, Nitra</span>
+        <span>Po — Št 9:00 — 17:00</span>
+        <a href="tel:+421912638059">0912 638 059</a>
+      </p>
+      <div class="btnrow">
+        <a class="btn btn--solid" href="#prihlaska">Vyplniť prihlášku</a>
+        <a class="btn btn--line" href="#terminy">Pozrieť termíny začiatkov</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 02 · KURZY ============ -->
+<section class="sec sec--band" id="kurzy">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">01 — Ponuka kurzov</p>
+        <h2>Kurzy a skupiny vodičských oprávnení</h2>
+      </div>
+      <p class="lede">Vedieme šesť typov výcviku. Do každej skupiny zapisujeme najviac štrnásť účastníkov, aby sa jazdy dali plánovať bez čakania.</p>
+    </div>
+
+    <div class="cells cells--3 reveal">
+      <article class="cell">
+        <p class="cell__code">B</p>
+        <p class="cell__tag">Najžiadanejší kurz</p>
+        <h3>Osobné auto — manuálna prevodovka</h3>
+        <p class="cell__price">890 €<small>cena celého kurzu</small></p>
+        <p>Základný kurz na vozidlo do 3 500 kg. Po skúške vediete manuál aj automat bez obmedzenia.</p>
+        <ul class="tick">
+          <li>32 hodín teórie v učebni</li>
+          <li>41 hodín jázd, z toho 6 na cvičisku</li>
+          <li>Kurz prvej pomoci a prvý termín skúšky v cene</li>
+        </ul>
+        <div class="cell__foot">
+          <span class="mono">7 týždňov teórie</span>
+          <a class="btn btn--line btn--sm" href="#prihlaska">Prihlásiť sa</a>
+        </div>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">B / AT</p>
+        <p class="cell__tag">Bez radenia</p>
+        <h3>Osobné auto — automatická prevodovka</h3>
+        <p class="cell__price">940 €<small>cena celého kurzu</small></p>
+        <p>Rovnaký rozsah ako pri manuáli, celý výcvik odjazdíte na vozidle s automatickou prevodovkou.</p>
+        <ul class="tick">
+          <li>32 hodín teórie v učebni</li>
+          <li>41 hodín jázd na automate</li>
+          <li>Rozdielové jazdy na manuál: 5 hodín za 150 €</li>
+        </ul>
+        <div class="cell__foot">
+          <span class="mono">7 týždňov teórie</span>
+          <a class="btn btn--line btn--sm" href="#prihlaska">Prihlásiť sa</a>
+        </div>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">A1 / A2 / A</p>
+        <p class="cell__tag">125 a 650 cm³</p>
+        <h3>Motocyklové skupiny</h3>
+        <p class="cell__price">780 €<small>cena celého kurzu</small></p>
+        <p>Výcvik na motocykli podľa veku a výkonu stroja. Praktické jazdy vedieme od marca do novembra.</p>
+        <ul class="tick">
+          <li>26 hodín teórie v učebni</li>
+          <li>24 hodín jázd a úkonov na cvičisku</li>
+          <li>Prilba, rukavice a chrániče zapožičané</li>
+        </ul>
+        <div class="cell__foot">
+          <span class="mono">6 týždňov teórie</span>
+          <a class="btn btn--line btn--sm" href="#prihlaska">Prihlásiť sa</a>
+        </div>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">BE</p>
+        <p class="cell__tag">Rozšírenie oprávnenia</p>
+        <h3>Jazdná súprava s prívesom</h3>
+        <p class="cell__price">260 €<small>cena celého kurzu</small></p>
+        <p>Rozšírenie skupiny B o príves nad 750 kg. Podmienkou je platné vodičské oprávnenie skupiny B.</p>
+        <ul class="tick">
+          <li>6 hodín teórie</li>
+          <li>8 hodín jázd so súpravou</li>
+          <li>Cúvanie a státie so súpravou na cvičisku</li>
+        </ul>
+        <div class="cell__foot">
+          <span class="mono">2 týždne</span>
+          <a class="btn btn--line btn--sm" href="#prihlaska">Prihlásiť sa</a>
+        </div>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">28 €/h</p>
+        <p class="cell__tag">Po vodičskom preukaze</p>
+        <h3>Kondičné jazdy</h3>
+        <p class="cell__price">28 €<small>za jednu jazdu 45 minút</small></p>
+        <p>Pre vodičov, ktorí dlhšie neviedli vozidlo alebo si chcú natrénovať parkovanie a jazdu v meste.</p>
+        <ul class="tick">
+          <li>Bez zápisu do kurzu, stačí platný preukaz</li>
+          <li>Termín si vyberáte v rezervačnom kalendári</li>
+          <li>Balík piatich jázd za 130 €</li>
+        </ul>
+        <div class="cell__foot">
+          <span class="mono">Celý rok</span>
+          <a class="btn btn--line btn--sm" href="#prihlaska">Objednať jazdu</a>
+        </div>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">DK</p>
+        <p class="cell__tag">Nariadený výcvik</p>
+        <h3>Doškoľovací kurz</h3>
+        <p class="cell__price">180 €<small>cena celého kurzu</small></p>
+        <p>Kurz pre vodičov, ktorým bola uložená povinnosť absolvovať doškoľovací výcvik.</p>
+        <ul class="tick">
+          <li>8 hodín teórie</li>
+          <li>4 hodiny praktických jázd</li>
+          <li>Potvrdenie vydáme v deň ukončenia</li>
+        </ul>
+        <div class="cell__foot">
+          <span class="mono">2 týždne</span>
+          <a class="btn btn--line btn--sm" href="#prihlaska">Prihlásiť sa</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 · CENA ============ -->
+<section class="sec sec--paper" id="cena">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">02 — Cena kurzu skupiny B</p>
+        <h2>Čo je v cene 890 € a čo sa dopláca</h2>
+      </div>
+      <p class="lede">Cena je konečná pre riadny rozsah výcviku. Doplatok vzniká len vtedy, keď si objednáte jazdy navyše alebo opakujete skúšku.</p>
+    </div>
+
+    <div class="split split--narrow">
+      <div class="panel panel--paper reveal" style="aspect-ratio:1/1;min-height:340px">
+        <svg class="panel__art" viewBox="0 0 480 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <rect width="480" height="480" fill="url(#gLight)"/>
+          <rect width="480" height="480" fill="url(#gridLight)" opacity=".95"/>
+          <rect width="480" height="480" fill="url(#dotsLight)" opacity=".55"/>
+          <path d="M480 0 L480 210 L270 0 Z" fill="#C9962F" opacity=".18"/>
+          <g fill="none" stroke="#CFCFC7">
+            <circle cx="30" cy="450" r="130"/><circle cx="30" cy="450" r="200"/><circle cx="30" cy="450" r="270"/>
+          </g>
+        </svg>
+        <div class="panel__in" style="justify-content:center;align-items:flex-start">
+          <p class="plabel">Kurz skupiny B — manuál</p>
+          <p class="figure" style="margin:14px 0 12px;font-size:clamp(3.2rem,8.4vw,5.2rem)">890 €</p>
+          <p class="pnote" style="max-width:28ch">Záloha pri zápise 150 €, zvyšok v troch bezúročných splátkach po 246,67 €.</p>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <p class="subhead">V cene kurzu</p>
+        <dl class="rows">
+          <div>
+            <dt>Teoretická príprava<small>Pravidlá cestnej premávky, teória vedenia vozidla, konštrukcia vozidla, zásady bezpečnej jazdy</small></dt>
+            <dd>32 hodín</dd>
+          </div>
+          <div>
+            <dt>Praktický výcvik<small>6 hodín na autocvičisku, 35 hodín v cestnej premávke</small></dt>
+            <dd>41 hodín</dd>
+          </div>
+          <div>
+            <dt>Kurz prvej pomoci<small>Vedie lektor so zdravotníckym vzdelaním, potvrdenie dostanete v deň kurzu</small></dt>
+            <dd>8 hodín</dd>
+          </div>
+          <div>
+            <dt>Učebné materiály<small>Skriptá, pracovný zošit a prístup k skúšobným testom na šesť mesiacov</small></dt>
+            <dd>v cene</dd>
+          </div>
+          <div>
+            <dt>Prvý termín skúšky<small>Teoretická skúška aj skúška z vedenia vozidla, prihlášku podávame my</small></dt>
+            <dd>v cene</dd>
+          </div>
+          <div>
+            <dt>Vyzdvihnutie na jazdu v Nitre<small>Inštruktor po vás príde na dohodnuté miesto v meste</small></dt>
+            <dd>v cene</dd>
+          </div>
+        </dl>
+
+        <p class="subhead" style="margin-top:38px">Doplatky mimo ceny kurzu</p>
+        <dl class="rows rows--flat">
+          <div><dt>Jazda navyše nad rámec kurzu (45 minút)</dt><dd>28 €</dd></div>
+          <div><dt>Balík piatich jázd navyše</dt><dd>130 €</dd></div>
+          <div><dt>Prípravný kurz na teoretickú skúšku (3 hodiny)</dt><dd>25 €</dd></div>
+          <div><dt>Opakovaná skúška — príprava podkladov a pristavenie vozidla</dt><dd>35 €</dd></div>
+          <div><dt>Predĺženie platnosti kurzu o 3 mesiace</dt><dd>30 €</dd></div>
+          <div><dt>Rozdielové jazdy z automatu na manuál (5 hodín)</dt><dd>150 €</dd></div>
+        </dl>
+
+        <p class="subhead" style="margin-top:38px">Platíte inde, nie u nás</p>
+        <ul class="plain">
+          <li>Potvrdenie o zdravotnej spôsobilosti uhrádzate priamo lekárovi</li>
+          <li>Správny poplatok za vydanie vodičského preukazu platíte na polícii</li>
+          <li>Fotografiu na preukaz vyhotoví polícia pri podaní žiadosti</li>
+        </ul>
+        <p class="note" style="margin-top:20px">Zľava 40 € pre študentov denného štúdia do 26 rokov. Pri úhrade celej sumy pri zápise odpočítame ďalších 20 €.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 · ROZSAH A POČET JÁZD ============ -->
+<section class="sec" id="rozsah">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">03 — Rozsah výcviku</p>
+        <h2>Počet jázd a čo sa na nich odjazdí</h2>
+      </div>
+      <p class="lede">Riadny rozsah kurzu skupiny B je 41 hodín praktického výcviku rozdelených do dvadsiatich jázd. Nižšie vidíte, čo obsahuje každá etapa.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="tablewrap" tabindex="0" role="region" aria-label="Rozpis praktického výcviku skupiny B">
+        <table>
+          <caption>Rozpis praktického výcviku — skupina B</caption>
+          <thead>
+            <tr>
+              <th scope="col">Etapa</th>
+              <th scope="col">Čo sa jazdí</th>
+              <th scope="col">Jázd</th>
+              <th scope="col">Hodín</th>
+              <th scope="col">Kde</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Autocvičisko</th>
+              <td>Rozjazd, radenie, cúvanie, kolmé aj pozdĺžne parkovanie, otáčanie</td>
+              <td class="num">3</td><td class="num">6</td><td>Uzavretá plocha</td>
+            </tr>
+            <tr>
+              <th scope="row">Mesto a križovatky</th>
+              <td>Prednosť v jazde, kruhové objazdy, jednosmerky, zastavenie a státie</td>
+              <td class="num">10</td><td class="num">20</td><td>Nitra</td>
+            </tr>
+            <tr>
+              <th scope="row">Cesty mimo obce</th>
+              <td>Predchádzanie, odbočovanie, jazda v kolóne, stúpania a klesania</td>
+              <td class="num">4</td><td class="num">8</td><td>Okres Nitra</td>
+            </tr>
+            <tr>
+              <th scope="row">Rýchlostná cesta</th>
+              <td>Pripájanie a odbočovanie, jazda vyššou rýchlosťou, odstupy</td>
+              <td class="num">2</td><td class="num">4</td><td>R1</td>
+            </tr>
+            <tr>
+              <th scope="row">Skúšobná trasa</th>
+              <td>Jazda s iným inštruktorom podľa skúšobných trás a rozbor chýb</td>
+              <td class="num">1</td><td class="num">3</td><td>Nitra a okolie</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="2">Spolu</td><td class="num">20</td><td class="num">41</td><td>—</td></tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="split reveal" style="margin-top:clamp(34px,4vw,52px)">
+      <div>
+        <p class="subhead">Ako sa jazdy plánujú</p>
+        <ul class="tick tick--last">
+          <li>Jedna vyučovacia hodina trvá 45 minút, jazdy plánujeme spravidla po dvoch hodinách v kuse</li>
+          <li>Termíny si rezervujete sami v kalendári, voľné časy sú od 7:00 do 19:00</li>
+          <li>Pri tempe dve jazdy týždenne odjazdíte celý kurz približne za desať týždňov</li>
+          <li>Naplánovanú jazdu zrušíte najneskôr 24 hodín vopred, inak sa počíta ako odjazdená</li>
+          <li>Inštruktor po vás príde na dohodnuté miesto v Nitre, mimo mesta za príplatok 30 €</li>
+        </ul>
+      </div>
+      <div>
+        <p class="subhead">Rozsah teórie</p>
+        <dl class="rows">
+          <div><dt>Pravidlá cestnej premávky</dt><dd>14 hodín</dd></div>
+          <div><dt>Teória vedenia vozidla</dt><dd>8 hodín</dd></div>
+          <div><dt>Konštrukcia a údržba vozidla</dt><dd>4 hodiny</dd></div>
+          <div><dt>Zásady bezpečnej jazdy a rizikové situácie</dt><dd>6 hodín</dd></div>
+        </dl>
+        <p class="note" style="margin-top:18px">Teória prebieha v sedemnástich stretnutiach. Zmeškanú hodinu si doplníte v ktorejkoľvek inej skupine, ktorá práve beží.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · PRIEBEH ============ -->
+<section class="sec sec--band" id="priebeh">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">04 — Priebeh výcviku</p>
+        <h2>Od zápisu po vodičský preukaz v šiestich krokoch</h2>
+      </div>
+      <p class="lede">Pri bežnom tempe trvá celý kurz tri až štyri mesiace. Najrýchlejší účastníci ho stihnú za desať týždňov.</p>
+    </div>
+
+    <div class="cells cells--3 reveal">
+      <div class="cell">
+        <span class="step__n">Krok 01</span>
+        <h3>Zápis do kurzu</h3>
+        <p>Prihlášku vyplníte na tomto webe alebo v kancelárii. Prinesiete doklad totožnosti a potvrdenie o zdravotnej spôsobilosti od lekára. Zápis potvrdíte zálohou 150 €.</p>
+        <p class="step__meta">1 návšteva · 20 minút</p>
+      </div>
+      <div class="cell">
+        <span class="step__n">Krok 02</span>
+        <h3>Teória v učebni</h3>
+        <p>32 hodín rozdelených do sedemnástich stretnutí. Prednášky sú dvakrát týždenne, víkendová skupina má sobotu. Zmeškanú hodinu si doplníte v inej skupine.</p>
+        <p class="step__meta">7 týždňov</p>
+      </div>
+      <div class="cell">
+        <span class="step__n">Krok 03</span>
+        <h3>Autocvičisko</h3>
+        <p>Prvých 6 hodín jazdíte na uzavretej ploche: rozjazd, radenie, cúvanie, parkovanie pozdĺžne aj kolmé, otáčanie na trikrát.</p>
+        <p class="step__meta">6 hodín · 3 jazdy</p>
+      </div>
+      <div class="cell">
+        <span class="step__n">Krok 04</span>
+        <h3>Jazdy v premávke</h3>
+        <p>35 hodín v meste, na cestách mimo obce a na rýchlostnej ceste. Termíny si rezervujete v kalendári, spravidla dve jazdy týždenne.</p>
+        <p class="step__meta">35 hodín · 10 až 14 týždňov</p>
+      </div>
+      <div class="cell">
+        <span class="step__n">Krok 05</span>
+        <h3>Príprava na skúšku</h3>
+        <p>Odjazdíte skúšobnú trasu s iným inštruktorom a napíšete dva cvičné testy. Ak niečo nesedí, dohodneme doplňujúce jazdy ešte pred termínom skúšky.</p>
+        <p class="step__meta">1 týždeň</p>
+      </div>
+      <div class="cell">
+        <span class="step__n">Krok 06</span>
+        <h3>Skúška a preukaz</h3>
+        <p>Prihlášku na skúšku podávame my, termín vám oznámime najneskôr sedem dní vopred. Na skúšku idete naším vozidlom, na ktorom ste jazdili celý kurz.</p>
+        <p class="step__meta">Termín do 4 týždňov od ukončenia</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 · TERMÍNY ============ -->
+<section class="sec" id="terminy">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">05 — Termíny začiatkov</p>
+        <h2>Najbližšie začiatky kurzov</h2>
+      </div>
+      <p class="lede">Prihlásiť sa dá až do dňa prvej prednášky, pokiaľ sú v skupine voľné miesta. Termín si viete v prihláške zmeniť aj neskôr.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="chips" role="group" aria-label="Filter termínov podľa typu kurzu">
+        <button type="button" class="chip is-on" data-filter="vsetky" aria-pressed="true">Všetky</button>
+        <button type="button" class="chip" data-filter="vecerny" aria-pressed="false">Večerný</button>
+        <button type="button" class="chip" data-filter="denny" aria-pressed="false">Denný</button>
+        <button type="button" class="chip" data-filter="vikendovy" aria-pressed="false">Víkendový</button>
+      </div>
+
+      <div class="tablewrap" tabindex="0" role="region" aria-label="Termíny začiatkov kurzov">
+        <table>
+          <caption id="terminy-pocet">Zobrazené termíny: 8 z 8</caption>
+          <thead>
+            <tr>
+              <th scope="col">Začiatok</th>
+              <th scope="col">Typ kurzu</th>
+              <th scope="col">Prednášky</th>
+              <th scope="col">Skupiny</th>
+              <th scope="col">Voľné miesta</th>
+              <th scope="col"><span class="vh">Prihlásenie</span></th>
+            </tr>
+          </thead>
+          <tbody id="terminy-telo">
+            <tr data-typ="vecerny">
+              <td class="date">2. 9. 2026</td><td>Večerný</td><td class="num">Ut, Št 17:00 — 19:00</td><td>B, B automat</td>
+              <td><span class="free"><b>4</b> zo 14</span></td>
+              <td><button type="button" class="linkbtn" data-termin="2. 9. 2026 — večerný kurz">Prihlásiť</button></td>
+            </tr>
+            <tr data-typ="denny">
+              <td class="date">15. 9. 2026</td><td>Denný</td><td class="num">Po, St 9:00 — 11:00</td><td>B</td>
+              <td><span class="free"><b>7</b> zo 14</span></td>
+              <td><button type="button" class="linkbtn" data-termin="15. 9. 2026 — denný kurz">Prihlásiť</button></td>
+            </tr>
+            <tr data-typ="vikendovy">
+              <td class="date">26. 9. 2026</td><td>Víkendový</td><td class="num">So 9:00 — 14:00</td><td>B</td>
+              <td><span class="free"><b>2</b> zo 14</span></td>
+              <td><button type="button" class="linkbtn" data-termin="26. 9. 2026 — víkendový kurz">Prihlásiť</button></td>
+            </tr>
+            <tr data-typ="vecerny">
+              <td class="date">6. 10. 2026</td><td>Večerný</td><td class="num">Ut, Št 17:00 — 19:00</td><td>B, B automat, BE</td>
+              <td><span class="free"><b>9</b> zo 14</span></td>
+              <td><button type="button" class="linkbtn" data-termin="6. 10. 2026 — večerný kurz">Prihlásiť</button></td>
+            </tr>
+            <tr data-typ="vecerny">
+              <td class="date">20. 10. 2026</td><td>Večerný</td><td class="num">Ut, Št 17:00 — 19:00</td><td>A1, A2, A</td>
+              <td><span class="free"><b>6</b> z 12</span></td>
+              <td><button type="button" class="linkbtn" data-termin="20. 10. 2026 — večerný kurz (motocykle)">Prihlásiť</button></td>
+            </tr>
+            <tr data-typ="denny">
+              <td class="date">3. 11. 2026</td><td>Denný</td><td class="num">Po, St 9:00 — 11:00</td><td>B</td>
+              <td><span class="free"><b>11</b> zo 14</span></td>
+              <td><button type="button" class="linkbtn" data-termin="3. 11. 2026 — denný kurz">Prihlásiť</button></td>
+            </tr>
+            <tr data-typ="vikendovy">
+              <td class="date">14. 11. 2026</td><td>Víkendový</td><td class="num">So 9:00 — 14:00</td><td>B, B automat</td>
+              <td><span class="free"><b>8</b> zo 14</span></td>
+              <td><button type="button" class="linkbtn" data-termin="14. 11. 2026 — víkendový kurz">Prihlásiť</button></td>
+            </tr>
+            <tr data-typ="vecerny">
+              <td class="date">1. 12. 2026</td><td>Večerný</td><td class="num">Ut, Št 17:00 — 19:00</td><td>B, BE</td>
+              <td><span class="free"><b>13</b> zo 14</span></td>
+              <td><button type="button" class="linkbtn" data-termin="1. 12. 2026 — večerný kurz">Prihlásiť</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:16px">Doškoľovacie kurzy a kondičné jazdy nie sú viazané na začiatok skupiny — dohodneme ich do troch pracovných dní od prihlášky.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 · SKÚŠKY ============ -->
+<section class="sec sec--paper" id="skusky">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">06 — Záverečné skúšky</p>
+        <h2>Ako prebiehajú skúšky na konci kurzu</h2>
+      </div>
+      <p class="lede">Skúška má dve časti a obe absolvujete v jeden deň. Prihlášku podávame my, vy prídete na termín a idete na vozidle, na ktorom ste jazdili.</p>
+    </div>
+
+    <div class="cells cells--3 reveal">
+      <div class="cell">
+        <span class="step__n">Časť 01</span>
+        <h3>Teoretická skúška</h3>
+        <p>Test na počítači z pravidiel cestnej premávky, dopravných značiek a situácií s prednosťou v jazde. Výsledok sa vyhodnotí hneď po odovzdaní.</p>
+        <dl class="rows rows--flat" style="margin-top:18px">
+          <div><dt>Forma</dt><dd>elektronický test</dd></div>
+          <div><dt>Trvanie</dt><dd>do 40 minút</dd></div>
+          <div><dt>Príprava</dt><dd>testy v cene kurzu</dd></div>
+        </dl>
+      </div>
+      <div class="cell">
+        <span class="step__n">Časť 02</span>
+        <h3>Skúška z vedenia vozidla</h3>
+        <p>Jazda v meste aj mimo obce podľa pokynov skúšobného komisára. Súčasťou je zastavenie a státie, otáčanie a jeden úkon na parkovanie.</p>
+        <dl class="rows rows--flat" style="margin-top:18px">
+          <div><dt>Trvanie</dt><dd>približne 30 minút</dd></div>
+          <div><dt>Vo vozidle</dt><dd>komisár a inštruktor</dd></div>
+          <div><dt>Vozidlo</dt><dd>naše, z výcviku</dd></div>
+        </dl>
+      </div>
+      <div class="cell">
+        <span class="step__n">Po skúške</span>
+        <h3>Výsledok a preukaz</h3>
+        <p>Výsledok sa dozviete v deň skúšky. Potom podáte na polícii žiadosť o vydanie vodičského preukazu — postup vám vytlačíme aj s adresou a hodinami.</p>
+        <dl class="rows rows--flat" style="margin-top:18px">
+          <div><dt>Výsledok</dt><dd>v deň skúšky</dd></div>
+          <div><dt>Žiadosť</dt><dd>na polícii</dd></div>
+          <div><dt>Prevzatie</dt><dd>do 2 týždňov</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="split reveal" style="margin-top:clamp(34px,4vw,52px)">
+      <div>
+        <p class="subhead">Čo si vziať na skúšku</p>
+        <ul class="plain">
+          <li>Doklad totožnosti — bez neho vás komisár na skúšku nepustí</li>
+          <li>Okuliare alebo šošovky, ak ich máte zapísané v zdravotnom posudku</li>
+          <li>Pevnú obuv, v ktorej sa vám dobre ovládajú pedále</li>
+          <li>Príchod 20 minút pred termínom, stretávame sa pred učebňou</li>
+        </ul>
+        <p class="note" style="margin-top:20px">Deň pred skúškou vám voláme a pripomenieme čas aj miesto stretnutia.</p>
+      </div>
+      <div>
+        <p class="subhead">Keď skúška nevyjde</p>
+        <ul class="terms">
+          <li><b>Opakovanie</b><span>Opakovanú skúšku prihlásime na najbližší voľný termín, spravidla do troch týždňov.</span></li>
+          <li><b>35 €</b><span>Poplatok za prípravu podkladov a pristavenie vozidla na opakovanú skúšku.</span></li>
+          <li><b>2 až 3 jazdy</b><span>Odporúčaný nácvik konkrétnej chyby pred opakovaním, jedna jazda 28 €.</span></li>
+          <li><b>6 mesiacov</b><span>Lehota na opakovanie od prvého termínu, potom je potrebný doplňujúci výcvik.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 · VOZOVÝ PARK ============ -->
+<section class="sec" id="vozidla">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">07 — Vozový park</p>
+        <h2>Na čom jazdíte počas výcviku</h2>
+      </div>
+      <p class="lede">Všetky výcvikové vozidlá majú dvojité ovládanie pedálov a prídavné spätné zrkadlá. Servisná prehliadka prebieha každých 10 000 km.</p>
+    </div>
+
+    <div class="cells cells--4 reveal">
+      <article class="cell">
+        <p class="cell__code">4 ×</p>
+        <p class="cell__tag">Malé osobné vozidlo — manuál</p>
+        <h3>Výcvikové vozidlo skupiny B</h3>
+        <p>Základ celého kurzu. Krátke vozidlo, v ktorom sa dobre odhaduje šírka aj vzdialenosť pri parkovaní.</p>
+        <dl class="deflist" style="margin-top:auto">
+          <div><dt>Motor</dt><dd>1.0 benzín, päťstupňová manuálna prevodovka</dd></div>
+          <div><dt>Ročník</dt><dd>2022 až 2024</dd></div>
+          <div><dt>Výbava</dt><dd>Klimatizácia, parkovacie snímače, cúvacia kamera</dd></div>
+        </dl>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">2 ×</p>
+        <p class="cell__tag">Malé osobné vozidlo — automat</p>
+        <h3>Vozidlo s automatickou prevodovkou</h3>
+        <p>Pre kurz skupiny B automat a pre kondičné jazdy vodičov, ktorí nechcú radiť.</p>
+        <dl class="deflist" style="margin-top:auto">
+          <div><dt>Motor</dt><dd>1.5 benzín, automatická prevodovka</dd></div>
+          <div><dt>Ročník</dt><dd>2023 a 2024</dd></div>
+          <div><dt>Výbava</dt><dd>Klimatizácia, cúvacia kamera, pomocník rozjazdu do kopca</dd></div>
+        </dl>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">3 ×</p>
+        <p class="cell__tag">Motocykle A1 a A2 / A</p>
+        <h3>Motocykle pre skupiny A</h3>
+        <p>Dva stroje s objemom 125 cm³ na skupinu A1 a jeden 650 cm³ na skupiny A2 a A.</p>
+        <dl class="deflist" style="margin-top:auto">
+          <div><dt>Objem</dt><dd>2 × 125 cm³, 1 × 650 cm³</dd></div>
+          <div><dt>Sezóna</dt><dd>Jazdy od marca do novembra</dd></div>
+          <div><dt>Výstroj</dt><dd>Prilba, rukavice a chrániče na zapožičanie</dd></div>
+        </dl>
+      </article>
+
+      <article class="cell">
+        <p class="cell__code">1 ×</p>
+        <p class="cell__tag">Súprava s prívesom</p>
+        <h3>Jazdná súprava skupiny BE</h3>
+        <p>Osobné vozidlo s brzdeným prívesom. Používa sa na výcvik cúvania a státia so súpravou.</p>
+        <dl class="deflist" style="margin-top:auto">
+          <div><dt>Príves</dt><dd>Brzdený, celková hmotnosť 1 300 kg</dd></div>
+          <div><dt>Ročník</dt><dd>2021</dd></div>
+          <div><dt>Výcvik</dt><dd>Prevažne na autocvičisku</dd></div>
+        </dl>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 · UČEBŇA A TÍM ============ -->
+<section class="sec sec--band" id="ucebna">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">08 — Učebňa, cvičisko a tím</p>
+        <h2>Kde prebieha teória a kde jazdíte prvé hodiny</h2>
+      </div>
+      <p class="lede">Učebňa je priamo v budove kancelárie na Kolárskej 26. Autocvičisko je 2,5 km odtiaľ, na prvé jazdy vás tam odvezie inštruktor.</p>
+    </div>
+
+    <div class="cells cells--3 reveal" style="margin-bottom:clamp(30px,3.6vw,46px)">
+      <div class="cell">
+        <p class="figure">24</p>
+        <p class="plabel" style="margin-top:14px">Miest v učebni</p>
+        <p style="margin-top:12px">Projektor, ozvučenie, klimatizácia a kuchynka s vodou a kávou pre účastníkov kurzu.</p>
+      </div>
+      <div class="cell">
+        <p class="figure">4 200 m²</p>
+        <p class="plabel" style="margin-top:14px">Autocvičisko</p>
+        <p style="margin-top:12px">Uzavretá plocha s vyznačenými parkovacími miestami, šikanou a plochou na otáčanie.</p>
+      </div>
+      <div class="cell">
+        <p class="figure">6</p>
+        <p class="plabel" style="margin-top:14px">Parkovacích miest vo dvore</p>
+        <p style="margin-top:12px">Vyhradené pre účastníkov kurzu, bez poplatku. Vjazd je z Kolárskej ulice.</p>
+      </div>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <p class="subhead">Kto vás bude učiť</p>
+        <dl class="rows">
+          <div><dt>Hlavný inštruktor a vedúci výcviku</dt><dd>teória + jazdy B</dd></div>
+          <div><dt>Inštruktori skupiny B</dt><dd>4 osoby</dd></div>
+          <div><dt>Inštruktor motocyklových skupín</dt><dd>A1, A2, A</dd></div>
+          <div><dt>Lektor prvej pomoci</dt><dd>externe</dd></div>
+          <div><dt>Kancelária a rozvrhovanie jázd</dt><dd>1 osoba</dd></div>
+        </dl>
+        <p class="note" style="margin-top:18px">Inštruktora si vyberáte pri zápise. Ak vám nesadne, prehodíme vás k inému bez poplatku a bez vysvetľovania.</p>
+      </div>
+      <div>
+        <p class="subhead">Čo je v učebni k dispozícii</p>
+        <ul class="tick tick--last">
+          <li>Skúšobné testy s vyhodnotením — prístup na šesť mesiacov od zápisu</li>
+          <li>Skriptá a pracovný zošit, ktoré si po kurze necháte</li>
+          <li>Modely križovatiek na precvičenie prednosti v jazde</li>
+          <li>Rezervačný kalendár jázd — voľné termíny vidíte hneď</li>
+          <li>Konzultačné hodiny pred skúškou každý štvrtok o 16:00</li>
+          <li>Bezbariérový vstup z dvora a výťah na druhé poschodie</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 · PRIHLÁŠKA ============ -->
+<section class="sec" id="prihlaska">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">09 — Prihláška do kurzu</p>
+        <h2>Prihláška s prepočtom ceny</h2>
+      </div>
+      <p class="lede">Vyberte kurz, rozsah jázd a termín začiatku. Cena sa prepočíta hneď, aby ste vedeli, na čom ste, ešte pred zápisom.</p>
+    </div>
+
+    <div class="split split--wide">
+      <form class="form reveal" id="prihlaska-form" novalidate>
+        <fieldset>
+          <legend>1 — Vyberte kurz</legend>
+          <div class="opts opts--2">
+            <label class="opt"><input type="radio" name="kurz" value="b" data-cena="890" data-nazov="Skupina B — manuál" checked><span><span class="opt__t">Skupina B — manuál</span><span class="opt__s">32 h teórie, 41 h jázd</span></span><span class="opt__p">890 €</span></label>
+            <label class="opt"><input type="radio" name="kurz" value="bat" data-cena="940" data-nazov="Skupina B — automat"><span><span class="opt__t">Skupina B — automat</span><span class="opt__s">32 h teórie, 41 h jázd</span></span><span class="opt__p">940 €</span></label>
+            <label class="opt"><input type="radio" name="kurz" value="a" data-cena="780" data-nazov="Motocyklové skupiny A1 / A2 / A"><span><span class="opt__t">Motocykel A1 / A2 / A</span><span class="opt__s">26 h teórie, 24 h výcviku</span></span><span class="opt__p">780 €</span></label>
+            <label class="opt"><input type="radio" name="kurz" value="be" data-cena="260" data-nazov="Skupina BE — súprava s prívesom"><span><span class="opt__t">Skupina BE — príves</span><span class="opt__s">6 h teórie, 8 h jázd</span></span><span class="opt__p">260 €</span></label>
+            <label class="opt"><input type="radio" name="kurz" value="dk" data-cena="180" data-nazov="Doškoľovací kurz"><span><span class="opt__t">Doškoľovací kurz</span><span class="opt__s">8 h teórie, 4 h jázd</span></span><span class="opt__p">180 €</span></label>
+            <label class="opt"><input type="radio" name="kurz" value="kond" data-cena="130" data-nazov="Kondičné jazdy — balík 5 jázd"><span><span class="opt__t">Kondičné jazdy</span><span class="opt__s">balík piatich jázd po 45 minút</span></span><span class="opt__p">130 €</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>2 — Rozsah a termín</legend>
+          <div class="fields">
+            <div class="field">
+              <label for="f-rozsah">Rozsah jázd</label>
+              <select id="f-rozsah" name="rozsah">
+                <option value="0" data-cena="0" data-nazov="riadny rozsah" selected>Riadny rozsah kurzu — bez príplatku</option>
+                <option value="5" data-cena="130" data-nazov="5 jázd navyše">5 jázd navyše — 130 €</option>
+                <option value="10" data-cena="250" data-nazov="10 jázd navyše">10 jázd navyše — 250 €</option>
+                <option value="15" data-cena="360" data-nazov="15 jázd navyše">15 jázd navyše — 360 €</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-termin">Termín začiatku</label>
+              <select id="f-termin" name="termin">
+                <option>2. 9. 2026 — večerný kurz</option>
+                <option>15. 9. 2026 — denný kurz</option>
+                <option>26. 9. 2026 — víkendový kurz</option>
+                <option>6. 10. 2026 — večerný kurz</option>
+                <option>20. 10. 2026 — večerný kurz (motocykle)</option>
+                <option>3. 11. 2026 — denný kurz</option>
+                <option>14. 11. 2026 — víkendový kurz</option>
+                <option>1. 12. 2026 — večerný kurz</option>
+                <option>Termín zatiaľ neviem vybrať</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>3 — Doplnky a zľavy</legend>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" name="doplnok" data-cena="25" data-nazov="prípravný kurz na teóriu"><span><span class="opt__t">Prípravný kurz na teoretickú skúšku</span><span class="opt__s">3 hodiny, týždeň pred termínom skúšky</span></span><span class="opt__p">+25 €</span></label>
+            <label class="opt"><input type="checkbox" name="doplnok" data-cena="40" data-nazov="jazdy po 16:00 a cez víkend"><span><span class="opt__t">Jazdy len po 16:00 a cez víkend</span><span class="opt__s">vyhradené termíny pre pracujúcich</span></span><span class="opt__p">+40 €</span></label>
+            <label class="opt"><input type="checkbox" name="doplnok" data-cena="30" data-nazov="vyzdvihnutie mimo Nitry"><span><span class="opt__t">Vyzdvihnutie na jazdu mimo Nitry</span><span class="opt__s">do 15 km od učebne</span></span><span class="opt__p">+30 €</span></label>
+            <label class="opt"><input type="checkbox" name="doplnok" data-cena="30" data-nazov="predĺženie platnosti kurzu"><span><span class="opt__t">Predĺženie platnosti kurzu o 3 mesiace</span><span class="opt__s">dá sa doobjednať aj neskôr</span></span><span class="opt__p">+30 €</span></label>
+            <label class="opt"><input type="checkbox" id="f-student" name="student"><span><span class="opt__t">Som študent denného štúdia do 26 rokov</span><span class="opt__s">preukaz doložíte pri zápise</span></span><span class="opt__p">−40 €</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>4 — Spôsob úhrady</legend>
+          <div class="opts opts--2">
+            <label class="opt"><input type="radio" name="platba" value="splatky" checked><span><span class="opt__t">Záloha 150 € a tri splátky</span><span class="opt__s">bez navýšenia</span></span></label>
+            <label class="opt"><input type="radio" name="platba" value="naraz"><span><span class="opt__t">Celá suma pri zápise</span><span class="opt__s">zľava z ceny kurzu</span></span><span class="opt__p">−20 €</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>5 — Kontaktné údaje</legend>
+          <div class="fields">
+            <div class="field">
+              <label for="f-meno">Meno a priezvisko</label>
+              <input type="text" id="f-meno" name="meno" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="f-tel">Telefón</label>
+              <input type="tel" id="f-tel" name="telefon" autocomplete="tel" inputmode="tel" required>
+            </div>
+            <div class="field">
+              <label for="f-mesto">Mesto alebo obec</label>
+              <input type="text" id="f-mesto" name="mesto" autocomplete="address-level2">
+            </div>
+            <div class="field">
+              <label for="f-vek">Rok narodenia</label>
+              <input type="text" id="f-vek" name="rok" inputmode="numeric" autocomplete="off">
+            </div>
+            <div class="field field--full">
+              <label for="f-pozn">Poznámka pre kanceláriu</label>
+              <textarea id="f-pozn" name="poznamka" placeholder="Napríklad preferovaný čas jázd alebo meno inštruktora."></textarea>
+            </div>
+          </div>
+          <label class="consent" style="margin-top:18px">
+            <input type="checkbox" id="f-suhlas" name="suhlas" required>
+            <span>Súhlasím so spracovaním údajov na účel vybavenia prihlášky do kurzu.</span>
+          </label>
+        </fieldset>
+
+        <div class="formfoot">
+          <button class="btn btn--solid" type="submit">Odoslať prihlášku</button>
+          <span class="note">Prihláška príde do schránky autoškoly. Ozveme sa telefonicky do 24 hodín.</span>
+        </div>
+        <p class="status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <aside class="sum reveal" aria-labelledby="sum-nadpis">
+        <div class="sum__head">
+          <p class="eyebrow" style="margin:0 0 8px">Prepočet ceny</p>
+          <p id="sum-nadpis" class="sum__title">Vaša cena kurzu</p>
+        </div>
+        <div class="sum__in">
+          <dl class="sum__rows">
+            <div><dt id="sum-kurz-n">Skupina B — manuál</dt><dd id="sum-kurz">890 €</dd></div>
+            <div><dt id="sum-rozsah-n">Rozsah jázd — riadny rozsah</dt><dd id="sum-rozsah">0 €</dd></div>
+            <div><dt id="sum-doplnky-n">Doplnky — žiadne</dt><dd id="sum-doplnky">0 €</dd></div>
+            <div><dt id="sum-zlava-n">Zľavy — žiadne</dt><dd id="sum-zlava">0 €</dd></div>
+            <div><dt>Termín začiatku</dt><dd id="sum-termin">2. 9. 2026</dd></div>
+          </dl>
+          <div class="sum__total">
+            <span>Spolu</span>
+            <b id="sum-total" aria-live="polite">890 €</b>
+          </div>
+          <p class="sum__pay" id="sum-pay">Záloha pri zápise <b>150 €</b>, potom tri splátky po <b>246,67 €</b>. Prvá splátka je splatná pri začiatku teórie.</p>
+          <p class="note" style="margin:16px 0 0">Prepočet je orientačný a nie je záväznou objednávkou. Presnú sumu potvrdíme pri zápise.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 · PLATBA ============ -->
+<section class="sec sec--paper" id="platba">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">10 — Platba a splátky</p>
+        <h2>Ako a kedy sa kurz platí</h2>
+      </div>
+      <p class="lede">Splátky vedieme sami, bez tretej strany a bez posudzovania. Doklad o každej platbe dostanete hneď pri úhrade.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <p class="subhead">Splátkový kalendár kurzu skupiny B</p>
+        <div class="tablewrap" tabindex="0" role="region" aria-label="Splátkový kalendár kurzu skupiny B">
+          <table>
+            <thead>
+              <tr><th scope="col">Platba</th><th scope="col">Kedy</th><th scope="col">Suma</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Záloha</th><td>pri zápise do kurzu</td><td class="num">150,00 €</td></tr>
+              <tr><th scope="row">1. splátka</th><td>pri prvej hodine teórie</td><td class="num">246,67 €</td></tr>
+              <tr><th scope="row">2. splátka</th><td>po ukončení autocvičiska</td><td class="num">246,67 €</td></tr>
+              <tr><th scope="row">3. splátka</th><td>pred podaním prihlášky na skúšku</td><td class="num">246,66 €</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td colspan="2">Spolu</td><td class="num">890,00 €</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="note" style="margin-top:16px">Pri úhrade celej sumy pri zápise je cena 870 €. Zľavu pre študentov denného štúdia odpočítame ešte pred rozdelením na splátky.</p>
+      </div>
+
+      <div>
+        <p class="subhead">Spôsoby platby</p>
+        <ul class="plain">
+          <li>Prevodom na účet — údaje dostanete pri zápise, splatnosť 7 dní</li>
+          <li>Platobnou kartou v kancelárii počas otváracích hodín</li>
+          <li>V hotovosti v kancelárii do sumy 1 000 €</li>
+          <li>Tri bezúročné splátky bez tretej strany a bez posudzovania</li>
+        </ul>
+
+        <p class="subhead" style="margin-top:36px">Doklady a faktúra na firmu</p>
+        <ul class="terms">
+          <li><b>Doklad</b><span>Potvrdenie o úhrade dostanete pri každej platbe, aj pri prevode na účet.</span></li>
+          <li><b>Faktúra</b><span>Kurz na firmu vystavíme na faktúru do troch pracovných dní od zápisu.</span></li>
+          <li><b>Zamestnávateľ</b><span>Ak kurz platí zamestnávateľ, splátky prispôsobíme jeho fakturačnému obdobiu.</span></li>
+          <li><b>Poukaz</b><span>Darčekový poukaz odpočítame z ceny pri zápise, zvyšok doplatíte bežným spôsobom.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 · STORNO ============ -->
+<section class="sec" id="storno">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">11 — Storno a platnosť kurzu</p>
+        <h2>Podmienky zrušenia a presunu termínu</h2>
+      </div>
+      <p class="lede">Podmienky dostanete aj v tlačenej podobe pri zápise. Nič z toho nie je skryté v drobnom písme.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <p class="subhead">Zrušenie zápisu</p>
+        <ul class="terms">
+          <li><b>Zápis</b><span>Prihláška je záväzná až po uhradení zálohy 150 €.</span></li>
+          <li><b>7 dní a viac</b><span>Zrušenie viac ako sedem dní pred začiatkom teórie — zálohu vraciame v plnej výške do piatich pracovných dní.</span></li>
+          <li><b>6 až 1 deň</b><span>Zrušenie v posledných šiestich dňoch pred začiatkom — vraciame 100 € zo zálohy.</span></li>
+          <li><b>Po začatí</b><span>Po prvej hodine teórie sa záloha nevracia. Kurz sa dá raz bezplatne presunúť na nasledujúci termín.</span></li>
+          <li><b>Jazdy</b><span>Naplánovanú jazdu zrušíte najneskôr 24 hodín vopred, inak sa počíta ako odjazdená.</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="subhead">Platnosť kurzu a doklady</p>
+        <ul class="terms">
+          <li><b>12 mesiacov</b><span>Kurz je platný dvanásť mesiacov od dátumu zápisu.</span></li>
+          <li><b>+3 mesiace</b><span>Platnosť predĺžime dvakrát, vždy o tri mesiace za poplatok 30 €.</span></li>
+          <li><b>Prerušenie</b><span>Kurz sa dá zo zdravotných dôvodov prerušiť na dva mesiace bez poplatku, stačí potvrdenie od lekára.</span></li>
+          <li><b>Potvrdenie</b><span>Potvrdenie o absolvovaní výcviku vydáme v deň ukončenia jázd.</span></li>
+          <li><b>Prihláška</b><span>Prihlášku na skúšku podávame my, vy prídete len na oznámený termín.</span></li>
+        </ul>
+        <p class="note" style="margin-top:20px">Ak sa počas kurzu presťahujete alebo zmeníte prácu, prehodíme vás do inej skupiny bez poplatku — stačí zavolať do kancelárie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13 · DARČEKOVÉ POUKAZY ============ -->
+<section class="sec sec--band" id="poukazy">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">12 — Darčekové poukazy</p>
+        <h2>Poukaz na kurz alebo na jednotlivé jazdy</h2>
+      </div>
+      <p class="lede">Poukaz vystavíme do dvoch pracovných dní. Odovzdáme ho v tlačenej podobe v kancelárii alebo pošleme v elektronickej podobe.</p>
+    </div>
+
+    <div class="cells cells--4 reveal">
+      <div class="cell">
+        <p class="cell__code">50 €</p>
+        <h3>Dve kondičné jazdy</h3>
+        <p>Dve jazdy po 45 minút s inštruktorom. Vhodné pre vodiča, ktorý si chce oprášiť parkovanie.</p>
+      </div>
+      <div class="cell">
+        <p class="cell__code">130 €</p>
+        <h3>Balík piatich jázd</h3>
+        <p>Päť kondičných jázd po 45 minút. Termíny si obdarovaný vyberá sám v kalendári.</p>
+      </div>
+      <div class="cell">
+        <p class="cell__code">250 €</p>
+        <h3>Časť ceny kurzu</h3>
+        <p>Poukaz na časť kurzu skupiny B. Zvyšok sumy sa dopláca pri zápise podľa splátkového kalendára.</p>
+      </div>
+      <div class="cell">
+        <p class="cell__code">890 €</p>
+        <h3>Celý kurz skupiny B</h3>
+        <p>Kompletný kurz vrátane teórie, jázd, prvej pomoci a prvého termínu skúšky.</p>
+      </div>
+    </div>
+
+    <div class="split reveal" style="margin-top:clamp(30px,3.6vw,46px)">
+      <div>
+        <p class="subhead">Ako to prebieha</p>
+        <ul class="plain">
+          <li>Zavoláte alebo napíšete cez formulár, akú hodnotu poukazu chcete</li>
+          <li>Poukaz uhradíte prevodom alebo kartou v kancelárii</li>
+          <li>Do dvoch pracovných dní ho pripravíme na prevzatie alebo odošleme</li>
+          <li>Obdarovaný ho uplatní pri zápise alebo pri objednaní prvej jazdy</li>
+        </ul>
+      </div>
+      <div>
+        <p class="subhead">Podmienky poukazu</p>
+        <ul class="terms">
+          <li><b>12 mesiacov</b><span>Platnosť poukazu od dátumu vystavenia.</span></li>
+          <li><b>Prenosný</b><span>Meno obdarovaného doplníme až pri uplatnení, poukaz sa dá darovať ďalej.</span></li>
+          <li><b>Delenie</b><span>Poukaz sa dá uplatniť aj po častiach, zostatok evidujeme na vašom mene.</span></li>
+          <li><b>Bez výmeny</b><span>Poukaz nevymieňame za hotovosť, dá sa však presunúť na iný kurz.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 · ČASTÉ OTÁZKY ============ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">13 — Časté otázky</p>
+        <h2>Na čo sa pýtate najčastejšie</h2>
+      </div>
+      <p class="lede">Ak vaša otázka medzi nimi nie je, zavolajte do kancelárie alebo napíšte cez formulár — odpovedáme do 24 hodín.</p>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Koľko hodín jázd je v kurze skupiny B?</summary>
+        <div class="faq__a">
+          <p>41 vyučovacích hodín praktického výcviku. Prvých 6 hodín odjazdíte na autocvičisku, zvyšných 35 hodín v cestnej premávke. Jedna vyučovacia hodina trvá 45 minút, jazdy plánujeme spravidla po dvoch hodinách.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Dokedy musím kurz dokončiť?</summary>
+        <div class="faq__a">
+          <p>Kurz je platný dvanásť mesiacov od dátumu zápisu. Ak to nestíhate, platnosť predĺžime o tri mesiace za 30 €. Predĺžiť sa dá dvakrát.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Čo sa stane, keď na skúške neuspejem?</summary>
+        <div class="faq__a">
+          <p>Opakovanú skúšku prihlásime na najbližší voľný termín, spravidla do troch týždňov. Za prípravu podkladov a pristavenie vozidla účtujeme 35 €. Ak ste neuspeli z jazdy, odporúčame pridať dve až tri jazdy po 28 €, aby ste si nacvičili konkrétnu chybu.</p>
+          <p>Opakovať skúšku môžete do šiestich mesiacov od prvého termínu, potom je potrebný doplňujúci výcvik.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Od koľkých rokov sa dá prihlásiť?</summary>
+        <div class="faq__a">
+          <p>Do kurzu skupiny B vás zapíšeme najskôr šesť mesiacov pred dosiahnutím veku, od ktorého sa vydáva vodičské oprávnenie. V praxi to znamená, že väčšina účastníkov nastupuje ešte počas strednej školy a skúšku robí krátko po narodeninách.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Môžem si vybrať inštruktora a čas jázd?</summary>
+        <div class="faq__a">
+          <p>Áno. Inštruktora si vyberáte pri zápise, jazdy si potom rezervujete sami v kalendári. Voľné termíny sú od 7:00 do 19:00. Za príplatok 40 € máme vyhradené termíny len po 16:00 a cez víkend.</p>
+          <p>Naplánovanú jazdu treba zrušiť najneskôr 24 hodín vopred, inak sa počíta ako odjazdená.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Učil som sa na automate, môžem viesť vozidlo s manuálom?</summary>
+        <div class="faq__a">
+          <p>Nie. Pri výcviku na automate je oprávnenie obmedzené len na vozidlá s automatickou prevodovkou. Obmedzenie sa dá zrušiť po piatich rozdielových jazdách a doplnkovej skúške — u nás to stojí 150 €.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Dá sa kurz zaplatiť na splátky?</summary>
+        <div class="faq__a">
+          <p>Áno, bez navýšenia a bez tretej strany. Pri zápise uhradíte zálohu 150 €, zvyšok rozdelíme na tri splátky — prvá pri začiatku teórie, druhá po autocvičisku, tretia pred podaním prihlášky na skúšku. Pri úhrade celej sumy pri zápise odpočítame 20 €.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Čo si mám priniesť na prvú jazdu?</summary>
+        <div class="faq__a">
+          <p>Doklad totožnosti, potvrdenie o zdravotnej spôsobilosti a pevnú obuv. Ak nosíte okuliare, prineste ich — jazdí sa v nich rovnako ako na skúške. Nič iné netreba, vozidlo aj materiály zabezpečíme.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 · DOSTUPNOSŤ A PARKOVANIE ============ -->
+<section class="sec sec--paper" id="dostupnost">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">14 — Ako sa k nám dostanete</p>
+        <h2>Cesta do učebne a parkovanie v okolí</h2>
+      </div>
+      <p class="lede">Kancelária aj učebňa sú v tej istej budove na Kolárskej 26 v Nitre. Vstup je z dvora, na druhom poschodí.</p>
+    </div>
+
+    <div class="split split--narrow reveal">
+      <div class="panel mappanel">
+        <svg class="panel__art" viewBox="0 0 480 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <rect width="480" height="360" fill="url(#gDark)"/>
+          <rect width="480" height="360" fill="url(#gridFine)" opacity=".7"/>
+          <path d="M0 250 H480" stroke="#232C37" stroke-width="20"/>
+          <path d="M0 250 H480" stroke="#E7EAEE" stroke-opacity=".2" stroke-width="1" stroke-dasharray="22 20"/>
+          <path d="M150 0 V360" stroke="#232C37" stroke-width="15"/>
+          <rect x="60" y="120" width="70" height="70" fill="#1B2430"/>
+          <rect x="190" y="90" width="110" height="90" fill="#1B2430"/>
+          <rect x="330" y="140" width="90" height="60" fill="#1B2430"/>
+          <rect x="196" y="96" width="98" height="78" fill="none" stroke="#C9962F" stroke-width="1.5"/>
+          <circle cx="245" cy="135" r="7" fill="#C9962F"/>
+          <g fill="none" stroke="#2B3543">
+            <circle cx="245" cy="135" r="46"/><circle cx="245" cy="135" r="76"/>
+          </g>
+        </svg>
+        <svg class="grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)"/></svg>
+        <div class="panel__in">
+          <p class="plabel">Kolárska 26, 949 01 Nitra</p>
+          <div style="margin-top:auto">
+            <div class="prule"></div>
+            <p class="pnote">Budova na rohu Kolárskej, vjazd do dvora je hneď za priechodom pre chodcov. Učebňa je na druhom poschodí, výťah je vo dvore.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="subhead">Doprava</p>
+        <dl class="deflist">
+          <div><dt>Autobus</dt><dd>Linky 12 a 26, zastávka Kolárska — 120 metrov pešo</dd></div>
+          <div><dt>Vlak</dt><dd>Zo železničnej stanice 8 minút pešo cez podchod</dd></div>
+          <div><dt>Autom</dt><dd>Z rýchlostnej cesty R1 zjazd Nitra-sever, potom 6 minút po Štefánikovej triede</dd></div>
+          <div><dt>Cvičisko</dt><dd>Priemyselná zóna sever, 2,5 km od učebne — na prvé jazdy vás tam odvezie inštruktor</dd></div>
+        </dl>
+
+        <p class="subhead" style="margin-top:36px">Parkovanie</p>
+        <ul class="terms">
+          <li><b>Vo dvore</b><span>Šesť vyhradených miest pre účastníkov kurzu, bez poplatku, vjazd z Kolárskej.</span></li>
+          <li><b>Na ulici</b><span>Kolárska je v spoplatnenej zóne, prvá hodina 1 €. Automat stojí pri vchode do budovy.</span></li>
+          <li><b>Parkovisko</b><span>Záchytné parkovisko 200 metrov od budovy, prvá hodina bez poplatku.</span></li>
+          <li><b>Motocykel</b><span>Vyhradené státie pri vjazde do dvora, priamo pri kamere.</span></li>
+        </ul>
+        <p class="note" style="margin-top:20px">Ak idete prvýkrát na zápis, zavolajte z parkoviska — otvoríme bránu a nebudete hľadať vchod.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16 · KARIÉRA ============ -->
+<section class="sec sec--tight" id="kariera">
+  <div class="wrap">
+    <div class="hire reveal">
+      <div>
+        <p class="eyebrow">15 — Kariéra</p>
+        <h2 style="font-size:clamp(1.5rem,2.6vw,2rem)">Hľadáme inštruktora skupiny B</h2>
+        <p class="lead-in" style="margin-bottom:0">Obsadzujeme jedno miesto na plný úväzok a jedno na dohodu — na poobedné a víkendové jazdy. Nástup dohodou, najskôr od 1. októbra 2026.</p>
+      </div>
+      <div>
+        <p class="subhead">Čo očakávame a čo ponúkame</p>
+        <ul class="tick">
+          <li>Platné inštruktorské oprávnenie skupiny B</li>
+          <li>Vodičské oprávnenie skupiny B minimálne tri roky</li>
+          <li>Pridelené výcvikové vozidlo a parkovacie miesto vo dvore</li>
+          <li>Rozvrh jázd si plánujete sami v kalendári</li>
+          <li>Odmena podľa počtu odjazdených hodín, vyplácaná dvakrát mesačne</li>
+        </ul>
+        <div class="btnrow">
+          <a class="btn btn--line" href="#sprava">Napísať do kancelárie</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17 · KONTAKT ============ -->
+<section class="sec sec--band" id="kontakt">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div>
+        <p class="eyebrow">16 — Kontakt</p>
+        <h2>Kde nás nájdete a kedy máme otvorené</h2>
+      </div>
+      <p class="lede">Zápis vybavíme na počkanie, netreba sa objednávať. Na otázky odpovedáme telefonicky počas otváracích hodín alebo cez formulár do 24 hodín.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <p class="subhead">Autoškola Rondel</p>
+        <dl class="deflist">
+          <div><dt>Adresa</dt><dd>Kolárska 26, 949 01 Nitra<br>2. poschodie, vstup z dvora</dd></div>
+          <div><dt>Telefón</dt><dd><a class="phone" href="tel:+421912638059">0912 638 059</a></dd></div>
+          <div><dt>Správa</dt><dd>Formulár vedľa — správa príde do schránky autoškoly, odpovedáme do 24 hodín</dd></div>
+          <div><dt>Učebňa</dt><dd>Tá istá budova, druhé poschodie, bezbariérový vstup a výťah z dvora</dd></div>
+          <div><dt>Cvičisko</dt><dd>Priemyselná zóna sever, 2,5 km od učebne</dd></div>
+        </dl>
+
+        <p class="subhead" style="margin-top:36px">Otváracie hodiny kancelárie</p>
+        <table class="hours">
+          <tbody>
+            <tr><th scope="row">Pondelok — štvrtok</th><td>9:00 — 17:00</td></tr>
+            <tr><th scope="row">Piatok</th><td>9:00 — 15:00</td></tr>
+            <tr><th scope="row">Sobota</th><td>9:00 — 12:00</td></tr>
+            <tr><th scope="row">Nedeľa</th><td>zatvorené</td></tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:14px">Teoretické prednášky: utorok a štvrtok 17:00 — 19:00, denná skupina pondelok a streda 9:00 — 11:00, víkendová skupina sobota 9:00 — 14:00.</p>
+
+        <div class="btnrow" style="margin-top:26px">
+          <a class="btn btn--solid" href="#prihlaska">Vyplniť prihlášku</a>
+          <a class="btn btn--line" href="tel:+421912638059">Zavolať 0912 638 059</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="subhead">Napíšte nám</p>
+        <form class="form" id="sprava" novalidate>
+          <div class="fields">
+            <div class="field">
+              <label for="k-meno">Meno a priezvisko</label>
+              <input type="text" id="k-meno" name="meno" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="k-tel">Telefón</label>
+              <input type="tel" id="k-tel" name="telefon" autocomplete="tel" inputmode="tel" required>
+            </div>
+            <div class="field field--full">
+              <label for="k-sprava">Správa</label>
+              <textarea id="k-sprava" name="sprava" placeholder="Napíšte, čo potrebujete vedieť — napríklad o termínoch, cene alebo poukaze." required></textarea>
+            </div>
+          </div>
+          <label class="consent">
+            <input type="checkbox" id="k-suhlas" name="suhlas" required>
+            <span>Súhlasím so spracovaním údajov na účel odpovede na moju správu.</span>
+          </label>
+          <div class="formfoot">
+            <button class="btn btn--solid" type="submit">Odoslať správu</button>
+            <span class="note">Správa príde do schránky autoškoly. Odpovedáme do 24 hodín, v pracovných dňoch spravidla skôr.</span>
+          </div>
+          <p class="status" id="kontakt-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ AUTOR UKÁŽKY ============ -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap author__in">
+    <div class="reveal">
+      <p class="eyebrow">O tejto ukážke</p>
+      <h2 id="autor-nadpis">Páči sa vám tento web?</h2>
+      <p>Túto ukážku navrhol a naprogramoval Alex Poliak. Autoškola Rondel je vymyslený podnik — názov, adresa, ceny aj termíny slúžia len na predvedenie toho, ako môže vyzerať hotový web.</p>
+      <p>Rovnaký web pripravím aj pre vašu firmu: štruktúru, texty, cenník, formulár aj prepočet ceny podľa vašich služieb.</p>
+      <p class="author__price">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      <p class="author__free">Konzultácia zadarmo a nezáväzne</p>
+    </div>
+    <div class="author__card reveal">
+      <p class="author__name">Alex Poliak</p>
+      <p class="author__role">Návrh a programovanie webových stránok</p>
+      <dl class="author__list">
+        <div><dt>E-mail</dt><dd><a href="mailto:info@apoliak.online">info@apoliak.online</a></dd></div>
+        <div><dt>Telefón</dt><dd><a href="tel:+421902464022">0902 464 022</a></dd></div>
+        <div><dt>Web</dt><dd><a href="https://apoliak.online">https://apoliak.online</a></dd></div>
+      </dl>
+      <div class="author__actions">
+        <a class="btn btn--solid" href="https://apoliak.online">Pozrieť apoliak.online</a>
+        <a class="btn btn--line" href="tel:+421902464022">Zavolať 0902 464 022</a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ PÄTIČKA ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <h4>Autoškola Rondel</h4>
+        <p>Kolárska 26, 949 01 Nitra</p>
+        <p><a href="tel:+421912638059">0912 638 059</a></p>
+        <p>Po — Št 9:00 — 17:00 · Pi 9:00 — 15:00 · So 9:00 — 12:00</p>
+        <p>Autocvičisko: Priemyselná zóna sever</p>
+      </div>
+      <div>
+        <h4>Kurzy</h4>
+        <ul>
+          <li><a href="#kurzy">Skupina B — manuál</a></li>
+          <li><a href="#kurzy">Skupina B — automat</a></li>
+          <li><a href="#kurzy">Motocykle A1 / A2 / A</a></li>
+          <li><a href="#kurzy">Skupina BE — príves</a></li>
+          <li><a href="#kurzy">Kondičné jazdy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Informácie</h4>
+        <ul>
+          <li><a href="#cena">Cena a čo obsahuje</a></li>
+          <li><a href="#rozsah">Rozsah a počet jázd</a></li>
+          <li><a href="#skusky">Priebeh skúšok</a></li>
+          <li><a href="#platba">Platba a splátky</a></li>
+          <li><a href="#storno">Storno podmienky</a></li>
+          <li><a href="#poukazy">Darčekové poukazy</a></li>
+          <li><a href="#dostupnost">Ako sa k nám dostanete</a></li>
+          <li><a href="#kariera">Kariéra</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span>Ukážkový web. Názov, adresa, ceny aj termíny sú vymyslené na predvedenie dizajnu.</span>
+      <span>Návrh a kód: <a href="https://apoliak.online">apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var doc = document.documentElement;
+  doc.classList.add('js');
+
+  /* ---- výška horného pásu ---- */
+  var topbar = document.querySelector('.topbar');
+  function meraj(){
+    if(!topbar) return;
+    doc.style.setProperty('--top', Math.round(topbar.getBoundingClientRect().height) + 'px');
+  }
+  meraj();
+  window.addEventListener('resize', meraj);
+  window.addEventListener('load', meraj);
+  window.addEventListener('orientationchange', meraj);
+  if(topbar && 'ResizeObserver' in window){ new ResizeObserver(meraj).observe(topbar); }
+  setTimeout(meraj, 300);
+
+  /* ---- mobilné menu ---- */
+  var site = document.getElementById('hlavicka');
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('menu');
+  function zatvorMenu(){
+    if(!site || !burger) return;
+    site.classList.remove('is-open');
+    burger.setAttribute('aria-expanded','false');
+  }
+  if(burger && site && menu){
+    burger.addEventListener('click', function(){
+      var otvorene = site.classList.toggle('is-open');
+      burger.setAttribute('aria-expanded', otvorene ? 'true' : 'false');
+      meraj();
+    });
+    menu.addEventListener('click', function(e){
+      if(e.target.closest('a')) zatvorMenu();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && site.classList.contains('is-open')){ zatvorMenu(); burger.focus(); }
+    });
+  }
+
+  /* ---- postupné zobrazovanie ---- */
+  var reveals = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add('is-in'); io.unobserve(z.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.05});
+    reveals.forEach(function(el){ io.observe(el); });
+  }else{
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  /* ---- filter termínov ---- */
+  var chips = document.querySelectorAll('.chip');
+  var riadky = document.querySelectorAll('#terminy-telo tr');
+  var pocet = document.getElementById('terminy-pocet');
+  function filtruj(typ){
+    var n = 0;
+    riadky.forEach(function(r){
+      var ok = (typ === 'vsetky' || r.getAttribute('data-typ') === typ);
+      r.hidden = !ok;
+      if(ok) n++;
+    });
+    if(pocet) pocet.textContent = 'Zobrazené termíny: ' + n + ' z ' + riadky.length;
+  }
+  chips.forEach(function(ch){
+    ch.addEventListener('click', function(){
+      chips.forEach(function(x){ x.classList.remove('is-on'); x.setAttribute('aria-pressed','false'); });
+      ch.classList.add('is-on');
+      ch.setAttribute('aria-pressed','true');
+      filtruj(ch.getAttribute('data-filter'));
+    });
+  });
+
+  /* ---- plynulé posunutie ---- */
+  function posun(el){
+    if(!el) return;
+    var hladko = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({behavior: hladko ? 'smooth' : 'auto', block:'start'});
+  }
+
+  /* ---- prihlásenie z tabuľky termínov ---- */
+  var vyberTermin = document.getElementById('f-termin');
+  document.querySelectorAll('.linkbtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = b.getAttribute('data-termin');
+      if(vyberTermin){
+        for(var i=0;i<vyberTermin.options.length;i++){
+          if(vyberTermin.options[i].text === t){ vyberTermin.selectedIndex = i; break; }
+        }
+        if(typeof vyberTermin.onchange === 'function'){ vyberTermin.onchange(); }
+        vyberTermin.dispatchEvent(new Event('change', {bubbles:true}));
+      }
+      posun(document.getElementById('prihlaska'));
+    });
+  });
+
+  /* ---- formátovanie sumy ---- */
+  function fmt(n){
+    var zaporne = n < 0;
+    n = Math.abs(Math.round(n*100)/100);
+    var s = n.toFixed(2).split('.');
+    var cele = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    var des = (s[1] === '00') ? '' : ',' + s[1];
+    return (zaporne ? '−' : '') + cele + des + ' €';
+  }
+  function txt(id, hodnota){
+    var el = document.getElementById(id);
+    if(el) el.textContent = hodnota;
+  }
+
+  /* ---- prepočet ceny kurzu ---- */
+  var form = document.getElementById('prihlaska-form');
+  if(form){
+    var prepocitaj = function(){
+      var kurz = form.querySelector('input[name="kurz"]:checked');
+      var zaklad = kurz ? parseFloat(kurz.getAttribute('data-cena')) : 0;
+      var nazovKurzu = kurz ? kurz.getAttribute('data-nazov') : '';
+
+      var rozsah = form.querySelector('#f-rozsah');
+      var opt = rozsah.options[rozsah.selectedIndex];
+      var rozsahCena = parseFloat(opt.getAttribute('data-cena'));
+      var rozsahNazov = opt.getAttribute('data-nazov');
+
+      var doplnky = 0, nazvy = [];
+      form.querySelectorAll('input[name="doplnok"]:checked').forEach(function(d){
+        doplnky += parseFloat(d.getAttribute('data-cena'));
+        nazvy.push(d.getAttribute('data-nazov'));
+      });
+
+      var student = form.querySelector('#f-student');
+      var jeStudent = !!(student && student.checked);
+      var zlavy = jeStudent ? 40 : 0;
+      var platba = form.querySelector('input[name="platba"]:checked');
+      var naraz = !!(platba && platba.value === 'naraz');
+      if(naraz) zlavy += 20;
+
+      var spolu = zaklad + rozsahCena + doplnky - zlavy;
+      if(spolu < 0) spolu = 0;
+
+      var termin = form.querySelector('#f-termin');
+      var terminText = termin ? termin.options[termin.selectedIndex].text : '—';
+
+      txt('sum-kurz-n', nazovKurzu);
+      txt('sum-kurz', fmt(zaklad));
+      txt('sum-rozsah-n', 'Rozsah jázd — ' + rozsahNazov);
+      txt('sum-rozsah', fmt(rozsahCena));
+      txt('sum-doplnky-n', nazvy.length ? 'Doplnky: ' + nazvy.join(', ') : 'Doplnky — žiadne');
+      txt('sum-doplnky', fmt(doplnky));
+      txt('sum-zlava-n', zlavy ? ('Zľavy' + (jeStudent ? ' — študent' : '') + (naraz ? (jeStudent ? ' a úhrada naraz' : ' — úhrada naraz') : '')) : 'Zľavy — žiadne');
+      txt('sum-zlava', zlavy ? fmt(-zlavy) : fmt(0));
+      txt('sum-termin', terminText.replace(' — ', ' · '));
+      txt('sum-total', fmt(spolu));
+
+      var pay = document.getElementById('sum-pay');
+      if(pay){
+        if(naraz){
+          pay.innerHTML = 'Celá suma <b>' + fmt(spolu) + '</b> je splatná pri zápise. Zľava 20 € je už započítaná.';
+        }else{
+          var zaloha = Math.min(150, spolu);
+          var zvysok = spolu - zaloha;
+          pay.innerHTML = 'Záloha pri zápise <b>' + fmt(zaloha) + '</b>' +
+            (zvysok > 0
+              ? ', potom tri splátky po <b>' + fmt(zvysok/3) + '</b>. Prvá splátka je splatná pri začiatku teórie.'
+              : '. Ďalšie splátky nie sú potrebné.');
+        }
+      }
+      return {spolu: spolu, kurz: nazovKurzu, termin: terminText};
+    };
+
+    form.addEventListener('input', prepocitaj);
+    form.addEventListener('change', prepocitaj);
+    prepocitaj();
+
+    var stav = document.getElementById('form-status');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(!stav) return;
+      var meno = form.querySelector('#f-meno').value.trim();
+      var tel = form.querySelector('#f-tel').value.trim();
+      var suhlas = form.querySelector('#f-suhlas').checked;
+      stav.classList.add('is-on');
+      if(!meno || !tel || !suhlas){
+        stav.textContent = 'Doplňte prosím meno, telefón a súhlas so spracovaním údajov. Formulár sa aj tak neodosiela — ide o ukážkový web.';
+        return;
+      }
+      var v = prepocitaj();
+      stav.textContent = 'Toto je ukážkový web, prihláška sa neodosiela a údaje sa nikam neukladajú. Na skutočnom webe by teraz do schránky autoškoly odišla prihláška: ' +
+        v.kurz + ', termín ' + v.termin + ', cena ' + fmt(v.spolu) + '.';
+    });
+  }
+
+  /* ---- formulár správy ---- */
+  var kform = document.getElementById('sprava');
+  if(kform){
+    var kstav = document.getElementById('kontakt-status');
+    kform.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(!kstav) return;
+      var meno = kform.querySelector('#k-meno').value.trim();
+      var tel = kform.querySelector('#k-tel').value.trim();
+      var sprava = kform.querySelector('#k-sprava').value.trim();
+      var suhlas = kform.querySelector('#k-suhlas').checked;
+      kstav.classList.add('is-on');
+      if(!meno || !tel || !sprava || !suhlas){
+        kstav.textContent = 'Doplňte prosím meno, telefón, text správy a súhlas so spracovaním údajov. Formulár sa aj tak neodosiela — ide o ukážkový web.';
+        return;
+      }
+      kstav.textContent = 'Toto je ukážkový web, správa sa neodosiela a údaje sa nikam neukladajú. Na skutočnom webe by správa prišla do schránky autoškoly a odpoveď by ste dostali do 24 hodín.';
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2018 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optika Meridián — meranie zraku, okuliare a kontaktné šošovky, Nitra</title>
+<meta name="description" content="Očná optika v Nitre: meranie zraku za 20 € do 30 minút, okuliare na mieru do 3 – 5 pracovných dní, cenník šošoviek a rámov, kontaktné šošovky, starostlivosť o okuliare a objednanie termínu. Návrh a kód Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#0D3B45">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:site_name" content="Optika Meridián (ukážkový web)">
+<meta property="og:title" content="Optika Meridián — meranie zraku, okuliare a kontaktné šošovky, Nitra">
+<meta property="og:description" content="Meranie zraku za 20 € do 30 minút, okuliare do 3 – 5 pracovných dní, cenník šošoviek a rámov, objednanie termínu. Ukážkový web od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%230D3B45'/%3E%3Ctext%20x='32'%20y='46'%20font-family='Georgia,serif'%20font-size='42'%20fill='%23BCD7DD'%20text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<style>
+/* ==================== TOKENY ==================== */
+:root{
+  --deep:#0D3B45;
+  --deep-2:#092931;
+  --deep-3:#17505C;
+  --deep-4:#24616E;
+  --sky:#BCD7DD;
+  --sky-2:#D6E4E7;
+
+  --paper:#F5F5F3;
+  --paper-2:#EBECE8;
+  --card:#FFFFFF;
+
+  --ink:#13181A;
+  --ink-2:#394347;
+  --muted:#5D666A;
+
+  --line:#D3D6D5;
+  --line-2:#E4E6E4;
+  --line-deep:#1E5361;
+  --on-deep:#FFFFFF;
+  --on-deep-2:#AEC6CB;
+
+  --serif:Georgia,"Iowan Old Style","Times New Roman",Times,serif;
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Consolas","DejaVu Sans Mono","Courier New",monospace;
+
+  --wrap:1200px;
+  --r:3px;
+  --barmin:64px;   /* vlastná minimálna výška pásika, JS ju nemení */
+  --barh:64px;     /* odsadenie obsahu pod pásikom, JS ho dopočíta */
+}
+@media (min-width:760px){ :root{ --barmin:46px; --barh:46px; } }
+
+/* ==================== ZÁKLAD ==================== */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){ html,body{overflow-x:clip} }
+body{
+  margin:0;
+  padding-top:var(--barh);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.66;
+  -webkit-text-size-adjust:100%;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0 0 .5em}
+h1,h2{font-family:var(--serif);font-weight:400;letter-spacing:-.018em}
+h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.0}
+h2{font-size:clamp(1.72rem,3.4vw,2.65rem);line-height:1.08}
+h3{font-family:var(--sans);font-weight:600;font-size:1.03rem;line-height:1.38;letter-spacing:-.005em}
+h4{font-family:var(--sans);font-weight:600;font-size:.95rem;line-height:1.4;margin-bottom:.35em}
+p{margin:0 0 1em}
+ul,ol{margin:0;padding:0;list-style:none}
+img,svg{max-width:100%}
+a{color:var(--deep)}
+a:hover{color:var(--deep-4)}
+strong{font-weight:600}
+:focus-visible{outline:2px solid var(--deep);outline-offset:3px}
+.panel :focus-visible,.demobar :focus-visible,.sec--deep :focus-visible,.author :focus-visible,.foot :focus-visible{outline-color:var(--sky)}
+
+.wrap{width:min(100% - 34px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--deep);color:#FFFFFF;padding:12px 18px;z-index:300}
+.skip:focus{left:8px;top:calc(var(--barh) + 8px)}
+section{scroll-margin-top:calc(var(--barh) + 76px)}
+.sec{padding:clamp(58px,7.4vw,116px) 0}
+.sec--band{background:var(--paper-2);border-block:1px solid var(--line)}
+.sec--deep{background:var(--deep);color:var(--on-deep)}
+.sec--tight{padding:clamp(44px,5vw,74px) 0}
+
+.eyebrow{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px;
+}
+.sec--deep .eyebrow{color:var(--on-deep-2)}
+.lede{font-size:1.06rem;color:var(--ink-2);max-width:60ch}
+.sec--deep .lede{color:var(--on-deep-2)}
+.note{font-size:.9rem;color:var(--muted);max-width:66ch}
+.sec--deep .note{color:var(--on-deep-2)}
+
+/* hlavička sekcie */
+.head{
+  display:grid;grid-template-columns:76px minmax(0,1fr);
+  gap:8px 28px;align-items:start;
+  padding-bottom:26px;border-bottom:1px solid var(--ink);
+  margin-bottom:clamp(34px,4.4vw,58px);
+}
+.sec--deep .head{border-bottom-color:var(--line-deep)}
+.head__num{
+  grid-row:1 / span 2;
+  font-family:var(--mono);font-size:.82rem;letter-spacing:.1em;color:var(--deep);
+  border-top:2px solid var(--deep);padding-top:10px;margin:10px 0 0;
+}
+.sec--deep .head__num{color:var(--sky);border-top-color:var(--sky)}
+.head h2{margin-bottom:.2em}
+.head .lede{margin-bottom:0}
+@media (max-width:660px){
+  .head{grid-template-columns:minmax(0,1fr);gap:0}
+  .head__num{grid-row:auto;display:inline-block;margin:0 0 16px}
+}
+
+/* ==================== TLAČIDLÁ ==================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--sans);font-size:.93rem;font-weight:600;line-height:1.2;
+  padding:14px 24px;border-radius:var(--r);border:1px solid transparent;
+  cursor:pointer;text-decoration:none;
+  transition:background-color .16s ease,border-color .16s ease,color .16s ease;
+}
+.link--light{color:var(--sky)}
+.link--light:hover{color:var(--sky-2)}
+
+/* ==================== PÁSIK UKÁŽKY ==================== */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  min-height:var(--barmin);
+  background:var(--deep-2);color:#FFFFFF;
+  border-bottom:1px solid var(--line-deep);
+  font-size:.78rem;line-height:1.35;
+}
+.demobar__in{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:6px 16px;min-height:var(--barmin);padding:8px 0;text-align:center;
+}
+.demobar__tag{
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid var(--line-deep);padding:3px 9px;color:var(--sky);white-space:nowrap;
+}
+.demobar__row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 16px}
+.demobar a:not(.btn){color:var(--sky);text-decoration:none;border-bottom:1px solid rgba(188,215,221,.5);white-space:nowrap}
+.demobar a:not(.btn):hover{color:var(--sky-2);border-bottom-color:var(--sky-2)}
+
+/* ==================== HLAVIČKA ==================== */
+.site-head{
+  position:sticky;top:var(--barh);z-index:150;
+  background:rgba(245,245,243,.97);
+  border-bottom:1px solid var(--line);
+}
+.head__in{display:flex;align-items:center;gap:18px;min-height:70px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);margin-right:auto;line-height:1.18}
+.brand b{font-family:var(--serif);font-size:1.24rem;font-weight:400;letter-spacing:-.01em}
+.brand span{font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.nav-toggle{
+  display:none;align-items:center;gap:8px;font:inherit;font-size:.84rem;font-weight:600;
+  background:transparent;border:1px solid var(--line);border-radius:var(--r);
+  padding:9px 14px;cursor:pointer;color:var(--ink);
+}
+.nav-toggle svg{width:18px;height:18px}
+.nav-list{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.nav-list a:not(.btn){
+  display:inline-block;text-decoration:none;color:var(--muted);
+  font-size:.88rem;padding:9px 11px;border-radius:var(--r);
+}
+.nav-list a:not(.btn):hover{color:var(--deep);background:var(--paper-2)}
+.nav-cta{margin-left:8px}
+@media (max-width:1020px){
+  .js .nav-toggle{display:inline-flex}
+  .js .nav-list[data-open="false"]{display:none}
+  .nav-list{width:100%;flex-direction:column;align-items:stretch;gap:0;padding:6px 0 16px;border-top:1px solid var(--line-2)}
+  .nav-list a:not(.btn){padding:13px 2px;border-bottom:1px solid var(--line-2);border-radius:0}
+  .nav-cta{margin:12px 0 0}
+  .nav-cta .btn{width:100%}
+}
+
+/* ==================== ÚVOD ==================== */
+.hero{padding:clamp(46px,7vw,104px) 0 0}
+.hero__in{display:grid;grid-template-columns:minmax(0,232px) minmax(0,1fr);gap:clamp(26px,4.6vw,74px);align-items:start}
+@media (max-width:900px){ .hero__in{grid-template-columns:minmax(0,1fr);gap:34px} }
+
+.rail{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 20px;border-right:1px solid var(--line);padding-right:clamp(14px,1.8vw,26px)}
+.rail__label{
+  writing-mode:vertical-rl;transform:rotate(180deg);margin:0;align-self:start;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.rail__list li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:12px 0;border-top:1px solid var(--line-2);font-size:.92rem;
+}
+.rail__list li:first-child{border-top:0;padding-top:0}
+.rail__list a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+.rail__list a:hover{color:var(--deep);border-bottom-color:var(--deep)}
+.rail__list span{font-family:var(--mono);font-size:.76rem;color:var(--muted);white-space:nowrap}
+@media (max-width:900px){
+  .rail{grid-template-columns:minmax(0,1fr);border-right:0;border-top:1px solid var(--ink);padding:22px 0 0}
+  .rail__label{writing-mode:horizontal-tb;transform:none;margin-bottom:16px}
+}
+
+.hero h1{max-width:16ch;margin-bottom:clamp(26px,3.2vw,44px)}
+.hero__cols{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(18px,2.8vw,44px);border-top:1px solid var(--ink);padding-top:24px;max-width:78ch;
+}
+@media (max-width:780px){ .hero__cols{grid-template-columns:minmax(0,1fr)} }
+.hero__cols p{margin:0;font-size:1rem;color:var(--ink-2);max-width:46ch}
+.hero__cols p:first-child{font-size:1.1rem;color:var(--ink)}
+.hero__cols p:first-child::first-letter{
+  font-family:var(--serif);font-size:3.2em;line-height:.84;float:left;
+  padding:.06em .1em 0 0;color:var(--deep);
+}
+.hero__actions{display:flex;flex-wrap:wrap;gap:12px;margin:clamp(26px,3vw,38px) 0 0}
+
+.facts{border-top:1px solid var(--line);margin-top:clamp(44px,6vw,80px)}
+.facts dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0}
+.facts div{padding:24px 26px 26px 0;border-right:1px solid var(--line-2)}
+.facts div:last-child{border-right:0}
+.facts dt{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.facts dd{margin:0;font-family:var(--serif);font-size:1.24rem;line-height:1.3}
+.facts dd a{text-decoration:none;border-bottom:1px solid var(--line)}
+.facts dd a:hover{border-bottom-color:var(--deep-4)}
+@media (max-width:840px){
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts div{border-bottom:1px solid var(--line-2);padding-right:20px}
+  .facts div:nth-child(2n){border-right:0}
+}
+@media (max-width:430px){
+  .facts dl{grid-template-columns:minmax(0,1fr)}
+  .facts div{border-right:0}
+}
+
+/* ==================== MRIEŽKY A BLOKY ==================== */
+.grid{display:grid;gap:clamp(22px,2.6vw,38px)}
+.grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid--4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid--side{grid-template-columns:minmax(0,1fr) minmax(0,.68fr);gap:clamp(26px,3.4vw,52px);align-items:start}
+@media (max-width:1020px){ .grid--4{grid-template-columns:repeat(2,minmax(0,1fr))} .grid--side{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:860px){ .grid--3{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:660px){ .grid--2,.grid--4{grid-template-columns:minmax(0,1fr)} }
+
+/* vlasový blok namiesto rámčeka */
+.blk{border-top:1px solid var(--ink);padding-top:20px}
+.blk h3{margin:0 0 10px}
+.blk p{color:var(--ink-2);font-size:.97rem;max-width:60ch}
+.blk p:last-child{margin-bottom:0}
+.blk__num{
+  display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:14px;
+}
+.blk__meta{
+  font-family:var(--mono);font-size:.86rem;color:var(--deep);
+  border-top:1px solid var(--line-2);padding-top:12px;margin-top:16px;
+}
+.sec--deep .blk{border-top-color:var(--sky)}
+.sec--deep .blk p{color:var(--on-deep-2)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.4vw,30px)}
+.card h3{margin-top:0}
+.card p{color:var(--ink-2);font-size:.97rem}
+.card p:last-child{margin-bottom:0}
+
+.ticks li{position:relative;padding:9px 0 9px 24px;border-bottom:1px solid var(--line-2);font-size:.95rem;color:var(--ink-2)}
+.ticks li:last-child{border-bottom:0}
+.ticks li::before{
+  content:"";position:absolute;left:0;top:18px;width:9px;height:9px;
+  border-left:1.5px solid var(--deep);border-bottom:1.5px solid var(--deep);transform:rotate(-45deg);
+}
+.sec--deep .ticks li{border-bottom-color:var(--line-deep);color:var(--on-deep-2)}
+.sec--deep .ticks li::before{border-color:var(--sky)}
+
+/* ==================== KROKY ==================== */
+.steps{display:grid;gap:0}
+.steps li{
+  display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:6px 24px;
+  padding:24px 0;border-top:1px solid var(--line);align-items:baseline;
+}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps__n{font-family:var(--mono);font-size:.82rem;letter-spacing:.1em;color:var(--deep)}
+.steps h3{margin:0 0 6px}
+.steps p{margin:0;color:var(--ink-2);font-size:.95rem;max-width:58ch}
+.steps__t{font-family:var(--mono);font-size:.82rem;color:var(--muted);white-space:nowrap}
+@media (max-width:660px){
+  .steps li{grid-template-columns:58px minmax(0,1fr)}
+  .steps__t{grid-column:2}
+}
+
+/* ==================== TABUĽKY ==================== */
+.tablewrap{overflow-x:auto;border-top:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:440px;font-size:.95rem}
+caption{
+  text-align:left;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);padding:14px 0 12px;
+}
+th,td{text-align:left;padding:14px 22px 14px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+th:last-child,td:last-child{padding-right:0}
+thead th{
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);font-weight:400;border-bottom:1px solid var(--line);
+}
+tbody th{font-weight:600}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody td.num{font-weight:600;color:var(--ink)}
+.t-sub{display:block;font-size:.85rem;font-weight:400;color:var(--muted);margin-top:3px;max-width:38ch}
+.sec--deep .tablewrap{border-top-color:var(--sky)}
+.sec--deep th,.sec--deep td{border-bottom-color:var(--line-deep)}
+.sec--deep tbody td.num{color:#FFFFFF}
+.sec--deep caption,.sec--deep thead th{color:var(--on-deep-2)}
+
+/* ==================== GEOMETRICKÉ PLOCHY ==================== */
+.panel{position:relative;overflow:hidden;background:var(--deep);color:var(--on-deep);border-radius:var(--r)}
+.panel__art{position:absolute;inset:0;width:100%;height:100%}
+.panel__in{position:relative;z-index:2}
+.panel--grad{background:linear-gradient(152deg,var(--deep-2) 0%,var(--deep) 48%,var(--deep-3) 100%)}
+.panel--grad2{background:linear-gradient(26deg,var(--deep-2) 0%,var(--deep-3) 60%,var(--deep-4) 100%)}
+.tp{display:flex;flex-direction:column;justify-content:space-between;gap:26px;min-height:220px;padding:clamp(22px,2.6vw,34px)}
+.tp__lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-deep-2);margin:0}
+.tp__big{font-family:var(--serif);font-size:clamp(2.2rem,4.6vw,3.3rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 12px}
+.tp p:last-child{margin:0;font-size:.94rem;color:var(--on-deep-2);max-width:44ch}
+
+/* ==================== KALKULAČKA ==================== */
+.calc{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(24px,3.4vw,48px);align-items:start}
+@media (max-width:940px){ .calc{grid-template-columns:minmax(0,1fr)} }
+.field{margin-bottom:20px}
+.field > label,.legend{
+  display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:9px;
+}
+select,input[type="text"],input[type="tel"],input[type="date"],textarea{
+  width:100%;font-family:var(--sans);font-size:.97rem;color:var(--ink);background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;
+}
+select:hover,input:hover,textarea:hover{border-color:#B4BCBE}
+textarea{min-height:118px;resize:vertical}
+fieldset{border:0;padding:0;margin:0 0 20px;min-width:0}
+.checks{display:grid;gap:0}
+.check{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line-2);font-size:.95rem}
+.check:last-child{border-bottom:0}
+.check input{margin:4px 0 0;width:17px;height:17px;flex:0 0 auto;accent-color:var(--deep)}
+.check span{flex:1;color:var(--ink-2)}
+.check b{font-family:var(--mono);font-weight:600;white-space:nowrap}
+
+.sumbox{background:var(--card);border:1px solid var(--line);border-radius:var(--r);position:sticky;top:calc(var(--barh) + 86px)}
+@media (max-width:940px){ .sumbox{position:static} }
+.sumbox__hd{padding:22px 24px;border-bottom:1px solid var(--line)}
+.sumbox__hd p{margin:0;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.sumbox__hd h3{margin:8px 0 0;font-family:var(--serif);font-weight:400;font-size:1.5rem;line-height:1.15}
+.sumrows{padding:6px 24px}
+.sumrows div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line-2);font-size:.94rem}
+.sumrows div:last-child{border-bottom:0}
+.sumrows dt{color:var(--muted)}
+.sumrows dd{margin:0;font-family:var(--mono);font-weight:600;white-space:nowrap}
+.sumtotal{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:20px 24px;background:var(--deep);color:#FFFFFF;border-radius:0 0 var(--r) var(--r)}
+.sumtotal span{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sky)}
+.sumtotal strong{font-family:var(--serif);font-size:1.8rem;font-weight:400;line-height:1.1}
+.sumfoot{padding:16px 24px 20px;font-size:.87rem;color:var(--muted)}
+
+/* ==================== FORMULÁRE ==================== */
+.slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:560px){ .slots{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.slot{position:relative;display:block}
+.slot input{position:absolute;opacity:0;width:1px;height:1px}
+.slot span{
+  display:block;text-align:center;font-family:var(--mono);font-size:.92rem;
+  padding:13px 4px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--card);cursor:pointer;
+}
+.slot input:checked + span{background:var(--deep);border-color:var(--deep);color:#FFFFFF}
+.slot input:focus-visible + span{outline:2px solid var(--deep);outline-offset:2px}
+.slot input:disabled + span{background:var(--paper-2);color:#5B666C;border-color:var(--line-2);cursor:not-allowed;text-decoration:line-through}
+.msg{
+  margin:16px 0 0;padding:14px 18px;background:var(--card);
+  border:1px solid var(--line);border-left:3px solid var(--deep);
+  font-size:.93rem;color:var(--ink-2);
+}
+.done{margin:22px 0 0;padding:20px 22px;background:var(--card);border:1px solid var(--deep);border-left-width:4px}
+.done h3{margin:0 0 8px}
+.done p{margin:0;color:var(--ink-2);font-size:.95rem}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px}
+@media (max-width:660px){ .formgrid{grid-template-columns:minmax(0,1fr)} }
+.full{grid-column:1 / -1}
+.consent{display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:var(--muted);margin:4px 0 22px;max-width:62ch}
+.consent input{margin:3px 0 0;width:17px;height:17px;flex:0 0 auto;accent-color:var(--deep)}
+
+/* ==================== HODINY A KONTAKT ==================== */
+.hours{width:100%;border-collapse:collapse;min-width:0}
+.hours th,.hours td{padding:13px 0;border-bottom:1px solid var(--line-deep);font-size:.97rem;vertical-align:baseline}
+.hours th{font-weight:400;color:var(--on-deep-2);text-align:left}
+.hours td{text-align:right;font-family:var(--mono)}
+.hours tr[data-dnes="1"] th,.hours tr[data-dnes="1"] td{color:#FFFFFF;font-weight:600}
+.hours tr[data-dnes="1"] th::after{content:" — dnes";font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--sky)}
+.stav{
+  display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.7rem;
+  letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--line-deep);
+  padding:8px 13px;color:var(--sky);margin:0 0 22px;
+}
+.stav i{width:7px;height:7px;background:var(--sky);display:block}
+.contact-list div{padding:16px 0;border-bottom:1px solid var(--line-deep)}
+.contact-list div:last-child{border-bottom:0}
+.contact-list dt{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-deep-2);margin-bottom:6px}
+.contact-list dd{margin:0;font-size:1.02rem}
+.contact-list dd a{color:#FFFFFF;text-decoration:none;border-bottom:1px solid var(--line-deep)}
+.contact-list dd a:hover{color:var(--sky);border-bottom-color:var(--sky)}
+.tel-big{font-family:var(--serif);font-size:1.6rem;line-height:1.3;letter-spacing:-.01em}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+
+/* ==================== FAQ ==================== */
+.faq{border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:21px 48px 21px 0;position:relative;
+  font-weight:600;font-size:1.01rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";position:absolute;right:8px;top:28px;width:9px;height:9px;
+  border-right:1.5px solid var(--deep);border-bottom:1.5px solid var(--deep);
+  transform:rotate(45deg);transition:transform .18s ease;
+}
+.faq details[open] summary::after{transform:rotate(-135deg);top:32px}
+.faq__body{padding:0 48px 22px 0;color:var(--ink-2);font-size:.97rem;max-width:70ch}
+.faq__body p:last-child{margin-bottom:0}
+
+/* ==================== AUTOR ==================== */
+.author{background:var(--deep-2);color:#FFFFFF;border-top:2px solid var(--sky)}
+.author__in{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(28px,4vw,60px);padding:clamp(58px,6.6vw,96px) 0;align-items:start}
+@media (max-width:900px){ .author__in{grid-template-columns:minmax(0,1fr)} }
+.author h2{color:#FFFFFF}
+.author p{color:#DDE8EA;max-width:60ch}
+.author .eyebrow{color:var(--sky)}
+.author__price{font-family:var(--serif);font-size:1.34rem;line-height:1.45;color:#FFFFFF;border-top:1px solid var(--line-deep);padding-top:20px;margin-top:24px}
+.author__card{background:var(--deep);border:1px solid var(--line-deep);border-radius:var(--r);padding:clamp(24px,2.6vw,32px)}
+.author__name{font-family:var(--serif);font-size:1.5rem;line-height:1.25;margin:0 0 4px;color:#FFFFFF}
+.author__role{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-deep-2);margin:0 0 22px}
+.author__list div{padding:13px 0;border-top:1px solid var(--line-deep)}
+.author__list dt{font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-deep-2);margin-bottom:4px}
+.author__list dd{margin:0}
+.author__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+
+/* ==================== PÄTA ==================== */
+.foot{background:var(--deep);color:#FFFFFF;padding:56px 0 62px;font-size:.92rem}
+.foot__in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:30px}
+@media (max-width:860px){ .foot__in{grid-template-columns:minmax(0,1fr)} }
+.foot b{display:block;font-family:var(--serif);font-weight:400;font-size:1.2rem;margin-bottom:10px}
+.foot p{color:var(--on-deep-2);margin:0 0 .7em}
+.foot p a{color:#FFFFFF;text-decoration:none;border-bottom:1px solid var(--line-deep)}
+.foot p a:hover{color:var(--sky);border-bottom-color:var(--sky)}
+.foot__links li{margin-bottom:9px}
+.foot__links a:not(.btn){color:#FFFFFF;text-decoration:none;border-bottom:1px solid var(--line-deep)}
+.foot__links a:not(.btn):hover{color:var(--sky);border-bottom-color:var(--sky)}
+.foot__bottom{border-top:1px solid var(--line-deep);margin-top:40px;padding-top:22px;color:var(--on-deep-2)}
+.foot__bottom a{color:var(--sky)}
+
+/* ==================== ODHAĽOVANIE ==================== */
+.js .reveal{opacity:0;transform:translateY(12px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none;transition:none}
+  *{transition-duration:.001ms !important;animation-duration:.001ms !important}
+}
+@media print{
+  .demobar,.site-head,.slots,.btn{display:none}
+  body{padding-top:0;font-size:11pt;background:#FFFFFF}
+  .sec--deep,.author,.foot,.panel{background:#FFFFFF;color:#000000}
+  .tp__lbl,.tp p:last-child,.contact-list dt,.foot p{color:#333333}
+}
+
+/* ========= KONTRAST TLAČIDIEL: posledné slovo v kaskáde ========= */
+.btn.btn--deep{background:var(--deep);border-color:var(--deep);color:#FFFFFF}
+.btn.btn--deep:hover{background:var(--deep-2);border-color:var(--deep-2);color:#FFFFFF}
+.btn.btn--line{background:transparent;border-color:var(--ink);color:var(--ink)}
+.btn.btn--line:hover{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.btn.btn--sky{background:var(--sky);border-color:var(--sky);color:var(--deep-2)}
+.btn.btn--sky:hover{background:var(--sky-2);border-color:var(--sky-2);color:var(--deep-2)}
+.btn.btn--ghost{background:transparent;border-color:var(--sky);color:#FFFFFF}
+.btn.btn--ghost:hover{background:var(--sky);border-color:var(--sky);color:var(--deep-2)}
+</style>
+</head>
+<body>
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===== PÁSIK UKÁŽKY ===== -->
+<div class="demobar" role="complementary" aria-label="Informácia o ukážkovom webe">
+  <div class="wrap demobar__in">
+    <span class="demobar__tag">Ukážkový web</span>
+    <span class="demobar__row">
+      <span>Takýto web pre vás spravím.</span>
+      <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+      <a href="tel:+421902464022">0902&nbsp;464&nbsp;022</a>
+    </span>
+  </div>
+</div>
+
+<!-- ===== HLAVIČKA ===== -->
+<header class="site-head">
+  <div class="wrap head__in">
+    <a class="brand" href="#uvod" aria-label="Optika Meridián, začiatok stránky">
+      <b>Optika Meridián</b>
+      <span>Očná optika &middot; Nitra</span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Menu
+    </button>
+
+    <nav aria-label="Hlavná navigácia">
+      <ul class="nav-list" id="hlavne-menu" data-open="false">
+        <li><a href="#sluzby">Služby</a></li>
+        <li><a href="#meranie">Meranie zraku</a></li>
+        <li><a href="#typy">Šošovky</a></li>
+        <li><a href="#ramy">Rámy</a></li>
+        <li><a href="#cennik">Cenník</a></li>
+        <li><a href="#hodiny">Kontakt</a></li>
+        <li class="nav-cta"><a class="btn btn--deep" href="#objednanie">Objednať sa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===== ÚVOD ===== -->
+<section class="hero" id="uvod">
+  <div class="wrap hero__in">
+    <aside class="rail" aria-label="Prehľad služieb">
+      <p class="rail__label">Očná optika &middot; Nitra</p>
+      <ul class="rail__list">
+        <li><a href="#meranie">Meranie zraku</a><span>30 min</span></li>
+        <li><a href="#typy">Okuliarové šošovky</a><span>od 39 €</span></li>
+        <li><a href="#ramy">Rámy okuliarov</a><span>6 kategórií</span></li>
+        <li><a href="#kontaktne">Kontaktné šošovky</a><span>od 22 €</span></li>
+        <li><a href="#starostlivost">Servis okuliarov</a><span>na počkanie</span></li>
+        <li><a href="#objednanie">Objednanie termínu</a><span>na webe</span></li>
+      </ul>
+    </aside>
+
+    <div class="hero__main">
+      <h1>Meranie zraku, okuliare na mieru a kontaktné šošovky</h1>
+      <div class="hero__cols">
+        <p>Meranie vedie optometrista, trvá 30 minút a stojí 20 €. Nič sa nekvapká do očí, takže po ňom môžete bez obmedzenia šoférovať. Výsledok dostanete písomne ešte v ten deň, aj keď si okuliare u nás neobjednáte.</p>
+        <p>Okuliare brúsime a osádzame vo vlastnej dielni na Studničnej ulici, bežne do troch až piatich pracovných dní. Pri kúpe okuliarov nad 90 € cenu merania z konečnej sumy odpočítame.</p>
+      </div>
+      <div class="hero__actions">
+        <a class="btn btn--deep" href="#objednanie">Objednať sa na meranie</a>
+        <a class="btn btn--line" href="#kalkulacka">Prepočítať cenu okuliarov</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="facts">
+      <dl>
+        <div><dt>Zhotovenie</dt><dd>3 – 5 pracovných dní</dd></div>
+        <div><dt>Expres</dt><dd>do 24 hodín za 25 €</dd></div>
+        <div><dt>Záruka</dt><dd>24 mesiacov</dd></div>
+        <div><dt>Telefón</dt><dd><a href="tel:+421916852034">0916&nbsp;852&nbsp;034</a></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 01 SLUŽBY ===== -->
+<section class="sec" id="sluzby">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">01</p>
+      <div>
+        <p class="eyebrow">Čo pre vás urobíme</p>
+        <h2>Služby optiky</h2>
+      </div>
+      <p class="lede">Štyri oblasti, ktoré pokrývame od prvého merania po servis okuliarov kúpených u nás pred rokmi.</p>
+    </div>
+
+    <div class="grid grid--4">
+      <article class="blk reveal">
+        <span class="blk__num">Služba 01</span>
+        <h3>Meranie zraku</h3>
+        <p>Objektívne meranie autorefraktometrom, subjektívna refrakcia v skúšobnej obrube, test na blízko a binokulárne vyrovnanie. Záznam s hodnotami dostanete v písomnej podobe.</p>
+        <p class="blk__meta">20 € &middot; 30 minút</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Služba 02</span>
+        <h3>Zhotovenie okuliarov</h3>
+        <p>Zameranie centrácie, výber rámu a šošoviek, brúsenie a osadenie vo vlastnej dielni. Po odovzdaní okuliare doladíme na tvár, doladenie je aj neskôr bez poplatku.</p>
+        <p class="blk__meta">Šošovky od 39 € za pár</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Služba 03</span>
+        <h3>Kontaktné šošovky</h3>
+        <p>Zameranie parametrov oka, prvá aplikácia a nácvik nasadzovania a vyberania. Kontrola po štrnástich dňoch je v cene aplikácie, ďalšia kontrola raz ročne.</p>
+        <p class="blk__meta">Aplikácia 25 € &middot; 45 minút</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Služba 04</span>
+        <h3>Servis a opravy</h3>
+        <p>Dotiahnutie a rovnanie rámu, výmena nosníkov a skrutiek, spájkovanie kovových rámov, ultrazvukové čistenie. Drobný servis robíme na počkanie.</p>
+        <p class="blk__meta">Čistenie a dotiahnutie bez poplatku</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 PRIEBEH MERANIA ===== -->
+<section class="sec sec--band" id="meranie">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">02</p>
+      <div>
+        <p class="eyebrow">Priebeh návštevy</p>
+        <h2>Ako prebieha meranie zraku</h2>
+      </div>
+      <p class="lede">Päť krokov, tridsať minút a jeden optometrista, ktorý sa v tom čase venuje len vám.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <ol class="steps reveal">
+        <li>
+          <span class="steps__n">Krok 1</span>
+          <div>
+            <h3>Vstupný rozhovor</h3>
+            <p>Prejdeme, ako vidíte teraz, čo vás obmedzuje, akú prácu robíte a aké okuliare nosíte. Dioptrie vašich súčasných okuliarov odčítame na fokometri.</p>
+          </div>
+          <span class="steps__t">5 minút</span>
+        </li>
+        <li>
+          <span class="steps__n">Krok 2</span>
+          <div>
+            <h3>Objektívne meranie</h3>
+            <p>Autorefraktometer zmeria východiskové hodnoty pre obe oči vrátane zakrivenia rohovky. Meranie je bezkontaktné a nebolí.</p>
+          </div>
+          <span class="steps__t">5 minút</span>
+        </li>
+        <li>
+          <span class="steps__n">Krok 3</span>
+          <div>
+            <h3>Subjektívna refrakcia</h3>
+            <p>V skúšobnej obrube postupne porovnávame šošovky na testovacej vzdialenosti päť metrov. Tu sa rozhodne hodnota, ktorá pôjde do okuliarov.</p>
+          </div>
+          <span class="steps__t">10 minút</span>
+        </li>
+        <li>
+          <span class="steps__n">Krok 4</span>
+          <div>
+            <h3>Videnie na blízko a spolupráca očí</h3>
+            <p>Doladíme adíciu na čítanie, overíme binokulárne vyrovnanie a rovnováhu medzi očami. Podľa toho vieme, či má zmysel kancelárska alebo progresívna šošovka.</p>
+          </div>
+          <span class="steps__t">5 minút</span>
+        </li>
+        <li>
+          <span class="steps__n">Krok 5</span>
+          <div>
+            <h3>Odporúčanie a výber</h3>
+            <p>Vysvetlíme výsledok, odporučíme typ šošovky a stenčenie podľa dioptrie a rámu. Písomný záznam si odnesiete aj vtedy, ak si okuliare u nás neobjednáte.</p>
+          </div>
+          <span class="steps__t">5 minút</span>
+        </li>
+      </ol>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:22px">
+          <h3>Čo si priniesť</h3>
+          <ul class="ticks">
+            <li>Okuliare, ktoré teraz nosíte, aj tie na čítanie</li>
+            <li>Posledný záznam o meraní, ak ho máte</li>
+            <li>Zoznam liekov, ktoré užívate dlhodobo</li>
+            <li>Kontaktné šošovky vyberte aspoň dve hodiny pred meraním</li>
+            <li>Pri deťoch do pätnástich rokov účasť rodiča</li>
+          </ul>
+        </div>
+        <p class="note">Meranie zraku v optike nenahrádza vyšetrenie u očného lekára. Ak zistíme nález, ktorý patrí lekárovi, povieme vám to a odporučíme vyšetrenie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 TYPY ŠOŠOVIEK ===== -->
+<section class="sec" id="typy">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">03</p>
+      <div>
+        <p class="eyebrow">Výber podľa použitia</p>
+        <h2>Typy okuliarových šošoviek</h2>
+      </div>
+      <p class="lede">Typ šošovky určuje, na aké vzdialenosti budete cez okuliare vidieť ostro. Odporučíme ho podľa výsledku merania a podľa toho, čo cez deň robíte.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <article class="blk reveal">
+        <span class="blk__num">Typ 01</span>
+        <h3>Jednoohniskové</h3>
+        <p>Jedna dioptrická hodnota po celej ploche šošovky. Používajú sa buď na diaľku, alebo na čítanie. Najjednoduchšie na zvyknutie, vhodné pre prvé okuliare aj pre deti.</p>
+        <p class="blk__meta">Od 39 € za pár</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 02</span>
+        <h3>Kancelárske (degresívne)</h3>
+        <p>Ostré videnie od stola po vzdialenosť približne štyri metre. Široké pole na monitor aj na papier, na šoférovanie sa nehodia. Dobre fungujú ako druhé okuliare k progresívnym.</p>
+        <p class="blk__meta">Monitor a stôl &middot; 129 €</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 03</span>
+        <h3>Progresívne</h3>
+        <p>Plynulý prechod od diaľky cez medzivzdialenosť po čítanie v jednej šošovke, bez viditeľnej deliacej čiary. Ponúkame tri úrovne podľa šírky pohodlného poľa videnia.</p>
+        <p class="blk__meta">Od 45 rokov &middot; 189 – 359 €</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 04</span>
+        <h3>Slnečné dioptrické</h3>
+        <p>Šošovka s dioptriou v tónovanom alebo polarizačnom vyhotovení. Polarizácia odstráni odlesky z vozovky, vody a snehu, preto ju odporúčame vodičom.</p>
+        <p class="blk__meta">Tónovanie 20 € &middot; polarizácia 55 €</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 05</span>
+        <h3>Fotochromatické</h3>
+        <p>Samozatmievacia šošovka, ktorá stmavne na dennom svetle a v interiéri sa vyčistí. Za čelným sklom auta stmavne len čiastočne, s tým treba počítať.</p>
+        <p class="blk__meta">Príplatok 65 € za pár</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 06</span>
+        <h3>Stenčené šošovky</h3>
+        <p>Vyšší index znamená tenšiu a ľahšiu šošovku pri rovnakej dioptrii. Nad štyri dioptrie ho odporúčame vždy, pri bezrámových okuliaroch aj skôr.</p>
+        <p class="blk__meta">Index 1.6 až 1.74 &middot; 30 – 140 €</p>
+      </article>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <h3>Ako si vyberiete</h3>
+        <ul class="ticks">
+          <li>Pracujete pri monitore viac ako štyri hodiny denne — kancelárske</li>
+          <li>Prekáža vám striedanie dvoch okuliarov — progresívne</li>
+          <li>Máte nad štyri dioptrie a vadí vám hrúbka — vyšší index</li>
+          <li>Šoférujete za tmy a rušia vás odlesky — antireflexná vrstva</li>
+          <li>Ste veľa vonku — fotochromatická alebo slnečná dioptrická</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3>Čo je v cene každej šošovky</h3>
+        <ul class="ticks">
+          <li>Zameranie centrácie na konkrétny rám</li>
+          <li>Brúsenie a osadenie vo vlastnej dielni</li>
+          <li>Nastavenie okuliarov na tvár pri odovzdaní</li>
+          <li>Neskoršie doladenie tvaru bez poplatku</li>
+          <li>Záruka 24 mesiacov na výrobné chyby</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 RÁMY ===== -->
+<section class="sec sec--band" id="ramy">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">04</p>
+      <div>
+        <p class="eyebrow">Kategórie rámov</p>
+        <h2>Rámy okuliarov</h2>
+      </div>
+      <p class="lede">Vystavených rámov máme 71 a delíme ich do šiestich kategórií podľa materiálu a použitia. Uvedené ceny sú za samotný rám, bez šošoviek.</p>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table>
+        <caption>Kategórie rámov a cenové rozpätie</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kategória</th>
+            <th scope="col">Materiál a vyhotovenie</th>
+            <th scope="col" class="num">Modelov</th>
+            <th scope="col" class="num">Cena rámu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Titánové<span class="t-sub">na celodenné nosenie</span></th>
+            <td>Titán, bezskrutkové pánty, hmotnosť od 14 g</td>
+            <td class="num">12</td>
+            <td class="num">149 – 219 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Acetátové<span class="t-sub">výraznejší tvar</span></th>
+            <td>Ručne brúsený acetát, kovové jadro v stranici</td>
+            <td class="num">18</td>
+            <td class="num">99 – 169 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Tenké kovové<span class="t-sub">nenápadné okuliare</span></th>
+            <td>Kovový profil 1,2 mm, silikónové nosníky</td>
+            <td class="num">14</td>
+            <td class="num">79 – 139 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Bezrámové<span class="t-sub">vŕtané šošovky</span></th>
+            <td>Šošovky uchytené skrutkou, bez obruby</td>
+            <td class="num">9</td>
+            <td class="num">129 – 189 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Detské<span class="t-sub">6 – 15 rokov</span></th>
+            <td>Pružné pánty, gumený mostík, päť veľkostí</td>
+            <td class="num">11</td>
+            <td class="num">59 – 99 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Športové<span class="t-sub">na pohyb a slnko</span></th>
+            <td>Zakrivený tvar, protišmykové stranice a nosník</td>
+            <td class="num">7</td>
+            <td class="num">109 – 159 €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="blk reveal">
+        <h3>Vlastný rám</h3>
+        <p>Šošovky osadíme aj do rámu, ktorý už máte. Pred prácou posúdime jeho stav a upozorníme vás, ak pri brúsení hrozí prasknutie.</p>
+        <p class="blk__meta">Osadenie 15 €</p>
+      </div>
+      <div class="blk reveal">
+        <h3>Skúšanie bez objednania</h3>
+        <p>Rámy si môžete skúšať kedykoľvek počas otváracích hodín, aj bez merania zraku. Vybraný rám vieme odložiť na tri dni.</p>
+        <p class="blk__meta">Bez poplatku</p>
+      </div>
+      <div class="blk reveal">
+        <h3>Doobjednanie modelu</h3>
+        <p>Ak vám sedí model, ktorý je práve vypredaný vo vašej veľkosti, doobjednáme ho. Bežná dodacia lehota je 7 – 10 pracovných dní.</p>
+        <p class="blk__meta">Bez zálohy do 200 €</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 CENNÍK ŠOŠOVIEK ===== -->
+<section class="sec" id="cennik">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">05</p>
+      <div>
+        <p class="eyebrow">Cenník</p>
+        <h2>Okuliarové šošovky a úpravy</h2>
+      </div>
+      <p class="lede">Všetky ceny sú za pár šošoviek vrátane brúsenia, osadenia a zamerania centrácie. Základom je index 1.5, tenšie šošovky sú príplatok.</p>
+    </div>
+
+    <div class="grid grid--2">
+      <div class="tablewrap reveal">
+        <table>
+          <caption>Typ šošovky &middot; cena za pár</caption>
+          <thead>
+            <tr><th scope="col">Typ</th><th scope="col" class="num">Cena</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Jednoohniskové<span class="t-sub">na diaľku alebo na čítanie</span></th><td class="num">39 €</td></tr>
+            <tr><th scope="row">Kancelárske (degresívne)<span class="t-sub">monitor a stôl do 4 metrov</span></th><td class="num">129 €</td></tr>
+            <tr><th scope="row">Progresívne štandard<span class="t-sub">bežná šírka pohodlného poľa</span></th><td class="num">189 €</td></tr>
+            <tr><th scope="row">Progresívne komfort<span class="t-sub">širšie pole na blízko</span></th><td class="num">269 €</td></tr>
+            <tr><th scope="row">Progresívne individuálne<span class="t-sub">počítané na váš rám a centráciu</span></th><td class="num">359 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reveal">
+        <div class="tablewrap" style="margin-bottom:clamp(26px,3vw,40px)">
+          <table>
+            <caption>Stenčenie šošovky &middot; príplatok za pár</caption>
+            <thead>
+              <tr><th scope="col">Index</th><th scope="col">Odporúčame pri</th><th scope="col" class="num">Príplatok</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">1.5</th><td>do 2 dioptrií</td><td class="num">v cene</td></tr>
+              <tr><th scope="row">1.6</th><td>2 – 4 dioptrie</td><td class="num">30 €</td></tr>
+              <tr><th scope="row">1.67</th><td>4 – 6 dioptrií</td><td class="num">80 €</td></tr>
+              <tr><th scope="row">1.74</th><td>nad 6 dioptrií</td><td class="num">140 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Úpravy povrchu &middot; príplatok za pár</caption>
+            <thead>
+              <tr><th scope="col">Úprava</th><th scope="col" class="num">Príplatok</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Antireflexná vrstva</th><td class="num">25 €</td></tr>
+              <tr><th scope="row">Tvrdená vrstva proti poškriabaniu</th><td class="num">12 €</td></tr>
+              <tr><th scope="row">Filter modrého svetla</th><td class="num">29 €</td></tr>
+              <tr><th scope="row">Fotochromatická (samozatmievacia)</th><td class="num">65 €</td></tr>
+              <tr><th scope="row">Polarizačná úprava</th><td class="num">55 €</td></tr>
+              <tr><th scope="row">Tónovanie do farby</th><td class="num">20 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:clamp(26px,3vw,40px)">Cena za pár platí aj vtedy, keď má každé oko inú dioptriu. Pri zákazke nad 200 € vyberáme zálohu 30 % pri objednaní, zvyšok zaplatíte pri prevzatí.</p>
+  </div>
+</section>
+
+<!-- ===== 06 CENNÍK MERANIA A SLUŽIEB ===== -->
+<section class="sec sec--band" id="cennik-sluzby">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">06</p>
+      <div>
+        <p class="eyebrow">Cenník</p>
+        <h2>Meranie zraku a služby v predajni</h2>
+      </div>
+      <p class="lede">Ceny za prácu optometristu a optického technika. Meranie zraku odpočítame z ceny okuliarov, ak si ich u nás objednáte nad 90 €.</p>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table>
+        <caption>Meranie, servis a úkony &middot; trvanie a cena</caption>
+        <thead>
+          <tr><th scope="col">Úkon</th><th scope="col">Trvanie</th><th scope="col" class="num">Cena</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Meranie zraku<span class="t-sub">pri kúpe okuliarov nad 90 € sa odpočíta</span></th><td>30 minút</td><td class="num">20 €</td></tr>
+          <tr><th scope="row">Kontrolné meranie do 12 mesiacov<span class="t-sub">pre zákazníkov, ktorí u nás merali</span></th><td>20 minút</td><td class="num">10 €</td></tr>
+          <tr><th scope="row">Meranie zraku pre deti od 6 rokov<span class="t-sub">vždy za účasti rodiča</span></th><td>30 minút</td><td class="num">20 €</td></tr>
+          <tr><th scope="row">Bezkontaktné meranie vnútroočného tlaku</th><td>5 minút</td><td class="num">10 €</td></tr>
+          <tr><th scope="row">Odčítanie dioptrií z okuliarov na fokometri</th><td>5 minút</td><td class="num">bez poplatku</td></tr>
+          <tr><th scope="row">Aplikácia kontaktných šošoviek a nácvik</th><td>45 minút</td><td class="num">25 €</td></tr>
+          <tr><th scope="row">Kontrola po prvej aplikácii</th><td>15 minút</td><td class="num">v cene aplikácie</td></tr>
+          <tr><th scope="row">Osadenie šošoviek do vlastného rámu</th><td>do 3 dní</td><td class="num">15 €</td></tr>
+          <tr><th scope="row">Expresné zhotovenie do 24 hodín</th><td>1 pracovný deň</td><td class="num">25 €</td></tr>
+          <tr><th scope="row">Výmena nosníkov</th><td>na počkanie</td><td class="num">6 €</td></tr>
+          <tr><th scope="row">Výmena skrutky alebo pántu</th><td>na počkanie</td><td class="num">4 €</td></tr>
+          <tr><th scope="row">Spájkovanie kovového rámu</th><td>2 pracovné dni</td><td class="num">od 18 €</td></tr>
+          <tr><th scope="row">Ultrazvukové čistenie a dotiahnutie</th><td>na počkanie</td><td class="num">bez poplatku</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07 PREPOČET CENY ===== -->
+<section class="sec" id="kalkulacka">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">07</p>
+      <div>
+        <p class="eyebrow">Orientačný prepočet</p>
+        <h2>Prepočet ceny okuliarov</h2>
+      </div>
+      <p class="lede">Vyberte typ šošoviek, stenčenie, úpravy a rám. Cena sa prepočíta okamžite a zodpovedá cenníku vyššie.</p>
+    </div>
+
+    <div class="calc">
+      <form class="reveal" id="kalk" novalidate>
+        <div class="field">
+          <label for="typ">Typ šošoviek</label>
+          <select id="typ" data-cena="39" data-dni="3">
+            <option value="jedno" data-cena="39" data-dni="3" selected>Jednoohniskové — 39 €</option>
+            <option value="kancel" data-cena="129" data-dni="4">Kancelárske (degresívne) — 129 €</option>
+            <option value="prog1" data-cena="189" data-dni="5">Progresívne štandard — 189 €</option>
+            <option value="prog2" data-cena="269" data-dni="5">Progresívne komfort — 269 €</option>
+            <option value="prog3" data-cena="359" data-dni="7">Progresívne individuálne — 359 €</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="stencenie">Stenčenie šošovky</label>
+          <select id="stencenie">
+            <option value="1.5" data-cena="0" selected>Index 1.5 — základ, v cene</option>
+            <option value="1.6" data-cena="30">Index 1.6 — tenšie, 30 €</option>
+            <option value="1.67" data-cena="80">Index 1.67 — veľmi tenké, 80 €</option>
+            <option value="1.74" data-cena="140">Index 1.74 — najtenšie, 140 €</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend class="legend">Úpravy povrchu</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" class="uprava" data-cena="25" data-nazov="antireflexná vrstva"><span>Antireflexná vrstva</span><b>25 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="12" data-nazov="tvrdená vrstva"><span>Tvrdená vrstva proti poškriabaniu</span><b>12 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="29" data-nazov="filter modrého svetla"><span>Filter modrého svetla</span><b>29 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="65" data-nazov="fotochromatická úprava"><span>Fotochromatická (samozatmievacia)</span><b>65 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="55" data-nazov="polarizačná úprava"><span>Polarizačná úprava</span><b>55 €</b></label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="ram">Rám</label>
+          <select id="ram">
+            <option value="vlastny" data-cena="15" selected>Vlastný rám — osadenie 15 €</option>
+            <option value="tenke" data-cena="79">Tenké kovové — od 79 €</option>
+            <option value="acetat" data-cena="99">Acetátové — od 99 €</option>
+            <option value="sport" data-cena="109">Športové — od 109 €</option>
+            <option value="bezramove" data-cena="129">Bezrámové — od 129 €</option>
+            <option value="titan" data-cena="149">Titánové — od 149 €</option>
+            <option value="detske" data-cena="59">Detské — od 59 €</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="expres">Termín zhotovenia</label>
+          <select id="expres">
+            <option value="bezny" data-cena="0" selected>Bežný termín — v cene</option>
+            <option value="expres" data-cena="25">Expres do 24 hodín — 25 €</option>
+          </select>
+        </div>
+
+        <p class="note">Prepočet je orientačný a nie je záväznou ponukou. Cena rámu vychádza z najnižšej ceny v danej kategórii. Presnú sumu potvrdíme po meraní, keď poznáme dioptrie aj vybraný rám.</p>
+      </form>
+
+      <div class="sumbox reveal">
+        <div class="sumbox__hd">
+          <p>Súčet</p>
+          <h3>Vaše okuliare</h3>
+        </div>
+        <dl class="sumrows" id="sum-vypis" aria-live="polite">
+          <div><dt>Šošovky</dt><dd id="sum-sosovky">39 €</dd></div>
+          <div><dt id="sum-sten-lbl">Stenčenie 1.5</dt><dd id="sum-sten">0 €</dd></div>
+          <div><dt id="sum-upravy-lbl">Úpravy</dt><dd id="sum-upravy">0 €</dd></div>
+          <div><dt id="sum-ram-lbl">Osadenie do vlastného rámu</dt><dd id="sum-ram">15 €</dd></div>
+          <div><dt>Expres</dt><dd id="sum-expres">0 €</dd></div>
+        </dl>
+        <div class="sumtotal">
+          <span>Spolu</span>
+          <strong id="sum-spolu">54 €</strong>
+        </div>
+        <p class="sumfoot" id="sum-lehota">Zhotovenie do 3 pracovných dní. Cena platí za pár šošoviek vrátane brúsenia a centrácie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 KONTAKTNÉ ŠOŠOVKY ===== -->
+<section class="sec sec--band" id="kontaktne">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">08</p>
+      <div>
+        <p class="eyebrow">Denné nosenie</p>
+        <h2>Kontaktné šošovky</h2>
+      </div>
+      <p class="lede">Šošovky predávame až po zameraní parametrov oka. Prvá aplikácia zahŕňa nácvik nasadzovania a vyberania priamo u nás, kým to nezvládnete sami.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <div class="tablewrap reveal">
+        <table>
+          <caption>Cenník kontaktných šošoviek a roztokov</caption>
+          <thead>
+            <tr><th scope="col">Typ</th><th scope="col">Balenie</th><th scope="col" class="num">Cena</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Jednodňové sférické</th><td>30 kusov</td><td class="num">22 €</td></tr>
+            <tr><th scope="row">Jednodňové tórické<span class="t-sub">pri astigmatizme</span></th><td>30 kusov</td><td class="num">32 €</td></tr>
+            <tr><th scope="row">Dvojtýždňové</th><td>6 kusov</td><td class="num">24 €</td></tr>
+            <tr><th scope="row">Mesačné sférické</th><td>6 kusov</td><td class="num">28 €</td></tr>
+            <tr><th scope="row">Mesačné tórické</th><td>6 kusov</td><td class="num">42 €</td></tr>
+            <tr><th scope="row">Multifokálne mesačné</th><td>6 kusov</td><td class="num">48 €</td></tr>
+            <tr><th scope="row">Roztok s puzdrom</th><td>360 ml</td><td class="num">9 €</td></tr>
+            <tr><th scope="row">Odber na šesť mesiacov naraz</th><td>6 balení</td><td class="num">zľava 10 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:22px">
+          <h3>Ako to prebieha</h3>
+          <ul class="ticks">
+            <li>Zameranie parametrov a výber typu — 45 minút</li>
+            <li>Nácvik nasadzovania a vyberania v predajni</li>
+            <li>Skúšobný pár na prvé dva dni</li>
+            <li>Kontrola po štrnástich dňoch, v cene aplikácie</li>
+            <li>Ďalšia kontrola raz ročne pred novým odberom</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <h3>Pravidlá, ktoré dodržujeme</h3>
+          <p>Bez platnej kontroly nie staršej ako dvanásť mesiacov šošovky nepredávame. Jednodňové šošovky sa nosia jeden deň a nevymývajú sa. Pri začervenaní alebo bolesti šošovku vyberte a príďte, takúto návštevu riešime prednostne.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09 STAROSTLIVOSŤ O OKULIARE ===== -->
+<section class="sec" id="starostlivost">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">09</p>
+      <div>
+        <p class="eyebrow">Po prevzatí</p>
+        <h2>Starostlivosť o okuliare</h2>
+      </div>
+      <p class="lede">Väčšina škrabancov vzniká pri suchom utieraní a väčšina rozladených rámov pri nasadzovaní jednou rukou. Obojmu sa dá vyhnúť.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <div class="blk reveal">
+        <span class="blk__num">Denne</span>
+        <h3>Čistenie šošoviek</h3>
+        <p>Opláchnite vlažnou vodou, naneste kvapku saponátu na riad, prepláchnite a osušte čistou handričkou z mikrovlákna. Suché utieranie vtiera prach do vrstvy a poškriabe ju.</p>
+        <p class="blk__meta">Handrička v cene okuliarov</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Denne</span>
+        <h3>Odkladanie</h3>
+        <p>Do puzdra, nikdy šošovkami nadol na stôl. V lete nenechávajte okuliare v aute na palubnej doske, teplota nad 60 °C poškodí antireflexnú vrstvu aj tvar rámu.</p>
+        <p class="blk__meta">Puzdro v cene okuliarov</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Denne</span>
+        <h3>Nasadzovanie</h3>
+        <p>Vždy oboma rukami. Nasadzovanie jednou rukou rozťahuje jednu stranicu, okuliare sa nakláňajú a progresívne šošovky potom nesedia v správnej výške.</p>
+        <p class="blk__meta">Nastavenie kedykoľvek bez poplatku</p>
+      </div>
+    </div>
+
+    <div class="tablewrap reveal" style="margin-top:clamp(30px,3.4vw,48px)">
+      <table>
+        <caption>Údržba a servis &middot; interval a cena</caption>
+        <thead>
+          <tr><th scope="col">Úkon</th><th scope="col">Ako často</th><th scope="col" class="num">Cena</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Ultrazvukové čistenie<span class="t-sub">vyčistí špinu spod obruby a z pántov</span></th><td>každé 3 mesiace</td><td class="num">bez poplatku</td></tr>
+          <tr><th scope="row">Kontrola nastavenia a dotiahnutie</th><td>každých 6 mesiacov</td><td class="num">bez poplatku</td></tr>
+          <tr><th scope="row">Výmena silikónových nosníkov</th><td>raz ročne</td><td class="num">6 €</td></tr>
+          <tr><th scope="row">Výmena handričky z mikrovlákna</th><td>raz ročne</td><td class="num">3 €</td></tr>
+          <tr><th scope="row">Nové puzdro</th><td>podľa potreby</td><td class="num">od 5 €</td></tr>
+          <tr><th scope="row">Rovnanie ohnutého rámu</th><td>podľa potreby</td><td class="num">bez poplatku</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <h3>Čomu sa vyhnúť</h3>
+        <ul class="ticks">
+          <li>Utieranie tričkom, obrúskom alebo papierovou vreckovkou</li>
+          <li>Lieh a prostriedky na okná — rozrušia antireflexnú vrstvu</li>
+          <li>Horúca voda nad 40 °C</li>
+          <li>Odkladanie okuliarov do vlasov, rozťahuje to stranice</li>
+          <li>Domáce doťahovanie skrutiek nevhodným skrutkovačom</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3>Kedy prísť aj bez objednania</h3>
+        <ul class="ticks">
+          <li>Okuliare sa naklápajú alebo tlačia za uchom</li>
+          <li>Uvoľnená skrutka alebo vypadnutá šošovka</li>
+          <li>Prasknutý nosník alebo stranica</li>
+          <li>Na šošovkách zostávajú mastné škvrny aj po umytí</li>
+          <li>Ohnutý rám po páde — vyrovnáme ho na počkanie</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 OBJEDNANIE ===== -->
+<section class="sec sec--band" id="objednanie">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">10</p>
+      <div>
+        <p class="eyebrow">Termín</p>
+        <h2>Objednanie na meranie zraku</h2>
+      </div>
+      <p class="lede">Vyberte dátum a čas, ktorý vám vyhovuje. Voľné časy sa riadia otváracími hodinami: v sobotu meriame do 12:00, v nedeľu je zatvorené.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <form class="reveal" id="objednavka" novalidate>
+        <div class="formgrid">
+          <div class="field">
+            <label for="ucel">Dôvod návštevy</label>
+            <select id="ucel" name="ucel">
+              <option value="Meranie zraku (30 minút)" selected>Meranie zraku — 30 minút</option>
+              <option value="Aplikácia kontaktných šošoviek (45 minút)">Aplikácia kontaktných šošoviek — 45 minút</option>
+              <option value="Výber okuliarov a centrácia (20 minút)">Výber okuliarov a centrácia — 20 minút</option>
+              <option value="Servis alebo oprava (15 minút)">Servis alebo oprava — 15 minút</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="datum">Dátum</label>
+            <input type="date" id="datum" name="datum">
+          </div>
+
+          <fieldset class="full">
+            <legend class="legend">Čas návštevy</legend>
+            <div class="slots">
+              <label class="slot"><input type="radio" name="cas" value="9:00" data-hod="9"><span>9:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="10:00" data-hod="10"><span>10:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="11:00" data-hod="11"><span>11:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="13:00" data-hod="13"><span>13:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="14:00" data-hod="14"><span>14:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="15:00" data-hod="15"><span>15:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="16:00" data-hod="16"><span>16:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="17:00" data-hod="17"><span>17:00</span></label>
+            </div>
+            <p class="msg" id="slot-info">Po výbere dátumu ponecháme len časy, v ktorých je v ten deň otvorené. Obedná prestávka je 12:00 – 13:00.</p>
+          </fieldset>
+
+          <div class="field">
+            <label for="meno">Meno a priezvisko</label>
+            <input type="text" id="meno" name="meno" autocomplete="name" placeholder="Meno a priezvisko">
+          </div>
+
+          <div class="field">
+            <label for="telefon">Telefón</label>
+            <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="0910 123 456">
+          </div>
+
+          <div class="field full">
+            <label for="poznamka">Poznámka</label>
+            <textarea id="poznamka" name="poznamka" placeholder="Napríklad: nosím progresívne okuliare tretí rok, v poslednom čase mi nesedí čítanie."></textarea>
+          </div>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="suhlas" name="suhlas">
+          <span>Súhlasím, aby ma optika kontaktovala telefonicky kvôli potvrdeniu termínu. Údaje použijeme len na tento účel.</span>
+        </label>
+
+        <button class="btn btn--deep" type="submit">Odoslať objednávku termínu</button>
+
+        <div class="done" id="objednavka-hotovo" hidden tabindex="-1">
+          <h3>Toto je ukážkový web</h3>
+          <p id="objednavka-recap">Formulár nič neodosiela a termín sa nikam neuloží.</p>
+        </div>
+      </form>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:22px">
+          <h3>Bez objednania</h3>
+          <p>Bez objednania si môžete skúšať rámy, dať okuliare vyčistiť a dotiahnuť alebo si vyzdvihnúť hotovú zákazku. Meranie zraku bez objednania robíme len vtedy, keď je práve voľná kapacita.</p>
+        </div>
+        <div class="blk">
+          <h3>Ak sa termín nehodí</h3>
+          <ul class="ticks">
+            <li>Termín zrušíte telefonicky do 4 hodín pred návštevou</li>
+            <li>Presunúť ho vieme aj na ten istý týždeň</li>
+            <li>Pri meškaní nad 15 minút meriame v skrátenom rozsahu</li>
+            <li>Nezrušený a nevyužitý termín nič nestojí</li>
+          </ul>
+          <p class="blk__meta">Zmeny na čísle <a href="tel:+421916852034">0916 852 034</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 PREVÁDZKA, CESTA A PARKOVANIE ===== -->
+<section class="sec" id="prevadzka">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">11</p>
+      <div>
+        <p class="eyebrow">Prevádzka</p>
+        <h2>Priestor, cesta k nám a parkovanie</h2>
+      </div>
+      <p class="lede">Predajňa, vyšetrovňa a brúsna dielňa sú na jednom mieste na prízemí. Väčšinu práce preto zvládneme bez posielania okuliarov mimo prevádzky.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <div class="panel panel--grad reveal">
+        <svg class="panel__art" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="art-mriezka-a" width="24" height="24" patternUnits="userSpaceOnUse">
+              <path d="M24 0 L0 0 0 24" fill="none" stroke="#BCD7DD" stroke-width="1" opacity=".13"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="240" fill="url(#art-mriezka-a)"/>
+          <g stroke="#BCD7DD" fill="none" stroke-width="1">
+            <path d="M0 200 L300 40" opacity=".22"/>
+            <path d="M0 224 L300 64" opacity=".14"/>
+          </g>
+        </svg>
+        <div class="tp panel__in">
+          <p class="tp__lbl">Vyšetrovňa</p>
+          <div>
+            <p class="tp__big">5 metrov</p>
+            <p>Zatemniteľná miestnosť s testovacou vzdialenosťou päť metrov, autorefraktometrom, foropterom a bezkontaktným tonometrom.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel--grad2 reveal">
+        <svg class="panel__art" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="art-srafy" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+              <line x1="0" y1="0" x2="0" y2="12" stroke="#BCD7DD" stroke-width="1" opacity=".22"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="240" fill="url(#art-srafy)"/>
+          <g stroke="#D6E4E7" fill="none" stroke-width="1">
+            <path d="M0 56 L300 56" opacity=".3"/>
+            <path d="M0 184 L300 184" opacity=".2"/>
+          </g>
+        </svg>
+        <div class="tp panel__in">
+          <p class="tp__lbl">Brúsna dielňa</p>
+          <div>
+            <p class="tp__big">24 hodín</p>
+            <p>Brúsny automat s tvarovým skenerom, vŕtačka na bezrámové okuliare a ultrazvuková čistička. Expresné zhotovenie stihneme do 24 hodín.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <svg class="panel__art" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="art-mriezka-b" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0 L0 0 0 30" fill="none" stroke="#BCD7DD" stroke-width="1" opacity=".1"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="240" fill="url(#art-mriezka-b)"/>
+          <g stroke="#BCD7DD" fill="none" stroke-width="1">
+            <path d="M40 0 L40 240" opacity=".2"/>
+            <path d="M260 0 L260 240" opacity=".2"/>
+          </g>
+        </svg>
+        <div class="tp panel__in">
+          <p class="tp__lbl">Predajňa</p>
+          <div>
+            <p class="tp__big">71 rámov</p>
+            <p>Vystavených rámov v šiestich kategóriách, z toho jedenásť detských. Skúšať sa dajú bez objednania počas celých otváracích hodín.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="blk reveal">
+        <span class="blk__num">Autom</span>
+        <h3>Parkovanie</h3>
+        <p>Pred prevádzkou sú štyri vyhradené miesta pre zákazníkov optiky vrátane jedného pre držiteľov parkovacieho preukazu. Ak sú obsadené, parkovisko na Krátkej ulici je 80 metrov ďaleko a prvá hodina je bezplatná.</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Mestskou dopravou</span>
+        <h3>Zastávka</h3>
+        <p>Najbližšia zastávka je 120 metrov od vchodu, na tej istej strane ulice. Od zastávky idete rovno, prvá križovatka je naša.</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Pešo</span>
+        <h3>Od stanice</h3>
+        <p>Od železničnej stanice je to 900 metrov, teda asi dvanásť minút pešo. Cesta vedie po chodníku bez schodov, s jedným priechodom so semaformi.</p>
+      </div>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <h3>Ako spoznáte vchod</h3>
+        <ul class="ticks">
+          <li>Roh Studničnej a Krátkej ulice, prízemie</li>
+          <li>Výklad s tmavozeleným rámom a číslom 6 nad dverami</li>
+          <li>Vstup priamo z chodníka, bez schodu</li>
+          <li>Vedľajší vchod číslo 8 patrí inej prevádzke</li>
+          <li>Vo výklade máme vyvesený platný cenník merania</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3>Prístupnosť prevádzky</h3>
+        <ul class="ticks">
+          <li>Dvere široké 90 cm, bez prahu</li>
+          <li>Celá prevádzka na prízemí vrátane vyšetrovne</li>
+          <li>Miesto na sedenie pri každom skúšobnom pulte</li>
+          <li>Vodiaci pes je vo všetkých priestoroch vítaný</li>
+          <li>Pri objednaní vieme vyhradiť tichší čas bez čakania</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 HODINY A KONTAKT ===== -->
+<section class="sec sec--deep" id="hodiny">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">12</p>
+      <div>
+        <p class="eyebrow">Kedy a kde</p>
+        <h2>Otváracie hodiny a kontakt</h2>
+      </div>
+      <p class="lede">Meranie zraku robíme počas celých otváracích hodín okrem poslednej polhodiny pred zatvorením.</p>
+    </div>
+
+    <div class="grid grid--2">
+      <div class="reveal">
+        <p class="stav" id="stav-otvorene"><i aria-hidden="true"></i><span>Otváracie hodiny</span></p>
+        <div class="tablewrap" style="border-top:0">
+          <table class="hours">
+            <caption>Týždenný rozpis</caption>
+            <tbody>
+              <tr data-den="1"><th scope="row">Pondelok</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="2"><th scope="row">Utorok</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="3"><th scope="row">Streda</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="4"><th scope="row">Štvrtok</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="5"><th scope="row">Piatok</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="6"><th scope="row">Sobota</th><td>9:00 – 12:00</td></tr>
+              <tr data-den="0"><th scope="row">Nedeľa</th><td>zatvorené</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-top:18px">Obedná prestávka pondelok až piatok 12:00 – 13:00. Počas štátnych sviatkov máme zatvorené.</p>
+      </div>
+
+      <div class="reveal">
+        <dl class="contact-list">
+          <div>
+            <dt>Adresa</dt>
+            <dd>Optika Meridián, Studničná 6, 949 01 Nitra</dd>
+          </div>
+          <div>
+            <dt>Telefón</dt>
+            <dd class="tel-big"><a href="tel:+421916852034">0916 852 034</a></dd>
+          </div>
+          <div>
+            <dt>Písomne</dt>
+            <dd>Cez kontaktný formulár na tejto stránke. Správa príde do schránky optiky a odpovedáme do 24 hodín.</dd>
+          </div>
+          <div>
+            <dt>Kto vás obslúži</dt>
+            <dd>Optometrista, optický technik a predajný poradca</dd>
+          </div>
+          <div>
+            <dt>Vyzdvihnutie zákazky</dt>
+            <dd>Kedykoľvek počas otváracích hodín, bez objednania</dd>
+          </div>
+        </dl>
+        <div class="actions">
+          <a class="btn btn--sky" href="#objednanie">Objednať sa na meranie</a>
+          <a class="btn btn--ghost" href="#napiste">Napísať správu</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 PODMIENKY, PLATBA A POUKAZY ===== -->
+<section class="sec" id="podmienky">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">13</p>
+      <div>
+        <p class="eyebrow">Pravidlá vopred</p>
+        <h2>Platba, záruka, storno a poukazy</h2>
+      </div>
+      <p class="lede">Podmienky uvádzame vopred, aby ste vedeli, čo platí, keď si okuliare objednáte, keď potrebujete termín zrušiť alebo keď vám okuliare nesadnú.</p>
+    </div>
+
+    <div class="grid grid--2">
+      <div class="blk reveal">
+        <h3>Platba</h3>
+        <ul class="ticks">
+          <li>Hotovosť aj platobná karta priamo v predajni</li>
+          <li>Prevodom na faktúru pre firmy so splatnosťou 14 dní</li>
+          <li>Záloha 30 % pri zákazke nad 200 €, zvyšok pri prevzatí</li>
+          <li>Doklad na uplatnenie príspevku vystavíme ku každej zákazke</li>
+          <li>Nie sme zmluvným partnerom zdravotných poisťovní</li>
+        </ul>
+      </div>
+
+      <div class="blk reveal">
+        <h3>Záruka a reklamácie</h3>
+        <ul class="ticks">
+          <li>24 mesiacov na výrobné chyby šošoviek aj rámu</li>
+          <li>Adaptačná záruka 60 dní na progresívne šošovky</li>
+          <li>Pri výmene typu šošovky doplácate len rozdiel v cene</li>
+          <li>Reklamáciu vybavíme do 30 dní od prevzatia</li>
+          <li>Doladenie tvaru rámu je vždy bez poplatku</li>
+        </ul>
+      </div>
+
+      <div class="blk reveal">
+        <h3>Storno podmienky</h3>
+        <ul class="ticks">
+          <li>Termín zrušíte alebo presuniete telefonicky do 4 hodín pred návštevou</li>
+          <li>Zrušený aj nevyužitý termín je bez poplatku</li>
+          <li>Pri meškaní nad 15 minút meriame v skrátenom rozsahu</li>
+          <li>Objednaný rám bez zálohy zrušíte kedykoľvek pred jeho dodaním</li>
+          <li>Zákazku so zálohou zrušíte do 24 hodín od objednania, potom sa záloha použije na výrobu individuálnych šošoviek</li>
+          <li>Hotovú zákazku držíme v predajni 60 dní od výzvy na prevzatie</li>
+        </ul>
+      </div>
+
+      <div class="blk reveal">
+        <h3>Darčekové poukazy</h3>
+        <ul class="ticks">
+          <li>Hodnoty 30 €, 50 € a 100 €, vystavíme ich na počkanie</li>
+          <li>Platnosť 12 mesiacov od dátumu vystavenia</li>
+          <li>Uplatníte ich na meranie, okuliare aj kontaktné šošovky</li>
+          <li>Rozdiel nad hodnotu poukazu jednoducho doplatíte</li>
+          <li>Poukaz je prenosný, nevymieňame ho za hotovosť</li>
+        </ul>
+        <p class="blk__meta">Objednanie poukazu na čísle <a href="tel:+421916852034">0916 852 034</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 ČASTÉ OTÁZKY ===== -->
+<section class="sec sec--band" id="faq">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">14</p>
+      <div>
+        <p class="eyebrow">Pýtate sa</p>
+        <h2>Časté otázky</h2>
+      </div>
+      <p class="lede">Osem otázok, ktoré dostávame v predajni najčastejšie. Ak vám tu odpoveď chýba, zavolajte alebo nám napíšte cez formulár.</p>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Musím sa na meranie zraku objednať?</summary>
+        <div class="faq__body"><p>Odporúčame to, pretože meranie trvá 30 minút a v tom čase sa venujeme len vám. Bez objednania meriame len vtedy, ak je práve voľná kapacita. Rámy si však môžete skúšať kedykoľvek počas otváracích hodín.</p></div>
+      </details>
+      <details>
+        <summary>Ako dlho trvá zhotovenie okuliarov?</summary>
+        <div class="faq__body"><p>Bežná lehota je 3 až 5 pracovných dní. Jednoohniskové šošovky v bežných dioptriách zvládneme často do dvoch dní, progresívne individuálne trvajú približne týždeň. Expresné zhotovenie do 24 hodín stojí 25 € a dá sa objednať pri jednoohniskových šošovkách.</p></div>
+      </details>
+      <details>
+        <summary>Môžem si dať nové šošovky do vlastného rámu?</summary>
+        <div class="faq__body"><p>Áno, osadenie do vlastného rámu stojí 15 €. Rám najprv posúdime — pri starom alebo krehkom acetáte hrozí prasknutie počas brúsenia a na toto riziko vás upozorníme vopred. Ak s ním nesúhlasíte, prácu nezačneme.</p></div>
+      </details>
+      <details>
+        <summary>Čo ak si na progresívne šošovky nezvyknem?</summary>
+        <div class="faq__body"><p>Na progresívne šošovky platí adaptačná záruka 60 dní. Do dvoch mesiacov od prevzatia vám vymeníme šošovky za iný typ, napríklad za kancelárske alebo za dvoje jednoohniskové okuliare. Doplatíte len rozdiel v cene, práca navyše je bez poplatku.</p></div>
+      </details>
+      <details>
+        <summary>Meriate zrak aj deťom?</summary>
+        <div class="faq__body"><p>Meriame deti od šiestich rokov a vždy za účasti rodiča. Pri podozrení na tupozrakosť, škúlenie alebo iný nález dieťa nepreberáme do starostlivosti a odporučíme vyšetrenie u očného lekára.</p></div>
+      </details>
+      <details>
+        <summary>Aký je rozdiel medzi indexom 1.5 a 1.67?</summary>
+        <div class="faq__body"><p>Index určuje, ako veľmi šošovka láme svetlo, a tým aj jej hrúbku. Pri rovnakej dioptrii je šošovka s indexom 1.67 výrazne tenšia a ľahšia ako 1.5. Do štyroch dioptrií býva rozdiel malý, nad štyri dioptrie stenčenie odporúčame, najmä pri bezrámových okuliaroch.</p></div>
+      </details>
+      <details>
+        <summary>Ako často mám chodiť na kontrolu?</summary>
+        <div class="faq__body"><p>Pri okuliaroch stačí meranie raz za dva roky, ak sa videnie nemení. Ak nosíte kontaktné šošovky, kontrola je potrebná raz ročne a bez nej ďalšie šošovky nepredávame. Pri náhlej zmene videnia príďte hneď, takúto návštevu riešime prednostne.</p></div>
+      </details>
+      <details>
+        <summary>Čím mám okuliare čistiť?</summary>
+        <div class="faq__body"><p>Vlažnou vodou s kvapkou saponátu na riad a potom handričkou z mikrovlákna. Lieh, prostriedky na okná a suché utieranie tričkom poškodzujú antireflexnú vrstvu. Raz za tri mesiace okuliare prineste, ultrazvukové čistenie robíme na počkanie a bez poplatku.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 KARIÉRA ===== -->
+<section class="sec sec--tight" id="kariera">
+  <div class="wrap">
+    <div class="grid grid--side">
+      <div class="reveal">
+        <p class="eyebrow">Kariéra</p>
+        <h2>Hľadáme optického technika do dielne</h2>
+        <p class="lede">Plný úväzok, pondelok až piatok, žiadne večerné zmeny. Soboty 9:00 – 12:00 podľa rozpisu, ktorý dostanete mesiac dopredu. Prax v optike je vítaná, prácu na brúsnom automate zaškolíme.</p>
+        <p class="note">Ozvite sa cez kontaktný formulár nižšie alebo zavolajte na 0916 852 034 a dohodneme si stretnutie priamo v dielni. Odpovedáme do piatich pracovných dní.</p>
+        <div class="actions">
+          <a class="btn btn--line" href="#napiste">Napísať nám</a>
+        </div>
+      </div>
+      <div class="card reveal">
+        <h3>Čo ponúkame</h3>
+        <ul class="ticks">
+          <li>Mzda od 1 100 € v hrubom podľa praxe</li>
+          <li>Zaškolenie na brúsny automat a tvarový skener</li>
+          <li>Pevný rozpis zmien na mesiac dopredu</li>
+          <li>Okuliare pre zamestnanca v nákupnej cene</li>
+          <li>Nástup dohodou, aj neskorší termín</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 16 KONTAKTNÝ FORMULÁR ===== -->
+<section class="sec sec--band" id="napiste">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">15</p>
+      <div>
+        <p class="eyebrow">Napíšte nám</p>
+        <h2>Kontaktný formulár</h2>
+      </div>
+      <p class="lede">Správa príde do schránky optiky. Odpovedáme do 24 hodín, správy z víkendu vybavujeme v pondelok ráno.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <form class="reveal" id="kontakt" novalidate>
+        <div class="formgrid">
+          <div class="field">
+            <label for="k-meno">Meno a priezvisko</label>
+            <input type="text" id="k-meno" name="k-meno" autocomplete="name" placeholder="Meno a priezvisko">
+          </div>
+          <div class="field">
+            <label for="k-telefon">Telefón</label>
+            <input type="tel" id="k-telefon" name="k-telefon" autocomplete="tel" placeholder="0910 123 456">
+          </div>
+          <div class="field full">
+            <label for="k-sprava">Správa</label>
+            <textarea id="k-sprava" name="k-sprava" placeholder="Napríklad: potreboval by som vymeniť šošovky do vlastného rámu, aký je najbližší voľný termín?"></textarea>
+          </div>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="k-suhlas" name="k-suhlas">
+          <span>Súhlasím, aby ma optika kontaktovala kvôli odpovedi na túto správu. Údaje použijeme len na tento účel a nikam ich neposielame.</span>
+        </label>
+
+        <button class="btn btn--deep" type="submit">Odoslať správu</button>
+
+        <div class="done" id="kontakt-hotovo" hidden tabindex="-1">
+          <h3>Toto je ukážkový web</h3>
+          <p id="kontakt-recap">Formulár nič neodosiela a správa sa nikam neuloží.</p>
+        </div>
+      </form>
+
+      <div class="reveal">
+        <div class="blk" style="margin-bottom:26px">
+          <h3>Kedy je rýchlejšie zavolať</h3>
+          <p>Ak potrebujete termín ešte dnes, riešite bolesť oka alebo prasknuté okuliare, zavolajte. Telefón dvíhame počas celých otváracích hodín.</p>
+          <p class="blk__meta"><a href="tel:+421916852034">0916 852 034</a></p>
+        </div>
+        <div class="blk">
+          <h3>Čo do správy napísať</h3>
+          <ul class="ticks">
+            <li>O akú službu máte záujem</li>
+            <li>Kedy sa vám hodí prísť</li>
+            <li>Či už u nás máte záznam o meraní</li>
+            <li>Číslo, na ktorom vás zastihneme cez deň</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY — jediné reálne kontaktné údaje na tejto stránke ===== -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap author__in">
+    <div class="reveal">
+      <p class="eyebrow">Autor ukážky</p>
+      <h2 id="autor-nadpis">Páči sa vám tento web?</h2>
+      <p>Optika Meridián je vymyslený podnik a všetky údaje na tejto stránke — adresa, telefón, ceny aj kategórie rámov — sú ukážkové. Túto stránku navrhol a naprogramoval Alex Poliak.</p>
+      <p>Rovnako hotový web spravím aj vašej prevádzke: s vašimi textami, cenníkom, otváracími hodinami a formulármi, ktoré naozaj doručia správu do vašej schránky.</p>
+      <p>Najprv si nezáväzne prejdeme, čo potrebujete, a poviem vám, čo sa dá spraviť a za koľko. Konzultácia je zadarmo a nezáväzne, k ničomu vás neviaže.</p>
+      <p class="author__price">Weby na mieru od 250 €. Prvý návrh do 3 dní. Konzultácia zadarmo a nezáväzne.</p>
+    </div>
+
+    <div class="author__card reveal">
+      <p class="author__name">Alex Poliak</p>
+      <p class="author__role">Návrh a programovanie webových stránok</p>
+      <dl class="author__list">
+        <div>
+          <dt>E-mail</dt>
+          <dd><a class="link--light" href="mailto:info@apoliak.online">info@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefón</dt>
+          <dd><a class="link--light" href="tel:+421902464022">0902 464 022</a></dd>
+        </div>
+        <div>
+          <dt>Web</dt>
+          <dd><a class="link--light" href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+      </dl>
+      <div class="author__actions">
+        <a class="btn btn--sky" href="mailto:info@apoliak.online?subject=Z%C3%A1ujem%20o%20web">Napísať e-mail</a>
+        <a class="btn btn--ghost" href="tel:+421902464022">Zavolať</a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== PÄTA ===== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <b>Optika Meridián</b>
+        <p>Studničná 6, 949 01 Nitra<br><a href="tel:+421916852034">0916 852 034</a></p>
+        <p>Vymyslený podnik pre účely ukážky webu.</p>
+      </div>
+      <div>
+        <b>Stránka</b>
+        <ul class="foot__links">
+          <li><a href="#sluzby">Služby optiky</a></li>
+          <li><a href="#typy">Typy šošoviek</a></li>
+          <li><a href="#cennik">Cenník šošoviek</a></li>
+          <li><a href="#starostlivost">Starostlivosť o okuliare</a></li>
+          <li><a href="#podmienky">Platba a storno podmienky</a></li>
+          <li><a href="#napiste">Kontaktný formulár</a></li>
+        </ul>
+      </div>
+      <div>
+        <b>Otváracie hodiny</b>
+        <p>Pondelok – piatok 9:00 – 18:00<br>Sobota 9:00 – 12:00<br>Nedeľa zatvorené<br>Obedná prestávka 12:00 – 13:00</p>
+      </div>
+    </div>
+    <p class="foot__bottom">Ukážkový web bez reálnej prevádzky. Návrh a kód: <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a> &middot; <a href="tel:+421902464022">0902 464 022</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var d = document;
+  d.documentElement.className += " js";
+  var jemne = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var NBSP = String.fromCharCode(160);
+
+  function eur(n){
+    var s = String(Math.round(n));
+    if(s.length > 3) s = s.slice(0, s.length - 3) + NBSP + s.slice(s.length - 3);
+    return s + NBSP + "€";
+  }
+
+  /* ---------- 0. skutočná výška pásika ukážky ---------- */
+  var pasik = d.querySelector(".demobar");
+  function nastavVyskuPasika(){
+    if(!pasik) return;
+    var v = Math.ceil(pasik.getBoundingClientRect().height);
+    if(v > 0) d.documentElement.style.setProperty("--barh", v + "px");
+  }
+  if(pasik){
+    nastavVyskuPasika();
+    window.addEventListener("resize", nastavVyskuPasika);
+    if(window.ResizeObserver) new ResizeObserver(nastavVyskuPasika).observe(pasik);
+    window.addEventListener("load", nastavVyskuPasika);
+  }
+
+  /* ---------- 1. mobilné menu ---------- */
+  var toggle = d.querySelector(".nav-toggle");
+  var menu = d.getElementById("hlavne-menu");
+  function zavriMenu(){
+    if(!toggle || !menu) return;
+    menu.setAttribute("data-open", "false");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var otvorene = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", otvorene ? "false" : "true");
+      toggle.setAttribute("aria-expanded", otvorene ? "false" : "true");
+    });
+    d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavriMenu(); });
+  }
+
+  /* ---------- 2. plynulé skrolovanie ---------- */
+  d.addEventListener("click", function(e){
+    var t = e.target;
+    var a = (t && t.closest) ? t.closest('a[href^="#"]') : null;
+    if(!a) return;
+    var id = a.getAttribute("href");
+    if(id === "#") return;
+    var ciel = d.querySelector(id);
+    if(!ciel) return;
+    e.preventDefault();
+    zavriMenu();
+    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
+    if(history.replaceState) history.replaceState(null, "", id);
+  });
+
+  /* ---------- 3. prepočet ceny okuliarov ---------- */
+  var typ = d.getElementById("typ");
+  var stencenie = d.getElementById("stencenie");
+  var ramSel = d.getElementById("ram");
+  var expresSel = d.getElementById("expres");
+  var upravy = [].slice.call(d.querySelectorAll(".uprava"));
+  var out = {
+    sosovky: d.getElementById("sum-sosovky"),
+    sten: d.getElementById("sum-sten"),
+    stenLbl: d.getElementById("sum-sten-lbl"),
+    upravy: d.getElementById("sum-upravy"),
+    upravyLbl: d.getElementById("sum-upravy-lbl"),
+    ram: d.getElementById("sum-ram"),
+    ramLbl: d.getElementById("sum-ram-lbl"),
+    expres: d.getElementById("sum-expres"),
+    spolu: d.getElementById("sum-spolu"),
+    lehota: d.getElementById("sum-lehota")
+  };
+
+  function cenaOption(sel){
+    var o = sel.options[sel.selectedIndex];
+    return parseFloat(o.getAttribute("data-cena")) || 0;
+  }
+
+  function prepocitaj(){
+    var optTyp = typ.options[typ.selectedIndex];
+    var cSosovky = parseFloat(optTyp.getAttribute("data-cena")) || 0;
+    var dni = parseInt(optTyp.getAttribute("data-dni"), 10) || 3;
+    var cSten = cenaOption(stencenie);
+    var cRam = cenaOption(ramSel);
+    var cExpres = cenaOption(expresSel);
+
+    var cUpravy = 0, nazvy = [];
+    upravy.forEach(function(ch){
+      if(ch.checked){
+        cUpravy += parseFloat(ch.getAttribute("data-cena")) || 0;
+        nazvy.push(ch.getAttribute("data-nazov"));
+      }
+    });
+
+    var spolu = cSosovky + cSten + cUpravy + cRam + cExpres;
+
+    out.sosovky.textContent = eur(cSosovky);
+    out.stenLbl.textContent = "Stenčenie " + stencenie.value;
+    out.sten.textContent = eur(cSten);
+    out.upravyLbl.textContent = nazvy.length ? "Úpravy (" + nazvy.length + ")" : "Úpravy";
+    out.upravy.textContent = eur(cUpravy);
+    out.ramLbl.textContent = ramSel.value === "vlastny"
+      ? "Osadenie do vlastného rámu"
+      : "Rám — " + ramSel.options[ramSel.selectedIndex].textContent.split("—")[0].trim();
+    out.ram.textContent = eur(cRam);
+    out.expres.textContent = eur(cExpres);
+    out.spolu.textContent = eur(spolu);
+
+    var lehota = expresSel.value === "expres"
+      ? "Expresné zhotovenie do 24 hodín."
+      : "Zhotovenie do " + dni + " pracovných dní.";
+    var doplnok = nazvy.length ? " Vybrané úpravy: " + nazvy.join(", ") + "." : " Bez úprav povrchu.";
+    out.lehota.textContent = lehota + doplnok + " Cena platí za pár šošoviek vrátane brúsenia a centrácie.";
+  }
+
+  if(typ && stencenie && ramSel && expresSel && out.spolu){
+    [typ, stencenie, ramSel, expresSel].forEach(function(el){
+      el.addEventListener("change", prepocitaj);
+    });
+    upravy.forEach(function(ch){ ch.addEventListener("change", prepocitaj); });
+    prepocitaj();
+  }
+
+  /* ---------- 4. otváracie hodiny: dnešný deň a stav ---------- */
+  var HODINY = {
+    1:[[9,12],[13,18]], 2:[[9,12],[13,18]], 3:[[9,12],[13,18]],
+    4:[[9,12],[13,18]], 5:[[9,12],[13,18]], 6:[[9,12]], 0:[]
+  };
+  var stav = d.getElementById("stav-otvorene");
+  var teraz = new Date();
+  var denDnes = teraz.getDay();
+
+  [].slice.call(d.querySelectorAll(".hours tr")).forEach(function(r){
+    if(parseInt(r.getAttribute("data-den"), 10) === denDnes) r.setAttribute("data-dnes", "1");
+  });
+
+  if(stav){
+    var minuty = teraz.getHours() * 60 + teraz.getMinutes();
+    var otvorene = HODINY[denDnes].some(function(i){
+      return minuty >= i[0] * 60 && minuty < i[1] * 60;
+    });
+    var text = stav.querySelector("span");
+    if(text) text.textContent = otvorene ? "Teraz otvorené" : "Teraz zatvorené";
+  }
+
+  /* ---------- 5. objednanie: dátum, voľné časy, odoslanie ---------- */
+  var datum = d.getElementById("datum");
+  var sloty = [].slice.call(d.querySelectorAll('input[name="cas"]'));
+  var info = d.getElementById("slot-info");
+  var DNI = ["nedeľa","pondelok","utorok","streda","štvrtok","piatok","sobota"];
+
+  function naISO(dt){
+    var m = String(dt.getMonth() + 1), den = String(dt.getDate());
+    return dt.getFullYear() + "-" + (m.length < 2 ? "0" + m : m) + "-" + (den.length < 2 ? "0" + den : den);
+  }
+  function zoISO(s){
+    if(!s) return null;
+    var c = s.split("-");
+    if(c.length !== 3) return null;
+    var dt = new Date(parseInt(c[0],10), parseInt(c[1],10) - 1, parseInt(c[2],10));
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+  function popisDatumu(dt){
+    return DNI[dt.getDay()] + " " + dt.getDate() + ". " + (dt.getMonth() + 1) + ". " + dt.getFullYear();
+  }
+  function sVelkym(t){ return t.charAt(0).toUpperCase() + t.slice(1); }
+  function casySlovom(n){
+    if(n === 1) return "1 voľný čas";
+    if(n > 1 && n < 5) return n + " voľné časy";
+    return n + " voľných časov";
+  }
+
+  function obnovSloty(){
+    if(!datum) return;
+    var dt = zoISO(datum.value);
+    if(!dt){
+      sloty.forEach(function(s){ s.disabled = false; });
+      if(info) info.textContent = "Vyberte dátum a ponecháme len časy, v ktorých je v ten deň otvorené.";
+      return;
+    }
+    var den = dt.getDay();
+    var intervaly = HODINY[den];
+    var dnes = new Date();
+    var jeDnes = naISO(dnes) === datum.value;
+    var volnych = 0;
+
+    sloty.forEach(function(s){
+      var h = parseInt(s.getAttribute("data-hod"), 10);
+      var vHodinach = intervaly.some(function(i){ return h >= i[0] && h < i[1]; });
+      var uzPreslo = jeDnes && h <= dnes.getHours();
+      var moznost = vHodinach && !uzPreslo;
+      s.disabled = !moznost;
+      if(!moznost && s.checked) s.checked = false;
+      if(moznost) volnych++;
+    });
+
+    if(info){
+      if(den === 0){
+        info.textContent = "V nedeľu máme zatvorené. Vyberte si prosím iný deň.";
+      } else if(volnych === 0){
+        info.textContent = "Na tento deň už nemáme voľný čas. Skúste nasledujúci pracovný deň.";
+      } else if(den === 6){
+        info.textContent = sVelkym(popisDatumu(dt)) + " — v sobotu meriame len do 12:00, ponúkame " + casySlovom(volnych) + ".";
+      } else {
+        info.textContent = sVelkym(popisDatumu(dt)) + " — ponúkame " + casySlovom(volnych) + ". Obedná prestávka je 12:00 – 13:00.";
+      }
+    }
+  }
+
+  if(datum){
+    var dnesDt = new Date();
+    var start = new Date(dnesDt.getTime());
+    start.setDate(start.getDate() + 1);
+    while(start.getDay() === 0) start.setDate(start.getDate() + 1);
+    datum.min = naISO(dnesDt);
+    datum.value = naISO(start);
+    datum.addEventListener("change", obnovSloty);
+    datum.addEventListener("input", obnovSloty);
+    obnovSloty();
+  }
+
+  var form = d.getElementById("objednavka");
+  var hotovo = d.getElementById("objednavka-hotovo");
+  var recap = d.getElementById("objednavka-recap");
+  if(form && hotovo && recap){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var ucel = d.getElementById("ucel");
+      var vybrany = null;
+      sloty.forEach(function(s){ if(s.checked) vybrany = s.value; });
+      var dt = datum ? zoISO(datum.value) : null;
+
+      var veta = "Formulár nič neodosiela a termín sa nikam neuloží. ";
+      if(dt && vybrany){
+        veta += "Na skutočnom webe by teraz odišla objednávka: " +
+          (ucel ? ucel.options[ucel.selectedIndex].value : "meranie zraku") +
+          ", " + popisDatumu(dt) + " o " + vybrany + ".";
+      } else {
+        veta += "Na skutočnom webe by objednávka odišla do optiky spolu s vybraným dátumom a časom.";
+      }
+      recap.textContent = veta;
+      hotovo.hidden = false;
+      hotovo.focus();
+      if(!jemne) hotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  }
+
+  /* ---------- 6. kontaktný formulár ---------- */
+  var kontakt = d.getElementById("kontakt");
+  var kHotovo = d.getElementById("kontakt-hotovo");
+  var kRecap = d.getElementById("kontakt-recap");
+  if(kontakt && kHotovo && kRecap){
+    kontakt.addEventListener("submit", function(e){
+      e.preventDefault();
+      var meno = d.getElementById("k-meno");
+      var hodnota = meno && meno.value ? meno.value.trim() : "";
+      var veta = "Formulár nič neodosiela a správa sa nikam neuloží. ";
+      veta += hodnota
+        ? "Na skutočnom webe by správa od odosielateľa " + hodnota + " prišla do schránky optiky a odpoveď by ste dostali do 24 hodín."
+        : "Na skutočnom webe by správa prišla do schránky optiky a odpoveď by ste dostali do 24 hodín.";
+      kRecap.textContent = veta;
+      kHotovo.hidden = false;
+      kHotovo.focus();
+      if(!jemne) kHotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  }
+
+  /* ---------- 7. odhaľovanie sekcií ---------- */
+  var bloky = [].slice.call(d.querySelectorAll(".reveal"));
+  if("IntersectionObserver" in window && !jemne){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, {rootMargin:"0px 0px -5% 0px", threshold:.05});
+    bloky.forEach(function(b){ io.observe(b); });
+  } else {
+    bloky.forEach(function(b){ b.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

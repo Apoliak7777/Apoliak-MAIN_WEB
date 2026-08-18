@@ -1,0 +1,1835 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fotoateliér Škála — portrétne, rodinné, produktové a firemné fotenie v Bratislave</title>
+<meta name="description" content="Ukážkový web fotoateliéru v Bratislave: štyri balíčky od 89 €, portrétne, rodinné, produktové a firemné fotenie, prepočet ceny podľa počtu upravených fotografií, náhľadová galéria do 5 pracovných dní. Návrh a kód Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#141414">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:site_name" content="Fotoateliér Škála (ukážkový web)">
+<meta property="og:title" content="Fotoateliér Škála — portrétne, rodinné, produktové a firemné fotenie">
+<meta property="og:description" content="Ateliér so severným svetlom v Bratislave. Balíčky od 89 €, upravené fotografie do 10 pracovných dní. Ukážkový web od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23141414'/%3E%3Crect x='12' y='13' width='40' height='7' fill='%23F4F3F1'/%3E%3Crect x='12' y='24' width='40' height='7' fill='%23A5A5A5'/%3E%3Crect x='12' y='35' width='40' height='7' fill='%23565656'/%3E%3Crect x='12' y='46' width='40' height='7' fill='%239A4B34'/%3E%3C/svg%3E">
+<style>
+/* ===================== TOKENY ===================== */
+:root{
+  --graphite:#141414;
+  --graphite-2:#1C1C1C;
+  --graphite-3:#242424;
+  --graphite-4:#0F0F0F;
+  --ink:#161616;
+  --paper:#F5F4F1;
+  --paper-2:#EDEBE6;
+  --card:#FFFFFF;
+  --muted:#57534E;
+  --line:#DAD6CF;
+  --line-2:#E7E4DE;
+  --line-dark:#333333;
+  --on-dark:#EEEDEB;
+  --on-dark-mut:#A8A49F;
+  --accent:#9A4B34;
+  --accent-2:#7E3B28;
+  --accent-l:#D98E76;
+  --author-bg:#221310;
+
+  --mono:ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,"Liberation Mono",monospace;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --wrap:1200px;
+  --bar-h:72px;
+}
+@media (min-width:840px){:root{--bar-h:44px}}
+
+/* ===================== ZÁKLAD ===================== */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  padding-top:var(--bar-h);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{font-family:var(--sans);margin:0 0 .45em;letter-spacing:-.02em;overflow-wrap:break-word;hyphens:none}
+h1{font-size:clamp(2.9rem,13vw,7rem);font-weight:800;line-height:.97;letter-spacing:-.045em}
+h2{font-size:clamp(1.95rem,4.1vw,3.15rem);font-weight:800;line-height:1.05;letter-spacing:-.033em}
+h3{font-size:clamp(1.06rem,1.5vw,1.24rem);font-weight:700;line-height:1.34;letter-spacing:-.012em}
+h4{font-size:1rem;font-weight:700}
+p{margin:0 0 1em}
+ul,ol{margin:0;padding:0;list-style:none}
+dl{margin:0}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sec--dark :focus-visible,.demobar :focus-visible,.author :focus-visible,.foot :focus-visible,.panel :focus-visible{outline-color:var(--accent-l)}
+.wrap{width:min(100% - 32px,var(--wrap));margin-inline:auto}
+@media (min-width:700px){.wrap{width:min(100% - 64px,var(--wrap))}}
+section{scroll-margin-top:calc(var(--bar-h) + 78px)}
+.sec{padding:clamp(70px,9vw,146px) 0}
+.sec--band{background:var(--paper-2)}
+.sec--dark{background:var(--graphite);color:var(--on-dark)}
+.skip{position:absolute;left:-9999px;top:0;z-index:300;background:var(--ink);color:var(--paper);padding:12px 18px}
+.skip:focus{left:8px;top:calc(var(--bar-h) + 8px)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}
+}
+
+/* ===================== TYPO POMOCNÍCI ===================== */
+.lede{font-size:1.07rem;color:var(--muted);max-width:56ch;margin:0}
+.sec--dark .lede{color:var(--on-dark-mut)}
+.small{font-size:.9rem;color:var(--muted);max-width:64ch}
+.sec--dark .small{color:var(--on-dark-mut)}
+.mono{font-family:var(--mono)}
+.mt{margin-top:clamp(28px,3.6vw,44px)}
+
+.shead{border-top:1px solid var(--line);padding-top:22px;margin-bottom:clamp(38px,5.5vw,74px);display:grid;gap:18px}
+.sec--dark .shead{border-top-color:var(--line-dark)}
+.shead__idx{font-family:var(--mono);font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+.sec--dark .shead__idx{color:var(--accent-l)}
+.shead h2{margin-bottom:0;max-width:20ch}
+@media (min-width:900px){
+  .shead{grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:12px 72px;align-items:end}
+}
+
+/* ===================== TLAČIDLÁ ===================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font:inherit;font-size:.92rem;font-weight:700;letter-spacing:.045em;
+  padding:16px 30px;border:1px solid transparent;border-radius:0;
+  cursor:pointer;text-decoration:none;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btnrow{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ===================== PÁSIK UKÁŽKY ===================== */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  background:#0B0B0B;color:var(--on-dark);
+  border-bottom:1px solid var(--accent);
+  font-size:.86rem;
+}
+.demobar__in{
+  width:min(100% - 24px,var(--wrap));margin-inline:auto;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:4px 20px;padding:9px 0;text-align:center;
+}
+.demobar__tag{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--accent-l);font-weight:700;white-space:nowrap;
+}
+.demobar__tag::before{content:"";width:9px;height:9px;background:var(--accent);flex:0 0 auto}
+.demobar__t{color:var(--on-dark-mut)}
+.demobar a{color:#FFFFFF;font-weight:700;text-decoration:none;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.34);padding-bottom:1px}
+.demobar a:hover{color:var(--accent-l);border-bottom-color:var(--accent-l)}
+
+/* ===================== HLAVIČKA ===================== */
+.site-head{
+  position:sticky;top:var(--bar-h);z-index:100;
+  background:var(--paper);border-bottom:1px solid var(--line);
+}
+.head__in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 0;min-height:64px}
+.brand{display:inline-flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink)}
+.brand__mark{display:flex;flex-direction:column;gap:2px;width:26px}
+.brand__mark i{display:block;height:4px}
+.brand__mark i:nth-child(1){background:#141414}
+.brand__mark i:nth-child(2){background:#565656}
+.brand__mark i:nth-child(3){background:#A5A5A5}
+.brand__mark i:nth-child(4){background:var(--accent)}
+.brand__tx{display:flex;flex-direction:column;line-height:1.08}
+.brand__n{font-weight:800;letter-spacing:.03em;font-size:1.02rem;text-transform:uppercase}
+.brand__s{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+.nav{display:none}
+@media (min-width:1140px){
+  .nav{display:flex;align-items:center;gap:26px}
+  .nav a{color:var(--ink);text-decoration:none;font-size:.9rem;font-weight:600;padding:6px 0;border-bottom:1px solid transparent}
+  .nav a:hover{border-bottom-color:var(--accent);color:var(--accent)}
+  .nav .btn{margin-left:8px;padding:14px 24px}
+}
+.burger{
+  display:inline-flex;align-items:center;gap:10px;
+  font:inherit;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  font-family:var(--mono);
+  background:transparent;border:1px solid var(--line);color:var(--ink);
+  padding:11px 16px;cursor:pointer;
+}
+.burger:hover{border-color:var(--ink)}
+.burger i{display:block;width:18px;height:9px;border-top:2px solid currentColor;border-bottom:2px solid currentColor}
+@media (min-width:1140px){.burger{display:none}}
+
+.mobmenu{border-top:1px solid var(--line);background:var(--paper);padding:8px 0 20px;max-height:72vh;overflow-y:auto}
+.mobmenu[hidden]{display:none}
+.mobmenu ul{display:grid}
+.mobmenu a{
+  display:block;padding:13px 2px;text-decoration:none;color:var(--ink);
+  font-weight:600;border-bottom:1px solid var(--line-2);
+}
+.mobmenu a:hover{color:var(--accent)}
+.mobmenu .btn{margin-top:18px;width:100%}
+
+/* ===================== TMAVÉ PLOCHY ===================== */
+.plate{position:relative;overflow:hidden;isolation:isolate}
+.plate::after{
+  content:"";position:absolute;inset:0;z-index:5;pointer-events:none;opacity:.13;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.g{position:absolute;inset:0;z-index:2;pointer-events:none}
+.g-grid--d{
+  background-image:linear-gradient(to right,rgba(238,237,235,.07) 1px,transparent 1px),
+                   linear-gradient(to bottom,rgba(238,237,235,.07) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.g-hatch{background:repeating-linear-gradient(126deg,rgba(238,237,235,.075) 0 1px,transparent 1px 16px)}
+
+.strip{
+  height:8px;
+  background:linear-gradient(90deg,
+    #0D0D0D 0 9.09%,#1F1F1F 0 18.18%,#2E2E2E 0 27.27%,#414141 0 36.36%,#565656 0 45.45%,
+    #6E6E6E 0 54.54%,#888888 0 63.63%,#A5A5A5 0 72.72%,#C2C2C2 0 81.81%,#DEDEDE 0 90.9%,#F5F5F5 0 100%);
+}
+
+/* ===================== HERO ===================== */
+.hero{background:var(--graphite);color:var(--on-dark);position:relative;overflow:hidden}
+.hero__in{padding:clamp(52px,7.5vw,116px) 0 clamp(44px,5.5vw,80px)}
+.hero__kick{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--accent-l);margin:0 0 clamp(22px,3.2vw,38px);line-height:1.8;
+}
+.hero h1{margin:0;color:#FFFFFF;padding-top:.05em}
+.hero h1 span{display:block}
+.hero__rule{height:1px;background:var(--line-dark);margin-top:clamp(26px,3.6vw,44px)}
+.hero__cols{margin-top:clamp(24px,3.4vw,40px);max-width:48ch}
+.hero__cols .lede{color:var(--on-dark-mut);font-size:1.09rem;max-width:none}
+.hero__cols .btnrow{margin-top:clamp(22px,3vw,32px)}
+
+.hero__band{background:var(--graphite-4);border-top:1px solid var(--line-dark)}
+.hband{display:grid;grid-template-columns:minmax(0,1fr);border-bottom:1px solid var(--line-dark)}
+@media (min-width:620px){.hband{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1020px){.hband{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.hband__i{padding:26px 0 26px 0;border-bottom:1px solid var(--line-dark)}
+.hband__i:last-child{border-bottom:0}
+@media (min-width:620px){
+  .hband__i{border-right:1px solid var(--line-dark);padding-right:24px}
+  .hband__i:nth-child(2n){border-right:0;padding-left:24px}
+  .hband__i:nth-last-child(-n+2){border-bottom:0}
+}
+@media (min-width:1020px){
+  .hband__i{border-bottom:0;border-right:1px solid var(--line-dark);padding:34px 26px 38px 26px}
+  .hband__i:first-child{padding-left:0}
+  .hband__i:nth-child(2n){padding-left:26px}
+  .hband__i:last-child{border-right:0;padding-right:0}
+}
+.hband__n{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;color:var(--accent-l);margin-bottom:12px}
+.hband__t{display:block;font-size:1.02rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#FFFFFF}
+.hband__p{display:block;font-family:var(--mono);font-size:clamp(2.1rem,4.4vw,3.05rem);font-weight:700;letter-spacing:-.035em;line-height:1.06;color:#FFFFFF;margin-top:10px}
+.hband__m{display:block;font-size:.88rem;color:var(--on-dark-mut);margin-top:8px}
+.hband__foot{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--on-dark-mut);margin:0;padding:18px 0 24px;line-height:1.95;
+}
+
+/* ===================== BALÍČKY ===================== */
+.packs{display:grid;border-top:1px solid var(--line)}
+@media (min-width:980px){.packs{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.pack{padding:28px 0 32px;border-bottom:1px solid var(--line);display:flex;flex-direction:column}
+@media (min-width:980px){
+  .pack{border-bottom:0;border-right:1px solid var(--line);padding:32px 28px 34px 0}
+  .pack + .pack{padding-left:28px}
+  .pack:last-child{border-right:0;padding-right:0}
+}
+.pack__idx{font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;color:var(--accent);margin:0 0 14px}
+.pack__name{font-size:clamp(1.35rem,2.1vw,1.62rem);font-weight:800;letter-spacing:-.02em;text-transform:uppercase;line-height:1.1;margin:0 0 12px}
+.pack__price{font-family:var(--mono);font-size:clamp(2.2rem,3.5vw,2.95rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin:0 0 14px;color:var(--ink)}
+.pack__meta{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 18px;line-height:1.75}
+.pack ul{display:grid;gap:9px;font-size:.94rem;margin-bottom:18px}
+.pack li{padding-left:17px;position:relative}
+.pack li::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:1px;background:var(--accent)}
+.pack__foot{margin:auto 0 0;padding-top:16px;border-top:1px solid var(--line-2);font-size:.86rem;color:var(--muted)}
+
+/* ===================== TABUĽKY ===================== */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw + .tw{margin-top:clamp(38px,4.6vw,64px)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+.tw--wide table{min-width:700px}
+.tw--mid table{min-width:520px}
+caption{
+  caption-side:top;text-align:left;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--accent);padding:0 0 16px;font-weight:700;
+}
+th,td{text-align:left;padding:15px 26px 15px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+th:last-child,td:last-child{padding-right:0}
+thead th{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);font-weight:700;border-bottom:1px solid var(--ink);padding-top:0;
+}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+td.num,th.num{font-family:var(--mono);font-weight:700;white-space:nowrap}
+tbody th{font-weight:700}
+
+/* ===================== PREPOČET ===================== */
+.calc{display:grid;gap:34px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:1000px){.calc{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:56px;align-items:start}}
+.opts{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:560px){.opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.opt{position:relative;display:block;border:1px solid var(--line-dark);background:var(--graphite-2);padding:17px;cursor:pointer}
+.opt:hover{border-color:#4C4C4C}
+.opt.is-on{border-color:var(--accent-l);background:var(--graphite-3)}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt__t{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.opt__n{font-weight:700;font-size:1.05rem;color:#FFFFFF}
+.opt__p{font-family:var(--mono);font-weight:700;color:var(--accent-l);white-space:nowrap}
+.opt__m{display:block;font-size:.86rem;color:var(--on-dark-mut);margin-top:7px}
+.opt input:focus-visible + .opt__t{outline:2px solid var(--accent-l);outline-offset:4px}
+
+.ctrl{margin-top:30px;border-top:1px solid var(--line-dark);padding-top:24px}
+.ctrl__h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.ctrl__lab{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-mut)}
+.ctrl__val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:#FFFFFF}
+input[type=range]{width:100%;accent-color:var(--accent-l);height:26px}
+.ctrl__scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--on-dark-mut);margin-top:2px}
+.adds{display:grid;gap:10px;margin-top:24px}
+@media (min-width:560px){.adds{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.add{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--line-dark);background:var(--graphite-2);padding:14px 15px;cursor:pointer;font-size:.94rem}
+.add:hover{border-color:#4C4C4C}
+.add.is-on{border-color:var(--accent-l);background:var(--graphite-3)}
+.add input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent-l);flex:0 0 auto}
+.add b{display:block;color:#FFFFFF;font-weight:700}
+.add span{display:block}
+.add .add__p{font-family:var(--mono);font-size:.82rem;color:var(--accent-l);margin-top:4px}
+
+.sum{border:1px solid var(--line-dark);background:var(--graphite-2);padding:24px;position:sticky;top:calc(var(--bar-h) + 92px)}
+@media (max-width:999.98px){.sum{position:static}}
+.sum h3{color:#FFFFFF;margin-bottom:16px}
+.sum__row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #2E2E2E;font-size:.93rem;color:var(--on-dark-mut)}
+.sum__row b{color:var(--on-dark);font-weight:600}
+.sum__row span{font-family:var(--mono);color:#FFFFFF;white-space:nowrap;font-weight:600}
+.sum__tot{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:18px;padding-top:18px;border-top:1px solid var(--accent-l)}
+.sum__totl{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-mut)}
+.sum__totv{font-family:var(--mono);font-size:2.2rem;font-weight:700;color:var(--accent-l);letter-spacing:-.035em;line-height:1}
+.sum__note{font-size:.85rem;color:var(--on-dark-mut);margin:16px 0 18px}
+.sum .btn{width:100%}
+.noscript{border:1px solid var(--line-dark);padding:12px 14px;font-size:.9rem;color:var(--on-dark-mut);margin-top:16px}
+
+/* ===================== KROKY / PRAVIDLÁ ===================== */
+.steps{border-top:1px solid var(--line)}
+.step{display:grid;gap:8px;padding:26px 0;border-bottom:1px solid var(--line)}
+@media (min-width:880px){
+  .step{grid-template-columns:96px minmax(0,1fr) 220px;gap:40px;align-items:start;padding:32px 0}
+}
+.step__n{font-family:var(--mono);font-size:1.75rem;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-.03em}
+.step__t h3{margin-bottom:8px}
+.step__t p{margin:0;color:var(--muted);font-size:.97rem;max-width:64ch}
+.step__m{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;line-height:1.85}
+
+.rules{border-top:1px solid var(--line)}
+.rule{display:grid;gap:8px;padding:22px 0;border-bottom:1px solid var(--line)}
+@media (min-width:880px){.rule{grid-template-columns:290px minmax(0,1fr);gap:44px}}
+.rule h3{margin:0;font-size:1.02rem}
+.rule p{margin:0;color:var(--muted);font-size:.97rem;max-width:68ch}
+
+/* ===================== ROZDELENIE / ŠPECIFIKÁCIE ===================== */
+.split{display:grid;gap:clamp(30px,4.4vw,56px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.split{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);align-items:start}}
+.speclist{display:grid;gap:32px}
+@media (min-width:640px){.speclist{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.spec h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.spec ul{display:grid;gap:9px;font-size:.95rem}
+.spec li{padding-left:17px;position:relative;color:var(--ink)}
+.spec li::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:1px;background:var(--line)}
+
+.nums{display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:900px){.nums{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.numi{background:var(--paper);padding:26px 22px 28px 0}
+.sec--band .numi{background:var(--paper-2)}
+.numi__v{font-family:var(--mono);font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:700;letter-spacing:-.04em;line-height:1.05;color:var(--ink)}
+.numi__l{font-size:.88rem;color:var(--muted);margin-top:10px;max-width:24ch}
+
+/* ===================== KARTY ===================== */
+.cards{display:grid;gap:clamp(26px,3.4vw,42px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:800px){.cards--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:700px){.cards--2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{border-top:1px solid var(--line);padding-top:22px}
+.card h3{margin-bottom:10px}
+.card p{color:var(--muted);font-size:.96rem;max-width:64ch}
+.card p:last-child{margin-bottom:0}
+.card ul{display:grid;gap:9px;font-size:.94rem}
+.card li{padding-left:17px;position:relative}
+.card li::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:1px;background:var(--accent)}
+.card__k{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+
+/* ===================== TMAVÝ PANEL ===================== */
+.panel{
+  position:relative;overflow:hidden;isolation:isolate;
+  background:linear-gradient(202deg,#2B2B2B,#141414 74%);color:var(--on-dark);
+  padding:clamp(26px,3.6vw,40px);display:flex;flex-direction:column;gap:18px;
+}
+.panel--warm{background:linear-gradient(200deg,#33211C,#160D0B 76%)}
+.panel > *{position:relative;z-index:4}
+.panel__k{font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent-l);margin:0}
+.panel__t{color:#FFFFFF;margin:0;font-size:clamp(1.4rem,2.5vw,1.95rem);font-weight:800;letter-spacing:-.03em;line-height:1.12}
+.panel__addr{color:#FFFFFF;margin:0;font-size:clamp(1.5rem,3vw,2.15rem);font-weight:800;letter-spacing:-.035em;line-height:1.15}
+.panel p{color:var(--on-dark-mut);margin:0;font-size:.95rem}
+.panel a:not(.btn){color:var(--accent-l);font-weight:700;text-underline-offset:3px}
+.panel a:not(.btn):hover{color:#EDB6A2}
+.plist{display:grid;border-top:1px solid var(--line-dark)}
+.plist > div{display:flex;justify-content:space-between;gap:20px;padding:12px 0;border-bottom:1px solid var(--line-dark);font-size:.93rem}
+.plist dt{color:var(--on-dark-mut);margin:0}
+.plist dd{margin:0;font-family:var(--mono);font-weight:700;color:#FFFFFF;text-align:right}
+.psteps{display:grid;gap:13px;border-top:1px solid var(--line-dark);padding-top:18px;counter-reset:ps}
+.psteps li{counter-increment:ps;padding-left:32px;position:relative;font-size:.94rem;color:var(--on-dark-mut)}
+.psteps li::before{
+  content:counter(ps,decimal-leading-zero);position:absolute;left:0;top:.18em;
+  font-family:var(--mono);font-size:.76rem;font-weight:700;color:var(--accent-l);
+}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{font-family:var(--mono);font-size:.9rem;font-weight:700;border:1px solid var(--line-dark);padding:10px 15px;color:#FFFFFF}
+
+/* ===================== FAQ ===================== */
+.faq{border-top:1px solid var(--line);max-width:88ch}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;position:relative;
+  padding:20px 52px 20px 0;font-weight:700;font-size:1.02rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:1.5rem;font-weight:400;color:var(--accent);line-height:1;
+}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:hover{color:var(--accent)}
+.faq__a{padding:0 52px 22px 0;color:var(--muted);font-size:.97rem;max-width:72ch}
+.faq__a p:last-child{margin-bottom:0}
+
+/* ===================== KONTAKT / FORMULÁR ===================== */
+.contact{display:grid;gap:clamp(30px,4.4vw,56px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.contact{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:64px;align-items:start}}
+.info{display:grid;gap:26px}
+.info__b{border-top:1px solid var(--line);padding-top:16px}
+.info__b h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.info__b p{margin:0;font-size:1rem}
+.info__tel{
+  font-family:var(--mono);font-size:clamp(1.45rem,3vw,1.95rem);font-weight:700;
+  letter-spacing:-.03em;line-height:1.15;color:var(--ink);text-decoration:none;display:inline-block;
+}
+.info__tel:hover{color:var(--accent)}
+.form{border:1px solid var(--line);background:var(--card);padding:clamp(22px,3.2vw,36px)}
+.frow{display:grid;gap:18px}
+@media (min-width:620px){.frow--2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.field{display:grid;gap:7px;margin-bottom:18px}
+.field .lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.field input,.field select,.field textarea{
+  font:inherit;font-size:1rem;padding:13px 14px;border:1px solid var(--line);
+  background:#FFFFFF;color:var(--ink);border-radius:0;width:100%;
+}
+.field textarea{min-height:140px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);outline:none}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.consent{display:flex;align-items:flex-start;gap:12px;font-size:.9rem;color:var(--muted);margin:6px 0 20px}
+.consent input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--accent);flex:0 0 auto}
+.formmsg{display:none;border-left:3px solid var(--accent);background:#FAF0EC;color:#57291B;padding:14px 16px;font-size:.94rem;margin-bottom:20px}
+.formmsg.is-on{display:block}
+.req{color:var(--accent)}
+
+/* ===================== AUTOR ===================== */
+.author{background:var(--author-bg);color:var(--paper);border-top:3px solid var(--accent)}
+.author__in{padding:clamp(52px,6.5vw,96px) 0;display:grid;gap:clamp(28px,4.4vw,60px)}
+@media (min-width:940px){.author__in{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center}}
+.author__k{font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-l);margin:0 0 14px}
+.author h2{color:#FFFFFF;margin-bottom:16px}
+.author p{color:#E6DDD9;max-width:58ch}
+.author a:not(.btn){color:var(--accent-l);font-weight:700;text-underline-offset:3px}
+.author a:not(.btn):hover{color:#EDB6A2}
+.author__price{font-family:var(--mono);font-size:1.06rem;font-weight:700;color:#FFFFFF;margin:0 0 6px}
+.author__free{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-l);margin:0}
+.author__box{border:1px solid #4A2B24;padding:clamp(22px,3.2vw,32px);display:grid;gap:14px;background:#1B0E0C}
+.author__row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between;border-bottom:1px solid #3B221C;padding-bottom:13px}
+.author__row:last-of-type{border-bottom:0;padding-bottom:0}
+.author__lab{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:#BC9E95}
+.author__val{font-weight:700;text-align:right}
+
+/* ===================== PÄTIČKA ===================== */
+.foot{background:var(--graphite);color:var(--on-dark-mut);font-size:.92rem}
+.foot__in{padding:clamp(44px,5.5vw,72px) 0 34px;display:grid;gap:34px}
+@media (min-width:880px){.foot__in{grid-template-columns:minmax(0,1.25fr) repeat(2,minmax(0,.9fr))}}
+.foot h4{color:#FFFFFF;font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+.foot ul{display:grid;gap:9px}
+.foot a:not(.btn){color:var(--on-dark);text-decoration:none}
+.foot a:not(.btn):hover{color:var(--accent-l);text-decoration:underline}
+.foot__bot{border-top:1px solid var(--line-dark);padding:20px 0 28px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:.85rem}
+.foot__mark{display:flex;gap:3px;margin-bottom:16px}
+.foot__mark i{display:block;width:22px;height:6px}
+
+/* ===================================================================
+   FARBY TLACIDIEL — zamerne az na konci a vzdy s dvoma triedami
+   (.btn.btn--x, specificita 0-2-0). Pravidla pre odkazy v okoli
+   (".nav a", ".foot a", ".panel a", ".author a") maju nizsiu specificitu
+   alebo su odfiltrovane cez :not(.btn), takze farbu textu tlacidla
+   nikde neprebiju a tlacidlo nesplynie s pozadim.
+   =================================================================== */
+.btn.btn--accent{background:var(--accent);border-color:var(--accent);color:#FFFFFF}
+.btn.btn--accent:hover{background:var(--accent-2);border-color:var(--accent-2);color:#FFFFFF}
+.btn.btn--ink{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.btn.btn--ink:hover{background:#000000;border-color:#000000;color:#FFFFFF}
+.btn.btn--line{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn.btn--line:hover{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.btn.btn--lined{background:transparent;border-color:#4F4F4F;color:#FFFFFF}
+.btn.btn--lined:hover{background:transparent;border-color:var(--accent-l);color:var(--accent-l)}
+.btn.btn--paper{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+.btn.btn--paper:hover{background:#FFFFFF;border-color:#FFFFFF;color:#000000}
+.author .btn.btn--lined{border-color:#6A3D31;color:#FFFFFF}
+.author .btn.btn--lined:hover{border-color:var(--accent-l);color:var(--accent-l)}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===== PÁSIK UKÁŽKY ===== -->
+<div class="demobar" id="demobar">
+  <div class="demobar__in">
+    <span class="demobar__tag">Ukážkový web</span>
+    <span class="demobar__t">Takýto web pre vás spravím.</span>
+    <a href="https://apoliak.online">apoliak.online</a>
+    <a href="tel:+421902464022">0902 464 022</a>
+  </div>
+</div>
+
+<!-- ===== HLAVIČKA ===== -->
+<header class="site-head">
+  <div class="wrap">
+    <div class="head__in">
+      <a class="brand" href="#uvod">
+        <span class="brand__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="brand__tx">
+          <span class="brand__n">Škála</span>
+          <span class="brand__s">Fotoateliér Bratislava</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Hlavná navigácia">
+        <a href="#balicky">Balíčky</a>
+        <a href="#cennik">Cenník</a>
+        <a href="#prepocet">Prepočet ceny</a>
+        <a href="#priebeh">Priebeh</a>
+        <a href="#atelier">Ateliér</a>
+        <a href="#firmy">Pre firmy</a>
+        <a href="#faq">Otázky</a>
+        <a class="btn btn--ink" href="#kontakt">Rezervovať termín</a>
+      </nav>
+
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobmenu">
+        <i aria-hidden="true"></i> Menu
+      </button>
+    </div>
+  </div>
+
+  <div class="mobmenu" id="mobmenu" hidden>
+    <div class="wrap">
+      <ul>
+        <li><a href="#balicky">Balíčky fotenia</a></li>
+        <li><a href="#cennik">Cenník a doplnky</a></li>
+        <li><a href="#prepocet">Prepočet ceny</a></li>
+        <li><a href="#priebeh">Priebeh fotenia</a></li>
+        <li><a href="#atelier">Ateliér a vybavenie</a></li>
+        <li><a href="#dodavka">Čo dostanete po fotení</a></li>
+        <li><a href="#firmy">Fotenie pre firmy</a></li>
+        <li><a href="#lehoty">Dodacie lehoty</a></li>
+        <li><a href="#hodiny">Otváracie hodiny</a></li>
+        <li><a href="#doprava">Ako sa k nám dostanete</a></li>
+        <li><a href="#podmienky">Podmienky a storno</a></li>
+        <li><a href="#platba">Spôsoby platby</a></li>
+        <li><a href="#poukazy">Darčekové poukazy</a></li>
+        <li><a href="#kariera">Voľná pozícia</a></li>
+        <li><a href="#faq">Časté otázky</a></li>
+        <li><a href="#kontakt">Kontakt a rezervácia</a></li>
+      </ul>
+      <a class="btn btn--ink" href="#kontakt">Rezervovať termín</a>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="uvod">
+  <div class="wrap">
+    <div class="hero__in">
+      <p class="hero__kick">Ateliér so severným svetlom · Sklárska 9, Bratislava · Fotenie výhradne na objednávku</p>
+      <h1><span>Fotoateliér</span><span>Škála</span></h1>
+      <div class="hero__rule" aria-hidden="true"></div>
+      <div class="hero__cols">
+        <p class="lede">Portrétne, rodinné, produktové a firemné fotenie v jednej hale so stálym aj zábleskovým svetlom. Fotíme s náhľadom na monitore, takže svetlo aj výraz doladíme ešte počas termínu. Zábery si potom vyberáte sami v galérii chránenej heslom.</p>
+        <div class="btnrow">
+          <a class="btn btn--accent" href="#kontakt">Rezervovať termín</a>
+          <a class="btn btn--lined" href="#prepocet">Prepočítať cenu</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__band">
+    <div class="wrap">
+      <ul class="hband">
+        <li class="hband__i">
+          <span class="hband__n">01</span>
+          <span class="hband__t">Portrét</span>
+          <span class="hband__p">89 €</span>
+          <span class="hband__m">40 minút · 5 upravených fotografií</span>
+        </li>
+        <li class="hband__i">
+          <span class="hband__n">02</span>
+          <span class="hband__t">Rodina</span>
+          <span class="hband__p">149 €</span>
+          <span class="hband__m">60 minút · 10 upravených fotografií</span>
+        </li>
+        <li class="hband__i">
+          <span class="hband__n">03</span>
+          <span class="hband__t">Produkt</span>
+          <span class="hband__p">190 €</span>
+          <span class="hband__m">90 minút · 12 upravených fotografií</span>
+        </li>
+        <li class="hband__i">
+          <span class="hband__n">04</span>
+          <span class="hband__t">Firemné</span>
+          <span class="hband__p">240 €</span>
+          <span class="hband__m">120 minút · 8 upravených fotografií</span>
+        </li>
+      </ul>
+      <p class="hband__foot">Náhľadová galéria do 5 pracovných dní · Upravené fotografie do 10 pracovných dní · Počas termínu je ateliér vyhradený len pre vás</p>
+    </div>
+  </div>
+  <div class="strip" aria-hidden="true"></div>
+</section>
+
+<!-- ===== 01 BALÍČKY ===== -->
+<section class="sec" id="balicky">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">01 — Ponuka</p>
+        <h2>Balíčky fotenia</h2>
+      </div>
+      <p class="lede">Štyri balíčky s pevnou cenou. Každý obsahuje fotenie v ateliéri, výber záberov v galérii chránenej heslom a dohodnutý počet upravených fotografií v tlačovom aj zmenšenom rozlíšení.</p>
+    </div>
+
+    <div class="packs">
+
+      <article class="pack">
+        <p class="pack__idx">01</p>
+        <h3 class="pack__name">Portrét</h3>
+        <p class="pack__price">89 €</p>
+        <p class="pack__meta">40 minút · 1 osoba · 2 pozadia</p>
+        <ul>
+          <li>5 upravených fotografií v cene</li>
+          <li>Odporúčanie k oblečeniu tri dni pred termínom</li>
+          <li>Náhľad na monitore priebežne počas fotenia</li>
+          <li>Galéria na výber záberov, prístup 14 dní</li>
+        </ul>
+        <p class="pack__foot">Ďalšia upravená fotografia 9 €</p>
+      </article>
+
+      <article class="pack">
+        <p class="pack__idx">02</p>
+        <h3 class="pack__name">Rodina</h3>
+        <p class="pack__price">149 €</p>
+        <p class="pack__meta">60 minút · do 5 osôb · 3 pozadia</p>
+        <ul>
+          <li>10 upravených fotografií v cene</li>
+          <li>Spoločné zábery aj samostatné portréty</li>
+          <li>Kútik pre deti a prebaľovací pult v čakárni</li>
+          <li>Ďalšia osoba nad rámec balíčka 15 €</li>
+        </ul>
+        <p class="pack__foot">Ďalšia upravená fotografia 9 €</p>
+      </article>
+
+      <article class="pack">
+        <p class="pack__idx">03</p>
+        <h3 class="pack__name">Produkt</h3>
+        <p class="pack__price">190 €</p>
+        <p class="pack__meta">90 minút · do 12 predmetov</p>
+        <ul>
+          <li>12 upravených fotografií v cene</li>
+          <li>Čisté biele pozadie a presný orez predmetu</li>
+          <li>Svetelný stan a produktový stôl šírky 120 cm</li>
+          <li>Súbory pre internetový obchod aj pre tlač</li>
+        </ul>
+        <p class="pack__foot">Ďalšia upravená fotografia 12 €</p>
+      </article>
+
+      <article class="pack">
+        <p class="pack__idx">04</p>
+        <h3 class="pack__name">Firemné</h3>
+        <p class="pack__price">240 €</p>
+        <p class="pack__meta">120 minút · do 8 osôb</p>
+        <ul>
+          <li>8 upravených fotografií v cene, jedna na osobu</li>
+          <li>Jednotné svetlo a pozadie pre celý tím</li>
+          <li>Orezy pre web, tlač aj profilové fotografie</li>
+          <li>Faktúra so splatnosťou 14 dní, bez zálohy</li>
+        </ul>
+        <p class="pack__foot">Ďalšia upravená fotografia 14 €</p>
+      </article>
+
+    </div>
+
+    <div class="btnrow mt">
+      <a class="btn btn--ink" href="#kontakt">Rezervovať termín</a>
+      <a class="btn btn--line" href="#cennik">Zobraziť celý cenník</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 CENNÍK ===== -->
+<section class="sec sec--band" id="cennik">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">02 — Ceny</p>
+        <h2>Cenník a doplnky</h2>
+      </div>
+      <p class="lede">Ceny sú konečné a platia pre fotenie v ateliéri. Záloha 30 € potvrdzuje termín a odpočíta sa z výslednej ceny. Doplnky si viete objednať aj dodatočne, najneskôr päť dní pred fotením.</p>
+    </div>
+
+    <div class="tw tw--wide">
+      <table>
+        <caption>Balíčky fotenia</caption>
+        <thead>
+          <tr>
+            <th scope="col">Balíček</th>
+            <th scope="col">Rozsah</th>
+            <th scope="col">Upravené fotografie v cene</th>
+            <th scope="col" class="num">Cena</th>
+            <th scope="col" class="num">Ďalšia fotografia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Portrét</th><td>40 minút, 1 osoba, 2 pozadia</td><td>5</td><td class="num">89 €</td><td class="num">9 €</td></tr>
+          <tr><th scope="row">Rodina</th><td>60 minút, do 5 osôb, 3 pozadia</td><td>10</td><td class="num">149 €</td><td class="num">9 €</td></tr>
+          <tr><th scope="row">Produkt</th><td>90 minút, do 12 predmetov</td><td>12</td><td class="num">190 €</td><td class="num">12 €</td></tr>
+          <tr><th scope="row">Firemné portréty</th><td>120 minút, do 8 osôb</td><td>8</td><td class="num">240 €</td><td class="num">14 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tw tw--mid">
+      <table>
+        <caption>Doplnky a samostatné služby</caption>
+        <thead>
+          <tr>
+            <th scope="col">Položka</th>
+            <th scope="col" class="num">Cena</th>
+            <th scope="col">Poznámka</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Vizáž a účes</th><td class="num">45 €</td><td>Objednáva sa najneskôr 5 dní pred fotením</td></tr>
+          <tr><th scope="row">Ďalšia osoba nad rámec balíčka</th><td class="num">15 €</td><td>Platí pre rodinné a firemné fotenie</td></tr>
+          <tr><th scope="row">Predĺženie fotenia o 30 minút</th><td class="num">35 €</td><td>Podľa voľnosti nasledujúceho termínu</td></tr>
+          <tr><th scope="row">Zrýchlené dodanie do 48 hodín</th><td class="num">40 €</td><td>Počíta sa od potvrdenia výberu záberov</td></tr>
+          <tr><th scope="row">Fotografie na doklady</th><td class="num">12 €</td><td>6 kusov v tlači, hotové do 20 minút</td></tr>
+          <tr><th scope="row">Zväčšenina 20 × 30 cm</th><td class="num">14 € / kus</td><td>Matný alebo pololesklý papier 250 g</td></tr>
+          <tr><th scope="row">Fotokniha 20 × 20 cm</th><td class="num">79 €</td><td>20 strán, tvrdá väzba, dodanie 7 až 10 dní</td></tr>
+          <tr><th scope="row">Fotenie mimo ateliéru</th><td class="num">60 €</td><td>Do 20 km, nad 20 km 0,50 € za kilometer</td></tr>
+          <tr><th scope="row">Odovzdanie na kľúči USB</th><td class="num">8 €</td><td>Kľúč zostáva vám, pripravíme do 3 dní</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 PREPOČET ===== -->
+<section class="sec sec--dark" id="prepocet">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">03 — Prepočet</p>
+        <h2>Prepočet ceny fotenia</h2>
+      </div>
+      <p class="lede">Vyberte balíček, počet upravených fotografií nad rámec balíčka a doplnky. Suma sa prepočíta okamžite a jedným tlačidlom ju prenesiete do rezervačného formulára.</p>
+    </div>
+
+    <form class="calc" id="calc" novalidate>
+      <div>
+        <fieldset style="border:0;padding:0;margin:0">
+          <legend class="ctrl__lab" style="padding:0;margin-bottom:14px">Balíček</legend>
+          <div class="opts">
+            <label class="opt is-on" data-opt="portret">
+              <input type="radio" name="balik" value="portret" checked>
+              <span class="opt__t"><span class="opt__n">Portrét</span><span class="opt__p">89 €</span></span>
+              <span class="opt__m">40 minút, 1 osoba, 5 upravených fotografií v cene</span>
+            </label>
+            <label class="opt" data-opt="rodina">
+              <input type="radio" name="balik" value="rodina">
+              <span class="opt__t"><span class="opt__n">Rodina</span><span class="opt__p">149 €</span></span>
+              <span class="opt__m">60 minút, do 5 osôb, 10 upravených fotografií v cene</span>
+            </label>
+            <label class="opt" data-opt="produkt">
+              <input type="radio" name="balik" value="produkt">
+              <span class="opt__t"><span class="opt__n">Produkt</span><span class="opt__p">190 €</span></span>
+              <span class="opt__m">90 minút, do 12 predmetov, 12 upravených fotografií v cene</span>
+            </label>
+            <label class="opt" data-opt="firemne">
+              <input type="radio" name="balik" value="firemne">
+              <span class="opt__t"><span class="opt__n">Firemné portréty</span><span class="opt__p">240 €</span></span>
+              <span class="opt__m">120 minút, do 8 osôb, 8 upravených fotografií v cene</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="ctrl">
+          <div class="ctrl__h">
+            <label class="ctrl__lab" for="extra">Upravené fotografie nad rámec balíčka</label>
+            <span class="ctrl__val"><output id="extraOut" for="extra">0</output> ks</span>
+          </div>
+          <input type="range" id="extra" name="extra" min="0" max="30" step="1" value="0" aria-describedby="extraHint">
+          <div class="ctrl__scale" aria-hidden="true"><span>0</span><span>15</span><span>30</span></div>
+          <p class="small" id="extraHint" style="margin:12px 0 0">Cena za jednu fotografiu navyše závisí od balíčka: 9 € portrét a rodina, 12 € produkt, 14 € firemné portréty.</p>
+        </div>
+
+        <div class="ctrl">
+          <p class="ctrl__lab" style="margin:0 0 14px">Doplnky</p>
+          <div class="adds">
+            <label class="add" data-add="vizaz"><input type="checkbox" name="doplnok" value="vizaz"><span><b>Vizáž a účes</b><span class="add__p">+ 45 €</span></span></label>
+            <label class="add" data-add="osoba"><input type="checkbox" name="doplnok" value="osoba"><span><b>Ďalšia osoba</b><span class="add__p">+ 15 €</span></span></label>
+            <label class="add" data-add="cas"><input type="checkbox" name="doplnok" value="cas"><span><b>Predĺženie o 30 minút</b><span class="add__p">+ 35 €</span></span></label>
+            <label class="add" data-add="expres"><input type="checkbox" name="doplnok" value="expres"><span><b>Zrýchlené dodanie do 48 hodín</b><span class="add__p">+ 40 €</span></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="sum" aria-live="polite">
+        <h3>Zhrnutie objednávky</h3>
+        <div id="sumRows">
+          <div class="sum__row"><b>Portrét — 40 minút</b><span>89 €</span></div>
+          <div class="sum__row"><b>Upravené fotografie v cene</b><span>5 ks</span></div>
+        </div>
+        <div class="sum__tot">
+          <span class="sum__totl">Cena spolu</span>
+          <span class="sum__totv" id="sumTotal">89 €</span>
+        </div>
+        <p class="sum__note">Záloha 30 € potvrdzuje termín a odpočíta sa z ceny. Doplatok uhrádzate pri prevzatí fotografií.</p>
+        <button class="btn btn--paper" type="button" id="toForm">Preniesť do formulára</button>
+        <noscript><p class="noscript">Prepočet vyžaduje zapnutý JavaScript. Všetky ceny nájdete v cenníku vyššie.</p></noscript>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ===== 04 PRIEBEH ===== -->
+<section class="sec" id="priebeh">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">04 — Postup</p>
+        <h2>Priebeh fotenia</h2>
+      </div>
+      <p class="lede">Od rezervácie po odovzdanie hotových fotografií prejdete piatimi krokmi. Pri každom kroku viete, čo sa deje a dokedy to bude hotové.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step__n">01</div>
+        <div class="step__t">
+          <h3>Rezervácia termínu</h3>
+          <p>Termín si dohodnete cez formulár na tejto stránke alebo telefonicky. Do 24 hodín vám zavoláme s dvoma voľnými termínmi a podkladmi na úhradu zálohy 30 €. Termín je záväzne rezervovaný po pripísaní zálohy.</p>
+        </div>
+        <div class="step__m">Odpoveď do 24 hodín</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">02</div>
+        <div class="step__t">
+          <h3>Príprava pred fotením</h3>
+          <p>Tri dni pred termínom dostanete písomné odporúčanie k oblečeniu, farbám a počtu prezlečení. Pri produktovom fotení si vopred odsúhlasíme zoznam predmetov, požadované orezy a rozmery súborov.</p>
+        </div>
+        <div class="step__m">3 dni pred termínom</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">03</div>
+        <div class="step__t">
+          <h3>Fotenie v ateliéri</h3>
+          <p>Prídite 10 minút pred začiatkom, k dispozícii je šatňa so zrkadlom a naparovačom. Zábery vidíte priebežne na veľkom monitore, takže postoj, svetlo aj výraz doladíme ešte počas fotenia.</p>
+        </div>
+        <div class="step__m">40 až 120 minút</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">04</div>
+        <div class="step__t">
+          <h3>Výber záberov</h3>
+          <p>Do 5 pracovných dní dostanete odkaz na galériu chránenú heslom. Zábery si označíte kliknutím a výber odošlete jedným tlačidlom. Na výber máte 14 dní, na požiadanie lehotu predĺžime.</p>
+        </div>
+        <div class="step__m">Galéria do 5 pracovných dní</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">05</div>
+        <div class="step__t">
+          <h3>Úprava a odovzdanie</h3>
+          <p>Vybrané zábery upravíme a odovzdáme do 10 pracovných dní v tlačovom aj zmenšenom rozlíšení. Odkaz na stiahnutie je platný 30 dní, na požiadanie pripravíme súbory aj na kľúči USB.</p>
+        </div>
+        <div class="step__m">Do 10 pracovných dní</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 ATELIÉR ===== -->
+<section class="sec sec--band" id="atelier">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">05 — Priestor</p>
+        <h2>Ateliér a vybavenie</h2>
+      </div>
+      <p class="lede">Jedna hala so severným oknom a zatemnením, plná zábleskového aj trvalého svetla, šesť papierových pozadí a zázemie pre klientov. Obhliadka je po dohode zdarma a trvá približne 15 minút.</p>
+    </div>
+
+    <div class="split">
+      <div class="speclist">
+        <div class="spec">
+          <h4>Priestor</h4>
+          <ul>
+            <li>Hlavná hala 62 m², výška stropu 4,1 m</li>
+            <li>Severné okno 3,2 × 2,4 m s difúziou a zatemnením</li>
+            <li>Cyklorama so zaoblením, šírka 4 m</li>
+            <li>Bezbariérový vstup z dvora, celý ateliér na prízemí</li>
+          </ul>
+        </div>
+        <div class="spec">
+          <h4>Svetlo</h4>
+          <ul>
+            <li>4 zábleskové svetlá, spolu 1200 Ws</li>
+            <li>Svetelné boxy 60 × 90 a 90 × 120 cm</li>
+            <li>Osemuholníkový box 150 cm, kruhový reflektor 55 cm</li>
+            <li>2 trvalé svietidlá s reguláciou teploty svetla</li>
+          </ul>
+        </div>
+        <div class="spec">
+          <h4>Pozadia a technika</h4>
+          <ul>
+            <li>Papierové rolky šírky 2,72 m: biela, sivá, čierna, olivová, piesková, hrdzavá</li>
+            <li>Produktový stôl 120 cm a svetelný stan 80 cm</li>
+            <li>Fotoaparát prepojený s kalibrovaným monitorom</li>
+            <li>Statív, otočný stolík, sada podložiek a klínov</li>
+          </ul>
+        </div>
+        <div class="spec">
+          <h4>Zázemie</h4>
+          <ul>
+            <li>Šatňa so zrkadlom a líčiacim stolom</li>
+            <li>Žehlička, naparovač a valček na oblečenie</li>
+            <li>Čakáreň s pripojením na internet a prebaľovacím pultom</li>
+            <li>Kútik s hračkami pre deti do 6 rokov</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="panel plate">
+        <span class="g g-grid--d" aria-hidden="true"></span>
+        <p class="panel__k">Technický list</p>
+        <h3 class="panel__t">Ateliér v číslach</h3>
+        <dl class="plist">
+          <div><dt>Plocha hlavnej haly</dt><dd>62 m²</dd></div>
+          <div><dt>Výška stropu</dt><dd>4,1 m</dd></div>
+          <div><dt>Severné okno</dt><dd>3,2 × 2,4 m</dd></div>
+          <div><dt>Šírka cykloramy</dt><dd>4 m</dd></div>
+          <div><dt>Zábleskový výkon spolu</dt><dd>1200 Ws</dd></div>
+          <div><dt>Papierové pozadia</dt><dd>6 farieb</dd></div>
+          <div><dt>Šírka vstupných dverí</dt><dd>110 cm</dd></div>
+          <div><dt>Miesta na parkovanie</dt><dd>4</dd></div>
+        </dl>
+        <p>Obhliadku dohodneme na ktorýkoľvek pracovný deň mimo prebiehajúceho fotenia.</p>
+      </aside>
+    </div>
+
+    <div class="nums mt">
+      <div class="numi"><div class="numi__v">62 m²</div><div class="numi__l">Plocha hlavnej haly</div></div>
+      <div class="numi"><div class="numi__v">4,1 m</div><div class="numi__l">Výška stropu</div></div>
+      <div class="numi"><div class="numi__v">1200 Ws</div><div class="numi__l">Zábleskový výkon spolu</div></div>
+      <div class="numi"><div class="numi__v">6</div><div class="numi__l">Farieb papierových pozadí</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 ČO DOSTANETE ===== -->
+<section class="sec" id="dodavka">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">06 — Dodávka</p>
+        <h2>Čo dostanete po fotení</h2>
+      </div>
+      <p class="lede">Každú vybranú fotografiu odovzdávame v dvoch veľkostiach: v tlačovom rozlíšení a v zmenšenej verzii na internet. Rozmery a formáty sú rovnaké pre všetky balíčky.</p>
+    </div>
+
+    <div class="tw tw--wide">
+      <table>
+        <caption>Formáty odovzdaných súborov</caption>
+        <thead>
+          <tr>
+            <th scope="col">Súbor</th>
+            <th scope="col">Formát</th>
+            <th scope="col">Rozmer</th>
+            <th scope="col">Kedy ho dostanete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Fotografia na tlač</th><td>JPG</td><td>dlhšia strana 4000 bodov, 300 bodov na palec</td><td>Pri každom balíčku</td></tr>
+          <tr><th scope="row">Fotografia na internet</th><td>JPG</td><td>dlhšia strana 2048 bodov</td><td>Pri každom balíčku</td></tr>
+          <tr><th scope="row">Štvorcový orez na profil</th><td>JPG</td><td>1200 × 1200 bodov</td><td>Pri firemných portrétoch</td></tr>
+          <tr><th scope="row">Predmet na bielom pozadí</th><td>JPG</td><td>1600 × 1600 bodov</td><td>Pri produktovom fotení</td></tr>
+          <tr><th scope="row">Predmet bez pozadia</th><td>PNG</td><td>podľa predlohy</td><td>Pri produktovom fotení, 3 € za kus</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cards cards--3 mt">
+      <div class="card">
+        <p class="card__k">Odovzdanie</p>
+        <h3>Odkaz na stiahnutie</h3>
+        <p>Hotové súbory nájdete v tej istej galérii, v akej ste vyberali zábery. Odkaz je platný 30 dní a stiahnuť si ich viete opakovane. Na požiadanie pripravíme súbory aj na kľúči USB za 8 €.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Úprava</p>
+        <h3>Čo úprava zahŕňa</h3>
+        <ul>
+          <li>Vyváženie expozície a farieb</li>
+          <li>Narovnanie horizontu a orez</li>
+          <li>Odstránenie prechodných nedokonalostí pleti</li>
+          <li>Odstránenie prachu a nečistôt na predmetoch</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card__k">Archivácia</p>
+        <h3>Doobjednanie záberov</h3>
+        <p>Neupravené zábery z fotenia držíme 6 mesiacov. Počas tejto lehoty si viete doobjednať ďalšie fotografie za cenu podľa balíčka, galériu vám znova sprístupníme do dvoch pracovných dní.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07 PRE FIRMY ===== -->
+<section class="sec sec--band" id="firmy">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">07 — Firmy</p>
+        <h2>Fotenie pre firmy a internetové obchody</h2>
+      </div>
+      <p class="lede">Firemné portréty a produktové fotenie robíme na faktúru bez zálohy. Nastavenie svetla si zapisujeme, takže nového kolegu vieme dofotiť tak, aby vyzeral rovnako ako zvyšok tímu.</p>
+    </div>
+
+    <div class="split">
+      <div class="cards cards--2">
+        <div class="card">
+          <p class="card__k">Portréty tímu</p>
+          <h3>Jednotná sada pre celú firmu</h3>
+          <p>Fotíme na jedno pozadie s rovnakým svetlom aj kompozíciou. Osem ľudí zvládneme za dve hodiny, väčší tím rozdelíme na dva termíny v jeden deň, aby nikto nečakal dlhšie ako pár minút.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Produkty</p>
+          <h3>Fotenie pre internetový obchod</h3>
+          <p>Predmety fotíme na čisté biele pozadie v rovnakej mierke a s rovnakým tieňom, aby v zozname tovaru pôsobili ako jedna sada. Dodáme aj verziu bez pozadia na použitie v letákoch a katalógoch.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Termíny</p>
+          <h3>Fotenie mimo pracovného času</h3>
+          <p>Firemný termín vieme začať od 7:00 alebo po 19:00, aby tím nemusel prerušovať pracovný deň. Príplatok za skorý ani večerný termín neúčtujeme.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Objednávka</p>
+          <h3>Faktúra a fakturačné údaje</h3>
+          <p>Stačí vyplniť formulár na tejto stránke a do správy uviesť fakturačné údaje. Zálohu pri firemnej objednávke neúčtujeme, celá suma je splatná na faktúru so splatnosťou 14 dní.</p>
+        </div>
+      </div>
+
+      <aside class="panel plate">
+        <span class="g g-hatch" aria-hidden="true"></span>
+        <p class="panel__k">Firemné sadzby</p>
+        <h3 class="panel__t">Doplnkové položky pre firmy</h3>
+        <dl class="plist">
+          <div><dt>Dofotenie jednej osoby do existujúcej sady</dt><dd>35 €</dd></div>
+          <div><dt>Predmet nad rámec dvanástich kusov</dt><dd>12 € / kus</dd></div>
+          <div><dt>Predmet bez pozadia</dt><dd>3 € / kus</dd></div>
+          <div><dt>Fotenie v sídle firmy</dt><dd>60 €</dd></div>
+          <div><dt>Zrýchlené dodanie do 48 hodín</dt><dd>40 €</dd></div>
+        </dl>
+        <p>Pri opakovanej spolupráci zopakujeme nastavenie svetla aj pozadia presne podľa zápisu z predchádzajúceho fotenia.</p>
+        <a class="btn btn--paper" href="#kontakt" style="align-self:flex-start">Dohodnúť firemné fotenie</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 LEHOTY ===== -->
+<section class="sec" id="lehoty">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">08 — Termíny</p>
+        <h2>Dodacie lehoty</h2>
+      </div>
+      <p class="lede">Lehoty počítame v pracovných dňoch. Ak by sa termín z akéhokoľvek dôvodu predlžoval, ozveme sa skôr, ako uplynie.</p>
+    </div>
+
+    <div class="nums">
+      <div class="numi"><div class="numi__v">5 dní</div><div class="numi__l">Náhľadová galéria po fotení</div></div>
+      <div class="numi"><div class="numi__v">10 dní</div><div class="numi__l">Upravené fotografie od výberu</div></div>
+      <div class="numi"><div class="numi__v">48 hodín</div><div class="numi__l">Zrýchlené dodanie za príplatok 40 €</div></div>
+      <div class="numi"><div class="numi__v">6 mesiacov</div><div class="numi__l">Archivácia neupravených záberov</div></div>
+    </div>
+
+    <div class="cards cards--3 mt">
+      <div class="card">
+        <p class="card__k">Tlač</p>
+        <h3>Zväčšeniny a fotokniha</h3>
+        <p>Jednotlivé zväčšeniny dodáme do 7 pracovných dní, fotoknihu do 10 pracovných dní od odsúhlasenia rozloženia strán. Vyzdvihnutie je v ateliéri počas otváracích hodín.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Na počkanie</p>
+        <h3>Fotografie na doklady</h3>
+        <p>Bez objednávky v pracovné dni od 9:00 do 11:00. Vytlačíme do 20 minút, digitálnu verziu v rozmeroch pre občiansky preukaz, pas aj vodičský preukaz pripravíme v ten istý deň.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Sezóna</p>
+        <h3>November a december</h3>
+        <p>V predvianočnom období sa lehoty predlžujú o 5 pracovných dní. Termíny na tieto dva mesiace otvárame začiatkom septembra a bývajú obsadené do konca októbra.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09 HODINY ===== -->
+<section class="sec sec--band" id="hodiny">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">09 — Prevádzka</p>
+        <h2>Otváracie hodiny a objednávky</h2>
+      </div>
+      <p class="lede">Fotenie prebieha výhradne na objednávku, aby ste v ateliéri boli sami. Bez objednávky prijímame len fotografie na doklady.</p>
+    </div>
+
+    <div class="split">
+      <div class="tw tw--mid">
+        <table>
+          <caption>Otváracie hodiny</caption>
+          <thead>
+            <tr>
+              <th scope="col">Deň</th>
+              <th scope="col">Fotenie na objednávku</th>
+              <th scope="col">Doklady bez objednávky</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Pondelok</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Utorok</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Streda</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Štvrtok</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Piatok</th><td>9:00 – 17:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Sobota</th><td>9:00 – 14:00</td><td>zatvorené</td></tr>
+            <tr><th scope="row">Nedeľa</th><td>zatvorené</td><td>zatvorené</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <p class="card__k">Objednávky</p>
+          <h3>Ako si dohodnúť termín</h3>
+          <ul>
+            <li>Formulár na tejto stránke, odpoveď do 24 hodín</li>
+            <li>Telefonicky na čísle 0951 306 742 počas otváracích hodín</li>
+            <li>Formulár funguje aj v noci a cez víkend</li>
+            <li>Voľné termíny bývajú 7 až 14 dní dopredu</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="card__k">Mimo hodín</p>
+          <h3>Skoré a večerné fotenie</h3>
+          <p>Firemné fotenie vieme po dohode urobiť aj od 7:00 alebo po 19:00, aby tím nemusel prerušovať pracovný deň. Príplatok za takýto termín neúčtujeme.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Sviatky</p>
+          <h3>Dni, keď nefotíme</h3>
+          <p>Počas štátnych sviatkov je ateliér zatvorený. Medzi 24. decembrom a 1. januárom nefotíme, formulár však funguje a na správy odpovedáme 2. januára.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 DOPRAVA ===== -->
+<section class="sec" id="doprava">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">10 — Cesta</p>
+        <h2>Ako sa k nám dostanete a kde zaparkujete</h2>
+      </div>
+      <p class="lede">Ateliér je na prízemí bývalej remeselnej dielne na Sklárskej ulici v Bratislave, vstup je z dvora za bránou. Ak ste u nás prvýkrát, pri príchode zavolajte a bránu otvoríme.</p>
+    </div>
+
+    <div class="split">
+      <div class="cards cards--3">
+        <div class="card">
+          <p class="card__k">Autom</p>
+          <h3>Parkovanie vo dvore</h3>
+          <p>Štyri vyhradené miesta priamo vo dvore, vjazd bránou z ulice. Miesto máte rezervované po celý čas fotenia. Okolité ulice patria do regulovanej zóny a parkovanie na nich je spoplatnené od 8:00 do 18:00.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Mestskou dopravou</p>
+          <h3>Zastávka 3 minúty pešo</h3>
+          <p>Najbližšia zastávka autobusu a trolejbusu je 250 metrov od ateliéru. Od zastávky choďte popri múre dielne až po zelenú bránu s číslom 9, ateliér je hneď za ňou vpravo.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Vstup</p>
+          <h3>Bezbariérový prístup</h3>
+          <p>Celý ateliér je na prízemí bez schodov, dvere majú šírku 110 cm a prah je zapustený. Pri čakárni je vyhradený priestor na odloženie kočíka aj invalidného vozíka.</p>
+        </div>
+      </div>
+
+      <aside class="panel plate">
+        <span class="g g-grid--d" aria-hidden="true"></span>
+        <p class="panel__k">Adresa</p>
+        <p class="panel__addr">Sklárska 9<br>811 07 Bratislava</p>
+        <ol class="psteps">
+          <li>Nájdite zelenú bránu s číslom 9 medzi murovaným plotom a rohovým domom.</li>
+          <li>Prejdite bránou do dvora, ateliér je v prízemnej budove vpravo.</li>
+          <li>Zvonček je označený nápisom Ateliér, otvárame do jednej minúty.</li>
+        </ol>
+        <p>Ak je brána zatvorená, zavolajte na <a href="tel:+421951306742">0951 306 742</a> a otvoríme vám.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 PODMIENKY ===== -->
+<section class="sec sec--band" id="podmienky">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">11 — Pravidlá</p>
+        <h2>Podmienky a storno</h2>
+      </div>
+      <p class="lede">Podmienky sú krátke a platia rovnako pre obe strany. Dostanete ich aj v potvrdení termínu, aby ste ich mali po ruke.</p>
+    </div>
+
+    <div class="rules">
+      <div class="rule">
+        <h3>Rezervácia a záloha</h3>
+        <p>Termín je záväzne rezervovaný po uhradení zálohy 30 €. Záloha sa odpočíta z výslednej ceny, doplatok uhrádzate pri prevzatí fotografií. Pri firemnej objednávke na faktúru zálohu neúčtujeme.</p>
+      </div>
+      <div class="rule">
+        <h3>Zrušenie a presun termínu</h3>
+        <p>Zrušenie alebo presun viac ako 48 hodín pred termínom je bez poplatku, záloha sa presúva na nový termín alebo ju vrátime do 5 pracovných dní. Pri zrušení neskôr ako 48 hodín pred termínom záloha prepadá.</p>
+      </div>
+      <div class="rule">
+        <h3>Meškanie</h3>
+        <p>Fotenie sa začína dohodnutým časom. Meškanie skracuje vyhradený čas, pretože po vás nasleduje ďalší termín. Pri meškaní nad 30 minút termín zaniká a záloha prepadá.</p>
+      </div>
+      <div class="rule">
+        <h3>Choroba a náhradný termín</h3>
+        <p>Ak ochoriete, termín presunieme bez poplatku aj na poslednú chvíľu. Stačí zavolať pred začiatkom fotenia a dohodneme náhradný termín, zvyčajne do dvoch týždňov.</p>
+      </div>
+      <div class="rule">
+        <h3>Rozsah dodaného diela</h3>
+        <p>Dodávame dohodnutý počet upravených fotografií. Neupravené súbory priamo z fotoaparátu neposkytujeme, rovnako ani zábery, ktoré neprešli technickým výberom.</p>
+      </div>
+      <div class="rule">
+        <h3>Licencia a použitie</h3>
+        <p>Autorské práva zostávajú ateliéru. K fotografiám dostávate časovo neobmedzenú licenciu na osobné použitie, pri firemnom balíčku aj na propagáciu firmy, jej webu a tlačených materiálov.</p>
+      </div>
+      <div class="rule">
+        <h3>Zverejnenie v portfóliu</h3>
+        <p>Fotografie zverejňujeme len s vaším písomným súhlasom. Súhlas je dobrovoľný, nemá vplyv na cenu a môžete ho kedykoľvek odvolať.</p>
+      </div>
+      <div class="rule">
+        <h3>Reklamácia a opakované fotenie</h3>
+        <p>Ak je zákazka technicky chybná, opravíme ju alebo znova odfotíme zdarma do 30 dní od odovzdania. Rozdielny vkus pri výbere záberov nie je dôvodom na reklamáciu.</p>
+      </div>
+      <div class="rule">
+        <h3>Deti a zvieratá</h3>
+        <p>Deti sú v ateliéri vítané a sprevádza ich dospelá osoba. Domáce zviera odfotíme po predchádzajúcej dohode, aby sme upravili pozadie a nechali si medzi termínmi priestor navyše.</p>
+      </div>
+      <div class="rule">
+        <h3>Spracovanie údajov</h3>
+        <p>Údaje z formulára používame výhradne na dohodnutie termínu a vybavenie objednávky. Neposkytujeme ich tretím stranám a po skončení zákazky ich uchovávame len v rozsahu potrebnom na účtovné doklady.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 PLATBA ===== -->
+<section class="sec" id="platba">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">12 — Platba</p>
+        <h2>Spôsoby platby</h2>
+      </div>
+      <p class="lede">Zálohu uhrádzate prevodom, doplatok akýmkoľvek spôsobom priamo v ateliéri. Firmám vystavíme faktúru so splatnosťou 14 dní.</p>
+    </div>
+
+    <div class="cards cards--3">
+      <div class="card">
+        <p class="card__k">V ateliéri</p>
+        <h3>Hotovosť a platobná karta</h3>
+        <ul>
+          <li>Debetné aj kreditné karty</li>
+          <li>Bezkontaktná platba z telefónu alebo hodiniek</li>
+          <li>Doklad o zaplatení dostanete hneď</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card__k">Prevodom</p>
+        <h3>Bankový prevod</h3>
+        <ul>
+          <li>Záloha 30 € pri potvrdení termínu</li>
+          <li>Podklady na platbu posielame spolu s potvrdením</li>
+          <li>Termín blokujeme 3 dni, kým záloha nedorazí</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card__k">Na faktúru</p>
+        <h3>Firemná objednávka</h3>
+        <ul>
+          <li>Splatnosť 14 dní od odovzdania fotografií</li>
+          <li>Bez zálohy, stačia fakturačné údaje v objednávke</li>
+          <li>Faktúru pripravíme do 2 pracovných dní</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 POUKAZY ===== -->
+<section class="sec sec--band" id="poukazy">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">13 — Poukazy</p>
+        <h2>Darčekové poukazy</h2>
+      </div>
+      <p class="lede">Poukaz vystavíme na sumu alebo na konkrétny balíček. Platí 12 mesiacov od vystavenia a je prenosný, takže obdarovaný si termín dohodne sám.</p>
+    </div>
+
+    <div class="split">
+      <aside class="panel panel--warm plate">
+        <span class="g g-hatch" aria-hidden="true"></span>
+        <p class="panel__k">Darčekový poukaz</p>
+        <h3 class="panel__t">Poukaz na fotenie s platnosťou 12 mesiacov</h3>
+        <div class="chips">
+          <span class="chip">50 €</span>
+          <span class="chip">89 €</span>
+          <span class="chip">149 €</span>
+          <span class="chip">Ľubovoľná suma</span>
+        </div>
+        <p>Poukaz si vyzdvihnete v ateliéri v obálke alebo vám ho pripravíme v elektronickej podobe do 24 hodín. Obsahuje kód, hodnotu, dátum platnosti a miesto na meno obdarovaného.</p>
+        <a class="btn btn--paper" href="#kontakt" style="align-self:flex-start">Objednať poukaz</a>
+      </aside>
+
+      <div class="cards">
+        <div class="card">
+          <p class="card__k">Objednanie</p>
+          <h3>Ako si poukaz objednať</h3>
+          <p>Vo formulári zvoľte položku Darčekový poukaz a do správy napíšte hodnotu alebo názov balíčka. Ozveme sa do 24 hodín a dohodneme spôsob prevzatia. Poukaz vystavíme do jedného pracovného dňa.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Uplatnenie</p>
+          <h3>Ako sa poukaz uplatní</h3>
+          <p>Kód z poukazu uveďte pri rezervácii termínu. Ak je cena fotenia vyššia ako hodnota poukazu, doplatíte rozdiel v ateliéri. Zvyšok hodnoty sa nevracia v hotovosti, viete ho však použiť na doplnky alebo tlač.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Platnosť</p>
+          <h3>Predĺženie platnosti</h3>
+          <p>Poukaz platí 12 mesiacov od vystavenia. Ak sa termín nestihne, platnosť raz predĺžime o 3 mesiace, stačí požiadať pred uplynutím lehoty. Zálohu pri fotení na poukaz neúčtujeme.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 KARIÉRA ===== -->
+<section class="sec" id="kariera">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">14 — Kariéra</p>
+        <h2>Voľná pozícia v ateliéri</h2>
+      </div>
+      <p class="lede">Hľadáme jedného človeka na výpomoc pri fotení. Prax nie je podmienkou, dôležitá je spoľahlivosť, presnosť a záujem o prácu so svetlom.</p>
+    </div>
+
+    <div class="cards cards--3">
+      <div class="card">
+        <p class="card__k">Pozícia</p>
+        <h3>Asistent ateliéru</h3>
+        <p>Príprava svetiel a pozadí pred fotením, obsluha techniky počas termínu, upratanie ateliéru medzi zákazkami a privítanie klientov v čakárni.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Rozsah</p>
+        <h3>Brigáda, 12 až 20 hodín týždenne</h3>
+        <p>Prevažne piatky a soboty, presný čas si dohodneme podľa rozpisu fotení vždy na dva týždne dopredu. Odmena 9 € za hodinu, po troch mesiacoch 10 € za hodinu.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Prihlásenie</p>
+        <h3>Čo napísať</h3>
+        <p>Cez formulár na tejto stránke pošlite krátku správu o tom, čo vás na fotografii zaujíma a kedy môžete pracovať. Životopis nepotrebujeme. Na osobné stretnutie pozývame do 7 dní.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 FAQ ===== -->
+<section class="sec sec--band" id="faq">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">15 — Otázky</p>
+        <h2>Časté otázky</h2>
+      </div>
+      <p class="lede">Osem otázok, ktoré dostávame najčastejšie. Ak vaša medzi nimi nie je, napíšte nám cez formulár a odpoveď doplníme.</p>
+    </div>
+
+    <div class="faq">
+      <details>
+        <summary>Čo si mám priniesť na fotenie?</summary>
+        <div class="faq__a"><p>Dva až tri sety oblečenia bez veľkých nápisov a výrazných vzorov. Tri dni pred termínom pošleme konkrétne odporúčania k farbám a strihom, ktoré v našom svetle vyzerajú najlepšie. V šatni je zrkadlo, naparovač aj valček na oblečenie.</p></div>
+      </details>
+      <details>
+        <summary>Dostanem aj neupravené zábery priamo z fotoaparátu?</summary>
+        <div class="faq__a"><p>Nie. Odovzdávame vybrané a upravené fotografie, ktoré považujeme za hotové dielo. Neupravené súbory neposkytujeme. Ak potrebujete viac fotografií, doobjednáte si ich za cenu podľa balíčka kedykoľvek počas šiestich mesiacov od fotenia.</p></div>
+      </details>
+      <details>
+        <summary>Ako prebieha výber záberov?</summary>
+        <div class="faq__a"><p>Do 5 pracovných dní dostanete odkaz na galériu chránenú heslom. V galérii si zábery označíte kliknutím a výber odošlete jedným tlačidlom. Na výber máte 14 dní. Ak si neviete vybrať, pomôžeme s odporúčaním priamo v galérii.</p></div>
+      </details>
+      <details>
+        <summary>Môžem prísť s malým dieťaťom alebo so psom?</summary>
+        <div class="faq__a"><p>Deti sú v ateliéri vítané, v čakárni je kútik s hračkami a prebaľovací pult. Domáce zviera odfotíme po predchádzajúcej dohode, aby sme zvolili vhodné pozadie a nechali si medzi termínmi priestor navyše na upratanie.</p></div>
+      </details>
+      <details>
+        <summary>Čo ak sa mi výsledok nebude páčiť?</summary>
+        <div class="faq__a"><p>Zábery vidíte priebežne na monitore počas fotenia, takže o výsledku sa dohodneme ešte v ateliéri. Ak by bola zákazka technicky chybná, opravíme ju alebo znova odfotíme zdarma do 30 dní od odovzdania.</p></div>
+      </details>
+      <details>
+        <summary>Robíte fotografie na doklady?</summary>
+        <div class="faq__a"><p>Áno, v pracovné dni od 9:00 do 11:00 bez objednávky. Šesť kusov v tlači stojí 12 € a vytlačíme ich do 20 minút. Digitálnu verziu v rozmeroch pre občiansky preukaz, pas aj vodičský preukaz pripravíme ešte v ten istý deň.</p></div>
+      </details>
+      <details>
+        <summary>Dá sa ateliér prenajať alebo si ho vopred pozrieť?</summary>
+        <div class="faq__a"><p>Obhliadka po dohode je zdarma a trvá zhruba 15 minút. Samostatný prenájom ateliéru so svetlami riešime individuálne podľa toho, koľko techniky potrebujete a či bude prítomný náš asistent. Napíšte nám cez formulár a ozveme sa do 24 hodín.</p></div>
+      </details>
+      <details>
+        <summary>Ako rýchlo sa dozviem voľné termíny?</summary>
+        <div class="faq__a"><p>Na správu z formulára odpovedáme do 24 hodín v pracovné dni. V odpovedi dostanete dva konkrétne voľné termíny a podklady na úhradu zálohy. Voľné miesta bývajú spravidla 7 až 14 dní dopredu, v novembri a decembri aj o mesiac skôr.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 16 KONTAKT ===== -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">16 — Kontakt</p>
+        <h2>Rezervácia termínu</h2>
+      </div>
+      <p class="lede">Napíšte, aké fotenie potrebujete a kedy sa vám hodí. Správa príde do schránky ateliéru a odpovedáme do 24 hodín v pracovné dni s návrhom dvoch voľných termínov.</p>
+    </div>
+
+    <div class="contact">
+      <div class="info">
+        <div class="info__b">
+          <h4>Telefón</h4>
+          <p><a class="info__tel" href="tel:+421951306742">0951 306 742</a></p>
+          <p class="small" style="margin:10px 0 0">Pondelok až piatok počas otváracích hodín. Ak práve fotíme, ozveme sa hneď po skončení termínu.</p>
+        </div>
+        <div class="info__b">
+          <h4>Adresa</h4>
+          <p>Fotoateliér Škála<br>Sklárska 9<br>811 07 Bratislava</p>
+          <p class="small" style="margin:10px 0 0">Vstup z dvora zelenou bránou s číslom 9, parkovanie priamo vo dvore.</p>
+        </div>
+        <div class="info__b">
+          <h4>Otváracie hodiny</h4>
+          <p>Pondelok až štvrtok 9:00 – 19:00<br>Piatok 9:00 – 17:00<br>Sobota 9:00 – 14:00<br>Nedeľa zatvorené</p>
+        </div>
+        <div class="info__b">
+          <h4>Fotenie na objednávku</h4>
+          <p class="small" style="margin:0">Ateliér je počas fotenia vyhradený len pre vás. Bez objednávky prijímame iba fotografie na doklady v pracovné dni od 9:00 do 11:00.</p>
+        </div>
+      </div>
+
+      <form class="form" id="rezervacia" novalidate>
+        <div class="formmsg" id="formmsg" role="status"></div>
+
+        <div class="frow frow--2">
+          <div class="field">
+            <label class="lbl" for="f-meno">Meno a priezvisko <span class="req">*</span></label>
+            <input type="text" id="f-meno" name="meno" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label class="lbl" for="f-tel">Telefón <span class="req">*</span></label>
+            <input type="tel" id="f-tel" name="telefon" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="frow frow--2">
+          <div class="field">
+            <label class="lbl" for="f-balik">Čo potrebujete</label>
+            <select id="f-balik" name="balik">
+              <option value="portret">Portrét — 89 €</option>
+              <option value="rodina">Rodina — 149 €</option>
+              <option value="produkt">Produkt — 190 €</option>
+              <option value="firemne">Firemné portréty — 240 €</option>
+              <option value="poukaz">Darčekový poukaz</option>
+              <option value="doklady">Fotografie na doklady</option>
+              <option value="obhliadka">Obhliadka ateliéru</option>
+              <option value="praca">Prihláška na voľnú pozíciu</option>
+              <option value="ine">Iné, napíšem v správe</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="f-datum">Preferovaný dátum</label>
+            <input type="date" id="f-datum" name="datum">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="lbl" for="f-osoby">Počet osôb alebo predmetov</label>
+          <input type="number" id="f-osoby" name="osoby" min="1" max="30" step="1" value="1">
+        </div>
+
+        <div class="field">
+          <label class="lbl" for="f-sprava">Správa <span class="req">*</span></label>
+          <textarea id="f-sprava" name="sprava" required placeholder="Napríklad: rodinné fotenie, 2 dospelí a 2 deti, ideálne sobota doobeda."></textarea>
+        </div>
+
+        <label class="consent" for="f-suhlas">
+          <input type="checkbox" id="f-suhlas" name="suhlas" required>
+          <span>Súhlasím so spracovaním uvedených údajov na účel vybavenia mojej požiadavky. <span class="req">*</span></span>
+        </label>
+
+        <button class="btn btn--accent" type="submit">Odoslať požiadavku</button>
+        <p class="small" style="margin:16px 0 0">Polia označené <span class="req">*</span> sú povinné. Správa príde do schránky ateliéru a odpoveď chodí do 24 hodín v pracovné dni. Telefónne číslo potrebujeme na potvrdenie termínu.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY ===== -->
+<section class="author" id="autor" aria-labelledby="autor-h">
+  <div class="wrap">
+    <div class="author__in">
+      <div>
+        <p class="author__k">O tejto ukážke</p>
+        <h2 id="autor-h">Páči sa vám tento web?</h2>
+        <p>Túto ukážku navrhol a naprogramoval Alex Poliak. Fotoateliér Škála je vymyslený podnik, ktorý slúži len na predvedenie toho, ako môže vyzerať hotový web. Rovnaký web postavím aj pre vašu prevádzku — s vaším obsahom, vašimi cenami a vašimi fotografiami.</p>
+        <p class="author__price">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+        <p class="author__free">Konzultácia zadarmo a nezáväzne</p>
+        <div class="btnrow" style="margin-top:24px">
+          <a class="btn btn--accent" href="https://apoliak.online">apoliak.online</a>
+          <a class="btn btn--lined" href="tel:+421902464022">0902 464 022</a>
+        </div>
+      </div>
+
+      <div class="author__box">
+        <div class="author__row">
+          <span class="author__lab">Autor</span>
+          <span class="author__val">Alex Poliak</span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">E-mail</span>
+          <span class="author__val"><a href="mailto:info@apoliak.online">info@apoliak.online</a></span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Telefón</span>
+          <span class="author__val"><a href="tel:+421902464022">0902 464 022</a></span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Web</span>
+          <span class="author__val"><a href="https://apoliak.online">apoliak.online</a></span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Cena</span>
+          <span class="author__val">od 250 €</span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Prvý návrh</span>
+          <span class="author__val">do 3 dní</span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Konzultácia</span>
+          <span class="author__val">zadarmo a nezáväzne</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PÄTIČKA ===== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <div class="foot__mark" aria-hidden="true">
+          <i style="background:#141414;border:1px solid #3A3A3A"></i>
+          <i style="background:#565656"></i>
+          <i style="background:#A5A5A5"></i>
+          <i style="background:#F5F5F5"></i>
+        </div>
+        <h4>Fotoateliér Škála</h4>
+        <p style="margin:0 0 12px">Sklárska 9, 811 07 Bratislava<br><a class="mono" href="tel:+421951306742">0951 306 742</a></p>
+        <p style="margin:0">Portrétne, rodinné, produktové a firemné fotenie na objednávku. Pondelok až štvrtok 9:00 – 19:00, piatok 9:00 – 17:00, sobota 9:00 – 14:00.</p>
+      </div>
+
+      <div>
+        <h4>Stránka</h4>
+        <ul>
+          <li><a href="#balicky">Balíčky fotenia</a></li>
+          <li><a href="#cennik">Cenník a doplnky</a></li>
+          <li><a href="#prepocet">Prepočet ceny</a></li>
+          <li><a href="#priebeh">Priebeh fotenia</a></li>
+          <li><a href="#atelier">Ateliér a vybavenie</a></li>
+          <li><a href="#dodavka">Čo dostanete po fotení</a></li>
+          <li><a href="#firmy">Fotenie pre firmy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Informácie</h4>
+        <ul>
+          <li><a href="#lehoty">Dodacie lehoty</a></li>
+          <li><a href="#hodiny">Otváracie hodiny</a></li>
+          <li><a href="#doprava">Ako sa k nám dostanete</a></li>
+          <li><a href="#podmienky">Podmienky a storno</a></li>
+          <li><a href="#platba">Spôsoby platby</a></li>
+          <li><a href="#poukazy">Darčekové poukazy</a></li>
+          <li><a href="#kariera">Voľná pozícia</a></li>
+          <li><a href="#kontakt">Kontakt a rezervácia</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bot">
+      <span>© 2026 Fotoateliér Škála — ukážkový web, údaje podniku sú vymyslené.</span>
+      <span>Návrh a kód: <a href="https://apoliak.online">Alex Poliak</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- výška pásika ukážky ---- */
+  var bar = document.getElementById('demobar');
+  function barH(){
+    if(!bar) return;
+    var h = bar.offsetHeight;
+    /* poistka proti nezmyselnej hodnote pri prvom vykreslení */
+    if(h < 28 || h > 140) return;
+    document.documentElement.style.setProperty('--bar-h', h + 'px');
+  }
+  barH();
+  if(window.requestAnimationFrame){ window.requestAnimationFrame(barH); }
+  window.addEventListener('resize', barH);
+  window.addEventListener('load', barH);
+  window.addEventListener('orientationchange', barH);
+  if(bar && window.ResizeObserver){ new ResizeObserver(barH).observe(bar); }
+
+  /* ---- mobilné menu ---- */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('mobmenu');
+  function closeMenu(){
+    if(!menu || !burger) return;
+    menu.hidden = true;
+    burger.setAttribute('aria-expanded','false');
+  }
+  if(burger && menu){
+    burger.addEventListener('click', function(){
+      var open = burger.getAttribute('aria-expanded') === 'true';
+      menu.hidden = open;
+      burger.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+    menu.addEventListener('click', function(e){
+      if(e.target.tagName === 'A') closeMenu();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeMenu();
+    });
+    window.addEventListener('resize', function(){
+      if(window.innerWidth >= 1140) closeMenu();
+    });
+  }
+
+  /* ---- prepočet ceny ---- */
+  var PACKS = {
+    portret:{ name:'Portrét', base:89, incl:5, extra:9, time:'40 minút' },
+    rodina:{ name:'Rodina', base:149, incl:10, extra:9, time:'60 minút' },
+    produkt:{ name:'Produkt', base:190, incl:12, extra:12, time:'90 minút' },
+    firemne:{ name:'Firemné portréty', base:240, incl:8, extra:14, time:'120 minút' }
+  };
+  var ADDS = {
+    vizaz:{ name:'Vizáž a účes', price:45 },
+    osoba:{ name:'Ďalšia osoba', price:15 },
+    cas:{ name:'Predĺženie fotenia o 30 minút', price:35 },
+    expres:{ name:'Zrýchlené dodanie do 48 hodín', price:40 }
+  };
+
+  var calc = document.getElementById('calc');
+  var extra = document.getElementById('extra');
+  var extraOut = document.getElementById('extraOut');
+  var sumRows = document.getElementById('sumRows');
+  var sumTotal = document.getElementById('sumTotal');
+  var toForm = document.getElementById('toForm');
+
+  function eur(n){ return n + ' €'; }
+
+  function currentPack(){
+    if(!calc) return 'portret';
+    var r = calc.querySelector('input[name="balik"]:checked');
+    return (r && PACKS[r.value]) ? r.value : 'portret';
+  }
+
+  function row(label, value){
+    var d = document.createElement('div');
+    d.className = 'sum__row';
+    var b = document.createElement('b');
+    b.textContent = label;
+    var s = document.createElement('span');
+    s.textContent = value;
+    d.appendChild(b); d.appendChild(s);
+    return d;
+  }
+
+  function state(){
+    var key = currentPack();
+    var p = PACKS[key];
+    var n = extra ? parseInt(extra.value, 10) || 0 : 0;
+    var chosen = [];
+    if(calc){
+      var boxes = calc.querySelectorAll('input[name="doplnok"]');
+      for(var i=0;i<boxes.length;i++){
+        if(boxes[i].checked && ADDS[boxes[i].value]) chosen.push(ADDS[boxes[i].value]);
+      }
+    }
+    return { key:key, pack:p, n:n, adds:chosen };
+  }
+
+  function render(){
+    if(!calc || !sumRows || !sumTotal) return;
+    var st = state();
+    var total = st.pack.base;
+
+    sumRows.textContent = '';
+    sumRows.appendChild(row(st.pack.name + ' — ' + st.pack.time, eur(st.pack.base)));
+    sumRows.appendChild(row('Upravené fotografie v cene', st.pack.incl + ' ks'));
+
+    if(st.n > 0){
+      var addPhotos = st.n * st.pack.extra;
+      total += addPhotos;
+      sumRows.appendChild(row('Fotografie navyše: ' + st.n + ' × ' + st.pack.extra + ' €', eur(addPhotos)));
+    }
+    for(var i=0;i<st.adds.length;i++){
+      total += st.adds[i].price;
+      sumRows.appendChild(row(st.adds[i].name, eur(st.adds[i].price)));
+    }
+    sumRows.appendChild(row('Fotografií spolu', (st.pack.incl + st.n) + ' ks'));
+
+    sumTotal.textContent = eur(total);
+    if(extraOut) extraOut.textContent = String(st.n);
+
+    var opts = calc.querySelectorAll('.opt');
+    for(var j=0;j<opts.length;j++){
+      var input = opts[j].querySelector('input');
+      opts[j].classList.toggle('is-on', !!(input && input.checked));
+    }
+    var adds = calc.querySelectorAll('.add');
+    for(var k=0;k<adds.length;k++){
+      var cb = adds[k].querySelector('input');
+      adds[k].classList.toggle('is-on', !!(cb && cb.checked));
+    }
+  }
+
+  if(calc){
+    calc.addEventListener('input', render);
+    calc.addEventListener('change', render);
+    calc.addEventListener('submit', function(e){ e.preventDefault(); });
+    render();
+  }
+
+  /* ---- prenos prepočtu do formulára ---- */
+  var fBalik = document.getElementById('f-balik');
+  var fSprava = document.getElementById('f-sprava');
+  if(toForm && calc){
+    toForm.addEventListener('click', function(){
+      var st = state();
+      var txt = 'Balíček: ' + st.pack.name + ' (' + st.pack.base + ' €).';
+      if(st.n > 0){
+        txt += ' Fotografie navyše: ' + st.n + ' ks.';
+      }
+      if(st.adds.length){
+        var names = [];
+        for(var i=0;i<st.adds.length;i++) names.push(st.adds[i].name);
+        txt += ' Doplnky: ' + names.join(', ') + '.';
+      }
+      if(sumTotal) txt += ' Predbežná cena: ' + sumTotal.textContent + '.';
+      if(fBalik && PACKS[st.key]) fBalik.value = st.key;
+      if(fSprava) fSprava.value = txt;
+      var target = document.getElementById('kontakt');
+      if(target && target.scrollIntoView) target.scrollIntoView({behavior:'smooth', block:'start'});
+      var meno = document.getElementById('f-meno');
+      if(meno){
+        window.setTimeout(function(){
+          try { meno.focus({preventScroll:true}); } catch(err) { meno.focus(); }
+        }, 450);
+      }
+    });
+  }
+
+  /* ---- formulár ---- */
+  var form = document.getElementById('rezervacia');
+  var msg = document.getElementById('formmsg');
+  if(form && msg){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      msg.textContent = 'Ďakujeme. Toto je ukážkový web — formulár nič neodosiela a žiadne údaje sa neukladajú. Na skutočnom webe by táto správa prišla do schránky ateliéru a odpoveď by chodila do 24 hodín.';
+      msg.classList.add('is-on');
+      if(msg.scrollIntoView) msg.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  }
+
+  /* ---- dátum: len budúce termíny ---- */
+  var fDatum = document.getElementById('f-datum');
+  if(fDatum){
+    var d = new Date();
+    d.setDate(d.getDate() + 1);
+    var m = String(d.getMonth() + 1);
+    var day = String(d.getDate());
+    if(m.length < 2) m = '0' + m;
+    if(day.length < 2) day = '0' + day;
+    fDatum.min = d.getFullYear() + '-' + m + '-' + day;
+  }
+})();
+</script>
+
+</body>
+</html>

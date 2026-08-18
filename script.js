@@ -39,6 +39,7 @@
     var tlacidla = filtre.querySelectorAll(".filt");
     var karty = document.querySelectorAll(".uk-grid .uk");
     var info = document.getElementById("filt-info");
+    var celkom = karty.length;
 
     var filtruj = function (kluc) {
       var viditelnych = 0;
@@ -52,9 +53,9 @@
         t.setAttribute("aria-pressed", t.getAttribute("data-f") === kluc ? "true" : "false");
       });
       if (info) {
-        info.textContent = viditelnych === 10
-          ? "Zobrazených všetkých 10 ukážok"
-          : "Zobrazené ukážky: " + viditelnych + " z 10";
+        info.textContent = viditelnych === celkom
+          ? "Zobrazených všetkých " + celkom + " ukážok"
+          : "Zobrazené ukážky: " + viditelnych + " z " + celkom;
       }
     };
 
@@ -96,5 +97,28 @@
         stav.textContent = "Otváram váš e-mailový program s vyplnenou správou. Ak sa neotvoril, napíšte mi priamo na info@apoliak.online.";
       }
     });
+  }
+
+  /* Náhľady v galérii: v ráme beží zmenšená skutočná stránka.
+     Mierku počítame z reálnej šírky rámu, aby sedela pri každej šírke okna. */
+  var nahlady = document.querySelectorAll(".shot--live");
+  if (nahlady.length) {
+    var ZAKLAD = 1400;
+    var prepocitaj = function () {
+      for (var i = 0; i < nahlady.length; i++) {
+        var sirka = nahlady[i].clientWidth;
+        if (sirka) nahlady[i].style.setProperty("--shot-s", String(sirka / ZAKLAD));
+      }
+    };
+    prepocitaj();
+    /* Prepočítavame pri zmene šírky okna aj cez ResizeObserver — samotný
+       observer pri zmene šírky okna spoľahlivo nezaberie v každom prehliadači. */
+    window.addEventListener("resize", prepocitaj);
+    window.addEventListener("orientationchange", prepocitaj);
+    window.addEventListener("load", prepocitaj);
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(prepocitaj);
+      for (var n = 0; n < nahlady.length; n++) { ro.observe(nahlady[n]); }
+    }
   }
 })();

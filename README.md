@@ -8,16 +8,17 @@
 
 # 🅰️ Apoliak - MAIN WEB
 
-**Statická jednostránková prezentácia freelance služieb Web - Design - Development, postavená čisto na HTML, CSS a vanilla JavaScripte.**
+**Statický web freelance tvorby webstránok pre malé podniky, aj s galériou dvadsiatich preklikateľných ukážkových webov. Čisté HTML, CSS a vanilla JavaScript.**
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=flat-square&logo=githubpages&logoColor=white)
 ![Bez závislostí](https://img.shields.io/badge/závislosti-0-22c55e?style=flat-square)
+![Ukážky](https://img.shields.io/badge/uk%C3%A1%C5%BEkov%C3%A9%20weby-20-e9b45f?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)
 
-[Živé demo](https://apoliak.online) - [Rýchly štart](#-rýchly-štart) - [Štruktúra](#-štruktúra-projektu)
+[Živý web](https://apoliak.online) - [Galéria ukážok](https://apoliak.online/ukazky/) - [Rýchly štart](#-rýchly-štart) - [Štruktúra](#-štruktúra-projektu)
 
 </div>
 
@@ -31,6 +32,7 @@
 - [Štruktúra projektu](#-štruktúra-projektu)
 - [Konfigurácia a dizajnové tokeny](#️-konfigurácia-a-dizajnové-tokeny)
 - [Sekcie stránky](#-sekcie-stránky)
+- [Ukážkové weby](#-ukážkové-weby)
 - [Nasadenie](#-nasadenie)
 - [Známe obmedzenia](#️-známe-obmedzenia)
 - [Licencia](#-licencia)
@@ -39,26 +41,31 @@
 
 ## 🔎 Prehľad
 
-Apoliak MAIN WEB je ručne písaný statický web, ktorý prezentuje služby tvorby webstránok - služby, proces spolupráce, cenník, FAQ a kontakt. Celý obsah je v slovenčine (`<html lang="sk">`).
+Apoliak MAIN WEB je ručne písaný statický web, ktorý prezentuje tvorbu webstránok na mieru pre malé podniky - reštaurácie, kaviarne, salóny, autoservisy, ambulancie a podobné prevádzky. Obsahuje výhody, služby, postup spolupráce, cenník, časté otázky a kontaktný formulár. Celý obsah je v slovenčine (`<html lang="sk">`).
 
-Projekt zámerne nepoužíva žiadny framework, bundler ani build krok. Sú to tri súbory - `index.html`, `styles.css`, `script.js` - ktoré sa dajú otvoriť priamo v prehliadači a nasadiť skopírovaním na akýkoľvek statický hosting. Aktuálne beží na GitHub Pages pod vlastnou doménou definovanou v súbore `CNAME`.
+Podstatnou časťou webu je galéria **dvadsiatich ukážkových webov**. Každý je samostatná stránka vymysleného podniku s vlastnou farebnosťou, rozložením a funkčným interaktívnym prvkom, takže návštevník si vie priamo preklikať, ako môže vyzerať jeho vlastný web.
 
-Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfonty, žiadne analytiky ani trackery. Typografia stojí na systémovom font stacku a všetky ikony sú Unicode emoji priamo v markupe.
+Projekt zámerne nepoužíva žiadny framework, bundler ani build krok. Sú to obyčajné súbory, ktoré sa dajú otvoriť priamo v prehliadači a nasadiť skopírovaním na akýkoľvek statický hosting. Beží na GitHub Pages pod vlastnou doménou definovanou v súbore `CNAME`.
+
+Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfonty, žiadne analytiky ani trackery. Typografia stojí na systémovom font stacku a celá grafika je CSS a inline SVG.
 
 ---
 
 ## ✨ Funkcie
 
-- 🧊 **Sticky glass header** - hlavička je `position:sticky` s `backdrop-filter:blur(14px)`; po prekročení 8 px scrollu jej JS nastaví `data-shadow="true"` a pribudne tieň.
-- 🍔 **Mobilná navigácia** - pod 980 px sa menu skryje za hamburger tlačidlo; otvára sa triedou `nav-open` na `<body>` a zatvára kliknutím na backdrop, klávesou `Escape` alebo kliknutím na ktorýkoľvek odkaz, pričom `aria-expanded` sa drží v synchrone.
-- 👁️ **Reveal animácie pri scrollovaní** - `IntersectionObserver` s prahom `0.12` pridá každému `.reveal` elementu triedu `.is-visible` a následne ho prestane sledovať, takže animácia prebehne raz.
-- 🎨 **Dekoratívne pozadie** - dve rozostrené farebné orby a radiálne maskovaná mriežka, všetko `pointer-events:none` a `aria-hidden`, takže nezavadzia obsahu ani čítačkám.
-- 💻 **Hero s fake code editorom** - kartička imitujúca editor s ručne označenou syntax highlight schémou, tri trust badge a tri mini štatistiky.
-- 💶 **Cenník s tromi balíkmi** - Starter, Standard (označený badgeom `Najčastejšie`) a Pro; každý balík odkazuje na kontaktnú kotvu.
-- ❓ **FAQ na natívnych `<details>`** - rozbaľovanie a zbaľovanie otázok rieši `<details>`/`<summary>` so skrytým default markerom, takže samotná interakcia nepotrebuje JS. Pozor: každá položka je zároveň `.reveal`, čiže bez JS ostáva neviditeľná (pozri [Známe obmedzenia](#️-známe-obmedzenia)).
-- ♿ **Prístupnosť** - skip-link na obsah, `.sr-only` helper, `aria-label` / `aria-hidden` / `aria-controls`, explicitné `:focus-visible` outliny a `scroll-margin-top:86px`, aby kotvy nekončili pod sticky hlavičkou.
-- 🐢 **Rešpekt k `prefers-reduced-motion`** - médiový dotaz vypína smooth scroll aj prechody na `.reveal`, `.btn` a `.nav-panel`.
-- 📅 **Automatický rok v pätičke** - `script.js` zapíše aktuálny rok do `#year`, netreba ho ručne aktualizovať.
+- 🏪 **Dvadsať ukážkových webov** - kompletné weby vymyslených podnikov, každý ako jeden sebestačný HTML súbor s vlastnou paletou, typografiou a funkčnou interakciou (pozri [Ukážkové weby](#-ukážkové-weby)).
+- 🔎 **Galéria s filtrovaním** - `ukazky/index.html` triedi ukážky podľa kategórie; filtre prepínajú `hidden` na kartách, držia `aria-pressed` v synchrone a hlásia počet zobrazených ukážok do živého textu.
+- 🖼️ **Živé náhľady namiesto obrázkov** - v ráme každej karty beží samotná ukážka v `<iframe>` zmenšenom cez `transform: scale()`; mierku dopočíta `script.js` z reálnej šírky rámu. Náhľad tak nemôže zostarnúť voči ukážke a nepribúda ani jeden obrázkový súbor. Rámy sú `loading="lazy"`, `pointer-events: none` a mimo poradia tabulátora.
+- 🎛️ **Interaktívne prvky bez knižníc** - prepínanie jedálneho lístka, konfigurátor pizze, filtrovanie rozvrhu, objednávanie termínov, cenové kalkulačky a nákupný košík sú napísané v čistom JavaScripte.
+- 🎨 **Vlastný tmavý dizajn** - hnedo-uhlíkové pozadie s mosadzným akcentom, jemné SVG zrno cez celú plochu a pätkové nadpisy s kurzívou. Žiadna grafika sa nesťahuje, všetko je CSS a inline SVG.
+- ✉️ **Kontaktný formulár** - polia meno, kontakt, typ podniku a správa sa po odoslaní poskladajú do predmetu a tela e-mailu a otvoria e-mailový program návštevníka. Žiadny backend, žiadne odosielanie údajov tretej strane.
+- ♿ **Prístupnosť podľa WCAG AA** - kontrastné pomery sú overené a zapísané pri tokenoch, stránka má skip-link, jeden `h1`, viditeľné focus stavy a `scroll-padding-top`, aby kotvy nekončili pod sticky hlavičkou.
+- 👁️ **Odhalenie sekcií pri scrollovaní** - `IntersectionObserver` pridáva triedu `.in` prvkom `.rv`. Efekt sa aktivuje len ak inline skript v hlavičke nastaví triedu `js` na `<html>`, takže bez JavaScriptu je obsah normálne viditeľný.
+- 🐢 **Rešpekt k `prefers-reduced-motion`** - pri zapnutom nastavení sa obsah odhalí naraz a prechody sa vypnú.
+- 🔍 **SEO a zdieľanie** - canonical URL, Open Graph aj Twitter Card, `og-image.png` v rozmere 1200 × 630, štruktúrované dáta schema.org `ProfessionalService`, `sitemap.xml`, `robots.txt` a inline SVG favicon.
+- 🚧 **Vlastná 404 stránka** - `404.html` v rovnakom dizajne s odkazmi späť na hlavnú stránku a do galérie.
+- 🔒 **Zásady ochrany osobných údajov** - samostatná stránka `ochrana-osobnych-udajov.html`.
+- 📅 **Automatický rok v pätičke** - `script.js` zapíše aktuálny rok do `#rok`, netreba ho ručne aktualizovať.
 
 ---
 
@@ -71,7 +78,7 @@ git clone https://github.com/Apoliak7777/Apoliak-MAIN_WEB.git
 cd Apoliak-MAIN_WEB
 ```
 
-**Najjednoduchšie** - otvor `index.html` priamo v prehliadači. Všetky cesty sú relatívne, takže `file://` funguje vrátane reveal animácií.
+**Najjednoduchšie** - otvor `index.html` priamo v prehliadači. Všetky cesty sú relatívne, takže `file://` funguje vrátane galérie aj ukážok.
 
 **Odporúčane cez lokálny HTTP server** (realistickejšie správanie, správne relatívne cesty):
 
@@ -79,7 +86,7 @@ cd Apoliak-MAIN_WEB
 python -m http.server 8000
 ```
 
-Potom otvor `http://localhost:8000/`. Rovnako dobre poslúži hociktorý statický server:
+Potom otvor `http://localhost:8000/` a galériu na `http://localhost:8000/ukazky/`. Rovnako dobre poslúži hociktorý statický server:
 
 ```bash
 npx serve .
@@ -95,68 +102,154 @@ php -S localhost:8000
 
 ```text
 Apoliak-MAIN_WEB/
-├── index.html      # celá stránka - 318 riadkov, sekcie #top, #services,
-│                   # #process, #pricing, #faq, #contact + footer a .backdrop
-├── styles.css      # všetok štýl - 394 riadkov: :root tokeny, header/nav, hero,
-│                   # karty, cenník, FAQ, reveal stavy, breakpoint 980px,
-│                   # prefers-reduced-motion a focus pravidlá
-├── script.js       # 64 riadkov v jednej IIFE: rok, tieň hlavičky,
-│                   # mobilné menu, IntersectionObserver reveal
-├── CNAME           # vlastná doména pre GitHub Pages (apoliak.online)
-├── LICENSE         # plný text GNU GPL v3
-├── README.md       # tento súbor
-└── README.en.md    # anglická verzia tohto súboru
+├── index.html                    # hlavná stránka (41 KB)
+├── styles.css                    # spoločné štýly pre hlavnú stránku,
+│                                 # galériu, 404 aj GDPR stránku (30 KB)
+├── script.js                     # spoločný skript (5 KB)
+├── ukazky/
+│   ├── index.html                # galéria ukážok s filtrovaním (27 KB)
+│   ├── restauracia/index.html    # 20 samostatných ukážkových webov,
+│   ├── kaviaren/index.html       # každý ako jeden sebestačný súbor
+│   ├── cukraren/index.html
+│   ├── penzion/index.html
+│   ├── fitko/index.html
+│   ├── salon/index.html
+│   ├── barber/index.html
+│   ├── wellness/index.html
+│   ├── fotoatelier/index.html
+│   ├── autoskola/index.html
+│   ├── remeselnik/index.html
+│   ├── autoservis/index.html
+│   ├── stavebna/index.html
+│   ├── ambulancia/index.html
+│   ├── veterina/index.html
+│   ├── optika/index.html
+│   ├── kvetinarstvo/index.html
+│   ├── reality/index.html
+│   ├── uctovnictvo/index.html
+│   └── advokat/index.html
+├── 404.html                      # vlastná stránka pre neexistujúce adresy
+├── ochrana-osobnych-udajov.html  # zásady ochrany osobných údajov
+├── og-image.png                  # náhľad pri zdieľaní, 1200 × 630
+├── sitemap.xml                   # mapa stránok
+├── robots.txt                    # pravidlá pre roboty
+├── CNAME                         # vlastná doména pre GitHub Pages
+├── .nojekyll                     # vypnutie Jekyll spracovania na Pages
+├── LICENSE                       # plný text GNU GPL v3
+├── README.md                     # tento súbor
+└── README.en.md                  # anglická verzia tohto súboru
 ```
 
-Žiadne podpriečinky, žiadne buildy, žiadne assety - repo má presne sedem súborov v roote.
+Priečinok `ukazky/` má spolu asi 1,9 MB. Žiadne buildy, žiadne node_modules, žiadne stiahnuté assety.
 
 ---
 
 ## ⚙️ Konfigurácia a dizajnové tokeny
 
-Projekt nemá konfiguračný systém - žiadne `.env`, žiadne env premenné. Vizuál sa mení editovaním CSS custom properties v bloku `:root` na začiatku `styles.css`.
+Projekt nemá konfiguračný systém - žiadne `.env`, žiadne env premenné. Vizuál hlavnej stránky, galérie, 404 aj GDPR stránky sa mení editovaním CSS custom properties v bloku `:root` na začiatku `styles.css`.
 
-| Token                    | Hodnota                       | Význam                                                                  |
-| ------------------------ | ----------------------------- | ----------------------------------------------------------------------- |
-| `--bg` / `--bg2`         | `#0b1020` / `#070a14`         | Základ tmavého gradientu pozadia                                        |
-| `--text`                 | `rgba(255,255,255,.92)`       | Primárna farba textu                                                    |
-| `--muted`                | `rgba(255,255,255,.68)`       | Sekundárny, stlmený text                                                |
-| `--border`               | `rgba(255,255,255,.12)`       | Rámček skip-linku a krokov procesu (`.step`) - nič viac                 |
-| `--shadow`               | `0 18px 60px rgba(0,0,0,.55)` | Tieň hero glass karty a mobilného nav panelu                            |
-| `--brand`                | `#2563eb`                     | Primárna značková modrá                                                 |
-| `--brand2`               | `#22c55e`                     | Doplnková zelená (gradienty, akcenty)                                   |
-| `--radius` / `--radius2` | `18px` / `24px`               | Zaoblenie kariet a väčších blokov                                       |
-| `--container`            | `1120px`                      | Maximálna šírka obsahového kontajnera                                   |
-| `--step`                 | `clamp(14px,1.2vw,16px)`      | Základná fluidná veľkosť písma                                          |
-| `--h1` / `--h2` / `--h3` | `clamp(...)`                  | Fluidná škála nadpisov                                                  |
+| Token         | Hodnota                                       | Význam                                          |
+| ------------- | --------------------------------------------- | ----------------------------------------------- |
+| `--bg`        | `#131010`                                     | Základné tmavé pozadie                          |
+| `--bg-2`      | `#1a1513`                                     | Striedavý tón sekcií                            |
+| `--panel`     | `#201916`                                     | Pozadie kariet a panelov                        |
+| `--panel-2`   | `#271e1a`                                     | Zvýraznený panel                                |
+| `--line`      | `#3a2d26`                                     | Rámčeky a oddeľovače                            |
+| `--line-soft` | `#2b211c`                                     | Jemnejšia linka vo vnútri panelov               |
+| `--ink`       | `#f7f0e7` (18,9:1)                            | Primárny text                                   |
+| `--ink-2`     | `#d8ccbf` (12,0:1)                            | Sekundárny text                                 |
+| `--mut`       | `#b6a99b` (8,2:1)                             | Stlmené popisky                                 |
+| `--brass`     | `#e9b45f` (10,1:1)                            | Mosadzný akcent - odkazy, čísla, zvýraznenia    |
+| `--brass-lo`  | `#c8913c`                                     | Tmavší odtieň akcentu, plochy tlačidiel         |
+| `--brass-hi`  | `#f2c273`                                     | Svetlejší odtieň akcentu, hover stavy           |
+| `--on-brass`  | `#1d1409` (6,5:1)                             | Text na mosadznej ploche                        |
+| `--sans`      | `system-ui` stack                             | Základné bezpätkové písmo                       |
+| `--serif`     | Iowan Old Style / Palatino Linotype / Georgia | Pätkové nadpisy a kurzíva                       |
+| `--mono`      | `ui-monospace` stack                          | Čísla, kódy, tabuľkové údaje                    |
+| `--pad`       | `clamp(18px,5vw,56px)`                        | Bočný odstup obsahu                             |
+| `--maxw`      | `1220px`                                      | Maximálna šírka obsahového kontajnera           |
 
 > [!IMPORTANT]
-> Tokenizácia je len čiastočná. Väčšina kariet (`.card`, `.price-card`, `.faq-item`, `.contact-card`, `.trust-item`, `.stat`, `.glass`, `.nav-panel`) má rámček zapísaný natvrdo ako `rgba(255,255,255,.10)` alebo `.12` a `.card` / `.step` majú aj vlastný hardcoded `box-shadow`. Zmena `--border` alebo `--shadow` sa na nich neprejaví - treba prejsť príslušné pravidlá v `styles.css` ručne.
+> Tokeny v `styles.css` platia pre hlavnú stránku, galériu, 404 a GDPR stránku. **Každý ukážkový web má vlastnú farebnosť zapísanú vo svojom vlastnom súbore** - je zámerne samostatný, aby sa dal poslať klientovi alebo nasadiť ako jeden súbor. Zmena tokenov v `styles.css` sa na ukážkach neprejaví.
 
-Ostatné veci sa menia priamo v `index.html`:
+Obsahové veci sa menia priamo v HTML:
 
-| Čo                                        | Kde                                       |
-| ----------------------------------------- | ----------------------------------------- |
-| Ceny (`od 100 €`, `od 225 €`, `dohodou`)  | sekcia `#pricing`, hardcoded v markupe    |
-| Texty služieb a FAQ                       | sekcie `#services` a `#faq`               |
-| Kontaktný email                           | `mailto:` odkaz v sekcii `#contact`       |
-| `<title>`, meta description, `theme-color` | `<head>`                                 |
-| Doména pre GitHub Pages                   | súbor `CNAME`                             |
+| Čo                                            | Kde                                                |
+| --------------------------------------------- | -------------------------------------------------- |
+| Ceny balíkov a doplnkov                       | sekcia `#cennik` v `index.html`                     |
+| Texty výhod, služieb, postupu a otázok        | sekcie `#vyhody`, `#sluzby`, `#postup`, `#otazky`   |
+| E-mail a telefón                              | sekcia `#kontakt` a JSON-LD blok v `<head>`         |
+| Cieľová adresa formulára                      | `mailto:` v `script.js`                             |
+| `<title>`, meta description, OG a Twitter tagy | `<head>` každej stránky                            |
+| Štruktúrované dáta                            | JSON-LD blok v `<head>` hlavnej stránky             |
+| Doména pre GitHub Pages                       | súbor `CNAME` (plus `sitemap.xml` a canonical URL)  |
 
 ---
 
 ## 🧭 Sekcie stránky
 
-| Kotva       | Sekcia            | Obsah                                                             |
-| ----------- | ----------------- | ----------------------------------------------------------------- |
-| `#top`      | Hero              | Nadpis s gradientovým akcentom, CTA, trust badge, fake code karta |
-| `#services` | Služby            | Tri karty: Web na mieru, Redizajn a opravy, Nasadenie             |
-| `#process`  | Proces spolupráce | Štyri kroky: Brief, Dizajn, Implementácia, Nasadenie              |
-| `#pricing`  | Cenník            | Tri balíky: Starter, Standard (highlight), Pro                    |
-| `#faq`      | FAQ               | Tri natívne `<details>` otázky                                    |
-| `#contact`  | Kontakt           | `mailto:` kartička a skratka späť na cenník                       |
+| Kotva       | Sekcia          | Obsah                                                              |
+| ----------- | --------------- | ------------------------------------------------------------------ |
+| -           | Hero            | Nadpis, hlavné CTA a odkaz na ukážky                                |
+| -           | Bežiaci pás     | Segmenty podnikov, pre ktoré weby robím                             |
+| `#vyhody`   | Výhody          | Deväť dôvodov pracovať so mnou a čo z webu podnik reálne má         |
+| `#sluzby`   | Služby          | Rozsah práce - návrh, dizajn, kód, texty, nasadenie                 |
+| `#postup`   | Postup          | Kroky spolupráce od prvého kontaktu po spustenie                    |
+| `#cennik`   | Cenník          | Balíky Starter, Standard, Pro - čo je a čo nie je v cene            |
+| `#ukazky`   | Ukážky          | Teaser s tromi živými náhľadmi a odkazom do galérie                 |
+| `#projekty` | Projekty        | Ďalšie veci, ktoré som postavil                                     |
+| `#otazky`   | Časté otázky    | Natívne `<details>` otázky, fungujú aj bez JavaScriptu              |
+| `#kontakt`  | Kontakt         | Konzultácia zadarmo, formulár dopytu, e-mail a telefón              |
+| -           | Pätička         | Odkazy, ochrana osobných údajov, automatický rok                    |
 
-Navigácia je čisto same-page cez hash odkazy - neexistuje router ani druhá stránka.
+Navigácia po hlavnej stránke je same-page cez hash odkazy; galéria, ukážky, 404 a GDPR stránka sú samostatné adresy.
+
+### Cenník na webe
+
+| Balík        | Cena       |
+| ------------ | ---------- |
+| **Starter**  | od 250 €   |
+| **Standard** | od 490 €   |
+| **Pro**      | od 890 €   |
+
+| Doplnok                  | Cena              |
+| ------------------------ | ----------------- |
+| Údržba                   | od 5 € / mesiac   |
+| Extra podstránka         | od 15 €           |
+| Texty                    | od 12 € / stránka |
+| Rýchla oprava do 48 h    | od 25 €           |
+
+---
+
+## 🏪 Ukážkové weby
+
+Dvadsať kompletných webov vymyslených podnikov - **nejde o reálnych klientov ani referencie**. Každá ukážka je jeden sebestačný HTML súbor s vlastnou farebnosťou a rozložením, so sticky pásikom s odkazom späť na `apoliak.online` a s funkčným interaktívnym prvkom.
+
+| Priečinok      | Podnik                            | Kategória          | Interaktívny prvok                            |
+| -------------- | --------------------------------- | ------------------ | --------------------------------------------- |
+| `restauracia`  | Reštaurácia Dubová                | Gastro a ubytovanie | Prepínanie jedálneho lístka, rezervácia stola |
+| `kaviaren`     | Lipová (kaviareň a pizzeria)      | Gastro a ubytovanie | Konfigurátor pizze s prepočtom ceny           |
+| `cukraren`     | Pekáreň a cukráreň Kôrka          | Gastro a ubytovanie | Konfigurátor torty s cenou a termínom         |
+| `penzion`      | Penzión Hrebeň                    | Gastro a ubytovanie | Rezervácia s prepočtom nocí a ceny            |
+| `fitko`        | Fitness centrum Halová            | Služby             | Filtrovanie rozvrhu tréningov                 |
+| `salon`        | Salón Brezová                     | Služby             | Rezervácia termínu so súhrnnou cenou          |
+| `barber`       | Holičstvo Ostrie                  | Služby             | Objednanie podľa služby a dĺžky               |
+| `wellness`     | Wellness Salvia                   | Služby             | Rezervácia procedúry so súhrnom               |
+| `fotoatelier`  | Fotoateliér Škála                 | Služby             | Výber balíčka a počtu fotografií              |
+| `autoskola`    | Autoškola Rondel                  | Služby             | Prihláška s prepočtom ceny kurzu              |
+| `remeselnik`   | Stolárstvo Rovina                 | Remeslo            | Kalkulačka ceny zákazky                       |
+| `autoservis`   | Autoservis 12                     | Remeslo            | Objednanie termínu s cenou úkonu              |
+| `stavebna`     | Stavebná firma KVADER             | Remeslo            | Kalkulačka ceny podľa plochy                  |
+| `ambulancia`   | Zubná ambulancia Vrbová           | Zdravie            | Objednanie ošetrenia                          |
+| `veterina`     | Veterinárna klinika Alveron       | Zdravie            | Objednanie podľa druhu zvieraťa               |
+| `optika`       | Optika Meridián                   | Zdravie            | Objednanie na meranie zraku                   |
+| `kvetinarstvo` | Kvetinárstvo Steblo               | Obchod a firmy     | Plne funkčný nákupný košík                    |
+| `reality`      | Kamenec reality                   | Obchod a firmy     | Filter ponuky a hypotekárna kalkulačka        |
+| `uctovnictvo`  | SALDIA (účtovníctvo a mzdy)       | Obchod a firmy     | Kalkulačka mesačného paušálu                  |
+| `advokat`      | Advokátska kancelária Meritum     | Obchod a firmy     | Dopyt s odhadom odmeny                        |
+
+> [!NOTE]
+> Ukážky sú zámerne bez fotografií. Plochy, kde by inak boli, nesú vlastnú kompozíciu - vrstvené prechody, geometriu, vlásočnicové vzory a typografiu. Stránky nikam nič neodosielajú, formuláre a košíky sú návrhové makety.
 
 ---
 
@@ -165,48 +258,44 @@ Navigácia je čisto same-page cez hash odkazy - neexistuje router ani druhá st
 Web beží na GitHub Pages. Postup:
 
 1. Pushni na default branch (`main`).
-2. V nastaveniach repozitára zapni GitHub Pages pre tento branch.
-3. Súbor `CNAME` v roote naviaže stránku na vlastnú doménu (`apoliak.online`).
+2. V nastaveniach repozitára zapni GitHub Pages pre tento branch a koreňový priečinok.
+3. Súbor `CNAME` v roote naviaže stránku na vlastnú doménu (`apoliak.online`), `.nojekyll` vypne Jekyll spracovanie.
 4. DNS záznamy domény (A / ALIAS) musia smerovať na GitHub Pages; TLS certifikát vystaví GitHub automaticky.
 
 > [!NOTE]
 > Nie je potrebná databáza, aplikačný server, runtime ani žiadne environment premenné. Rovnaký obsah sa dá nahrať na Netlify, Vercel, S3 alebo klasický FTP hosting bez jedinej zmeny v kóde.
 
+Po zmene domény treba upraviť `CNAME`, canonical URL, Open Graph adresy a `sitemap.xml`.
+
 ---
 
 ## ⚠️ Známe obmedzenia
 
-> [!WARNING]
-> **Bez JavaScriptu je obsah neviditeľný.** `styles.css` nastavuje `.reveal{opacity:0}` a viditeľnosť pridáva až `script.js` triedou `.is-visible`. Ak je JS vypnutý, blokovaný alebo spadne, vykreslí sa iba hlavička, pätička a pozadie. Neexistuje `<noscript>` fallback ani CSS-only záložné riešenie.
+- **Formulár nemá backend** - odoslanie poskladá `mailto:` odkaz a otvorí e-mailový program návštevníka. Ak návštevník nemá nastavený e-mailový klient, musí napísať priamo na uvedenú adresu. Nič sa neukladá a neexistuje nič, čo by správy prijímalo na serveri.
+- **Kontaktné údaje sú v markupe v čistom texte**, kde ich scrapery bez problémov prečítajú. Neexistuje ochrana proti spamu.
+- **Ukážkové weby sú návrhy vymyslených podnikov** - názvy, adresy, otváracie hodiny aj ceny sú ilustračné. Nezbierajú žiadne údaje, ich formuláre, rezervácie ani košíky nikam nič neodosielajú a po obnovení stránky sa stav stráca.
+- **Ukážky nemajú ani jednu fotografiu** - všetko nesie typografia, farba a geometria. Pri reálnej zákazke fotografie dodáva klient a nahrádzajú tieto plochy.
+- **Obsah je duplikovaný v HTML** - ceny, kontakt aj texty sú zapísané natvrdo na viacerých miestach (markup, meta tagy, JSON-LD). Zmena znamená prejsť všetky výskyty ručne.
+- **Každá ukážka má vlastnú kópiu štýlov aj skriptov** vo svojom súbore. Je to zámer, aby bola prenositeľná, ale znamená to, že spoločná zmena sa musí urobiť dvadsaťkrát.
+- **Žiadne automatické kontroly** - v repe nie sú testy, lintery, formatter config ani GitHub Actions workflow. Kvalita stojí na manuálnej kontrole.
+- **Bez pripojenia nie sú fallbacky tretích strán**, ale ani nie sú potrebné - stránka nepoužíva žiadne externé zdroje.
 
-- **Kontakt je len `mailto:`** - nie je tu formulár ani backend, takže neexistuje nič, čo by prijímalo správy, a žiadna ochrana proti spamu. Emailová adresa je v markupe v čistom texte, kde ju scrapery bez problémov prečítajú.
-- **Mŕtve CSS** - pravidlá `.form`, `.field`, `input`, `textarea` (riadky 282-301 v `styles.css`) štýlujú kontaktný formulár, ktorý v `index.html` neexistuje. Podobne `.work-grid` v mobilnom breakpointe nemá žiadny zodpovedajúci element. Ide o zvyšky po odstránenej sekcii.
-- **Nepoužitý atribút** - `<header>` nesie `data-elevate`, ale `script.js` zapisuje `data-shadow` a `styles.css` naň reaguje. Atribút je neaktívny.
-- **Nesúlad domény** - dekoratívna code karta v hero sekcii zobrazuje reťazec `apoliak.site`, zatiaľ čo `CNAME` deklaruje `apoliak.online`. Text v mockupe je zastaraný.
-- **Chýba SEO a social metadata** - hoci stránka predáva "Základné SEO" ako službu, z metadát sú v `<head>` len `charset`, `viewport`, `theme-color`, `<title>` a meta description. Žiadny favicon, Open Graph, Twitter Card, canonical URL, JSON-LD, `robots.txt` ani `sitemap.xml`.
-- **"Lighthouse 90+" je marketingový text** - v repozitári nič túto hodnotu nemeria, netestuje ani nevynucuje.
-- **Ceny sú hardcoded** v HTML, neexistuje jediný zdroj pravdy - zmena znamená ručnú editáciu markupu.
-- **Žiadne automatické kontroly** - v repe nie sú testy, lintery, formatter config, GitHub Actions workflow, `.gitignore` ani `.editorconfig`. Kvalita stojí na manuálnej kontrole.
-- **`backdrop-filter`** (hlavička a mobilný panel) na prehliadačoch bez podpory degraduje na plocho priesvitné pozadie; nie je deklarovaný `@supports` fallback.
-- **Git história má len dva commity**, takže nie je kde dohľadať zámer za konkrétnymi rozhodnutiami.
+**Požiadavky na runtime:** ľubovoľný evergreen prehliadač s podporou CSS custom properties, `clamp()` a `IntersectionObserver`. Bez JavaScriptu ostáva obsah plne čitateľný, len bez odhaľovacích animácií, filtrovania galérie a interaktívnych prvkov v ukážkach.
 
-**Požiadavky na runtime:** ľubovoľný evergreen prehliadač s podporou `IntersectionObserver`, CSS custom properties a `clamp()`.
+**Overené rozlíšenia:** 375, 768 a 1280 px bez vodorovného rolovania.
 
 ---
 
 ## 📜 Licencia
 
-Repozitár obsahuje súbor `LICENSE` s úplným a nezmeneným textom **GNU General Public License v3** (29. jún 2007, 674 riadkov).
+Repozitár obsahuje súbor `LICENSE` s úplným a nezmeneným textom **GNU General Public License v3**.
 
-> [!NOTE]
-> Záverečná "how to apply" pasáž licencie stále obsahuje nevyplnené placeholdery `<year>` a `<name of author>`, takže držiteľ autorských práv nie je nikde v repozitári menovite uvedený a žiadny zdrojový súbor nenesie GPL hlavičku.
-
-GPL-3.0 je silné copyleft licencovanie určené pre softvér. Aplikované na tento web to znamená, že markup, štýly aj skript smie ktokoľvek kopírovať, upravovať a ďalej šíriť - za podmienky, že odvodené dielo bude tiež pod GPL-3.0 a so sprístupneným zdrojovým kódom.
+GPL-3.0 je silné copyleft licencovanie určené pre softvér. Aplikované na tento web to znamená, že markup, štýly aj skripty smie ktokoľvek kopírovať, upravovať a ďalej šíriť - za podmienky, že odvodené dielo bude tiež pod GPL-3.0 a so sprístupneným zdrojovým kódom.
 
 ---
 
 <div align="center">
 
-Vytvoril **Alex Poliak** - [GitHub](https://github.com/Apoliak7777) - [alexpoliak21@gmail.com](mailto:alexpoliak21@gmail.com)
+Vytvoril **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [info@apoliak.online](mailto:info@apoliak.online) - 0902 464 022
 
 </div>

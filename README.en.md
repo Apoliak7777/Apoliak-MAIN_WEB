@@ -8,16 +8,17 @@
 
 # 🅰️ Apoliak - MAIN WEB
 
-**A static single-page showcase of freelance Web - Design - Development services, built purely on HTML, CSS and vanilla JavaScript.**
+**A static site for a freelance web-design practice serving small businesses, with a gallery of twenty fully clickable demo websites. Plain HTML, CSS and vanilla JavaScript.**
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=flat-square&logo=githubpages&logoColor=white)
 ![No dependencies](https://img.shields.io/badge/dependencies-0-22c55e?style=flat-square)
+![Demos](https://img.shields.io/badge/demo%20sites-20-e9b45f?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)
 
-[Live demo](https://apoliak.online) - [Quick start](#-quick-start) - [Structure](#-project-structure)
+[Live site](https://apoliak.online) - [Demo gallery](https://apoliak.online/ukazky/) - [Quick start](#-quick-start) - [Structure](#-project-structure)
 
 </div>
 
@@ -31,6 +32,7 @@
 - [Project structure](#-project-structure)
 - [Configuration and design tokens](#️-configuration-and-design-tokens)
 - [Page sections](#-page-sections)
+- [Demo websites](#-demo-websites)
 - [Deployment](#-deployment)
 - [Known limitations](#️-known-limitations)
 - [License](#-license)
@@ -39,26 +41,31 @@
 
 ## 🔎 Overview
 
-Apoliak MAIN WEB is a hand-written static site that presents website-building services - the services themselves, the collaboration process, pricing, FAQ and contact. All content is in Slovak (`<html lang="sk">`).
+Apoliak MAIN WEB is a hand-written static site presenting custom website work for small businesses - restaurants, cafés, salons, garages, medical practices and the like. It covers the benefits, the services, how a project runs, pricing, an FAQ and a contact form. All content is in Slovak (`<html lang="sk">`).
 
-The project deliberately uses no framework, no bundler and no build step. It is three files - `index.html`, `styles.css`, `script.js` - that can be opened straight in a browser and deployed by copying them onto any static hosting. It currently runs on GitHub Pages under a custom domain defined in the `CNAME` file.
+A major part of the site is a gallery of **twenty demo websites**. Each one is a standalone page for a fictional business with its own colour scheme, layout and a working interactive feature, so a visitor can click through and see what their own site could look like.
 
-The site makes not a single external network request: no CDN, no web fonts, no analytics and no trackers. Typography relies on the system font stack and every icon is a Unicode emoji placed directly in the markup.
+The project deliberately uses no framework, no bundler and no build step. These are plain files that open straight in a browser and deploy by copying them onto any static host. It runs on GitHub Pages under a custom domain defined in the `CNAME` file.
+
+The site makes not a single external network request: no CDN, no web fonts, no analytics and no trackers. Typography relies on the system font stack, and all graphics are CSS and inline SVG.
 
 ---
 
 ## ✨ Features
 
-- 🧊 **Sticky glass header** - the header is `position:sticky` with `backdrop-filter:blur(14px)`; once the page is scrolled past 8 px, JS sets `data-shadow="true"` on it and a shadow appears.
-- 🍔 **Mobile navigation** - below 980 px the menu hides behind a hamburger button; it opens via the `nav-open` class on `<body>` and closes on a backdrop click, the `Escape` key or a click on any link, while `aria-expanded` is kept in sync.
-- 👁️ **Reveal animations on scroll** - an `IntersectionObserver` with a threshold of `0.12` adds the `.is-visible` class to every `.reveal` element and then stops observing it, so the animation runs only once.
-- 🎨 **Decorative background** - two blurred colour orbs and a radially masked grid, all `pointer-events:none` and `aria-hidden`, so they get in the way of neither the content nor screen readers.
-- 💻 **Hero with a fake code editor** - a card mimicking an editor with a hand-marked syntax highlighting scheme, three trust badges and three mini stats.
-- 💶 **Pricing with three packages** - Starter, Standard (marked with a `Najčastejšie` badge) and Pro; each package links to the contact anchor.
-- ❓ **FAQ built on native `<details>`** - expanding and collapsing the questions is handled by `<details>`/`<summary>` with the default marker hidden, so the interaction itself needs no JS. Careful though: every item is also a `.reveal`, which means it stays invisible without JS (see [Known limitations](#️-known-limitations)).
-- ♿ **Accessibility** - a skip link to the content, an `.sr-only` helper, `aria-label` / `aria-hidden` / `aria-controls`, explicit `:focus-visible` outlines and `scroll-margin-top:86px` so that anchors do not end up underneath the sticky header.
-- 🐢 **Respect for `prefers-reduced-motion`** - the media query disables smooth scrolling as well as transitions on `.reveal`, `.btn` and `.nav-panel`.
-- 📅 **Automatic year in the footer** - `script.js` writes the current year into `#year`, so there is no need to update it by hand.
+- 🏪 **Twenty demo websites** - complete sites for fictional businesses, each a single self-contained HTML file with its own palette, typography and working interaction (see [Demo websites](#-demo-websites)).
+- 🔎 **Filterable gallery** - `ukazky/index.html` sorts the demos by category; the filters toggle `hidden` on the cards, keep `aria-pressed` in sync and announce how many demos are showing in a live text.
+- 🖼️ **Live previews instead of images** - the frame on every card runs the demo itself in an `<iframe>` scaled down with `transform: scale()`; `script.js` derives the factor from the frame's real width. A preview can therefore never go stale against its demo, and not a single image file is added. The frames are `loading="lazy"`, `pointer-events: none` and out of the tab order.
+- 🎛️ **Interactions without libraries** - menu switching, a pizza builder, schedule filtering, appointment booking, price calculators and a shopping cart are all written in plain JavaScript.
+- 🎨 **Custom dark design** - a warm charcoal background with a brass accent, a subtle SVG grain across the whole surface, and serif headings with italics. Nothing is downloaded; it is all CSS and inline SVG.
+- ✉️ **Contact form** - name, contact detail, business type and message are assembled into an e-mail subject and body that open in the visitor's mail client. No backend, no data sent to a third party.
+- ♿ **WCAG AA accessibility** - contrast ratios are verified and noted next to the tokens; the page has a skip link, a single `h1`, visible focus states and `scroll-padding-top` so anchors do not land under the sticky header.
+- 👁️ **Scroll reveal** - an `IntersectionObserver` adds the `.in` class to `.rv` elements. The effect only engages once the inline script in the head sets the `js` class on `<html>`, so without JavaScript the content is simply visible.
+- 🐢 **Respect for `prefers-reduced-motion`** - with the setting on, content is revealed at once and transitions are turned off.
+- 🔍 **SEO and sharing** - canonical URL, Open Graph and Twitter Card tags, a 1200 × 630 `og-image.png`, schema.org `ProfessionalService` structured data, `sitemap.xml`, `robots.txt` and an inline SVG favicon.
+- 🚧 **Custom 404 page** - `404.html` in the same design, linking back to the home page and the gallery.
+- 🔒 **Privacy policy** - a dedicated `ochrana-osobnych-udajov.html` page.
+- 📅 **Automatic year in the footer** - `script.js` writes the current year into `#rok`, so it never needs a manual update.
 
 ---
 
@@ -71,7 +78,7 @@ git clone https://github.com/Apoliak7777/Apoliak-MAIN_WEB.git
 cd Apoliak-MAIN_WEB
 ```
 
-**The simplest way** - open `index.html` directly in a browser. All paths are relative, so `file://` works, including the reveal animations.
+**The simplest way** - open `index.html` directly in a browser. All paths are relative, so `file://` works, gallery and demos included.
 
 **Recommended via a local HTTP server** (more realistic behaviour, correct relative paths):
 
@@ -79,7 +86,7 @@ cd Apoliak-MAIN_WEB
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000/`. Any static server will do just as well:
+Then open `http://localhost:8000/`, and the gallery at `http://localhost:8000/ukazky/`. Any static server will do just as well:
 
 ```bash
 npx serve .
@@ -95,68 +102,154 @@ php -S localhost:8000
 
 ```text
 Apoliak-MAIN_WEB/
-├── index.html      # the whole page - 318 lines, sections #top, #services,
-│                   # #process, #pricing, #faq, #contact + footer and .backdrop
-├── styles.css      # all styling - 394 lines: :root tokens, header/nav, hero,
-│                   # cards, pricing, FAQ, reveal states, 980px breakpoint,
-│                   # prefers-reduced-motion and focus rules
-├── script.js       # 64 lines in a single IIFE: year, header shadow,
-│                   # mobile menu, IntersectionObserver reveal
-├── CNAME           # custom domain for GitHub Pages (apoliak.online)
-├── LICENSE         # full text of the GNU GPL v3
-├── README.md       # Slovak version
-└── README.en.md    # this file
+├── index.html                    # home page (41 KB)
+├── styles.css                    # shared styles for the home page,
+│                                 # gallery, 404 and privacy page (30 KB)
+├── script.js                     # shared script (5 KB)
+├── ukazky/                       # "ukazky" = demos
+│   ├── index.html                # demo gallery with filtering (27 KB)
+│   ├── restauracia/index.html    # 20 standalone demo sites,
+│   ├── kaviaren/index.html       # each one a self-contained file
+│   ├── cukraren/index.html
+│   ├── penzion/index.html
+│   ├── fitko/index.html
+│   ├── salon/index.html
+│   ├── barber/index.html
+│   ├── wellness/index.html
+│   ├── fotoatelier/index.html
+│   ├── autoskola/index.html
+│   ├── remeselnik/index.html
+│   ├── autoservis/index.html
+│   ├── stavebna/index.html
+│   ├── ambulancia/index.html
+│   ├── veterina/index.html
+│   ├── optika/index.html
+│   ├── kvetinarstvo/index.html
+│   ├── reality/index.html
+│   ├── uctovnictvo/index.html
+│   └── advokat/index.html
+├── 404.html                      # custom page for unknown addresses
+├── ochrana-osobnych-udajov.html  # privacy policy
+├── og-image.png                  # sharing preview, 1200 × 630
+├── sitemap.xml                   # sitemap
+├── robots.txt                    # crawler rules
+├── CNAME                         # custom domain for GitHub Pages
+├── .nojekyll                     # disables Jekyll processing on Pages
+├── LICENSE                       # full text of the GNU GPL v3
+├── README.md                     # Slovak version
+└── README.en.md                  # this file
 ```
 
-No subfolders, no builds, no assets - the repo holds exactly seven files in its root.
+The `ukazky/` folder comes to roughly 1.9 MB in total. No builds, no node_modules, no downloaded assets.
 
 ---
 
 ## ⚙️ Configuration and design tokens
 
-The project has no configuration system - no `.env`, no environment variables. The visuals are changed by editing the CSS custom properties in the `:root` block at the top of `styles.css`.
+The project has no configuration system - no `.env`, no environment variables. The look of the home page, gallery, 404 and privacy page is changed by editing the CSS custom properties in the `:root` block at the top of `styles.css`.
 
-| Token                    | Value                         | Meaning                                                                 |
-| ------------------------ | ----------------------------- | ----------------------------------------------------------------------- |
-| `--bg` / `--bg2`         | `#0b1020` / `#070a14`         | Base of the dark background gradient                                    |
-| `--text`                 | `rgba(255,255,255,.92)`       | Primary text colour                                                     |
-| `--muted`                | `rgba(255,255,255,.68)`       | Secondary, muted text                                                   |
-| `--border`               | `rgba(255,255,255,.12)`       | Border of the skip link and the process steps (`.step`) - nothing more  |
-| `--shadow`               | `0 18px 60px rgba(0,0,0,.55)` | Shadow of the hero glass card and the mobile nav panel                  |
-| `--brand`                | `#2563eb`                     | Primary brand blue                                                      |
-| `--brand2`               | `#22c55e`                     | Complementary green (gradients, accents)                                |
-| `--radius` / `--radius2` | `18px` / `24px`               | Corner rounding of cards and larger blocks                              |
-| `--container`            | `1120px`                      | Maximum width of the content container                                  |
-| `--step`                 | `clamp(14px,1.2vw,16px)`      | Base fluid font size                                                    |
-| `--h1` / `--h2` / `--h3` | `clamp(...)`                  | Fluid heading scale                                                     |
+| Token         | Value                                         | Meaning                                        |
+| ------------- | --------------------------------------------- | ---------------------------------------------- |
+| `--bg`        | `#131010`                                     | Base dark background                           |
+| `--bg-2`      | `#1a1513`                                     | Alternating section tone                       |
+| `--panel`     | `#201916`                                     | Card and panel background                      |
+| `--panel-2`   | `#271e1a`                                     | Highlighted panel                              |
+| `--line`      | `#3a2d26`                                     | Borders and dividers                           |
+| `--line-soft` | `#2b211c`                                     | Softer line inside panels                      |
+| `--ink`       | `#f7f0e7` (18.9:1)                            | Primary text                                   |
+| `--ink-2`     | `#d8ccbf` (12.0:1)                            | Secondary text                                 |
+| `--mut`       | `#b6a99b` (8.2:1)                             | Muted labels                                   |
+| `--brass`     | `#e9b45f` (10.1:1)                            | Brass accent - links, figures, highlights      |
+| `--brass-lo`  | `#c8913c`                                     | Darker accent shade, button fills              |
+| `--brass-hi`  | `#f2c273`                                     | Lighter accent shade, hover states             |
+| `--on-brass`  | `#1d1409` (6.5:1)                             | Text sitting on a brass surface                |
+| `--sans`      | `system-ui` stack                             | Base sans-serif face                           |
+| `--serif`     | Iowan Old Style / Palatino Linotype / Georgia | Serif headings and italics                     |
+| `--mono`      | `ui-monospace` stack                          | Figures, codes, tabular data                   |
+| `--pad`       | `clamp(18px,5vw,56px)`                        | Horizontal content padding                     |
+| `--maxw`      | `1220px`                                      | Maximum content container width                |
 
 > [!IMPORTANT]
-> The tokenisation is only partial. Most cards (`.card`, `.price-card`, `.faq-item`, `.contact-card`, `.trust-item`, `.stat`, `.glass`, `.nav-panel`) have their border hardcoded as `rgba(255,255,255,.10)` or `.12`, and `.card` / `.step` also carry their own hardcoded `box-shadow`. Changing `--border` or `--shadow` will not affect them - the relevant rules in `styles.css` have to be edited by hand.
+> The tokens in `styles.css` cover the home page, the gallery, the 404 and the privacy page. **Every demo site carries its own colour scheme inside its own file** - deliberately standalone, so it can be sent to a client or deployed as a single file. Changing the tokens in `styles.css` has no effect on the demos.
 
-Everything else is changed directly in `index.html`:
+Content lives directly in the HTML:
 
-| What                                       | Where                                     |
-| ------------------------------------------ | ----------------------------------------- |
-| Prices (`od 100 €`, `od 225 €`, `dohodou`) | the `#pricing` section, hardcoded in the markup |
-| Service and FAQ texts                      | the `#services` and `#faq` sections       |
-| Contact email                              | the `mailto:` link in the `#contact` section |
-| `<title>`, meta description, `theme-color` | `<head>`                                  |
-| Domain for GitHub Pages                    | the `CNAME` file                          |
+| What                                            | Where                                                 |
+| ----------------------------------------------- | ----------------------------------------------------- |
+| Package and add-on prices                       | the `#cennik` section in `index.html`                  |
+| Benefit, service, process and FAQ copy          | the `#vyhody`, `#sluzby`, `#postup`, `#otazky` sections |
+| E-mail and phone number                         | the `#kontakt` section and the JSON-LD block in `<head>` |
+| Form target address                             | the `mailto:` in `script.js`                           |
+| `<title>`, meta description, OG and Twitter tags | the `<head>` of each page                             |
+| Structured data                                 | the JSON-LD block in the home page `<head>`            |
+| Domain for GitHub Pages                         | the `CNAME` file (plus `sitemap.xml` and canonical URL) |
 
 ---
 
 ## 🧭 Page sections
 
-| Anchor      | Section              | Content                                                                |
-| ----------- | -------------------- | ---------------------------------------------------------------------- |
-| `#top`      | Hero                 | Heading with a gradient accent, CTA, trust badges, fake code card      |
-| `#services` | Services             | Three cards: custom website, redesign and fixes, deployment            |
-| `#process`  | Collaboration process | Four steps: brief, design, implementation, deployment                 |
-| `#pricing`  | Pricing              | Three packages: Starter, Standard (highlighted), Pro                   |
-| `#faq`      | FAQ                  | Three native `<details>` questions                                     |
-| `#contact`  | Contact              | A `mailto:` card and a shortcut back to the pricing                    |
+| Anchor      | Section        | Content                                                        |
+| ----------- | -------------- | -------------------------------------------------------------- |
+| -           | Hero           | Headline, primary CTA and a link to the demos                   |
+| -           | Marquee        | Business segments the sites are built for                       |
+| `#vyhody`   | Benefits       | Nine reasons to work with me and what the site really delivers  |
+| `#sluzby`   | Services       | Scope of work - concept, design, code, copy, launch             |
+| `#postup`   | Process        | Steps from first contact to going live                          |
+| `#cennik`   | Pricing        | Starter, Standard and Pro - what is and is not in the price     |
+| `#ukazky`   | Demos          | Teaser with three live previews and a link into the gallery     |
+| `#projekty` | Projects       | Other things built along the way                                |
+| `#otazky`   | FAQ            | Native `<details>` questions, working without JavaScript        |
+| `#kontakt`  | Contact        | Free consultation, enquiry form, e-mail and phone               |
+| -           | Footer         | Links, privacy policy, automatic year                           |
 
-The navigation is purely same-page through hash links - there is no router and no second page.
+Navigation across the home page is same-page via hash links; the gallery, the demos, the 404 and the privacy page are separate addresses.
+
+### Pricing shown on the site
+
+| Package      | Price     |
+| ------------ | --------- |
+| **Starter**  | from €250 |
+| **Standard** | from €490 |
+| **Pro**      | from €890 |
+
+| Add-on                  | Price            |
+| ----------------------- | ---------------- |
+| Maintenance             | from €5 / month  |
+| Extra subpage           | from €15         |
+| Copywriting             | from €12 / page  |
+| Rush fix within 48 h    | from €25         |
+
+---
+
+## 🏪 Demo websites
+
+Twenty complete sites for fictional businesses - **not real clients and not references**. Each demo is a single self-contained HTML file with its own colours and layout, a sticky strip linking back to `apoliak.online`, and one working interactive feature.
+
+| Folder         | Business                              | Category           | Interactive feature                     |
+| -------------- | ------------------------------------- | ------------------ | --------------------------------------- |
+| `restauracia`  | Reštaurácia Dubová (restaurant)       | Food and lodging   | Menu switching, table booking           |
+| `kaviaren`     | Lipová (café and pizzeria)            | Food and lodging   | Pizza builder with live price           |
+| `cukraren`     | Pekáreň a cukráreň Kôrka (bakery)     | Food and lodging   | Cake builder with price and pickup date |
+| `penzion`      | Penzión Hrebeň (guest house)          | Food and lodging   | Booking with night and price calculation |
+| `fitko`        | Fitness centrum Halová (gym)          | Services           | Class schedule filtering                |
+| `salon`        | Salón Brezová (hair and beauty)       | Services           | Appointment booking with running total  |
+| `barber`       | Holičstvo Ostrie (barbershop)         | Services           | Booking by service and duration         |
+| `wellness`     | Wellness Salvia (massage and sauna)   | Services           | Treatment booking with summary          |
+| `fotoatelier`  | Fotoateliér Škála (photo studio)      | Services           | Package and photo count picker          |
+| `autoskola`    | Autoškola Rondel (driving school)     | Services           | Application with course price estimate  |
+| `remeselnik`   | Stolárstvo Rovina (joinery)           | Trades             | Ballpark price calculator               |
+| `autoservis`   | Autoservis 12 (garage)                | Trades             | Appointment booking with job price      |
+| `stavebna`     | Stavebná firma KVADER (builder)       | Trades             | Price calculator by floor area          |
+| `ambulancia`   | Zubná ambulancia Vrbová (dental)      | Health             | Treatment booking                       |
+| `veterina`     | Veterinárna klinika Alveron (vet)     | Health             | Booking by type of animal               |
+| `optika`       | Optika Meridián (optician)            | Health             | Eye test appointment booking            |
+| `kvetinarstvo` | Kvetinárstvo Steblo (florist)         | Retail and offices | Fully working shopping cart             |
+| `reality`      | Kamenec reality (estate agency)       | Retail and offices | Listing filter and mortgage calculator  |
+| `uctovnictvo`  | SALDIA (bookkeeping and payroll)      | Retail and offices | Monthly retainer calculator             |
+| `advokat`      | Advokátska kancelária Meritum (law)   | Retail and offices | Enquiry with fee estimate               |
+
+> [!NOTE]
+> The demos deliberately carry no photographs. The areas where photos would normally sit hold a composition of their own - layered gradients, geometry, hairline patterns and typography. The pages send nothing anywhere; the forms and carts are design mock-ups.
 
 ---
 
@@ -165,48 +258,44 @@ The navigation is purely same-page through hash links - there is no router and n
 The site runs on GitHub Pages. The procedure:
 
 1. Push to the default branch (`main`).
-2. Enable GitHub Pages for that branch in the repository settings.
-3. The `CNAME` file in the root binds the site to the custom domain (`apoliak.online`).
+2. Enable GitHub Pages for that branch and the root folder in the repository settings.
+3. The `CNAME` file in the root binds the site to the custom domain (`apoliak.online`), and `.nojekyll` switches off Jekyll processing.
 4. The domain's DNS records (A / ALIAS) must point at GitHub Pages; the TLS certificate is issued by GitHub automatically.
 
 > [!NOTE]
 > No database, application server, runtime or environment variables are needed. The same content can be uploaded to Netlify, Vercel, S3 or classic FTP hosting without a single change to the code.
 
+After a domain change, update `CNAME`, the canonical URL, the Open Graph addresses and `sitemap.xml`.
+
 ---
 
 ## ⚠️ Known limitations
 
-> [!WARNING]
-> **Without JavaScript the content is invisible.** `styles.css` sets `.reveal{opacity:0}` and visibility is only added by `script.js` through the `.is-visible` class. If JS is disabled, blocked or fails, only the header, footer and background get rendered. There is no `<noscript>` fallback and no CSS-only backup solution.
+- **The form has no backend** - submitting assembles a `mailto:` link and opens the visitor's mail client. A visitor without a configured mail client has to write to the listed address directly. Nothing is stored and there is no server-side receiver.
+- **Contact details sit in the markup as plain text**, where scrapers read them without any trouble. There is no spam protection.
+- **The demo sites are designs for fictional businesses** - names, addresses, opening hours and prices are illustrative. They collect no data, their forms, bookings and carts submit nowhere, and their state is lost on reload.
+- **The demos carry no photographs at all** - typography, colour and geometry do all the work. On a real commission the client supplies photos, which then replace those areas.
+- **Content is duplicated across the HTML** - prices, contact details and copy are hardcoded in several places (markup, meta tags, JSON-LD). Changing them means walking through every occurrence by hand.
+- **Each demo carries its own copy of the styles and scripts** inside its file. That is intentional for portability, but a shared change has to be made twenty times.
+- **No automated checks** - the repo contains no tests, linters, formatter config or GitHub Actions workflow. Quality rests on manual review.
+- **There are no third-party fallbacks offline**, nor are any needed - the site uses no external resources at all.
 
-- **Contact is `mailto:` only** - there is no form and no backend, so nothing exists to receive messages and there is no spam protection whatsoever. The email address sits in the markup as plain text, where scrapers read it without any trouble.
-- **Dead CSS** - the `.form`, `.field`, `input` and `textarea` rules (lines 282-301 in `styles.css`) style a contact form that does not exist in `index.html`. Likewise `.work-grid` in the mobile breakpoint has no corresponding element. These are leftovers from a removed section.
-- **Unused attribute** - `<header>` carries `data-elevate`, but `script.js` writes `data-shadow` and `styles.css` reacts to it. The attribute is inactive.
-- **Domain mismatch** - the decorative code card in the hero section displays the string `apoliak.site`, while `CNAME` declares `apoliak.online`. The text in the mockup is out of date.
-- **Missing SEO and social metadata** - even though the site sells "basic SEO" as a service, the only metadata in `<head>` are `charset`, `viewport`, `theme-color`, `<title>` and the meta description. No favicon, Open Graph, Twitter Card, canonical URL, JSON-LD, `robots.txt` or `sitemap.xml`.
-- **"Lighthouse 90+" is marketing copy** - nothing in the repository measures, tests or enforces that value.
-- **Prices are hardcoded** in the HTML, there is no single source of truth - changing them means editing the markup by hand.
-- **No automated checks** - the repo contains no tests, linters, formatter config, GitHub Actions workflow, `.gitignore` or `.editorconfig`. Quality rests on manual review.
-- **`backdrop-filter`** (header and mobile panel) degrades to a flat translucent background on browsers without support; no `@supports` fallback is declared.
-- **The git history is only two commits**, so there is nowhere to trace the intent behind specific decisions.
+**Runtime requirements:** any evergreen browser with support for CSS custom properties, `clamp()` and `IntersectionObserver`. Without JavaScript the content stays fully readable - only the reveal animations, the gallery filtering and the demo interactions go away.
 
-**Runtime requirements:** any evergreen browser with support for `IntersectionObserver`, CSS custom properties and `clamp()`.
+**Verified viewports:** 375, 768 and 1280 px, with no horizontal scrolling.
 
 ---
 
 ## 📜 License
 
-The repository contains a `LICENSE` file with the full, unmodified text of the **GNU General Public License v3** (29 June 2007, 674 lines).
+The repository contains a `LICENSE` file with the full, unmodified text of the **GNU General Public License v3**.
 
-> [!NOTE]
-> The closing "how to apply" passage of the license still contains the unfilled `<year>` and `<name of author>` placeholders, so the copyright holder is not named anywhere in the repository and no source file carries a GPL header.
-
-GPL-3.0 is a strong copyleft license intended for software. Applied to this website it means that anyone may copy, modify and further distribute the markup, styles and script - on condition that the derived work is also under GPL-3.0 and its source code is made available.
+GPL-3.0 is a strong copyleft license intended for software. Applied to this website it means anyone may copy, modify and redistribute the markup, styles and scripts - on condition that the derived work is also under GPL-3.0 and its source code is made available.
 
 ---
 
 <div align="center">
 
-Built by **Alex Poliak** - [GitHub](https://github.com/Apoliak7777) - [alexpoliak21@gmail.com](mailto:alexpoliak21@gmail.com)
+Built by **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [info@apoliak.online](mailto:info@apoliak.online) - 0902 464 022
 
 </div>

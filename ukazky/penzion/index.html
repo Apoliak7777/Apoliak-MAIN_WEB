@@ -3,423 +3,598 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Penzión Jelenia Rúbaň — horské ubytovanie s raňajkami</title>
-<meta name="description" content="Ukážkový web horského penziónu: izby a apartmány, raňajky z okolia, tipy na výlety a rezervačný prepočet. Návrh a kód Alex Poliak, apoliak.online.">
+<title>Penzión Hrebeň — horský penzión, izby a ceny</title>
+<meta name="description" content="Ukážkový web horského penziónu: 8 izieb a 2 apartmány, cenník podľa sezóny od 68 € za noc, raňajky v cene, rezervačný formulár s prepočtom ceny pobytu, podmienky a storno. Návrh a kód Alex Poliak, apoliak.online.">
 <meta name="author" content="Alex Poliak — apoliak.online">
-<meta name="theme-color" content="#1E3128">
+<meta name="theme-color" content="#1E2A25">
+<meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="sk_SK">
-<meta property="og:site_name" content="Penzión Jelenia Rúbaň (ukážkový web)">
-<meta property="og:title" content="Penzión Jelenia Rúbaň — ukážkový web horského penziónu">
-<meta property="og:description" content="Izby a apartmány, raňajky z okolia, tipy na výlety a rezervačný prepočet. Ukážka webu od Alexa Poliaka — apoliak.online. Podobný web spravím aj vášmu podniku.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%231E3128'/%3E%3Cpath%20d='M10%2048L24%2023l7%2012%205-9%2012%2022z'%20fill='%23E0B15E'/%3E%3Cpath%20d='M22%2048l9-16%209%2016z'%20fill='%234F6B4A'/%3E%3C/svg%3E">
+<meta property="og:site_name" content="Penzión Hrebeň (ukážkový web)">
+<meta property="og:title" content="Penzión Hrebeň — horský penzión, izby a ceny">
+<meta property="og:description" content="8 izieb a 2 apartmány, cenník podľa sezóny od 68 € za noc, raňajky v cene, rezervácia s prepočtom ceny pobytu. Ukážkový web od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='4'%20fill='%231E2A25'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Georgia,serif'%20font-size='36'%20fill='%23D8C4A4'%20text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 <style>
-/* ============ TOKENY ============ */
+/* ================= TOKENY ================= */
 :root{
-  --cream:#F7F1E6;
-  --cream-2:#EFE5D3;
-  --paper:#FDFAF3;
-  --forest:#1E3128;
-  --forest-2:#2A4436;
-  --moss:#4F6B4A;
-  --bark:#8A5324;
-  --bark-dark:#6E4120;
-  --gold:#E0B15E;
-  --ink:#23291F;
-  --ink-soft:#55584C;
-  --line:#DDD1BB;
-  --line-dark:#3A5142;
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
-  --sans:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --wrap:1180px;
-  --r:14px;
-  --shadow:0 18px 44px -26px rgba(30,49,40,.55);
-  --shadow-lg:0 34px 70px -34px rgba(30,49,40,.6);
+  /* dve farby: bridlicová zelenosivá + teplý bronz. zvyšok sú neutrály */
+  --slate:#1E2A25;
+  --slate-2:#26312B;
+  --slate-3:#37453D;
+  --bronze:#6E5533;
+  --sand:#D8C4A4;
+
+  --bg:#FAF8F5;
+  --bg-2:#F2EFEA;
+  --card:#FFFFFF;
+  --ink:#1B221F;
+  --muted:#565E58;
+  --line:#DCD6CC;
+  --line-2:#EAE5DC;
+  --line-dark:#3A473F;
+  --on-dark:#EDEAE4;
+  --on-dark-muted:#A7B0A8;
+  --plate-sub:#CFD6CE;
+
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --wrap:1220px;
+  --r:3px;
+  /* výšku pásika ukážky dopočíta skript, toto je záložná hodnota */
+  --bar:44px;
 }
 
-/* ============ ZÁKLAD ============ */
+/* ================= ZÁKLAD ================= */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
 body{
   margin:0;
-  background:var(--cream);
+  background:var(--bg);
   color:var(--ink);
   font-family:var(--sans);
   font-size:17px;
-  line-height:1.65;
+  line-height:1.62;
   -webkit-text-size-adjust:100%;
-  overflow-x:hidden;
-  max-width:100%;
-  padding-bottom:82px; /* miesto pre spodný pásik ukážky */
+  padding-top:var(--bar);
 }
-img,svg{max-width:100%}
-h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.14;letter-spacing:-.01em;margin:0 0 .5em}
-h1{font-size:clamp(2.3rem,6.2vw,4.3rem);font-weight:500}
-h2{font-size:clamp(1.85rem,3.6vw,2.9rem);font-weight:500}
-h3{font-size:clamp(1.2rem,2vw,1.5rem)}
-p{margin:0 0 1.1em}
-a{color:var(--bark-dark)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.14;letter-spacing:-.012em;margin:0 0 .5em}
+h1{font-size:clamp(2.45rem,8vw,7rem);line-height:1.03;letter-spacing:-.022em}
+h2{font-size:clamp(1.72rem,3.2vw,2.6rem);line-height:1.12}
+h3{font-size:clamp(1.1rem,1.6vw,1.32rem);line-height:1.28}
+p{margin:0 0 1em}
+a{color:var(--bronze)}
 ul{margin:0;padding:0;list-style:none}
-:focus-visible{outline:3px solid var(--bark);outline-offset:3px;border-radius:4px}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.on-dark :focus-visible,.demobar :focus-visible{outline-color:var(--sand)}
 .wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
-.skip{position:absolute;left:-9999px;top:0;background:var(--forest);color:var(--paper);padding:12px 18px;z-index:200}
+.skip{position:absolute;left:-9999px;top:0;background:var(--slate);color:var(--on-dark);padding:12px 18px;z-index:200}
 .skip:focus{left:8px;top:8px}
+section{scroll-margin-top:calc(var(--bar) + 72px)}
+.sec{padding:clamp(58px,7.4vw,116px) 0}
+.scroll-x{overflow-x:auto}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--dark{background:var(--slate);color:var(--on-dark);border-block:1px solid var(--line-dark)}
+.sec--dark h2,.sec--dark h3{color:#F5F3EE}
+.sec--dark .lede{color:var(--on-dark-muted)}
+.sec--dark .eyebrow{color:var(--sand)}
+.sec--dark .sec__head{border-bottom-color:var(--line-dark)}
+.sec--dark .note{color:var(--on-dark-muted)}
+
+/* pomocná definícia filtra zrna, nič nevykresľuje */
+.defs{position:absolute;width:0;height:0;overflow:hidden}
+
 .eyebrow{
-  font-family:var(--sans);font-size:.76rem;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--bark-dark);font-weight:700;margin:0 0 .9em;display:flex;align-items:center;gap:12px;
+  font-size:.71rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin:0 0 16px;
 }
-.eyebrow::after{content:"";flex:1;height:1px;background:var(--line);max-width:120px}
-.on-dark .eyebrow{color:var(--gold)}
-.on-dark .eyebrow::after{background:var(--line-dark)}
-.lede{font-size:1.09rem;color:var(--ink-soft);max-width:60ch}
-.on-dark .lede{color:#C7CFBC}
-section{scroll-margin-top:86px}
-.sec{padding:clamp(64px,9vw,124px) 0}
-.sec--dark{background:var(--forest);color:#F2E9D8}
-.sec--dark h2,.sec--dark h3{color:#F6EFE0}
+.eyebrow__no{
+  font-family:var(--serif);font-size:.86rem;letter-spacing:.06em;
+  color:var(--bronze);margin-right:14px;font-variant-numeric:tabular-nums;
+}
+.sec--dark .eyebrow__no{color:var(--sand)}
+.lede{font-size:1.05rem;color:var(--muted);max-width:60ch}
+.sec__head{
+  display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  gap:20px clamp(24px,5vw,72px);align-items:end;
+  padding-bottom:28px;border-bottom:1px solid var(--line);
+  margin-bottom:clamp(32px,4.4vw,56px);
+}
+.sec__head h2{margin-bottom:0;max-width:22ch}
+.sec__head .lede{margin-bottom:0}
 
-/* ============ TLAČIDLÁ ============ */
+/* ================= TLAČIDLÁ ================= */
+/* Farby textu tlačidiel sú zámerne písané zdvojenou triedou (.btn.btn--x).
+   Bežné odkazové pravidlá typu .foot a alebo .author a majú špecificitu (0,1,1)
+   a jednoduchému .btn--x by prebili farbu textu — tlačidlo by splynulo s pozadím. */
 .btn{
-  display:inline-flex;align-items:center;gap:10px;justify-content:center;
-  font:inherit;font-weight:650;letter-spacing:.01em;
-  padding:14px 26px;border-radius:999px;border:1.5px solid transparent;
-  cursor:pointer;text-decoration:none;transition:transform .18s ease,background-color .18s ease,color .18s ease;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font:inherit;font-size:.95rem;font-weight:600;letter-spacing:.01em;
+  padding:14px 26px;border-radius:var(--r);border:1px solid transparent;
+  cursor:pointer;text-decoration:none;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
 }
-.btn--solid{background:var(--bark-dark);color:var(--paper)}
-.btn--solid:hover{background:#5B3519;transform:translateY(-2px)}
-.btn--ghost{border-color:var(--bark-dark);color:var(--bark-dark);background:transparent}
-.btn--ghost:hover{background:rgba(138,83,36,.09);transform:translateY(-2px)}
-.on-dark .btn--ghost{border-color:var(--gold);color:var(--gold)}
-.on-dark .btn--ghost:hover{background:rgba(224,177,94,.14)}
-.btn--gold{background:var(--gold);color:#33230A}
-.btn--gold:hover{background:#EEC57C;transform:translateY(-2px)}
+.btn.btn--primary{background:var(--bronze);color:#FFFFFF;border-color:var(--bronze)}
+.btn.btn--primary:hover{background:#54401F;border-color:#54401F;color:#FFFFFF}
+.btn.btn--line{border-color:var(--line);color:var(--ink);background:transparent}
+.btn.btn--line:hover{border-color:var(--bronze);color:var(--bronze)}
+.on-dark .btn.btn--line,.sec--dark .btn.btn--line{border-color:var(--line-dark);color:var(--on-dark)}
+.on-dark .btn.btn--line:hover,.sec--dark .btn.btn--line:hover{border-color:var(--sand);color:var(--sand)}
+.btn.btn--sand{background:var(--sand);color:var(--slate);border-color:var(--sand)}
+.btn.btn--sand:hover{background:#E6D5B9;color:var(--slate);border-color:#E6D5B9}
+.on-dark .btn.btn--sand,.author__actions .btn.btn--sand{background:var(--sand);color:var(--slate);border-color:var(--sand)}
+.on-dark .btn.btn--sand:hover,.author__actions .btn.btn--sand:hover{background:#E6D5B9;color:var(--slate)}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
 
-/* ============ PÁSIK UKÁŽKY ============ */
+/* ================= PÁSIK UKÁŽKY ================= */
 .demobar{
-  position:fixed;left:0;right:0;bottom:0;z-index:120;
-  background:var(--forest);
-  border-top:3px solid var(--gold);
-  color:#F4EDDD;
-  box-shadow:0 -14px 34px -22px rgba(0,0,0,.75);
+  position:fixed;left:0;right:0;top:0;z-index:140;
+  background:#151D19;color:var(--on-dark);
+  border-bottom:1px solid var(--line-dark);
+  font-size:.88rem;
 }
 .demobar__in{
-  width:min(100% - 28px,var(--wrap));margin-inline:auto;
-  display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
-  padding:12px 0;font-size:.95rem;text-align:center;
+  width:min(100% - 32px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;gap:6px 22px;flex-wrap:wrap;
+  padding:11px 0;text-align:center;
 }
 .demobar__tag{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--gold);color:#33230A;font-weight:800;
-  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
-  padding:5px 12px;border-radius:999px;white-space:nowrap;
+  font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--sand);font-weight:600;white-space:nowrap;
+  border:1px solid rgba(216,196,164,.42);padding:3px 10px;border-radius:2px;
 }
-.demobar a{color:var(--gold);font-weight:700;text-underline-offset:4px}
-.demobar a:hover{color:#F2D79E}
+.demobar__sep{color:var(--on-dark-muted)}
+.demobar a{color:var(--sand);font-weight:600;text-underline-offset:3px}
+.demobar a:hover{color:#EBDDC4}
 .demobar__tel{white-space:nowrap}
 
-/* ============ HLAVIČKA ============ */
+/* ================= HLAVIČKA ================= */
 .site-head{
-  position:sticky;top:0;z-index:90;
-  background:rgba(247,241,230,.94);
-  border-bottom:1px solid var(--line);
+  position:sticky;top:var(--bar);z-index:90;
+  background:rgba(250,248,245,.96);border-bottom:1px solid var(--line);
 }
-.head__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
-.brand__mark{flex:none;width:44px;height:44px}
-.brand__txt strong{display:block;font-family:var(--serif);font-size:1.12rem;font-weight:600;line-height:1.1}
-.brand__txt span{display:block;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
-.nav-list{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.head__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0}
+.brand{display:flex;align-items:baseline;gap:11px;text-decoration:none;color:var(--ink)}
+.brand strong{font-family:var(--serif);font-size:1.2rem;font-weight:400;letter-spacing:.01em}
+.brand span{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.nav-list{display:flex;align-items:center;gap:0;flex-wrap:wrap}
 .nav-list a{
-  text-decoration:none;color:var(--ink);font-size:.95rem;font-weight:550;
-  padding:9px 12px;border-radius:999px;display:block;
+  text-decoration:none;color:var(--ink);font-size:.93rem;
+  padding:8px 11px;display:block;border-radius:var(--r);
 }
-.nav-list a:hover{background:rgba(79,107,74,.13);color:var(--forest)}
-.nav-cta{margin-left:6px}
+.nav-list a:hover{color:var(--bronze)}
+.nav-tel a{
+  font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;
+  margin-left:10px;padding-left:16px;border-left:1px solid var(--line);border-radius:0;
+}
+.nav-cta a{border:1px solid var(--ink);margin-left:12px;font-weight:600;color:var(--ink)}
+.nav-cta a:hover{background:var(--ink);color:var(--bg)}
 .nav-toggle{display:none}
-.head__phone{display:none}
 
-/* ============ HERO ============ */
-.hero{position:relative;background:var(--forest);color:#F4EDDD;overflow:hidden}
-.hero::after{
-  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(102deg,rgba(14,25,19,.88) 0%,rgba(14,25,19,.7) 34%,rgba(14,25,19,.28) 62%,rgba(14,25,19,.05) 82%,rgba(14,25,19,0) 100%);
+/* ================= DIZAJNOVÉ KOMPOZÍCIE ================= */
+/* vrstvený gradient + geometria + vlásková mriežka + zrno, nesie vlastnú informáciu */
+.plate{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:flex;align-items:flex-end;
+  background-color:var(--slate-2);
+  color:var(--on-dark);
+  background-image:
+    radial-gradient(120% 92% at 86% 4%,rgba(216,196,164,.17) 0%,rgba(216,196,164,0) 62%),
+    linear-gradient(158deg,var(--slate-3) 0%,var(--slate-2) 46%,#172019 100%);
 }
-.hero .btn--ghost{background:rgba(16,28,22,.55);border-color:var(--gold);color:var(--gold)}
-.hero .btn--ghost:hover{background:rgba(16,28,22,.78)}
-.hero__scene{position:absolute;inset:0;width:100%;height:100%}
-.hero__scene svg{width:100%;height:100%;display:block}
-.hero__in{position:relative;z-index:2;padding:clamp(70px,12vw,140px) 0 clamp(120px,15vw,170px)}
-.hero__card{max-width:660px}
-.hero__kicker{
-  display:inline-flex;align-items:center;gap:10px;
-  border:1px solid rgba(224,177,94,.55);border-radius:999px;
-  padding:7px 16px;font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold);font-weight:700;margin-bottom:22px;background:rgba(24,40,32,.5);
+.plate__art{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.plate::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:74%;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(20,27,23,0) 0%,rgba(20,27,23,.62) 100%);
 }
-.hero h1{color:#FBF5E9;text-shadow:0 2px 26px rgba(16,28,22,.55)}
-.hero h1 em{font-style:italic;color:var(--gold)}
-.hero__lede{font-size:clamp(1.05rem,2vw,1.24rem);color:#DDE3D4;max-width:52ch;text-shadow:0 1px 14px rgba(16,28,22,.6)}
-.hero__actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
-.hero__facts{
-  position:relative;z-index:2;display:grid;gap:1px;background:var(--line-dark);
-  grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line-dark);
-  width:min(100% - 40px,var(--wrap));margin:0 auto;border-radius:2px;
+.plate--grid .plate__art{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(243,241,236,.055) 0 1px,rgba(243,241,236,0) 1px 26px),
+    repeating-linear-gradient(90deg,rgba(243,241,236,.055) 0 1px,rgba(243,241,236,0) 1px 26px);
 }
-.hero__facts div{background:var(--forest);padding:22px 20px}
-.hero__facts dt{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#AFBBA6;margin-bottom:6px}
-.hero__facts dd{margin:0;font-family:var(--serif);font-size:1.22rem;color:#F6EFE0}
+.plate__txt{position:relative;z-index:2;padding:clamp(18px,2.4vw,26px);width:100%}
+.plate__kicker{
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--sand);font-weight:600;margin:0 0 10px;
+}
+.plate__big{font-family:var(--serif);font-size:clamp(2rem,4.2vw,2.9rem);line-height:1;color:#F5F3EE;margin:0}
+.plate__big--sm{font-size:clamp(1.5rem,2.6vw,2rem)}
+.plate__sub{margin:10px 0 0;font-size:.9rem;line-height:1.5;color:var(--plate-sub);max-width:30ch}
 
-/* ============ MRIEŽKY / KARTY ============ */
-.sec__head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap;margin-bottom:clamp(34px,5vw,58px)}
-.sec__head p{margin-bottom:0}
-.rooms{display:grid;gap:28px}
-.room{
-  background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
-  overflow:hidden;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
-  box-shadow:var(--shadow);
+.plate--light{
+  background-color:var(--bg-2);color:var(--ink);
+  background-image:
+    radial-gradient(110% 84% at 10% 4%,rgba(216,196,164,.6) 0%,rgba(216,196,164,0) 62%),
+    linear-gradient(150deg,#F7F3EB 0%,#EDE6DA 52%,#E4DCCE 100%);
 }
-.room--flip .room__art{order:2}
-.room__art{position:relative;min-height:270px;background:#20342A}
-.room__art svg{position:absolute;inset:0;width:100%;height:100%}
-.room__badge{
-  position:absolute;left:16px;top:16px;z-index:2;
-  background:rgba(247,241,230,.94);color:var(--forest);
-  font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
-  padding:6px 13px;border-radius:999px;
-}
-.room__body{padding:clamp(24px,3vw,38px);display:flex;flex-direction:column}
-.room__meta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
-.room__meta li{
-  font-size:.82rem;color:var(--ink-soft);border:1px solid var(--line);
-  border-radius:999px;padding:4px 12px;background:var(--cream);
-}
-.room__price{margin-top:auto;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.room__price .num{font-family:var(--serif);font-size:2.05rem;color:var(--bark-dark);line-height:1}
-.room__price .per{font-size:.86rem;color:var(--ink-soft);display:block;margin-top:6px}
-
-/* ============ VYBAVENIE ============ */
-.amen{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-dark);border:1px solid var(--line-dark);border-radius:var(--r);overflow:hidden}
-.amen li{background:var(--forest-2);padding:28px 26px}
-.amen h3{font-size:1.12rem;margin-bottom:.35em}
-.amen p{margin:0;color:#C7CFBC;font-size:.95rem}
-.amen .ico{display:block;width:34px;height:34px;margin-bottom:16px;color:var(--gold)}
-.amen .ico svg{width:100%;height:100%;display:block}
-
-/* ============ RAŇAJKY ============ */
-.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,66px);align-items:center}
-.menu-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(24px,3vw,38px);box-shadow:var(--shadow)}
-.menu-list li{display:flex;justify-content:space-between;gap:18px;align-items:baseline;padding:13px 0;border-bottom:1px dashed var(--line)}
-.menu-list li:last-child{border-bottom:0;padding-bottom:0}
-.menu-list b{font-family:var(--serif);font-weight:600;font-size:1.05rem}
-.menu-list span{color:var(--ink-soft);font-size:.9rem;text-align:right}
-.menu-list em{display:block;font-style:normal;color:var(--ink-soft);font-size:.9rem;font-weight:400;margin-top:2px}
-.frame{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lg);background:#20342A}
-.frame svg{display:block;width:100%;height:auto}
-
-/* ============ OKOLIE ============ */
-.trips{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.trip{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px;position:relative;box-shadow:var(--shadow)}
-.trip__dist{font-family:var(--serif);color:var(--bark-dark);font-size:1.5rem;line-height:1}
-.trip h3{margin:14px 0 .35em}
-.trip p{margin:0;color:var(--ink-soft);font-size:.96rem}
-.trip__season{margin-top:16px;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--moss);font-weight:700}
-
-/* ============ GALÉRIA ============ */
-.gal{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
-.gal figure{margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:#20342A;border:1px solid var(--line-dark)}
-.gal figure svg{display:block;width:100%;height:100%}
-.gal .g-a{grid-column:span 4;aspect-ratio:16/9}
-.gal .g-b{grid-column:span 2;aspect-ratio:4/5}
-.gal .g-c{grid-column:span 2;aspect-ratio:4/5}
-.gal .g-d{grid-column:span 2;aspect-ratio:1/1}
-.gal .g-e{grid-column:span 2;aspect-ratio:1/1}
-.gal figcaption{
-  position:absolute;left:0;right:0;bottom:0;padding:34px 18px 14px;
-  background:linear-gradient(to top,rgba(14,25,19,.88),rgba(14,25,19,0));
-  color:#F1E9D9;font-size:.9rem;font-family:var(--serif);letter-spacing:.01em;
+.plate--light::after{background:linear-gradient(180deg,rgba(246,242,234,0) 0%,rgba(246,242,234,.5) 100%)}
+.plate--light .plate__kicker{color:var(--bronze)}
+.plate--light .plate__big{color:var(--ink)}
+.plate--light .plate__sub{color:var(--muted)}
+.plate--light.plate--grid .plate__art{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(110,85,51,.09) 0 1px,rgba(110,85,51,0) 1px 26px),
+    repeating-linear-gradient(90deg,rgba(110,85,51,.09) 0 1px,rgba(110,85,51,0) 1px 26px);
 }
 
-/* ============ REZERVÁCIA ============ */
-.book{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:28px;align-items:start}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,3vw,34px);box-shadow:var(--shadow-lg)}
-.field{margin-bottom:18px}
-.field label{display:block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);margin-bottom:7px}
+/* ================= ÚVOD ================= */
+/* celošírkový typografický úvod: obrí nadpis, pod ním úzky stĺpec textu vľavo,
+   dole pás s veľkými číslami. Plocha je vyplnená vrstvenými gradientmi a vláskovou mriežkou. */
+.hero{position:relative;background:var(--bg);border-bottom:1px solid var(--line);overflow:hidden}
+.hero__bg{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(96% 78% at 88% -14%,rgba(216,196,164,.55) 0%,rgba(216,196,164,0) 60%),
+    radial-gradient(70% 62% at 2% 106%,rgba(110,85,51,.13) 0%,rgba(110,85,51,0) 62%),
+    repeating-linear-gradient(90deg,rgba(30,42,37,.055) 0 1px,rgba(30,42,37,0) 1px 112px),
+    linear-gradient(180deg,#FCFAF7 0%,#F3EFE7 100%);
+}
+.hero__in{position:relative;z-index:2;padding:clamp(48px,8vw,112px) 0 clamp(40px,5.4vw,72px)}
+.hero .eyebrow{margin-bottom:clamp(20px,3vw,34px)}
+.hero h1{
+  color:var(--ink);
+  margin:0 0 clamp(26px,4vw,48px);
+  max-width:100%;
+}
+.hero__col{max-width:44ch;border-top:1px solid var(--line);padding-top:24px}
+.hero__lede{color:var(--muted);font-size:clamp(1.02rem,1.25vw,1.14rem);margin:0 0 26px}
+.hero__actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero__tag{
+  margin:22px 0 0;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+}
+.hero__tag a{font-weight:600;text-underline-offset:3px;font-variant-numeric:tabular-nums}
+
+.facts{background:var(--slate);color:var(--on-dark);border-top:1px solid var(--line-dark);position:relative;z-index:2}
+.facts dl{
+  margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;background:var(--line-dark);
+}
+.facts dl>div{background:var(--slate);padding:clamp(24px,3.2vw,38px) clamp(18px,2.2vw,30px)}
+.facts dt{font-size:.67rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-muted);margin-bottom:14px}
+.facts dd{
+  margin:0;font-family:var(--serif);font-size:clamp(1.95rem,3.4vw,3.1rem);line-height:1.02;
+  color:var(--sand);font-variant-numeric:tabular-nums;letter-spacing:-.015em;
+}
+.facts dd small{
+  display:block;font-family:var(--sans);font-size:.86rem;line-height:1.45;
+  color:var(--on-dark-muted);margin-top:12px;letter-spacing:0;
+}
+
+/* ================= IZBY ================= */
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.room{background:var(--card);display:flex;flex-direction:column}
+.room .plate{aspect-ratio:4/3}
+.room__body{padding:26px 24px 24px;display:flex;flex-direction:column;flex:1}
+.room__body h3{margin-bottom:.4em}
+.room__body>p{color:var(--muted);font-size:.96rem}
+.room__spec{margin:4px 0 20px;border-top:1px solid var(--line-2)}
+.room__spec div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:.9rem}
+.room__spec dt{color:var(--muted)}
+.room__spec dd{margin:0;text-align:right}
+.room__foot{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.price{font-family:var(--serif);font-size:1.8rem;line-height:1;color:var(--ink)}
+.price small{display:block;font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+.room__foot a{font-size:.92rem;font-weight:600;text-underline-offset:3px}
+.note{color:var(--muted);font-size:.92rem;margin:24px 0 0;max-width:78ch}
+
+/* ================= CENNÍK ================= */
+.tbl{width:100%;border-collapse:collapse;font-size:.95rem;min-width:660px}
+.tbl th,.tbl td{padding:15px 18px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left;white-space:normal;padding-left:0}
+.tbl th:last-child,.tbl td:last-child{padding-right:0}
+.tbl thead th{
+  font:inherit;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:12px;
+}
+.tbl thead th{white-space:normal}
+.tbl thead th span{display:block;text-transform:none;letter-spacing:0;font-size:.78rem;font-weight:400;margin-top:5px;color:var(--muted)}
+.tbl tbody th{font-weight:600;font-size:.98rem}
+.tbl tbody th small{display:block;font-weight:400;font-size:.86rem;color:var(--muted);margin-top:3px}
+.tbl td{font-family:var(--serif);font-size:1.16rem;font-variant-numeric:tabular-nums}
+.tbl tbody tr:last-child th,.tbl tbody tr:last-child td{border-bottom:0}
+.tbl tfoot td,.tbl tfoot th{border-bottom:0;border-top:1px solid var(--line);font-family:var(--sans);font-size:.9rem;color:var(--muted)}
+
+/* ================= POSTUP ================= */
+.steps{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.steps>div{background:var(--bg);padding:28px 26px 34px}
+.steps .n{
+  font-family:var(--serif);font-size:2.6rem;line-height:1;color:var(--bronze);
+  margin:0 0 18px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.steps h3{margin:0 0 .45em;font-size:1.06rem}
+.steps p{margin:0;color:var(--muted);font-size:.94rem}
+.steps p+p{margin-top:.7em}
+
+/* ================= VYBAVENIE ================= */
+.list-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,72px)}
+.list-2 div{padding:20px 0;border-top:1px solid var(--line)}
+.list-2 dt{font-family:var(--serif);font-size:1.1rem;margin-bottom:5px}
+.list-2 dd{margin:0;color:var(--muted);font-size:.95rem}
+
+/* ================= PRIESTOR ================= */
+.plates{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.plates .plate{aspect-ratio:3/4;border:1px solid var(--line-dark);border-radius:var(--r)}
+
+/* ================= STRAVA ================= */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,72px);align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,3vw,32px)}
+.rows{margin:0}
+.rows div{display:flex;justify-content:space-between;gap:20px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line-2)}
+.rows div:last-child{border-bottom:0}
+.rows dt{font-weight:600;font-size:.97rem}
+.rows dd{margin:0;color:var(--muted);font-size:.92rem;text-align:right}
+
+/* ================= OKOLIE ================= */
+.trips{border-top:1px solid var(--line)}
+.trips>div{
+  display:grid;grid-template-columns:110px minmax(0,1fr) 190px;
+  gap:6px 28px;align-items:baseline;
+  padding:20px 0;border-bottom:1px solid var(--line);
+}
+.trips .dist{font-family:var(--serif);font-size:1.24rem;margin:0}
+.trips h3{margin:0 0 3px;font-size:1.08rem}
+.trips p{margin:0;color:var(--muted);font-size:.95rem}
+.trips .season{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;margin:0}
+
+/* ================= SEZÓNA ================= */
+.season-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line-dark);border:1px solid var(--line-dark)}
+.season-grid article{background:var(--slate);padding:26px 22px;display:flex;flex-direction:column}
+.season-grid .rim{font-family:var(--serif);font-size:2.1rem;line-height:1;color:var(--sand);margin:0 0 14px;letter-spacing:.02em}
+.season-grid h3{margin:0 0 .35em;font-size:1.16rem}
+.season-grid>article>p{color:var(--plate-sub);font-size:.94rem}
+.season-grid ul{margin-top:auto;border-top:1px solid var(--line-dark)}
+.season-grid li{padding:10px 0;border-bottom:1px solid var(--line-dark);font-size:.88rem;color:var(--on-dark-muted)}
+.season-grid li:last-child{border-bottom:0}
+
+/* ================= REZERVÁCIA ================= */
+.book{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:start}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:7px}
 .field input,.field select,.field textarea{
   width:100%;font:inherit;font-size:1rem;color:var(--ink);
-  background:var(--cream);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;
 }
-.field textarea{min-height:104px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--moss);outline:none;box-shadow:0 0 0 3px rgba(79,107,74,.22)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hint{font-size:.86rem;color:var(--ink-soft);margin:0}
-.sum{background:var(--forest);color:#EFE7D6;border-radius:var(--r);padding:clamp(22px,3vw,30px);position:sticky;top:96px}
-.sum h3{color:#F6EFE0;margin-bottom:.2em}
-.sum__room{font-size:.95rem;color:#C7CFBC;margin-bottom:20px}
-.sum__row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line-dark);font-size:.97rem}
-.sum__row span:last-child{font-variant-numeric:tabular-nums;font-weight:650;white-space:nowrap}
-.sum__total{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-top:20px}
-.sum__total .lbl{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:#AFBBA6;font-weight:700}
-.sum__total .val{font-family:var(--serif);font-size:2.5rem;line-height:1;color:var(--gold)}
-.sum__note{font-size:.84rem;color:#AFBBA6;margin:16px 0 0}
-.sum__warn{margin:14px 0 0;font-size:.9rem;color:#F3C89A}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
-.chip{
-  font:inherit;font-size:.86rem;cursor:pointer;
-  background:rgba(247,241,230,.06);color:#E7E0CE;border:1.5px solid var(--line-dark);
-  border-radius:999px;padding:7px 14px;transition:background-color .15s ease,border-color .15s ease;
+.field textarea{min-height:96px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#6B726C}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--bronze);outline:2px solid var(--bronze);outline-offset:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.rule{border:0;border-top:1px solid var(--line);margin:24px 0}
+.hint{font-size:.88rem;color:var(--muted);margin:12px 0 0}
+
+.sum{background:var(--slate);color:var(--on-dark);border-radius:var(--r);padding:clamp(22px,3vw,30px);position:sticky;top:calc(var(--bar) + 84px)}
+.sum h3{color:#F5F3EE;margin-bottom:.25em}
+.sum .eyebrow{color:var(--on-dark-muted)}
+.sum__room{font-size:.95rem;color:var(--on-dark-muted);margin-bottom:22px}
+.nights{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
+.nights button{
+  font:inherit;font-size:.88rem;cursor:pointer;
+  background:transparent;color:var(--on-dark);
+  border:1px solid var(--line-dark);border-radius:var(--r);padding:8px 14px;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
 }
-.chip:hover{background:rgba(224,177,94,.16)}
-.chip[aria-pressed="true"]{background:var(--gold);color:#33230A;border-color:var(--gold);font-weight:700}
-.done{
-  margin-top:20px;border-radius:12px;border:1.5px solid var(--moss);
-  background:#EDF1E6;padding:20px 22px;display:flex;gap:14px;align-items:flex-start;
-}
-.done svg{flex:none;width:26px;height:26px;color:var(--moss);margin-top:2px}
-.done strong{display:block;font-family:var(--serif);font-size:1.15rem;margin-bottom:4px}
-.done p{margin:0;font-size:.95rem;color:var(--ink-soft)}
-.done a{color:var(--bark-dark);font-weight:700}
+.nights button:hover{border-color:var(--sand);color:var(--sand)}
+.nights button[aria-pressed="true"]{background:var(--sand);color:var(--slate);border-color:var(--sand);font-weight:600}
+.sum__row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line-dark);font-size:.95rem}
+.sum__row span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.sum__total{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-top:20px}
+.sum__total .lbl{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);font-weight:600}
+.sum__total .val{font-family:var(--serif);font-size:2.1rem;line-height:1;color:var(--sand);font-variant-numeric:tabular-nums}
+.sum__note{font-size:.85rem;color:var(--on-dark-muted);margin:14px 0 0}
+.sum__warn{margin:14px 0 0;font-size:.9rem;color:#F0C9A2;border-left:2px solid #F0C9A2;padding-left:12px}
+
+.done{margin-top:20px;border:1px solid var(--line);border-left:3px solid var(--bronze);background:var(--bg-2);padding:18px 20px;border-radius:var(--r)}
+.done strong{display:block;font-family:var(--serif);font-weight:400;font-size:1.14rem;margin-bottom:6px}
+.done p{margin:0;font-size:.94rem;color:var(--muted)}
 [hidden]{display:none !important}
 
-/* ============ KONTAKT ============ */
-.contact{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,4vw,56px);align-items:start}
-.contact dl{margin:0}
-.contact dt{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-top:22px}
-.contact dd{margin:6px 0 0;font-size:1.05rem;color:#F0E8D7}
-.contact dd a{color:#F0E8D7}
-.route li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-dark);color:#C7CFBC;font-size:.97rem}
-.route li b{color:#F0E8D7;display:block;font-family:var(--serif);font-weight:600;font-size:1.02rem;margin-bottom:2px}
-.route .num{
-  flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);
-  display:grid;place-items:center;font-size:.85rem;font-weight:700;
+/* ================= POUKAZY A SKUPINY ================= */
+.gift{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.gift .plate{min-height:320px;border:1px solid var(--line);border-radius:var(--r)}
+.cards-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:clamp(28px,4vw,44px)}
+.cards-3 .panel{display:flex;flex-direction:column}
+.cards-3 h3{margin-bottom:.45em}
+.cards-3 p{color:var(--muted);font-size:.95rem}
+.cards-3 ul{margin-top:auto;border-top:1px solid var(--line-2)}
+.cards-3 li{padding:10px 0;border-bottom:1px solid var(--line-2);font-size:.9rem;color:var(--muted)}
+.cards-3 li:last-child{border-bottom:0}
+.cards-3 li b{color:var(--ink);font-weight:600}
+
+/* ================= ČASTÉ OTÁZKY ================= */
+.faq{border-top:1px solid var(--line);max-width:96ch}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:18px 2px;
+  font-family:var(--serif);font-size:clamp(1.04rem,1.5vw,1.18rem);
+  display:flex;justify-content:space-between;gap:24px;align-items:baseline;
 }
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--sans);font-size:1.3rem;line-height:1;color:var(--bronze);font-weight:600}
+.faq details[open] summary::after{content:"–"}
+.faq summary:hover{color:var(--bronze)}
+.faq .ans{padding:0 2px 20px}
+.faq .ans p{margin:0 0 .8em;color:var(--muted);font-size:.97rem;max-width:68ch}
+.faq .ans p:last-child{margin-bottom:0}
 
-/* ============ PÄTA ============ */
-.foot{background:#16241C;color:#B9C4B0;padding:52px 0 44px;font-size:.94rem}
-.foot__in{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:flex-start}
-.foot a{color:#DCD3C0}
-.foot__brand{display:flex;gap:12px;align-items:center;color:#F0E8D7}
-.foot__brand svg{width:40px;height:40px;flex:none}
-.foot__brand strong{font-family:var(--serif);font-size:1.1rem;display:block}
-.foot__links{display:flex;gap:20px;flex-wrap:wrap}
+/* ================= KARIÉRA ================= */
+.jobs{border-top:1px solid var(--line)}
+.jobs>div{
+  display:grid;grid-template-columns:minmax(0,1fr) 260px 200px;
+  gap:8px 32px;align-items:baseline;
+  padding:22px 0;border-bottom:1px solid var(--line);
+}
+.jobs h3{margin:0 0 4px;font-size:1.12rem}
+.jobs p{margin:0;color:var(--muted);font-size:.95rem}
+.jobs .when{margin:0;font-size:.92rem;color:var(--muted)}
+.jobs .form{margin:0;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right}
 
-/* ============ AUTOR UKÁŽKY ============ */
+/* ================= KONTAKT ================= */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,72px);align-items:start}
+.contact dl{margin:0;border-top:1px solid var(--line)}
+.contact dl>div{padding:16px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 20px}
+.contact dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-top:3px}
+.contact dd{margin:0;overflow-wrap:anywhere}
+.route{margin-top:8px}
+.route li{padding:16px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px}
+.route li:first-child{border-top:1px solid var(--line)}
+.route .n{font-family:var(--serif);color:var(--muted)}
+.route b{display:block;font-weight:600;font-size:.98rem;margin-bottom:3px}
+.route p{margin:0;color:var(--muted);font-size:.95rem}
+.contact .plate{aspect-ratio:16/10;border-radius:var(--r);margin-bottom:28px}
+.contact__tel{font-family:var(--serif);font-size:1.5rem;font-variant-numeric:tabular-nums;text-underline-offset:4px;display:inline-block}
+.contact__form{margin-top:clamp(34px,4vw,52px)}
+.contact__form h3{margin-bottom:.5em}
+.contact__form .hint{max-width:64ch}
+.mini{margin:0;border-top:1px solid rgba(216,196,164,.30)}
+.mini>div{display:flex;justify-content:space-between;gap:18px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(216,196,164,.18)}
+.mini>div:last-child{border-bottom:0}
+.mini dt{color:var(--plate-sub);font-size:.92rem}
+.mini dd{margin:0;font-family:var(--serif);font-size:1.04rem;color:var(--sand);white-space:nowrap}
+
+/* ================= AUTOR UKÁŽKY ================= */
 .author{
-  background:var(--forest-2);color:#F2E9D8;
-  border-top:4px solid var(--gold);
-  padding:clamp(52px,7vw,88px) 0;
-  scroll-margin-top:86px;
+  background:var(--slate-2);color:var(--on-dark);border-top:1px solid var(--sand);
+  padding:clamp(54px,6.6vw,92px) 0;scroll-margin-top:calc(var(--bar) + 72px);
+  background-image:
+    radial-gradient(70% 60% at 88% 0%,rgba(216,196,164,.10) 0%,rgba(216,196,164,0) 62%),
+    repeating-linear-gradient(90deg,rgba(243,241,236,.03) 0 1px,rgba(243,241,236,0) 1px 112px);
 }
-.author__in{
-  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-  gap:clamp(28px,4vw,56px);align-items:start;
+.author__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start}
+.author .eyebrow{color:var(--sand)}
+.author h2{color:#F5F3EE;max-width:16ch}
+.author p{color:#D5DAD4;max-width:52ch}
+.author__price{border-left:2px solid var(--sand);padding-left:16px;margin-bottom:14px;color:#F0EDE6}
+.author__price b{font-weight:600}
+.author__free{
+  display:inline-block;margin:0;padding:9px 16px;border:1px solid var(--sand);
+  color:var(--sand);font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;border-radius:2px;
 }
-.author h2{color:#F8F1E2;margin-bottom:.45em}
-.author__lede{color:#D7DFCC;max-width:52ch}
-.author__price{
-  display:inline-block;margin:6px 0 0;
-  border:1px solid rgba(224,177,94,.5);border-radius:999px;
-  padding:9px 18px;color:var(--gold);font-weight:700;font-size:.97rem;
-}
-.author__card{
-  background:rgba(20,33,25,.62);border:1px solid var(--line-dark);
-  border-radius:var(--r);padding:clamp(22px,3vw,32px);box-shadow:var(--shadow-lg);
-}
-.author__name{font-family:var(--serif);font-size:1.5rem;color:#F8F1E2;margin:0;line-height:1.2}
-.author__city{margin:4px 0 0;color:#AFBBA6;font-size:.9rem}
-.author__list{margin:22px 0 0}
-.author__list>div{
-  display:flex;gap:6px 18px;align-items:baseline;flex-wrap:wrap;
-  padding:12px 0;border-bottom:1px solid var(--line-dark);
-}
-.author__list>div:last-child{border-bottom:0;padding-bottom:0}
-.author__list dt{
-  flex:none;width:78px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
-  color:#AFBBA6;font-weight:700;
-}
-.author__list dd{margin:0;font-size:1.02rem;color:#F0E8D7;overflow-wrap:anywhere}
-.author a{color:var(--gold);font-weight:650}
-.author__sms{font-size:.86rem;color:#AFBBA6;white-space:nowrap}
+.author__card{background:var(--slate);border:1px solid var(--line-dark);border-radius:var(--r);padding:clamp(22px,3vw,30px)}
+.author__name{font-family:var(--serif);font-size:1.4rem;color:#F5F3EE;margin:0}
+.author__role{margin:4px 0 0;color:var(--on-dark-muted);font-size:.9rem}
+.author__list{margin:22px 0 0;border-top:1px solid var(--line-dark)}
+.author__list>div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 16px;padding:13px 0;border-bottom:1px solid var(--line-dark)}
+.author__list dt{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);font-weight:600;padding-top:4px}
+.author__list dd{margin:0;overflow-wrap:anywhere;color:var(--on-dark)}
+.author a{color:var(--sand);font-weight:600}
 .author__actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.author .btn{font-weight:700}
-.author .btn--gold{color:#33230A}
 
-/* ============ ANIMÁCIE ============ */
-html.js .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+/* ================= PÄTA ================= */
+.foot{background:var(--slate);color:var(--on-dark-muted);padding:48px 0 40px;font-size:.92rem;border-top:1px solid var(--line-dark)}
+.foot__in{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:32px}
+.foot a{color:var(--on-dark)}
+.foot strong{font-family:var(--serif);font-weight:400;font-size:1.06rem;color:var(--on-dark);display:block;margin-bottom:6px}
+.foot h3{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-muted);font-family:var(--sans);font-weight:600;margin:0 0 12px}
+.foot__links li,.foot__social li{padding:5px 0}
+.foot p{margin:0;max-width:40ch}
+.foot__bar{margin-top:34px;padding-top:18px;border-top:1px solid var(--line-dark);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.88rem}
+
+/* ================= ODHAĽOVANIE ================= */
+html.js .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
 html.js .reveal.in{opacity:1;transform:none}
-.mist{transform-origin:center;animation:drift 26s ease-in-out infinite alternate}
-@keyframes drift{from{transform:translateX(-18px)}to{transform:translateX(26px)}}
 
-/* ============ RESPONZÍVNE ============ */
+/* ================= RESPONZÍVNE ================= */
 @media (max-width:1040px){
-  .room{grid-template-columns:1fr}
-  .room--flip .room__art{order:0}
-  .room__art{min-height:230px}
-  .amen{grid-template-columns:repeat(2,1fr)}
-  .trips{grid-template-columns:1fr 1fr}
+  .rooms{grid-template-columns:repeat(2,minmax(0,1fr))}
   .book{grid-template-columns:1fr}
   .sum{position:static}
   .contact{grid-template-columns:1fr}
+  .plates{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .season-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards-3{grid-template-columns:1fr}
+  .gift{grid-template-columns:1fr}
+  .jobs>div{grid-template-columns:minmax(0,1fr) 220px}
+  .jobs .form{grid-column:2;text-align:left;margin-top:4px}
+  .foot__in{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:860px){
-  body{padding-bottom:104px}
+  .sec__head{grid-template-columns:1fr;align-items:start}
+  .sec__head h2{max-width:none}
   .split{grid-template-columns:1fr}
-  .hero__facts{grid-template-columns:1fr 1fr}
-  .gal{grid-template-columns:repeat(2,1fr)}
-  .gal .g-a,.gal .g-b,.gal .g-c,.gal .g-d,.gal .g-e{grid-column:span 2;aspect-ratio:16/10}
-  .gal .g-b,.gal .g-c{aspect-ratio:4/3}
+  .author__in{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .trips>div{grid-template-columns:88px minmax(0,1fr);gap:4px 20px}
+  .trips .season{grid-column:2;text-align:left;margin-top:6px}
   html.js .nav-list{
     position:absolute;left:0;right:0;top:100%;
-    background:var(--paper);border-bottom:1px solid var(--line);
-    flex-direction:column;align-items:stretch;gap:0;padding:8px 20px 18px;
-    box-shadow:0 22px 40px -28px rgba(30,49,40,.7);
+    background:var(--bg);border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0;padding:6px 20px 14px;
   }
   html.js .nav-list[data-open="false"]{display:none}
-  html.js .nav-list a{padding:13px 6px;border-bottom:1px solid var(--line);border-radius:0}
+  html.js .nav-list a{padding:13px 4px;border-bottom:1px solid var(--line-2);border-radius:0}
   html.js .nav-list li:last-child a{border-bottom:0}
-  html.js .nav-cta{margin:12px 0 0}
-  html.js .nav-cta a{background:var(--bark-dark);color:var(--paper);text-align:center;border-radius:999px}
+  html.js .nav-tel a{margin:0;padding:13px 4px;border-left:0;border-bottom:1px solid var(--line-2)}
+  html.js .nav-cta a{margin:12px 0 0;border:1px solid var(--ink);text-align:center;padding:13px;border-radius:var(--r)}
   html.js .nav-toggle{
-    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:650;
-    background:transparent;border:1.5px solid var(--line);color:var(--ink);
-    border-radius:999px;padding:9px 15px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:600;
+    background:transparent;border:1px solid var(--line);color:var(--ink);
+    border-radius:var(--r);padding:9px 14px;cursor:pointer;
   }
-  html.js .nav-toggle svg{width:18px;height:18px}
-  .site-head{position:sticky}
+  html.js .nav-toggle svg{width:16px;height:16px}
   .head__in{position:relative}
-  .author__in{grid-template-columns:1fr}
 }
-@media (max-width:620px){
+@media (max-width:640px){
   body{font-size:16px}
-  .trips{grid-template-columns:1fr}
-  .amen{grid-template-columns:1fr}
+  .rooms{grid-template-columns:1fr}
+  .list-2{grid-template-columns:1fr}
   .grid2{grid-template-columns:1fr}
-  .hero__facts{grid-template-columns:1fr}
-  .demobar__in{gap:8px;padding:10px 0;font-size:.86rem;line-height:1.4}
-  .sec__head{margin-bottom:30px}
-  .brand__txt span{display:none}
-  .author__list dt{width:100%}
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plates{grid-template-columns:1fr}
+  .plates .plate{aspect-ratio:16/10}
+  .season-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .contact dl>div{grid-template-columns:1fr}
+  .brand span{display:none}
+  .demobar__in{gap:4px 14px;padding:9px 0;font-size:.82rem;line-height:1.5}
+  .demobar__sep{display:none}
+  .trips>div{grid-template-columns:1fr}
+  .trips .season{grid-column:1}
+  .jobs>div{grid-template-columns:1fr}
+  .jobs .form{grid-column:1}
+  .author__list>div{grid-template-columns:1fr}
   .author__actions .btn{flex:1 1 auto}
+  .foot__in{grid-template-columns:1fr}
 }
-/* na úzkych displejoch pásik neroztiahneme — číslo ustúpi, odkaz ostáva */
-@media (max-width:560px){
-  .demobar__tel{display:none}
+@media (max-width:460px){
+  .demobar__tag{display:none}
+  .facts dl{grid-template-columns:1fr}
+  .hero__actions .btn{flex:1 1 100%}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
   html.js .reveal{opacity:1;transform:none}
 }
-@media print{.demobar,.site-head{display:none}}
+@media print{
+  .demobar,.site-head,.nights{display:none}
+  body{padding-top:0}
+  .hero__bg{display:none}
+}
 </style>
 </head>
 <body>
 <a class="skip" href="#obsah">Preskočiť na obsah</a>
 
+<!-- filter zrna pre dizajnové plochy, sám o sebe nič nevykresľuje -->
+<svg class="defs" aria-hidden="true" focusable="false" width="0" height="0">
+  <defs>
+    <filter id="zrno" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+</svg>
+
 <!-- ===== PÁSIK UKÁŽKY ===== -->
-<div class="demobar" role="complementary" aria-label="Informácia o ukážkovom webe">
+<div class="demobar" id="pasik-ukazky" role="complementary" aria-label="Informácia o ukážkovom webe">
   <div class="demobar__in">
     <span class="demobar__tag">Ukážkový web</span>
     <span>Takýto web pre vás spravím. <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></span>
+    <span class="demobar__sep" aria-hidden="true">·</span>
     <a class="demobar__tel" href="tel:+421902464022">0902 464 022</a>
   </div>
 </div>
@@ -427,34 +602,27 @@ html.js .reveal.in{opacity:1;transform:none}
 <!-- ===== HLAVIČKA ===== -->
 <header class="site-head">
   <div class="wrap head__in">
-    <a class="brand" href="#uvod" aria-label="Penzión Jelenia Rúbaň, domovská stránka">
-      <svg class="brand__mark" viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
-        <circle cx="32" cy="32" r="31" fill="#1E3128"/>
-        <path d="M12 44l11-19 6.5 11.2L34 28l10 16z" fill="#E0B15E"/>
-        <path d="M22 44l7-12 7 12z" fill="#4F6B4A"/>
-        <path d="M32 12v7M28 15l4 4 4-4" stroke="#E0B15E" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <circle cx="32" cy="32" r="29" fill="none" stroke="#4F6B4A" stroke-width="1.5"/>
-      </svg>
-      <span class="brand__txt">
-        <strong>Jelenia Rúbaň</strong>
-        <span>Horský penzión</span>
-      </span>
+    <a class="brand" href="#uvod" aria-label="Penzión Hrebeň, domovská stránka">
+      <strong>Penzión Hrebeň</strong>
+      <span>Horský penzión</span>
     </a>
 
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       Menu
     </button>
 
     <nav aria-label="Hlavná navigácia">
       <ul class="nav-list" id="hlavne-menu" data-open="false">
-        <li><a href="#izby">Izby a ceny</a></li>
-        <li><a href="#vybavenie">Vybavenie</a></li>
-        <li><a href="#ranajky">Raňajky</a></li>
+        <li><a href="#izby">Izby</a></li>
+        <li><a href="#cennik">Cenník</a></li>
+        <li><a href="#strava">Strava</a></li>
         <li><a href="#okolie">Okolie</a></li>
-        <li><a href="#galeria">Galéria</a></li>
+        <li><a href="#podmienky">Podmienky</a></li>
+        <li><a href="#otazky">Otázky</a></li>
         <li><a href="#kontakt">Kontakt</a></li>
-        <li class="nav-cta"><a href="#rezervacia">Rezervovať pobyt</a></li>
+        <li class="nav-tel"><a href="tel:+421908331947">0908 331 947</a></li>
+        <li class="nav-cta"><a href="#rezervacia">Rezervácia</a></li>
       </ul>
     </nav>
   </div>
@@ -462,99 +630,33 @@ html.js .reveal.in{opacity:1;transform:none}
 
 <main id="obsah">
 
-<!-- ===== HERO ===== -->
+<!-- ===== ÚVOD ===== -->
 <section class="hero" id="uvod">
-  <!-- miesto pre reálnu fotografiu klienta: panoráma penziónu s hrebeňom v pozadí -->
-  <div class="hero__scene" aria-hidden="true">
-    <svg viewBox="0 0 1440 760" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <defs>
-        <linearGradient id="obloha" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#20372C"/>
-          <stop offset=".45" stop-color="#33513F"/>
-          <stop offset=".75" stop-color="#6E7C5E"/>
-          <stop offset="1" stop-color="#B99A64"/>
-        </linearGradient>
-        <linearGradient id="hrebenD" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#54654F"/><stop offset="1" stop-color="#3D5241"/>
-        </linearGradient>
-        <linearGradient id="hrebenS" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#3C5343"/><stop offset="1" stop-color="#2C4234"/>
-        </linearGradient>
-        <linearGradient id="hrebenB" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#243A2E"/><stop offset="1" stop-color="#16261D"/>
-        </linearGradient>
-        <radialGradient id="slnko" cx=".5" cy=".5" r=".5">
-          <stop offset="0" stop-color="#F5D79B" stop-opacity=".95"/>
-          <stop offset=".55" stop-color="#E0B15E" stop-opacity=".35"/>
-          <stop offset="1" stop-color="#E0B15E" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="zavoj" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#16261D" stop-opacity="0"/>
-          <stop offset="1" stop-color="#16261D" stop-opacity=".92"/>
-        </linearGradient>
-      </defs>
-
-      <rect width="1440" height="760" fill="url(#obloha)"/>
-      <circle cx="1090" cy="470" r="250" fill="url(#slnko)"/>
-      <circle cx="1090" cy="470" r="46" fill="#F7E3B7" opacity=".9"/>
-
-      <!-- vzdialené hrebene -->
-      <path d="M0 470l150-108 96 62 128-96 132 108 116-70 154 122 128-84 168 128 168-96 200 118v268H0z" fill="url(#hrebenD)" opacity=".75"/>
-      <path d="M0 522l176-96 130 74 150-52 142 92 176-64 186 104 168-70 312 100v152H0z" fill="url(#hrebenS)"/>
-      <!-- hmla v doline -->
-      <g class="mist" opacity=".5">
-        <ellipse cx="420" cy="556" rx="360" ry="26" fill="#D9E2D2" opacity=".45"/>
-        <ellipse cx="960" cy="580" rx="420" ry="22" fill="#D9E2D2" opacity=".35"/>
-      </g>
-      <path d="M0 596l180-56 190 44 168-40 190 60 200-52 232 56 280-40v192H0z" fill="url(#hrebenB)"/>
-
-      <!-- ihličnatý les -->
-      <g fill="#12201A">
-        <g id="strom"><path d="M0 0l-15 34h30z"/><path d="M0 12l-19 40h38z"/><path d="M0 26l-23 46h46z"/></g>
-      </g>
-      <g fill="#132218">
-        <use href="#strom" x="60" y="614"/><use href="#strom" x="130" y="632"/><use href="#strom" x="196" y="606"/>
-        <use href="#strom" x="262" y="638"/><use href="#strom" x="330" y="620"/><use href="#strom" x="398" y="644"/>
-        <use href="#strom" x="470" y="616"/><use href="#strom" x="540" y="640"/><use href="#strom" x="612" y="622"/>
-        <use href="#strom" x="686" y="646"/><use href="#strom" x="756" y="618"/><use href="#strom" x="826" y="642"/>
-        <use href="#strom" x="900" y="624"/><use href="#strom" x="970" y="648"/><use href="#strom" x="1046" y="620"/>
-        <use href="#strom" x="1118" y="644"/><use href="#strom" x="1190" y="618"/><use href="#strom" x="1262" y="640"/>
-        <use href="#strom" x="1336" y="622"/><use href="#strom" x="1406" y="646"/>
-      </g>
-
-      <!-- chata -->
-      <g transform="translate(1010 590) scale(1.15)">
-        <path d="M-70 40L0-24l70 64z" fill="#3A2A1C"/>
-        <rect x="-56" y="34" width="112" height="60" fill="#4A3524"/>
-        <rect x="-56" y="34" width="112" height="60" fill="none" stroke="#2A1D12" stroke-width="2"/>
-        <rect x="-34" y="50" width="26" height="24" fill="#E0B15E"/>
-        <rect x="10" y="50" width="26" height="24" fill="#E9C57F"/>
-        <rect x="-8" y="74" width="18" height="20" fill="#2A1D12"/>
-        <path d="M-78 42L0-28l78 70" fill="none" stroke="#241A11" stroke-width="6" stroke-linejoin="round"/>
-      </g>
-
-      <rect y="470" width="1440" height="290" fill="url(#zavoj)"/>
-    </svg>
-  </div>
+  <div class="hero__bg" aria-hidden="true"></div>
 
   <div class="wrap hero__in">
-    <div class="hero__card">
-      <p class="hero__kicker">Ukážkový penzión &middot; 940 m n. m.</p>
-      <h1>Víkend, keď je najhlasnejším zvukom <em>praskanie dreva</em></h1>
-      <p class="hero__lede">Osem izieb a dva apartmány na okraji lesa. Raňajky do desiatej, sauna po túre, večer ticho a obloha bez pouličných lámp.</p>
+    <p class="eyebrow">Horský penzión &middot; 940 m n. m. &middot; otvorené celý rok</p>
+    <h1>Horský penzión s ôsmimi izbami a dvomi apartmánmi</h1>
+    <div class="hero__col">
+      <p class="hero__lede">Ubytovanie na okraji lesa nad obcou Podhrebeň. Cena od 68 € za izbu a noc vrátane raňajok, sauny a parkovania. Značený chodník začína pri plote.</p>
       <div class="hero__actions">
-        <a class="btn btn--gold" href="#rezervacia">Zistiť cenu pobytu</a>
-        <a class="btn btn--ghost" href="#izby">Pozrieť izby</a>
+        <a class="btn btn--primary" href="#rezervacia">Prepočítať cenu pobytu</a>
+        <a class="btn btn--line" href="#cennik">Cenník a termíny</a>
       </div>
+      <p class="hero__tag">Recepcia denne 8:00 – 20:00 &middot; <a href="tel:+421908331947">0908 331 947</a></p>
     </div>
   </div>
 
-  <dl class="hero__facts wrap-full">
-    <div><dt>Ubytovanie</dt><dd>8 izieb &amp; 2 apartmány</dd></div>
-    <div><dt>Raňajky</dt><dd>V cene, 7:30 – 10:00</dd></div>
-    <div><dt>Najbližší vlek</dt><dd>4 km údolím</dd></div>
-    <div><dt>Domáci miláčik</dt><dd>Vítaný, po dohode</dd></div>
-  </dl>
+  <div class="facts">
+    <div class="wrap">
+      <dl>
+        <div><dt>Kapacita</dt><dd>8 + 2<small>osem izieb a dva apartmány, spolu 30 lôžok vrátane prísteliek</small></dd></div>
+        <div><dt>Cena od</dt><dd>68 €<small>za izbu a noc vrátane raňajkového bufetu</small></dd></div>
+        <div><dt>Nadmorská výška</dt><dd>940 m<small>posledné 2 km cesty stúpajú, v zime odhrnuté do 7:00</small></dd></div>
+        <div><dt>Raňajky</dt><dd>7:30<small>bufet do 10:00, balíček so sebou bez príplatku</small></dd></div>
+      </dl>
+    </div>
+  </div>
 </section>
 
 <!-- ===== IZBY ===== -->
@@ -562,411 +664,548 @@ html.js .reveal.in{opacity:1;transform:none}
   <div class="wrap">
     <div class="sec__head reveal">
       <div>
-        <p class="eyebrow">Izby a apartmány</p>
-        <h2>Desať kľúčov, žiadne dlhé chodby</h2>
+        <p class="eyebrow"><span class="eyebrow__no">01</span>Ubytovanie</p>
+        <h2>Izby a ceny</h2>
       </div>
-      <p class="lede">Ceny sú za izbu a noc vrátane raňajok a vstupu do sauny. Deti do šiestich rokov spia s rodičmi bez poplatku.</p>
+      <p class="lede">Ceny sú za izbu a noc vrátane raňajok a vstupu do sauny. Daň za ubytovanie 1,50 € za osobu a noc sa platí zvlášť. Deti do 6 rokov spia s rodičmi bez poplatku.</p>
     </div>
 
     <div class="rooms">
-
       <article class="room reveal">
-        <div class="room__art">
-          <span class="room__badge">Najobľúbenejšia</span>
-          <!-- miesto pre reálnu fotografiu klienta: podkrovná izba so strešným oknom -->
-          <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustrácia podkrovnej izby so šikmým stropom, dreveným trámom a strešným oknom">
-            <defs>
-              <linearGradient id="i1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFE2CB"/><stop offset="1" stop-color="#D9C7A8"/></linearGradient>
-              <linearGradient id="i1b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9FB9C9"/><stop offset="1" stop-color="#D7E1E4"/></linearGradient>
-            </defs>
-            <rect width="640" height="480" fill="url(#i1a)"/>
-            <path d="M0 0h640v190L0 300z" fill="#C9B392"/>
-            <path d="M300 44l150 96-26 42-150-96z" fill="url(#i1b)"/>
-            <path d="M300 44l150 96-26 42-150-96z" fill="none" stroke="#6E5334" stroke-width="9"/>
-            <path d="M362 74l30 20-10 16-30-20z" fill="#F3E7C8" opacity=".7"/>
-            <path d="M0 250L640 140" stroke="#8A6C46" stroke-width="16"/>
-            <rect y="330" width="640" height="150" fill="#B99C74"/>
-            <g>
-              <rect x="96" y="286" width="330" height="30" rx="6" fill="#5C4227"/>
-              <rect x="86" y="312" width="350" height="86" rx="10" fill="#F6F1E4"/>
-              <rect x="86" y="356" width="350" height="42" rx="8" fill="#4F6B4A"/>
-              <rect x="112" y="322" width="90" height="34" rx="8" fill="#FDFBF4"/>
-              <rect x="212" y="322" width="90" height="34" rx="8" fill="#FDFBF4"/>
-              <rect x="96" y="398" width="16" height="26" fill="#3E2C1A"/>
-              <rect x="410" y="398" width="16" height="26" fill="#3E2C1A"/>
+        <div class="plate plate--grid">
+          <svg class="plate__art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M400 0 L400 300 L120 300 Z" fill="rgba(216,196,164,.07)"/>
+            <g fill="none" stroke="rgba(216,196,164,.20)" stroke-width="1">
+              <path d="M300 -40 L300 340"/>
+              <path d="M340 -40 L340 340"/>
             </g>
-            <rect x="470" y="330" width="86" height="12" rx="4" fill="#6E5334"/>
-            <rect x="474" y="342" width="78" height="66" fill="#7E6041"/>
-            <circle cx="513" cy="300" r="22" fill="#E0B15E"/>
-            <path d="M513 278v-40" stroke="#6E5334" stroke-width="4"/>
-            <g fill="#4F6B4A"><path d="M486 330c8-14 22-16 30-6-12 2-22 6-30 6z"/></g>
+            <rect width="400" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
           </svg>
-        </div>
-        <div class="room__body">
-          <h3>Podkrovná izba pod trámami</h3>
-          <p>Šikmý strop, hrubý smrekový trám a strešné okno presne nad posteľou. Ráno vás zobudí svetlo, večer sa cez sklo pozeráte na hviezdy.</p>
-          <ul class="room__meta">
-            <li>2 osoby</li><li>manželská posteľ</li><li>18 m²</li><li>sprcha</li><li>rýchle Wi-Fi</li>
-          </ul>
-          <div class="room__price">
-            <p style="margin:0"><span class="num">68 €</span><span class="per">za izbu a noc, raňajky v cene</span></p>
-            <a class="btn btn--ghost" href="#rezervacia" data-room="podkrovna">Vybrať túto izbu</a>
+          <div class="plate__txt">
+            <p class="plate__kicker">Izby 01 – 04</p>
+            <p class="plate__big">18 m²</p>
+            <p class="plate__sub">Podkrovie, šikmý strop, strešné okno na východ</p>
           </div>
         </div>
-      </article>
-
-      <article class="room room--flip reveal">
-        <div class="room__art">
-          <span class="room__badge">Výhľad na hrebeň</span>
-          <!-- miesto pre reálnu fotografiu klienta: izba s balkónom a výhľadom do doliny -->
-          <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustrácia izby s veľkým oknom, za ktorým je horský hrebeň a les">
-            <defs>
-              <linearGradient id="i2a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7DAC2"/><stop offset="1" stop-color="#CDB998"/></linearGradient>
-              <linearGradient id="i2b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE0E6"/><stop offset=".6" stop-color="#9DBBB6"/><stop offset="1" stop-color="#6F8C6E"/></linearGradient>
-            </defs>
-            <rect width="640" height="480" fill="url(#i2a)"/>
-            <rect x="150" y="40" width="400" height="270" rx="4" fill="url(#i2b)"/>
-            <path d="M150 240l90-72 66 46 74-64 92 76 78-52v82H150z" fill="#4E6B54"/>
-            <path d="M150 268l70-40 84 34 92-30 84 40 70-24v62H150z" fill="#2F4A38"/>
-            <circle cx="470" cy="104" r="26" fill="#F6E6BE"/>
-            <rect x="150" y="40" width="400" height="270" fill="none" stroke="#6E5334" stroke-width="14"/>
-            <path d="M350 40v270M150 175h400" stroke="#6E5334" stroke-width="10"/>
-            <rect x="86" y="30" width="60" height="300" fill="#8C6647"/>
-            <rect x="554" y="30" width="60" height="300" fill="#8C6647"/>
-            <rect y="330" width="640" height="150" fill="#AE905F"/>
-            <rect x="30" y="352" width="250" height="16" rx="6" fill="#5C4227"/>
-            <rect x="46" y="368" width="218" height="60" rx="8" fill="#F6F1E4"/>
-            <rect x="46" y="398" width="218" height="30" rx="6" fill="#8A5324"/>
-            <g stroke="#3E2C1A" stroke-width="6" stroke-linecap="round">
-              <path d="M420 430v-52M500 430v-52M420 378h80"/>
-            </g>
-            <path d="M414 372h92l-10-34h-72z" fill="#4F6B4A"/>
-            <circle cx="330" cy="352" r="18" fill="#E0B15E"/>
-          </svg>
-        </div>
         <div class="room__body">
-          <h3>Izba s balkónom do doliny</h3>
-          <p>Najväčšie okno v dome a k tomu vlastný balkón s dvomi stoličkami. Popoludní sem svieti slnko, po západe vidno svetlá dediny hlboko pod vami.</p>
-          <ul class="room__meta">
-            <li>2 – 3 osoby</li><li>balkón</li><li>24 m²</li><li>vaňa</li><li>prístelka na požiadanie</li>
-          </ul>
-          <div class="room__price">
-            <p style="margin:0"><span class="num">84 €</span><span class="per">za izbu a noc, raňajky v cene</span></p>
-            <a class="btn btn--ghost" href="#rezervacia" data-room="balkon">Vybrať túto izbu</a>
+          <h3>Dvojlôžková izba</h3>
+          <p>Podkrovná izba so šikmým stropom a strešným oknom. Manželská posteľ, pracovný stôl, sprchový kút.</p>
+          <dl class="room__spec">
+            <div><dt>Kapacita</dt><dd>2 osoby</dd></div>
+            <div><dt>Rozloha</dt><dd>18 m²</dd></div>
+            <div><dt>Kúpeľňa</dt><dd>sprcha, WC</dd></div>
+            <div><dt>Vybavenie</dt><dd>internet, televízor, kanvica</dd></div>
+          </dl>
+          <div class="room__foot">
+            <p class="price" style="margin:0">68 €<small>za izbu a noc</small></p>
+            <a href="#rezervacia" data-room="dvojlozkova">Rezervovať túto izbu</a>
           </div>
         </div>
       </article>
 
       <article class="room reveal">
-        <div class="room__art">
-          <span class="room__badge">Pre rodiny</span>
-          <!-- miesto pre reálnu fotografiu klienta: obývačka apartmánu s krbom -->
-          <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustrácia obývačky apartmánu s kamenným krbom, pohovkou a kobercom">
-            <defs>
-              <linearGradient id="i3a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EADCC4"/><stop offset="1" stop-color="#D2BC99"/></linearGradient>
-              <radialGradient id="i3b" cx=".5" cy=".7" r=".6"><stop offset="0" stop-color="#F6D48A"/><stop offset="1" stop-color="#C9722A"/></radialGradient>
-            </defs>
-            <rect width="640" height="480" fill="url(#i3a)"/>
-            <g stroke="#C6AF8B" stroke-width="3">
-              <path d="M0 90h640M0 160h640M0 230h640"/>
+        <div class="plate">
+          <svg class="plate__art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="rgba(216,196,164,.18)" stroke-width="1">
+              <circle cx="330" cy="70" r="46"/>
+              <circle cx="330" cy="70" r="84"/>
+              <circle cx="330" cy="70" r="126"/>
             </g>
-            <rect x="196" y="60" width="250" height="300" fill="#8E8271"/>
-            <rect x="212" y="76" width="218" height="284" fill="#9C9081"/>
-            <g fill="#847768">
-              <circle cx="250" cy="110" r="16"/><circle cx="300" cy="96" r="13"/><circle cx="360" cy="116" r="17"/>
-              <circle cx="400" cy="92" r="12"/><circle cx="270" cy="160" r="14"/><circle cx="340" cy="168" r="15"/><circle cx="398" cy="152" r="12"/>
+            <g fill="none" stroke="rgba(237,234,228,.10)" stroke-width="1">
+              <path d="M-20 120 L420 120"/>
+              <path d="M-20 152 L420 152"/>
+              <path d="M-20 184 L420 184"/>
+              <path d="M-20 216 L420 216"/>
             </g>
-            <rect x="184" y="188" width="274" height="22" rx="4" fill="#6E5334"/>
-            <rect x="238" y="228" width="166" height="132" rx="6" fill="#2F241A"/>
-            <path d="M321 350c-26 0-46-20-46-44 0-22 20-32 26-52 4 16 14 20 20 30 6-10 8-18 8-30 14 16 38 30 38 52 0 24-20 44-46 44z" fill="url(#i3b)"/>
-            <rect y="360" width="640" height="120" fill="#A9895C"/>
-            <rect x="120" y="392" width="400" height="70" rx="10" fill="#7C5230"/>
-            <rect x="140" y="404" width="360" height="46" rx="8" fill="#8A5324" opacity=".55"/>
-            <g>
-              <rect x="60" y="286" width="150" height="26" rx="8" fill="#3F5A44"/>
-              <rect x="42" y="306" width="186" height="66" rx="12" fill="#4F6B4A"/>
-              <rect x="58" y="316" width="70" height="30" rx="7" fill="#E0B15E"/>
-              <rect x="136" y="316" width="70" height="30" rx="7" fill="#EFE2CB"/>
-              <rect x="52" y="372" width="14" height="22" fill="#332415"/><rect x="204" y="372" width="14" height="22" fill="#332415"/>
-            </g>
-            <g>
-              <rect x="470" y="330" width="112" height="14" rx="5" fill="#6E5334"/>
-              <rect x="476" y="344" width="100" height="40" fill="#7E6041"/>
-              <rect x="492" y="284" width="14" height="46" fill="#4F6B4A"/><rect x="520" y="296" width="14" height="34" fill="#8A5324"/><rect x="548" y="288" width="14" height="42" fill="#3F5A44"/>
-            </g>
+            <rect width="400" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
           </svg>
+          <div class="plate__txt">
+            <p class="plate__kicker">Izby 05 – 08</p>
+            <p class="plate__big">24 m²</p>
+            <p class="plate__sub">Južná strana, balkón s dvomi stoličkami</p>
+          </div>
         </div>
         <div class="room__body">
-          <h3>Apartmán pod smrekmi</h3>
-          <p>Dve oddelené spálne, obývačka s kachľovou pecou a kuchynský kút, keď sa vám nechce zísť dolu. Vlastný vchod z bočnej terasy, takže deti nikoho neprebudia.</p>
-          <ul class="room__meta">
-            <li>4 – 5 osôb</li><li>2 spálne</li><li>46 m²</li><li>kuchynský kút</li><li>pec na drevo</li>
-          </ul>
-          <div class="room__price">
-            <p style="margin:0"><span class="num">129 €</span><span class="per">za apartmán a noc, raňajky v cene</span></p>
-            <a class="btn btn--ghost" href="#rezervacia" data-room="apartman">Vybrať apartmán</a>
+          <h3>Izba s balkónom</h3>
+          <p>Väčšia izba na južnej strane s vlastným balkónom a dvomi stoličkami. Možnosť prístelky pre tretiu osobu.</p>
+          <dl class="room__spec">
+            <div><dt>Kapacita</dt><dd>2 – 3 osoby</dd></div>
+            <div><dt>Rozloha</dt><dd>24 m²</dd></div>
+            <div><dt>Kúpeľňa</dt><dd>vaňa, WC</dd></div>
+            <div><dt>Vybavenie</dt><dd>balkón, internet, televízor, chladnička</dd></div>
+          </dl>
+          <div class="room__foot">
+            <p class="price" style="margin:0">84 €<small>za izbu a noc</small></p>
+            <a href="#rezervacia" data-room="balkon">Rezervovať túto izbu</a>
           </div>
         </div>
       </article>
 
+      <article class="room reveal">
+        <div class="plate">
+          <svg class="plate__art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M0 0 L400 0 L400 110 L0 210 Z" fill="rgba(216,196,164,.06)"/>
+            <path d="M0 210 L400 110" fill="none" stroke="rgba(216,196,164,.22)" stroke-width="1"/>
+            <g fill="none" stroke="rgba(237,234,228,.12)" stroke-width="1">
+              <path d="M60 -20 L200 320"/>
+              <path d="M120 -20 L260 320"/>
+              <path d="M180 -20 L320 320"/>
+              <path d="M240 -20 L380 320"/>
+            </g>
+            <rect width="400" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+          </svg>
+          <div class="plate__txt">
+            <p class="plate__kicker">Apartmány A a B</p>
+            <p class="plate__big">46 m²</p>
+            <p class="plate__sub">Dve spálne, pec na drevo, samostatný vchod</p>
+          </div>
+        </div>
+        <div class="room__body">
+          <h3>Apartmán</h3>
+          <p>Dve oddelené spálne, obývacia izba s pecou na drevo a kuchynský kút. Samostatný vchod z bočnej terasy.</p>
+          <dl class="room__spec">
+            <div><dt>Kapacita</dt><dd>4 – 5 osôb</dd></div>
+            <div><dt>Rozloha</dt><dd>46 m²</dd></div>
+            <div><dt>Kúpeľňa</dt><dd>vaňa, samostatné WC</dd></div>
+            <div><dt>Vybavenie</dt><dd>kuchynský kút, práčka, pec na drevo</dd></div>
+          </dl>
+          <div class="room__foot">
+            <p class="price" style="margin:0">129 €<small>za apartmán a noc</small></p>
+            <a href="#rezervacia" data-room="apartman">Rezervovať apartmán</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <p class="note">Prístelka 18 € za noc. Detská postieľka bez poplatku, treba ju nahlásiť pri rezervácii. Pes 10 € za noc po dohode vopred. Pri plnom obsadení má dom 30 lôžok vrátane prísteliek.</p>
+  </div>
+</section>
+
+<!-- ===== CENNÍK ===== -->
+<section class="sec sec--band" id="cennik">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">02</span>Cenník</p>
+        <h2>Cenník a termíny sezón</h2>
+      </div>
+      <p class="lede">Ceny sú za izbu a noc vrátane raňajok, sauny, parkovania a internetu. Daň za ubytovanie sa pripočítava na mieste, zálohu pri jednotlivých izbách nevyberáme.</p>
+    </div>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <caption>Ceny za izbu a noc v eurách. Cenník platí pre pobyty do konca nasledujúceho kalendárneho roka.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Typ ubytovania</th>
+            <th scope="col">Mimo sezóny<span>apríl – jún, september – november</span></th>
+            <th scope="col">Hlavná sezóna<span>júl – august, december – marec</span></th>
+            <th scope="col">Vianoce a Silvester<span>22. 12. – 2. 1.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Dvojlôžková izba<small>18 m², 2 osoby, podkrovie</small></th>
+            <td>68</td><td>78</td><td>92</td>
+          </tr>
+          <tr>
+            <th scope="row">Izba s balkónom<small>24 m², 2 až 3 osoby, južná strana</small></th>
+            <td>84</td><td>96</td><td>112</td>
+          </tr>
+          <tr>
+            <th scope="row">Apartmán<small>46 m², 4 až 5 osôb, samostatný vchod</small></th>
+            <td>129</td><td>148</td><td>172</td>
+          </tr>
+          <tr>
+            <th scope="row">Celý dom pre skupinu<small>osem izieb a dva apartmány naraz</small></th>
+            <td>690</td><td>790</td><td>920</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">Prepočet v rezervačnom formulári nižšie počíta so základnou cenou mimo sezóny. Presnú cenu podľa termínu vám potvrdíme do 24 hodín.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="split" style="margin-top:clamp(30px,4vw,52px)">
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Príplatky a doplnkové služby</h3>
+        <dl class="rows">
+          <div><dt>Prístelka pre tretiu osobu</dt><dd>18 € za noc</dd></div>
+          <div><dt>Detská postieľka</dt><dd>bez poplatku</dd></div>
+          <div><dt>Pes po dohode vopred</dt><dd>10 € za noc</dd></div>
+          <div><dt>Večera, mäsové alebo bezmäsité menu</dt><dd>22 € za osobu</dd></div>
+          <div><dt>Detská porcia do 12 rokov</dt><dd>12 € za osobu</dd></div>
+          <div><dt>Pranie, jeden cyklus na žetón</dt><dd>3 €</dd></div>
+          <div><dt>Daň za ubytovanie</dt><dd>1,50 € za osobu a noc</dd></div>
+          <div><dt>Strata kľúča, výmena vložky</dt><dd>20 €</dd></div>
+        </dl>
+        <p class="hint">Deti do 6 rokov spia s rodičmi bez poplatku a daň za ubytovanie neplatia.</p>
+      </div>
+
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Najkratší pobyt a rezervačné okno</h3>
+        <dl class="rows">
+          <div><dt>Mimo sezóny</dt><dd>od 1 noci</dd></div>
+          <div><dt>Hlavná sezóna, víkend</dt><dd>od 2 nocí</dd></div>
+          <div><dt>Vianoce a jarné prázdniny</dt><dd>od 3 nocí</dd></div>
+          <div><dt>Silvester</dt><dd>od 4 nocí</dd></div>
+          <div><dt>Skupina od piatich izieb</dt><dd>od 2 nocí</dd></div>
+          <div><dt>Rezervácie prijímame</dt><dd>14 mesiacov dopredu</dd></div>
+          <div><dt>Príchod a odchod</dt><dd>od 14:00, do 10:00</dd></div>
+          <div><dt>Údržba, dom zatvorený</dt><dd>dva týždne v novembri</dd></div>
+        </dl>
+        <p class="hint">Na leto odporúčame rezervovať 4 až 6 týždňov vopred, na Silvester už v septembri.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===== VYBAVENIE ===== -->
-<section class="sec sec--dark on-dark" id="vybavenie">
+<section class="sec" id="vybavenie">
   <div class="wrap">
     <div class="sec__head reveal">
       <div>
-        <p class="eyebrow">Vybavenie penziónu</p>
-        <h2>Veci, ktoré po túre naozaj oceníte</h2>
+        <p class="eyebrow"><span class="eyebrow__no">03</span>Penzión</p>
+        <h2>Vybavenie a služby</h2>
       </div>
-      <p class="lede">Nič z toho sa neplatí zvlášť. Sauna a sušiareň sú spoločné, kľúč od úschovne bicyklov dostanete pri príchode.</p>
+      <p class="lede">Všetko nižšie je zahrnuté v cene ubytovania. Kľúč od úschovne dostanete pri príchode na recepcii.</p>
     </div>
 
-    <ul class="amen reveal">
-      <li>
-        <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 27h22M7 27V13l9-6 9 6v14"/><path d="M13 27v-7h6v7"/><path d="M11 5c0 2-2 2-2 4M16 3c0 2-2 2-2 4"/></svg></span>
-        <h3>Fínska sauna</h3>
-        <p>Denne od 16:00 do 21:00, s ochladzovacím sudom na terase a výhľadom do lesa.</p>
-      </li>
-      <li>
-        <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 28s9-7.5 9-14a9 9 0 1 0-18 0c0 6.5 9 14 9 14z"/><circle cx="16" cy="13.5" r="3.4"/></svg></span>
-        <h3>Sušiareň a úschovňa bicyklov</h3>
-        <p>Vyhrievaná sušiareň na bundy a lyžiarky, uzamykateľná úschovňa pre bicykle a skialpy.</p>
-      </li>
-      <li>
-        <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h20a4 4 0 0 1 0 8h-1"/><path d="M4 12v9a4 4 0 0 0 4 4h11a4 4 0 0 0 4-4v-9"/><path d="M9 8c0-1.5 1.5-1.8 1.5-3.5M15 8c0-1.5 1.5-1.8 1.5-3.5"/></svg></span>
-        <h3>Spoločenská izba</h3>
-        <p>Otvorená pec, čaj a bylinky po celý deň, police s knihami a spoločenskými hrami.</p>
-      </li>
-      <li>
-        <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5C6.5 8 11 6.2 16 6.2s9.5 1.8 13 5.3"/><path d="M7 16c2.5-2.4 5.6-3.7 9-3.7s6.5 1.3 9 3.7"/><path d="M11 20.5c1.5-1.4 3.2-2.1 5-2.1s3.5.7 5 2.1"/><circle cx="16" cy="25" r="1.6"/></svg></span>
-        <h3>Wi-Fi po celom dome</h3>
-        <p>Optika až hore do dediny, takže aj v podkroví bez problémov odbavíte videohovor.</p>
-      </li>
-      <li>
-        <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25l6-13 4 6 3-5 7 12z"/><path d="M4 25h24"/><path d="M12 12l1.5-3"/></svg></span>
-        <h3>Ohnisko a altánok</h3>
-        <p>Drevo aj prúty na špekáčiky máme, altánok si stačí večer vopred zapísať na nástenke.</p>
-      </li>
-      <li>
-        <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 24V9a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v15"/><path d="M2 24h28"/><path d="M9 7V4h6v3"/><path d="M16 12v7M12.5 15.5h7"/></svg></span>
-        <h3>Parkovanie pri dome</h3>
-        <p>Osem miest priamo pred penziónom, v zime odhrnuté. Nabíjačka na elektromobil po dohode.</p>
-      </li>
-    </ul>
+    <dl class="list-2 reveal">
+      <div>
+        <dt>Sauna</dt>
+        <dd>Fínska sauna pre šesť osôb, denne od 16:00 do 21:00. Hodinu si rezervujete na recepcii.</dd>
+      </div>
+      <div>
+        <dt>Sušiareň a úschovňa</dt>
+        <dd>Vyhrievaná sušiareň na oblečenie a obuv, uzamykateľná miestnosť pre bicykle a lyže.</dd>
+      </div>
+      <div>
+        <dt>Parkovanie</dt>
+        <dd>Osem miest priamo pri budove, bez poplatku. V zime je plocha odhrnutá.</dd>
+      </div>
+      <div>
+        <dt>Bezdrôtový internet</dt>
+        <dd>Pripojenie vo všetkých izbách aj v spoločných priestoroch. Heslo je na karte v izbe.</dd>
+      </div>
+      <div>
+        <dt>Spoločenská miestnosť</dt>
+        <dd>Kachle, čaj a káva po celý deň, knihy a spoločenské hry.</dd>
+      </div>
+      <div>
+        <dt>Ohnisko a altánok</dt>
+        <dd>Drevo je v cene. Altánok si zapíšete na recepcii do 18:00 v ten istý deň.</dd>
+      </div>
+      <div>
+        <dt>Práčka a sušička</dt>
+        <dd>V suteréne, na žetóny z recepcie. Jeden cyklus 3 €, prášok je k dispozícii.</dd>
+      </div>
+      <div>
+        <dt>Požičovňa</dt>
+        <dd>Palice na turistiku, detská nosička a sane bez poplatku. Snehové reťaze na požičanie.</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
-<!-- ===== RAŇAJKY ===== -->
-<section class="sec" id="ranajky">
-  <div class="wrap split">
-    <div class="reveal">
-      <p class="eyebrow">Raňajky a strava</p>
-      <h2>Raňajky, po ktorých netreba obed</h2>
-      <p class="lede">Pečieme každé ráno, mlieko a syry vozíme z družstva v susednej doline. Ak vyrážate na hrebeň skoro, zabalíme vám raňajky so sebou do papierového vrecka.</p>
-      <p>Večere varíme od štvrtka do nedele pre ubytovaných hostí, vždy jedno mäsové a jedno bezmäsité menu. Objednávka do 15:00 v ten istý deň. Bezlepkové a bezlaktózové varianty vieme pripraviť, stačí to napísať do rezervácie.</p>
-      <div class="hero__actions" style="margin-top:6px">
-        <a class="btn btn--solid" href="#rezervacia">Rezervovať s polpenziou</a>
+<!-- ===== PRIESTOR ===== -->
+<section class="sec sec--dark on-dark" id="priestor">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">04</span>Dom</p>
+        <h2>Priestory a časy</h2>
+      </div>
+      <p class="lede">Dom má tri podlažia. Recepcia, jedáleň a spoločenská miestnosť sú na prízemí, izby na poschodí a v podkroví, sauna a technické zázemie v suteréne.</p>
+    </div>
+
+    <div class="plates reveal">
+      <div class="plate plate--grid">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <path d="M300 0 L300 400 L60 400 Z" fill="rgba(216,196,164,.07)"/>
+          <g fill="none" stroke="rgba(216,196,164,.20)" stroke-width="1">
+            <circle cx="240" cy="60" r="34"/>
+            <circle cx="240" cy="60" r="64"/>
+          </g>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <div class="plate__txt">
+          <p class="plate__kicker">Jedáleň, prízemie</p>
+          <p class="plate__big plate__big--sm">7:30 – 10:00</p>
+          <p class="plate__sub">Raňajkový bufet, 32 miest, v lete aj na terase</p>
+        </div>
+      </div>
+
+      <div class="plate">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(237,234,228,.12)" stroke-width="1">
+            <path d="M-20 90 L320 90"/><path d="M-20 130 L320 130"/><path d="M-20 170 L320 170"/>
+            <path d="M-20 210 L320 210"/><path d="M-20 250 L320 250"/>
+          </g>
+          <path d="M0 0 L300 0 L300 60 L0 140 Z" fill="rgba(216,196,164,.08)"/>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <div class="plate__txt">
+          <p class="plate__kicker">Sauna, suterén</p>
+          <p class="plate__big">6 osôb</p>
+          <p class="plate__sub">Fínska sauna denne 16:00 – 21:00, hodinu si zapíšete na recepcii</p>
+        </div>
+      </div>
+
+      <div class="plate plate--grid">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(216,196,164,.18)" stroke-width="1">
+            <circle cx="70" cy="330" r="50"/>
+            <circle cx="70" cy="330" r="96"/>
+            <circle cx="70" cy="330" r="150"/>
+          </g>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <div class="plate__txt">
+          <p class="plate__kicker">Spoločenská miestnosť</p>
+          <p class="plate__big plate__big--sm">Celý deň</p>
+          <p class="plate__sub">Kachle, čaj a káva bez poplatku, knihy a spoločenské hry</p>
+        </div>
+      </div>
+
+      <div class="plate">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(237,234,228,.11)" stroke-width="1">
+            <path d="M-40 60 L200 420"/><path d="M20 20 L260 380"/><path d="M80 -20 L320 340"/>
+          </g>
+          <path d="M0 400 L300 240 L300 400 Z" fill="rgba(216,196,164,.07)"/>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <div class="plate__txt">
+          <p class="plate__kicker">Terasa a ohnisko</p>
+          <p class="plate__big plate__big--sm">Máj – október</p>
+          <p class="plate__sub">Drevo je v cene, altánok si zapíšete do 18:00 v ten istý deň</p>
+        </div>
       </div>
     </div>
 
-    <div class="menu-card reveal">
-      <h3 style="margin-bottom:.6em">Čo býva na stole</h3>
-      <ul class="menu-list">
-        <li><span><b>Domáci kváskový chlieb</b><em>pečený deň predtým v peci na drevo</em></span><span>denne</span></li>
-        <li><span><b>Vajcia z dediny</b><em>miešané, na tvrdo alebo praženica so slaninou</em></span><span>na objednanie</span></li>
-        <li><span><b>Syry a bryndza z družstva</b><em>oštiepok, čerstvý syr, ovčia bryndza</em></span><span>denne</span></li>
-        <li><span><b>Lekváre a med</b><em>slivkový, ríbezľový, lesný med od včelára z doliny</em></span><span>denne</span></li>
-        <li><span><b>Ovsená kaša s pečenými jablkami</b><em>teplá, so škoricou a orechmi</em></span><span>denne</span></li>
-        <li><span><b>Bylinkový čaj a mletá káva</b><em>čaj z mäty a materinej dúšky spoza domu</em></span><span>bez obmedzenia</span></li>
-      </ul>
-      <p class="hint" style="margin-top:18px">Raňajky podávame od 7:30 do 10:00 v jedálni na prízemí. V lete aj na terase.</p>
+    <p class="note">V celom dome sa nefajčí. Fajčiť sa dá pod prístreškom pri vchode, popolník je na stĺpiku vľavo.</p>
+  </div>
+</section>
+
+<!-- ===== STRAVA ===== -->
+<section class="sec" id="strava">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">05</span>Strava</p>
+        <h2>Raňajky a večere</h2>
+      </div>
+      <p class="lede">Raňajky sú v cene ubytovania. Večere varíme od štvrtka do nedele pre ubytovaných hostí.</p>
+    </div>
+
+    <div class="split">
+      <div class="reveal">
+        <p>Raňajky podávame formou bufetu v jedálni na prízemí od 7:30 do 10:00, v lete aj na terase. Ak vyrážate skôr, pripravíme vám balíček so sebou. Nahláste to na recepcii deň vopred do 20:00.</p>
+        <p>Večere sa podávajú od 18:00 do 20:00, cena je 22 € za osobu. Na výber je mäsové a bezmäsité menu. Objednávka do 15:00 v ten istý deň.</p>
+        <p>Bezlepkové a bezlaktózové jedlá vieme pripraviť, uveďte to prosím v rezervácii. Do jedálne chodia aj neubytovaní hostia, v sezóne odporúčame rezervovať stôl vopred.</p>
+        <p>Menu píšeme podľa toho, čo je v danom týždni dostupné. Stálicami sú polievka z kostí, zemiakové placky s bryndzou, pečené koleno na tmavom pive a dusené hovädzie s domácimi cestovinami. Bezmäsité menu býva strukovinové alebo hubové.</p>
+        <div class="actions" style="margin-top:4px">
+          <a class="btn btn--primary" href="#rezervacia">Rezervovať s polpenziou</a>
+          <a class="btn btn--line" href="#cennik">Cenník doplnkov</a>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Časy a ceny</h3>
+        <dl class="rows">
+          <div><dt>Raňajky</dt><dd>7:30 – 10:00, v cene</dd></div>
+          <div><dt>Balíček so sebou</dt><dd>na objednanie, v cene</dd></div>
+          <div><dt>Večera</dt><dd>18:00 – 20:00, 22 € za osobu</dd></div>
+          <div><dt>Detská porcia</dt><dd>do 12 rokov, 12 € za osobu</dd></div>
+          <div><dt>Polievka a dezert</dt><dd>súčasť večere</dd></div>
+          <div><dt>Bar a čajovňa</dt><dd>14:00 – 22:00</dd></div>
+          <div><dt>Fľaša vína na izbu</dt><dd>od 14 €, na objednanie</dd></div>
+        </dl>
+        <p class="hint">Mimo štvrtka až nedele je najbližšia reštaurácia v Podhrebeni, 2 km od penziónu.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===== OKOLIE ===== -->
-<section class="sec" id="okolie" style="background:var(--cream-2)">
+<section class="sec sec--band" id="okolie">
   <div class="wrap">
     <div class="sec__head reveal">
       <div>
-        <p class="eyebrow">Okolie a tipy na výlety</p>
-        <h2>Od dverí rovno na chodník</h2>
+        <p class="eyebrow"><span class="eyebrow__no">06</span>Okolie</p>
+        <h2>Vzdialenosti a výlety</h2>
       </div>
-      <p class="lede">Značka vedie priamo popri plote, takže autom už nikam nemusíte. Mapy a odporúčania podľa počasia dostanete pri raňajkách.</p>
+      <p class="lede">Značený chodník začína pri plote penziónu. Mapy okolia sú k dispozícii na recepcii.</p>
     </div>
 
-    <div class="trips">
-      <article class="trip reveal">
-        <p class="trip__dist">0 km</p>
-        <h3>Okruh cez sedlo</h3>
-        <p>Pohodlné tri hodiny lesnou cestou na sedlo a späť druhou stranou dolinou. Zvládnu ho aj deti od šiestich rokov.</p>
-        <p class="trip__season">Apríl – november</p>
+    <div class="trips reveal">
+      <div>
+        <p class="dist">0 km</p>
+        <div>
+          <h3>Okruh cez sedlo</h3>
+          <p>Lesná cesta na sedlo a späť dolinou. Približne 3 hodiny, prevýšenie 320 m.</p>
+        </div>
+        <p class="season">Apríl – november</p>
+      </div>
+      <div>
+        <p class="dist">2,5 km</p>
+        <div>
+          <h3>Vodopád v tiesňave</h3>
+          <p>Odbočka zo žltej značky k skalnej stene. Cesta tam a späť trvá hodinu.</p>
+        </div>
+        <p class="season">Máj – október</p>
+      </div>
+      <div>
+        <p class="dist">4 km</p>
+        <div>
+          <h3>Lyžiarsky vlek</h3>
+          <p>Dve zjazdovky a bežecká stopa. V zime vozíme hostí na vlek dodávkou bez poplatku.</p>
+        </div>
+        <p class="season">December – marec</p>
+      </div>
+      <div>
+        <p class="dist">7 km</p>
+        <div>
+          <h3>Hrebeňová túra</h3>
+          <p>Celodenný výstup nad hranicu lesa. Prevýšenie 900 m, odporúčaný odchod pred 7:00.</p>
+        </div>
+        <p class="season">Jún – september</p>
+      </div>
+      <div>
+        <p class="dist">9 km</p>
+        <div>
+          <h3>Drevený kostolík</h3>
+          <p>Zrubová stavba nad susednou obcou. Cez leto otvorená denne od 10:00 do 17:00.</p>
+        </div>
+        <p class="season">Celoročne</p>
+      </div>
+      <div>
+        <p class="dist">14 km</p>
+        <div>
+          <h3>Termálne kúpalisko</h3>
+          <p>Vonkajšie bazény otvorené aj v zime. Vstupenky sa na recepcii penziónu nepredávajú.</p>
+        </div>
+        <p class="season">Celoročne</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SEZÓNA ===== -->
+<section class="sec sec--dark on-dark" id="sezona">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">07</span>Rok v penzióne</p>
+        <h2>Prevádzka počas roka</h2>
+      </div>
+      <p class="lede">Otvorené máme celý rok okrem dvoch týždňov údržby v novembri. Presný termín zverejňujeme v septembri a hostí s rezerváciou naň upozorňujeme vopred.</p>
+    </div>
+
+    <div class="season-grid reveal">
+      <article>
+        <p class="rim">XII – III</p>
+        <h3>Zima</h3>
+        <p>Vlek so zjazdovkami je 4 km od domu, bežecká stopa začína pri odbočke. Hostí vozíme na vlek dodávkou ráno o 8:30 a späť o 16:00.</p>
+        <ul>
+          <li>Sušiareň a lyžiareň v prevádzke</li>
+          <li>Cez Vianoce a jarné prázdniny minimálne 3 noci</li>
+          <li>Silvester minimálne 4 noci</li>
+          <li>Odporúčame zimné pneumatiky</li>
+        </ul>
       </article>
-      <article class="trip reveal">
-        <p class="trip__dist">2,5 km</p>
-        <h3>Vodopád v tiesňave</h3>
-        <p>Krátka odbočka k skalnej stene, kde padá voda do zeleného jazierka. Po daždi je najfotogenickejší.</p>
-        <p class="trip__season">Máj – október</p>
+      <article>
+        <p class="rim">IV – V</p>
+        <h3>Jar</h3>
+        <p>Najtichšie obdobie roka. Chodníky nad hranicou lesa bývajú do polovice mája miestami zasnežené, dolinové trasy sú suché.</p>
+        <ul>
+          <li>Vodopád v tiesňave má najviac vody</li>
+          <li>Večere štvrtok až nedeľa</li>
+          <li>Sauna denne 16:00 – 21:00</li>
+          <li>Voľné termíny aj týždeň vopred</li>
+        </ul>
       </article>
-      <article class="trip reveal">
-        <p class="trip__dist">4 km</p>
-        <h3>Lyžiarsky vlek v doline</h3>
-        <p>Dve zjazdovky pre rodiny a bežecká stopa, ktorá začína hneď za obcou. V zime vozíme hostí dodávkou zadarmo.</p>
-        <p class="trip__season">December – marec</p>
+      <article>
+        <p class="rim">VI – VIII</p>
+        <h3>Leto</h3>
+        <p>Raňajky podávame na terase, ohnisko je v prevádzke každý večer. Najvyťaženejšie sú posledné dva augustové týždne.</p>
+        <ul>
+          <li>Rezervujte 4 – 6 týždňov vopred</li>
+          <li>Altánok sa zapisuje do 18:00</li>
+          <li>Detská postieľka bez poplatku</li>
+          <li>Hrebeňová túra s odchodom pred 7:00</li>
+        </ul>
       </article>
-      <article class="trip reveal">
-        <p class="trip__dist">7 km</p>
-        <h3>Hrebeňová túra</h3>
-        <p>Celodenný výstup nad hranicu lesa s výhľadom na dve pohoria. Vyrážajte pred siedmou, popoludní tu často hrmí.</p>
-        <p class="trip__season">Jún – september</p>
-      </article>
-      <article class="trip reveal">
-        <p class="trip__dist">9 km</p>
-        <h3>Drevený kostolík</h3>
-        <p>Zrubová stavba nad susednou obcou, otvorená cez leto denne. Cesta sa dá spojiť s návštevou mlyna pod cintorínom.</p>
-        <p class="trip__season">Celoročne</p>
-      </article>
-      <article class="trip reveal">
-        <p class="trip__dist">14 km</p>
-        <h3>Termálne kúpalisko</h3>
-        <p>Vonkajšie bazény otvorené aj v zime. Dobrý plán na deň, keď prší a na hrebeň sa ísť neoplatí.</p>
-        <p class="trip__season">Celoročne</p>
+      <article>
+        <p class="rim">IX – XI</p>
+        <h3>Jeseň</h3>
+        <p>Hubárske obdobie a najlepšia viditeľnosť z hrebeňa. V spoločenskej miestnosti kúrime v kachliach od polovice septembra.</p>
+        <ul>
+          <li>Sušiareň na hubársky výnos</li>
+          <li>Dva týždne údržby v novembri</li>
+          <li>Pobyty od 3 nocí sú bežné</li>
+          <li>Skoré stmievanie, vezmite čelovku</li>
+        </ul>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ===== GALÉRIA ===== -->
-<section class="sec sec--dark on-dark" id="galeria">
+<!-- ===== POSTUP ===== -->
+<section class="sec" id="postup">
   <div class="wrap">
     <div class="sec__head reveal">
       <div>
-        <p class="eyebrow">Galéria</p>
-        <h2>Ako to u nás vyzerá</h2>
+        <p class="eyebrow"><span class="eyebrow__no">08</span>Postup</p>
+        <h2>Ako prebieha rezervácia</h2>
       </div>
-      <p class="lede">Zábery z domu, terasy a najbližšieho okolia naprieč ročnými obdobiami.</p>
+      <p class="lede">Štyri kroky od dopytu po odovzdanie kľúča. Nič z toho nevyžaduje platbu vopred, pri jednotlivých izbách zálohu nevyberáme.</p>
     </div>
 
-    <div class="gal reveal">
-      <!-- miesto pre reálnu fotografiu klienta: penzión pri západe slnka -->
-      <figure class="g-a">
-        <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Penzión na okraji lesa pri západe slnka">
-          <defs>
-            <linearGradient id="ga1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C3F44"/><stop offset=".55" stop-color="#8A7A63"/><stop offset="1" stop-color="#D9A35F"/></linearGradient>
-          </defs>
-          <rect width="800" height="450" fill="url(#ga1)"/>
-          <circle cx="600" cy="300" r="54" fill="#F3D08F" opacity=".9"/>
-          <path d="M0 300l120-70 110 52 130-74 120 84 140-56 180 74v140H0z" fill="#31473A"/>
-          <path d="M0 350l150-40 140 30 160-34 180 44 170-24v130H0z" fill="#1D2E24"/>
-          <g fill="#152219">
-            <path d="M70 400l-16 42h32zM70 414l-20 44h40zM160 396l-15 40h30zM160 410l-19 42h38zM700 398l-16 42h32zM700 412l-20 44h40z"/>
-          </g>
-          <g transform="translate(400 330)">
-            <path d="M-96 30L0-40l96 70z" fill="#33241A"/>
-            <rect x="-78" y="26" width="156" height="86" fill="#4A3524"/>
-            <rect x="-56" y="46" width="34" height="30" fill="#F0C173"/>
-            <rect x="-8" y="46" width="34" height="30" fill="#F6D89C"/>
-            <rect x="40" y="46" width="26" height="30" fill="#E0B15E"/>
-            <rect x="-14" y="82" width="28" height="30" fill="#2A1D12"/>
-            <path d="M-104 32L0-46l104 78" fill="none" stroke="#241A11" stroke-width="8" stroke-linejoin="round"/>
-          </g>
-          <rect y="420" width="800" height="30" fill="#16241C"/>
-        </svg>
-        <figcaption>Dom pri poslednom svetle nad hrebeňom</figcaption>
-      </figure>
-
-      <!-- miesto pre reálnu fotografiu klienta: chodník v hmlistom lese -->
-      <figure class="g-b">
-        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Lesný chodník medzi smrekmi v rannej hmle">
-          <defs><linearGradient id="ga2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9D3C4"/><stop offset="1" stop-color="#4F6B4A"/></linearGradient></defs>
-          <rect width="400" height="500" fill="url(#ga2)"/>
-          <g fill="#3B5140" opacity=".55"><rect x="40" y="60" width="16" height="420"/><rect x="130" y="30" width="20" height="450"/><rect x="250" y="50" width="18" height="430"/><rect x="330" y="20" width="22" height="460"/></g>
-          <g fill="#22382B"><rect x="80" y="0" width="26" height="500"/><rect x="196" y="0" width="30" height="500"/><rect x="300" y="0" width="24" height="500"/></g>
-          <path d="M120 500l60-260h30l70 260z" fill="#8A7355" opacity=".85"/>
-          <ellipse cx="200" cy="250" rx="220" ry="46" fill="#E4EBE0" opacity=".38"/>
-          <ellipse cx="180" cy="330" rx="240" ry="38" fill="#E4EBE0" opacity=".28"/>
-        </svg>
-        <figcaption>Chodník za plotom, šesť ráno</figcaption>
-      </figure>
-
-      <!-- miesto pre reálnu fotografiu klienta: terasa so saunovým sudom -->
-      <figure class="g-c">
-        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Drevená terasa so saunou a stoličkami pri lese">
-          <defs><linearGradient id="ga3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#405B48"/><stop offset="1" stop-color="#B08B5C"/></linearGradient></defs>
-          <rect width="400" height="500" fill="url(#ga3)"/>
-          <g fill="#2C4234"><path d="M40 240l-24 60h48zM40 262l-30 66h60zM340 230l-24 60h48zM340 252l-30 66h60z"/></g>
-          <rect y="300" width="400" height="200" fill="#8A6A46"/>
-          <g stroke="#6E5334" stroke-width="3"><path d="M0 330h400M0 370h400M0 410h400M0 450h400"/></g>
-          <rect x="220" y="180" width="150" height="130" rx="18" fill="#6E5334"/>
-          <rect x="234" y="196" width="122" height="98" rx="12" fill="#8A6A46"/>
-          <rect x="262" y="222" width="66" height="46" rx="6" fill="#E9C782"/>
-          <g stroke="#3E2C1A" stroke-width="7" stroke-linecap="round" fill="none">
-            <path d="M60 330v-56h70v56M60 274l-14-30h98l-14 30"/>
-          </g>
-          <path d="M46 244h98l-12-34H58z" fill="#4F6B4A"/>
-          <circle cx="180" cy="300" r="14" fill="#E0B15E"/>
-        </svg>
-        <figcaption>Sauna a terasa na severnej strane</figcaption>
-      </figure>
-
-      <!-- miesto pre reálnu fotografiu klienta: raňajkový stôl -->
-      <figure class="g-d">
-        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Raňajkový stôl s chlebom, kávou a medom">
-          <rect width="400" height="400" fill="#B98F5D"/>
-          <g stroke="#9C7748" stroke-width="4"><path d="M0 70h400M0 170h400M0 270h400M0 370h400"/></g>
-          <ellipse cx="200" cy="210" rx="150" ry="120" fill="#C79C68" opacity=".5"/>
-          <circle cx="150" cy="200" r="58" fill="#F4EAD6"/>
-          <circle cx="150" cy="200" r="44" fill="#EADFC7"/>
-          <path d="M120 196c14-16 46-16 60 0-10 12-50 12-60 0z" fill="#B07A3C"/>
-          <g><rect x="248" y="176" width="72" height="62" rx="8" fill="#F4EAD6"/><path d="M320 190h14a14 14 0 0 1 0 28h-14z" fill="none" stroke="#F4EAD6" stroke-width="8"/><rect x="256" y="186" width="56" height="18" rx="4" fill="#5A3A1E"/></g>
-          <g><rect x="60" y="286" width="54" height="50" rx="6" fill="#E0B15E"/><rect x="56" y="278" width="62" height="12" rx="4" fill="#8A5324"/></g>
-          <g fill="#4F6B4A"><path d="M300 300c16-18 44-14 52 4-18 6-38 6-52-4z"/><path d="M290 316c18-14 44-8 50 10-18 4-36 2-50-10z"/></g>
-          <rect x="176" y="286" width="90" height="14" rx="7" fill="#F4EAD6"/>
-          <rect x="186" y="304" width="70" height="10" rx="5" fill="#D9C7A8"/>
-        </svg>
-        <figcaption>Raňajky, ako ich nosíme na stôl</figcaption>
-      </figure>
-
-      <!-- miesto pre reálnu fotografiu klienta: zimná nočná obloha nad penziónom -->
-      <figure class="g-e">
-        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Zimná noc s hviezdnou oblohou nad zasneženým penziónom">
-          <defs><linearGradient id="ga5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16261D"/><stop offset="1" stop-color="#3F5A55"/></linearGradient></defs>
-          <rect width="400" height="400" fill="url(#ga5)"/>
-          <g fill="#F1E6CC">
-            <circle cx="40" cy="50" r="2"/><circle cx="96" cy="30" r="1.6"/><circle cx="150" cy="70" r="2.4"/><circle cx="210" cy="40" r="1.6"/>
-            <circle cx="268" cy="72" r="2"/><circle cx="320" cy="36" r="2.6"/><circle cx="370" cy="88" r="1.8"/><circle cx="70" cy="120" r="1.6"/>
-            <circle cx="184" cy="128" r="2"/><circle cx="300" cy="140" r="1.6"/><circle cx="240" cy="98" r="1.4"/><circle cx="130" cy="160" r="1.4"/>
-          </g>
-          <path d="M0 210l90-56 70 40 80-52 76 58 84-40v240H0z" fill="#22382B"/>
-          <path d="M0 268l110-30 90 24 96-30 104 28v140H0z" fill="#E8EEEA"/>
-          <g fill="#1B2C22"><path d="M50 268l-18 46h36zM50 286l-22 50h44zM340 260l-18 46h36zM340 278l-22 50h44z"/></g>
-          <g transform="translate(200 250)">
-            <path d="M-62 22L0-24l62 46z" fill="#E8EEEA"/>
-            <rect x="-50" y="20" width="100" height="56" fill="#3B2A1C"/>
-            <rect x="-34" y="34" width="24" height="22" fill="#E9C782"/>
-            <rect x="10" y="34" width="24" height="22" fill="#F2D89F"/>
-            <rect x="-8" y="60" width="16" height="16" fill="#1B120B"/>
-          </g>
-          <rect y="330" width="400" height="70" fill="#F2F6F3"/>
-        </svg>
-        <figcaption>Januárová noc bez pouličných lámp</figcaption>
-      </figure>
+    <div class="steps reveal">
+      <div>
+        <p class="n">01</p>
+        <h3>Dopyt</h3>
+        <p>Vyplníte rezervačný formulár alebo zavoláte na recepciu na číslo 0908 331 947. Potrebujeme termín, počet osôb a typ izby.</p>
+        <p>Formulár hneď ukáže orientačnú cenu pobytu vrátane dane a večerí.</p>
+      </div>
+      <div>
+        <p class="n">02</p>
+        <h3>Potvrdenie do 24 hodín</h3>
+        <p>Ozveme sa telefonicky alebo krátkou správou. Potvrdíme voľný termín a presnú cenu podľa sezóny, prípadne ponúkneme najbližší voľný termín.</p>
+        <p>Rezervácia platí až po tomto potvrdení.</p>
+      </div>
+      <div>
+        <p class="n">03</p>
+        <h3>Dva dni pred príchodom</h3>
+        <p>Pripomenieme termín a dohodneme čas príchodu. Vtedy nahláste večere, detskú postieľku, psa alebo odvoz zo zastávky.</p>
+        <p>Zmena počtu osôb je do tohto momentu bez poplatku.</p>
+      </div>
+      <div>
+        <p class="n">04</p>
+        <h3>Príchod a platba</h3>
+        <p>Ubytovanie od 14:00, kľúč vyzdvihnete na recepcii. Pri neskorom príchode ho necháme v schránke pri vchode a kód pošleme správou.</p>
+        <p>Platí sa pri odchode kartou alebo v hotovosti, firmám vystavíme faktúru.</p>
+      </div>
     </div>
+
+    <p class="note">Ak termín, ktorý chcete, už nie je voľný, ponúkneme najbližší dostupný a zapíšeme vás ako náhradníka. Pri zrušení sa vám ozveme ako prvým.</p>
   </div>
 </section>
 
 <!-- ===== REZERVÁCIA ===== -->
-<section class="sec" id="rezervacia">
+<section class="sec sec--band" id="rezervacia">
   <div class="wrap">
     <div class="sec__head reveal">
       <div>
-        <p class="eyebrow">Rezervácia</p>
-        <h2>Spočítajte si pobyt</h2>
+        <p class="eyebrow"><span class="eyebrow__no">09</span>Rezervácia</p>
+        <h2>Prepočet ceny a nezáväzný dopyt</h2>
       </div>
-      <p class="lede">Vyberte izbu, termín a počet osôb. Cenu vidíte hneď vedľa, ešte pred odoslaním dopytu. Potvrdenie posielame do 24 hodín, zálohu nevyberáme.</p>
+      <p class="lede">Vyberte izbu, termín a počet osôb. Cenu uvidíte hneď vedľa formulára. Potvrdenie posielame do 24 hodín, zálohu nevyberáme.</p>
     </div>
 
     <div class="book">
@@ -974,9 +1213,9 @@ html.js .reveal.in{opacity:1;transform:none}
         <div class="field">
           <label for="izba">Izba alebo apartmán</label>
           <select id="izba" name="izba">
-            <option value="podkrovna" data-cena="68" data-max="2" selected>Podkrovná izba pod trámami — 68 € / noc</option>
-            <option value="balkon" data-cena="84" data-max="3">Izba s balkónom do doliny — 84 € / noc</option>
-            <option value="apartman" data-cena="129" data-max="5">Apartmán pod smrekmi — 129 € / noc</option>
+            <option value="dvojlozkova" data-cena="68" data-max="2" selected>Dvojlôžková izba, 68 € za noc</option>
+            <option value="balkon" data-cena="84" data-max="3">Izba s balkónom, 84 € za noc</option>
+            <option value="apartman" data-cena="129" data-max="5">Apartmán, 129 € za noc</option>
           </select>
         </div>
 
@@ -994,62 +1233,54 @@ html.js .reveal.in{opacity:1;transform:none}
         <div class="grid2">
           <div class="field">
             <label for="osoby">Počet osôb</label>
-            <input type="number" id="osoby" name="osoby" value="2" min="1" max="5" step="1">
+            <input type="number" id="osoby" name="osoby" value="2" min="1" max="5" step="1" inputmode="numeric">
           </div>
           <div class="field">
-            <label for="strava">Strava</label>
-            <select id="strava" name="strava">
-              <option value="0" selected>Len raňajky (v cene)</option>
-              <option value="22">Polpenzia — večera 22 € / osoba</option>
+            <label for="strava-volba">Strava</label>
+            <select id="strava-volba" name="strava">
+              <option value="0" selected>Raňajky, v cene ubytovania</option>
+              <option value="22">Polpenzia, večera 22 € za osobu</option>
             </select>
           </div>
         </div>
 
-        <hr style="border:0;border-top:1px solid var(--line);margin:26px 0">
+        <hr class="rule">
 
         <div class="grid2">
           <div class="field">
             <label for="meno">Meno a priezvisko</label>
-            <input type="text" id="meno" name="meno" autocomplete="name" placeholder="napríklad Jana Horská">
+            <input type="text" id="meno" name="meno" autocomplete="name">
           </div>
           <div class="field">
             <label for="telefon">Telefón</label>
-            <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="09XX XXX XXX">
+            <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="Vaše telefónne číslo">
           </div>
         </div>
 
         <div class="field">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" autocomplete="email" placeholder="vas@example.com">
+          <label for="poznamka">Poznámka</label>
+          <textarea id="poznamka" name="poznamka" placeholder="Detská postieľka, bezlepkové raňajky, príchod po 20:00"></textarea>
         </div>
 
-        <div class="field">
-          <label for="poznamka">Poznámka pre nás</label>
-          <textarea id="poznamka" name="poznamka" placeholder="Prídeme s psom, potrebujeme detskú postieľku, bezlepkové raňajky…"></textarea>
-        </div>
-
-        <button class="btn btn--solid" type="submit" style="width:100%">Odoslať nezáväznú rezerváciu</button>
-        <p class="hint" style="margin-top:14px">Toto je ukážkový web — formulár nikam nič neodošle a žiadne údaje sa neukladajú.</p>
+        <button class="btn btn--primary" type="submit" style="width:100%">Odoslať nezáväzný dopyt</button>
+        <p class="hint">Dopyt príde do schránky penziónu a odpovedáme naň do 24 hodín. Toto je ukážkový web, formulár nikam nič neodosiela a žiadne údaje sa neukladajú.</p>
 
         <div class="done" id="rezervacia-hotovo" hidden tabindex="-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>
-          <div>
-            <strong>Takto by hosť videl potvrdenie</strong>
-            <p>Na ostrom webe by vám teraz prišiel e-mail s rekapituláciou pobytu a penzión by mal rezerváciu v schránke. Tu sa nikam nič neodoslalo — je to ukážka. Chcete takýto web pre svoj podnik? <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></p>
-          </div>
+          <strong>Takto by hosť videl potvrdenie</strong>
+          <p>Na ostrom webe by dopyt v tomto momente pristál v schránke penziónu a hosť by dostal potvrdenie do 24 hodín. Tu sa nikam nič neodoslalo. Ak chcete takýto web pre svoj podnik, pozrite si <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
         </div>
       </form>
 
-      <aside class="sum reveal" aria-label="Prepočet ceny pobytu">
-        <h3>Váš pobyt</h3>
-        <p class="sum__room" id="sum-izba">Podkrovná izba pod trámami</p>
+      <aside class="sum reveal on-dark" aria-label="Prepočet ceny pobytu">
+        <h3>Prepočet pobytu</h3>
+        <p class="sum__room" id="sum-izba">Dvojlôžková izba</p>
 
-        <p class="eyebrow" style="font-size:.7rem;margin-bottom:.7em">Rýchly výber dĺžky</p>
-        <div class="chips" id="chips" role="group" aria-label="Rýchly výber dĺžky pobytu">
-          <button type="button" class="chip" data-noci="1" aria-pressed="false">1 noc</button>
-          <button type="button" class="chip" data-noci="2" aria-pressed="true">2 noci</button>
-          <button type="button" class="chip" data-noci="3" aria-pressed="false">3 noci</button>
-          <button type="button" class="chip" data-noci="7" aria-pressed="false">týždeň</button>
+        <p class="eyebrow">Dĺžka pobytu</p>
+        <div class="nights" id="nights" role="group" aria-label="Rýchly výber dĺžky pobytu">
+          <button type="button" data-noci="1" aria-pressed="false">1 noc</button>
+          <button type="button" data-noci="2" aria-pressed="true">2 noci</button>
+          <button type="button" data-noci="3" aria-pressed="false">3 noci</button>
+          <button type="button" data-noci="7" aria-pressed="false">7 nocí</button>
         </div>
 
         <div class="sum__row"><span>Termín</span><span id="sum-termin">2 noci</span></div>
@@ -1059,85 +1290,408 @@ html.js .reveal.in{opacity:1;transform:none}
         <div class="sum__row"><span>Daň za ubytovanie</span><span id="sum-dan">6,00 €</span></div>
 
         <div class="sum__total">
-          <span class="lbl">Spolu za pobyt</span>
+          <span class="lbl">Spolu</span>
           <span class="val" id="sum-spolu">142,00 €</span>
         </div>
 
         <p class="sum__note" id="sum-detail">2 osoby &middot; 68 € za noc &middot; daň 1,50 € za osobu a noc</p>
         <p class="sum__warn" id="sum-chyba" hidden role="status"></p>
-        <p class="sum__note">Sauna, parkovanie aj Wi-Fi sú v cene. Platí sa až na mieste, kartou alebo v hotovosti.</p>
+        <p class="sum__note">Sauna, parkovanie a internet sú v cene. Platí sa na mieste kartou alebo v hotovosti.</p>
       </aside>
     </div>
   </div>
 </section>
 
-<!-- ===== KONTAKT ===== -->
-<section class="sec sec--dark on-dark" id="kontakt">
+<!-- ===== POUKAZY A SKUPINY ===== -->
+<section class="sec" id="poukazy">
   <div class="wrap">
     <div class="sec__head reveal">
       <div>
-        <p class="eyebrow">Kontakt a cesta k nám</p>
-        <h2>Nájdete nás na konci obce</h2>
+        <p class="eyebrow"><span class="eyebrow__no">10</span>Darovanie a skupiny</p>
+        <h2>Poukazy, firmy a celý dom</h2>
       </div>
-      <p class="lede">Ak zablúdite, zavolajte — vyjdeme vám na križovatku naproti. V zime odporúčame zimné pneumatiky, posledný úsek stúpa.</p>
+      <p class="lede">Poukaz vystavíme na sumu alebo na konkrétny pobyt. Skupinám vieme prenajať celý dom aj s večerami a spoločenskou miestnosťou.</p>
+    </div>
+
+    <div class="gift">
+      <div class="plate plate--light plate--grid reveal">
+        <svg class="plate__art" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(110,85,51,.20)" stroke-width="1">
+            <circle cx="320" cy="70" r="42"/>
+            <circle cx="320" cy="70" r="78"/>
+            <circle cx="320" cy="70" r="118"/>
+          </g>
+          <path d="M0 320 L400 190 L400 320 Z" fill="rgba(110,85,51,.06)"/>
+          <rect width="400" height="320" fill="#6E5533" filter="url(#zrno)" opacity=".10"/>
+        </svg>
+        <div class="plate__txt">
+          <p class="plate__kicker">Darčekový poukaz</p>
+          <p class="plate__big">50 &middot; 100 &middot; 150 €</p>
+          <p class="plate__sub">Platnosť 12 mesiacov od vystavenia. Poukaz na konkrétny pobyt vystavíme na sumu podľa cenníka.</p>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Ako to funguje</h3>
+        <dl class="rows">
+          <div><dt>Na čo platí</dt><dd>ubytovanie, večere aj bar</dd></div>
+          <div><dt>Forma</dt><dd>tlačený poukaz, vyzdvihnutie na recepcii</dd></div>
+          <div><dt>Vystavenie</dt><dd>do 2 pracovných dní od objednávky</dd></div>
+          <div><dt>Platba za poukaz</dt><dd>prevodom alebo osobne na recepcii</dd></div>
+          <div><dt>Uplatnenie</dt><dd>číslo poukazu uveďte v rezervácii</dd></div>
+          <div><dt>Nevyčerpaná časť</dt><dd>ostáva na poukaze do konca platnosti</dd></div>
+          <div><dt>Výmena za hotovosť</dt><dd>nie je možná</dd></div>
+        </dl>
+        <p class="hint">Poukaz si viete objednať cez rezervačný formulár, do poznámky napíšte hodnotu a meno obdarovaného.</p>
+      </div>
+    </div>
+
+    <div class="cards-3">
+      <article class="panel reveal">
+        <h3>Celý dom pre skupinu</h3>
+        <p>Osem izieb a dva apartmány naraz, teda až 30 lôžok vrátane prísteliek. Vhodné na rodinné stretnutie alebo turistický víkend.</p>
+        <ul>
+          <li><b>Minimálne 2 noci</b>, cez sviatky 3 noci</li>
+          <li>Raňajky pre celú skupinu v jednom čase</li>
+          <li>Večere na objednávku aj v pondelok až stredu</li>
+          <li>Cena podľa počtu obsadených izieb</li>
+        </ul>
+      </article>
+      <article class="panel reveal">
+        <h3>Firemné stretnutie</h3>
+        <p>Spoločenskú miestnosť vieme prestaviť na pracovné stretnutie do 20 osôb. Ostatné priestory zostávajú bežne v prevádzke.</p>
+        <ul>
+          <li>Plátno, projektor a tabuľa s papierovým blokom</li>
+          <li>Káva, čaj a voda po celý deň</li>
+          <li>Obed alebo večera po dohode</li>
+          <li>Faktúra so splatnosťou 14 dní</li>
+        </ul>
+      </article>
+      <article class="panel reveal">
+        <h3>Skupinová rezervácia</h3>
+        <p>Od piatich izieb pracujeme so zálohou a s pevným zoznamom hostí. Podmienky pošleme písomne pred potvrdením termínu.</p>
+        <ul>
+          <li>Záloha <b>30 %</b> do 10 dní od potvrdenia</li>
+          <li>Zoznam hostí najneskôr 7 dní vopred</li>
+          <li>Storno do 21 dní bez poplatku</li>
+          <li>Jedna kontaktná osoba za skupinu</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PODMIENKY ===== -->
+<section class="sec sec--band" id="podmienky">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">11</span>Pravidlá pobytu</p>
+        <h2>Podmienky, storno a platby</h2>
+      </div>
+      <p class="lede">Pravidlá držíme krátke a rovnaké pre všetkých. Čokoľvek mimo nich vieme dohodnúť vopred telefonicky na čísle 0908 331 947.</p>
+    </div>
+
+    <dl class="list-2 reveal">
+      <div>
+        <dt>Rezervácia a potvrdenie</dt>
+        <dd>Dopyt z formulára je nezáväzný. Potvrdenie s termínom a cenou posielame do 24 hodín telefonicky alebo krátkou správou, rezervácia platí až po ňom.</dd>
+      </div>
+      <div>
+        <dt>Záloha</dt>
+        <dd>Pri jednotlivých izbách zálohu nevyberáme. Pri skupinách od piatich izieb je záloha 30 % z ceny ubytovania.</dd>
+      </div>
+      <div>
+        <dt>Storno pobytu</dt>
+        <dd>Do 7 dní pred príchodom bez poplatku. Od 7 do 2 dní 50 % ceny prvej noci, menej ako 48 hodín vopred 100 % ceny prvej noci.</dd>
+      </div>
+      <div>
+        <dt>Storno pri skupinách</dt>
+        <dd>Do 21 dní pred príchodom bez poplatku, potom prepadá zaplatená záloha. Zmena počtu izieb do 7 dní vopred je bez poplatku.</dd>
+      </div>
+      <div>
+        <dt>Spôsoby platby</dt>
+        <dd>Hotovosť, platobná karta na recepcii alebo prevod na faktúru pre firmy. Stravné lístky a benefitné karty neprijímame.</dd>
+      </div>
+      <div>
+        <dt>Daň za ubytovanie</dt>
+        <dd>1,50 € za osobu a noc, platí sa na mieste. Deti do 6 rokov ju neplatia, doklad o veku nežiadame.</dd>
+      </div>
+      <div>
+        <dt>Príchod a odchod</dt>
+        <dd>Ubytovanie od 14:00, odhlásenie do 10:00. Neskorý príchod po 20:00 nahláste vopred, dohodneme prevzatie kľúča.</dd>
+      </div>
+      <div>
+        <dt>Tichá doba</dt>
+        <dd>Od 22:00 do 7:00. Spoločenská miestnosť je do 22:00, potom prosíme presunúť posedenie k ohnisku alebo do apartmánu.</dd>
+      </div>
+      <div>
+        <dt>Deti a prístelky</dt>
+        <dd>Deti do 6 rokov spia s rodičmi bez poplatku. Prístelka 18 € za noc, detská postieľka bez poplatku po nahlásení.</dd>
+      </div>
+      <div>
+        <dt>Psy</dt>
+        <dd>10 € za noc po dohode vopred, najviac dva psy v apartmáne. Do jedálne a do sauny psy nesmú, deka je k dispozícii na recepcii.</dd>
+      </div>
+      <div>
+        <dt>Škody a strata kľúča</dt>
+        <dd>Spôsobenú škodu riešime na mieste podľa skutočnej ceny opravy. Strata kľúča je 20 € za výmenu vložky.</dd>
+      </div>
+      <div>
+        <dt>Fajčenie</dt>
+        <dd>V celom dome vrátane balkónov je fajčenie zakázané. Fajčiť sa dá pod prístreškom pri hlavnom vchode.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ===== ČASTÉ OTÁZKY ===== -->
+<section class="sec" id="otazky">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">12</span>Otázky</p>
+        <h2>Odpovede na časté otázky</h2>
+      </div>
+      <p class="lede">Ak tu odpoveď nenájdete, zavolajte na recepciu na číslo 0908 331 947 alebo napíšte cez formulár nižšie. Odpovedáme v ten istý deň, cez víkend do večera.</p>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Sú raňajky naozaj v cene ubytovania?</summary>
+        <div class="ans">
+          <p>Áno. Cena izby zahŕňa raňajkový bufet od 7:30 do 10:00 pre všetky ubytované osoby vrátane detí. Ak vyrážate skôr, pripravíme balíček so sebou, tiež bez príplatku. Stačí to povedať na recepcii deň vopred do 20:00.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Môžeme prísť so psom?</summary>
+        <div class="ans">
+          <p>Áno, po dohode vopred. Poplatok je 10 € za noc a psa, v apartmáne sú najviac dva psy. Deku a misku požičiame na recepcii.</p>
+          <p>Do jedálne, sauny a spoločenskej miestnosti psy nesmú. Vo verejných priestoroch prosíme vodítko, v okolí domu voľný pohyb nikomu neprekáža.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Kde zaparkujeme a je parkovanie spoplatnené?</summary>
+        <div class="ans">
+          <p>Priamo pri budove je osem miest zdarma, bez rezervácie. V zime je plocha odhrnutá do 7:00.</p>
+          <p>Pri plnom obsadení domu je ďalšia odstavná plocha 100 metrov nižšie pri odbočke, tiež bez poplatku. Prívesný vozík alebo dodávku nám prosím nahláste vopred.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Dá sa k vám dostať bez auta?</summary>
+        <div class="ans">
+          <p>Dá. Do doliny premáva zo železničnej stanice regionálny autobus, zastávka je 10 minút chôdze od penziónu. Cesta zo stanice trvá približne 35 minút.</p>
+          <p>Ak nám vopred napíšete čas príchodu, vyzdvihneme vás na zastávke dodávkou bez poplatku. Platí to aj pri odchode.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Je penzión bezbariérový?</summary>
+        <div class="ans">
+          <p>Čiastočne. Izba 01 je na prízemí, prístupná bočným vchodom bez schodu, dvere majú 90 cm a sprchový kút je bez prahu. Recepcia, jedáleň a spoločenská miestnosť sú tiež na prízemí bez schodov.</p>
+          <p>Sauna je v suteréne a vedie k nej 12 schodov, bezbariérová nie je. Ostatné izby sú na poschodí a v podkroví, výťah v dome nie je.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Ako to chodí so saunou?</summary>
+        <div class="ans">
+          <p>Sauna je v cene ubytovania a kúri sa denne od 16:00 do 21:00. Kapacita je šesť osôb, preto sa hodiny zapisujú na recepcii, spravidla ráno pri raňajkách.</p>
+          <p>Uteráky sú v izbe, plachtu na sedenie dostanete pri saune. Deti do 12 rokov len v sprievode dospelého.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Musíme platiť zálohu vopred?</summary>
+        <div class="ans">
+          <p>Pri jednotlivých izbách nie, platí sa až na mieste kartou alebo v hotovosti. Zálohu žiadame len pri skupinách od piatich izieb, a to 30 % z ceny ubytovania.</p>
+          <p>Firmám vystavíme faktúru so splatnosťou 14 dní, potrebujeme fakturačné údaje pred príchodom.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Čo ak prídeme až neskoro večer?</summary>
+        <div class="ans">
+          <p>Recepcia je otvorená do 20:00. Neskorší príchod nie je problém, len nám ho nahláste v rezervácii alebo telefonicky v ten deň.</p>
+          <p>Kľúč vám necháme v uzamykateľnej schránke pri vchode a kód pošleme SMS správou. Poplatok za to nie je.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KARIÉRA ===== -->
+<section class="sec sec--band" id="kariera">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">13</span>Kariéra</p>
+        <h2>Voľné pracovné miesta</h2>
+      </div>
+      <p class="lede">Sme malý tím, kde sa role prekrývajú. Hľadáme ľudí, ktorí bývajú v okolí alebo sa vedia na sezónu presťahovať. Ubytovanie počas turnusu poskytujeme.</p>
+    </div>
+
+    <div class="jobs reveal">
+      <div>
+        <div>
+          <h3>Kuchár alebo kuchárka na víkendové večere</h3>
+          <p>Príprava večerí pre 20 až 40 hostí, mäsové aj bezmäsité menu, nákup so šéfom prevádzky. Kuchyňa je malá, varí sa v dvojici.</p>
+        </div>
+        <p class="when">Štvrtok až nedeľa, 15:00 – 21:30</p>
+        <p class="form">Dohoda alebo živnosť</p>
+      </div>
+      <div>
+        <div>
+          <h3>Chyžná alebo chyžný na čiastočný úväzok</h3>
+          <p>Upratovanie izieb a spoločných priestorov, výmena bielizne, obsluha práčovne. Zaškolenie je na dva dni.</p>
+        </div>
+        <p class="when">Pondelok, štvrtok a sobota, 8:00 – 14:00</p>
+        <p class="form">Čiastočný úväzok</p>
+      </div>
+      <div>
+        <div>
+          <h3>Recepcia, sezónna výpomoc v zime</h3>
+          <p>Príjem hostí, telefonáty a rezervácie, zápis sauny, odvoz hostí na vlek dodávkou. Vodičský preukaz skupiny B je podmienka.</p>
+        </div>
+        <p class="when">December až marec, turnusy 5 dní</p>
+        <p class="form">Sezónna zmluva</p>
+      </div>
+    </div>
+
+    <p class="note">Životopis stačí krátky, napíšte nám cez kontaktný formulár alebo sa zastavte na recepcii. Ozveme sa do troch dní a pozveme vás na hodinu k nám, nech viete, kam idete.</p>
+  </div>
+</section>
+
+<!-- ===== KONTAKT ===== -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">14</span>Kontakt</p>
+        <h2>Kde nás nájdete</h2>
+      </div>
+      <p class="lede">Penzión stojí nad obcou Podhrebeň, posledné 2 km cesty stúpajú. V zime odporúčame zimné pneumatiky.</p>
     </div>
 
     <div class="contact">
       <div class="reveal">
         <dl>
-          <dt>Adresa</dt>
-          <dd>Penzión Jelenia Rúbaň<br>Horná ulica, horská obec<br>(ukážková adresa)</dd>
-          <dt>Recepcia</dt>
-          <dd>denne 8:00 – 20:00</dd>
-          <dt>Telefón</dt>
-          <dd>09XX XXX XXX <span style="font-size:.85rem;color:#AFBBA6">(doplní sa)</span></dd>
-          <dt>E-mail</dt>
-          <dd>rezervacie@example.com <span style="font-size:.85rem;color:#AFBBA6">(doplní sa)</span></dd>
-          <dt>Príchod a odchod</dt>
-          <dd>ubytovanie od 14:00, odhlásenie do 10:00</dd>
+          <div>
+            <dt>Adresa</dt>
+            <dd>Penzión Hrebeň<br>Hrebeňová 12, 976 66 Podhrebeň</dd>
+          </div>
+          <div>
+            <dt>Telefón</dt>
+            <dd><a class="contact__tel" href="tel:+421908331947">0908 331 947</a></dd>
+          </div>
+          <div>
+            <dt>Recepcia</dt>
+            <dd>denne 8:00 – 20:00</dd>
+          </div>
+          <div>
+            <dt>Raňajky</dt>
+            <dd>denne 7:30 – 10:00, v cene ubytovania</dd>
+          </div>
+          <div>
+            <dt>Večere</dt>
+            <dd>štvrtok až nedeľa 18:00 – 20:00, objednávka do 15:00</dd>
+          </div>
+          <div>
+            <dt>Sauna</dt>
+            <dd>denne 16:00 – 21:00, hodinu si zapíšete na recepcii</dd>
+          </div>
+          <div>
+            <dt>Príchod a odchod</dt>
+            <dd>ubytovanie od 14:00, odhlásenie do 10:00</dd>
+          </div>
+          <div>
+            <dt>Platba</dt>
+            <dd>na mieste kartou alebo v hotovosti, firmám faktúra so splatnosťou 14 dní</dd>
+          </div>
+          <div>
+            <dt>Odpisujeme</dt>
+            <dd>do 24 hodín, cez víkend najneskôr do večera</dd>
+          </div>
         </dl>
       </div>
 
       <div class="reveal">
-        <!-- miesto pre reálnu fotografiu klienta: mapa alebo letecký záber príjazdovej cesty -->
-        <div class="frame" style="margin-bottom:26px">
-          <svg viewBox="0 0 800 420" role="img" aria-label="Zjednodušená mapa: hlavná cesta údolím, odbočka v obci a penzión na okraji lesa">
-            <defs>
-              <linearGradient id="mapa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#25392E"/><stop offset="1" stop-color="#33513F"/></linearGradient>
-            </defs>
-            <rect width="800" height="420" fill="url(#mapa)"/>
-            <g fill="#2C4534">
-              <circle cx="120" cy="90" r="60"/><circle cx="230" cy="60" r="46"/><circle cx="660" cy="330" r="70"/><circle cx="560" cy="380" r="50"/>
+        <div class="plate">
+          <svg class="plate__art" viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="rgba(216,196,164,.22)" stroke-width="1">
+              <circle cx="90" cy="230" r="46"/>
+              <circle cx="90" cy="230" r="92"/>
+              <circle cx="90" cy="230" r="150"/>
+              <circle cx="90" cy="230" r="215"/>
             </g>
-            <path d="M-20 300C120 300 180 250 300 250s180 60 300 60 180-40 240-40" fill="none" stroke="#8A6A46" stroke-width="18" stroke-linecap="round"/>
-            <path d="M-20 300C120 300 180 250 300 250s180 60 300 60 180-40 240-40" fill="none" stroke="#E0B15E" stroke-width="3" stroke-dasharray="14 16"/>
-            <path d="M300 250c0-70 40-110 120-130" fill="none" stroke="#8A6A46" stroke-width="12" stroke-linecap="round"/>
-            <g fill="#B9C4B0" font-family="Segoe UI, Arial, sans-serif" font-size="15">
-              <text x="40" y="345">hlavná cesta údolím</text>
-              <text x="318" y="300">obec</text>
-              <text x="452" y="96">posledné 2 km do kopca</text>
-            </g>
-            <g>
-              <rect x="286" y="236" width="28" height="28" rx="6" fill="#DDD1BB"/>
-              <rect x="292" y="242" width="16" height="16" fill="#4F6B4A"/>
-            </g>
-            <g transform="translate(420 120)">
-              <circle cx="0" cy="0" r="26" fill="#E0B15E"/>
-              <path d="M-13 6L0-9l13 15z" fill="#33230A"/>
-              <rect x="-8" y="4" width="16" height="10" fill="#33230A"/>
-              <path d="M0 30v26" stroke="#E0B15E" stroke-width="4"/>
-            </g>
-            <text x="392" y="184" fill="#F0E8D7" font-family="Georgia, serif" font-size="19">penzión</text>
-            <g fill="#1D2E24"><path d="M700 150l-18 44h36zM700 168l-22 48h44zM60 210l-16 40h32zM60 226l-20 44h40z"/></g>
+            <path d="M90 230 L430 40" fill="none" stroke="rgba(237,234,228,.20)" stroke-width="1" stroke-dasharray="5 7"/>
+            <path d="M90 230 L470 210" fill="none" stroke="rgba(237,234,228,.12)" stroke-width="1" stroke-dasharray="5 7"/>
+            <rect width="480" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
           </svg>
+          <div class="plate__txt">
+            <p class="plate__kicker">Vzdialenosti od penziónu</p>
+            <dl class="mini">
+              <div><dt>Podhrebeň, obchod a reštaurácia</dt><dd>2 km</dd></div>
+              <div><dt>Lyžiarsky vlek</dt><dd>4 km</dd></div>
+              <div><dt>Autobusová zastávka</dt><dd>10 min chôdze</dd></div>
+              <div><dt>Železničná stanica</dt><dd>11 km</dd></div>
+            </dl>
+          </div>
         </div>
 
+        <h3>Ako sa k nám dostanete</h3>
         <ul class="route">
-          <li><span class="num" aria-hidden="true">1</span><span><b>Autom</b>Z hlavného ťahu odbočte v obci pri drevenom moste a držte sa smeru na lyžiarsky vlek. Posledné dva kilometre sú do kopca, ale asfaltové.</span></li>
-          <li><span class="num" aria-hidden="true">2</span><span><b>Vlakom a autobusom</b>Do doliny premáva regionálny autobus zo železničnej stanice. Zastávka je desať minút chôdze od penziónu.</span></li>
-          <li><span class="num" aria-hidden="true">3</span><span><b>Odvoz od autobusu</b>Ak nám vopred napíšete čas príchodu, vyzdvihneme vás na zastávke aj s batožinou. Bez poplatku.</span></li>
+          <li>
+            <span class="n" aria-hidden="true">1</span>
+            <span><b>Autom</b><p>Z hlavnej cesty odbočte v Podhrebeni pri moste a držte sa smeru na lyžiarsky vlek. Posledné 2 km stúpajú, cesta je asfaltová a v zime odhrnutá do 7:00.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">2</span>
+            <span><b>Vlakom a autobusom</b><p>Zo železničnej stanice premáva do doliny regionálny autobus, cesta trvá približne 35 minút. Zastávka je 10 minút chôdze od penziónu.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">3</span>
+            <span><b>Odvoz zo zastávky</b><p>Ak nám vopred napíšete čas príchodu, vyzdvihneme vás na zastávke. Bez poplatku, platí to aj pri odchode.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">4</span>
+            <span><b>Parkovanie</b><p>Osem miest pri budove zdarma, ďalšia odstavná plocha 100 metrov nižšie pri odbočke. Nabíjačku pre elektromobil pri dome nemáme, najbližšia je v Podhrebeni pri obecnom úrade.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">5</span>
+            <span><b>Bezbariérový prístup</b><p>Izba 01, recepcia, jedáleň aj spoločenská miestnosť sú na prízemí, bočný vchod je bez schodu. Sauna v suteréne je prístupná len po schodoch.</p></span>
+          </li>
         </ul>
       </div>
+    </div>
+
+    <div class="contact__form split">
+      <div class="reveal">
+        <h3>Napíšte nám</h3>
+        <p class="lede">Formulár použite na otázku, ktorá nie je viazaná na konkrétny termín: darčekový poukaz, skupinová akcia, firemné stretnutie, životopis alebo zabudnutá vec.</p>
+        <p class="lede">Ak chcete rezervovať pobyt, rýchlejšie to pôjde cez <a href="#rezervacia">prepočet ceny a nezáväzný dopyt</a>, kde rovno uvidíte cenu. Ak potrebujete odpoveď hneď, zavolajte na recepciu.</p>
+        <p class="actions" style="margin-top:24px">
+          <a class="btn btn--line" href="tel:+421908331947">Zavolať na 0908 331 947</a>
+        </p>
+      </div>
+
+      <form class="panel reveal" id="kontakt-form" novalidate>
+        <div class="field">
+          <label for="k-meno">Meno a priezvisko</label>
+          <input type="text" id="k-meno" name="k-meno" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="k-telefon">Telefón</label>
+          <input type="tel" id="k-telefon" name="k-telefon" autocomplete="tel" placeholder="Vaše telefónne číslo">
+        </div>
+        <div class="field">
+          <label for="k-sprava">Správa</label>
+          <textarea id="k-sprava" name="k-sprava" placeholder="Na čo sa chcete opýtať"></textarea>
+        </div>
+        <button class="btn btn--primary" type="submit" style="width:100%">Odoslať správu</button>
+        <p class="hint">Správa príde do schránky penziónu a odpoveď posielame do 24 hodín. Toto je ukážkový web, formulár nikam nič neodosiela a žiadne údaje sa neukladajú.</p>
+
+        <div class="done" id="kontakt-hotovo" hidden tabindex="-1">
+          <strong>Takto by to videl návštevník</strong>
+          <p>Na ostrom webe by správa pristála v schránke penziónu a recepcia by na ňu odpovedala do 24 hodín. Tu sa nikam nič neodoslalo.</p>
+        </div>
+      </form>
     </div>
   </div>
 </section>
@@ -1148,23 +1702,33 @@ html.js .reveal.in{opacity:1;transform:none}
 <aside class="author on-dark" id="autor" aria-labelledby="autor-nadpis">
   <div class="wrap author__in">
     <div class="reveal">
-      <p class="eyebrow">Autor tohto ukážkového webu</p>
+      <p class="eyebrow">Autor ukážky</p>
       <h2 id="autor-nadpis">Páči sa vám tento web?</h2>
-      <p class="author__lede">Penzión Jelenia Rúbaň je vymyslený podnik. Celá stránka je ukážka, ktorú navrhol a naprogramoval Alex Poliak — od prvého náčrtu cez ilustrácie až po rezervačný prepočet. Podobný web spravím aj vám, s vašimi fotkami, textami a cenami.</p>
-      <p class="author__price">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      <p>Penzión Hrebeň je vymyslený podnik a všetky jeho údaje sú ukážkové. Túto stránku navrhol a naprogramoval Alex Poliak, vrátane prepočtu ceny pobytu, ktorý ste si mohli vyskúšať vyššie.</p>
+      <p>Rovnaký web postavím aj pre váš podnik, s vašimi fotografiami, textami a cenami. Súčasťou je cenník, rezervačný alebo kontaktný formulár a plnohodnotná mobilná verzia.</p>
+      <p class="author__price"><b>Weby na mieru od 250 €.</b> Prvý návrh do 3 dní od zadania.</p>
+      <p class="author__free">Konzultácia zadarmo a nezáväzne</p>
     </div>
 
     <div class="author__card reveal">
       <p class="author__name">Alex Poliak</p>
-      <p class="author__city">Bratislava &middot; tvorba webových stránok</p>
+      <p class="author__role">Návrh a programovanie webových stránok</p>
       <dl class="author__list">
+        <div>
+          <dt>Cena</dt>
+          <dd>od 250 € za web na mieru</dd>
+        </div>
+        <div>
+          <dt>Prvý návrh</dt>
+          <dd>do 3 dní od zadania</dd>
+        </div>
         <div>
           <dt>E-mail</dt>
           <dd><a href="mailto:info@apoliak.online">info@apoliak.online</a></dd>
         </div>
         <div>
           <dt>Telefón</dt>
-          <dd><a href="tel:+421902464022">0902 464 022</a> <span class="author__sms">alebo <a href="sms:+421902464022">SMS</a></span></dd>
+          <dd><a href="tel:+421902464022">0902 464 022</a> (aj <a href="sms:+421902464022">SMS</a>)</dd>
         </div>
         <div>
           <dt>Web</dt>
@@ -1172,8 +1736,8 @@ html.js .reveal.in{opacity:1;transform:none}
         </div>
       </dl>
       <div class="author__actions">
-        <a class="btn btn--gold" href="mailto:info@apoliak.online?subject=Z%C3%A1ujem%20o%20web">Napísať e-mail</a>
-        <a class="btn btn--ghost" href="tel:+421902464022">Zavolať</a>
+        <a class="btn btn--sand" href="mailto:info@apoliak.online?subject=Z%C3%A1ujem%20o%20web">Napísať na info@apoliak.online</a>
+        <a class="btn btn--line" href="tel:+421902464022">Zavolať 0902 464 022</a>
       </div>
     </div>
   </div>
@@ -1181,27 +1745,46 @@ html.js .reveal.in{opacity:1;transform:none}
 
 <!-- ===== PÄTA ===== -->
 <footer class="foot">
-  <div class="wrap foot__in">
-    <div class="foot__brand">
-      <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
-        <circle cx="32" cy="32" r="31" fill="#22382B"/>
-        <path d="M12 44l11-19 6.5 11.2L34 28l10 16z" fill="#E0B15E"/>
-        <path d="M22 44l7-12 7 12z" fill="#4F6B4A"/>
-        <circle cx="32" cy="32" r="29" fill="none" stroke="#4F6B4A" stroke-width="1.5"/>
-      </svg>
-      <span>
-        <strong>Penzión Jelenia Rúbaň</strong>
-        Vymyslený penzión pre účely ukážky webu
-      </span>
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <strong>Penzión Hrebeň</strong>
+        <p>Horský penzión s ôsmimi izbami a dvomi apartmánmi, 940 m n. m. Recepcia denne 8:00 – 20:00, raňajky v cene ubytovania. Otvorené celý rok okrem dvoch týždňov údržby v novembri.</p>
+      </div>
+      <div>
+        <h3>Na stránke</h3>
+        <ul class="foot__links">
+          <li><a href="#izby">Izby a ceny</a></li>
+          <li><a href="#cennik">Cenník a termíny sezón</a></li>
+          <li><a href="#priestor">Priestory a časy</a></li>
+          <li><a href="#strava">Raňajky a večere</a></li>
+          <li><a href="#okolie">Vzdialenosti a výlety</a></li>
+          <li><a href="#sezona">Prevádzka počas roka</a></li>
+          <li><a href="#postup">Ako prebieha rezervácia</a></li>
+          <li><a href="#rezervacia">Prepočet ceny pobytu</a></li>
+          <li><a href="#poukazy">Poukazy a skupiny</a></li>
+          <li><a href="#podmienky">Podmienky, storno a platby</a></li>
+          <li><a href="#otazky">Časté otázky</a></li>
+          <li><a href="#kariera">Voľné pracovné miesta</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Kontakt</h3>
+        <ul class="foot__social">
+          <li>Penzión Hrebeň</li>
+          <li>Hrebeňová 12, 976 66 Podhrebeň</li>
+          <li><a href="tel:+421908331947">0908 331 947</a></li>
+          <li>Recepcia denne 8:00 – 20:00</li>
+          <li>Raňajky 7:30 – 10:00</li>
+          <li>Večere štvrtok až nedeľa 18:00 – 20:00</li>
+          <li><a href="#kontakt">Kontaktný formulár</a></li>
+        </ul>
+      </div>
     </div>
-    <ul class="foot__links">
-      <li><a href="#izby">Izby a ceny</a></li>
-      <li><a href="#ranajky">Raňajky</a></li>
-      <li><a href="#okolie">Okolie</a></li>
-      <li><a href="#rezervacia">Rezervácia</a></li>
-      <li><a href="#kontakt">Kontakt</a></li>
-    </ul>
-    <p style="margin:0;max-width:32ch">Ukážkový web bez reálnej prevádzky. Návrh a kód: <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></p>
+    <div class="foot__bar">
+      <p>Ukážkový web bez reálnej prevádzky. Vymyslený podnik pre účely ukážky.</p>
+      <p>Návrh a kód: <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></p>
+    </div>
   </div>
 </footer>
 
@@ -1209,65 +1792,31 @@ html.js .reveal.in{opacity:1;transform:none}
 (function(){
   var d = document;
   d.documentElement.className += " js";
-
-  /* ---------- mobilné menu ---------- */
-  var toggle = d.querySelector(".nav-toggle");
-  var menu = d.getElementById("hlavne-menu");
-  function zavriMenu(){
-    if(!toggle) return;
-    menu.setAttribute("data-open","false");
-    toggle.setAttribute("aria-expanded","false");
-  }
-  if(toggle){
-    toggle.addEventListener("click", function(){
-      var otvorene = menu.getAttribute("data-open") === "true";
-      menu.setAttribute("data-open", otvorene ? "false" : "true");
-      toggle.setAttribute("aria-expanded", otvorene ? "false" : "true");
-    });
-  }
-  d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavriMenu(); });
-
-  /* ---------- plynulé skrolovanie ---------- */
   var jemne = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  d.addEventListener("click", function(e){
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if(!a) return;
-    var id = a.getAttribute("href");
-    if(id === "#" ) return;
-    var ciel = d.querySelector(id);
-    if(!ciel) return;
-    e.preventDefault();
-    zavriMenu();
-    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
-    if(history.replaceState) history.replaceState(null,"",id);
-    var room = a.getAttribute("data-room");
-    if(room){
-      izba.value = room;
-      prepocitaj();
-      setTimeout(function(){ try{ izba.focus({preventScroll:true}); }catch(err){ izba.focus(); } }, jemne ? 0 : 500);
-    }
-  });
 
-  /* ---------- odhaľovanie sekcií ---------- */
-  var bloky = [].slice.call(d.querySelectorAll(".reveal"));
-  if("IntersectionObserver" in window && !jemne){
-    var io = new IntersectionObserver(function(zaznamy){
-      zaznamy.forEach(function(z){
-        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
-      });
-    }, {rootMargin:"0px 0px -8% 0px", threshold:.08});
-    bloky.forEach(function(b){ io.observe(b); });
-  } else {
-    bloky.forEach(function(b){ b.classList.add("in"); });
+  /* ---------- výška horného pásika ukážky ----------
+     pásik je fixovaný, preto o jeho skutočnú výšku odsádzame telo stránky
+     aj lepivú hlavičku. Na úzkych displejoch sa obsah pásika zalomí. */
+  var pasik = d.getElementById("pasik-ukazky");
+  function odmeraj(){
+    if(!pasik) return;
+    var v = pasik.offsetHeight;
+    if(v > 0) d.documentElement.style.setProperty("--bar", v + "px");
+  }
+  if(pasik){
+    odmeraj();
+    window.addEventListener("resize", odmeraj);
+    window.addEventListener("load", odmeraj);
+    if(window.ResizeObserver){ new window.ResizeObserver(odmeraj).observe(pasik); }
   }
 
-  /* ---------- rezervačný prepočet ---------- */
+  /* ---------- prvky rezervácie ---------- */
   var izba = d.getElementById("izba");
   var prichod = d.getElementById("prichod");
   var odchod = d.getElementById("odchod");
   var osoby = d.getElementById("osoby");
-  var strava = d.getElementById("strava");
-  var chips = [].slice.call(d.querySelectorAll("#chips .chip"));
+  var strava = d.getElementById("strava-volba");
+  var tlacidlaNoci = [].slice.call(d.querySelectorAll("#nights button"));
   var DAN = 1.5;
   var DEN = 86400000;
 
@@ -1283,26 +1832,25 @@ html.js .reveal.in{opacity:1;transform:none}
     chyba: d.getElementById("sum-chyba")
   };
 
-  function eur(n){
-    return n.toFixed(2).replace(".", ",") + " €";
-  }
+  function eur(n){ return n.toFixed(2).replace(".", ",") + " €"; }
+
   function naISO(datum){
-    var m = String(datum.getMonth()+1);
+    var m = String(datum.getMonth() + 1);
     var den = String(datum.getDate());
-    return datum.getFullYear() + "-" + (m.length<2?"0"+m:m) + "-" + (den.length<2?"0"+den:den);
+    return datum.getFullYear() + "-" + (m.length < 2 ? "0" + m : m) + "-" + (den.length < 2 ? "0" + den : den);
   }
   function zoISO(hodnota){
     if(!hodnota) return null;
     var c = hodnota.split("-");
     if(c.length !== 3) return null;
-    var dt = new Date(+c[0], +c[1]-1, +c[2]);
+    var dt = new Date(+c[0], +c[1] - 1, +c[2]);
     return isNaN(dt.getTime()) ? null : dt;
   }
-  /* pripočítanie dní cez kalendár, nie cez milisekundy — inak by deň zmeny času posunul dátum */
+  /* dni pripočítavame cez kalendár, nie cez milisekundy, inak by deň zmeny času posunul dátum */
   function pridajDni(datum, n){
     return new Date(datum.getFullYear(), datum.getMonth(), datum.getDate() + n);
   }
-  function slovom(n){
+  function nociSlovom(n){
     if(n === 1) return "1 noc";
     if(n >= 2 && n <= 4) return n + " noci";
     return n + " nocí";
@@ -1322,6 +1870,7 @@ html.js .reveal.in{opacity:1;transform:none}
   }
 
   function prepocitaj(){
+    if(!izba) return;
     var vybrana = izba.options[izba.selectedIndex];
     var cena = parseFloat(vybrana.getAttribute("data-cena"));
     var max = parseInt(vybrana.getAttribute("data-max"), 10);
@@ -1334,12 +1883,14 @@ html.js .reveal.in{opacity:1;transform:none}
 
     var noci = pocetNoci();
     var chyba = "";
-    if(noci === null) chyba = "Doplňte dátum príchodu aj odchodu.";
-    else if(noci <= 0) chyba = "Dátum odchodu musí byť neskôr ako príchod.";
+    if(noci === null) chyba = "Doplňte dátum príchodu aj dátum odchodu.";
+    else if(noci === 0) chyba = "Príchod a odchod sú v ten istý deň. Pobyt musí trvať aspoň jednu noc.";
+    else if(noci < 0) chyba = "Dátum odchodu je skôr ako dátum príchodu. Opravte prosím termín.";
+
     if(chyba){
       vystup.chyba.textContent = chyba;
       vystup.chyba.hidden = false;
-      noci = Math.max(noci || 0, 0);
+      noci = 0;
     } else {
       vystup.chyba.hidden = true;
       vystup.chyba.textContent = "";
@@ -1351,11 +1902,11 @@ html.js .reveal.in{opacity:1;transform:none}
     var dan = DAN * poc * noci;
     var spolu = ubytovanie + vecere + dan;
 
-    vystup.izba.textContent = vybrana.textContent.split(" — ")[0];
     var od = zoISO(prichod.value), po = zoISO(odchod.value);
+    vystup.izba.textContent = vybrana.textContent.split(",")[0];
     vystup.termin.textContent = (od && po && noci > 0)
-      ? popisDatumu(od) + " – " + popisDatumu(po) + " (" + slovom(noci) + ")"
-      : slovom(noci || 0);
+      ? popisDatumu(od) + " – " + popisDatumu(po) + " (" + nociSlovom(noci) + ")"
+      : "0 nocí";
     vystup.ubytovanie.textContent = eur(ubytovanie);
     vystup.vecere.textContent = eur(vecere);
     vystup.riadokVecere.hidden = vecera === 0;
@@ -1363,8 +1914,8 @@ html.js .reveal.in{opacity:1;transform:none}
     vystup.spolu.textContent = eur(spolu);
     vystup.detail.textContent = osobySlovom(poc) + " · " + cena + " € za noc · daň 1,50 € za osobu a noc";
 
-    chips.forEach(function(ch){
-      ch.setAttribute("aria-pressed", String(parseInt(ch.getAttribute("data-noci"),10) === noci));
+    tlacidlaNoci.forEach(function(b){
+      b.setAttribute("aria-pressed", String(parseInt(b.getAttribute("data-noci"), 10) === noci));
     });
   }
 
@@ -1396,23 +1947,76 @@ html.js .reveal.in{opacity:1;transform:none}
       }
       prepocitaj();
     });
-    chips.forEach(function(ch){
-      ch.addEventListener("click", function(){ nastavNoci(parseInt(ch.getAttribute("data-noci"),10)); });
+    tlacidlaNoci.forEach(function(b){
+      b.addEventListener("click", function(){ nastavNoci(parseInt(b.getAttribute("data-noci"), 10)); });
     });
     prepocitaj();
   }
 
-  /* ---------- odoslanie formulára (iba ukážka) ---------- */
-  var form = d.getElementById("rezervacia-form");
-  var hotovo = d.getElementById("rezervacia-hotovo");
-  if(form){
+  /* ---------- mobilné menu ---------- */
+  var toggle = d.querySelector(".nav-toggle");
+  var menu = d.getElementById("hlavne-menu");
+  function zavriMenu(){
+    if(!toggle || !menu) return;
+    menu.setAttribute("data-open", "false");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var otvorene = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", otvorene ? "false" : "true");
+      toggle.setAttribute("aria-expanded", otvorene ? "false" : "true");
+    });
+  }
+  d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavriMenu(); });
+
+  /* ---------- plynulé skrolovanie ---------- */
+  d.addEventListener("click", function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if(!a) return;
+    var id = a.getAttribute("href");
+    if(id === "#") return;
+    var ciel = d.querySelector(id);
+    if(!ciel) return;
+    e.preventDefault();
+    zavriMenu();
+    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
+    if(history.replaceState) history.replaceState(null, "", id);
+    var room = a.getAttribute("data-room");
+    if(room && izba){
+      izba.value = room;
+      prepocitaj();
+      setTimeout(function(){
+        try{ izba.focus({preventScroll:true}); }catch(err){ izba.focus(); }
+      }, jemne ? 0 : 450);
+    }
+  });
+
+  /* ---------- odhaľovanie sekcií ---------- */
+  var bloky = [].slice.call(d.querySelectorAll(".reveal"));
+  if("IntersectionObserver" in window && !jemne){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, {rootMargin:"0px 0px -6% 0px", threshold:.05});
+    bloky.forEach(function(b){ io.observe(b); });
+  } else {
+    bloky.forEach(function(b){ b.classList.add("in"); });
+  }
+
+  /* ---------- odoslanie formulárov (iba ukážka) ---------- */
+  [["rezervacia-form","rezervacia-hotovo"],["kontakt-form","kontakt-hotovo"]].forEach(function(par){
+    var form = d.getElementById(par[0]);
+    var hotovo = d.getElementById(par[1]);
+    if(!form || !hotovo) return;
     form.addEventListener("submit", function(e){
       e.preventDefault();
       hotovo.hidden = false;
       hotovo.focus();
       if(!jemne) hotovo.scrollIntoView({behavior:"smooth", block:"center"});
     });
-  }
+  });
 })();
 </script>
 </body>

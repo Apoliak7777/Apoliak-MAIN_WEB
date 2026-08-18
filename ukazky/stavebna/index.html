@@ -1,0 +1,2097 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KVADER — stavebná spoločnosť: novostavby, rekonštrukcie, zateplenia</title>
+<meta name="description" content="Stavebná spoločnosť KVADER, Žilina: novostavby na kľúč, rekonštrukcie domov a bytov, zateplenie fasád. Kalkulačka ceny podľa plochy v m², cenník prác, harmonogram výstavby a záruka 60 mesiacov.">
+<meta name="theme-color" content="#1A1D20">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:site_name" content="KVADER — stavebná spoločnosť (ukážkový web)">
+<meta property="og:title" content="KVADER — stavebná spoločnosť: novostavby, rekonštrukcie, zateplenia">
+<meta property="og:description" content="Hrubá stavba od 520 €/m², rekonštrukcia bytu od 620 €/m², zateplenie od 62 €/m². Pevná cena a termín v zmluve, záruka 60 mesiacov. Ukážkový web od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%231A1D20'/%3E%3Crect%20x='12'%20y='12'%20width='26'%20height='8'%20fill='%23C08A2E'/%3E%3Crect%20x='12'%20y='12'%20width='8'%20height='40'%20fill='%23C08A2E'/%3E%3Crect%20x='28'%20y='32'%20width='24'%20height='8'%20fill='%238C8F93'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   1. TOKENY — tlmená betónová paleta, jediný akcent: okrová
+   ========================================================================== */
+:root{
+  --coal:#131517;
+  --concrete:#1A1D20;
+  --graphite:#23272A;
+  --steel:#31363A;
+  --line-dark:#343A3F;
+  --on-dark:#E9E7E3;
+  --on-dark-muted:#A6ABAF;
+
+  --ochre:#C08A2E;
+  --ochre-soft:#D6A44A;
+  --ochre-ink:#7A5210;
+
+  --bg:#F5F4F1;
+  --bg-2:#EDEBE6;
+  --paper:#FFFFFF;
+  --ink:#15171A;
+  --muted:#5A5F63;
+  --line:#DCD8D1;
+  --line-soft:#E8E5DF;
+
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Consolas","SFMono-Regular","Liberation Mono",monospace;
+
+  --wrap:1180px;
+  --wide:1400px;
+  --barH:44px;
+  --headH:66px;
+}
+
+/* ==========================================================================
+   2. ZÁKLAD
+   ========================================================================== */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+
+body{
+  margin:0;
+  padding-top:var(--barH);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-text-size-adjust:100%;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-weight:700;margin:0 0 .5em;letter-spacing:-.02em}
+h1{font-size:clamp(2.3rem,5.6vw,4.1rem);line-height:.98;letter-spacing:-.03em}
+h2{font-size:clamp(1.65rem,3.3vw,2.6rem);line-height:1.05}
+h3{font-size:clamp(1.04rem,1.4vw,1.18rem);line-height:1.35;letter-spacing:-.005em}
+h4{font-size:.95rem;letter-spacing:0;line-height:1.4}
+p{margin:0 0 1.05em}
+ul,ol{margin:0;padding:0;list-style:none}
+img,svg{max-width:100%}
+strong{font-weight:700}
+a{color:var(--ochre-ink);text-underline-offset:3px}
+a:hover{color:var(--ink)}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:3px}
+
+.wrap{width:min(100% - 36px,var(--wrap));margin-inline:auto}
+.wrap--wide{width:min(100% - 36px,var(--wide));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;z-index:300;background:var(--coal);color:var(--on-dark);padding:12px 18px}
+.skip:focus{left:8px;top:calc(var(--barH) + 8px)}
+section{scroll-margin-top:calc(var(--barH) + var(--headH) + 10px)}
+.sec{padding:clamp(58px,7.5vw,116px) 0}
+.sec--band{background:var(--bg-2)}
+.sec--dark{background:var(--concrete);color:var(--on-dark)}
+.sec--dark h2,.sec--dark h3,.sec--dark h4{color:#FFFFFF}
+
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.lede{font-size:1.06rem;color:var(--muted);max-width:62ch;margin:0}
+.sec--dark .lede{color:var(--on-dark-muted)}
+.small{font-size:.88rem;color:var(--muted);max-width:66ch}
+.sec--dark .small{color:var(--on-dark-muted)}
+
+/* hlavička sekcie — index, nadpis, vysvetlenie, vlasová linka */
+.sec__head{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(14px,3vw,56px);align-items:end;
+  padding-bottom:clamp(20px,2.6vw,30px);
+  border-bottom:1px solid var(--line);
+  margin-bottom:clamp(34px,5vw,68px);
+}
+.sec--dark .sec__head{border-bottom-color:var(--line-dark)}
+.sec__idx{
+  display:block;font-family:var(--mono);font-size:.76rem;letter-spacing:.24em;
+  color:var(--ochre-ink);margin-bottom:14px;
+}
+.sec--dark .sec__idx{color:var(--ochre)}
+.sec__head h2{margin:0;max-width:18ch}
+.sec__head .lede{padding-bottom:.35em}
+
+.eyebrow{
+  font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
+  font-weight:700;color:var(--muted);margin:0 0 16px;
+}
+.sec--dark .eyebrow{color:var(--on-dark-muted)}
+.hair{height:1px;background:var(--line);border:0;margin:0}
+
+/* ==========================================================================
+   3. TLAČIDLÁ — farba textu je vždy zapísaná explicitne
+   ========================================================================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font:inherit;font-size:.93rem;font-weight:700;letter-spacing:.02em;
+  padding:15px 28px;border:1px solid transparent;border-radius:2px;
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+a.btn--accent,button.btn--accent{background:var(--ochre);color:#131517;border-color:var(--ochre)}
+a.btn--accent:hover,button.btn--accent:hover{background:var(--ochre-soft);border-color:var(--ochre-soft);color:#131517}
+a.btn--solid,button.btn--solid{background:var(--ink);color:#FFFFFF;border-color:var(--ink)}
+a.btn--solid:hover,button.btn--solid:hover{background:var(--steel);border-color:var(--steel);color:#FFFFFF}
+a.btn--line,button.btn--line{background:transparent;color:var(--ink);border-color:var(--ink)}
+a.btn--line:hover,button.btn--line:hover{background:var(--ink);color:#FFFFFF;border-color:var(--ink)}
+.on-dark a.btn--line,.on-dark button.btn--line{color:#FFFFFF;border-color:var(--steel)}
+.on-dark a.btn--line:hover,.on-dark button.btn--line:hover{background:#FFFFFF;color:#131517;border-color:#FFFFFF}
+.btn--sm{padding:11px 18px;font-size:.86rem}
+.btn--wide{width:100%}
+
+/* ==========================================================================
+   4. PÁSIK UKÁŽKY
+   ========================================================================== */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:130;
+  background:var(--coal);color:var(--on-dark);
+  border-bottom:1px solid var(--ochre);
+  font-size:.85rem;
+}
+.demobar__in{
+  width:min(100% - 26px,var(--wide));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;gap:5px 18px;flex-wrap:wrap;
+  padding:11px 0;text-align:center;
+}
+.demobar__tag{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ochre);white-space:nowrap;
+}
+.demobar span{color:var(--on-dark-muted)}
+.demobar a:not(.btn){color:#FFFFFF;font-weight:700;text-underline-offset:3px;white-space:nowrap}
+.demobar a:not(.btn):hover{color:var(--ochre)}
+.demobar :focus-visible{outline-color:var(--ochre)}
+
+/* ==========================================================================
+   5. HLAVIČKA
+   ========================================================================== */
+.site-head{
+  position:sticky;top:var(--barH);z-index:100;
+  background:rgba(245,244,241,.96);border-bottom:1px solid var(--line);
+  backdrop-filter:none;
+}
+.head__in{
+  width:min(100% - 36px,var(--wide));margin-inline:auto;
+  min-height:var(--headH);
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+}
+.brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink)}
+.brand__mark{width:32px;height:32px;flex:none;background:var(--coal);position:relative;border-radius:1px}
+.brand__mark::before{content:"";position:absolute;left:6px;top:6px;width:14px;height:4px;background:var(--ochre)}
+.brand__mark::after{content:"";position:absolute;left:6px;top:6px;width:4px;height:20px;background:var(--ochre)}
+.brand__name{font-weight:700;letter-spacing:.2em;font-size:1rem;display:block}
+.brand__sub{display:block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+.nav{display:flex;align-items:center;gap:0}
+.nav a:not(.btn){
+  text-decoration:none;color:var(--ink);font-size:.8rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;
+  border-bottom:1px solid transparent;
+}
+.nav a:not(.btn):hover{color:var(--ochre-ink);border-bottom-color:var(--ochre)}
+.head__cta{display:flex;align-items:center;gap:16px}
+.head__tel{
+  font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--ink);
+  text-decoration:none;white-space:nowrap;
+}
+.head__tel:hover{color:var(--ochre-ink)}
+.burger{
+  display:none;align-items:center;gap:9px;background:none;border:1px solid var(--ink);
+  padding:10px 14px;font:inherit;font-size:.78rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;cursor:pointer;color:var(--ink);border-radius:2px;
+}
+.burger__bars{display:block;width:17px;height:1px;background:var(--ink);position:relative}
+.burger__bars::before,.burger__bars::after{content:"";position:absolute;left:0;width:17px;height:1px;background:var(--ink)}
+.burger__bars::before{top:-6px}
+.burger__bars::after{top:6px}
+.mnav{display:none;border-top:1px solid var(--line);background:var(--bg)}
+.mnav.is-open{display:block}
+.mnav ul{width:min(100% - 36px,var(--wide));margin-inline:auto;padding:6px 0 20px}
+.mnav a:not(.btn){
+  display:block;padding:13px 0;border-bottom:1px solid var(--line-soft);
+  text-decoration:none;color:var(--ink);font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;font-size:.86rem;
+}
+.mnav a:not(.btn):hover{color:var(--ochre-ink)}
+.mnav a.mnav__tel{border-bottom:0;padding:18px 0 0;font-family:var(--mono);font-weight:700;color:var(--ink);letter-spacing:.04em;text-transform:none;font-size:1rem}
+
+/* ==========================================================================
+   6. HERO — krátky nadpis vľavo hore, dominantou je dátový panel
+   ========================================================================== */
+.hero{
+  position:relative;background:var(--concrete);color:var(--on-dark);overflow:hidden;
+  background-image:
+    linear-gradient(180deg,rgba(192,138,46,.10) 0,transparent 42%),
+    linear-gradient(168deg,#262A2E 0%,#1A1D20 55%,#141618 100%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+.hero__in{position:relative;z-index:2;padding:clamp(48px,7vw,96px) 0 clamp(44px,6vw,80px)}
+.hero__top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(20px,4vw,64px);align-items:end}
+.hero__kicker{
+  font-family:var(--mono);font-size:.73rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--ochre);margin:0 0 22px;
+}
+.hero h1{color:#FFFFFF;max-width:13ch;margin:0}
+.hero__lede{font-size:1.08rem;color:var(--on-dark-muted);max-width:52ch;margin:0 0 26px}
+.hero__actions{display:flex;flex-wrap:wrap;gap:12px}
+
+/* dátový panel cez celú šírku */
+.deck{
+  position:relative;z-index:2;
+  margin:clamp(34px,5vw,64px) auto 0;
+  background:var(--graphite);border:1px solid var(--line-dark);border-radius:2px;
+}
+.deck__head{
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 20px;
+  padding:16px clamp(18px,2.4vw,28px);border-bottom:1px solid var(--line-dark);
+}
+.deck__head b{font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:#FFFFFF}
+.deck__head span{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--ochre)}
+.deck__meta{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
+  background:var(--line-dark);border-bottom:1px solid var(--line-dark);
+}
+.deck__meta div{background:var(--graphite);padding:14px clamp(18px,2.4vw,28px)}
+.deck__meta dt{margin:0;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted)}
+.deck__meta dd{margin:4px 0 0;font-family:var(--mono);font-size:1rem;color:#FFFFFF}
+.deck__body{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr) minmax(0,1fr);gap:1px;background:var(--line-dark)}
+.deck__col{background:var(--graphite);padding:clamp(20px,2.4vw,30px)}
+.deck__title{
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-muted);
+  margin:0 0 20px;padding-bottom:12px;border-bottom:1px solid var(--line-dark);
+}
+.deck__foot{
+  display:flex;flex-wrap:wrap;gap:16px 26px;align-items:center;justify-content:space-between;
+  padding:18px clamp(18px,2.4vw,28px);border-top:1px solid var(--line-dark);
+}
+.deck__foot p{margin:0;font-size:.84rem;color:var(--on-dark-muted);max-width:70ch}
+
+/* formulárové prvky na tmavom */
+.field{margin-bottom:22px}
+.field:last-child{margin-bottom:0}
+.field > label,.field > .lbl{
+  display:block;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+  font-weight:700;color:var(--muted);margin-bottom:10px;
+}
+.deck .field > label,.deck .field > .lbl{color:var(--on-dark-muted)}
+select,input[type="text"],input[type="tel"],input[type="number"],textarea{
+  width:100%;font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:2px;padding:12px 13px;
+}
+.deck select,.deck input[type="number"]{background:var(--concrete);color:#FFFFFF;border-color:var(--line-dark)}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--ochre);outline-offset:1px;border-color:var(--ochre)}
+textarea{min-height:130px;resize:vertical}
+.range-row{display:flex;align-items:center;gap:14px}
+.range-row input[type="range"]{flex:1;accent-color:var(--ochre);height:28px;min-width:0}
+.range-val{
+  display:flex;align-items:baseline;gap:4px;font-family:var(--mono);font-weight:700;font-size:1.05rem;
+  border:1px solid var(--line-dark);padding:8px 12px;background:var(--concrete);color:#FFFFFF;white-space:nowrap;
+}
+.range-val small{font-weight:400;color:var(--on-dark-muted)}
+.choice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.choice label{
+  display:block;border:1px solid var(--line-dark);padding:11px 6px;text-align:center;cursor:pointer;
+  font-size:.86rem;font-weight:600;background:var(--concrete);color:var(--on-dark);border-radius:2px;
+}
+.choice input{position:absolute;opacity:0;width:1px;height:1px}
+.choice input:checked + span{text-decoration:underline;text-decoration-color:currentColor;text-decoration-thickness:2px;text-underline-offset:5px}
+.choice label:has(input:checked){background:var(--ochre);border-color:var(--ochre);color:#131517}
+.choice label:has(input:focus-visible){outline:2px solid var(--ochre);outline-offset:2px}
+.checks{display:grid;gap:12px}
+.checks label{display:flex;gap:11px;align-items:flex-start;font-size:.92rem;cursor:pointer;color:var(--on-dark)}
+.checks input{margin:3px 0 0;accent-color:var(--ochre);width:17px;height:17px;flex:none}
+.checks small{display:block;color:var(--on-dark-muted);font-size:.81rem}
+
+/* výsledok kalkulácie */
+.res__price{font-family:var(--mono);font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:700;color:#FFFFFF;line-height:1.1;margin:0 0 6px}
+.res__unit{font-size:.84rem;color:var(--on-dark-muted);margin:0 0 22px}
+.res__rows{margin:0 0 22px}
+.res__rows div{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid rgba(52,58,63,.8);font-size:.89rem}
+.res__rows div:last-child{border-bottom:0}
+.res__rows dt{color:var(--on-dark-muted);margin:0}
+.res__rows dd{margin:0;font-family:var(--mono);color:#FFFFFF;text-align:right}
+.bar{display:flex;height:10px;margin-bottom:12px;overflow:hidden;border-radius:1px}
+.bar i{display:block;height:100%}
+.bar i:nth-child(1){background:var(--ochre)}
+.bar i:nth-child(2){background:#868C91}
+.bar i:nth-child(3){background:#454B50}
+.legend{display:grid;gap:7px;font-size:.82rem;color:var(--on-dark-muted);margin:0}
+.legend span{display:flex;align-items:center;gap:9px}
+.legend b{width:9px;height:9px;display:inline-block;flex:none}
+.legend span:nth-child(1) b{background:var(--ochre)}
+.legend span:nth-child(2) b{background:#868C91}
+.legend span:nth-child(3) b{background:#454B50}
+.legend i{margin-left:auto;font-style:normal;font-family:var(--mono);color:var(--on-dark)}
+
+/* harmonogram v paneli */
+.ph{display:grid;grid-template-columns:minmax(0,1fr) 54px;gap:4px 12px;align-items:center;margin-bottom:12px}
+.ph__n{font-size:.86rem;color:var(--on-dark)}
+.ph__w{font-family:var(--mono);font-size:.82rem;color:#FFFFFF;text-align:right}
+.ph__bar{grid-column:1 / -1;height:3px;background:rgba(52,58,63,.9)}
+.ph__bar i{display:block;height:100%;background:var(--ochre)}
+.deck__sub{
+  margin:24px 0 14px;padding-top:16px;border-top:1px solid var(--line-dark);
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-muted);
+}
+.kv{display:grid;gap:9px;font-size:.87rem}
+.kv div{display:flex;justify-content:space-between;gap:12px}
+.kv dt{margin:0;color:var(--on-dark-muted)}
+.kv dd{margin:0;font-family:var(--mono);color:#FFFFFF}
+.nojs{padding:4px 0 0;font-size:.9rem;color:var(--on-dark-muted)}
+
+/* ==========================================================================
+   7. SLUŽBY
+   ========================================================================== */
+.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(26px,3.4vw,52px)}
+.svc__card{display:flex;flex-direction:column;border-top:1px solid var(--ink);padding-top:22px}
+.svc__num{font-family:var(--mono);font-size:2.6rem;line-height:1;color:var(--ochre-ink);display:block;margin-bottom:6px}
+.svc__unit{display:block;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:26px}
+.svc__card h3{margin-bottom:10px}
+.svc__desc{color:var(--muted);font-size:.95rem;margin-bottom:20px;max-width:44ch}
+.svc__list{margin:0 0 22px;font-size:.92rem}
+.svc__list li{padding:9px 0;border-bottom:1px solid var(--line-soft);color:var(--ink)}
+.svc__list li:first-child{border-top:1px solid var(--line-soft)}
+.svc__meta{margin-top:auto;display:grid;gap:8px}
+.svc__meta div{display:flex;justify-content:space-between;gap:12px;font-size:.87rem}
+.svc__meta span{color:var(--muted)}
+.svc__meta b{font-family:var(--mono);color:var(--ink)}
+
+/* ==========================================================================
+   8. POSTUP
+   ========================================================================== */
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(30px,5vw,80px)}
+.step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 22px;padding:26px 0;border-bottom:1px solid var(--line-dark)}
+.step__n{font-family:var(--mono);font-size:.82rem;letter-spacing:.14em;color:var(--ochre);grid-row:1 / span 3;padding-top:.35em}
+.step h3{margin:0 0 6px}
+.step p{color:var(--on-dark-muted);font-size:.92rem;margin:0 0 8px;max-width:48ch}
+.step__time{font-family:var(--mono);font-size:.8rem;color:#FFFFFF}
+
+/* ==========================================================================
+   9. TABUĽKY
+   ========================================================================== */
+.tablewrap{overflow-x:auto;border-top:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.94rem}
+caption{
+  text-align:left;padding:0 0 14px;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--muted);
+}
+th,td{text-align:left;padding:14px 18px 14px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+thead th{
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  font-weight:700;border-bottom:1px solid var(--line);padding-top:14px;
+}
+tbody th{font-weight:600}
+td.num,th.num{font-family:var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+tfoot th,tfoot td{border-top:1px solid var(--ink);border-bottom:0;font-weight:700;padding-top:14px}
+.sec--dark .tablewrap{border-top-color:var(--line-dark)}
+.sec--dark th,.sec--dark td{border-bottom-color:var(--line-dark)}
+.sec--dark thead th{color:var(--on-dark-muted);border-bottom-color:var(--line-dark)}
+
+/* ==========================================================================
+   10. BLOKY OBSAHU
+   ========================================================================== */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(30px,4vw,64px);align-items:start}
+.two--wide{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.notes{display:grid;gap:clamp(20px,2.6vw,30px)}
+.notes--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.note{border-left:1px solid var(--ochre);padding:2px 0 2px 20px}
+.note h3{font-size:1.02rem;margin-bottom:8px}
+.note p{margin:0;color:var(--muted);font-size:.93rem;max-width:60ch}
+.note p + p{margin-top:10px}
+.sec--dark .note p{color:var(--on-dark-muted)}
+
+.paylist{counter-reset:p;display:grid}
+.paylist li{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 20px;align-items:baseline;
+  padding:18px 0;border-bottom:1px solid var(--line-soft);
+}
+.paylist li:first-child{border-top:1px solid var(--ink)}
+.paylist li::before{
+  counter-increment:p;content:counter(p,decimal-leading-zero);
+  font-family:var(--mono);font-weight:700;color:var(--ochre-ink);font-size:.86rem;
+}
+.paylist b{display:block;font-size:1rem}
+.paylist span.d{grid-column:2;color:var(--muted);font-size:.91rem;max-width:52ch}
+.paylist em{font-style:normal;font-family:var(--mono);font-weight:700;font-size:1.05rem;grid-row:1;grid-column:3}
+
+.works{display:grid;gap:clamp(30px,4vw,58px)}
+.work{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(20px,3vw,48px);border-top:1px solid var(--ink);padding-top:26px}
+.work__id{font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ochre-ink);margin:0 0 12px}
+.work__big{font-family:var(--mono);font-size:clamp(2.2rem,5vw,3.4rem);line-height:1;margin:0 0 8px;letter-spacing:-.03em}
+.work__sub{font-size:.86rem;color:var(--muted);margin:0}
+.work h3{margin-bottom:10px}
+.work__body > p{color:var(--muted);font-size:.95rem;max-width:62ch}
+.params{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(18px,3vw,40px);margin-top:14px}
+.params div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.params dt{margin:0;font-size:.87rem;color:var(--muted)}
+.params dd{margin:0;font-family:var(--mono);font-size:.89rem;color:var(--ink);text-align:right}
+
+.mats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,44px)}
+.mat{border-top:1px solid var(--line);padding-top:20px}
+.mat__val{font-family:var(--mono);font-size:1.5rem;line-height:1;color:var(--ink);display:block;margin-bottom:4px}
+.mat__lab{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre-ink);margin-bottom:18px}
+.mat h3{font-size:1.02rem;margin-bottom:8px}
+.mat p{font-size:.91rem;color:var(--muted);margin:0 0 12px;max-width:44ch}
+.mat__spec{font-family:var(--mono);font-size:.81rem;color:var(--ink);border-top:1px solid var(--line-soft);padding-top:10px;margin:0}
+
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(30px,5vw,72px)}
+.role{padding:20px 0;border-bottom:1px solid var(--line-soft)}
+.role b{display:block;font-size:1rem;margin-bottom:4px}
+.role span{font-size:.91rem;color:var(--muted);display:block;max-width:52ch}
+.gear{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,32px);margin-top:clamp(30px,4vw,50px)}
+.gear li{font-size:.91rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;max-width:44ch}
+.gear b{font-family:var(--mono);display:block;font-size:.85rem;color:var(--ink);margin-bottom:5px}
+
+.jobs{display:grid;gap:0}
+.job{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) auto;gap:8px clamp(20px,3vw,44px);
+  align-items:start;padding:26px 0;border-bottom:1px solid var(--line-soft);
+}
+.job:first-child{border-top:1px solid var(--ink)}
+.job h3{margin:0 0 6px}
+.job__meta{font-size:.85rem;color:var(--muted);margin:0}
+.job p{margin:0;font-size:.92rem;color:var(--muted);max-width:56ch}
+.job__pay{font-family:var(--mono);font-size:1.05rem;font-weight:700;white-space:nowrap;text-align:right}
+.job__pay small{display:block;font-weight:400;font-size:.76rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+
+.docs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(30px,5vw,72px)}
+.docs li{padding:14px 0;border-bottom:1px solid var(--line-soft);font-size:.93rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px}
+.docs li b{font-family:var(--mono);color:var(--ochre-ink);font-size:.82rem;padding-top:.18em}
+.docs li span{color:var(--muted)}
+.docs li strong{display:block;color:var(--ink);font-weight:600}
+
+/* ==========================================================================
+   11. FAQ
+   ========================================================================== */
+.faq{max-width:82ch}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-of-type{border-top:1px solid var(--ink)}
+.faq summary{
+  cursor:pointer;list-style:none;padding:22px 54px 22px 0;position:relative;
+  font-weight:700;font-size:1.02rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";position:absolute;right:14px;top:50%;width:11px;height:11px;
+  border-right:1px solid var(--ochre-ink);border-bottom:1px solid var(--ochre-ink);
+  transform:translateY(-70%) rotate(45deg);transition:transform .18s ease;
+}
+.faq details[open] summary::after{transform:translateY(-30%) rotate(225deg)}
+.faq summary:hover{color:var(--ochre-ink)}
+.faq__a{padding:0 0 24px;color:var(--muted);max-width:70ch}
+.faq__a p:last-child{margin-bottom:0}
+
+/* ==========================================================================
+   12. KONTAKT
+   ========================================================================== */
+.contact{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(28px,4vw,64px);align-items:start}
+.form{background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:clamp(22px,3vw,36px)}
+.form__row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.form .field{margin-bottom:18px}
+.consent{display:flex;gap:11px;align-items:flex-start;font-size:.87rem;color:var(--muted);margin:4px 0 20px}
+.consent input{margin:2px 0 0;accent-color:var(--ochre);width:17px;height:17px;flex:none}
+.formnote{
+  display:none;margin:18px 0 0;padding:14px 0 0;border-top:1px solid var(--line);
+  font-size:.92rem;color:var(--ink);
+}
+.formnote.is-on{display:block}
+.formhint{font-size:.86rem;color:var(--muted);margin:14px 0 0;max-width:62ch}
+.info{display:grid;gap:clamp(24px,3vw,38px)}
+.infobox h3{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.infobox p{margin:0 0 10px;font-size:.95rem;max-width:52ch}
+.infobox p:last-child{margin-bottom:0}
+.bigtel{font-family:var(--mono);font-size:clamp(1.3rem,2.6vw,1.7rem);font-weight:700;color:var(--ink);text-decoration:none;display:inline-block;letter-spacing:-.02em}
+.bigtel:hover{color:var(--ochre-ink)}
+.hours{display:grid;gap:0;font-size:.93rem}
+.hours div{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line-soft);padding:9px 0}
+.hours div:last-child{border-bottom:0}
+.hours b{font-family:var(--mono);font-weight:600}
+.hours .off{color:var(--muted)}
+.planwrap{border-top:1px solid var(--line)}
+.planwrap svg{display:block;width:100%;height:auto;margin-top:18px}
+.plancap{padding:14px 0 0;font-size:.88rem;color:var(--muted);max-width:66ch}
+
+/* ==========================================================================
+   13. AUTOR UKÁŽKY
+   ========================================================================== */
+.author{
+  background:var(--coal);color:var(--on-dark);position:relative;overflow:hidden;
+  background-image:linear-gradient(160deg,#23272A 0%,#131517 68%);
+  border-top:1px solid var(--ochre);
+}
+.author__in{position:relative;z-index:2;padding:clamp(54px,6.5vw,96px) 0}
+.author__grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(28px,4vw,64px);align-items:start}
+.author h2{color:#FFFFFF}
+.author p{color:var(--on-dark-muted);max-width:58ch}
+.author strong{color:#FFFFFF}
+.author__price{
+  font-family:var(--mono);font-size:1.04rem;color:var(--ochre);
+  border-left:1px solid var(--ochre);padding-left:16px;margin:26px 0 28px;
+}
+.author__actions{display:flex;flex-wrap:wrap;gap:12px}
+.author__card{border:1px solid var(--line-dark);border-radius:2px}
+.author__card h3{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;padding:16px 22px;margin:0;border-bottom:1px solid var(--line-dark)}
+.author__card ul{padding:6px 22px 18px}
+.author__card li{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(52,58,63,.75);font-size:.92rem;color:var(--on-dark-muted);flex-wrap:wrap}
+.author__card li:last-child{border-bottom:0}
+.author__card a:not(.btn){color:#FFFFFF;font-weight:600;text-underline-offset:3px}
+.author__card a:not(.btn):hover{color:var(--ochre)}
+.author__card .v{color:#FFFFFF;font-family:var(--mono)}
+
+/* ==========================================================================
+   14. PÄTIČKA
+   ========================================================================== */
+.foot{background:var(--concrete);color:var(--on-dark-muted);font-size:.9rem}
+.foot__in{padding:clamp(44px,5.5vw,68px) 0 36px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(22px,3vw,44px)}
+.foot h3{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;margin-bottom:16px}
+.foot p{max-width:34ch}
+.foot a:not(.btn){color:var(--on-dark);text-decoration:none}
+.foot a:not(.btn):hover{color:var(--ochre);text-decoration:underline}
+.foot li{margin-bottom:9px}
+.foot__tel{font-family:var(--mono);font-weight:700}
+.foot__bottom{border-top:1px solid var(--line-dark);padding:20px 0 28px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:space-between;font-size:.83rem}
+
+/* ==========================================================================
+   15. RESPONZÍVNE
+   ========================================================================== */
+@media (max-width:1100px){
+  .nav{display:none}
+  .burger{display:inline-flex}
+  .head__tel{display:none}
+  .deck__body{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .deck__col--ph{grid-column:1 / -1}
+  .svc,.mats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gear{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  :root{--barH:70px}
+  .hero__top,.contact,.author__grid,.work,.two,.two--wide{grid-template-columns:minmax(0,1fr)}
+  .hero h1{max-width:16ch}
+  .deck__meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps,.roles,.docs{grid-template-columns:minmax(0,1fr)}
+  .job{grid-template-columns:minmax(0,1fr) auto}
+  .job p{grid-column:1 / -1}
+  .job__pay{text-align:right}
+}
+@media (max-width:680px){
+  body{font-size:16px}
+  .sec__head{grid-template-columns:minmax(0,1fr);align-items:start}
+  .sec__head h2{max-width:none}
+  .sec__head .lede{padding-bottom:0}
+  .deck__body{grid-template-columns:minmax(0,1fr)}
+  .svc,.mats,.gear,.notes--2{grid-template-columns:minmax(0,1fr)}
+  .form__row,.params{grid-template-columns:minmax(0,1fr)}
+  .choice{grid-template-columns:minmax(0,1fr)}
+  .foot__in{grid-template-columns:minmax(0,1fr)}
+  .job{grid-template-columns:minmax(0,1fr)}
+  .job__pay{text-align:left}
+  .paylist li{grid-template-columns:auto minmax(0,1fr)}
+  .paylist em{grid-column:1 / -1;grid-row:auto}
+  .demobar__in{padding:9px 0;font-size:.79rem}
+  h1{line-height:1}
+}
+@media (max-width:400px){
+  :root{--barH:92px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+@media print{
+  .demobar,.site-head,.mnav{display:none}
+  body{padding-top:0}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ============ PÁSIK UKÁŽKY ============ -->
+<div class="demobar" id="demobar">
+  <div class="demobar__in">
+    <span class="demobar__tag">Ukážkový web</span>
+    <span>Takýto web pre vás spravím.</span>
+    <a href="https://apoliak.online">apoliak.online</a>
+    <a href="tel:+421902464022">0902&nbsp;464&nbsp;022</a>
+  </div>
+</div>
+
+<!-- ============ HLAVIČKA ============ -->
+<header class="site-head">
+  <div class="head__in">
+    <a class="brand" href="#uvod">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span>
+        <span class="brand__name">KVADER</span>
+        <span class="brand__sub">Stavebná spoločnosť</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Hlavná navigácia">
+      <a href="#sluzby">Čo staviame</a>
+      <a href="#postup">Postup</a>
+      <a href="#harmonogram">Harmonogram</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#zaruky">Záruky</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="head__cta">
+      <a class="head__tel" href="tel:+421944190583">0944&nbsp;190&nbsp;583</a>
+      <a class="btn btn--accent btn--sm" href="#kontakt">Cenová ponuka</a>
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mnav">
+        <span class="burger__bars" aria-hidden="true"></span> Menu
+      </button>
+    </div>
+  </div>
+  <nav class="mnav" id="mnav" aria-label="Mobilná navigácia">
+    <ul>
+      <li><a href="#sluzby">Čo staviame</a></li>
+      <li><a href="#postup">Postup prác</a></li>
+      <li><a href="#harmonogram">Harmonogram výstavby</a></li>
+      <li><a href="#prace">Typy prác</a></li>
+      <li><a href="#materialy">Materiály</a></li>
+      <li><a href="#zaruky">Záruky a reklamácie</a></li>
+      <li><a href="#cennik">Cenník prác</a></li>
+      <li><a href="#platby">Platby a splátky</a></li>
+      <li><a href="#zmluva">Zmluva a storno</a></li>
+      <li><a href="#kvalita">Kontrola kvality</a></li>
+      <li><a href="#tim">Tím a technika</a></li>
+      <li><a href="#kariera">Kariéra</a></li>
+      <li><a href="#doprava">Príchod a parkovanie</a></li>
+      <li><a href="#faq">Časté otázky</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <a class="mnav__tel" href="tel:+421944190583">Zavolať 0944 190 583</a>
+  </nav>
+</header>
+
+<main id="obsah">
+
+<!-- ============ HERO + DÁTOVÝ PANEL ============ -->
+<section class="hero on-dark" id="uvod" aria-labelledby="h1">
+  <div class="hero__in">
+    <div class="wrap--wide">
+      <div class="hero__top">
+        <div>
+          <p class="hero__kicker">Žilina a okolie do 60 km</p>
+          <h1 id="h1">Novostavby, rekonštrukcie a zateplenia</h1>
+        </div>
+        <div>
+          <p class="hero__lede">Staviame rodinné domy od základovej dosky po kolaudáciu, rekonštruujeme byty a domy a zatepľujeme fasády. Pevná cena aj termín odovzdania sú súčasťou zmluvy o dielo.</p>
+          <div class="hero__actions">
+            <a class="btn btn--accent" href="#kontakt">Vyžiadať cenovú ponuku</a>
+            <a class="btn btn--line" href="tel:+421944190583">Zavolať 0944 190 583</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap--wide">
+      <div class="deck">
+        <div class="deck__head">
+          <b>Kalkulačka ceny podľa plochy</b>
+          <span>KVD / KALK-01 · jednotkové ceny z rozpočtov</span>
+        </div>
+
+        <dl class="deck__meta">
+          <div><dt>Pôsobnosť</dt><dd>Žilina + 60 km</dd></div>
+          <div><dt>Obhliadka</dt><dd>do 5 pracovných dní</dd></div>
+          <div><dt>Položkový rozpočet</dt><dd>do 10 pracovných dní</dd></div>
+          <div><dt>Záruka na dielo</dt><dd>60 mesiacov</dd></div>
+        </dl>
+
+        <div class="deck__body">
+          <div class="deck__col">
+            <p class="deck__title">Zadanie</p>
+            <form id="calcForm" novalidate>
+              <div class="field">
+                <label for="cType">Typ práce</label>
+                <select id="cType">
+                  <option value="hruba">Hrubá stavba rodinného domu</option>
+                  <option value="kluc" selected>Novostavba rodinného domu na kľúč</option>
+                  <option value="rekdom">Kompletná rekonštrukcia rodinného domu</option>
+                  <option value="rekbyt">Kompletná rekonštrukcia bytu</option>
+                  <option value="kupelna">Rekonštrukcia kúpeľne a WC</option>
+                  <option value="podkrovie">Prestavba podkrovia na obytné</option>
+                  <option value="zatep">Zateplenie fasády</option>
+                  <option value="strecha">Rekonštrukcia strechy</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="cArea" id="cAreaLabel">Podlahová plocha domu v m²</label>
+                <div class="range-row">
+                  <input type="range" id="cArea" min="60" max="400" step="5" value="150" aria-describedby="cAreaOut">
+                  <span class="range-val"><span id="cAreaOut">150</span> <small>m²</small></span>
+                </div>
+              </div>
+
+              <div class="field">
+                <span class="lbl" id="lvlLabel">Úroveň vyhotovenia</span>
+                <div class="choice" role="radiogroup" aria-labelledby="lvlLabel">
+                  <label><input type="radio" name="lvl" value="0.92"><span>Základná</span></label>
+                  <label><input type="radio" name="lvl" value="1" checked><span>Štandard</span></label>
+                  <label><input type="radio" name="lvl" value="1.2"><span>Nadštandard</span></label>
+                </div>
+              </div>
+
+              <div class="field">
+                <span class="lbl">Doplnkové práce</span>
+                <div class="checks">
+                  <label><input type="checkbox" id="cDem"><span>Búracie práce, kontajner a odvoz sute <small>pripočíta 8 %</small></span></label>
+                  <label><input type="checkbox" id="cScaf"><span>Lešenie a zariadenie staveniska <small>pripočíta 5 %</small></span></label>
+                  <label><input type="checkbox" id="cProj"><span>Projektová dokumentácia a inžiniering <small>pripočíta 4 %</small></span></label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="deck__col">
+            <p class="deck__title">Orientačná cena</p>
+            <div id="rNojs" class="nojs">Kalkulačka potrebuje zapnutý JavaScript. Jednotkové ceny nájdete v cenníku prác nižšie na stránke.</div>
+            <div id="rBody" hidden>
+              <p class="res__price" id="rPrice">—</p>
+              <p class="res__unit" id="rUnit">bez DPH</p>
+
+              <dl class="res__rows">
+                <div><dt>Plocha</dt><dd id="rArea">—</dd></div>
+                <div><dt>Jednotková cena</dt><dd id="rUnitPrice">—</dd></div>
+                <div><dt>Cena s DPH 20 %</dt><dd id="rVat">—</dd></div>
+                <div><dt>Záloha na materiál 15 %</dt><dd id="rDep">—</dd></div>
+                <div><dt>Zádržné 10 %</dt><dd id="rHold">—</dd></div>
+              </dl>
+
+              <div class="bar" id="rBar" role="img" aria-label="Rozdelenie ceny na materiál, prácu a techniku">
+                <i style="width:50%"></i><i style="width:36%"></i><i style="width:14%"></i>
+              </div>
+              <div class="legend">
+                <span><b aria-hidden="true"></b> Materiál <i id="rMat"></i></span>
+                <span><b aria-hidden="true"></b> Práca partií <i id="rWork"></i></span>
+                <span><b aria-hidden="true"></b> Technika a réžia <i id="rOvh"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="deck__col deck__col--ph">
+            <p class="deck__title">Harmonogram a záruka</p>
+            <div id="rPhaseWrap">
+              <p class="res__unit" id="rTotal">—</p>
+              <div id="rPhases"></div>
+            </div>
+            <p class="deck__sub">Postup a záruka</p>
+            <dl class="kv">
+              <div><dt>Etáp s preberacím zápisom</dt><dd id="rSteps">—</dd></div>
+              <div><dt>Fotoreport zo stavby</dt><dd>1× týždenne</dd></div>
+              <div><dt>Záruka na konštrukcie</dt><dd>60 mesiacov</dd></div>
+              <div><dt>Reakcia na reklamáciu</dt><dd>do 48 hodín</dd></div>
+              <div><dt>Pokuta za omeškanie</dt><dd>0,05 % / deň</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="deck__foot">
+          <p>Ceny sú bez DPH a vychádzajú z bežne dostupného pozemku a štandardných podmienok. Presnú cenu určí položkový rozpočet po obhliadke — rozdiel oproti kalkulačke býva do 15 %.</p>
+          <button class="btn btn--accent" type="button" id="toForm">Preniesť zadanie do dopytu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 ČO STAVIAME ============ -->
+<section class="sec" id="sluzby" aria-labelledby="h-sluzby">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">01 — Rozsah prác</span>
+        <h2 id="h-sluzby">Čo staviame</h2>
+      </div>
+      <p class="lede">Tri okruhy prác robíme vlastnými partiami. Elektroinštalácie, kúrenie a vodoinštalácie zabezpečujú stáli subdodávatelia, koordinuje ich náš stavbyvedúci.</p>
+    </div>
+
+    <div class="svc">
+      <article class="svc__card">
+        <span class="svc__num">520 €</span>
+        <span class="svc__unit">za m² hrubej stavby</span>
+        <h3>Novostavby rodinných domov</h3>
+        <p class="svc__desc">Od vytýčenia a základovej dosky až po odovzdanie ku kolaudácii. Staviame z tehly aj z betónových tvárnic, podľa vášho projektu alebo z typového katalógu.</p>
+        <ul class="svc__list">
+          <li>Zemné práce, základová doska, izolácia proti vode a radónu</li>
+          <li>Murovanie, stropy, vence, schodisko</li>
+          <li>Krov, strešná krytina, klampiarske prvky</li>
+          <li>Okná, dvere, rozvody, omietky, podlahy</li>
+          <li>Podklady pre kolaudáciu a energetický certifikát</li>
+        </ul>
+        <div class="svc__meta">
+          <div><span>Hrubá stavba</span><b>520 – 700 €/m²</b></div>
+          <div><span>Na kľúč</span><b>1 150 – 1 450 €/m²</b></div>
+          <div><span>Trvanie pri 150 m²</span><b>11 – 13 mesiacov</b></div>
+        </div>
+      </article>
+
+      <article class="svc__card">
+        <span class="svc__num">620 €</span>
+        <span class="svc__unit">za m² bytu, kompletne</span>
+        <h3>Rekonštrukcie bytov a domov</h3>
+        <p class="svc__desc">Kompletné prestavby aj jednotlivé miestnosti. Bývajúcim klientom vieme prácu rozdeliť na etapy tak, aby ostala funkčná kuchyňa a jedna kúpeľňa.</p>
+        <ul class="svc__list">
+          <li>Búracie práce, odvoz a legálna likvidácia sute</li>
+          <li>Nové rozvody elektriny, vody a odpadov</li>
+          <li>Sadrokartón, omietky, stierky, maľby</li>
+          <li>Obklady, dlažby, plávajúce a drevené podlahy</li>
+          <li>Kúpeľne na kľúč vrátane zariaďovacích predmetov</li>
+        </ul>
+        <div class="svc__meta">
+          <div><span>Byt kompletne</span><b>620 – 860 €/m²</b></div>
+          <div><span>Kúpeľňa</span><b>950 – 1 400 €/m²</b></div>
+          <div><span>Trvanie pri 65 m²</span><b>8 – 10 týždňov</b></div>
+        </div>
+      </article>
+
+      <article class="svc__card">
+        <span class="svc__num">62 €</span>
+        <span class="svc__unit">za m² fasády s omietkou</span>
+        <h3>Zateplenie a fasády</h3>
+        <p class="svc__desc">Kontaktné zatepľovacie systémy na rodinné domy a menšie bytové domy. Súčasťou je výpočet hrúbky izolácie, aby stavba spĺňala aktuálnu normu.</p>
+        <ul class="svc__list">
+          <li>Zateplenie fasády polystyrénom alebo minerálnou vlnou</li>
+          <li>Zateplenie sokla extrudovaným polystyrénom</li>
+          <li>Zateplenie stropu pivnice a podkrovia</li>
+          <li>Silikónové a silikátové omietky, farebné odtiene</li>
+          <li>Lešenie, ochrana okien a spevnených plôch</li>
+        </ul>
+        <div class="svc__meta">
+          <div><span>Fasáda 120 mm</span><b>62 – 74 €/m²</b></div>
+          <div><span>Fasáda 200 mm</span><b>76 – 86 €/m²</b></div>
+          <div><span>Trvanie pri 230 m²</span><b>5 – 6 týždňov</b></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 POSTUP ============ -->
+<section class="sec sec--dark on-dark" id="postup" aria-labelledby="h-postup">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">02 — Priebeh zákazky</span>
+        <h2 id="h-postup">Postup od obhliadky po odovzdanie</h2>
+      </div>
+      <p class="lede">Osem krokov, ktoré prejde každá zákazka. Pri každom kroku viete, čo sa práve deje a dokedy to trvá.</p>
+    </div>
+
+    <div class="steps">
+      <article class="step">
+        <span class="step__n">01</span>
+        <h3>Dopyt a telefonát</h3>
+        <p>Zistíme typ stavby, plochu, lokalitu a predstavu o termíne. Hneď povieme, či je zákazka v našej kapacite.</p>
+        <span class="step__time">do 24 hodín</span>
+      </article>
+      <article class="step">
+        <span class="step__n">02</span>
+        <h3>Obhliadka na mieste</h3>
+        <p>Prídeme na pozemok alebo do bytu, odmeriame skutkový stav, zdokumentujeme kritické miesta a prejdeme si vaše požiadavky.</p>
+        <span class="step__time">do 5 pracovných dní</span>
+      </article>
+      <article class="step">
+        <span class="step__n">03</span>
+        <h3>Rozpočet a harmonogram</h3>
+        <p>Dostanete položkový rozpočet s výmerami, cenami materiálu a prác a časový plán rozdelený na etapy.</p>
+        <span class="step__time">do 10 pracovných dní</span>
+      </article>
+      <article class="step">
+        <span class="step__n">04</span>
+        <h3>Zmluva o dielo</h3>
+        <p>Zmluva obsahuje pevnú cenu, termín odovzdania, zmluvnú pokutu z omeškania a postup pri prípadných viacprácach.</p>
+        <span class="step__time">1 – 2 dni</span>
+      </article>
+      <article class="step">
+        <span class="step__n">05</span>
+        <h3>Príprava staveniska</h3>
+        <p>Zariadenie staveniska, prípojky, kontajner na suť, ochrana okolitých plôch a prvý zápis do stavebného denníka.</p>
+        <span class="step__time">2 – 4 dni</span>
+      </article>
+      <article class="step">
+        <span class="step__n">06</span>
+        <h3>Realizácia po etapách</h3>
+        <p>Každá etapa má svoj termín a preberací zápis. Raz týždenne dostanete fotoreport a stav čerpania rozpočtu.</p>
+        <span class="step__time">podľa harmonogramu</span>
+      </article>
+      <article class="step">
+        <span class="step__n">07</span>
+        <h3>Kontrola a odstránenie chýb</h3>
+        <p>Pred odovzdaním prejdeme dielo spoločne s vami, spíšeme zoznam chýb a odstránime ich.</p>
+        <span class="step__time">5 – 10 dní</span>
+      </article>
+      <article class="step">
+        <span class="step__n">08</span>
+        <h3>Odovzdanie a záruka</h3>
+        <p>Odovzdávací protokol, revízne správy, záručné listy na materiály a kontakt na servis počas záruky.</p>
+        <span class="step__time">v deň odovzdania</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 HARMONOGRAM ============ -->
+<section class="sec" id="harmonogram" aria-labelledby="h-harm">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">03 — Časový plán</span>
+        <h2 id="h-harm">Harmonogram výstavby</h2>
+      </div>
+      <p class="lede">Modelové trvanie fáz pri troch najčastejších zadaniach. Rovnaký rozpis dostanete v rozpočte, doplnený o presné dátumy.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-bottom:clamp(30px,4vw,52px)">
+      <table>
+        <caption>Trvanie fáz podľa typu stavby</caption>
+        <thead>
+          <tr>
+            <th scope="col">Fáza</th>
+            <th scope="col">Dom na kľúč, 156 m²</th>
+            <th scope="col">Rekonštrukcia bytu, 68 m²</th>
+            <th scope="col">Zateplenie fasády, 245 m²</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Zariadenie staveniska a lešenie</th><td class="num">2 týždne</td><td class="num">3 dni</td><td class="num">4 dni</td></tr>
+          <tr><th scope="row">Zemné a búracie práce</th><td class="num">3 týždne</td><td class="num">2 týždne</td><td class="num">—</td></tr>
+          <tr><th scope="row">Hrubá stavba, stropy, vence</th><td class="num">12 týždňov</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">Krov, krytina, klampiarina</th><td class="num">5 týždňov</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><th scope="row">Rozvody elektro, voda, kúrenie</th><td class="num">4 týždne</td><td class="num">2 týždne</td><td class="num">—</td></tr>
+          <tr><th scope="row">Okná a vonkajšie dvere</th><td class="num">1 týždeň</td><td class="num">3 dni</td><td class="num">—</td></tr>
+          <tr><th scope="row">Zateplenie a fasádna omietka</th><td class="num">5 týždňov</td><td class="num">—</td><td class="num">4 týždne</td></tr>
+          <tr><th scope="row">Omietky, stierky, potery</th><td class="num">6 týždňov</td><td class="num">2 týždne</td><td class="num">—</td></tr>
+          <tr><th scope="row">Obklady, dlažby, podlahy</th><td class="num">5 týždňov</td><td class="num">2 týždne</td><td class="num">—</td></tr>
+          <tr><th scope="row">Sanita, dvere, maľby</th><td class="num">3 týždne</td><td class="num">1 týždeň</td><td class="num">—</td></tr>
+          <tr><th scope="row">Kontrola, chyby, odovzdanie</th><td class="num">2 týždne</td><td class="num">1 týždeň</td><td class="num">1 týždeň</td></tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">Trvanie celkom, s prekryvom fáz</th>
+            <td class="num">11 – 13 mesiacov</td>
+            <td class="num">8 – 10 týždňov</td>
+            <td class="num">5 – 6 týždňov</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="notes notes--2">
+      <div class="note">
+        <h3>Prečo súčet riadkov nesedí</h3>
+        <p>Fázy sa čiastočne prekrývajú — kým na streche pracuje pokrývač, vnútri už bežia rozvody. V riadku celkom je preto reálne trvanie vrátane prekryvu a rezervy na počasie.</p>
+      </div>
+      <div class="note">
+        <h3>Sezónne obmedzenia</h3>
+        <p>Betonáž robíme do −3 °C s prísadou do betónu, pod touto teplotou práce prerušíme. Fasádne omietky nanášame pri +5 až +30 °C a nie na priamom slnku.</p>
+      </div>
+      <div class="note">
+        <h3>Vysychanie a technologické prestávky</h3>
+        <p>Cementový poter vysychá približne 1 cm za týždeň, anhydritový rýchlejšie. Podlahu kladieme až po meraní zvyškovej vlhkosti, aj keď to znamená posun o týždeň.</p>
+      </div>
+      <div class="note">
+        <h3>Kedy začíname</h3>
+        <p>Voľnú kapacitu máme spravidla 6 až 10 týždňov dopredu. Menšie zákazky do 3 týždňov vieme zaradiť skôr, ak sa uvoľní partia medzi dvomi etapami.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 TYPY PRÁC ============ -->
+<section class="sec sec--band" id="prace" aria-labelledby="h-prace">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">04 — Modelové zadania</span>
+        <h2 id="h-prace">Referenčné typy prác a ich parametre</h2>
+      </div>
+      <p class="lede">Zadania, ktoré robíme najčastejšie. Čísla ukazujú, s akou plochou, dĺžkou a zložením partie treba pri danom type práce počítať.</p>
+    </div>
+
+    <div class="works">
+      <article class="work">
+        <div>
+          <p class="work__id">Typ A — dom na kľúč</p>
+          <p class="work__big">156 m²</p>
+          <p class="work__sub">dvojpodlažný, murovaný, sedlová strecha</p>
+        </div>
+        <div class="work__body">
+          <h3>Rodinný dom na kľúč, dve podlažia</h3>
+          <p>Murovaný dom z tehlových tvárnic s betónovým stropom, sedlovou strechou a kontaktným zateplením. Odovzdáva sa s omietkami, podlahami, dverami a osadenou sanitou, pripravený na kolaudáciu.</p>
+          <dl class="params">
+            <div><dt>Úžitková plocha</dt><dd>156 m²</dd></div>
+            <div><dt>Trvanie výstavby</dt><dd>11 – 13 mes.</dd></div>
+            <div><dt>Partia na stavbe</dt><dd>6 – 9 ľudí</dd></div>
+            <div><dt>Obvodové murivo</dt><dd>tehla 380 mm</dd></div>
+            <div><dt>Zateplenie</dt><dd>vlna 160 mm</dd></div>
+            <div><dt>Cenové pásmo</dt><dd>1 150 – 1 450 €/m²</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="work">
+        <div>
+          <p class="work__id">Typ B — rekonštrukcia bytu</p>
+          <p class="work__big">68 m²</p>
+          <p class="work__sub">panelový dom, trojizbový byt</p>
+        </div>
+        <div class="work__body">
+          <h3>Kompletná rekonštrukcia trojizbového bytu</h3>
+          <p>Vybúranie jadra, nové rozvody vody, odpadov a elektriny, nová kúpeľňa a WC, stierky, podlahy a interiérové dvere. Práce sú rozdelené tak, aby hlučné etapy prebehli v prvých troch týždňoch.</p>
+          <dl class="params">
+            <div><dt>Podlahová plocha</dt><dd>68 m²</dd></div>
+            <div><dt>Trvanie</dt><dd>8 – 10 týž.</dd></div>
+            <div><dt>Partia na stavbe</dt><dd>3 – 5 ľudí</dd></div>
+            <div><dt>Odvoz sute</dt><dd>2 kontajnery, 14 t</dd></div>
+            <div><dt>Elektroinštalácia</dt><dd>nová s rozvádzačom</dd></div>
+            <div><dt>Cenové pásmo</dt><dd>620 – 860 €/m²</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="work">
+        <div>
+          <p class="work__id">Typ C — zateplenie fasády</p>
+          <p class="work__big">245 m²</p>
+          <p class="work__sub">rodinný dom, dve podlažia, sokel</p>
+        </div>
+        <div class="work__body">
+          <h3>Zateplenie fasády rodinného domu</h3>
+          <p>Kontaktný zatepľovací systém so silikónovou omietkou vrátane zateplenia sokla, nových parapetov a klampiarskych prvkov. Súčasťou je aj výpočet hrúbky izolácie podľa aktuálnej normy.</p>
+          <dl class="params">
+            <div><dt>Plocha fasády</dt><dd>245 m²</dd></div>
+            <div><dt>Trvanie</dt><dd>5 – 6 týž.</dd></div>
+            <div><dt>Partia na stavbe</dt><dd>4 – 6 ľudí</dd></div>
+            <div><dt>Hrúbka izolácie</dt><dd>160 – 200 mm</dd></div>
+            <div><dt>Prestup tepla</dt><dd>U ≈ 0,15 W/m²K</dd></div>
+            <div><dt>Cenové pásmo</dt><dd>62 – 86 €/m²</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="work">
+        <div>
+          <p class="work__id">Typ D — podkrovie</p>
+          <p class="work__big">92 m²</p>
+          <p class="work__sub">prestavba na dve izby a kúpeľňu</p>
+        </div>
+        <div class="work__body">
+          <h3>Prestavba podkrovia na obytný priestor</h3>
+          <p>Statické posúdenie krovu, nové strešné okná, zateplenie medzi aj pod krokvami, parozábrana, sadrokartónové konštrukcie, rozvody a podlahy. Vhodné aj pri obývanom dome, pretože sa pracuje zhora.</p>
+          <dl class="params">
+            <div><dt>Obytná plocha</dt><dd>92 m²</dd></div>
+            <div><dt>Trvanie</dt><dd>12 – 14 týž.</dd></div>
+            <div><dt>Partia na stavbe</dt><dd>4 – 6 ľudí</dd></div>
+            <div><dt>Zateplenie strechy</dt><dd>vlna 300 mm</dd></div>
+            <div><dt>Strešné okná</dt><dd>4 ks, trojsklo</dd></div>
+            <div><dt>Cenové pásmo</dt><dd>540 – 760 €/m²</dd></div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 MATERIÁLY ============ -->
+<section class="sec" id="materialy" aria-labelledby="h-mat">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">05 — Skladby a materiál</span>
+        <h2 id="h-mat">Materiály, s ktorými pracujeme</h2>
+      </div>
+      <p class="lede">Materiál vyberáme podľa zadania a rozpočtu, držíme sa však overených skladieb. V rozpočte je každý materiál uvedený menovite, aby ste vedeli, čo do stavby ide.</p>
+    </div>
+
+    <div class="mats">
+      <article class="mat">
+        <span class="mat__val">380 mm</span>
+        <span class="mat__lab">Obvodové murivo</span>
+        <h3>Murivo</h3>
+        <p>Tehlové tvárnice na obvodové steny, vápennopieskové bloky tam, kde treba zvukovú izoláciu medzi bytmi a izbami.</p>
+        <p class="mat__spec">obvod 380 mm · priečky 115 / 175 mm</p>
+      </article>
+
+      <article class="mat">
+        <span class="mat__val">200 mm</span>
+        <span class="mat__lab">Izolácia fasády</span>
+        <h3>Tepelná izolácia</h3>
+        <p>Fasádny polystyrén na bežné fasády, minerálna vlna na drevené konštrukcie a tam, kde je požiadavka na nehorľavosť.</p>
+        <p class="mat__spec">fasáda 120 – 200 mm · strecha 300 mm</p>
+      </article>
+
+      <article class="mat">
+        <span class="mat__val">15 – 45°</span>
+        <span class="mat__lab">Sklon strechy</span>
+        <h3>Strecha a klampiarske prvky</h3>
+        <p>Betónová alebo pálená krytina na šikmé strechy, poplastovaný plech na žľaby, zvody a oplechovania.</p>
+        <p class="mat__spec">latovanie 40/60 mm · poistná fólia</p>
+      </article>
+
+      <article class="mat">
+        <span class="mat__val">0,75</span>
+        <span class="mat__lab">Uw okien, W/m²K</span>
+        <h3>Okná a dvere</h3>
+        <p>Plastové aj drevo-hliníkové okná s izolačným trojsklom, vchodové dvere s prerušeným tepelným mostom.</p>
+        <p class="mat__spec">Uw 0,75 – 0,95 W/m²K · 6 komôr</p>
+      </article>
+
+      <article class="mat">
+        <span class="mat__val">2 vrstvy</span>
+        <span class="mat__lab">Izolácia pod terénom</span>
+        <h3>Hydroizolácie</h3>
+        <p>Asfaltové pásy proti zemnej vlhkosti a radónu, stierkové hydroizolácie v kúpeľniach pod obklad a dlažbu.</p>
+        <p class="mat__spec">2 vrstvy pásov · stierka v 2 náteroch</p>
+      </article>
+
+      <article class="mat">
+        <span class="mat__val">65 mm</span>
+        <span class="mat__lab">Hrúbka poteru</span>
+        <h3>Podlahy a povrchy</h3>
+        <p>Anhydritové aj cementové potery, vinylové a laminátové podlahy, veľkoformátová dlažba, sadrové stierky.</p>
+        <p class="mat__spec">poter 50 – 65 mm · stierka 2 – 3 mm</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 ZÁRUKY ============ -->
+<section class="sec sec--band" id="zaruky" aria-labelledby="h-zaruky">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">06 — Záruka a reklamácie</span>
+        <h2 id="h-zaruky">Záruky, lehoty a reklamácie</h2>
+      </div>
+      <p class="lede">Záruka je uvedená v zmluve o dielo a začína plynúť dňom odovzdania. Na materiály platí navyše záruka výrobcu, záručné listy odovzdávame v tlačenej podobe.</p>
+    </div>
+
+    <div class="two two--wide">
+      <div class="tablewrap">
+        <table>
+          <caption>Záručné doby podľa druhu práce</caption>
+          <thead>
+            <tr><th scope="col">Druh práce</th><th scope="col">Záruka</th><th scope="col">Reakcia na reklamáciu</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Hrubá stavba a nosné konštrukcie</th><td class="num">60 mesiacov</td><td class="num">do 5 dní</td></tr>
+            <tr><th scope="row">Strecha a klampiarske prvky</th><td class="num">60 mesiacov</td><td class="num">do 48 hodín</td></tr>
+            <tr><th scope="row">Zateplenie a fasádna omietka</th><td class="num">60 mesiacov</td><td class="num">do 5 dní</td></tr>
+            <tr><th scope="row">Hydroizolácie a kúpeľne</th><td class="num">60 mesiacov</td><td class="num">do 48 hodín</td></tr>
+            <tr><th scope="row">Omietky, stierky, maľby</th><td class="num">24 mesiacov</td><td class="num">do 7 dní</td></tr>
+            <tr><th scope="row">Podlahy a obklady</th><td class="num">36 mesiacov</td><td class="num">do 7 dní</td></tr>
+            <tr><th scope="row">Dodaný materiál a zariadenie</th><td class="num">podľa výrobcu</td><td class="num">do 7 dní</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notes">
+        <div class="note">
+          <h3>Ako plynú lehoty</h3>
+          <p>Termín odovzdania v zmluve počítame v pracovných dňoch a už obsahuje rezervu na bežné počasie. Ak stavbu zdržíme z vlastnej viny, platíme zmluvnú pokutu 0,05 % z ceny diela za každý deň omeškania.</p>
+        </div>
+        <div class="note">
+          <h3>Čo lehotu predlžuje</h3>
+          <p>Mráz pod −5 °C pri mokrých procesoch, zmena zadania počas stavby, čakanie na rozhodnutie stavebného úradu alebo na dodávku materiálu, ktorý ste si vybrali sami. Každé takéto zdržanie zapisujeme do stavebného denníka.</p>
+        </div>
+        <div class="note">
+          <h3>Reklamácia počas záruky</h3>
+          <p>Chybu nahlásite telefonicky na 0944 190 583 alebo cez formulár na tejto stránke. Do 48 hodín potvrdíme prijatie a dohodneme obhliadku. Bežnú chybu odstránime do 15 pracovných dní, pri chybe, ktorá bráni užívaniu, nastupujeme okamžite.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 CENNÍK ============ -->
+<section class="sec" id="cennik" aria-labelledby="h-cennik">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">07 — Jednotkové ceny</span>
+        <h2 id="h-cennik">Cenník prác</h2>
+      </div>
+      <p class="lede">Ceny za samotnú prácu bez materiálu, ak nie je uvedené inak. Sú bez DPH a platia pre zákazky v okruhu 60 km od Žiliny.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-bottom:clamp(30px,4vw,52px)">
+      <table>
+        <caption>Murárske, betonárske a búracie práce</caption>
+        <thead>
+          <tr><th scope="col">Práca</th><th scope="col">Jednotka</th><th scope="col">Cena</th><th scope="col">Poznámka</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Murovanie obvodového muriva 380 mm</th><td class="num">m²</td><td class="num">26 – 32 €</td><td>bez tvárnic a malty</td></tr>
+          <tr><th scope="row">Murovanie priečky 115 mm</th><td class="num">m²</td><td class="num">17 – 21 €</td><td>bez materiálu</td></tr>
+          <tr><th scope="row">Základová doska vrátane výstuže</th><td class="num">m²</td><td class="num">78 – 96 €</td><td>s materiálom a betónom</td></tr>
+          <tr><th scope="row">Vnútorná omietka strojová</th><td class="num">m²</td><td class="num">11 – 14 €</td><td>bez omietkovej zmesi</td></tr>
+          <tr><th scope="row">Búranie priečky do 150 mm</th><td class="num">m²</td><td class="num">14 – 19 €</td><td>bez odvozu sute</td></tr>
+          <tr><th scope="row">Odvoz a likvidácia sute</th><td class="num">kontajner 7 m³</td><td class="num">210 – 280 €</td><td>vrátane poplatku na skládke</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tablewrap" style="margin-bottom:clamp(30px,4vw,52px)">
+      <table>
+        <caption>Zateplenie, strecha a povrchy</caption>
+        <thead>
+          <tr><th scope="col">Práca</th><th scope="col">Jednotka</th><th scope="col">Cena</th><th scope="col">Poznámka</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Zateplenie fasády vrátane omietky</th><td class="num">m²</td><td class="num">62 – 86 €</td><td>s materiálom, podľa hrúbky</td></tr>
+          <tr><th scope="row">Zateplenie stropu pivnice</th><td class="num">m²</td><td class="num">28 – 36 €</td><td>s materiálom</td></tr>
+          <tr><th scope="row">Montáž lešenia</th><td class="num">m² / mesiac</td><td class="num">4,20 – 5,60 €</td><td>vrátane dopravy a montáže</td></tr>
+          <tr><th scope="row">Krytina na šikmú strechu</th><td class="num">m²</td><td class="num">22 – 30 €</td><td>bez krytiny a lát</td></tr>
+          <tr><th scope="row">Sadrokartónový podhľad</th><td class="num">m²</td><td class="num">24 – 31 €</td><td>s profilmi a doskami</td></tr>
+          <tr><th scope="row">Obklad a dlažba do formátu 60 × 60 cm</th><td class="num">m²</td><td class="num">27 – 38 €</td><td>bez obkladu a lepidla</td></tr>
+          <tr><th scope="row">Sadrová stierka a maľba</th><td class="num">m²</td><td class="num">13 – 18 €</td><td>s materiálom, dva nátery</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Hodinové sadzby a doprava</caption>
+        <thead>
+          <tr><th scope="col">Položka</th><th scope="col">Jednotka</th><th scope="col">Cena</th><th scope="col">Poznámka</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Murár, obkladač, sadrokartonár</th><td class="num">hodina</td><td class="num">24 €</td><td>drobné práce mimo rozpočtu</td></tr>
+          <tr><th scope="row">Pomocný pracovník</th><td class="num">hodina</td><td class="num">17 €</td><td>prípravné a upratovacie práce</td></tr>
+          <tr><th scope="row">Stavbyvedúci, technický dozor</th><td class="num">hodina</td><td class="num">38 €</td><td>aj pri zákazkách iných firiem</td></tr>
+          <tr><th scope="row">Obhliadka a cenová ponuka</th><td class="num">zákazka</td><td class="num">0 €</td><td>do 60 km od Žiliny</td></tr>
+          <tr><th scope="row">Doprava nad 60 km</th><td class="num">km</td><td class="num">0,95 €</td><td>počíta sa jedna cesta denne</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 PLATBY ============ -->
+<section class="sec sec--band" id="platby" aria-labelledby="h-platby">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">08 — Splátky</span>
+        <h2 id="h-platby">Platby naviazané na etapy</h2>
+      </div>
+      <p class="lede">Neplatíte celú stavbu dopredu. Každá splátka je naviazaná na dokončenú etapu, ktorú si prevezmete zápisom do stavebného denníka.</p>
+    </div>
+
+    <div class="two two--wide">
+      <ol class="paylist">
+        <li>
+          <b>Záloha na materiál</b>
+          <span class="d">Splatná pri podpise zmluvy. Kupujeme za ňu materiál na prvú etapu.</span>
+          <em>15 %</em>
+        </li>
+        <li>
+          <b>Po hrubej stavbe alebo búraní</b>
+          <span class="d">Po prevzatí prvej etapy a zápise do stavebného denníka.</span>
+          <em>25 %</em>
+        </li>
+        <li>
+          <b>Po rozvodoch a strešnom plášti</b>
+          <span class="d">Keď je stavba uzavretá a rozvody sú pripravené na skúšky.</span>
+          <em>25 %</em>
+        </li>
+        <li>
+          <b>Po dokončovacích prácach</b>
+          <span class="d">Po omietkach, podlahách a osadení zariaďovacích predmetov.</span>
+          <em>25 %</em>
+        </li>
+        <li>
+          <b>Zádržné</b>
+          <span class="d">Splatné 30 dní po odovzdaní diela a odstránení všetkých zapísaných chýb.</span>
+          <em>10 %</em>
+        </li>
+      </ol>
+
+      <div class="notes">
+        <div class="note">
+          <h3>Spôsob platby</h3>
+          <p>Prevodom na účet na základe faktúry so splatnosťou 14 dní. Zálohovú faktúru vystavujeme pri podpise zmluvy. V hotovosti prijímame platby len do 300 € a vždy s dokladom.</p>
+        </div>
+        <div class="note">
+          <h3>Čo je v cene zahrnuté</h3>
+          <p>Práca partií, réžia stavby, doprava do 60 km, zariadenie staveniska a upratanie po dokončení. Materiál je v rozpočte samostatnou položkou s uvedenou cenou za jednotku.</p>
+        </div>
+        <div class="note">
+          <h3>Poistenie</h3>
+          <p>Máme uzatvorené poistenie zodpovednosti za škodu spôsobenú pri výkone činnosti. Číslo poistnej zmluvy je uvedené v zmluve o dielo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 ZMLUVA A STORNO ============ -->
+<section class="sec" id="zmluva" aria-labelledby="h-zmluva">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">09 — Zmluvné podmienky</span>
+        <h2 id="h-zmluva">Zmluva, viacpráce a storno</h2>
+      </div>
+      <p class="lede">Podmienky, ktoré platia rovnako pre nás aj pre vás. Sú v zmluve o dielo, tu ich uvádzame vopred, aby vás pri podpise nič neprekvapilo.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-bottom:clamp(30px,4vw,52px)">
+      <table>
+        <caption>Storno podmienky pri odstúpení od zmluvy</caption>
+        <thead>
+          <tr><th scope="col">Kedy odstúpite</th><th scope="col">Čo sa vám vracia</th><th scope="col">Čo vám účtujeme</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Do 7 dní od podpisu, materiál nie je objednaný</th><td>celá záloha</td><td class="num">0 €</td></tr>
+          <tr><th scope="row">Po objednaní materiálu, práce ešte nezačali</th><td>záloha znížená o objednaný materiál</td><td>materiál a doprava podľa dokladov</td></tr>
+          <tr><th scope="row">Po začatí prác</th><td>zvyšok zálohy po vyúčtovaní</td><td>skutočne vykonané práce a materiál na stavbe</td></tr>
+          <tr><th scope="row">Presun termínu na vašu žiadosť o viac ako 30 dní</th><td>záloha ostáva v platnosti</td><td class="num">0 €</td></tr>
+          <tr><th scope="row">Odstúpenie z našej strany</th><td>celá záloha do 14 dní</td><td class="num">0 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="notes notes--2">
+      <div class="note">
+        <h3>Viacpráce a zmeny počas stavby</h3>
+        <p>Každá zmena oproti rozpočtu má vlastný zmenový list s cenou a s vplyvom na termín. Bez vášho podpisu na zmenovom liste nezačíname a nič nefakturujeme.</p>
+      </div>
+      <div class="note">
+        <h3>Menej prác</h3>
+        <p>Ak niektorú položku z rozpočtu vypustíte, odpočítame ju v plnej výške vrátane materiálu. Menej prác riešime rovnakým zmenovým listom ako viacpráce.</p>
+      </div>
+      <div class="note">
+        <h3>Skryté chyby zistené pri búraní</h3>
+        <p>Zhnitý trám, popraskaný preklad alebo hliníkové rozvody sa nedajú vidieť dopredu. Prácu zastavíme, stav zdokumentujeme a navrhneme riešenie s cenou. Pokračujeme až po vašom súhlase.</p>
+      </div>
+      <div class="note">
+        <h3>Odstúpenie z našej strany</h3>
+        <p>Odstúpiť môžeme len pri nepravdivých podkladoch, nesprístupnení stavby dlhšie ako 30 dní alebo pri omeškaní platby nad 30 dní. Zálohu v takom prípade vraciame do 14 dní.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 KONTROLA KVALITY ============ -->
+<section class="sec sec--dark on-dark" id="kvalita" aria-labelledby="h-kvalita">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">10 — Kontrola a doklady</span>
+        <h2 id="h-kvalita">Kontrolné body a odovzdávané doklady</h2>
+      </div>
+      <p class="lede">Kontrolný bod je miesto, kde sa práca preberá pred zakrytím. Zápis a fotografia z každého bodu sú súčasťou dokumentácie, ktorú dostanete pri odovzdaní.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-bottom:clamp(30px,4vw,52px)">
+      <table>
+        <caption>Kontrolné body počas stavby</caption>
+        <thead>
+          <tr><th scope="col">Kontrolný bod</th><th scope="col">Čo sa meria</th><th scope="col">Kritérium</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Základová doska</th><td>rovinnosť a rozmery</td><td class="num">±5 mm / 2 m</td></tr>
+          <tr><th scope="row">Murivo a preklady</th><td>zvislosť stien, uloženie prekladov</td><td class="num">±5 mm / podlažie</td></tr>
+          <tr><th scope="row">Rozvody vody a kúrenia</th><td>tlaková skúška pred zakrytím</td><td class="num">6 barov, 60 min.</td></tr>
+          <tr><th scope="row">Elektroinštalácia</th><td>východisková revízia</td><td>revízna správa</td></tr>
+          <tr><th scope="row">Poter pred podlahou</th><td>zvyšková vlhkosť, CM metóda</td><td class="num">do 2,0 %</td></tr>
+          <tr><th scope="row">Hydroizolácia v kúpeľni</th><td>celistvosť náteru a rohov</td><td>2 nátery, páska v rohoch</td></tr>
+          <tr><th scope="row">Fasáda po zateplení</th><td>tepelné mosty, termokamera</td><td>bez lineárnych mostov</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="docs">
+      <li><b>01</b><span><strong>Stavebný denník</strong>Denné zápisy, počasie, počet ľudí na stavbe, prerušenia.</span></li>
+      <li><b>02</b><span><strong>Preberacie protokoly etáp</strong>Podpísaný zápis ku každej ukončenej etape a splátke.</span></li>
+      <li><b>03</b><span><strong>Revízna správa elektroinštalácie</strong>Východisková revízia od oprávneného technika.</span></li>
+      <li><b>04</b><span><strong>Protokol o tlakovej skúške</strong>Voda a kúrenie, vykonané pred zakrytím rozvodov.</span></li>
+      <li><b>05</b><span><strong>Záručné listy materiálov</strong>Krytina, okná, izolácia, sanita a podlahy v tlačenej podobe.</span></li>
+      <li><b>06</b><span><strong>Vyhlásenia o parametroch</strong>Doklady k zabudovaným stavebným výrobkom.</span></li>
+      <li><b>07</b><span><strong>Fotodokumentácia zakrytých častí</strong>Rozvody v stenách a podlahách pred zabetónovaním.</span></li>
+      <li><b>08</b><span><strong>Podklady ku kolaudácii</strong>Zameranie skutkového stavu a podklady pre energetický certifikát.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 11 TÍM A TECHNIKA ============ -->
+<section class="sec" id="tim" aria-labelledby="h-tim">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">11 — Ľudia a technika</span>
+        <h2 id="h-tim">Kto je na stavbe a s čím pracujeme</h2>
+      </div>
+      <p class="lede">Na každej zákazke je jeden zodpovedný stavbyvedúci, ktorý je vaším jediným kontaktom. Nemusíte volať piatim remeselníkom.</p>
+    </div>
+
+    <div class="roles">
+      <div class="role"><b>Stavbyvedúci</b><span>Vedie stavebný denník, koordinuje partie a subdodávateľov, preberá etapy s klientom.</span></div>
+      <div class="role"><b>Majster murárskej partie</b><span>Zodpovedá za murovanie, betonáž, omietky a dodržanie výmer z rozpočtu.</span></div>
+      <div class="role"><b>Rozpočtár</b><span>Pripravuje položkový rozpočet, sleduje čerpanie a pripravuje zmenové listy.</span></div>
+      <div class="role"><b>Obkladač a podlahár</b><span>Obklady, dlažby, potery a finálne podlahy vrátane hydroizolácie v kúpeľniach.</span></div>
+      <div class="role"><b>Sadrokartonár</b><span>Podhľady, predsadené steny, akustické a protipožiarne konštrukcie.</span></div>
+      <div class="role"><b>Klampiar a pokrývač</b><span>Strešné plášte, žľaby, zvody, oplechovania a strešné okná.</span></div>
+      <div class="role"><b>Fasádna partia</b><span>Zateplenie, lešenie, armovanie a finálne omietky vrátane farebnosti.</span></div>
+      <div class="role"><b>Stáli subdodávatelia</b><span>Elektroinštalácia, voda a kúrenie, vždy s platnými oprávneniami a revíznymi správami.</span></div>
+    </div>
+
+    <ul class="gear">
+      <li><b>Minibáger 2,5 t</b> Výkopy základov, prípojok a drenáží aj na stiesnených pozemkoch.</li>
+      <li><b>Stavebný výťah do 200 kg</b> Doprava materiálu na podlažia bez nosenia po schodoch.</li>
+      <li><b>Silo a omietací stroj</b> Strojové omietky s rovnomernou hrúbkou a bez zbytočného odpadu.</li>
+      <li><b>Rámové lešenie 400 m²</b> Vlastné lešenie, takže sa nečaká na požičovňu a neplatíte prestoje.</li>
+      <li><b>Rotačný laser a nivelák</b> Kontrola rovinnosti stropov, poterov a osadenia okien.</li>
+      <li><b>Vlhkomer a termokamera</b> Kontrola vyschnutia poterov a tepelných mostov po zateplení.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 12 KARIÉRA ============ -->
+<section class="sec sec--band" id="kariera" aria-labelledby="h-kariera">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">12 — Kariéra</span>
+        <h2 id="h-kariera">Voľné pozície</h2>
+      </div>
+      <p class="lede">Prijímame ľudí na stavby v okruhu 60 km od Žiliny. Domov sa vraciate každý deň, na stavbu jazdíme firemným autom zo zberného miesta pri kancelárii.</p>
+    </div>
+
+    <div class="jobs">
+      <article class="job">
+        <div>
+          <h3>Murár</h3>
+          <p class="job__meta">Plný úväzok · nástup ihneď</p>
+        </div>
+        <p>Murovanie obvodového aj priečkového muriva, debnenie a betonáž vencov, osádzanie prekladov. Podmienkou je prax aspoň 3 roky a vlastné ručné náradie.</p>
+        <p class="job__pay">16 – 22 €<small>za hodinu</small></p>
+      </article>
+
+      <article class="job">
+        <div>
+          <h3>Obkladač</h3>
+          <p class="job__meta">Plný úväzok alebo živnosť</p>
+        </div>
+        <p>Obklady a dlažby vrátane veľkoformátových, hydroizolačné stierky v kúpeľniach, silikónové škáry. Hľadáme človeka, ktorý si po sebe kontroluje spády a rovinnosť.</p>
+        <p class="job__pay">18 – 24 €<small>za hodinu</small></p>
+      </article>
+
+      <article class="job">
+        <div>
+          <h3>Stavbyvedúci</h3>
+          <p class="job__meta">Plný úväzok · 2 stavby súčasne</p>
+        </div>
+        <p>Vedenie stavebného denníka, koordinácia partií a subdodávateľov, preberanie etáp s klientom, kontrola čerpania rozpočtu. Odborná spôsobilosť výhodou, nie podmienkou.</p>
+        <p class="job__pay">2 200 – 3 000 €<small>mesačne</small></p>
+      </article>
+
+      <article class="job">
+        <div>
+          <h3>Pomocný pracovník</h3>
+          <p class="job__meta">Plný úväzok · aj bez praxe</p>
+        </div>
+        <p>Príprava materiálu, obsluha miešačky, upratovanie staveniska, pomoc murárskej a fasádnej partii. Zaučíme vás, po roku je možný prechod na murársku pozíciu.</p>
+        <p class="job__pay">12 – 15 €<small>za hodinu</small></p>
+      </article>
+    </div>
+
+    <div class="notes notes--2" style="margin-top:clamp(30px,4vw,52px)">
+      <div class="note">
+        <h3>Čo ponúkame</h3>
+        <p>Výplata do 10. dňa v mesiaci, žiadne zadržiavanie mzdy. Pracovné oblečenie, obuv a ochranné pomôcky dodávame my. Elektrické náradie je firemné vrátane servisu.</p>
+      </div>
+      <div class="note">
+        <h3>Ako sa prihlásiť</h3>
+        <p>Vyplňte formulár v sekcii Kontakt, do popisu uveďte pozíciu a roky praxe. Ozveme sa do 3 pracovných dní a dohodneme stretnutie priamo na niektorej z našich stavieb.</p>
+      </div>
+    </div>
+
+    <p style="margin:clamp(26px,3vw,38px) 0 0">
+      <a class="btn btn--line" href="#kontakt">Prihlásiť sa cez formulár</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============ 13 PRÍCHOD A PARKOVANIE ============ -->
+<section class="sec" id="doprava" aria-labelledby="h-doprava">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">13 — Príchod</span>
+        <h2 id="h-doprava">Ako sa k nám dostanete a kde zaparkujete</h2>
+      </div>
+      <p class="lede">Kancelária je na rohu ulíc Kamenárska a Tehelná v Žiline. Rozpočty a zmluvy podpisujeme tu, obhliadky robíme priamo u vás.</p>
+    </div>
+
+    <div class="two two--wide">
+      <div class="planwrap">
+        <svg viewBox="0 0 640 300" role="img" aria-label="Schematický plán okolia kancelárie: ulice Kamenárska a Tehelná, budova kancelárie a parkovisko">
+          <rect width="640" height="300" fill="#EDEBE6"/>
+          <g fill="#DCD8D1">
+            <rect x="24" y="24" width="150" height="86"/>
+            <rect x="196" y="24" width="118" height="86"/>
+            <rect x="24" y="196" width="118" height="80"/>
+            <rect x="418" y="24" width="198" height="60"/>
+            <rect x="474" y="196" width="142" height="80"/>
+          </g>
+          <rect x="0" y="128" width="640" height="46" fill="#CFCAC2"/>
+          <rect x="336" y="0" width="40" height="300" fill="#CFCAC2"/>
+          <g stroke="#F5F4F1" stroke-width="2" stroke-dasharray="16 14">
+            <line x1="0" y1="151" x2="640" y2="151"/>
+            <line x1="356" y1="0" x2="356" y2="300"/>
+          </g>
+          <rect x="418" y="104" width="120" height="72" fill="#1A1D20"/>
+          <rect x="418" y="104" width="120" height="6" fill="#C08A2E"/>
+          <text x="478" y="146" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#F5F4F1">KVADER</text>
+          <text x="478" y="165" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#C7C3BC">kancelária</text>
+          <rect x="556" y="104" width="60" height="72" fill="#DCD8D1" stroke="#9A958D" stroke-width="1"/>
+          <text x="586" y="147" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#31363A">P</text>
+          <text x="24" y="120" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#31363A" letter-spacing="1.5">KAMENÁRSKA</text>
+          <text x="384" y="40" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#31363A" letter-spacing="1.5">TEHELNÁ</text>
+          <text x="196" y="216" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#5A5F63">smer centrum, 1,2 km</text>
+        </svg>
+        <p class="plancap">Vchod do kancelárie je z Kamenárskej ulice, hneď za rohom od križovatky s Tehelnou. Za budovou je areál so skladom a technikou, ten je pre klientov uzavretý — materiál vozíme priamo na stavbu.</p>
+      </div>
+
+      <div class="notes">
+        <div class="note">
+          <h3>Parkovanie</h3>
+          <p>Pred budovou je 6 vyhradených miest pre návštevy, parkovanie je zdarma a bez parkovacích hodín. Ak sú miesta obsadené, ďalšie voľné parkovisko je 120 m po Kamenárskej smerom od centra.</p>
+        </div>
+        <div class="note">
+          <h3>Mestská doprava</h3>
+          <p>Najbližšia zastávka je 200 metrov smerom do centra, od nej idete rovno po Kamenárskej. Z autobusovej aj vlakovej stanice je to približne 12 minút.</p>
+        </div>
+        <div class="note">
+          <h3>Autom z diaľnice</h3>
+          <p>Od diaľničného privádzača sú to 4 km. Pri križovatke s Tehelnou odbočte doprava, kancelária je druhá budova vľavo s tmavou fasádou a okrovým pásom.</p>
+        </div>
+        <div class="note">
+          <h3>Bezbariérový vstup</h3>
+          <p>Vstup z Kamenárskej je bez schodov, rokovacia miestnosť je na prízemí. Ak potrebujete pomoc pri vstupe, zavolajte pred príchodom na 0944 190 583.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tablewrap" style="margin-top:clamp(30px,4vw,52px)">
+      <table>
+        <caption>Oblasť pôsobenia a doprava na stavbu</caption>
+        <thead>
+          <tr><th scope="col">Mesto alebo obec</th><th scope="col">Vzdialenosť</th><th scope="col">Doprava na stavbu</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Žilina a mestské časti</th><td class="num">do 8 km</td><td>v cene zákazky</td></tr>
+          <tr><th scope="row">Kysucké Nové Mesto</th><td class="num">15 km</td><td>v cene zákazky</td></tr>
+          <tr><th scope="row">Bytča</th><td class="num">22 km</td><td>v cene zákazky</td></tr>
+          <tr><th scope="row">Rajec</th><td class="num">24 km</td><td>v cene zákazky</td></tr>
+          <tr><th scope="row">Čadca</th><td class="num">30 km</td><td>v cene zákazky</td></tr>
+          <tr><th scope="row">Martin</th><td class="num">34 km</td><td>v cene zákazky</td></tr>
+          <tr><th scope="row">Ostatné obce nad 60 km</th><td class="num">nad 60 km</td><td>0,95 €/km, len zákazky nad 60 000 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 FAQ ============ -->
+<section class="sec sec--band" id="faq" aria-labelledby="h-faq">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">14 — Otázky</span>
+        <h2 id="h-faq">Časté otázky</h2>
+      </div>
+      <p class="lede">Otázky, ktoré dostávame pri každej druhej obhliadke. Ak vaša medzi nimi nie je, napíšte ju do formulára.</p>
+    </div>
+
+    <div class="faq">
+      <details open>
+        <summary>Je cena z kalkulačky konečná?</summary>
+        <div class="faq__a"><p>Nie, je orientačná. Slúži na to, aby ste vedeli, či sa zámer vôbec zmestí do vášho rozpočtu. Konečnú cenu určí položkový rozpočet po obhliadke, kde sú zahrnuté konkrétne výmery, materiály a podmienky na mieste. Rozdiel medzi kalkulačkou a rozpočtom býva do 15 %.</p></div>
+      </details>
+
+      <details>
+        <summary>Ako vám pošlem dopyt, keď na stránke nie je e-mailová adresa?</summary>
+        <div class="faq__a"><p>Použite formulár v sekcii Kontakt. Správa príde do schránky spoločnosti rovnako ako e-mail, odpovedáme do 24 hodín. Ak to súri, zavolajte na 0944 190 583 počas otváracích hodín kancelárie.</p></div>
+      </details>
+
+      <details>
+        <summary>Robíte aj menšie zákazky, nielen celé domy?</summary>
+        <div class="faq__a"><p>Áno. Najmenšia zákazka, ktorú preberáme, je približne 3 000 € bez DPH — napríklad rekonštrukcia kúpeľne alebo výmena podláh v byte. Pri menších prácach účtujeme hodinovú sadzbu podľa cenníka.</p></div>
+      </details>
+
+      <details>
+        <summary>Musím mať pred obhliadkou hotový projekt?</summary>
+        <div class="faq__a"><p>Nemusíte. Pri rekonštrukciách stačí, keď prídeme odmerať skutkový stav. Pri novostavbe projekt potrebujeme, ale vieme ho zabezpečiť cez projektanta, s ktorým spolupracujeme, vrátane inžinieringu a stavebného povolenia.</p></div>
+      </details>
+
+      <details>
+        <summary>Kupujete materiál vy, alebo ho mám zabezpečiť ja?</summary>
+        <div class="faq__a"><p>Bežne materiál zabezpečujeme my a v rozpočte ho vidíte menovite s cenou. Ak si chcete niektoré položky kúpiť sami — typicky obklady, sanitu alebo podlahy — je to bez problémov, len ich musíte mať na stavbe pred začiatkom danej etapy, inak sa posúva termín.</p></div>
+      </details>
+
+      <details>
+        <summary>Môžem v byte bývať počas rekonštrukcie?</summary>
+        <div class="faq__a"><p>Pri kompletnej rekonštrukcii to neodporúčame — v prvých troch týždňoch je byt bez vody a s prašnými búracími prácami. Pri čiastočnej rekonštrukcii jednej miestnosti alebo kúpeľne sa bývať dá, priestor oddelíme prachovou zástenou a vodu vypíname len na dohodnuté hodiny.</p></div>
+      </details>
+
+      <details>
+        <summary>Ako riešite prach, hluk a susedov v bytovke?</summary>
+        <div class="faq__a"><p>Hlučné práce robíme v pracovné dni od 8:00 do 17:00, nikdy cez víkend. Spoločné priestory zakrývame fóliou a chodbu upratujeme každý deň. Oznam pre susedov s termínmi a kontaktom na stavbyvedúceho vyvesíme pred začiatkom prác.</p></div>
+      </details>
+
+      <details>
+        <summary>Čo ak sa počas búrania nájde niečo neočakávané?</summary>
+        <div class="faq__a"><p>Napríklad zhnitý trám, popraskaný preklad alebo hliníkové rozvody. Prácu na danom mieste zastavíme, stav zdokumentujeme, navrhneme riešenie a dáme cenu do zmenového listu. Pokračujeme až po vašom podpise, aby vás faktúra neprekvapila.</p></div>
+      </details>
+
+      <details>
+        <summary>Dá sa dohodnúť obhliadka mimo pracovných hodín?</summary>
+        <div class="faq__a"><p>Obhliadky robíme od 7:00 do 18:00 vrátane podvečerných termínov. V sobotu prídeme po dohode, keď to inak nevychádza. Nedeľa je pre nás voľná a stavby v ten deň nefungujú.</p></div>
+      </details>
+
+      <details>
+        <summary>Ako ďaleko od Žiliny chodíte?</summary>
+        <div class="faq__a"><p>Bežne do 60 km, čo pokrýva Žilinu, Bytču, Rajec, Martin, Kysucké Nové Mesto aj Čadcu. Ďalej ideme len pri väčších zákazkách nad 60 000 € a doprava sa v takom prípade účtuje podľa cenníka.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 KONTAKT ============ -->
+<section class="sec" id="kontakt" aria-labelledby="h-kontakt">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <span class="sec__idx">15 — Kontakt</span>
+        <h2 id="h-kontakt">Dopyt na cenovú ponuku</h2>
+      </div>
+      <p class="lede">Napíšte, čo potrebujete postaviť alebo prerobiť. Ozveme sa do 24 hodín a dohodneme termín obhliadky.</p>
+    </div>
+
+    <div class="contact">
+      <form class="form" id="dopyt" novalidate>
+        <div class="form__row">
+          <div class="field">
+            <label for="fName">Meno a priezvisko</label>
+            <input type="text" id="fName" name="meno" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="fPhone">Telefón</label>
+            <input type="tel" id="fPhone" name="telefon" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="fCity">Obec alebo mesto stavby</label>
+            <input type="text" id="fCity" name="obec" autocomplete="address-level2">
+          </div>
+          <div class="field">
+            <label for="fArea">Plocha v m²</label>
+            <input type="number" id="fArea" name="plocha" min="1" max="2000" step="1" inputmode="numeric">
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="fType">Typ práce</label>
+            <select id="fType" name="typ">
+              <option value="hruba">Hrubá stavba rodinného domu</option>
+              <option value="kluc">Novostavba na kľúč</option>
+              <option value="rekdom">Rekonštrukcia rodinného domu</option>
+              <option value="rekbyt">Rekonštrukcia bytu</option>
+              <option value="kupelna">Rekonštrukcia kúpeľne</option>
+              <option value="podkrovie">Prestavba podkrovia</option>
+              <option value="zatep">Zateplenie fasády</option>
+              <option value="strecha">Rekonštrukcia strechy</option>
+              <option value="kariera">Prihláška na voľnú pozíciu</option>
+              <option value="ine">Iné práce</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fTerm">Predpokladaný začiatok</label>
+            <select id="fTerm" name="termin">
+              <option>Čo najskôr</option>
+              <option>Do 3 mesiacov</option>
+              <option>Do 6 mesiacov</option>
+              <option>Budúci rok</option>
+              <option>Zatiaľ len zisťujem cenu</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="fMsg">Správa</label>
+          <textarea id="fMsg" name="sprava" placeholder="Napríklad: trojizbový byt v panelovom dome, chceme nové jadro, elektriku a podlahy."></textarea>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="fGdpr" required>
+          <span>Súhlasím so spracovaním údajov na účel spracovania cenovej ponuky. Údaje neposkytujeme tretím stranám.</span>
+        </label>
+
+        <button class="btn btn--accent btn--wide" type="submit">Odoslať dopyt</button>
+        <p class="formhint">Správa príde do schránky spoločnosti KVADER. Odpovedáme do 24 hodín, v pracovné dni spravidla do niekoľkých hodín. Ak potrebujete odpoveď hneď, zavolajte.</p>
+        <p class="formnote" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="info">
+        <div class="infobox">
+          <h3>Telefón</h3>
+          <p><a class="bigtel" href="tel:+421944190583">0944 190 583</a></p>
+          <p class="small">Volajte počas otváracích hodín kancelárie. Mimo nich použite formulár, ozveme sa v nasledujúci pracovný deň.</p>
+        </div>
+
+        <div class="infobox">
+          <h3>Kancelária</h3>
+          <p><strong>KVADER — stavebná spoločnosť</strong><br>Kamenárska 26<br>010 01 Žilina</p>
+          <p class="small">Rokovacia miestnosť je na prízemí, vchod z Kamenárskej ulice. Pred budovou je 6 parkovacích miest zdarma.</p>
+        </div>
+
+        <div class="infobox">
+          <h3>Otváracie hodiny</h3>
+          <div class="hours">
+            <div><span>Pondelok — štvrtok</span><b>7:30 — 16:00</b></div>
+            <div><span>Piatok</span><b>7:30 — 14:00</b></div>
+            <div><span>Sobota</span><b>po dohode</b></div>
+            <div><span>Nedeľa</span><b class="off">zatvorené</b></div>
+            <div><span>Obhliadky na stavbách</span><b>7:00 — 18:00</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ AUTOR UKÁŽKY ============ -->
+<section class="author on-dark" aria-labelledby="h-autor">
+  <div class="author__in">
+    <div class="wrap">
+      <div class="author__grid">
+        <div>
+          <p class="eyebrow" style="color:var(--ochre)">O tejto ukážke</p>
+          <h2 id="h-autor">Páči sa vám tento web?</h2>
+          <p>Tento web je ukážka z portfólia. Firma <strong>KVADER</strong> aj všetky jej údaje sú vymyslené — slúžia len na to, aby ste videli, ako môže vyzerať hotová stránka stavebnej firmy s cenníkom, kalkulačkou, harmonogramom a dopytovým formulárom.</p>
+          <p>Ukážku navrhol a naprogramoval <strong>Alex Poliak</strong>. Rovnako spravím web aj pre vašu firmu — s vaším obsahom, cenami a fotografiami vašich realizácií.</p>
+          <p class="author__price">Weby na mieru od 250 €. Prvý návrh do 3 dní. Konzultácia zadarmo a nezáväzne.</p>
+          <div class="author__actions">
+            <a class="btn btn--accent" href="https://apoliak.online">Pozrieť apoliak.online</a>
+            <a class="btn btn--line" href="tel:+421902464022">Zavolať 0902 464 022</a>
+          </div>
+        </div>
+
+        <div class="author__card">
+          <h3>Kontakt na autora</h3>
+          <ul>
+            <li><span>Web</span> <a href="https://apoliak.online">apoliak.online</a></li>
+            <li><span>E-mail</span> <a href="mailto:info@apoliak.online">info@apoliak.online</a></li>
+            <li><span>Telefón</span> <a href="tel:+421902464022">0902 464 022</a></li>
+            <li><span>Cena</span> <span class="v">od 250 €</span></li>
+            <li><span>Prvý návrh</span> <span class="v">do 3 dní</span></li>
+            <li><span>Konzultácia</span> <span class="v">zadarmo a nezáväzne</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PÄTIČKA ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <h3>KVADER</h3>
+        <p style="margin:0">Stavebná spoločnosť pre novostavby, rekonštrukcie a zateplenia. Žilina a okolie do 60 km.</p>
+      </div>
+      <div>
+        <h3>Služby</h3>
+        <ul>
+          <li><a href="#sluzby">Novostavby na kľúč</a></li>
+          <li><a href="#sluzby">Rekonštrukcie bytov a domov</a></li>
+          <li><a href="#sluzby">Zateplenie a fasády</a></li>
+          <li><a href="#prace">Prestavba podkrovia</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Informácie</h3>
+        <ul>
+          <li><a href="#cennik">Cenník prác</a></li>
+          <li><a href="#harmonogram">Harmonogram výstavby</a></li>
+          <li><a href="#zaruky">Záruky a reklamácie</a></li>
+          <li><a href="#zmluva">Zmluva a storno</a></li>
+          <li><a href="#kariera">Voľné pozície</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Kontakt</h3>
+        <p style="margin:0 0 10px">Kamenárska 26<br>010 01 Žilina</p>
+        <p style="margin:0 0 10px"><a class="foot__tel" href="tel:+421944190583">0944 190 583</a></p>
+        <p style="margin:0"><a href="#kontakt">Napísať cez formulár</a></p>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>Ukážkový web — údaje firmy sú vymyslené.</span>
+      <span>Návrh a kód: <a href="https://apoliak.online">Alex Poliak — apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- výška pásika ukážky ---------- */
+  var bar = document.getElementById("demobar");
+  function setBar(){
+    if(!bar) return;
+    var h = Math.round(bar.getBoundingClientRect().height);
+    if(h > 0) document.documentElement.style.setProperty("--barH", h + "px");
+  }
+  setBar();
+  window.addEventListener("resize", setBar);
+  window.addEventListener("load", setBar);
+  if(window.ResizeObserver && bar){
+    new ResizeObserver(function(){ setBar(); }).observe(bar);
+  }
+  if(window.requestAnimationFrame) window.requestAnimationFrame(setBar);
+  window.setTimeout(setBar, 300);
+  if(document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(setBar);
+
+  /* ---------- mobilné menu ---------- */
+  var burger = document.getElementById("burger");
+  var mnav = document.getElementById("mnav");
+  function closeNav(){
+    if(!mnav || !burger) return;
+    mnav.classList.remove("is-open");
+    burger.setAttribute("aria-expanded","false");
+  }
+  if(burger && mnav){
+    burger.addEventListener("click", function(){
+      var open = mnav.classList.toggle("is-open");
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    mnav.addEventListener("click", function(e){
+      if(e.target.tagName === "A") closeNav();
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape") closeNav();
+    });
+  }
+
+  /* ---------- kalkulačka ---------- */
+  var TYPY = {
+    hruba: {
+      n:"Hrubá stavba rodinného domu", lo:520, hi:700, min:60, max:400, step:5, def:140,
+      unit:"Podlahová plocha domu", base:8, per:0.08, split:[0.52,0.34,0.14], etapy:4,
+      faz:[["Zemné práce a základová doska",0.22],["Murivo, stropy a vence",0.34],["Krov a strešný plášť",0.26],["Okná, dvere a odovzdanie",0.18]]
+    },
+    kluc: {
+      n:"Novostavba na kľúč", lo:1150, hi:1450, min:60, max:400, step:5, def:150,
+      unit:"Podlahová plocha domu", base:26.6, per:0.15, split:[0.50,0.36,0.14], etapy:5,
+      faz:[["Príprava a základová doska",0.12],["Hrubá stavba a strecha",0.30],["Rozvody, okná, zateplenie",0.24],["Omietky, potery, podlahy",0.22],["Dokončenie a odovzdanie",0.12]]
+    },
+    rekdom: {
+      n:"Rekonštrukcia rodinného domu", lo:700, hi:980, min:40, max:350, step:5, def:120,
+      unit:"Podlahová plocha domu", base:9, per:0.11, split:[0.44,0.42,0.14], etapy:5,
+      faz:[["Búranie a odvoz sute",0.14],["Rozvody a nové konštrukcie",0.28],["Omietky, stierky, potery",0.24],["Obklady, podlahy, dvere",0.22],["Kontrola a odovzdanie",0.12]]
+    },
+    rekbyt: {
+      n:"Rekonštrukcia bytu", lo:620, hi:860, min:25, max:200, step:1, def:68,
+      unit:"Podlahová plocha bytu", base:4, per:0.07, split:[0.43,0.43,0.14], etapy:5,
+      faz:[["Búranie jadra a odvoz",0.16],["Rozvody vody a elektriny",0.22],["Sadrokartón a stierky",0.22],["Obklady, dlažby, podlahy",0.26],["Sanita, dvere, odovzdanie",0.14]]
+    },
+    kupelna: {
+      n:"Rekonštrukcia kúpeľne a WC", lo:950, hi:1400, min:3, max:30, step:1, def:7,
+      unit:"Plocha kúpeľne a WC", base:2.2, per:0.28, split:[0.46,0.40,0.14], etapy:4,
+      faz:[["Búranie a odvoz",0.18],["Rozvody a hydroizolácia",0.24],["Obklad a dlažba",0.34],["Sanita a odovzdanie",0.24]]
+    },
+    podkrovie: {
+      n:"Prestavba podkrovia", lo:540, hi:760, min:30, max:200, step:1, def:92,
+      unit:"Obytná plocha podkrovia", base:5, per:0.085, split:[0.45,0.41,0.14], etapy:5,
+      faz:[["Statika a strešné okná",0.18],["Zateplenie a parozábrana",0.22],["Sadrokartón a rozvody",0.26],["Potery, podlahy, povrchy",0.22],["Kontrola a odovzdanie",0.12]]
+    },
+    zatep: {
+      n:"Zateplenie fasády", lo:62, hi:86, min:50, max:900, step:5, def:245,
+      unit:"Plocha fasády", base:1.8, per:0.0135, split:[0.50,0.32,0.18], etapy:4,
+      faz:[["Lešenie a príprava podkladu",0.18],["Kotvenie izolácie",0.30],["Armovanie a penetrácia",0.26],["Omietka a demontáž lešenia",0.26]]
+    },
+    strecha: {
+      n:"Rekonštrukcia strechy", lo:85, hi:135, min:40, max:600, step:5, def:180,
+      unit:"Plocha strechy", base:2, per:0.018, split:[0.48,0.34,0.18], etapy:4,
+      faz:[["Demontáž krytiny a lát",0.20],["Oprava krovu a poistná fólia",0.26],["Krytina a klampiarina",0.34],["Žľaby, zvody, odovzdanie",0.20]]
+    }
+  };
+
+  var elType = document.getElementById("cType");
+  var elArea = document.getElementById("cArea");
+  var elAreaOut = document.getElementById("cAreaOut");
+  var elAreaLabel = document.getElementById("cAreaLabel");
+  var elDem = document.getElementById("cDem");
+  var elScaf = document.getElementById("cScaf");
+  var elProj = document.getElementById("cProj");
+  var resBody = document.getElementById("rBody");
+  var nojs = document.getElementById("rNojs");
+  var phWrap = document.getElementById("rPhases");
+
+  var fmt = new Intl.NumberFormat("sk-SK", {maximumFractionDigits:0});
+  function eur(x){ return fmt.format(x) + " €"; }
+  function r100(x){ return Math.round(x/100)*100; }
+  function tyz(n){
+    if(n === 1) return "1 týž.";
+    return n + " týž.";
+  }
+
+  function level(){
+    var r = document.querySelector('input[name="lvl"]:checked');
+    return r ? parseFloat(r.value) : 1;
+  }
+
+  function syncRange(){
+    var t = TYPY[elType.value];
+    elArea.min = t.min; elArea.max = t.max; elArea.step = t.step;
+    elArea.value = t.def;
+    elAreaLabel.textContent = t.unit + " v m²";
+  }
+
+  function phases(t, weeks){
+    if(!phWrap) return;
+    while(phWrap.firstChild) phWrap.removeChild(phWrap.firstChild);
+    for(var i = 0; i < t.faz.length; i++){
+      var name = t.faz[i][0], share = t.faz[i][1];
+      var w = Math.max(1, Math.round(share * weeks));
+
+      var row = document.createElement("div");
+      row.className = "ph";
+
+      var n = document.createElement("span");
+      n.className = "ph__n";
+      n.textContent = name;
+
+      var v = document.createElement("span");
+      v.className = "ph__w";
+      v.textContent = tyz(w);
+
+      var barEl = document.createElement("span");
+      barEl.className = "ph__bar";
+      var fill = document.createElement("i");
+      fill.style.width = Math.round(share * 100) + "%";
+      barEl.appendChild(fill);
+
+      row.appendChild(n);
+      row.appendChild(v);
+      row.appendChild(barEl);
+      phWrap.appendChild(row);
+    }
+  }
+
+  function compute(){
+    var t = TYPY[elType.value];
+    var area = parseFloat(elArea.value) || t.def;
+    var lvl = level();
+    var extra = 1
+      + (elDem.checked ? 0.08 : 0)
+      + (elScaf.checked ? 0.05 : 0)
+      + (elProj.checked ? 0.04 : 0);
+
+    var lo = r100(t.lo * area * lvl * extra);
+    var hi = r100(t.hi * area * lvl * extra);
+    var mid = (lo + hi) / 2;
+    var weeks = Math.max(2, t.base + t.per * area);
+    var wLo = Math.max(1, Math.round(weeks * 0.95));
+    var wHi = Math.max(wLo + 1, Math.round(weeks * 1.12));
+    var doba = (weeks >= 30)
+      ? ("Trvanie " + Math.round(wLo/4.33) + " – " + Math.round(wHi/4.33) + " mesiacov")
+      : ("Trvanie " + wLo + " – " + wHi + " týždňov");
+
+    elAreaOut.textContent = fmt.format(area);
+    document.getElementById("rPrice").textContent = eur(lo) + " – " + eur(hi);
+    document.getElementById("rUnit").textContent = "bez DPH · " + t.n;
+    document.getElementById("rArea").textContent = fmt.format(area) + " m²";
+    document.getElementById("rUnitPrice").textContent =
+      fmt.format(Math.round(t.lo * lvl * extra)) + " – " + fmt.format(Math.round(t.hi * lvl * extra)) + " €/m²";
+    document.getElementById("rVat").textContent = eur(r100(lo*1.2)) + " – " + eur(r100(hi*1.2));
+    document.getElementById("rDep").textContent = eur(r100(lo*0.15));
+    document.getElementById("rHold").textContent = eur(r100(lo*0.10));
+    document.getElementById("rTotal").textContent = doba;
+    document.getElementById("rSteps").textContent = t.etapy;
+
+    var s = t.split;
+    var barEl = document.getElementById("rBar");
+    barEl.children[0].style.width = Math.round(s[0]*100) + "%";
+    barEl.children[1].style.width = Math.round(s[1]*100) + "%";
+    barEl.children[2].style.width = Math.round(s[2]*100) + "%";
+    document.getElementById("rMat").textContent = eur(r100(mid*s[0]));
+    document.getElementById("rWork").textContent = eur(r100(mid*s[1]));
+    document.getElementById("rOvh").textContent = eur(r100(mid*s[2]));
+
+    phases(t, weeks);
+  }
+
+  if(elType && elArea && resBody){
+    nojs.hidden = true;
+    resBody.hidden = false;
+    syncRange();
+    compute();
+    elType.addEventListener("change", function(){ syncRange(); compute(); });
+    elArea.addEventListener("input", compute);
+    elDem.addEventListener("change", compute);
+    elScaf.addEventListener("change", compute);
+    elProj.addEventListener("change", compute);
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="lvl"]'), function(r){
+      r.addEventListener("change", compute);
+    });
+  }
+
+  /* ---------- prenos zadania do dopytu ---------- */
+  var toForm = document.getElementById("toForm");
+  if(toForm){
+    toForm.addEventListener("click", function(){
+      var fType = document.getElementById("fType");
+      var fArea = document.getElementById("fArea");
+      var fMsg = document.getElementById("fMsg");
+      if(fType) fType.value = elType.value;
+      if(fArea) fArea.value = elArea.value;
+      if(fMsg && !fMsg.value){
+        fMsg.value = "Mám záujem o: " + TYPY[elType.value].n + ", plocha " + elArea.value + " m².";
+      }
+      var target = document.getElementById("kontakt");
+      if(target) target.scrollIntoView({behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+      window.setTimeout(function(){ var n = document.getElementById("fName"); if(n) n.focus(); }, 500);
+    });
+  }
+
+  /* ---------- formulár ---------- */
+  var form = document.getElementById("dopyt");
+  var status = document.getElementById("formStatus");
+  if(form && status){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      status.textContent = "Toto je ukážkový web — formulár sa neodosiela a žiadne údaje sa neukladajú. Na skutočnom webe by správa prišla do schránky spoločnosti do niekoľkých sekúnd a odpoveď by ste dostali do 24 hodín.";
+      status.classList.add("is-on");
+      status.scrollIntoView({behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

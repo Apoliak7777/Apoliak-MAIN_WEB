@@ -1,0 +1,2222 @@
+<!doctype html>
+<html lang="sk" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kamenec reality — realitná kancelária v meste Kamenec</title>
+<meta name="description" content="Realitná kancelária Kamenec: dvanásť nehnuteľností s filtrom podľa typu, lokality, počtu izieb a ceny, hypotekárna kalkulačka, provízia od 2,4 %, postup predaja a podmienky spolupráce. Návrh a kód Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#1D242C">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:site_name" content="Kamenec reality (ukážkový web)">
+<meta property="og:title" content="Kamenec reality — realitná kancelária v meste Kamenec">
+<meta property="og:description" content="Ponuka nehnuteľností s filtrom, hypotekárna kalkulačka, provízia od 2,4 % s právnym servisom v cene a postup predaja v šiestich krokoch.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%231D242C'/%3E%3Crect%20x='16'%20y='16'%20width='32'%20height='32'%20fill='none'%20stroke='%23E9AC8A'%20stroke-width='3'/%3E%3Crect%20x='16'%20y='16'%20width='13'%20height='13'%20fill='%23E9AC8A'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   TOKENY — bridlicová neutrálna škála, jeden akcent: hlinená
+   ============================================================ */
+:root{
+  --slate:#1D242C;
+  --slate-2:#252E38;
+  --slate-3:#38424E;
+  --clay:#A9502B;          /* výplň tlačidiel, 5,43:1 s bielym textom */
+  --clay-dark:#8A3F20;     /* text a odkazy, 7,4:1 na papieri */
+  --clay-soft:#E9AC8A;     /* akcent na tmavom podklade, 8,0:1 */
+
+  --bg:#F6F5F2;
+  --bg-2:#EDECE8;
+  --card:#FFFFFF;
+  --ink:#161C22;
+  --muted:#535B63;
+  --line:#DCDAD4;
+  --line-2:#E8E6E1;
+  --line-dark:#333D48;
+  --line-dark-2:#46525F;
+  --field-dark:#151B22;
+  --on-dark:#F2F4F6;
+  --on-dark-muted:#A9B2BB;
+
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --wrap:1200px;
+  --r:2px;
+  --bar-h:46px;
+
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   ZÁKLAD
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  padding-top:var(--bar-h);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.64;
+  -webkit-text-size-adjust:100%;
+  text-rendering:optimizeLegibility;
+}
+h1,h2,h3,h4{font-weight:650;margin:0 0 .5em;letter-spacing:-.02em}
+h1{font-size:clamp(2.2rem,5.2vw,3.7rem);line-height:1.05;letter-spacing:-.03em}
+h2{font-size:clamp(1.6rem,3.1vw,2.35rem);line-height:1.12}
+h3{font-size:clamp(1.04rem,1.4vw,1.18rem);line-height:1.32;letter-spacing:-.008em}
+h4{font-size:1rem;letter-spacing:0;line-height:1.3}
+p{margin:0 0 1em;max-width:70ch}
+ul,ol{margin:0;padding:0;list-style:none}
+img,svg{max-width:100%}
+b,strong{font-weight:700}
+:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+.on-dark :focus-visible,.demobar :focus-visible,.toolband :focus-visible{outline-color:var(--clay-soft)}
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--slate);color:var(--on-dark);padding:12px 18px;z-index:300}
+.skip:focus{left:8px;top:8px}
+section{scroll-margin-top:calc(var(--bar-h) + 76px)}
+.sec{padding:clamp(58px,7.2vw,116px) 0}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--dark{background:var(--slate);color:var(--on-dark)}
+.on-dark h2,.on-dark h3,.on-dark h4{color:var(--on-dark)}
+.on-dark .lede,.on-dark .muted{color:var(--on-dark-muted)}
+.num{font-variant-numeric:tabular-nums}
+.small{font-size:.87rem}
+.muted{color:var(--muted)}
+
+.eyebrow{
+  display:flex;align-items:baseline;gap:12px;
+  font-size:.69rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;
+  color:var(--muted);margin:0 0 18px;
+}
+.eyebrow__no{color:var(--clay-dark);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.on-dark .eyebrow{color:var(--on-dark-muted)}
+.on-dark .eyebrow__no{color:var(--clay-soft)}
+.lede{font-size:1.03rem;color:var(--muted);max-width:60ch;margin:0}
+
+.sec__head{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:16px clamp(28px,6vw,88px);align-items:end;
+  padding-bottom:22px;border-bottom:1px solid var(--line);
+  margin-bottom:clamp(30px,4vw,56px);
+}
+.on-dark .sec__head{border-bottom-color:var(--line-dark)}
+.sec__head h2{margin-bottom:0;max-width:20ch}
+
+/* ============================================================
+   ODKAZY (pozor: nižšia špecificita než tlačidlá)
+   ============================================================ */
+a{color:var(--clay-dark)}
+a:hover{color:var(--clay)}
+
+/* ============================================================
+   TLAČIDLÁ — vždy dve triedy, aby ich farbu neprebil odkaz
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font:inherit;font-size:.95rem;font-weight:650;letter-spacing:.004em;
+  padding:13px 24px;border-radius:var(--r);border:1px solid transparent;
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--clay);color:#FFFFFF;border-color:var(--clay)}
+.btn.btn--primary:hover{background:var(--clay-dark);border-color:var(--clay-dark);color:#FFFFFF}
+.btn.btn--dark{background:var(--slate);color:var(--on-dark);border-color:var(--slate)}
+.btn.btn--dark:hover{background:#0F151B;border-color:#0F151B;color:#FFFFFF}
+.btn.btn--line{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--line:hover{border-color:var(--clay-dark);color:var(--clay-dark)}
+.on-dark .btn.btn--line,.toolband .btn.btn--line{color:var(--on-dark);border-color:var(--line-dark-2)}
+.on-dark .btn.btn--line:hover,.toolband .btn.btn--line:hover{color:var(--clay-soft);border-color:var(--clay-soft)}
+.btn.btn--soft{background:var(--clay-soft);color:var(--slate);border-color:var(--clay-soft)}
+.btn.btn--soft:hover{background:#F4C6AB;border-color:#F4C6AB;color:var(--slate)}
+.btn.btn--sm{padding:9px 16px;font-size:.86rem}
+
+/* ============================================================
+   PÁSIK UKÁŽKY
+   ============================================================ */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  background:var(--slate);color:var(--on-dark);
+  border-bottom:1px solid var(--line-dark);
+  font-size:.87rem;
+}
+.demobar__in{
+  width:min(100% - 28px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;gap:4px 20px;flex-wrap:wrap;
+  padding:11px 0;text-align:center;
+}
+.demobar__tag{
+  font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;
+  color:var(--slate);background:var(--clay-soft);padding:4px 9px;white-space:nowrap;
+}
+.demobar a{color:var(--clay-soft);font-weight:650;text-underline-offset:3px}
+.demobar a:hover{color:#F7D3BC}
+.demobar__sep{color:#6B767F}
+
+/* ============================================================
+   HLAVIČKA
+   ============================================================ */
+.site-head{
+  position:sticky;top:var(--bar-h);z-index:100;
+  background:rgba(246,245,242,.97);
+  border-bottom:1px solid var(--line);
+}
+.head__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand__mark{
+  width:36px;height:36px;flex:none;background:var(--slate);color:var(--clay-soft);
+  display:grid;place-items:center;border-radius:var(--r);
+  font-weight:700;font-size:1.05rem;letter-spacing:.02em;
+}
+.brand__txt strong{display:block;font-size:1.04rem;font-weight:700;letter-spacing:.09em;line-height:1.15}
+.brand__txt span{display:block;font-size:.61rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.nav-list{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.nav-list a{text-decoration:none;color:var(--ink);font-size:.91rem;padding:8px 10px;display:block;border-radius:var(--r)}
+.nav-list a:hover{color:var(--clay-dark)}
+.nav-list .nav-cta a{border:1px solid var(--slate);margin-left:10px;font-weight:650;color:var(--ink)}
+.nav-list .nav-cta a:hover{background:var(--slate);color:var(--on-dark)}
+.nav-toggle{display:none}
+/* ============================================================
+   PLOCHY — vrstvené gradienty, rastre, vlasové linky, typografia
+   ============================================================ */
+.ph{
+  position:relative;overflow:hidden;isolation:isolate;
+  background-color:var(--slate-2);
+  background-image:var(--noise),var(--grad,linear-gradient(150deg,var(--slate-3),var(--slate)));
+  background-size:180px 180px,auto;
+  background-blend-mode:soft-light,normal;
+}
+.ph::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background-image:var(--pat,none);background-size:var(--patsize,auto);
+}
+.ph--a{--grad:linear-gradient(152deg,#3A4652 0%,#242D36 55%,#1B222A 100%);
+  --pat:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 14px)}
+.ph--b{--grad:linear-gradient(128deg,#1D242C 0%,#2C3742 62%,#38424E 100%);
+  --pat:radial-gradient(circle at 1px 1px,rgba(255,255,255,.15) 1px,transparent 1.6px);--patsize:16px 16px}
+.ph--c{--grad:linear-gradient(196deg,#6B3A21 0%,#33272A 54%,#1D242C 100%);
+  --pat:repeating-linear-gradient(45deg,rgba(255,255,255,.055) 0 1px,transparent 1px 12px)}
+.ph--d{--grad:linear-gradient(168deg,#2C3742 0%,#1D242C 74%);
+  --pat:linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(0deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  --patsize:30px 30px,30px 30px}
+.ph--e{--grad:linear-gradient(112deg,#1D242C 0%,#262F39 46%,#4A2E1E 100%);
+  --pat:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 1px,transparent 1px 16px)}
+.ph--f{--grad:linear-gradient(210deg,#38424E 0%,#232C35 58%,#1B222A 100%);
+  --pat:repeating-linear-gradient(135deg,rgba(233,172,138,.14) 0 1px,transparent 1px 18px)}
+
+.ph__label{
+  position:absolute;left:18px;top:16px;
+  font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
+  color:var(--clay-soft);
+}
+.ph__sub{
+  position:absolute;right:18px;top:15px;
+  color:#FFFFFF;font-size:.78rem;font-weight:650;
+  border:1px solid rgba(255,255,255,.35);padding:2px 8px;border-radius:var(--r);
+}
+.ph__big{
+  position:absolute;left:18px;bottom:13px;right:18px;
+  color:#FFFFFF;font-weight:700;letter-spacing:-.03em;line-height:1.08;
+  font-size:clamp(1.5rem,3.4vw,1.95rem);font-variant-numeric:tabular-nums;
+}
+
+/* ============================================================
+   HERO — krátky nadpis hore vľavo, dominantou je dátový panel
+   ============================================================ */
+.hero{background:var(--bg)}
+.hero__in{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:clamp(26px,4vw,72px);align-items:end;
+  padding:clamp(40px,5.4vw,78px) 0 clamp(26px,3vw,40px);
+}
+.hero h1{margin-bottom:.34em;max-width:14ch}
+.hero__lede{font-size:1.08rem;color:var(--muted);max-width:54ch;margin:0}
+.hero__facts{margin:0;display:grid;gap:0}
+.hero__facts div{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:11px 0;border-bottom:1px solid var(--line);
+}
+.hero__facts div:first-child{border-top:1px solid var(--line)}
+.hero__facts dt{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--muted);flex:none}
+.hero__facts dd{margin:0;font-size:.95rem;font-weight:650;text-align:right}
+.hero__facts a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--clay);padding-bottom:1px}
+.hero__facts a:hover{color:var(--clay-dark);border-bottom-color:var(--clay-dark)}
+
+/* ============================================================
+   NÁSTROJ — celošírkový dátový panel (filter + kalkulačka)
+   ============================================================ */
+.toolband{
+  background:var(--slate);color:var(--on-dark);
+  border-block:1px solid var(--line-dark);
+  background-image:var(--noise),linear-gradient(160deg,#2B353F 0%,#1D242C 62%);
+  background-size:180px 180px,auto;background-blend-mode:soft-light,normal;
+}
+.tool{padding:clamp(24px,3.2vw,40px) 0 clamp(26px,3.4vw,44px)}
+.tool__head{
+  display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between;
+  padding-bottom:16px;border-bottom:1px solid var(--line-dark);margin-bottom:clamp(22px,2.8vw,34px);
+}
+.tool__title{
+  margin:0;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;
+  color:var(--clay-soft);max-width:none;
+}
+.tool__tabs{display:flex;border:1px solid var(--line-dark-2);border-radius:var(--r);overflow:hidden}
+.tool__tab{
+  font:inherit;font-size:.9rem;font-weight:650;padding:10px 20px;
+  background:transparent;color:var(--on-dark-muted);border:0;border-right:1px solid var(--line-dark-2);
+  cursor:pointer;white-space:nowrap;
+}
+.tool__tab:last-child{border-right:0}
+.tool__tab:hover{color:#FFFFFF}
+.tool__tab.is-active{background:var(--clay-soft);color:var(--slate)}
+.tool__panel.is-off{display:none}
+.no-js .tool__panel.is-off{display:block;margin-top:34px}
+.no-js .tool__tabs{display:none}
+
+.tool__grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px 20px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field>label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.toolband .field>label{color:var(--on-dark-muted)}
+select,input[type="text"],input[type="tel"],input[type="number"],textarea{
+  font:inherit;font-size:.94rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;width:100%;
+}
+.toolband select{background:var(--field-dark);color:#FFFFFF;border-color:var(--line-dark-2)}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--clay);outline-offset:1px;border-color:var(--clay)}
+.toolband select:focus{outline-color:var(--clay-soft);border-color:var(--clay-soft)}
+textarea{min-height:132px;resize:vertical}
+
+.readout{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px 40px;
+  margin-top:26px;padding-top:20px;border-top:1px solid var(--line-dark);
+}
+.readout__item span{
+  display:block;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:700;color:var(--on-dark-muted);margin-bottom:5px;
+}
+.readout__item b{font-size:1.08rem;font-weight:700;color:#FFFFFF;font-variant-numeric:tabular-nums;white-space:nowrap}
+.readout__cta{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+
+.calc{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(24px,3.2vw,52px);align-items:start}
+.rangefield{margin-bottom:24px}
+.rangefield:last-of-type{margin-bottom:6px}
+.rangefield__top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}
+.rangefield__top label{font-size:.85rem;font-weight:650;color:var(--on-dark)}
+.rangefield__val{font-weight:700;font-variant-numeric:tabular-nums;color:var(--clay-soft);white-space:nowrap}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:26px;background:transparent;cursor:pointer;margin:0}
+input[type="range"]::-webkit-slider-runnable-track{height:3px;background:rgba(255,255,255,.24)}
+input[type="range"]::-moz-range-track{height:3px;background:rgba(255,255,255,.24)}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--clay-soft);border:3px solid var(--slate);margin-top:-8.5px;
+}
+input[type="range"]::-moz-range-thumb{
+  width:20px;height:20px;border-radius:50%;background:var(--clay-soft);border:3px solid var(--slate);
+}
+input[type="range"]:focus-visible{outline:2px solid var(--clay-soft);outline-offset:4px}
+.calc__scale{display:flex;justify-content:space-between;font-size:.76rem;color:var(--on-dark-muted);margin-top:2px}
+.calc__disc{font-size:.83rem;color:var(--on-dark-muted);margin:18px 0 0;max-width:66ch}
+.calc__out{border-left:1px solid var(--line-dark);padding-left:clamp(20px,2.6vw,40px)}
+.calc__out .eyebrow{margin-bottom:8px}
+.calc__pay{
+  font-size:clamp(2.3rem,5.4vw,3.3rem);font-weight:700;letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums;line-height:1.02;margin:0 0 4px;color:#FFFFFF;max-width:none;
+}
+.calc__pay small{font-size:.95rem;font-weight:650;letter-spacing:0;color:var(--on-dark-muted)}
+.calc__rows{margin:22px 0 0;display:grid;gap:0}
+.calc__rows div{
+  display:flex;justify-content:space-between;gap:14px;padding:11px 0;
+  border-bottom:1px solid var(--line-dark);font-size:.93rem;
+}
+.calc__rows div:last-child{border-bottom:0}
+.calc__rows dt{color:var(--on-dark-muted)}
+.calc__rows dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums;color:#FFFFFF;white-space:nowrap}
+.calc__flag{
+  margin:18px 0 0;padding:12px 0 12px 14px;border-left:2px solid var(--clay-soft);
+  font-size:.88rem;color:#E4E8EC;max-width:60ch;
+}
+
+/* ============================================================
+   PÁS ÚDAJOV
+   ============================================================ */
+.strip{background:var(--bg-2);border-bottom:1px solid var(--line)}
+.strip__in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.strip__cell{padding:28px clamp(16px,2vw,30px) 30px;border-left:1px solid var(--line)}
+.strip__cell:first-child{border-left:0;padding-left:0}
+.strip__cell b{display:block;font-size:1.55rem;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.1}
+.strip__cell span{display:block;font-size:.86rem;color:var(--muted);margin-top:7px;max-width:30ch}
+/* ============================================================
+   KARTY PONUKY
+   ============================================================ */
+.grid-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,28px)}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.card.is-hidden{display:none}
+.card__ph{height:164px}
+.card__body{padding:22px clamp(16px,1.6vw,24px) 24px;display:flex;flex-direction:column;flex:1}
+.card__body h3{margin-bottom:5px}
+.card__loc{font-size:.87rem;color:var(--muted);margin:0 0 16px}
+.specs{margin:0 0 16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}
+.specs div{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:.86rem}
+.specs dt{color:var(--muted)}
+.specs dd{margin:0;font-weight:650;font-variant-numeric:tabular-nums}
+.card__note{font-size:.88rem;color:var(--muted);margin:0 0 18px}
+.card__foot{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+.empty{
+  display:none;padding:40px 24px;text-align:center;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--card);color:var(--muted);margin:26px auto 0;max-width:62ch;
+}
+.empty.is-on{display:block}
+
+/* ============================================================
+   TABUĽKY
+   ============================================================ */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tablewrap--bare{border:0;background:transparent}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.94rem}
+.tablewrap--bare table{min-width:0}
+caption{text-align:left;padding:16px 18px 2px;font-size:.84rem;color:var(--muted)}
+th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--line);white-space:nowrap;font-weight:700;
+}
+tbody tr:last-child td{border-bottom:0}
+td.price{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap--bare td{padding:12px 0}
+
+/* ============================================================
+   KROKY POSTUPU
+   ============================================================ */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 clamp(24px,3.6vw,54px)}
+.step{padding:26px 0 30px;border-top:1px solid var(--line)}
+.step__top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px}
+.step__no{font-size:2.1rem;font-weight:700;color:var(--clay-dark);letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}
+.step__when{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.step h3{margin-bottom:8px}
+.step p{margin:0;font-size:.93rem;color:var(--muted);max-width:44ch}
+
+/* ============================================================
+   PANELY, ZOZNAMY
+   ============================================================ */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,2.6vw,38px)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(24px,2.6vw,34px)}
+.panel--plain{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:26px 0 0}
+.panel--dark{background:transparent;border:0;border-top:1px solid var(--line-dark);border-radius:0;padding:26px 0 0;color:var(--on-dark)}
+.panel h3{margin-bottom:16px}
+.ticks li{position:relative;padding:9px 0 9px 26px;border-bottom:1px solid var(--line-2);font-size:.94rem}
+.panel--dark .ticks li{border-bottom-color:var(--line-dark)}
+.ticks li:last-child{border-bottom:0}
+.ticks li::before{
+  content:"";position:absolute;left:2px;top:17px;width:9px;height:9px;
+  border-left:2px solid var(--clay-dark);border-bottom:2px solid var(--clay-dark);transform:rotate(-45deg);
+}
+.panel--dark .ticks li::before{border-color:var(--clay-soft)}
+.panel__note{margin:18px 0 0;font-size:.87rem;color:var(--muted);max-width:56ch}
+.panel--dark .panel__note{color:var(--on-dark-muted)}
+
+/* ============================================================
+   CENOVÉ KARTY
+   ============================================================ */
+.pricecards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,28px);margin-top:clamp(22px,2.6vw,34px)}
+.pricecard{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--slate);border-radius:var(--r);padding:24px clamp(18px,1.8vw,26px) 26px}
+.pricecard__amount{
+  display:block;font-size:2.05rem;font-weight:700;letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums;line-height:1.1;margin-bottom:14px;
+}
+.pricecard h3{margin-bottom:8px}
+.pricecard p{font-size:.92rem;color:var(--muted);margin:0 0 12px;max-width:40ch}
+.pricecard p:last-child{margin-bottom:0}
+
+/* ============================================================
+   INFO MRIEŽKY, HODINY, DOPRAVA
+   ============================================================ */
+.infogrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,30px)}
+.infocard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.infocard h3{margin-bottom:12px}
+.infocard p{margin:0;font-size:.93rem;color:var(--muted)}
+.infocard ul li{font-size:.93rem;padding:8px 0;border-bottom:1px solid var(--line-2)}
+.infocard ul li:last-child{border-bottom:0}
+
+.route{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,2.6vw,38px);align-items:stretch}
+.route__panel{min-height:320px;border-radius:var(--r);padding:clamp(24px,2.8vw,36px);color:#FFFFFF;display:flex;flex-direction:column;justify-content:flex-end}
+.route__panel .addr{font-size:clamp(1.4rem,2.8vw,1.9rem);font-weight:700;letter-spacing:-.025em;margin:0 0 6px;line-height:1.12}
+.route__panel .addr-sub{color:#E4E8EC;margin:0 0 20px;font-size:.94rem}
+.hours{width:100%;border-collapse:collapse;min-width:0;font-size:.94rem}
+.hours th,.hours td{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.2)}
+.hours th{font-weight:650;text-align:left;color:#FFFFFF;text-transform:none;letter-spacing:0;font-size:.94rem;white-space:nowrap}
+.hours td{text-align:right;font-variant-numeric:tabular-nums;color:#FFFFFF;font-weight:650}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:0}
+.hours .off{color:#D8DDE2;font-weight:400}
+.route__list li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line-2);font-size:.94rem}
+.route__list li:last-child{border-bottom:0}
+.route__list b{font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ============================================================
+   ČASTÉ OTÁZKY
+   ============================================================ */
+.faq{max-width:920px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:19px 46px 19px 0;position:relative;
+  font-weight:650;font-size:1.01rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";position:absolute;right:12px;top:26px;width:9px;height:9px;
+  border-right:2px solid var(--clay-dark);border-bottom:2px solid var(--clay-dark);transform:rotate(45deg);
+  transition:transform .16s ease;
+}
+.faq details[open] summary::after{transform:rotate(-135deg);top:30px}
+.faq summary:hover{color:var(--clay-dark)}
+.faq .answer{padding:0 46px 22px 0;color:var(--muted);font-size:.96rem;max-width:70ch}
+.faq .answer p:last-child{margin-bottom:0}
+
+/* ============================================================
+   KARIÉRA
+   ============================================================ */
+.jobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.2vw,30px)}
+.job{background:var(--card);border:1px solid var(--line);border-left:2px solid var(--clay);border-radius:var(--r);padding:26px}
+.job h3{margin-bottom:6px}
+.job .tagline{font-size:.85rem;color:var(--muted);margin:0 0 16px}
+.job dl{margin:0;display:grid;gap:0}
+.job dl div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:.91rem}
+.job dl div:last-child{border-bottom:0}
+.job dt{color:var(--muted)}
+.job dd{margin:0;font-weight:650;text-align:right}
+
+/* ============================================================
+   KONTAKT A FORMULÁR
+   ============================================================ */
+.contact{display:grid;grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);gap:clamp(24px,3.2vw,52px);align-items:start}
+.contact__list{margin:0 0 24px}
+.contact__list div{padding:15px 0;border-bottom:1px solid var(--line-dark)}
+.contact__list div:first-child{border-top:1px solid var(--line-dark)}
+.contact__list dt{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay-soft);font-weight:700;margin-bottom:4px}
+.contact__list dd{margin:0;font-size:1.04rem;font-weight:650;color:#FFFFFF}
+.contact__list a{color:#FFFFFF;text-decoration:underline;text-underline-offset:4px}
+.contact__list a:hover{color:var(--clay-soft)}
+.form{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(24px,2.8vw,36px)}
+.form__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}
+.form__grid .full{grid-column:1 / -1}
+.req{color:var(--clay-dark);font-weight:700}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.89rem;color:var(--muted)}
+.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--clay)}
+.form__foot{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:22px}
+.form__note{font-size:.85rem;color:var(--muted);margin:16px 0 0;max-width:62ch}
+.formstatus{
+  display:none;margin-top:18px;padding:16px 18px;border-radius:var(--r);
+  background:var(--slate);color:var(--on-dark);border-left:2px solid var(--clay-soft);font-size:.93rem;max-width:none;
+}
+.formstatus.is-on{display:block}
+.formstatus b{color:#FFFFFF}
+
+/* ============================================================
+   SEKCIA AUTORA
+   ============================================================ */
+.author{background:var(--clay-soft);color:var(--slate);border-block:1px solid #D2906A}
+.author__in{
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:clamp(24px,3.2vw,56px);align-items:center;padding:clamp(46px,5.4vw,82px) 0;
+}
+.author__tag{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#6E3018;margin:0 0 14px}
+.author h2{color:var(--slate);margin-bottom:.38em}
+.author p{color:#2A1F17;max-width:56ch}
+.author__price{font-weight:700;color:var(--slate)}
+.author__box{background:var(--slate);color:var(--on-dark);border-radius:var(--r);padding:clamp(24px,2.8vw,32px)}
+.author__box dl{margin:0}
+.author__box div{padding:13px 0;border-bottom:1px solid var(--line-dark)}
+.author__box div:last-child{border-bottom:0}
+.author__box dt{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay-soft);font-weight:700;margin-bottom:3px}
+.author__box dd{margin:0;font-size:1.01rem;font-weight:650}
+.author__box a{color:#FFFFFF;text-decoration:underline;text-underline-offset:4px}
+.author__box a:hover{color:var(--clay-soft)}
+.author__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.author__actions .btn.btn--dark{background:var(--slate);color:var(--on-dark);border-color:var(--slate)}
+.author__actions .btn.btn--dark:hover{background:#0F151B;border-color:#0F151B;color:#FFFFFF}
+.author__actions .btn.btn--line{border-color:#8A5B3C;color:#2A1F17;background:transparent}
+.author__actions .btn.btn--line:hover{border-color:var(--slate);color:var(--slate)}
+
+/* ============================================================
+   PÄTIČKA
+   ============================================================ */
+.site-foot{background:var(--slate);color:var(--on-dark-muted);padding:clamp(44px,5vw,68px) 0 34px;font-size:.91rem}
+.foot__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.foot__grid h4{color:var(--on-dark);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+.foot__grid li{padding:5px 0}
+.foot__grid a{color:var(--on-dark-muted);text-decoration:none}
+.foot__grid a:hover{color:var(--clay-soft)}
+.foot__addr{margin:0;line-height:1.75}
+.foot__addr a{color:var(--on-dark);text-decoration:none;border-bottom:1px solid var(--line-dark-2)}
+.foot__addr a:hover{color:var(--clay-soft)}
+.foot__bottom{
+  margin-top:36px;padding-top:22px;border-top:1px solid var(--line-dark);
+  display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:.84rem;
+}
+.foot__bottom a{color:var(--clay-soft)}
+/* ============================================================
+   RESPONZÍVNE
+   ============================================================ */
+@media (max-width:1080px){
+  .tool__grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid-cards,.steps,.infogrid,.pricecards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip__cell:nth-child(3){border-left:0;padding-left:0}
+}
+@media (max-width:900px){
+  .hero__in,.calc,.contact,.author__in,.route,.duo{grid-template-columns:minmax(0,1fr)}
+  .hero__in{align-items:start}
+  .sec__head{grid-template-columns:minmax(0,1fr);align-items:start}
+  .sec__head h2{max-width:none}
+  .jobs{grid-template-columns:minmax(0,1fr)}
+  .calc__out{border-left:0;border-top:1px solid var(--line-dark);padding-left:0;padding-top:26px}
+  .steps{gap:0}
+}
+@media (max-width:860px){
+  :root{--bar-h:70px}
+  .nav-toggle{
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:650;
+    background:transparent;border:1px solid var(--line);border-radius:var(--r);
+    padding:9px 14px;color:var(--ink);cursor:pointer;
+  }
+  .nav-toggle .bars{display:block;width:16px;height:2px;background:var(--ink);position:relative}
+  .nav-toggle .bars::before,.nav-toggle .bars::after{content:"";position:absolute;left:0;width:16px;height:2px;background:var(--ink)}
+  .nav-toggle .bars::before{top:-5px}
+  .nav-toggle .bars::after{top:5px}
+  .site-nav{
+    display:none;position:absolute;left:0;right:0;top:100%;
+    background:var(--bg);border-bottom:1px solid var(--line);
+    box-shadow:0 14px 26px rgba(29,36,44,.1);
+  }
+  .site-nav.is-open{display:block}
+  .no-js .site-nav{display:block;position:static;box-shadow:none;border-bottom:0}
+  .no-js .nav-toggle{display:none}
+  .head__in{position:relative}
+  .nav-list{flex-direction:column;align-items:stretch;gap:0;padding:8px 20px 16px}
+  .nav-list a{padding:12px 4px;border-bottom:1px solid var(--line-2)}
+  .nav-list .nav-cta a{margin:10px 0 0;text-align:center;border:1px solid var(--slate);padding:12px}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .tool__grid,.form__grid{grid-template-columns:minmax(0,1fr)}
+  .grid-cards,.steps,.infogrid,.pricecards{grid-template-columns:minmax(0,1fr)}
+  .strip__in{grid-template-columns:minmax(0,1fr)}
+  .strip__cell{border-left:0;padding-left:0;padding-right:0;border-top:1px solid var(--line)}
+  .strip__cell:first-child{border-top:0}
+  .foot__grid{grid-template-columns:minmax(0,1fr)}
+  .specs{grid-template-columns:minmax(0,1fr)}
+  .tool__tabs{width:100%}
+  .tool__tab{flex:1 1 50%;padding:11px 8px;font-size:.85rem}
+  .readout{gap:16px 26px}
+  .readout__cta{margin-left:0;width:100%}
+  .readout__cta .btn{flex:1 1 100%}
+  .hero__facts dd{font-size:.92rem}
+  .form__foot .btn{width:100%}
+  .card__foot .btn{flex:1 1 100%}
+  .hours th,.hours td{font-size:.9rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+@media print{
+  .demobar,.site-head,.toolband,.author,.form{display:none}
+  body{padding-top:0}
+}
+
+/* ============================================================
+   POISTKA — farbu textu tlačidiel nesmie prebiť pravidlo pre odkazy
+   ============================================================ */
+a.btn.btn--primary,button.btn.btn--primary{color:#FFFFFF;background:var(--clay);border-color:var(--clay)}
+a.btn.btn--dark,button.btn.btn--dark{color:var(--on-dark);background:var(--slate);border-color:var(--slate)}
+a.btn.btn--soft,button.btn.btn--soft{color:var(--slate);background:var(--clay-soft);border-color:var(--clay-soft)}
+a.btn.btn--line,button.btn.btn--line{color:var(--ink);background:transparent;border-color:var(--line)}
+.on-dark a.btn.btn--line,.on-dark button.btn.btn--line,
+.toolband a.btn.btn--line,.toolband button.btn.btn--line{color:var(--on-dark);border-color:var(--line-dark-2)}
+.author__actions a.btn.btn--line{color:#2A1F17;border-color:#8A5B3C}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===================== PÁSIK UKÁŽKY ===================== -->
+<div class="demobar" id="demobar">
+  <div class="demobar__in">
+    <span class="demobar__tag">Ukážkový web</span>
+    <span>Takýto web pre vás spravím.</span>
+    <span class="demobar__sep" aria-hidden="true">·</span>
+    <a href="https://apoliak.online">apoliak.online</a>
+    <a href="tel:+421902464022">0902&nbsp;464&nbsp;022</a>
+  </div>
+</div>
+
+<!-- ===================== HLAVIČKA ===================== -->
+<header class="site-head">
+  <div class="wrap head__in">
+    <a class="brand" href="#obsah">
+      <span class="brand__mark" aria-hidden="true">K</span>
+      <span class="brand__txt">
+        <strong>KAMENEC</strong>
+        <span>Realitná kancelária</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav">
+      <span class="bars" aria-hidden="true"></span> Menu
+    </button>
+
+    <nav class="site-nav" id="siteNav" aria-label="Hlavná navigácia">
+      <ul class="nav-list">
+        <li><a href="#ponuka">Ponuka</a></li>
+        <li><a href="#postup">Postup predaja</a></li>
+        <li><a href="#sluzby">Služby</a></li>
+        <li><a href="#provizia">Provízia</a></li>
+        <li><a href="#financovanie">Financovanie</a></li>
+        <li><a href="#faq">Otázky</a></li>
+        <li class="nav-cta"><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-labelledby="h-hero">
+  <div class="wrap hero__in">
+    <div>
+      <p class="eyebrow">Predaj, kúpa a prenájom nehnuteľností</p>
+      <h1 id="h-hero">Realitná kancelária Kamenec</h1>
+      <p class="hero__lede">Predávame byty, domy, pozemky a komerčné priestory v meste Kamenec a okolí. Právny servis aj úschova kúpnej ceny sú súčasťou provízie.</p>
+    </div>
+    <dl class="hero__facts">
+      <div><dt>Kancelária</dt><dd>Studničná 9, štvrť Nad Riekou, Kamenec</dd></div>
+      <div><dt>Otvorené</dt><dd>Po&nbsp;&ndash;&nbsp;Pi 9:00&nbsp;&ndash;&nbsp;17:00</dd></div>
+      <div><dt>Telefón</dt><dd><a href="tel:+421907415306">0907&nbsp;415&nbsp;306</a></dd></div>
+    </dl>
+  </div>
+</section>
+<!-- ===================== NÁSTROJ: FILTER + KALKULAČKA ===================== -->
+<section class="toolband on-dark" id="nastroj" aria-labelledby="h-nastroj">
+  <div class="wrap tool">
+    <div class="tool__head">
+      <h2 class="tool__title" id="h-nastroj">Vyhľadávanie v ponuke a prepočet hypotéky</h2>
+      <div class="tool__tabs" id="toolTabs" role="tablist" aria-label="Nástroje kancelárie">
+        <button class="tool__tab is-active" type="button" id="tabFilter" role="tab" aria-selected="true" aria-controls="panelFilter">Filter ponuky</button>
+        <button class="tool__tab" type="button" id="tabHypo" role="tab" aria-selected="false" aria-controls="panelHypo" tabindex="-1">Hypotekárna kalkulačka</button>
+      </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="tool__panel" id="panelFilter" role="tabpanel" aria-labelledby="tabFilter">
+      <form id="filterForm" aria-label="Filtrovanie ponuky nehnuteľností">
+        <div class="tool__grid">
+          <div class="field">
+            <label for="fType">Typ nehnuteľnosti</label>
+            <select id="fType">
+              <option value="all">Všetky typy</option>
+              <option value="byt">Byt</option>
+              <option value="dom">Rodinný dom</option>
+              <option value="pozemok">Pozemok</option>
+              <option value="komercia">Komerčný priestor</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fLoc">Lokalita</label>
+            <select id="fLoc">
+              <option value="all">Všetky lokality</option>
+              <option value="nad-riekou">štvrť Nad Riekou</option>
+              <option value="kamenne-pole">sídlisko Kamenné pole</option>
+              <option value="podhorie">štvrť Podhorie</option>
+              <option value="stara-kolonia">Stará kolónia</option>
+              <option value="vinohrady">štvrť Vinohrady</option>
+              <option value="dolne-luky">obec Dolné Lúky</option>
+              <option value="brezinka">obec Brezinka</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fRooms">Počet izieb</label>
+            <select id="fRooms">
+              <option value="all">Nerozhoduje</option>
+              <option value="1">1 izba</option>
+              <option value="2">2 izby</option>
+              <option value="3">3 izby</option>
+              <option value="4">4 a viac izieb</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fMin">Cena od</label>
+            <select id="fMin">
+              <option value="0">bez spodnej hranice</option>
+              <option value="100000">100 000 €</option>
+              <option value="150000">150 000 €</option>
+              <option value="200000">200 000 €</option>
+              <option value="300000">300 000 €</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fMax">Cena do</label>
+            <select id="fMax">
+              <option value="100000">100 000 €</option>
+              <option value="150000">150 000 €</option>
+              <option value="200000">200 000 €</option>
+              <option value="300000">300 000 €</option>
+              <option value="9999999" selected>bez hornej hranice</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="readout" role="status" aria-live="polite">
+          <div class="readout__item"><span>Zodpovedá výberu</span><b id="rCount">12 z 12</b></div>
+          <div class="readout__item"><span>Cenové rozpätie</span><b id="rRange">89 000 &ndash; 415 000 €</b></div>
+          <div class="readout__item"><span>Priemerná cena</span><b id="rAvg">198 567 €</b></div>
+          <div class="readout__cta">
+            <button class="btn btn--line btn--sm" type="reset" id="filterReset">Zrušiť filter</button>
+            <a class="btn btn--soft btn--sm" href="#ponuka">Zobraziť ponuku</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- KALKULAČKA -->
+    <div class="tool__panel is-off" id="panelHypo" role="tabpanel" aria-labelledby="tabHypo">
+      <div class="calc">
+        <form id="calcForm" aria-label="Hypotekárna kalkulačka">
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cPrice">Cena nehnuteľnosti</label>
+              <output class="rangefield__val" id="cPriceOut" for="cPrice">180 000 €</output>
+            </div>
+            <input type="range" id="cPrice" min="40000" max="600000" step="5000" value="180000">
+            <div class="calc__scale"><span>40 000 €</span><span>600 000 €</span></div>
+          </div>
+
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cOwn">Vlastné zdroje</label>
+              <output class="rangefield__val" id="cOwnOut" for="cOwn">20 % &middot; 36 000 €</output>
+            </div>
+            <input type="range" id="cOwn" min="0" max="60" step="1" value="20">
+            <div class="calc__scale"><span>0 %</span><span>60 %</span></div>
+          </div>
+
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cYears">Doba splácania</label>
+              <output class="rangefield__val" id="cYearsOut" for="cYears">30 rokov</output>
+            </div>
+            <input type="range" id="cYears" min="5" max="30" step="1" value="30">
+            <div class="calc__scale"><span>5 rokov</span><span>30 rokov</span></div>
+          </div>
+
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cRate">Úroková sadzba</label>
+              <output class="rangefield__val" id="cRateOut" for="cRate">4,2 % ročne</output>
+            </div>
+            <input type="range" id="cRate" min="1" max="8" step="0.1" value="4.2">
+            <div class="calc__scale"><span>1,0 %</span><span>8,0 %</span></div>
+          </div>
+
+          <p class="calc__disc">Prepočet je anuitný, bez poplatkov banky, poistenia nehnuteľnosti a poistenia schopnosti splácať. Nejde o ponuku úveru ani o posúdenie bonity, to robí banka.</p>
+        </form>
+
+        <div class="calc__out" aria-live="polite">
+          <p class="eyebrow">Mesačná splátka</p>
+          <p class="calc__pay" id="oPay">704 €<small> / mesiac</small></p>
+          <dl class="calc__rows">
+            <div><dt>Výška úveru</dt><dd id="oLoan">144 000 €</dd></div>
+            <div><dt>Vlastné zdroje</dt><dd id="oOwn">36 000 €</dd></div>
+            <div><dt>Pomer úveru k cene (LTV)</dt><dd id="oLtv">80 %</dd></div>
+            <div><dt>Zaplatené úroky spolu</dt><dd id="oInterest">109 507 €</dd></div>
+            <div><dt>Celkom zaplatíte banke</dt><dd id="oTotal">253 507 €</dd></div>
+          </dl>
+          <p class="calc__flag" id="oFlag">Pri LTV do 80 % banky spravidla nevyžadujú dofinancovanie ďalším úverom.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PÁS ÚDAJOV ===================== -->
+<section class="strip" aria-label="Základné parametre spolupráce">
+  <div class="wrap">
+    <div class="strip__in">
+      <div class="strip__cell">
+        <b>2,4 %</b>
+        <span>provízia z kúpnej ceny pri exkluzívnom predaji, najmenej 1 900 €</span>
+      </div>
+      <div class="strip__cell">
+        <b>6 portálov</b>
+        <span>inzercia zaradená do troch pracovných dní od podpisu zmluvy</span>
+      </div>
+      <div class="strip__cell">
+        <b>0 €</b>
+        <span>vopred, províziu platíte až pri podpise kúpnej zmluvy</span>
+      </div>
+      <div class="strip__cell">
+        <b>30 dní</b>
+        <span>výpovedná lehota sprostredkovateľskej zmluvy, aj bez dôvodu</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== PONUKA ===================== -->
+<section class="sec" id="ponuka" aria-labelledby="h-ponuka">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">01</span> Aktuálna ponuka</p>
+        <h2 id="h-ponuka">Nehnuteľnosti na predaj</h2>
+      </div>
+      <p class="lede">Dvanásť nehnuteľností s uvedenou podlahovou plochou, poschodím, energetickou triedou a cenou vrátane provízie. Ponuku zúžite filtrom v paneli hore.</p>
+    </div>
+
+    <div class="grid-cards" id="cardGrid">
+
+      <article class="card" data-type="byt" data-rooms="2" data-price="139500" data-loc="nad-riekou" data-area="54">
+        <div class="ph ph--a card__ph">
+          <span class="ph__label">Byt</span>
+          <span class="ph__sub">3./8. poschodie</span>
+          <span class="ph__big">139&nbsp;500&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>2-izbový byt, 54 m²</h3>
+          <p class="card__loc">štvrť Nad Riekou, tehlový dom z roku 1998</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>2</dd></div>
+            <div><dt>Plocha</dt><dd>54 m²</dd></div>
+            <div><dt>Poschodie</dt><dd>3./8.</dd></div>
+            <div><dt>Energ. trieda</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">Po kompletnej rekonštrukcii, zasklený balkón 5 m², pivnica, výťah. Voľný ihneď.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="139500">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="3" data-price="172900" data-loc="kamenne-pole" data-area="74">
+        <div class="ph ph--b card__ph">
+          <span class="ph__label">Byt</span>
+          <span class="ph__sub">5./7. poschodie</span>
+          <span class="ph__big">172&nbsp;900&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>3-izbový byt, 74 m²</h3>
+          <p class="card__loc">sídlisko Kamenné pole, panelový dom po obnove</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>3</dd></div>
+            <div><dt>Plocha</dt><dd>74 m²</dd></div>
+            <div><dt>Poschodie</dt><dd>5./7.</dd></div>
+            <div><dt>Energ. trieda</dt><dd>C</dd></div>
+          </dl>
+          <p class="card__note">Zateplený dom, nové rozvody, lodžia 6 m², orientácia juhozápad. Odovzdanie do 60 dní.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="172900">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="1" data-price="96400" data-loc="podhorie" data-area="34">
+        <div class="ph ph--d card__ph">
+          <span class="ph__label">Byt</span>
+          <span class="ph__sub">6./9. poschodie</span>
+          <span class="ph__big">96&nbsp;400&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>1-izbový byt, 34 m²</h3>
+          <p class="card__loc">štvrť Podhorie, 400 m od zastávky</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>1</dd></div>
+            <div><dt>Plocha</dt><dd>34 m²</dd></div>
+            <div><dt>Poschodie</dt><dd>6./9.</dd></div>
+            <div><dt>Energ. trieda</dt><dd>D</dd></div>
+          </dl>
+          <p class="card__note">Pôvodný stav, plastové okná, zariadená kuchynská linka. Vhodné na prenájom.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="96400">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="4" data-price="219000" data-loc="nad-riekou" data-area="96">
+        <div class="ph ph--f card__ph">
+          <span class="ph__label">Byt</span>
+          <span class="ph__sub">1./4. poschodie</span>
+          <span class="ph__big">219&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>4-izbový byt, 96 m²</h3>
+          <p class="card__loc">štvrť Nad Riekou, novostavba z roku 2019</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>4</dd></div>
+            <div><dt>Plocha</dt><dd>96 m²</dd></div>
+            <div><dt>Poschodie</dt><dd>1./4.</dd></div>
+            <div><dt>Energ. trieda</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">Terasa 18 m², parkovacie státie v cene, kuchyňa na mieru. Nízke náklady na kúrenie.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="219000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="3" data-price="158000" data-loc="stara-kolonia" data-area="68">
+        <div class="ph ph--c card__ph">
+          <span class="ph__label">Byt</span>
+          <span class="ph__sub">2./5. poschodie</span>
+          <span class="ph__big">158&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>3-izbový byt, 68 m²</h3>
+          <p class="card__loc">Stará kolónia, tehlový dom, tichý vnútroblok</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>3</dd></div>
+            <div><dt>Plocha</dt><dd>68 m²</dd></div>
+            <div><dt>Poschodie</dt><dd>2./5.</dd></div>
+            <div><dt>Energ. trieda</dt><dd>C</dd></div>
+          </dl>
+          <p class="card__note">Čiastočná rekonštrukcia z roku 2021, samostatná komora, možnosť dokúpiť garáž za 14 000 €.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="158000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="dom" data-rooms="4" data-price="268000" data-loc="dolne-luky" data-area="112">
+        <div class="ph ph--e card__ph">
+          <span class="ph__label">Rodinný dom</span>
+          <span class="ph__sub">pozemok 480 m²</span>
+          <span class="ph__big">268&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>Rodinný dom, 112 m²</h3>
+          <p class="card__loc">obec Dolné Lúky, 9 km od centra mesta</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>4</dd></div>
+            <div><dt>Plocha</dt><dd>112 m²</dd></div>
+            <div><dt>Pozemok</dt><dd>480 m²</dd></div>
+            <div><dt>Energ. trieda</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">Prízemný dom z roku 2008, tepelné čerpadlo, garáž pre jedno auto, oplotená záhrada.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="268000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-type="dom" data-rooms="5" data-price="329000" data-loc="vinohrady" data-area="148">
+        <div class="ph ph--a card__ph">
+          <span class="ph__label">Rodinný dom</span>
+          <span class="ph__sub">pozemok 612 m²</span>
+          <span class="ph__big">329&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>Rodinný dom, 148 m²</h3>
+          <p class="card__loc">štvrť Vinohrady, koniec slepej ulice</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>5</dd></div>
+            <div><dt>Plocha</dt><dd>148 m²</dd></div>
+            <div><dt>Pozemok</dt><dd>612 m²</dd></div>
+            <div><dt>Energ. trieda</dt><dd>A0</dd></div>
+          </dl>
+          <p class="card__note">Dvojpodlažný dom z roku 2021, rekuperácia, fotovoltika 6 kWp, terasa 34 m² na juh.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="329000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="dom" data-rooms="6" data-price="415000" data-loc="brezinka" data-area="186">
+        <div class="ph ph--b card__ph">
+          <span class="ph__label">Rodinný dom</span>
+          <span class="ph__sub">pozemok 845 m²</span>
+          <span class="ph__big">415&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>Rodinný dom, 186 m²</h3>
+          <p class="card__loc">obec Brezinka, pri lesnom okraji</p>
+          <dl class="specs">
+            <div><dt>Izby</dt><dd>6</dd></div>
+            <div><dt>Plocha</dt><dd>186 m²</dd></div>
+            <div><dt>Pozemok</dt><dd>845 m²</dd></div>
+            <div><dt>Energ. trieda</dt><dd>A1</dd></div>
+          </dl>
+          <p class="card__note">Dve samostatné bytové jednotky, dvojgaráž, vŕtaná studňa, vhodné pre dve generácie.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="415000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="pozemok" data-rooms="0" data-price="89000" data-loc="dolne-luky" data-area="780">
+        <div class="ph ph--d card__ph">
+          <span class="ph__label">Pozemok</span>
+          <span class="ph__sub">780 m²</span>
+          <span class="ph__big">89&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>Stavebný pozemok, 780 m²</h3>
+          <p class="card__loc">obec Dolné Lúky, ulica ukončená obratiskom</p>
+          <dl class="specs">
+            <div><dt>Výmera</dt><dd>780 m²</dd></div>
+            <div><dt>Šírka</dt><dd>21 m</dd></div>
+            <div><dt>Siete</dt><dd>na hranici</dd></div>
+            <div><dt>Prístup</dt><dd>asfalt</dd></div>
+          </dl>
+          <p class="card__note">Rovinatý pozemok, územný plán povoľuje samostatne stojaci dom do dvoch podlaží.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="89000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="pozemok" data-rooms="0" data-price="132000" data-loc="vinohrady" data-area="1240">
+        <div class="ph ph--f card__ph">
+          <span class="ph__label">Pozemok</span>
+          <span class="ph__sub">1 240 m²</span>
+          <span class="ph__big">132&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>Stavebný pozemok, 1 240 m²</h3>
+          <p class="card__loc">štvrť Vinohrady, južný svah</p>
+          <dl class="specs">
+            <div><dt>Výmera</dt><dd>1 240 m²</dd></div>
+            <div><dt>Šírka</dt><dd>28 m</dd></div>
+            <div><dt>Siete</dt><dd>voda, elektrina</dd></div>
+            <div><dt>Prístup</dt><dd>spevnená cesta</dd></div>
+          </dl>
+          <p class="card__note">Mierny svah s výhľadom, možnosť rozdelenia na dve stavebné parcely po dohode s obcou.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="132000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="komercia" data-rooms="2" data-price="118000" data-loc="stara-kolonia" data-area="62">
+        <div class="ph ph--c card__ph">
+          <span class="ph__label">Komerčný priestor</span>
+          <span class="ph__sub">prízemie</span>
+          <span class="ph__big">118&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>Obchodný priestor, 62 m²</h3>
+          <p class="card__loc">Stará kolónia, výklad do hlavnej ulice</p>
+          <dl class="specs">
+            <div><dt>Miestnosti</dt><dd>2</dd></div>
+            <div><dt>Plocha</dt><dd>62 m²</dd></div>
+            <div><dt>Poschodie</dt><dd>prízemie</dd></div>
+            <div><dt>Energ. trieda</dt><dd>C</dd></div>
+          </dl>
+          <p class="card__note">Samostatný vchod z ulice, sociálne zariadenie, sklad 9 m², bezbariérový prístup.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="118000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="komercia" data-rooms="4" data-price="246000" data-loc="nad-riekou" data-area="140">
+        <div class="ph ph--e card__ph">
+          <span class="ph__label">Komerčný priestor</span>
+          <span class="ph__sub">2./4. poschodie</span>
+          <span class="ph__big">246&nbsp;000&nbsp;€</span>
+        </div>
+        <div class="card__body">
+          <h3>Kancelárie, 140 m²</h3>
+          <p class="card__loc">štvrť Nad Riekou, administratívna budova</p>
+          <dl class="specs">
+            <div><dt>Miestnosti</dt><dd>4</dd></div>
+            <div><dt>Plocha</dt><dd>140 m²</dd></div>
+            <div><dt>Poschodie</dt><dd>2./4.</dd></div>
+            <div><dt>Energ. trieda</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">Klimatizácia, dátové rozvody, tri parkovacie státia, recepcia v budove, výťah.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Dohodnúť obhliadku</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="246000">Prepočítať hypotéku</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="empty" id="emptyState">Zadaným kritériám nezodpovedá žiadna nehnuteľnosť z aktuálnej ponuky. Skúste rozšíriť cenové rozpätie alebo nám napíšte, čo hľadáte &ndash; dopyt vieme podchytiť aj mimo zverejnenej ponuky.</p>
+  </div>
+</section>
+
+<!-- ===================== LOKALITY ===================== -->
+<section class="sec sec--band" id="lokality" aria-labelledby="h-lokality">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">02</span> Kde pôsobíme</p>
+        <h2 id="h-lokality">Lokality a cenové rozpätie ponuky</h2>
+      </div>
+      <p class="lede">Prehľad mestských štvrtí a obcí, v ktorých máme zaradené nehnuteľnosti. Rozpätie vychádza z cien našej aktuálnej ponuky, nie z inzerovaných cien celého trhu.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Aktuálna ponuka podľa lokality</caption>
+        <thead>
+          <tr>
+            <th scope="col">Lokalita</th>
+            <th scope="col">Prevažujúca zástavba</th>
+            <th scope="col">Ponuky</th>
+            <th scope="col">Cenové rozpätie</th>
+            <th scope="col">Do centra mesta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>štvrť Nad Riekou</td>
+            <td>tehlové domy, novostavby, administratíva</td>
+            <td class="price">3</td>
+            <td class="price">139 500 &ndash; 246 000 €</td>
+            <td>10 minút pešo</td>
+          </tr>
+          <tr>
+            <td>sídlisko Kamenné pole</td>
+            <td>panelové domy po obnove</td>
+            <td class="price">1</td>
+            <td class="price">172 900 €</td>
+            <td>4 minúty autobusom</td>
+          </tr>
+          <tr>
+            <td>štvrť Podhorie</td>
+            <td>bytové domy z osemdesiatych rokov</td>
+            <td class="price">1</td>
+            <td class="price">96 400 €</td>
+            <td>12 minút autobusom</td>
+          </tr>
+          <tr>
+            <td>Stará kolónia</td>
+            <td>tehlové domy, obchodné priestory</td>
+            <td class="price">2</td>
+            <td class="price">118 000 &ndash; 158 000 €</td>
+            <td>6 minút pešo</td>
+          </tr>
+          <tr>
+            <td>štvrť Vinohrady</td>
+            <td>rodinné domy a stavebné pozemky</td>
+            <td class="price">2</td>
+            <td class="price">132 000 &ndash; 329 000 €</td>
+            <td>9 minút autom</td>
+          </tr>
+          <tr>
+            <td>obec Dolné Lúky</td>
+            <td>rodinné domy a stavebné pozemky</td>
+            <td class="price">2</td>
+            <td class="price">89 000 &ndash; 268 000 €</td>
+            <td>9 km, 12 minút autom</td>
+          </tr>
+          <tr>
+            <td>obec Brezinka</td>
+            <td>samostatne stojace domy pri lese</td>
+            <td class="price">1</td>
+            <td class="price">415 000 €</td>
+            <td>14 km, 18 minút autom</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- ===================== POSTUP PREDAJA ===================== -->
+<section class="sec" id="postup" aria-labelledby="h-postup">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">03</span> Ako to prebieha</p>
+        <h2 id="h-postup">Postup predaja v šiestich krokoch</h2>
+      </div>
+      <p class="lede">Od prvej obhliadky po zápis na katastri. Pri byte bez tiarch trvá celý proces spravidla 9 až 14 týždňov, pri dome s vecným bremenom alebo dedičským konaním dlhšie.</p>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <div class="step__top"><span class="step__no">01</span><span class="step__when">do 48 hodín</span></div>
+        <h3>Obhliadka a ocenenie</h3>
+        <p>Prejdeme nehnuteľnosť, odmeriame plochy, overíme list vlastníctva a porovnáme uskutočnené predaje v okolí. Výsledkom je cenové rozpätie a odporúčaná cena.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">02</span><span class="step__when">1. týždeň</span></div>
+        <h3>Zmluva a podklady</h3>
+        <p>Podpíšeme sprostredkovateľskú zmluvu s uvedenou cenou, províziou a dobou platnosti. Zaobstaráme energetický certifikát a pôdorys, doplníme chýbajúce doklady.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">03</span><span class="step__when">do 3 dní</span></div>
+        <h3>Príprava a inzercia</h3>
+        <p>Nehnuteľnosť pripravíme na prezentáciu, spracujeme podklady a zaradíme inzerát na šesť portálov, na náš web a do databázy dopytov.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">04</span><span class="step__when">priebežne</span></div>
+        <h3>Obhliadky a spätná väzba</h3>
+        <p>Obhliadky vedieme my, vy nemusíte byť prítomní. Každý druhý týždeň dostanete písomný prehľad o počte otvorení inzerátu, obhliadok a pripomienok záujemcov.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">05</span><span class="step__when">7 až 30 dní</span></div>
+        <h3>Rezervácia a financovanie</h3>
+        <p>So záujemcom podpíšeme rezervačnú zmluvu a rezervačný poplatok ide do úschovy. Ak kupujúci financuje kúpu úverom, koordinujeme banku a znalca.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">06</span><span class="step__when">30 dní na kataster</span></div>
+        <h3>Kúpna zmluva a odovzdanie</h3>
+        <p>Pripravíme kúpnu zmluvu, návrh na vklad a preberací protokol. Po zápise vlastníckeho práva prepíšeme energie a uvoľníme kúpnu cenu z úschovy.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== SLUŽBY ===================== -->
+<section class="sec sec--band" id="sluzby" aria-labelledby="h-sluzby">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">04</span> Čo pre vás urobíme</p>
+        <h2 id="h-sluzby">Služby pre predávajúcich a kupujúcich</h2>
+      </div>
+      <p class="lede">Predávajúci platí províziu až pri podpise kúpnej zmluvy. Kupujúci u nás neplatí za sprostredkovanie nič, hradí len správne poplatky katastra a prípadne poplatok za úschovu.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Predávam nehnuteľnosť</h3>
+        <ul class="ticks">
+          <li>Ocenenie na základe porovnania uskutočnených predajov v lokalite</li>
+          <li>Odporúčania, čo pred predajom doriešiť a čo sa neoplatí</li>
+          <li>Energetický certifikát a pôdorys s rozmermi miestností</li>
+          <li>Inzercia na šiestich portáloch a v databáze dopytov</li>
+          <li>Vedenie obhliadok bez vašej účasti, aj vo večerných hodinách</li>
+          <li>Preverenie bonity záujemcu a jeho spôsobu financovania</li>
+          <li>Rezervačná zmluva a správa rezervačného poplatku</li>
+          <li>Kúpna zmluva, návrh na vklad a komunikácia s katastrom</li>
+          <li>Odovzdanie nehnuteľnosti a prepis energií</li>
+        </ul>
+        <p class="panel__note">Všetko uvedené je zahrnuté v provízii. Nič sa nedoúčtováva dodatočne.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Kupujem nehnuteľnosť</h3>
+        <ul class="ticks">
+          <li>Zápis do databázy dopytov, ozveme sa skôr, než ide inzerát von</li>
+          <li>Overenie listu vlastníctva, tiarch, vecných bremien a exekúcií</li>
+          <li>Kontrola súladu skutkového stavu s katastrálnou mapou</li>
+          <li>Sprievod pri obhliadke a upozornenie na technické riziká</li>
+          <li>Podklady pre banku a koordinácia znaleckého posudku</li>
+          <li>Notárska úschova alebo vinkulácia kúpnej ceny</li>
+          <li>Preberací protokol so stavmi meračov</li>
+          <li>Prepis energií a odhlásenie pôvodného vlastníka</li>
+        </ul>
+        <p class="panel__note">Zápis do databázy dopytov je bezplatný a k ničomu vás neviaže.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== PROVÍZIA ===================== -->
+<section class="sec" id="provizia" aria-labelledby="h-provizia">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">05</span> Provízia a ceny</p>
+        <h2 id="h-provizia">Koľko stojí predaj cez kanceláriu</h2>
+      </div>
+      <p class="lede">Provízia je splatná pri podpise kúpnej zmluvy, nie vopred. Ak sa nehnuteľnosť nepredá, neplatíte nič. Uvedené sumy sú konečné, kancelária nie je platiteľom dane z pridanej hodnoty.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Sadzby provízie podľa typu spolupráce</caption>
+        <thead>
+          <tr>
+            <th scope="col">Typ spolupráce</th>
+            <th scope="col">Provízia</th>
+            <th scope="col">Minimálna suma</th>
+            <th scope="col">Doba platnosti zmluvy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Predaj s exkluzivitou</td><td class="price">2,4 %</td><td class="price">1 900 €</td><td>6 mesiacov</td></tr>
+          <tr><td>Predaj bez exkluzivity</td><td class="price">3,2 %</td><td class="price">2 400 €</td><td>3 mesiace</td></tr>
+          <tr><td>Predaj pozemku</td><td class="price">3,0 %</td><td class="price">1 500 €</td><td>6 mesiacov</td></tr>
+          <tr><td>Komerčný priestor</td><td class="price">2,8 %</td><td class="price">2 200 €</td><td>6 mesiacov</td></tr>
+          <tr><td>Prenájom bytu alebo domu</td><td class="price">1 mesačné nájomné</td><td class="price">450 €</td><td>3 mesiace</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pricecards">
+      <div class="pricecard">
+        <span class="pricecard__amount">120 €</span>
+        <h3>Ocenenie nehnuteľnosti</h3>
+        <p>Písomné cenové rozpätie s porovnaním piatich uskutočnených predajov v lokalite, do piatich pracovných dní.</p>
+        <p class="small muted">Pri následnom predaji cez kanceláriu sa suma odpočíta z provízie.</p>
+      </div>
+      <div class="pricecard">
+        <span class="pricecard__amount">290 €</span>
+        <h3>Kúpna zmluva a vklad</h3>
+        <p>Vypracovanie kúpnej zmluvy, návrhu na vklad a preberacieho protokolu pre predaj, ktorý ste si dohodli sami.</p>
+        <p class="small muted">Bez správnych poplatkov katastra a bez poplatku za úschovu.</p>
+      </div>
+      <div class="pricecard">
+        <span class="pricecard__amount">490 €</span>
+        <h3>Servis pre kupujúceho</h3>
+        <p>Preverenie vybranej nehnuteľnosti, účasť na obhliadke, kontrola zmluvy a sprievod až po zápis vlastníctva.</p>
+        <p class="small muted">Určené pre kúpu mimo našej ponuky, napríklad od súkromného predajcu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINANCOVANIE ===================== -->
+<section class="sec sec--band" id="financovanie" aria-labelledby="h-fin">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">06</span> Financovanie kúpy</p>
+        <h2 id="h-fin">Hypotéka a harmonogram schvaľovania</h2>
+      </div>
+      <p class="lede">Orientačnú splátku si prepočítate v kalkulačke v paneli hore. Tu nájdete, čo banka požaduje, ako dlho jednotlivé kroky trvajú a čo z toho vybavíme s vami.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Čo banka požaduje od kupujúceho</h3>
+        <ul class="ticks">
+          <li>Doklad totožnosti a potvrdenie o výške príjmu</li>
+          <li>Daňové priznanie za posledné zdaňovacie obdobie pri podnikateľovi</li>
+          <li>Výpisy z účtu spravidla za posledné tri mesiace</li>
+          <li>List vlastníctva a znalecký posudok k zakladanej nehnuteľnosti</li>
+          <li>Rezervačnú alebo kúpnu zmluvu s uvedenou cenou</li>
+          <li>Vlastné zdroje najmenej 10 % z ceny, pri LTV nad 80 % prísnejšie posúdenie</li>
+        </ul>
+        <p class="panel__note">Podklady zbierame spolu s vami, aby banka nevracala žiadosť na doplnenie.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Harmonogram od žiadosti po čerpanie</h3>
+        <div class="tablewrap tablewrap--bare">
+          <table>
+            <tbody>
+              <tr><td>Predbežné posúdenie v banke</td><td class="price">1 &ndash; 3 dni</td></tr>
+              <tr><td>Znalecký posudok na nehnuteľnosť</td><td class="price">3 &ndash; 7 dní</td></tr>
+              <tr><td>Schválenie úveru</td><td class="price">5 &ndash; 14 dní</td></tr>
+              <tr><td>Podpis úverovej zmluvy</td><td class="price">1 deň</td></tr>
+              <tr><td>Vklad záložného práva do katastra</td><td class="price">do 30 dní</td></tr>
+              <tr><td>Čerpanie úveru a uvoľnenie ceny</td><td class="price">2 &ndash; 5 dní</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="panel__note">Pri financovaní úverom predlžujeme rezervačnú dobu na 45 dní, aby stihol prejsť celý postup.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== PRENÁJOM ===================== -->
+<section class="sec" id="prenajom" aria-labelledby="h-prenajom">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">07</span> Prenájom</p>
+        <h2 id="h-prenajom">Prenájom a správa nehnuteľnosti</h2>
+      </div>
+      <p class="lede">Prenájom sprostredkujeme jednorazovo alebo prevezmeme aj správu na celý čas nájmu. Províziu za sprostredkovanie platí prenajímateľ, nájomca neplatí nič.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Sprostredkovanie prenájmu</h3>
+        <ul class="ticks">
+          <li>Provízia vo výške jedného mesačného nájomného, najmenej 450 €</li>
+          <li>Preverenie záujemcu: doklad totožnosti, zamestnanie, referencie</li>
+          <li>Nájomná zmluva vrátane inflačnej doložky a výpovedných dôvodov</li>
+          <li>Protokol o odovzdaní so stavmi meračov a fotodokumentáciou</li>
+          <li>Evidencia depozitu vo výške dvoch mesačných nájmov</li>
+          <li>Prihlásenie nájomcu u správcu bytového domu</li>
+        </ul>
+        <p class="panel__note">Ak nájomca odíde do troch mesiacov, nového hľadáme bez ďalšej provízie.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Správa prenájmu počas nájmu</h3>
+        <ul class="ticks">
+          <li>Mesačný poplatok 8 % z nájomného, najmenej 35 € mesačne</li>
+          <li>Sledovanie úhrad a upomienky pri omeškaní</li>
+          <li>Riešenie porúch cez preverených remeselníkov</li>
+          <li>Kontrola bytu dvakrát ročne s písomným záznamom</li>
+          <li>Ročné vyúčtovanie energií a úprava zálohových platieb</li>
+          <li>Zastupovanie na schôdzi vlastníkov po dohode</li>
+        </ul>
+        <p class="panel__note">Zmluvu o správe vypovedáte s dvojmesačnou lehotou, bez sankcie.</p>
+      </div>
+    </div>
+
+    <div class="tablewrap" style="margin-top:clamp(22px,2.6vw,34px)">
+      <table>
+        <caption>Orientačná výška nájomného v našej ponuke, energie sa platia osobitne</caption>
+        <thead>
+          <tr>
+            <th scope="col">Typ nehnuteľnosti</th>
+            <th scope="col">Mesačné nájomné</th>
+            <th scope="col">Depozit</th>
+            <th scope="col">Minimálna doba nájmu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1-izbový byt</td><td class="price">380 &ndash; 450 €</td><td class="price">2 nájmy</td><td>12 mesiacov</td></tr>
+          <tr><td>2-izbový byt</td><td class="price">480 &ndash; 590 €</td><td class="price">2 nájmy</td><td>12 mesiacov</td></tr>
+          <tr><td>3-izbový byt</td><td class="price">620 &ndash; 780 €</td><td class="price">2 nájmy</td><td>12 mesiacov</td></tr>
+          <tr><td>Rodinný dom</td><td class="price">900 &ndash; 1 300 €</td><td class="price">2 nájmy</td><td>24 mesiacov</td></tr>
+          <tr><td>Obchodný priestor</td><td class="price">9 &ndash; 14 € za m²</td><td class="price">3 nájmy</td><td>36 mesiacov</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DOKUMENTY ===================== -->
+<section class="sec sec--band" id="dokumenty" aria-labelledby="h-doku">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">08</span> Doklady</p>
+        <h2 id="h-doku">Dokumenty, ktoré vybavíme za vás</h2>
+      </div>
+      <p class="lede">Čo je súčasťou provízie, čo doobjednáte za príplatok a čo potrebujeme od vás. Ceny za doklady sú uvedené vopred, nič sa nedopĺňa po ceste.</p>
+    </div>
+
+    <div class="infogrid">
+      <div class="infocard">
+        <h3>V cene provízie</h3>
+        <ul>
+          <li>List vlastníctva na právne úkony</li>
+          <li>Kópia z katastrálnej mapy</li>
+          <li>Energetický certifikát</li>
+          <li>Pôdorys s rozmermi miestností</li>
+          <li>Kúpna a rezervačná zmluva</li>
+          <li>Návrh na vklad do katastra</li>
+          <li>Preberací protokol so stavmi meračov</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <h3>Zabezpečíme za príplatok</h3>
+        <ul>
+          <li>Znalecký posudok, od 220 €</li>
+          <li>Geometrický plán, od 340 €</li>
+          <li>Overenie podpisov u notára, 3 € za podpis</li>
+          <li>Notárska úschova kúpnej ceny, od 180 €</li>
+          <li>Vyhlásenie správcu o nedoplatkoch, 25 €</li>
+          <li>Zrýchlený vklad do katastra, 266 €</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <h3>Potrebujeme od vás</h3>
+        <ul>
+          <li>Doklad totožnosti všetkých vlastníkov</li>
+          <li>Nadobúdací titul, teda zmluvu, dedičstvo alebo darovanie</li>
+          <li>Kolaudačné rozhodnutie pri dome</li>
+          <li>Posledné vyúčtovanie energií</li>
+          <li>Číslo účtu pre uvoľnenie kúpnej ceny</li>
+          <li>Súhlas manžela alebo manželky pri bezpodielovom vlastníctve</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== HODINY A DOPRAVA ===================== -->
+<section class="sec" id="hodiny" aria-labelledby="h-hodiny">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">09</span> Kancelária</p>
+        <h2 id="h-hodiny">Otváracie hodiny a ako sa k nám dostanete</h2>
+      </div>
+      <p class="lede">Kancelária je na prízemí, bez schodov. Obhliadky nehnuteľností robíme aj mimo otváracích hodín, po telefonickom dohovore aj cez víkend.</p>
+    </div>
+
+    <div class="route">
+      <div class="route__panel ph ph--a">
+        <p class="addr">Studničná 9, Kamenec</p>
+        <p class="addr-sub">štvrť Nad Riekou &middot; prízemie, vchod priamo z ulice</p>
+        <table class="hours">
+          <tbody>
+            <tr><th scope="row">Pondelok &ndash; piatok</th><td>9:00 &ndash; 17:00</td></tr>
+            <tr><th scope="row">Sobota</th><td>9:00 &ndash; 12:00, na objednanie</td></tr>
+            <tr><th scope="row">Nedeľa</th><td class="off">zatvorené</td></tr>
+            <tr><th scope="row">Obhliadky</th><td>aj večer, po dohode</td></tr>
+            <tr><th scope="row">Telefón</th><td>0907 415 306</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h3>Doprava a parkovanie</h3>
+        <ul class="route__list">
+          <li><span>Autobusová zastávka Kamenné pole</span><b>200 m</b></li>
+          <li><span>Železničná stanica Kamenec</span><b>1,4 km</b></li>
+          <li><span>Parkovanie priamo pred budovou</span><b>6 miest</b></li>
+          <li><span>Prvá hodina na parkovisku</span><b>zdarma</b></li>
+          <li><span>Platené parkovanie v okolí</span><b>0,80 € za hodinu</b></li>
+          <li><span>Bezbariérový vstup</span><b>áno</b></li>
+          <li><span>Stojan na bicykle</span><b>pri vchode</b></li>
+        </ul>
+        <p class="panel__note">Ak prídete autom, zavolajte na 0907 415 306, miesto pred budovou vám podržíme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PLATBY ===================== -->
+<section class="sec sec--band" id="platby" aria-labelledby="h-platby">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">10</span> Platby</p>
+        <h2 id="h-platby">Spôsoby platby a poplatky</h2>
+      </div>
+      <p class="lede">Kúpna cena nikdy neprechádza cez účet kancelárie. Ide do notárskej úschovy alebo do vinkulácie v banke kupujúceho, odkiaľ sa uvoľní až po zápise vlastníctva.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Ako sa platí</h3>
+        <ul class="ticks">
+          <li>Kúpna cena cez notársku úschovu alebo vinkulovaný účet</li>
+          <li>Rezervačný poplatok prevodom na účet úschovy</li>
+          <li>Provízia prevodom po podpise kúpnej zmluvy, splatnosť 7 dní</li>
+          <li>Samostatné služby prevodom alebo platobnou kartou v kancelárii</li>
+          <li>Hotovosť prijímame do 500 €, vždy na doklad</li>
+        </ul>
+        <p class="panel__note">Ku každej platbe dostanete doklad. Faktúru vystavíme aj na firmu.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Poplatky, ktoré neplatia nám</h3>
+        <div class="tablewrap tablewrap--bare">
+          <table>
+            <tbody>
+              <tr><td>Návrh na vklad do katastra, listinne</td><td class="price">100 €</td></tr>
+              <tr><td>Návrh na vklad elektronicky</td><td class="price">50 €</td></tr>
+              <tr><td>Zrýchlený vklad do 15 dní</td><td class="price">266 €</td></tr>
+              <tr><td>Notárska úschova kúpnej ceny</td><td class="price">od 180 €</td></tr>
+              <tr><td>Overenie podpisu</td><td class="price">3 € za podpis</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="panel__note">Poplatky katastra a notára hradí spravidla kupujúci, ak sa strany nedohodnú inak.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PODMIENKY A STORNO ===================== -->
+<section class="sec sec--dark on-dark" id="podmienky" aria-labelledby="h-podm">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">11</span> Zmluvné podmienky</p>
+        <h2 id="h-podm">Podmienky spolupráce, storno a odstúpenie</h2>
+      </div>
+      <p class="lede">Zmluvu si môžete zobrať domov a prečítať v pokoji. Nič nepodpisujeme na kolene a nepoužívame automatické predlžovanie.</p>
+    </div>
+
+    <div class="infogrid">
+      <div class="panel panel--dark">
+        <h3>Sprostredkovateľská zmluva</h3>
+        <ul class="ticks">
+          <li>Exkluzivita na 6 mesiacov, bez automatického predĺženia</li>
+          <li>Výpovedná lehota 30 dní, aj bez uvedenia dôvodu</li>
+          <li>Cenu nehnuteľnosti určujete vy, my dávame odporúčanie</li>
+          <li>Zmena ceny kedykoľvek, písomným dodatkom</li>
+          <li>Provízia je splatná až pri podpise kúpnej zmluvy</li>
+        </ul>
+      </div>
+      <div class="panel panel--dark">
+        <h3>Rezervačná zmluva</h3>
+        <ul class="ticks">
+          <li>Rezervačný poplatok 3 000 €, na účet úschovy</li>
+          <li>Rezervácia platí 30 dní, pri hypotéke 45 dní</li>
+          <li>Poplatok sa započítava do kúpnej ceny</li>
+          <li>Ak banka úver neschváli, poplatok sa vracia v plnej výške</li>
+          <li>Ak kupujúci odstúpi bez dôvodu, poplatok prepadá predávajúcemu</li>
+        </ul>
+      </div>
+      <div class="panel panel--dark">
+        <h3>Storno obhliadky a stretnutia</h3>
+        <ul class="ticks">
+          <li>Zrušenie obhliadky je bezplatné, stačí zavolať</li>
+          <li>Prosíme oznámiť aspoň 2 hodiny vopred</li>
+          <li>Náhradný termín dohodneme telefonicky, spravidla do 48 hodín</li>
+          <li>Obhliadku vieme presunúť aj na sobotu</li>
+          <li>Samostatne objednané ocenenie stornujete do 24 hodín bez poplatku</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== ČASTÉ OTÁZKY ===================== -->
+<section class="sec" id="faq" aria-labelledby="h-faq">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">12</span> Časté otázky</p>
+        <h2 id="h-faq">Na čo sa nás pýtate najčastejšie</h2>
+      </div>
+      <p class="lede">Ak medzi otázkami nenájdete tú svoju, napíšte nám cez formulár v kontakte alebo zavolajte. Odpovedáme do 24 hodín.</p>
+    </div>
+
+    <div class="faq">
+      <details open>
+        <summary>Kedy a koľko platím províziu?</summary>
+        <div class="answer">
+          <p>Províziu platí predávajúci a je splatná až pri podpise kúpnej zmluvy, so splatnosťou 7 dní. Pri exkluzívnej spolupráci je to 2,4 % z kúpnej ceny, najmenej 1 900 €. Ak sa nehnuteľnosť nepredá, neplatíte nič, ani za inzerciu, ani za obhliadky, ani za energetický certifikát.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Musím podpísať exkluzívnu zmluvu?</summary>
+        <div class="answer">
+          <p>Nemusíte. Bez exkluzivity je provízia 3,2 % a zmluva na 3 mesiace. Exkluzivita nám umožňuje investovať do prípravy a inzercie viac, preto je pri nej sadzba nižšia. Vypovedať sa dá s 30-dňovou lehotou aj bez uvedenia dôvodu.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Ako určíte cenu mojej nehnuteľnosti?</summary>
+        <div class="answer">
+          <p>Vychádzame z uskutočnených predajov porovnateľných nehnuteľností v tej istej lokalite za posledných 12 mesiacov, nie z inzerovaných cien. Do ceny premietneme stav, poschodie, orientáciu, energetickú triedu a náklady na prevádzku. Dostanete písomné rozpätie a odporúčanú cenu, konečné rozhodnutie je vaše.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Ako dlho trvá predaj?</summary>
+        <div class="answer">
+          <p>Pri byte bez tiarch a s kompletnými dokladmi spravidla 9 až 14 týždňov od podpisu zmluvy po zápis na katastri. Samotný vklad má lehotu 30 dní, zrýchlený 15 dní. Dedičské konanie, vecné bremeno alebo nezapísaná stavba proces predlžujú, na to vás upozorníme hneď na začiatku.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Musím byť pri obhliadkach prítomný?</summary>
+        <div class="answer">
+          <p>Nie. Obhliadky vedieme sami po prevzatí kľúčov, aj vo večerných hodinách a cez víkend. Vždy vopred overíme, či má záujemca reálne financovanie. Po každej obhliadke dostanete krátku správu, čo záujemcu zaujalo a čo mu prekáža.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Čo ak kupujúcemu banka neschváli hypotéku?</summary>
+        <div class="answer">
+          <p>Rezervačná zmluva to rieši vopred. Pri financovaní úverom je rezervačná doba 45 dní a ak banka úver preukázateľne neschváli, rezervačný poplatok sa kupujúcemu vracia v plnej výške. Nehnuteľnosť sa vracia do ponuky a pokračujeme s ďalšími záujemcami.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Predávam byt s hypotékou. Dá sa to?</summary>
+        <div class="answer">
+          <p>Áno, je to bežné. Od banky vyžiadame vyčíslenie zostatku úveru a kúpna cena sa rozdelí: časť ide priamo na doplatenie úveru a na výmaz záložného práva, zvyšok vám. Celý postup ošetruje kúpna zmluva a úschova, aby ani jedna strana neniesla riziko.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Sprostredkujete aj prenájom?</summary>
+        <div class="answer">
+          <p>Áno. Provízia je vo výške jedného mesačného nájomného, najmenej 450 €, a platí ju prenajímateľ. V cene je preverenie záujemcu, nájomná zmluva, protokol o odovzdaní so stavmi meračov a evidencia depozitu. Správu prenájmu vieme prevziať aj na celý čas nájmu.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Predávame nehnuteľnosť z dedičstva, čo potrebujeme?</summary>
+        <div class="answer">
+          <p>Potrebujeme právoplatné osvedčenie o dedičstve a zápis nového vlastníka na liste vlastníctva. Kým nie je zápis hotový, nehnuteľnosť môžeme pripraviť a inzerovať, ale kúpnu zmluvu podpíšeme až po ňom. Ak je dedičov viac, zmluvu podpisujú všetci alebo jeden na základe splnomocnenia s overeným podpisom.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KARIÉRA ===================== -->
+<section class="sec sec--band" id="kariera" aria-labelledby="h-kariera">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">13</span> Kariéra</p>
+        <h2 id="h-kariera">Voľné pozície v kancelárii</h2>
+      </div>
+      <p class="lede">Hľadáme ľudí, ktorí chcú robiť reality poriadne a dlhodobo. Zaškolenie vedie vedúci kancelárie, prvé tri mesiace pracujete vo dvojici so skúseným maklérom.</p>
+    </div>
+
+    <div class="jobs">
+      <div class="job">
+        <h3>Realitný maklér</h3>
+        <p class="tagline">Plný úväzok &middot; nástup dohodou</p>
+        <dl>
+          <div><dt>Fixná zložka</dt><dd>900 € mesačne</dd></div>
+          <div><dt>Podiel z provízie</dt><dd>25 &ndash; 40 %</dd></div>
+          <div><dt>Zaškolenie</dt><dd>3 mesiace vo dvojici</dd></div>
+          <div><dt>Požiadavky</dt><dd>vodičský preukaz skupiny B, ukončené stredoškolské vzdelanie</dd></div>
+          <div><dt>K dispozícii</dt><dd>notebook, telefón, inzertné kredity</dd></div>
+        </dl>
+      </div>
+      <div class="job">
+        <h3>Asistent kancelárie</h3>
+        <p class="tagline">Skrátený úväzok 6 hodín denne &middot; nástup dohodou</p>
+        <dl>
+          <div><dt>Mzda</dt><dd>1 050 € mesačne</dd></div>
+          <div><dt>Náplň práce</dt><dd>príprava zmlúv, komunikácia s katastrom</dd></div>
+          <div><dt>Pracovný čas</dt><dd>9:00 &ndash; 15:00</dd></div>
+          <div><dt>Požiadavky</dt><dd>presnosť, prax s administratívou</dd></div>
+          <div><dt>Výhodou</dt><dd>skúsenosť s realitnou alebo právnou agendou</dd></div>
+        </dl>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:24px;max-width:62ch">Životopis odovzdajte osobne v kancelárii na Studničnej 9 alebo si dohodnite stretnutie na čísle 0907 415 306, prípadne cez formulár v kontakte. Ozveme sa do piatich pracovných dní, aj v prípade zamietnutia.</p>
+  </div>
+</section>
+<!-- ===================== KONTAKT ===================== -->
+<section class="sec sec--dark on-dark" id="kontakt" aria-labelledby="h-kontakt">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">14</span> Kontakt</p>
+        <h2 id="h-kontakt">Napíšte nám, čo riešite</h2>
+      </div>
+      <p class="lede">Ocenenie nehnuteľnosti aj prvá konzultácia sú nezáväzné a bezplatné. Správu z formulára spracujeme a odpovieme do 24 hodín.</p>
+    </div>
+
+    <div class="contact">
+      <div>
+        <dl class="contact__list">
+          <div>
+            <dt>Adresa kancelárie</dt>
+            <dd>Studničná 9, štvrť Nad Riekou, Kamenec</dd>
+          </div>
+          <div>
+            <dt>Telefón</dt>
+            <dd><a href="tel:+421907415306">0907 415 306</a></dd>
+          </div>
+          <div>
+            <dt>Otváracie hodiny</dt>
+            <dd>Po &ndash; Pi 9:00 &ndash; 17:00, So 9:00 &ndash; 12:00 na objednanie</dd>
+          </div>
+          <div>
+            <dt>Obhliadky</dt>
+            <dd>aj večer a v sobotu, po dohode</dd>
+          </div>
+        </dl>
+        <p class="small" style="color:var(--on-dark-muted);max-width:52ch">Údaje podniku na tejto stránke sú ukážkové. Kontakt na autora webu nájdete v sekcii nižšie.</p>
+      </div>
+
+      <form class="form" id="contactForm" novalidate>
+        <div class="form__grid">
+          <div class="field">
+            <label for="fName">Meno a priezvisko <span class="req">*</span></label>
+            <input type="text" id="fName" name="meno" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="fPhone">Telefón <span class="req">*</span></label>
+            <input type="tel" id="fPhone" name="telefon" autocomplete="tel" required>
+          </div>
+          <div class="field full">
+            <label for="fTopic">Čo potrebujete</label>
+            <select id="fTopic" name="tema">
+              <option>Chcem predať nehnuteľnosť</option>
+              <option>Chcem kúpiť nehnuteľnosť</option>
+              <option>Chcem prenajať nehnuteľnosť</option>
+              <option>Mám záujem o ocenenie</option>
+              <option>Obhliadka konkrétnej ponuky</option>
+              <option>Iné</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="fMsg">Správa <span class="req">*</span></label>
+            <textarea id="fMsg" name="sprava" placeholder="Napríklad: 3-izbový byt, 74 m², 5. poschodie, potrebujem predať do jari." required></textarea>
+          </div>
+          <div class="field full">
+            <label class="check" for="fGdpr">
+              <input type="checkbox" id="fGdpr" name="suhlas" required>
+              <span>Súhlasím so spracovaním uvedených údajov na účel odpovede na túto správu. <span class="req">*</span></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form__foot">
+          <button class="btn btn--primary" type="submit">Odoslať správu</button>
+          <span class="small muted">Polia označené <span class="req">*</span> sú povinné.</span>
+        </div>
+
+        <p class="formstatus" id="formStatus" role="status" aria-live="polite"></p>
+        <p class="form__note">Odoslaná správa príde do schránky kancelárie a odpoveď od nás dostanete do 24 hodín. Ak potrebujete termín obhliadky ešte dnes, zavolajte na 0907 415 306.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== SEKCIA AUTORA ===================== -->
+<section class="author" id="autor" aria-labelledby="h-autor">
+  <div class="wrap author__in">
+    <div>
+      <p class="author__tag">O tejto ukážke</p>
+      <h2 id="h-autor">Páči sa vám tento web?</h2>
+      <p>Takýto web pre vás postaví Alex Poliak. Realitná kancelária Kamenec je vymyslený podnik, ceny, adresa aj ponuka slúžia len na predvedenie, ako môže vyzerať web vašej kancelárie.</p>
+      <p>Váš web postavím rovnako: filtrovateľná ponuka, kalkulačka, kontaktný formulár, rýchle načítanie a správne zobrazenie na mobile. <span class="author__price">Weby na mieru od 250 €, prvý návrh do 3 dní. Konzultácia je zadarmo a nezáväzne.</span></p>
+      <div class="author__actions">
+        <a class="btn btn--dark" href="https://apoliak.online">Pozrieť apoliak.online</a>
+        <a class="btn btn--line" href="tel:+421902464022">Zavolať 0902 464 022</a>
+      </div>
+    </div>
+
+    <div class="author__box">
+      <dl>
+        <div>
+          <dt>Autor návrhu a kódu</dt>
+          <dd>Alex Poliak</dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:info@apoliak.online">info@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefón</dt>
+          <dd><a href="tel:+421902464022">0902 464 022</a></dd>
+        </div>
+        <div>
+          <dt>Web</dt>
+          <dd><a href="https://apoliak.online">apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Cena a termín</dt>
+          <dd>od 250 €, prvý návrh do 3 dní</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PÄTIČKA ===================== -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <h4>Kamenec reality</h4>
+        <p class="foot__addr">Studničná 9<br>štvrť Nad Riekou<br>Kamenec<br><a href="tel:+421907415306">0907 415 306</a></p>
+      </div>
+      <div>
+        <h4>Ponuka</h4>
+        <ul>
+          <li><a href="#ponuka">Byty</a></li>
+          <li><a href="#ponuka">Rodinné domy</a></li>
+          <li><a href="#ponuka">Pozemky</a></li>
+          <li><a href="#ponuka">Komerčné priestory</a></li>
+          <li><a href="#lokality">Lokality</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Pre klientov</h4>
+        <ul>
+          <li><a href="#postup">Postup predaja</a></li>
+          <li><a href="#provizia">Provízia</a></li>
+          <li><a href="#nastroj">Hypotekárna kalkulačka</a></li>
+          <li><a href="#prenajom">Prenájom a správa</a></li>
+          <li><a href="#podmienky">Podmienky spolupráce</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kancelária</h4>
+        <ul>
+          <li><a href="#hodiny">Otváracie hodiny</a></li>
+          <li><a href="#platby">Spôsoby platby</a></li>
+          <li><a href="#dokumenty">Dokumenty</a></li>
+          <li><a href="#kariera">Kariéra</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>Ukážkový web, vymyslený podnik a ukážkové údaje. Po &ndash; Pi 9:00 &ndash; 17:00, Studničná 9, Kamenec.</span>
+      <span>Návrh a kód: <a href="https://apoliak.online">Alex Poliak &ndash; apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  root.classList.remove("no-js");
+
+  /* ---------- výška pásika ukážky ---------- */
+  var bar = document.getElementById("demobar");
+  function setBar(){
+    if(!bar) return;
+    var h = Math.round(bar.getBoundingClientRect().height);
+    if(!h || h > 160) return;
+    root.style.setProperty("--bar-h", h + "px");
+  }
+  setBar();
+  window.addEventListener("resize", setBar);
+  window.addEventListener("load", setBar);
+  if(window.ResizeObserver){ new window.ResizeObserver(setBar).observe(bar); }
+
+  /* ---------- mobilné menu ---------- */
+  var toggle = document.getElementById("navToggle");
+  var nav = document.getElementById("siteNav");
+  if(toggle && nav){
+    toggle.addEventListener("click", function(){
+      var open = nav.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.addEventListener("click", function(e){
+      if(e.target.closest("a")){
+        nav.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded","false");
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && nav.classList.contains("is-open")){
+        nav.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded","false");
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---------- formátovanie súm ---------- */
+  function eur(n){
+    return Math.round(n).toLocaleString("sk-SK").replace(/[  \s]/g," ") + " €";
+  }
+
+  /* ---------- prepínanie nástrojov v paneli ---------- */
+  var tabs = [
+    {tab: document.getElementById("tabFilter"), panel: document.getElementById("panelFilter")},
+    {tab: document.getElementById("tabHypo"), panel: document.getElementById("panelHypo")}
+  ];
+  function showTab(idx, focus){
+    for(var i = 0; i < tabs.length; i++){
+      var t = tabs[i];
+      if(!t.tab || !t.panel) continue;
+      var on = (i === idx);
+      t.tab.classList.toggle("is-active", on);
+      t.tab.setAttribute("aria-selected", on ? "true" : "false");
+      t.tab.setAttribute("tabindex", on ? "0" : "-1");
+      t.panel.classList.toggle("is-off", !on);
+      if(on && focus) t.tab.focus();
+    }
+  }
+  (function bindTabs(){
+    var box = document.getElementById("toolTabs");
+    if(!box || !tabs[0].tab || !tabs[1].tab) return;
+    tabs.forEach(function(t, i){
+      t.tab.addEventListener("click", function(){ showTab(i, false); });
+    });
+    box.addEventListener("keydown", function(e){
+      var cur = e.target.id === "tabHypo" ? 1 : 0;
+      if(e.key === "ArrowRight" || e.key === "ArrowDown"){ e.preventDefault(); showTab((cur + 1) % 2, true); }
+      if(e.key === "ArrowLeft" || e.key === "ArrowUp"){ e.preventDefault(); showTab((cur + 1) % 2, true); }
+      if(e.key === "Home"){ e.preventDefault(); showTab(0, true); }
+      if(e.key === "End"){ e.preventDefault(); showTab(1, true); }
+    });
+  })();
+
+  /* ---------- filter ponuky ---------- */
+  var form = document.getElementById("filterForm");
+  var grid = document.getElementById("cardGrid");
+  if(form && grid){
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".card"));
+    var fType = document.getElementById("fType");
+    var fLoc = document.getElementById("fLoc");
+    var fRooms = document.getElementById("fRooms");
+    var fMin = document.getElementById("fMin");
+    var fMax = document.getElementById("fMax");
+    var rCount = document.getElementById("rCount");
+    var rRange = document.getElementById("rRange");
+    var rAvg = document.getElementById("rAvg");
+    var emptyEl = document.getElementById("emptyState");
+    var total = cards.length;
+
+    function apply(){
+      var t = fType.value, l = fLoc.value, r = fRooms.value;
+      var min = parseInt(fMin.value, 10);
+      var max = parseInt(fMax.value, 10);
+      if(max < min){ max = 99999999; }
+      var shown = 0, sum = 0, lo = null, hi = null;
+
+      cards.forEach(function(card){
+        var ct = card.getAttribute("data-type");
+        var cl = card.getAttribute("data-loc");
+        var cr = parseInt(card.getAttribute("data-rooms"), 10);
+        var cp = parseInt(card.getAttribute("data-price"), 10);
+        var ok = true;
+        if(t !== "all" && ct !== t) ok = false;
+        if(l !== "all" && cl !== l) ok = false;
+        if(r !== "all"){
+          var want = parseInt(r, 10);
+          if(want === 4){ if(!(cr >= 4)) ok = false; }
+          else if(cr !== want){ ok = false; }
+        }
+        if(cp < min || cp > max) ok = false;
+        card.classList.toggle("is-hidden", !ok);
+        if(ok){
+          shown++;
+          sum += cp;
+          if(lo === null || cp < lo) lo = cp;
+          if(hi === null || cp > hi) hi = cp;
+        }
+      });
+
+      rCount.textContent = shown + " z " + total;
+      if(shown === 0){
+        rRange.textContent = "—";
+        rAvg.textContent = "—";
+      } else if(shown === 1){
+        rRange.textContent = eur(lo);
+        rAvg.textContent = eur(sum);
+      } else {
+        rRange.textContent = eur(lo).replace(" €","") + " – " + eur(hi);
+        rAvg.textContent = eur(sum / shown);
+      }
+      emptyEl.classList.toggle("is-on", shown === 0);
+    }
+
+    form.addEventListener("change", apply);
+    form.addEventListener("submit", function(e){ e.preventDefault(); apply(); });
+    form.addEventListener("reset", function(){ window.setTimeout(apply, 0); });
+    apply();
+  }
+  /* ---------- hypotekárna kalkulačka ---------- */
+  var cPrice = document.getElementById("cPrice");
+  var cOwn = document.getElementById("cOwn");
+  var cYears = document.getElementById("cYears");
+  var cRate = document.getElementById("cRate");
+
+  if(cPrice && cOwn && cYears && cRate){
+    var cPriceOut = document.getElementById("cPriceOut");
+    var cOwnOut = document.getElementById("cOwnOut");
+    var cYearsOut = document.getElementById("cYearsOut");
+    var cRateOut = document.getElementById("cRateOut");
+    var oPay = document.getElementById("oPay");
+    var oLoan = document.getElementById("oLoan");
+    var oOwn = document.getElementById("oOwn");
+    var oLtv = document.getElementById("oLtv");
+    var oInterest = document.getElementById("oInterest");
+    var oTotal = document.getElementById("oTotal");
+    var oFlag = document.getElementById("oFlag");
+
+    function rokySlovo(n){
+      if(n === 1) return "rok";
+      if(n >= 2 && n <= 4) return "roky";
+      return "rokov";
+    }
+
+    function calc(){
+      var price = parseFloat(cPrice.value);
+      var ownPct = parseFloat(cOwn.value);
+      var years = parseInt(cYears.value, 10);
+      var rate = parseFloat(cRate.value);
+
+      var own = price * ownPct / 100;
+      var loan = price - own;
+      var n = years * 12;
+      var i = rate / 100 / 12;
+      var pay = i > 0 ? loan * i / (1 - Math.pow(1 + i, -n)) : loan / n;
+      var totalPaid = pay * n;
+      var interest = totalPaid - loan;
+      var ltv = price > 0 ? (loan / price) * 100 : 0;
+
+      cPriceOut.textContent = eur(price);
+      cOwnOut.textContent = ownPct + " % · " + eur(own);
+      cYearsOut.textContent = years + " " + rokySlovo(years);
+      cRateOut.textContent = rate.toFixed(1).replace(".", ",") + " % ročne";
+
+      oPay.innerHTML = eur(pay) + "<small> / mesiac</small>";
+      oLoan.textContent = eur(loan);
+      oOwn.textContent = eur(own);
+      oLtv.textContent = Math.round(ltv) + " %";
+      oInterest.textContent = eur(interest);
+      oTotal.textContent = eur(totalPaid);
+
+      if(loan <= 0){
+        oFlag.textContent = "Pri plnej úhrade z vlastných zdrojov úver nepotrebujete, platia len poplatky katastra a úschovy.";
+      } else if(ltv > 90){
+        oFlag.textContent = "Pri LTV nad 90 % banky úver spravidla neposkytnú. Počítajte s vlastnými zdrojmi aspoň 10 % z ceny.";
+      } else if(ltv > 80){
+        oFlag.textContent = "Pri LTV nad 80 % býva úroková sadzba vyššia a banka posudzuje príjem prísnejšie.";
+      } else {
+        oFlag.textContent = "Pri LTV do 80 % banky spravidla nevyžadujú dofinancovanie ďalším úverom.";
+      }
+    }
+
+    [cPrice, cOwn, cYears, cRate].forEach(function(el){
+      el.addEventListener("input", calc);
+      el.addEventListener("change", calc);
+    });
+    var calcForm = document.getElementById("calcForm");
+    if(calcForm){ calcForm.addEventListener("submit", function(e){ e.preventDefault(); }); }
+    calc();
+
+    /* prepojenie kariet ponuky s kalkulačkou v paneli */
+    Array.prototype.forEach.call(document.querySelectorAll(".js-calc"), function(btn){
+      btn.addEventListener("click", function(){
+        var p = parseInt(btn.getAttribute("data-price"), 10);
+        var min = parseInt(cPrice.min, 10);
+        var max = parseInt(cPrice.max, 10);
+        var step = parseInt(cPrice.step, 10);
+        var v = Math.round(p / step) * step;
+        if(v < min) v = min;
+        if(v > max) v = max;
+        cPrice.value = v;
+        calc();
+        showTab(1, false);
+        var target = document.getElementById("nastroj");
+        if(target){
+          var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          target.scrollIntoView({behavior: reduce ? "auto" : "smooth", block: "start"});
+        }
+      });
+    });
+  }
+
+  /* ---------- kontaktný formulár ---------- */
+  var cf = document.getElementById("contactForm");
+  var status = document.getElementById("formStatus");
+  if(cf && status){
+    cf.addEventListener("submit", function(e){
+      e.preventDefault();
+      var name = document.getElementById("fName");
+      var phone = document.getElementById("fPhone");
+      var msg = document.getElementById("fMsg");
+      var gdpr = document.getElementById("fGdpr");
+      var missing = [];
+      if(!name.value.trim()) missing.push("meno");
+      if(!phone.value.trim()) missing.push("telefón");
+      if(!msg.value.trim()) missing.push("správu");
+      if(!gdpr.checked) missing.push("súhlas so spracovaním údajov");
+
+      status.classList.add("is-on");
+      if(missing.length){
+        status.innerHTML = "<b>Doplňte prosím: " + missing.join(", ") + ".</b> Formulár je ukážkový, kontrolu povinných polí však robí rovnako ako ostrý web.";
+        var first = missing[0] === "meno" ? name : (missing[0] === "telefón" ? phone : (missing[0] === "správu" ? msg : gdpr));
+        first.focus();
+        return;
+      }
+      status.innerHTML = "<b>Toto je ukážkový web, správa sa nikam neodoslala.</b> Na ostrom webe by dorazila do schránky kancelárie a odpoveď by prišla do 24 hodín. Chcete taký web pre svoju kanceláriu? Kontakt na autora je v sekcii nižšie, telefón 0902 464 022.";
+      cf.reset();
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
