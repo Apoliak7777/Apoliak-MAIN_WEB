@@ -197,7 +197,10 @@ a.btn.btn--ghost-dark:hover{color:var(--sand)}
   padding:6px 0;border-bottom:2px solid transparent;display:inline-block;
 }
 .nav-list a:hover{color:var(--accent);border-bottom-color:var(--accent)}
-.head-cta{display:inline-flex}
+
+/* trvalá dvojica v hlavičke: objednávka + telefón, na mobile ostáva viditeľná */
+.head-actions{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.head-actions .btn{white-space:nowrap}
 
 /* ============================================================
    HERO
@@ -293,6 +296,45 @@ a.btn.btn--ghost-dark:hover{color:var(--sand)}
 .stack > .card{margin-bottom:30px}
 .stack > .card:last-child{margin-bottom:0}
 
+/* ============================================================
+   OBRAZOVÉ PLOCHY — pripravené miesta pre fotografie
+   ============================================================ */
+.obraz{position:relative;overflow:hidden;margin:0;border-radius:var(--r);display:flex;flex-direction:column;justify-content:flex-end}
+.obraz > *{position:relative}
+.obraz--tile{min-height:170px;padding:16px 18px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--wide{min-height:250px;padding:22px 24px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--tile::after,.obraz--wide::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light;
+}
+.obraz__cap{position:relative;display:block}
+.obraz__k{display:block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-2);font-weight:700}
+.obraz__n{display:block;font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.72rem);line-height:1.1;color:#FFFFFF;margin-top:4px}
+.obraz--a{background:linear-gradient(150deg,#3D2C22,#2E211A 58%,#55402F)}
+.obraz--a::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(72deg,rgba(240,231,218,.08) 0 1px,transparent 1px 14px)}
+.obraz--b{background:linear-gradient(150deg,#55402F,#6B3A26 62%,#8A3823)}
+.obraz--b::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 78% 20%,rgba(255,255,255,.12) 0 1px,transparent 1px 18px)}
+.obraz--c{background:linear-gradient(150deg,#2E211A,#55402F 70%,#6B3A26)}
+.obraz--c::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.07) 0 1px,transparent 1px 20px)}
+.obraz--d{background:linear-gradient(150deg,#6B3A26,#8A3823 52%,#3D2C22)}
+.obraz--d::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-40deg,rgba(240,231,218,.09) 0 1px,transparent 1px 16px)}
+.obraz--e{background:linear-gradient(150deg,#3D2C22,#55402F 45%,#2E211A)}
+.obraz--e::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 22% 78%,rgba(240,231,218,.1) 0 1px,transparent 1px 22px)}
+
+/* dlaždice sortimentu */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:clamp(14px,1.8vw,22px)}
+.tile{
+  display:flex;flex-direction:column;text-decoration:none;color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden;
+  transition:border-color .16s ease;
+}
+.tile:hover{border-color:var(--accent)}
+.tile .obraz{border:0;border-radius:0}
+.tile__body{padding:15px 17px 18px;display:flex;flex-direction:column;gap:5px}
+.tile__body h3{margin:0;font-size:1.08rem;color:var(--ink)}
+.tile__body p{margin:0;font-size:.88rem;line-height:1.5;color:var(--muted);max-width:none}
+.tile:hover .tile__body h3{color:var(--accent)}
+
 /* cenový riadok s bodkovaným vodičom */
 .pl{list-style:none;margin:0;padding:0}
 .pl li{display:flex;align-items:baseline;gap:10px;padding:12px 0;border-bottom:1px dotted var(--line)}
@@ -322,8 +364,9 @@ a.btn.btn--ghost-dark:hover{color:var(--sand)}
 .sweet__plate--2::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 82% 18%,rgba(255,255,255,.13) 0 1px,transparent 1px 20px)}
 .sweet__plate--3{background:linear-gradient(140deg,#2E211A,#55402F 70%,#6B3A26)}
 .sweet__plate--3::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.08) 0 1px,transparent 1px 22px)}
-.sweet__price{position:relative;font-family:var(--serif);font-size:2rem;line-height:1;color:#FFFFFF}
-.sweet__unit{position:relative;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:8px}
+.sweet__cap{position:relative;display:block}
+.sweet__price{position:relative;display:block;font-family:var(--serif);font-size:2rem;line-height:1;color:#FFFFFF}
+.sweet__unit{position:relative;display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:8px}
 .sweet__body{padding:18px 0 0;display:flex;flex-direction:column;gap:8px;flex:1 1 auto}
 .sweet__body h3{margin:0}
 .sweet__body p{margin:0;font-size:.93rem;color:var(--muted)}
@@ -533,6 +576,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
    PÄTIČKA
    ============================================================ */
 .foot{background:var(--cocoa);color:var(--on-dark-2);padding:clamp(44px,5vw,66px) 0 30px;font-size:.94rem}
+.foot__cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;
+  padding-bottom:28px;margin-bottom:30px;border-bottom:1px solid var(--line-dark);
+}
+.foot__cta p{margin:0;max-width:44ch;color:var(--on-dark);font-size:1rem}
+.foot__cta .btn{flex:0 0 auto}
+.foot a.btn:hover{text-decoration:none}
 .foot__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;padding-bottom:30px;border-bottom:1px solid var(--line-dark)}
 .foot h3{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark);font-family:var(--sans);font-weight:700;margin-bottom:1em}
 .foot ul{list-style:none;margin:0;padding:0}
@@ -556,17 +606,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 /* ============================================================
    RESPONZÍVNE
    ============================================================ */
-@media (max-width:1040px){
-  .hstrip{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .cfg{grid-template-columns:1fr}
-  .sum{position:static}
-  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:900px){
-  .hero h1{max-width:none}
+/* navigácia sa skladá skôr ako zvyšok, aby sa tlačidlo a telefón v hlavičke
+   nemuseli nikdy schovávať */
+@media (max-width:1120px){
   .nav-toggle{display:inline-flex}
-  .head-cta{display:none}
+  .site-head__in{position:relative;min-height:66px}
   .nav-list{
     display:none;position:absolute;left:0;right:0;top:100%;
     flex-direction:column;align-items:stretch;gap:0;
@@ -578,7 +622,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   .nav-list li:last-child{border-bottom:0}
   .nav-list a{display:block;padding:14px 0;border-bottom:0;font-size:1rem}
   .nav-list a:hover{border-bottom-color:transparent}
-  .site-head__in{position:relative;min-height:64px}
+}
+@media (max-width:1040px){
+  .hstrip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cfg{grid-template-columns:1fr}
+  .sum{position:static}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero h1{max-width:none}
   .two,.two--wide{grid-template-columns:1fr}
   .three{grid-template-columns:1fr}
   .hstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -591,6 +644,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   .hcard{border-radius:0;border-bottom:0}
   .hcard:last-child{border-bottom:1px solid var(--line)}
   .hcard__n{font-size:1.85rem}
+  /* hlavička na dva riadky: značka a menu hore, objednávka a telefón pod tým */
+  .site-head__in{flex-wrap:wrap;gap:10px 12px;padding-block:10px;min-height:0}
+  .brand{order:0}
+  .site-head__in nav{order:1}
+  .nav-toggle{order:2}
+  .head-actions{order:3;width:100%;gap:8px}
+  .head-actions .btn{flex:1 1 0;min-width:0;padding-inline:10px}
 }
 @media (max-width:640px){
   :root{--bar:64px}
@@ -637,23 +697,26 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       </span>
     </a>
 
-    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="hlavne-menu">
-      <span class="nav-toggle__bars" aria-hidden="true"><span></span></span>
-      Menu
-    </button>
-
     <nav aria-label="Hlavná navigácia">
       <ul class="nav-list" id="hlavne-menu" data-open="false">
-        <li><a href="#pecivo">Pečivo</a></li>
+        <li><a href="#sortiment">Sortiment</a></li>
         <li><a href="#zakusky">Zákusky</a></li>
         <li><a href="#torty">Torty</a></li>
         <li><a href="#konfigurator">Konfigurátor</a></li>
         <li><a href="#alergeny">Alergény</a></li>
-        <li><a href="#kontakt">Kontakt</a></li>
+        <li><a href="#doprava">Kde nás nájdete</a></li>
       </ul>
     </nav>
 
-    <a class="btn btn--primary btn--sm head-cta" href="#objednavka">Objednať tortu</a>
+    <div class="head-actions">
+      <a class="btn btn--line btn--sm" href="tel:+421948260731">0948&nbsp;260&nbsp;731</a>
+      <a class="btn btn--primary btn--sm head-cta" href="#objednavka">Objednať tortu</a>
+    </div>
+
+    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="hlavne-menu">
+      <span class="nav-toggle__bars" aria-hidden="true"><span></span></span>
+      Menu
+    </button>
   </div>
 </header>
 
@@ -667,9 +730,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <p class="hero__lede">Chlieb, pečivo a zákusky pečieme každý deň priamo v prevádzke a torty na objednávku si naceníte v konfigurátore nižšie.</p>
 
     <div class="actions">
-      <a class="btn btn--primary" href="#konfigurator">Zostaviť tortu a zistiť cenu</a>
-      <a class="btn btn--line" href="#pecivo">Cenník pečiva</a>
-      <a class="btn btn--line" href="tel:+421948260731">0948&nbsp;260&nbsp;731</a>
+      <a class="btn btn--primary" href="#objednavka">Objednať tortu</a>
+      <a class="btn btn--line" href="#konfigurator">Zostaviť tortu a zistiť cenu</a>
+      <a class="btn btn--line" href="#doprava">Kde nás nájdete</a>
     </div>
 
     <div class="hstrip">
@@ -707,6 +770,90 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   </div>
 </section>
 
+<!-- ================= SORTIMENT ================= -->
+<section class="sec sec--band sec--tight" id="sortiment">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Sortiment</p>
+      <h2>Päť skupín výrobkov</h2>
+      <p class="lede">Pri každej skupine je najnižšia cena a čas, odkedy je tovar v pulte. Kliknutím sa dostanete na celý cenník s hmotnosťami a alergénmi.</p>
+    </div>
+
+    <div class="tiles reveal">
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: rozkrojený bochník kváskového chleba na drevenej doske, detail na striedku a tmavú kôrku -->
+        <figure class="obraz obraz--tile obraz--a">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Chlieb</span>
+            <span class="obraz__n">od 2,60 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Kváskový chlieb</h3>
+          <p>Štyri druhy, cesto kysne 24 hodín. V pulte od 8:00, chlieb z predošlého dňa za 2,20 €.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: plech s čerstvo upečenými rožkami a pletenkami vyťahovaný z pece -->
+        <figure class="obraz obraz--tile obraz--c">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Pečivo</span>
+            <span class="obraz__n">od 0,45 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Bežné a slané pečivo</h3>
+          <p>Rožky, pletenky, croissanty, pagáčiky. Prvá várka o 6:30, druhá o 10:00.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#zakusky">
+        <!-- FOTO: cukrárska vitrína zhora, rad zákuskov a rezov na papierových podložkách -->
+        <figure class="obraz obraz--tile obraz--b">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Vitrína</span>
+            <span class="obraz__n">od 1,70 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Zákusky a rezy</h3>
+          <p>Osem druhov denne od 9:00. Kus odložíme, ak zavoláte do 15:00 predošlého dňa.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#torty">
+        <!-- FOTO: hotová torta s krémovým povrchom zboku, vidno rovné hrany a vrstvy -->
+        <figure class="obraz obraz--tile obraz--d">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Na objednávku</span>
+            <span class="obraz__n">od 42 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Torty na objednávku</h3>
+          <p>Päť veľkostí od 8 do 36 porcií. Najkratší termín tri pracovné dni.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#sezona">
+        <!-- FOTO: sezónne pečivo podľa obdobia, napríklad mazanec alebo tácka vianočných medovníkov -->
+        <figure class="obraz obraz--tile obraz--e">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Počas roka</span>
+            <span class="obraz__n">od 1,60 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Sezónne pečenie</h3>
+          <p>Veľká noc, ovocná sezóna, orechy a Vianoce. Každé obdobie má vlastnú uzávierku objednávok.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= O PEKÁRNI ================= -->
 <section class="sec" id="pekaren">
   <div class="wrap">
@@ -719,13 +866,20 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         </div>
         <p>Kôrka je pekáreň s cukrárskou dielňou v jednej miestnosti za predajňou. Nemáme centrálnu výrobňu ani rozvoz zmrazených polotovarov &mdash; cesto miesime večer, chlieb sadíme do pece nad ránom a zákusky dokončujeme počas dopoludnia.</p>
         <p>Múku berieme z mlyna vzdialeného 40 kilometrov, maslo používame 82&nbsp;%, vajcia od chovu z okresu. Do chleba ide múka, voda, soľ a kvások. Nič iné tam nepatrí, preto v zložení nenájdete zlepšujúce prípravky ani konzervanty.</p>
-        <p>Čo sa cez deň nepredá, ide večer do výdaja za polovicu ceny. Chlieb z predošlého dňa predávame za 2,20 € bez ohľadu na veľkosť.</p>
+        <p>Pečivo, ktoré ostane, predávame poslednú hodinu pred zatvorením za polovicu ceny. Chlieb z predošlého dňa stojí ráno 2,20 € bez ohľadu na veľkosť bochníka.</p>
         <div class="actions">
-          <a class="btn btn--onlight-dark" href="#objednavka">Objednať</a>
+          <a class="btn btn--primary" href="#objednavka">Objednať tortu</a>
           <a class="btn btn--line" href="#hodiny">Otváracie hodiny</a>
         </div>
       </div>
       <div>
+        <!-- FOTO: pekár pri stole s rozrobeným kváskovým cestom, v pozadí otvorená pec -->
+        <figure class="obraz obraz--wide obraz--e" style="margin-bottom:30px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Dielňa za predajňou</span>
+            <span class="obraz__n">Kvások kŕmime dvakrát denne</span>
+          </figcaption>
+        </figure>
         <div class="three" style="grid-template-columns:1fr;gap:30px">
           <div class="card">
             <h3>Kto pečie</h3>
@@ -884,10 +1038,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 
     <div class="cards reveal">
       <article class="sweet">
-        <div class="sweet__plate sweet__plate--1">
-          <span class="sweet__price">2,60 €</span>
-          <span class="sweet__unit">za kus &middot; 90 g</span>
-        </div>
+        <!-- FOTO: čokoládový rez zboku na tanieriku, vidno tri vrstvy korpusu a pásik višňového želé -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,60 €</span>
+            <span class="sweet__unit">za kus &middot; 90 g</span>
+          </figcaption>
+        </figure>
         <div class="sweet__body">
           <h3>Čokoládový rez</h3>
           <p>Tri vrstvy kakaového korpusu, ganache zo 70&nbsp;% čokolády, tenká vrstva višňového želé.</p>
@@ -896,10 +1053,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       </article>
 
       <article class="sweet">
-        <div class="sweet__plate sweet__plate--2">
-          <span class="sweet__price">2,20 €</span>
-          <span class="sweet__unit">za kus &middot; 80 g</span>
-        </div>
+        <!-- FOTO: veterník s karamelovou polevou, detail na vrstvu vanilkového krému -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,20 €</span>
+            <span class="sweet__unit">za kus &middot; 80 g</span>
+          </figcaption>
+        </figure>
         <div class="sweet__body">
           <h3>Veterník</h3>
           <p>Odpaľované cesto, vanilkový krém z pravého mlieka, karamelová poleva. Pečieme každý deň.</p>
@@ -908,10 +1068,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       </article>
 
       <article class="sweet">
-        <div class="sweet__plate sweet__plate--3">
-          <span class="sweet__price">2,10 €</span>
-          <span class="sweet__unit">za kus &middot; 85 g</span>
-        </div>
+        <!-- FOTO: punčový rez s ružovou polevou, rez cez piškótový stred -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,10 €</span>
+            <span class="sweet__unit">za kus &middot; 85 g</span>
+          </figcaption>
+        </figure>
         <div class="sweet__body">
           <h3>Punčový rez</h3>
           <p>Klasika z piškótových odrezkov s rumovou arómou a ružovou polevou.</p>
@@ -920,10 +1083,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       </article>
 
       <article class="sweet">
-        <div class="sweet__plate sweet__plate--2">
-          <span class="sweet__price">2,40 €</span>
-          <span class="sweet__unit">za kus &middot; 70 g</span>
-        </div>
+        <!-- FOTO: medovník nakrojený tak, aby bolo vidno šesť tenkých plátov a krém medzi nimi -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,40 €</span>
+            <span class="sweet__unit">za kus &middot; 70 g</span>
+          </figcaption>
+        </figure>
         <div class="sweet__body">
           <h3>Medovník</h3>
           <p>Šesť tenkých plátov, karamelový krém, vyzretý dva dni pred predajom.</p>
@@ -932,10 +1098,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       </article>
 
       <article class="sweet">
-        <div class="sweet__plate sweet__plate--1">
-          <span class="sweet__price">2,30 €</span>
-          <span class="sweet__unit">za kus &middot; 110 g</span>
-        </div>
+        <!-- FOTO: tvarohový koláč s ovocím zhora, vidno hrubú vrstvu tvarohu a kúsky sezónneho ovocia -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,30 €</span>
+            <span class="sweet__unit">za kus &middot; 110 g</span>
+          </figcaption>
+        </figure>
         <div class="sweet__body">
           <h3>Tvarohový koláč s ovocím</h3>
           <p>Krehký korpus, hrubá vrstva tvarohu, sezónne ovocie. Od septembra s hruškou, v lete s marhuľami.</p>
@@ -944,10 +1113,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       </article>
 
       <article class="sweet">
-        <div class="sweet__plate sweet__plate--3">
-          <span class="sweet__price">2,90 €</span>
-          <span class="sweet__unit">za kus &middot; 90 g</span>
-        </div>
+        <!-- FOTO: bezlepkový mandľový rez na oddelenej podložke, detail na hrubšiu mandľovú štruktúru -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,90 €</span>
+            <span class="sweet__unit">za kus &middot; 90 g</span>
+          </figcaption>
+        </figure>
         <div class="sweet__body">
           <h3>Bezlepkový mandľový rez</h3>
           <p>Mandľová múka, čokoládový krém, bez pridanej pšeničnej múky. Pečieme v oddelenej forme, dielňa však nie je bezlepková.</p>
@@ -993,7 +1165,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         </div>
         <div class="card">
           <h3>Kávový pult</h3>
-          <p class="note">K zákusku podávame espresso za 1,60 € a cappuccino za 2,20 €. Pri okne je stojaci pult a dva stolíky pre štyroch, kávu točíme do 16:30.</p>
+          <p class="note">K zákusku podávame espresso za 1,60 € a cappuccino za 2,20 €. Pri okne je stojaci pult a dva stolíky pre štyroch. Kávu podávame v utorok až piatok do 16:30, v sobotu do 12:00.</p>
         </div>
       </div>
     </div>
@@ -1007,8 +1179,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       <div class="head__rule"></div>
       <p class="eyebrow">Na objednávku</p>
       <h2>Torty a ich veľkosti</h2>
-      <p class="lede">Uvedená cena je základ za korpus, plnku a jednoduchý krémový povrch. Príchute a dekor sa priplácajú &mdash; presnú sumu vám spočíta konfigurátor nižšie. V cene je pevná papierová krabica aj sviečky.</p>
+      <p class="lede">Uvedená cena je základ za korpus, plnku a jednoduchý krémový povrch. Príchute a dekor sa priplácajú, presnú sumu vám spočíta konfigurátor nižšie. V cene je pevná papierová krabica aj sviečky.</p>
     </div>
+
+    <!-- FOTO: hotová torta s priemerom 22 cm na cukrárskom podnose, pohľad zboku na rovný krémový povrch -->
+    <figure class="obraz obraz--wide obraz--d reveal" style="margin-bottom:clamp(26px,3.4vw,44px)">
+      <figcaption class="obraz__cap">
+        <span class="obraz__k">Ø 22 cm, tri vrstvy, 12 až 16 porcií</span>
+        <span class="obraz__n">58 € v základnej výbave</span>
+      </figcaption>
+    </figure>
 
     <div class="cards reveal">
       <article class="size">
@@ -1283,11 +1463,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         <p class="eyebrow">Máj &ndash; august</p>
         <h3>Ovocná sezóna</h3>
         <ul style="margin-bottom:12px">
-          <li>Jahodová torta Ø 22 cm &mdash; 66 €</li>
+          <li>Jahodová torta Ø 22 cm &mdash; 67 €</li>
           <li>Marhuľová bublanina, 100 g &mdash; 1,60 €</li>
           <li>Malinový rez &mdash; 2,70 €</li>
         </ul>
-        <p class="note">Ovocie berieme od pestovateľov, ponuka sa mení každý týždeň.</p>
+        <p class="note">Jahodová torta je základ 58 € plus 9 € za čerstvé ovocie na povrchu. Ovocie kupujeme od pestovateľov, ponuka sa mení každý týždeň.</p>
       </article>
 
       <article class="card">
@@ -1378,7 +1558,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       <div class="head__rule"></div>
       <p class="eyebrow">Objednávka krok za krokom</p>
       <h2>Ako to prebieha</h2>
-      <p class="lede">Od prvej správy po vyzdvihnutie prejdete štyrmi krokmi. Pri každom viete, čo sa deje a dokedy.</p>
+      <p class="lede">Od odoslania správy po vyzdvihnutie sú štyri kroky. Termín potvrdíme do 24 hodín, záloha je splatná do dvoch dní od potvrdenia.</p>
     </div>
     <ol class="steps reveal">
       <li>
@@ -1412,7 +1592,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       <div class="head__rule"></div>
       <p class="eyebrow">Formulár</p>
       <h2>Objednávka torty a väčšieho pečiva</h2>
-      <p class="lede">Vyplňte, čo potrebujete. Správa príde do schránky pekárne a odpoveď s potvrdením termínu aj ceny dostanete do 24 hodín. Rovnako dobre nám zavolajte počas otváracích hodín na 0948&nbsp;260&nbsp;731.</p>
+      <p class="lede">Vyplňte, čo potrebujete. Odpoveď s potvrdením termínu aj ceny dostanete do 24 hodín. Ak sa ponáhľate, zavolajte na 0948&nbsp;260&nbsp;731 v utorok až piatok 8:00 &ndash; 16:00 alebo v sobotu 8:00 &ndash; 12:00.</p>
     </div>
 
     <div class="two two--wide">
@@ -1480,16 +1660,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         </label>
 
         <button class="btn btn--primary btn--full" type="submit">Odoslať správu</button>
-        <p class="note" style="margin-top:16px">Správa príde do schránky pekárne a odpoveď od nás dostanete do 24 hodín. Odoslaním sa objednávka ešte nepotvrdzuje &mdash; záväzná je až po telefonickom potvrdení a uhradení zálohy.</p>
+        <p class="note" style="margin-top:16px">Odoslaním sa objednávka ešte nepotvrdzuje. Záväznou sa stáva po telefonickom potvrdení termínu a uhradení zálohy 30 % z ceny.</p>
       </form>
 
       <div class="reveal stack">
         <div class="card">
           <h3>Rýchlejšie telefonicky</h3>
-          <p class="note">Ak potrebujete tortu na blízky termín alebo si nie ste istí zostavou, zavolajte. Cez telefón sa dohodneme za pár minút.</p>
+          <p class="note">Ak si nie ste istí veľkosťou, povedzte nám počet hostí. V hovore vám povieme priemer, cenu aj to, či je termín ešte voľný.</p>
           <ul class="kv" style="margin-top:16px">
             <li><b>Telefón</b><span><a href="tel:+421948260731">0948&nbsp;260&nbsp;731</a></span></li>
-            <li><b>Kedy voláme</b><span>Utorok až sobota, 8:00 &ndash; 16:00</span></li>
+            <li><b>Kedy dvíhame</b><span>Utorok &ndash; piatok 8:00 &ndash; 16:00, sobota 8:00 &ndash; 12:00</span></li>
             <li><b>Adresa</b><span>Kováčska 21, 949 01 Nitra</span></li>
           </ul>
         </div>
@@ -1530,17 +1710,17 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
           <li><span class="hours__d">Sobota</span><span>6:30 &ndash; 12:30</span></li>
           <li><span class="hours__d">Nedeľa</span><span>Zatvorené</span></li>
         </ul>
-        <p class="note" style="margin-top:18px">Cez sviatky pečieme v skrátenom režime, hodiny vyvesíme na dvere týždeň dopredu. Posledné zákusky bývajú v pulte približne hodinu pred zatvorením.</p>
+        <p class="note" style="margin-top:18px">Cez štátne sviatky pečieme v skrátenom režime, hodiny vyvesíme na dvere týždeň dopredu. Zákusky bývajú vypredané približne hodinu pred zatvorením.</p>
       </div>
 
       <div class="stack">
         <div class="card">
           <h3>Výdaj po zatvorení</h3>
-          <p class="note">Ak vám nevychádzajú otváracie hodiny, dohodneme výdaj objednanej torty medzi 17:30 a 18:30. Napíšte to do poznámky v objednávke.</p>
+          <p class="note">Ak vám nevychádzajú otváracie hodiny, dohodneme výdaj objednanej torty v utorok až piatok medzi 17:30 a 18:30. Napíšte to do poznámky v objednávke.</p>
         </div>
         <div class="card">
           <h3>Večerný výpredaj</h3>
-          <p class="note">Poslednú hodinu pred zatvorením predávame zvyšné pečivo za polovicu ceny. Zákusky vo výpredaji nie sú, tie skladujeme v chlade do druhého dňa.</p>
+          <p class="note">Poslednú hodinu pred zatvorením predávame zvyšné pečivo za polovicu ceny. Zákusky vo výpredaji nie sú, tie skladujeme v chlade do druhého dňa. Chlieb z predošlého dňa stojí ráno 2,20 €.</p>
         </div>
         <div class="card">
           <h3>Dovolenka</h3>
@@ -1687,8 +1867,87 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   </div>
 </section>
 
+<!-- ================= VEĽKOOBCHOD ================= -->
+<section class="sec" id="velkoobchod">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Pre kaviarne a firmy</p>
+      <h2>Veľkoobchod a pohostenia</h2>
+      <p class="lede">Dve možnosti pre väčšie objednávky: pravidelný denný odber na fixný rozpis a jednorazové pohostenie na akciu. Denne vieme upiecť navyše 200 kusov pečiva, preto berieme najviac päť pravidelných odberateľov.</p>
+    </div>
+
+    <div class="two two--wide reveal">
+      <div>
+        <!-- FOTO: prepravky s pečivom pripravené pri zadnom vchode na ranný rozvoz -->
+        <figure class="obraz obraz--wide obraz--c" style="margin-bottom:26px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Pravidelný odber</span>
+            <span class="obraz__n">V kaviarni do 8:00</span>
+          </figcaption>
+        </figure>
+        <ul class="kv">
+          <li><b>Minimálny odber</b><span>30 kusov pečiva alebo 10 bochníkov chleba denne</span></li>
+          <li><b>Cena</b><span>O 20 % nižšia ako v predajni, pri odbere nad 60 kusov denne o 25 %</span></li>
+          <li><b>Rozvoz</b><span>Po Nitre v utorok až sobotu do 8:00. Zdarma pri odbere nad 40 kusov denne, inak 5 € za jazdu.</span></li>
+          <li><b>Rozpis</b><span>Objednávku na ďalší týždeň potvrdzujeme do štvrtka 12:00</span></li>
+          <li><b>Fakturácia</b><span>Raz mesačne, splatnosť 14 dní</span></li>
+          <li><b>Zmena a ukončenie</b><span>Rozpis meníme alebo rušíme 14 dní vopred, bez poplatku</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="group">
+          <div class="group__head">
+            <h3>Pohostenie na akciu</h3>
+            <span class="group__when">Tri pracovné dni vopred</span>
+          </div>
+          <ul class="pl">
+            <li>
+              <span class="pl__name"><b>Slané pohostenie, 40 kusov</b><span class="pl__desc">Mini pagáče, praclíky, syrové tyčinky</span></span>
+              <span class="pl__price">26,00 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Sladké pohostenie, 40 kusov</b><span class="pl__desc">Mini zákusky, rezy, laskonky</span></span>
+              <span class="pl__price">38,00 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Mini zákusky, od 20 kusov</b><span class="pl__desc">Cena za kus, druhy podľa dohody</span></span>
+              <span class="pl__price">0,95 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Chlebové misy na pomazánky, 5 ks</b></span>
+              <span class="pl__price">14,00 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Torta nad 30 porcií</b><span class="pl__desc">Dvojposchodová 22 + 16 cm, šesť pracovných dní</span></span>
+              <span class="pl__price">od 138 €</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:26px">
+          <h3>Čo pri pohostení platí</h3>
+          <ul style="margin-bottom:0">
+            <li>Konečný počet kusov potvrdíte najneskôr 48 hodín pred akciou</li>
+            <li>Dovoz po Nitre 5 €, pri objednávke nad 100 € zdarma</li>
+            <li>Podnosy sú vratné, vraciate ich do troch dní od akcie</li>
+            <li>Zoznam alergénov ku každej položke dostanete vytlačený</li>
+            <li>Záloha 30 % pri objednávkach nad 60 €, storno podľa rovnakých pravidiel ako pri tortách</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="#objednavka">Dohodnúť odber</a>
+      <a class="btn btn--line" href="tel:+421948260731">0948&nbsp;260&nbsp;731</a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= POUKÁŽKY ================= -->
-<section class="sec" id="poukazky">
+<section class="sec sec--band" id="poukazky">
   <div class="wrap">
     <div class="head reveal">
       <div class="head__rule"></div>
@@ -1717,7 +1976,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 </section>
 
 <!-- ================= FAQ ================= -->
-<section class="sec sec--band" id="faq">
+<section class="sec" id="faq">
   <div class="wrap">
     <div class="head reveal">
       <div class="head__rule"></div>
@@ -1752,11 +2011,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       </details>
       <details>
         <summary>Dá sa u vás sadnúť a dať si kávu?</summary>
-        <div class="faq__a"><p>V predajni máme dva stolíky so štyrmi miestami a stojaci pult pri okne. Kávu podávame do 16:30, espresso stojí 1,60 €, cappuccino 2,20 €. Rezervácie miest nerobíme.</p></div>
+        <div class="faq__a"><p>V predajni máme dva stolíky so štyrmi miestami a stojaci pult pri okne. Espresso stojí 1,60 €, cappuccino 2,20 €. Kávu podávame v utorok až piatok do 16:30, v sobotu do 12:00. Miesta nerezervujeme.</p></div>
       </details>
       <details>
         <summary>Predávate aj veľkoobchodne do kaviarní?</summary>
-        <div class="faq__a"><p>Áno, pri odbere aspoň 30 kusov pečiva denne a fixnom rozpise dní. Podmienky dohodneme osobne, kapacita pece je obmedzená a berieme len toľko odberateľov, koľko stihneme upiecť.</p></div>
+        <div class="faq__a"><p>Áno, pri odbere aspoň 30 kusov pečiva denne a fixnom rozpise dní sú ceny o 20 % nižšie ako v predajni. Celé podmienky vrátane kapacity nájdete v sekcii <a href="#velkoobchod">Veľkoobchod a pohostenia</a>.</p></div>
       </details>
     </div>
   </div>
@@ -1769,7 +2028,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       <div class="head__rule"></div>
       <p class="eyebrow">Práca u nás</p>
       <h2>Koho hľadáme</h2>
-      <p class="lede">Sme malá prevádzka, takže si všetci pomáhame. Nedeľa a pondelok sú voľné pre celý tím, sviatky nepečieme.</p>
+      <p class="lede">Dve voľné miesta na dennej zmene. Nedeľa a pondelok sú voľné pre celý tím, cez sviatky pečieme v skrátenom režime.</p>
     </div>
 
     <div class="reveal">
@@ -1796,8 +2055,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         <div>
           <p>Obsluha pultu, príjem objednávok, dopĺňanie výrobkov a večerná uzávierka.</p>
           <ul>
-            <li>Príjemné vystupovanie a rýchla práca s pokladňou</li>
-            <li>Ochota vstávať na rannú zmenu od 6:00</li>
+            <li>Práca s registračnou pokladňou a hotovosťou</li>
+            <li>Začiatok rannej zmeny o 6:00</li>
             <li>Zdravotný preukaz</li>
           </ul>
         </div>
@@ -1814,7 +2073,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="head reveal">
       <div class="head__rule"></div>
       <p class="eyebrow">Kontakt</p>
-      <h2>Kde nás nájdete</h2>
+      <h2>Telefón, adresa a veľké objednávky</h2>
     </div>
 
     <div class="two reveal">
@@ -1884,6 +2143,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 <!-- ================= PÄTIČKA ================= -->
 <footer class="foot">
   <div class="wrap">
+    <div class="foot__cta">
+      <p>Torta na objednávku od 42 €, najkratší termín tri pracovné dni. Termín aj cenu potvrdíme do 24 hodín.</p>
+      <a class="btn btn--primary" href="#objednavka">Objednať tortu</a>
+      <a class="btn btn--sand" href="tel:+421948260731">Zavolať 0948&nbsp;260&nbsp;731</a>
+    </div>
     <div class="foot__grid">
       <div>
         <h3>Pekáreň a cukráreň Kôrka</h3>
@@ -1898,6 +2162,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
           <li><a href="#zakusky">Zákusky a rezy</a></li>
           <li><a href="#torty">Torty na objednávku</a></li>
           <li><a href="#sezona">Sezónne pečenie</a></li>
+          <li><a href="#poukazky">Darčekové poukážky</a></li>
         </ul>
       </div>
       <div>
@@ -1907,6 +2172,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
           <li><a href="#postup">Ako to prebieha</a></li>
           <li><a href="#objednavka">Formulár</a></li>
           <li><a href="#podmienky">Platba a storno</a></li>
+          <li><a href="#velkoobchod">Veľkoobchod a pohostenia</a></li>
         </ul>
       </div>
       <div>
@@ -1916,6 +2182,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
           <li><a href="#doprava">Ako sa k nám dostanete</a></li>
           <li><a href="#alergeny">Alergény</a></li>
           <li><a href="#faq">Časté otázky</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
           <li><a href="#kariera">Kariéra</a></li>
         </ul>
       </div>

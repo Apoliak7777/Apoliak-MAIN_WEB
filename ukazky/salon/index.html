@@ -117,6 +117,9 @@ ul,ol{margin:0;padding:0;list-style:none}
   transition:background .2s ease,border-color .2s ease,color .2s ease;
 }
 .btn:hover{background:var(--plum);border-color:var(--plum);color:#FBFAF7}
+/* hlavná akcia celej stránky: akcentová slivková, biely text má na nej 7,6:1 */
+.btn--acc{background:var(--plum);border-color:var(--plum);color:#FBFAF7}
+.btn--acc:hover{background:var(--plum-dk);border-color:var(--plum-dk);color:#FBFAF7}
 .btn--line{background:transparent;color:var(--ink);border-color:var(--control)}
 .btn--line:hover{background:var(--stone);color:var(--ink);border-color:var(--ink)}
 .btn--light{background:var(--on-dark);border-color:var(--on-dark);color:var(--ink)}
@@ -129,6 +132,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 /* poistka proti prebitiu farby textu pravidlom pre odkazy */
 a.btn{color:var(--sand)}
 a.btn:hover{color:#FBFAF7}
+a.btn--acc,a.btn--acc:hover{color:#FBFAF7}
 a.btn--line,a.btn--line:hover{color:var(--ink)}
 a.btn--light,a.btn--light:hover{color:var(--ink)}
 a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
@@ -139,25 +143,35 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
 .topstack{position:sticky;top:0;z-index:90;background:var(--sand)}
 .site{position:relative;z-index:60;background:var(--sand);border-bottom:1px solid var(--line)}
 .site__in{display:flex;align-items:center;gap:18px;height:var(--head-h);position:relative}
-.brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink);margin-right:auto;min-width:0}
 .brand__mark{
   width:38px;height:38px;flex:none;border:1px solid var(--control);border-radius:var(--r);
   display:flex;align-items:center;justify-content:center;
   font-family:var(--serif);font-size:.95rem;letter-spacing:.04em;color:var(--ink);
 }
-.brand__name{font-family:var(--serif);font-size:1.14rem;line-height:1.15;display:block}
-.brand__sub{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.brand__txt{min-width:0;display:block}
+.brand__name{font-family:var(--serif);font-size:1.14rem;line-height:1.15;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand__sub{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .nav{display:flex;align-items:center;gap:22px}
 .nav a:not(.btn){color:var(--body);text-decoration:none;font-size:.86rem;padding:6px 0;border-bottom:1px solid transparent;white-space:nowrap}
 .nav a:not(.btn):hover{color:var(--ink);border-bottom-color:var(--plum)}
-.nav a.btn{color:var(--sand)}
-.nav a.btn:hover{color:#FBFAF7}
 .nav .btn{display:none}
 .burger{
   display:none;width:44px;height:42px;border:1px solid var(--control);border-radius:var(--r);
-  background:transparent;color:var(--ink);cursor:pointer;align-items:center;justify-content:center;
+  background:transparent;color:var(--ink);cursor:pointer;align-items:center;justify-content:center;flex:none;
 }
+
+/* klikacie číslo a hlavná akcia sú v hlavičke na každej šírke obrazovky */
+.site__act{display:flex;align-items:center;gap:10px;flex:none}
+.site__tel{
+  display:inline-flex;align-items:center;gap:9px;flex:none;
+  padding:11px 15px;border:1px solid var(--control);border-radius:var(--r);
+  color:var(--ink);text-decoration:none;font-size:.82rem;font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.site__tel:hover{color:var(--plum);border-color:var(--plum)}
+.site__tel svg{width:15px;height:15px;flex:none}
+.site__cta .sm{display:none}
 
 /* =========================================================
    5. DIZAJNOVÉ PLOCHY
@@ -211,6 +225,67 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
 .art--addr{min-height:clamp(250px,26vw,330px)}
 .art--gift{min-height:clamp(250px,26vw,330px)}
 .art--gift .art__num{font-size:clamp(2rem,4.6vw,3.2rem)}
+
+/* =========================================================
+   5b. OBRAZOVÉ MIESTA
+   Rámy pripravené na fotografie salónu, tímu a hotovej práce.
+   Kým fotky nie sú vložené, rám drží vrstvený prechod,
+   geometriu a typografiu, ktorá nesie údaj o obsahu.
+   ========================================================= */
+.obraz{margin:0;display:flex;flex-direction:column}
+.obraz .art{width:100%}
+.obraz--sirka .art{aspect-ratio:16/10;min-height:180px}
+.obraz--stvorec .art{aspect-ratio:1/1;min-height:190px}
+.obraz--vyska .art{aspect-ratio:4/5;min-height:210px}
+.obraz--pas .art{aspect-ratio:21/9;min-height:200px}
+.obraz__cap{margin:14px 0 0;font-size:.92rem;color:var(--muted);max-width:46ch}
+.obraz__cap b{display:block;font-family:var(--serif);font-weight:400;font-size:1.06rem;color:var(--ink);margin-bottom:4px}
+.sec--ink .obraz__cap{color:var(--on-dark-mut)}
+.sec--ink .obraz__cap b{color:var(--on-dark)}
+.prepo{display:flex;margin:0;gap:0}
+.prepo span{flex:1;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--plum);font-weight:600}
+.prepo span + span{padding-left:14px}
+.art--dark .prepo span{color:var(--on-dark-acc)}
+.art__ini{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3rem);line-height:1;color:var(--ink);margin:auto 0 0;letter-spacing:.04em}
+
+/* =========================================================
+   5c. DLAŽDICE SLUŽIEB, TÍM, GALÉRIA, RECENZIE, MAPA
+   ========================================================= */
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(26px,3.4vw,44px)}
+.tile h3{margin:18px 0 6px}
+.tile > p{font-size:.95rem;color:var(--muted);margin:0;max-width:48ch}
+.tile ul{margin:14px 0 0;border-top:1px solid var(--line)}
+.tile li{display:flex;justify-content:space-between;gap:8px 18px;padding:11px 0;border-bottom:1px solid var(--line);font-size:.93rem;color:var(--body)}
+.tile li b{font-family:var(--serif);font-weight:400;color:var(--ink);white-space:nowrap}
+.tile__more{display:inline-block;margin-top:14px;font-size:.86rem;color:var(--plum);text-decoration:none;border-bottom:1px solid var(--line)}
+.tile__more:hover{color:var(--plum-dk);border-bottom-color:var(--plum)}
+
+.team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.member h3{margin:16px 0 3px;font-size:1.08rem}
+.member .role{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--plum);font-weight:600;margin:0 0 10px}
+.member p{font-size:.9rem;color:var(--muted);margin:0 0 8px}
+.member .dni{font-size:.82rem;color:var(--body);margin:0 0 14px;font-variant-numeric:tabular-nums}
+.member .btn{margin-top:auto}
+.member{display:flex;flex-direction:column}
+
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(22px,3vw,34px)}
+
+.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,28px)}
+.quote{display:flex;flex-direction:column;margin:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,30px)}
+.quote blockquote{margin:0 0 20px;font-family:var(--serif);font-size:1.06rem;line-height:1.5;color:var(--ink)}
+.quote figcaption{margin:auto 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted)}
+.quote figcaption b{display:block;font-weight:600;color:var(--ink);margin-bottom:3px}
+
+.mapa{margin:0;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden}
+.mapa svg{display:block;width:100%;height:auto}
+.mapa figcaption{padding:16px 20px;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.mapa figcaption b{color:var(--ink);font-weight:600}
+
+.endcta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px 44px}
+.endcta > div{max-width:52ch}
+.endcta h2{margin-bottom:12px}
+.endcta p{margin:0;color:var(--on-dark-mut);font-size:1rem}
+.endcta__act{display:flex;flex-wrap:wrap;gap:14px}
 
 /* =========================================================
    6. ÚVOD
@@ -524,8 +599,36 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
 @media (max-width:1100px){
   .nav{gap:16px}
   .nav a:not(.btn){font-size:.82rem}
+  .site__in{gap:14px}
+  .site__act{gap:8px}
+  .team{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+/* číslo sa zmení na ikonu, aby sa zmestilo aj menu; odkaz ostáva klikací */
+@media (max-width:1080px){
+  .site__tel{padding:12px;gap:0}
+  .site__tel span{display:none}
+}
+/* menu ide pod tlačidlo skôr než ostatný obsah, hlavička je najplnejší riadok */
+@media (max-width:980px){
+  :root{--head-h:64px}
+  .nav{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--sand);border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0;padding:6px 0 20px;
+  }
+  .js .nav{display:none}
+  .js .nav.open{display:flex}
+  .nav a:not(.btn){padding:14px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+  .nav a:not(.btn):hover{border-bottom-color:var(--line)}
+  .burger{display:flex}
+  .no-js .topstack{position:static}
+  .no-js .burger{display:none}
+  .no-js .site__in{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+  .no-js .nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px 18px;padding:0;background:transparent;border:0}
+  .no-js .nav a:not(.btn){padding:4px 0;border-bottom:0;font-size:.86rem}
 }
 @media (max-width:1040px){
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pricegrid,.svcgrid{grid-template-columns:1fr}
   .sum{grid-template-columns:1fr}
   .sum__col + .sum__col{border-left:0;border-top:1px solid rgba(200,189,176,.28);padding-left:0;padding-top:22px}
@@ -543,26 +646,10 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
   .facts > div:nth-child(-n+2){border-bottom:1px solid var(--line)}
 }
 @media (max-width:860px){
-  :root{--head-h:64px}
-  .nav{
-    position:absolute;left:0;right:0;top:100%;
-    background:var(--sand);border-bottom:1px solid var(--line);
-    flex-direction:column;align-items:stretch;gap:0;padding:6px 0 20px;
-  }
-  .js .nav{display:none}
-  .js .nav.open{display:flex}
-  .nav a:not(.btn){padding:14px 0;border-bottom:1px solid var(--line);font-size:.95rem}
-  .nav a:not(.btn):hover{border-bottom-color:var(--line)}
-  .nav .btn{display:inline-flex;margin-top:16px}
-  .burger{display:flex}
-  .site__cta{display:none}
-  .no-js .topstack{position:static}
-  .no-js .burger{display:none}
-  .no-js .site__in{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
-  .no-js .nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px 18px;padding:0;background:transparent;border:0}
-  .no-js .nav a:not(.btn){padding:4px 0;border-bottom:0;font-size:.86rem}
-  .no-js .nav .btn{margin-top:0}
-  .hours,.contact,.rooms,.daytime,.fields,.cols,.pkgs,.faq{grid-template-columns:1fr}
+  .team{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tiles,.quotes{grid-template-columns:1fr}
+  .endcta{flex-direction:column;align-items:flex-start}
+  .hours,.contact,.rooms,.daytime,.fields,.cols,.cols--2,.pkgs,.faq{grid-template-columns:1fr}
   .hero__grid{grid-template-columns:1fr;gap:26px}
   .hero__side{flex-direction:column;gap:14px;padding-right:0;padding-bottom:22px;border-right:0;border-bottom:1px solid var(--line)}
   .hero__vert{writing-mode:horizontal-tb;transform:none;letter-spacing:.24em}
@@ -576,6 +663,10 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
   body{font-size:16px}
   .wrap{padding:0 18px}
   .demobar__in{padding:8px 16px;font-size:.72rem;gap:4px 12px}
+  .team{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal{grid-template-columns:1fr}
+  .brand__sub{display:none}
+  .brand__name{font-size:1.02rem}
   .steps{grid-template-columns:1fr}
   .hero__cta .btn{width:100%}
   .hero__svc{grid-template-columns:1fr}
@@ -595,6 +686,19 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
   .submitrow .btn{width:100%}
   .demobar__lg{display:none}
   .demobar__sm{display:inline}
+}
+/* na najužších telefónoch sa skracuje len popis tlačidla, akcia ostáva */
+@media (max-width:430px){
+  .site__in{gap:10px}
+  .site__act{gap:6px}
+  .site__cta{padding:12px 14px;font-size:.68rem}
+  .site__cta .lg{display:none}
+  .site__cta .sm{display:inline}
+  .site__tel{padding:11px}
+  .brand{gap:9px}
+  .brand__mark{width:34px;height:34px;font-size:.86rem}
+  .member h3{font-size:1rem}
+  .member p{font-size:.86rem}
 }
 </style>
 </head>
@@ -620,28 +724,32 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
   <div class="wrap site__in">
     <a class="brand" href="#uvod">
       <span class="brand__mark" aria-hidden="true">SB</span>
-      <span class="brand__name">Salón Brezová
+      <span class="brand__txt">
+        <span class="brand__name">Salón Brezová</span>
         <span class="brand__sub">Kaderníctvo a kozmetika</span>
       </span>
     </a>
 
+    <nav class="nav" id="nav" aria-label="Hlavná navigácia">
+      <a href="#sluzby">Služby</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#tim">Tím</a>
+      <a href="#galeria">Naša práca</a>
+      <a href="#hodiny">Hodiny</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="site__act">
+      <a class="site__tel" href="tel:+421917284903" aria-label="Zavolať do salónu na číslo 0917 284 903">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><path d="M6.7 3.6 9.1 8l-2 1.6a12.2 12.2 0 0 0 5.3 5.3L14 12.9l4.4 2.4-1 3.3a2 2 0 0 1-2.2 1.4C8.6 19.5 4.5 15.4 4 8.8a2 2 0 0 1 1.4-2.1z"/></svg>
+        <span>0917 284 903</span>
+      </a>
+      <a class="btn btn--sm btn--acc site__cta" href="#objednanie"><span class="lg">Objednať termín</span><span class="sm">Objednať</span></a>
+    </div>
+
     <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Otvoriť menu">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
-
-    <nav class="nav" id="nav" aria-label="Hlavná navigácia">
-      <a href="#cennik">Cenník</a>
-      <a href="#priestor">Priestor</a>
-      <a href="#hodiny">Hodiny</a>
-      <a href="#poukazy">Poukazy</a>
-      <a href="#doprava">Doprava</a>
-      <a href="#starostlivost">Starostlivosť</a>
-      <a href="#otazky">Otázky</a>
-      <a href="#kontakt">Kontakt</a>
-      <a class="btn btn--sm" href="#objednanie">Objednať termín</a>
-    </nav>
-
-    <a class="btn btn--sm site__cta" href="#objednanie">Objednať termín</a>
   </div>
 </header>
 
@@ -656,7 +764,7 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
       <div class="hero__side">
         <p class="hero__vert">Kaderníctvo a kozmetika</p>
         <ul class="hero__svc">
-          <li>Strihanie a styling</li>
+          <li>Strihanie a úprava účesu</li>
           <li>Farbenie, melír, balayage</li>
           <li>Ošetrenie pleti</li>
           <li>Mihalnice a obočie</li>
@@ -667,13 +775,13 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
 
       <div class="hero__main">
         <p class="hero__kicker">Brezová 14, Modra</p>
-        <h1>Kaderníctvo a kozmetický salón</h1>
+        <h1>Kaderníctvo a kozmetický salón v Modre</h1>
         <div class="hero__text">
           <p class="hero__p1">Vlasy, pleť aj nechty máte na jednej adrese a v jednom termíne. Salón má tri samostatné pracoviská, takže si viete objednať dve služby za sebou bez čakania medzi nimi.</p>
           <p class="hero__p2">Pracujeme výhradne na objednávku, aby mal každý hosť pevne vyhradený čas. Termín si vyberiete priamo na tejto stránke, súhrn priebežne ukazuje cenu aj to, dokedy budete v salóne. Kto volá radšej, dovolá sa na <a href="tel:+421917284903">0917 284 903</a>.</p>
         </div>
         <div class="hero__cta">
-          <a class="btn" href="#objednanie">Objednať termín</a>
+          <a class="btn btn--acc" href="#objednanie">Objednať termín</a>
           <a class="btn btn--line" href="#cennik">Cenník služieb</a>
         </div>
       </div>
@@ -708,6 +816,121 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
   </div>
 </section>
 
+<!-- ====================== SLUŽBY ====================== -->
+<section class="sec" id="sluzby">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Služby</p>
+      <h2>Čo v salóne robíme a čo to stojí</h2>
+      <p class="lead">Štyri skupiny služieb, pri každej sú tri najčastejšie úkony s cenou a trvaním. Celý zoznam so všetkými úkonmi je v cenníku nižšie.</p>
+    </div>
+
+    <div class="tiles">
+      <article class="tile rev">
+        <!-- FOTO: hotový dámsky strih po fúkanej, záber od chrbta pri kresle -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--grid">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#7A3E52" stroke-opacity=".18" stroke-width="1">
+                <circle cx="318" cy="60" r="44"/><circle cx="318" cy="60" r="84"/><circle cx="318" cy="60" r="124"/>
+              </g>
+              <path d="M0 186h400" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Strih a fúkaná<span>45 minút vrátane umytia a masáže hlavy</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Vlasy</h3>
+        <p>Strihanie, fúkaná a spoločenské účesy. Masáž hlavy pri umytí je v cene každého strihu.</p>
+        <ul>
+          <li><span>Dámsky strih s fúkanou, 45 min</span><b>38 €</b></li>
+          <li><span>Pánsky strih, 30 min</span><b>22 €</b></li>
+          <li><span>Spoločenský účes, 60 min</span><b>55 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Celý cenník vlasov</a>
+      </article>
+
+      <article class="tile rev">
+        <!-- FOTO: miešanie farby v miske pri pracovnom stole, detail rúk -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1">
+                <rect x="228" y="-46" width="190" height="190" transform="rotate(20 323 49)"/>
+                <rect x="262" y="-12" width="122" height="122" transform="rotate(20 323 49)"/>
+              </g>
+              <path d="M0 200h400" stroke="#7A3E52" stroke-opacity=".24" stroke-width="1"/>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Odrasty, melír, balayage<span>Odtieň miešame až na mieste, po konzultácii</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Farbenie</h3>
+        <p>Pri prvom farbení robíme alergický test 48 hodín pred termínom. Trvá päť minút a je zdarma.</p>
+        <ul>
+          <li><span>Farbenie odrastov do 3 cm, 90 min</span><b>55 €</b></li>
+          <li><span>Melír alebo balayage, 150 min</span><b>od 95 €</b></li>
+          <li><span>Preliv na šediny, 60 min</span><b>40 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Celý cenník farbenia</a>
+      </article>
+
+      <article class="tile rev">
+        <!-- FOTO: kozmetická kabínka s polohovacím lehátkom a lupou, zapnuté svetlo -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--dots">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <path d="M-20 168C86 92 214 232 420 118" fill="none" stroke="#7A3E52" stroke-opacity=".22" stroke-width="1"/>
+              <path d="M-20 200C86 124 214 264 420 150" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="64" cy="58" r="38" fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1"/>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Čistenie a predlžovanie<span>V samostatnej kabínke s dverami</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Pleť a mihalnice</h3>
+        <p>Kozmetická kabínka je oddelená miestnosť, do ktorej nie je vidieť z čakárne.</p>
+        <ul>
+          <li><span>Hĺbkové čistenie pleti, 75 min</span><b>48 €</b></li>
+          <li><span>Predlžovanie mihalníc, 90 min</span><b>65 €</b></li>
+          <li><span>Úprava a farbenie obočia, 30 min</span><b>18 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Celý cenník kozmetiky</a>
+      </article>
+
+      <article class="tile rev">
+        <!-- FOTO: hotová manikúra, detail rúk na podložke pri stole s odsávaním -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--grid">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1">
+                <path d="M300 0v250M0 108h400"/>
+              </g>
+              <g fill="none" stroke="#7A3E52" stroke-opacity=".24" stroke-width="1">
+                <circle cx="300" cy="108" r="24"/><circle cx="300" cy="108" r="52"/><circle cx="300" cy="108" r="86"/>
+              </g>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Manikúra a pedikúra<span>Jednorazové pilníky a podložky ku každému hosťovi</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Nechty</h3>
+        <p>Frézka odsáva prach priamo pri ruke. Gél odstraňujeme aj samostatne, bez ďalšej služby.</p>
+        <ul>
+          <li><span>Gélové nechty, nová sada, 90 min</span><b>45 €</b></li>
+          <li><span>Japonská manikúra, 45 min</span><b>25 €</b></li>
+          <li><span>Klasická pedikúra, 60 min</span><b>32 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Celý cenník nechtov</a>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- ====================== CENNÍK ====================== -->
 <section class="sec sec--paper" id="cennik">
   <div class="wrap">
@@ -719,7 +942,7 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
 
     <div class="pricegrid">
       <div class="pricegroup rev">
-        <h3>Strihanie a styling<span>Vlasové štúdio</span></h3>
+        <h3>Strihanie a úprava účesu<span>Vlasové štúdio</span></h3>
         <ul class="plist">
           <li><span class="nm">Dámsky strih s umytím a fúkanou<span class="ds">Vrátane masáže hlavy</span></span><span class="tm">45 min</span><span class="pr">38 €</span></li>
           <li><span class="nm">Pánsky strih<span class="ds">Strojček aj nožnice</span></span><span class="tm">30 min</span><span class="pr">22 €</span></li>
@@ -754,7 +977,7 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
           <li><span class="nm">Úprava a farbenie obočia</span><span class="tm">30 min</span><span class="pr">18 €</span></li>
           <li><span class="nm">Predlžovanie mihalníc<span class="ds">Nová sada, metóda 1:1</span></span><span class="tm">90 min</span><span class="pr">65 €</span></li>
           <li><span class="nm">Doplnenie mihalníc<span class="ds">Odporúčaný interval 3 týždne</span></span><span class="tm">60 min</span><span class="pr">40 €</span></li>
-          <li><span class="nm">Lifting a farbenie mihalníc<span class="ds">Bez predlžovania</span></span><span class="tm">60 min</span><span class="pr">40 €</span></li>
+          <li><span class="nm">Zdvihnutie a farbenie mihalníc<span class="ds">Bez predlžovania</span></span><span class="tm">60 min</span><span class="pr">40 €</span></li>
           <li><span class="nm">Ošetrenie pleti pre mužov<span class="ds">Čistenie a úprava obočia</span></span><span class="tm">60 min</span><span class="pr">45 €</span></li>
           <li><span class="nm">Depilácia tváre voskom<span class="ds">Horná pera a brada</span></span><span class="tm">20 min</span><span class="pr">12 €</span></li>
         </ul>
@@ -838,7 +1061,7 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
       </li>
       <li class="rev">
         <p class="no">04</p>
-        <h3>Styling a odporúčania</h3>
+        <h3>Úprava účesu a odporúčania</h3>
         <p>Ukážeme vám, ako účes zopakovať doma, a povieme termín na obnovenie farby alebo doplnenie gélu.</p>
         <span class="dur">10 minút</span>
       </li>
@@ -857,6 +1080,8 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
 
     <div class="rooms">
       <article class="room rev">
+        <!-- FOTO: kadernícka časť, dve kreslá a zrkadlá, denné svetlo od okna -->
+        <figure class="obraz obraz--sirka">
         <div class="art art--room art--grid">
           <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
             <g fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1">
@@ -869,11 +1094,14 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
             <p class="art__num">2<span>kreslá</span></p>
           </div>
         </div>
+        </figure>
         <h3>Kadernícka časť</h3>
-        <p>Dva umývacie boxy so sklopnou opierkou a masážnou hlavicou. Medzi kreslami je miesto na kočík.</p>
+        <p>Dve umývacie miesta so sklopnou opierkou a masážnou hlavicou. Medzi kreslami je miesto na kočík.</p>
       </article>
 
       <article class="room rev">
+        <!-- FOTO: kozmetická kabínka, polohovacie lehátko a lupa s osvetlením -->
+        <figure class="obraz obraz--sirka">
         <div class="art art--room art--hatch">
           <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
             <g fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1">
@@ -887,11 +1115,14 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
             <p class="art__num">1<span>kabínka s dverami</span></p>
           </div>
         </div>
+        </figure>
         <h3>Kozmetická kabínka</h3>
         <p>Samostatná miestnosť s polohovacím lehátkom a lupou s osvetlením. Do kabínky nie je vidieť z čakárne.</p>
       </article>
 
       <article class="room rev">
+        <!-- FOTO: stôl na manikúru s frézkou a odsávaním, kreslo na pedikúru v pozadí -->
+        <figure class="obraz obraz--sirka">
         <div class="art art--room art--dots">
           <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
             <path d="M-20 210C90 120 220 300 420 170" fill="none" stroke="#7A3E52" stroke-opacity=".22" stroke-width="1"/>
@@ -903,21 +1134,13 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
             <p class="art__num">1<span>stôl s odsávaním</span></p>
           </div>
         </div>
+        </figure>
         <h3>Manikúra a pedikúra</h3>
         <p>Frézka s odsávaním prachu a samostatné kreslo na pedikúru s kúpeľom.</p>
       </article>
     </div>
 
-    <div class="cols rev" style="margin-top:clamp(38px,5vw,60px)">
-      <div class="col">
-        <h3>Kto v salóne pracuje</h3>
-        <ul>
-          <li>Tri kaderníčky</li>
-          <li>Kozmetička</li>
-          <li>Nechtová dizajnérka</li>
-        </ul>
-        <p style="margin-top:14px">Ak chcete konkrétneho človeka, napíšte to do poznámky pri objednávke.</p>
-      </div>
+    <div class="cols cols--2 rev" style="margin-top:clamp(38px,5vw,60px)">
       <div class="col">
         <h3>Materiál a hygiena</h3>
         <ul>
@@ -931,11 +1154,209 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
         <h3>Pohodlie počas návštevy</h3>
         <ul>
           <li>Káva, čaj a voda sú v cene</li>
-          <li>Wi-Fi na požiadanie pri recepcii</li>
+          <li>Pripojenie na internet, heslo dostanete pri recepcii</li>
           <li>Vešiak a uzamykateľná skrinka na kabát</li>
           <li>Sprievod má vlastné miesto pri kresle</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== TÍM ====================== -->
+<section class="sec sec--paper" id="tim">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Tím</p>
+      <h2>Kto v salóne pracuje a kedy</h2>
+      <p class="lead">Piati ľudia, tri pracoviská. Pri každom je napísané, čo robí a v ktoré dni ho v salóne nájdete. Ak chcete konkrétneho človeka, napíšte to do poznámky pri objednávke.</p>
+    </div>
+
+    <div class="team">
+      <article class="member rev">
+        <!-- FOTO: portrét Kataríny v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">K</p></div>
+          </div>
+        </figure>
+        <h3>Katarína</h3>
+        <p class="role">Kaderníčka</p>
+        <p>Farbenie, melír a balayage. Na odfarbenie a novú farbu si u nej vyhraďte tri hodiny.</p>
+        <p class="dni">Pondelok až štvrtok</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Objednať termín u Kataríny">Objednať</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Zuzany v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">Z</p></div>
+          </div>
+        </figure>
+        <h3>Zuzana</h3>
+        <p class="role">Kaderníčka</p>
+        <p>Dámske strihy a spoločenské účesy. Svadobné ráno začína aj o siedmej.</p>
+        <p class="dni">Utorok, streda, piatok a sobota</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Objednať termín u Zuzany">Objednať</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Michala v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">M</p></div>
+          </div>
+        </figure>
+        <h3>Michal</h3>
+        <p class="role">Kaderník</p>
+        <p>Pánske a detské strihy, úprava brady britvou s horúcim obkladom.</p>
+        <p class="dni">Pondelok, štvrtok a piatok</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Objednať termín u Michala">Objednať</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Ivany v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">I</p></div>
+          </div>
+        </figure>
+        <h3>Ivana</h3>
+        <p class="role">Kozmetička</p>
+        <p>Čistenie pleti, ošetrenie kyselinami a mihalnice v samostatnej kabínke.</p>
+        <p class="dni">Pondelok, streda a piatok</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Objednať termín u Ivany">Objednať</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Lenky v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">L</p></div>
+          </div>
+        </figure>
+        <h3>Lenka</h3>
+        <p class="role">Nechtová dizajnérka</p>
+        <p>Gélové nechty, japonská manikúra a pedikúra pri stole s odsávaním.</p>
+        <p class="dni">Utorok až sobota</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Objednať termín u Lenky">Objednať</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== NAŠA PRÁCA ====================== -->
+<section class="sec" id="galeria">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Naša práca</p>
+      <h2>Pred a po, aj s časom a cenou</h2>
+      <p class="lead">Fotky sú z tohto salónu a z týchto kresiel. Pri každej je napísané, čo sa robilo, ako dlho to trvalo a koľko to stálo podľa cenníka.</p>
+    </div>
+
+    <div class="gal">
+      <!-- FOTO: pred a po odfarbení, rovnaký uhol a rovnaké svetlo na oboch záberoch -->
+      <figure class="obraz obraz--sirka rev">
+        <div class="art art--grid">
+          <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M200 0v250" stroke="#241C22" stroke-opacity=".14" stroke-width="1"/>
+            <rect x="200" y="0" width="200" height="250" fill="#241C22" fill-opacity=".035"/>
+            <circle cx="300" cy="124" r="58" fill="none" stroke="#7A3E52" stroke-opacity=".2" stroke-width="1"/>
+          </svg>
+          <div class="art__body">
+            <p class="prepo"><span>Pred</span><span>Po</span></p>
+            <p class="art__title">Odfarbenie a nová farba<span>180 minút v kresle</span></p>
+          </div>
+        </div>
+        <figcaption class="obraz__cap"><b>Z čiernej na tmavý gaštan</b>Farba z drogérie sa musela najprv odfarbiť. Tri hodiny, 120 € podľa cenníka, druhé sedenie nebolo potrebné.</figcaption>
+      </figure>
+
+      <!-- FOTO: pred a po melíre, rovnaký uhol a rovnaké svetlo na oboch záberoch -->
+      <figure class="obraz obraz--sirka rev">
+        <div class="art art--hatch">
+          <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M200 0v250" stroke="#241C22" stroke-opacity=".14" stroke-width="1"/>
+            <rect x="200" y="0" width="200" height="250" fill="#241C22" fill-opacity=".035"/>
+            <g fill="none" stroke="#7A3E52" stroke-opacity=".2" stroke-width="1">
+              <path d="M244 0v250M300 0v250M356 0v250"/>
+            </g>
+          </svg>
+          <div class="art__body">
+            <p class="prepo"><span>Pred</span><span>Po</span></p>
+            <p class="art__title">Melír a tónovanie<span>150 minút v kresle</span></p>
+          </div>
+        </div>
+        <figcaption class="obraz__cap"><b>Prerastený melír po pol roku</b>Nový melír a tónovanie do studeného odtieňa. Dve a pol hodiny, 95 € plus tónovanie v cene výkonu.</figcaption>
+      </figure>
+
+      <!-- FOTO: pred a po hĺbkovom čistení pleti, rovnaký uhol a rovnaké svetlo -->
+      <figure class="obraz obraz--sirka rev">
+        <div class="art art--dots">
+          <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M200 0v250" stroke="#241C22" stroke-opacity=".14" stroke-width="1"/>
+            <rect x="200" y="0" width="200" height="250" fill="#241C22" fill-opacity=".035"/>
+            <circle cx="300" cy="110" r="34" fill="none" stroke="#7A3E52" stroke-opacity=".22" stroke-width="1"/>
+            <circle cx="300" cy="110" r="70" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+          </svg>
+          <div class="art__body">
+            <p class="prepo"><span>Pred</span><span>Po</span></p>
+            <p class="art__title">Hĺbkové čistenie pleti<span>75 minút v kabínke</span></p>
+          </div>
+        </div>
+        <figcaption class="obraz__cap"><b>Zanesené póry na nose a brade</b>Čistenie s masážou tváre za 48 €. Záber po sme robili až o dva dni neskôr, keď opadlo prekrvenie.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== RECENZIE ====================== -->
+<section class="sec sec--ink" id="recenzie">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Recenzie</p>
+      <h2>Čo nám hostia napísali po návšteve</h2>
+      <p class="lead">Vyberáme tie, ktoré hovoria o konkrétnej službe, cene alebo termíne.</p>
+    </div>
+
+    <div class="quotes">
+      <figure class="quote rev">
+        <blockquote>Objednala som sa cez stránku na piatok o 15:00 a v kresle som sedela o 15:00. Odfarbenie trvalo tri hodiny presne tak, ako mi povedali pri konzultácii.</blockquote>
+        <figcaption><b>Monika</b>Odfarbenie a nová farba, 120 €</figcaption>
+      </figure>
+      <figure class="quote rev">
+        <blockquote>Cenu mi povedali pred začiatkom a na konci som zaplatila rovnakú sumu. Za dlhé vlasy nepripočítali nič navyše.</blockquote>
+        <figcaption><b>Veronika</b>Farbenie odrastov s fúkanou, 55 €</figcaption>
+      </figure>
+      <figure class="quote rev">
+        <blockquote>Termín som rušil deň vopred telefonicky a nič mi neúčtovali. Nový mi ponúkli hneď v tom istom hovore.</blockquote>
+        <figcaption><b>Peter</b>Pánsky strih a úprava brady, 34 €</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -1016,7 +1437,7 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
 
           <div class="svcgrid">
             <div>
-              <h4>Strihanie a styling</h4>
+              <h4>Strihanie a úprava účesu</h4>
               <div class="opt"><input type="checkbox" id="s1" data-price="38" data-min="45" data-name="Dámsky strih s fúkanou"><label for="s1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Dámsky strih s fúkanou</span><span class="p">38 €</span><span class="m">45 minút</span></label></div>
               <div class="opt"><input type="checkbox" id="s2" data-price="22" data-min="30" data-name="Pánsky strih"><label for="s2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Pánsky strih</span><span class="p">22 €</span><span class="m">30 minút</span></label></div>
               <div class="opt"><input type="checkbox" id="s3" data-price="55" data-min="60" data-name="Spoločenský účes"><label for="s3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Spoločenský účes</span><span class="p">55 €</span><span class="m">60 minút</span></label></div>
@@ -1039,7 +1460,7 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
               <div class="opt"><input type="checkbox" id="s10" data-price="55" data-min="60" data-name="Ošetrenie s kyselinami"><label for="s10"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Ošetrenie s kyselinami</span><span class="p">55 €</span><span class="m">60 minút</span></label></div>
               <div class="opt"><input type="checkbox" id="s11" data-price="18" data-min="30" data-name="Úprava a farbenie obočia"><label for="s11"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Úprava a farbenie obočia</span><span class="p">18 €</span><span class="m">30 minút</span></label></div>
               <div class="opt"><input type="checkbox" id="s12" data-price="65" data-min="90" data-name="Predlžovanie mihalníc"><label for="s12"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Predlžovanie mihalníc</span><span class="p">65 €</span><span class="m">90 minút</span></label></div>
-              <div class="opt"><input type="checkbox" id="s19" data-price="40" data-min="60" data-name="Lifting a farbenie mihalníc"><label for="s19"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Lifting a farbenie mihalníc</span><span class="p">40 €</span><span class="m">60 minút</span></label></div>
+              <div class="opt"><input type="checkbox" id="s19" data-price="40" data-min="60" data-name="Zdvihnutie a farbenie mihalníc"><label for="s19"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Zdvihnutie a farbenie mihalníc</span><span class="p">40 €</span><span class="m">60 minút</span></label></div>
             </div>
 
             <div>
@@ -1316,7 +1737,7 @@ a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
       </div>
       <div class="col rev">
         <h3>Po ošetrení pleti</h3>
-        <p>Prvých 24 hodín nechajte pleť bez make-upu. Je prekrvená a póry sú otvorené, líčidlo ich hneď zanesie.</p>
+        <p>Prvých 24 hodín pleť nelíčte. Je prekrvená a póry sú otvorené, líčidlo ich hneď zanesie.</p>
         <p>Dva dni vynechajte saunu, bazén aj náročné cvičenie. Pot a chlór dráždia čerstvo vyčistenú pleť.</p>
         <p>Po ošetrení kyselinami noste opaľovací krém aj v zime, inak sa pigmentácie vrátia rýchlejšie, než odišli.</p>
       </div>

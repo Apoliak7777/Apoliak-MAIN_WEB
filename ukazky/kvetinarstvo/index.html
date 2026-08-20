@@ -171,6 +171,11 @@ html:not(.js) .js-only{display:none}
 .art--tile{aspect-ratio:4/3}
 .art--wide{min-height:clamp(15rem,19vw,19rem)}
 .art--panel{min-height:12.5rem}
+/* miesta pre fotografie: v celej mriežke rovnaký orez, rovnaké pozadie */
+figure.obraz{margin:0}
+.obraz--produkt{--a1:#FBF7F0;--a2:#E4DCCC}
+.obraz--prilezitost{--a1:#F2F2EA;--a2:#D9E0D5}
+.obraz--zakaznik{--a1:#F7F5F0;--a2:#DCD6C9}
 
 /* vlasové vzory a geometrické vrstvenie */
 .pat-grid::before,.pat-diag::before,.pat-rings::before,
@@ -245,7 +250,7 @@ html:not(.js) .js-only{display:none}
 .demobar a:hover{color:#FFFFFF}
 .demobar__sep{color:var(--green-line)}
 .nav{background:var(--bg);border-bottom:1px solid var(--line)}
-.nav__inner{display:flex;align-items:center;gap:1rem;min-height:4.4rem}
+.nav__inner{--navpad:clamp(1.25rem,4vw,2.25rem);display:flex;align-items:center;gap:.8rem;min-height:4.4rem;padding-inline:var(--navpad)}
 .brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;color:var(--ink);margin-right:auto}
 .brand__mark{width:2.35rem;height:2.35rem;flex:none}
 .brand__name{font-family:var(--serif);font-size:1.2rem;line-height:1.15;display:block;letter-spacing:.03em}
@@ -256,14 +261,22 @@ html:not(.js) .js-only{display:none}
   border:1px solid var(--line-2);border-radius:3px;padding:.5rem .85rem;
   font-size:.85rem;font-weight:600;color:var(--ink);background:var(--surface)
 }
+.nav__burger:hover{border-color:var(--green);color:var(--green)}
 .nav__list{display:flex;align-items:center;gap:.1rem;list-style:none;margin:0;padding:0}
 .nav__list a{
-  display:block;padding:.5rem .72rem;text-decoration:none;color:var(--ink);
-  font-size:.88rem;letter-spacing:.01em;border-bottom:2px solid transparent;white-space:nowrap
+  display:block;padding:.5rem .58rem;text-decoration:none;color:var(--ink);
+  font-size:.85rem;letter-spacing:.01em;border-bottom:2px solid transparent;white-space:nowrap
 }
 .nav__list a:hover{color:var(--green);border-bottom-color:var(--line-2)}
 .nav__list a.is-current{color:var(--green);border-bottom-color:var(--green);font-weight:600}
-.nav__cart{margin-left:.7rem}
+.nav__actions{display:flex;align-items:center;gap:.5rem;flex:none}
+.nav__tel{
+  display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;color:var(--ink);
+  font-size:.86rem;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;padding:.4rem .25rem
+}
+.nav__tel:hover{color:var(--green)}
+.nav__tel .ico{width:1.05rem;height:1.05rem;color:var(--green)}
+.nav__cta{white-space:nowrap}
 .nav__cart .count{font-variant-numeric:tabular-nums}
 
 /* ---------- úvod ---------- */
@@ -603,6 +616,62 @@ textarea{min-height:7.5rem;resize:vertical}
 .toast.is-on{transform:translate(-50%,0)}
 .nojs{border:1px solid var(--line-2);background:var(--surface);padding:.9rem 1.05rem;margin:2rem 0 0;font-size:.89rem;max-width:56ch}
 
+/* ---------- nákup podľa príležitosti ---------- */
+.occ-grid{display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fill,minmax(13.5rem,1fr))}
+.occ{
+  display:flex;flex-direction:column;text-decoration:none;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;overflow:hidden;
+  transition:border-color .16s ease
+}
+.occ:hover{border-color:var(--line-2);color:var(--ink)}
+.occ .obraz{border:0;border-bottom:1px solid var(--line);border-radius:0}
+.occ__body{padding:1.05rem 1.15rem 1.2rem;display:flex;flex-direction:column;gap:.4rem;flex:1}
+.occ h3{margin:0;font-size:1.08rem}
+.occ p{margin:0;font-size:.86rem;color:var(--muted);line-height:1.5}
+.occ .occ__go{
+  margin:auto 0 0;padding-top:.85rem;font-size:.76rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--terra)
+}
+.occ.is-on{border-color:var(--green)}
+.occ.is-on .occ__go{color:var(--green)}
+.occ h3,.occ .occ__body{color:var(--ink)}
+
+/* ---------- recenzie zákazníkov ---------- */
+.rev-grid{display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr))}
+.rev{
+  display:flex;flex-direction:column;gap:.7rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  padding:1.3rem 1.4rem 1.35rem
+}
+.rev p{margin:0;font-size:.93rem;line-height:1.6}
+.rev .rev__what{
+  margin:0;font-size:.66rem;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted)
+}
+.rev .rev__meta{
+  margin:auto 0 0;padding-top:.9rem;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;
+  font-size:.82rem;color:var(--muted)
+}
+.rev .rev__meta b{font-weight:600;color:var(--ink)}
+.obraz-rada{display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));margin-bottom:2.2rem}
+
+/* ---------- plánik ulice ---------- */
+.plan{
+  margin:0;border:1px solid var(--line-2);border-radius:3px;background:var(--surface);
+  padding:clamp(1rem,.85rem + .7vw,1.5rem)
+}
+.plan svg{display:block;width:100%;height:auto}
+.plan figcaption{margin-top:.9rem;font-size:.84rem;color:var(--muted);line-height:1.5}
+
+/* ---------- opakované hlavné tlačidlo v pätičke ---------- */
+.footer__cta{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1rem;margin-top:1.3rem}
+.footer__cta .tel{
+  font-family:var(--serif);font-size:1.3rem;letter-spacing:.01em;
+  font-variant-numeric:tabular-nums;text-decoration:none;color:var(--terra)
+}
+.footer__cta .tel:hover{color:var(--terra-2)}
+
 /* ---------- responzivita ---------- */
 @media (min-width:30rem){
   .spec > div{grid-template-columns:9rem 1fr;gap:1rem;align-items:baseline}
@@ -627,25 +696,44 @@ textarea{min-height:7.5rem;resize:vertical}
   .steps{grid-template-columns:repeat(4,1fr)}
   .footer__grid{grid-template-columns:1.5fr 1fr 1fr 1.1fr}
 }
-@media (max-width:61.99rem){
+/* plné menu v riadku sa zmestí až od 74rem, nižšie ide do rozbaľovacieho menu */
+@media (max-width:73.99rem){
   .nav__burger{display:inline-flex}
-  .nav__inner{position:relative;flex-wrap:wrap}
+  .nav__inner{position:relative;flex-wrap:wrap;row-gap:.5rem}
   .nav__list{
     display:none;position:absolute;left:0;right:0;top:100%;
     flex-direction:column;align-items:stretch;gap:0;
     background:var(--bg);border-bottom:1px solid var(--line-2);
-    margin-inline:calc(var(--pad) * -1);padding:.4rem var(--pad) .7rem;
+    margin-inline:0;padding:.4rem var(--navpad) .7rem;
     max-height:70vh;overflow-y:auto
   }
   .nav__check:checked ~ .nav__list{display:flex}
   .nav__list a{padding:.75rem 0;border-bottom:1px solid var(--line)}
   .nav__list a:hover,.nav__list a.is-current{border-bottom-color:var(--line)}
-  .nav__cart{margin-left:0}
+}
+@media (max-width:44rem){
+  .nav__tel{
+    border:1px solid var(--line-2);border-radius:3px;background:var(--surface);
+    width:2.35rem;height:2.35rem;justify-content:center;padding:0
+  }
+  .nav__tel .num{display:none}
+  .nav__burger{padding:.5rem;width:2.35rem;height:2.35rem;justify-content:center}
+  .nav__burger .lbl{display:none}
 }
 @media (max-width:36rem){
   .demobar__inner{font-size:.73rem;gap:.15rem .6rem}
   .demobar__long{display:none}
   .hero h1{max-width:none}
+}
+@media (max-width:30rem){
+  .nav__inner{gap:.4rem}
+  .brand{gap:.55rem}
+  .brand__mark{width:2.05rem;height:2.05rem}
+  .brand__name{font-size:1.05rem}
+  .nav__actions{gap:.35rem}
+  .nav__cta{padding-inline:.85rem}
+  .nav__cta .dlhy{display:none}
+  .nav__cart{padding-inline:.6rem;gap:.35rem}
 }
 @media (max-width:26rem){
   .nav__cart .label{display:none}
@@ -669,19 +757,21 @@ textarea{min-height:7.5rem;resize:vertical}
    a text tlačidla nikdy nesplynul s jeho pozadím.
 ------------------------------------------------------------------- */
 .btn,a.btn,button.btn,
-.author a.btn,.footer a.btn,.panel a.btn,.section--dark a.btn,.demobar a.btn{
+.author a.btn,.footer a.btn,.panel a.btn,.section--dark a.btn,.demobar a.btn,.nav a.btn,.occ a.btn{
   color:var(--on-green)
 }
 .btn:hover,a.btn:hover,button.btn:hover,
-.author a.btn:hover,.footer a.btn:hover,.panel a.btn:hover,.section--dark a.btn:hover{
+.author a.btn:hover,.footer a.btn:hover,.panel a.btn:hover,.section--dark a.btn:hover,.nav a.btn:hover{
   color:var(--on-green)
 }
 .btn--terra,a.btn--terra,button.btn--terra,
-.author a.btn--terra,.footer a.btn--terra,.panel a.btn--terra,.section--dark a.btn--terra{
+.author a.btn--terra,.footer a.btn--terra,.panel a.btn--terra,.section--dark a.btn--terra,
+.nav a.btn--terra,.hero a.btn--terra{
   color:#FFFFFF
 }
 .btn--terra:hover,a.btn--terra:hover,button.btn--terra:hover,
-.author a.btn--terra:hover,.panel a.btn--terra:hover,.section--dark a.btn--terra:hover{
+.author a.btn--terra:hover,.panel a.btn--terra:hover,.section--dark a.btn--terra:hover,
+.footer a.btn--terra:hover,.nav a.btn--terra:hover,.hero a.btn--terra:hover{
   color:#FFFFFF
 }
 .btn--ghost,a.btn--ghost,button.btn--ghost,.footer a.btn--ghost{
@@ -717,6 +807,7 @@ textarea{min-height:7.5rem;resize:vertical}
     <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5.5 12h13"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9.5 7V4.8h5V7M6.5 7l1 12.2h9l1-12.2"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.6 4.6 4.6L19 7.4"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M7.1 3.8h2.9l1.4 3.5-1.8 1.4a11.2 11.2 0 0 0 5.7 5.7l1.4-1.8 3.5 1.4v2.9a1.6 1.6 0 0 1-1.7 1.6C11.6 18 6 12.4 5.5 5.5a1.6 1.6 0 0 1 1.6-1.7Z"/></symbol>
   </defs>
 </svg>
 
@@ -747,12 +838,10 @@ textarea{min-height:7.5rem;resize:vertical}
       </a>
 
       <input type="checkbox" id="navToggle" class="nav__check" tabindex="-1" aria-hidden="true">
-      <label class="nav__burger" for="navToggle" id="navBurger" tabindex="0" role="button" aria-controls="navList" aria-expanded="false">
-        <svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg> Menu
-      </label>
 
       <ul class="nav__list" id="navList">
         <li><a href="#ponuka">Ponuka</a></li>
+        <li><a href="#prilezitosti">Príležitosti</a></li>
         <li><a href="#cennik">Cenník</a></li>
         <li><a href="#doprava">Doprava</a></li>
         <li><a href="#predajna">Predajňa</a></li>
@@ -760,11 +849,24 @@ textarea{min-height:7.5rem;resize:vertical}
         <li><a href="#kontakt">Kontakt</a></li>
       </ul>
 
-      <button class="btn btn--sm nav__cart js-only" type="button" data-open-cart aria-haspopup="dialog">
-        <svg class="ico" aria-hidden="true"><use href="#i-cart"/></svg>
-        <span class="label">Košík</span>
-        <span class="count" data-cart-count>0</span>
-      </button>
+      <div class="nav__actions">
+        <a class="nav__tel" href="tel:+421940176592" aria-label="Zavolať na číslo 0940 176 592">
+          <svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg>
+          <span class="num">0940 176 592</span>
+        </a>
+
+        <a class="btn btn--terra btn--sm nav__cta" href="#ponuka">Objednať<span class="dlhy">&nbsp;kyticu</span></a>
+
+        <button class="btn btn--ghost btn--sm nav__cart js-only" type="button" data-open-cart aria-haspopup="dialog">
+          <svg class="ico" aria-hidden="true"><use href="#i-cart"/></svg>
+          <span class="label">Košík</span>
+          <span class="count" data-cart-count>0</span>
+        </button>
+
+        <label class="nav__burger" for="navToggle" id="navBurger" tabindex="0" role="button" aria-controls="navList" aria-expanded="false" aria-label="Menu">
+          <svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg> <span class="lbl">Menu</span>
+        </label>
+      </div>
     </div>
   </header>
 </div>
@@ -777,15 +879,14 @@ textarea{min-height:7.5rem;resize:vertical}
       <div>
         <p class="eyebrow"><b>01</b> Kvetinárstvo a e-shop</p>
         <h1>Rezané kvety, kytice a izbové rastliny s rozvozom po meste</h1>
-        <p class="lead hero__lead">Predajňa na Záhradnej ulici. Objednávku prijatú do 12:00 doručíme v ten istý deň, na osobný odber pripravíme kyticu do dvoch hodín.</p>
+        <p class="lead hero__lead">Objednávku prijatú do 12:00 doručíme v Bratislave ešte v ten istý deň. Na osobný odber pripravíme kyticu do dvoch hodín od objednávky.</p>
         <div class="hero__cta">
-          <a class="btn" href="#ponuka">Ponuka a ceny</a>
-          <a class="btn btn--ghost" href="#doprava">Doprava a platba</a>
+          <a class="btn btn--terra" href="#ponuka">Objednať kyticu</a>
         </div>
 
         <ul class="kpi">
-          <li><b>do 15 minút</b><span>väzba bežnej kytice pri pulte</span></li>
-          <li><b>od 12,00 €</b><span>kytica viazaná na počkanie</span></li>
+          <li><b>do 12:00</b><span>objednávku prijatú do tohto času doručíme dnes</span></li>
+          <li><b>od 12,00 €</b><span>kytica viazaná pri pulte, z e-shopu od 15,40 €</span></li>
           <li><b>4,90 €</b><span>rozvoz v meste, nad 60 € zadarmo</span></li>
         </ul>
 
@@ -819,11 +920,6 @@ textarea{min-height:7.5rem;resize:vertical}
             <dd>Kartou online, prevodom, hotovosťou alebo kartou v predajni</dd>
           </div>
         </dl>
-
-        <div class="btnrow">
-          <a class="btn btn--terra" href="tel:+421940176592">Zavolať 0940 176 592</a>
-          <a class="btn btn--ghost" href="#kontakt">Napísať cez formulár</a>
-        </div>
       </div>
     </div>
   </section>
@@ -843,19 +939,21 @@ textarea{min-height:7.5rem;resize:vertical}
           <button class="chip" type="button" data-filter="kytice" aria-pressed="false">Kytice</button>
           <button class="chip" type="button" data-filter="rastliny" aria-pressed="false">Izbové rastliny</button>
           <button class="chip" type="button" data-filter="svadba" aria-pressed="false">Svadobné väzby</button>
-          <button class="chip" type="button" data-filter="darceky" aria-pressed="false">Darčekové balenia</button>
+          <button class="chip" type="button" data-filter="smutocne" aria-pressed="false">Smútočné väzby</button>
+          <button class="chip" type="button" data-filter="darceky" aria-pressed="false">Darčeky</button>
         </div>
-        <p class="shop__count js-only" id="shopCount" role="status" aria-live="polite">Zobrazených 11 z 11 položiek</p>
+        <p class="shop__count js-only" id="shopCount" role="status" aria-live="polite">Zobrazených 13 z 13 položiek</p>
       </div>
 
       <div class="grid-prod">
 
-        <article class="prod" data-product="sezonna" data-cat="kytice" data-price="24.90" data-name="Sezónna kytica" data-rv>
-          <div class="art art--tile art--warm pat-grid">
+        <article class="prod" data-product="sezonna" data-cat="kytice" data-occ="narodeniny vyrocie podakovanie" data-price="24.90" data-name="Sezónna kytica" data-rv>
+          <!-- FOTO: sezónna kytica, 25 stoniek, na neutrálnom pozadí, celá kytica zhora až po koniec stoniek -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
             <p class="art__kick">Kytice</p>
             <p class="art__big">25</p>
             <p class="art__note">stoniek v strednej veľkosti</p>
-          </div>
+          </figure>
           <div class="prod__body">
             <p class="prod__cat">Kytice</p>
             <h3>Sezónna kytica</h3>
@@ -876,23 +974,24 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="ruze" data-cat="kytice" data-price="33.00" data-name="Kytica z ruží" data-rv>
-          <div class="art art--tile art--clay pat-rings">
+        <article class="prod" data-product="ruze" data-cat="kytice" data-occ="vyrocie narodeniny" data-price="33.00" data-name="Kytica z ruží" data-rv>
+          <!-- FOTO: kytica z 15 ruží so stonkou 50 cm, zabalená v papieri, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
             <p class="art__kick">Kytice</p>
             <p class="art__big">15</p>
             <p class="art__note">ruží v základnej veľkosti</p>
-          </div>
+          </figure>
           <div class="prod__body">
             <p class="prod__cat">Kytice</p>
             <h3>Kytica z ruží</h3>
-            <p class="prod__desc">Ruže s dĺžkou stonky 50 cm, zabalené do papiera a stuhy. Farbu vyberiete pri objednávke, k dispozícii sú červené, krémové a ružové.</p>
+            <p class="prod__desc">Ruže s dĺžkou stonky 50 cm, cena je 2,20 € za stonku. Zabalenie do papiera a stuhy je v cene. Farbu vyberiete pri objednávke: červená, krémová alebo ružová.</p>
             <p class="prod__stock">Dostupnosť: <b>na sklade</b></p>
             <div class="field">
               <label for="v-ruze">Počet stoniek</label>
               <select id="v-ruze" data-variant="počet">
                 <option data-delta="0" data-label="15 stoniek">15 stoniek</option>
-                <option data-delta="-18" data-label="7 stoniek">7 stoniek</option>
-                <option data-delta="18" data-label="25 stoniek">25 stoniek</option>
+                <option data-delta="-17.60" data-label="7 stoniek">7 stoniek</option>
+                <option data-delta="22" data-label="25 stoniek">25 stoniek</option>
               </select>
             </div>
             <div class="prod__buy">
@@ -902,12 +1001,13 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="susene" data-cat="kytice" data-price="29.90" data-name="Kytica zo sušených kvetov" data-rv>
-          <div class="art art--tile art--stone pat-diag">
+        <article class="prod" data-product="susene" data-cat="kytice" data-occ="narodeniny podakovanie" data-price="29.90" data-name="Kytica zo sušených kvetov" data-rv>
+          <!-- FOTO: kytica zo sušených tráv, bavlníka a makovíc, priemer 30 cm, rovnaké svetlo a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
             <p class="art__kick">Kytice</p>
             <p class="art__big">Ø 30</p>
-            <p class="art__note">cm priemer, vydrží roky bez vody</p>
-          </div>
+            <p class="art__note">cm priemer, vydrží bez vody</p>
+          </figure>
           <div class="prod__body">
             <p class="prod__cat">Kytice</p>
             <h3>Kytica zo sušených kvetov</h3>
@@ -927,12 +1027,13 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="monstera" data-cat="rastliny" data-price="34.00" data-name="Monstera deliciosa, výška 70 cm" data-rv>
-          <div class="art art--tile art--sage pat-blocks">
+        <article class="prod" data-product="monstera" data-cat="rastliny" data-occ="podakovanie" data-price="34.00" data-name="Monstera deliciosa, výška 70 cm" data-rv>
+          <!-- FOTO: monstera vysoká 70 cm v hlinenom kvetináči, celá rastlina, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
             <p class="art__kick">Izbové rastliny</p>
             <p class="art__big">70</p>
             <p class="art__note">cm výška, kvetináč Ø 19 cm</p>
-          </div>
+          </figure>
           <div class="prod__body">
             <p class="prod__cat">Izbové rastliny</p>
             <h3>Monstera deliciosa, výška 70 cm</h3>
@@ -945,12 +1046,13 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="pilea" data-cat="rastliny" data-price="22.00" data-name="Pilea peperomioides, výška 25 cm" data-rv>
-          <div class="art art--tile art--sage pat-dots">
+        <article class="prod" data-product="pilea" data-cat="rastliny" data-occ="podakovanie narodeniny" data-price="22.00" data-name="Pilea peperomioides, výška 25 cm" data-rv>
+          <!-- FOTO: pilea vysoká 25 cm v keramickom kvetináči, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
             <p class="art__kick">Izbové rastliny</p>
             <p class="art__big">25</p>
             <p class="art__note">cm výška, kvetináč Ø 12 cm</p>
-          </div>
+          </figure>
           <div class="prod__body">
             <p class="prod__cat">Izbové rastliny</p>
             <h3>Pilea peperomioides, výška 25 cm</h3>
@@ -963,12 +1065,13 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="sansevieria" data-cat="rastliny" data-price="26.00" data-name="Sansevieria, výška 60 cm" data-rv>
-          <div class="art art--tile art--sage pat-grid">
+        <article class="prod" data-product="sansevieria" data-cat="rastliny" data-occ="podakovanie" data-price="26.00" data-name="Sansevieria, výška 60 cm" data-rv>
+          <!-- FOTO: sansevieria vysoká 60 cm v keramickom kvetináči, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
             <p class="art__kick">Izbové rastliny</p>
             <p class="art__big">60</p>
-            <p class="art__note">cm výška, znesie aj tmavší kút</p>
-          </div>
+            <p class="art__note">cm výška, kvetináč Ø 17 cm</p>
+          </figure>
           <div class="prod__body">
             <p class="prod__cat">Izbové rastliny</p>
             <h3>Sansevieria, výška 60 cm</h3>
@@ -981,12 +1084,13 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="svadobna" data-cat="svadba" data-price="69.00" data-name="Svadobná kytica z ruží" data-rv>
-          <div class="art art--tile art--clay pat-arc">
+        <article class="prod" data-product="svadobna" data-cat="svadba" data-occ="svadba" data-price="69.00" data-name="Svadobná kytica z ruží" data-rv>
+          <!-- FOTO: svadobná kytica z krémových ruží a eukalyptu, priemer 32 cm, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
             <p class="art__kick">Svadobné väzby</p>
             <p class="art__big">Ø 32</p>
             <p class="art__note">cm okrúhla väzba, pierko v cene</p>
-          </div>
+          </figure>
           <div class="prod__body">
             <p class="prod__cat">Svadobné väzby</p>
             <h3>Svadobná kytica z ruží</h3>
@@ -1006,17 +1110,25 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="venec" data-cat="svadba" data-price="45.00" data-name="Veniec na dvere, priemer 40 cm" data-rv>
-          <div class="art art--tile art--warm pat-rings">
-            <p class="art__kick">Svadobné väzby</p>
-            <p class="art__big">Ø 40</p>
-            <p class="art__note">cm prútený základ a sušené kvety</p>
-          </div>
+        <article class="prod" data-product="smutvenec" data-cat="smutocne" data-occ="smutocne" data-price="45.00" data-name="Smútočný veniec, priemer 60 cm" data-rv>
+          <!-- FOTO: smútočný veniec s priemerom 60 cm postavený na stojane, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
+            <p class="art__kick">Smútočné väzby</p>
+            <p class="art__big">Ø 60</p>
+            <p class="art__note">cm veniec, naviažeme do 24 hodín</p>
+          </figure>
           <div class="prod__body">
-            <p class="prod__cat">Svadobné väzby</p>
-            <h3>Veniec na dvere, priemer 40 cm</h3>
-            <p class="prod__desc">Prútený základ, sušené kvety a stuha. Farby prispôsobíme podľa vzorky, ktorú prinesiete do predajne.</p>
-            <p class="prod__stock">Dostupnosť: <b>na objednávku, 3 dni</b></p>
+            <p class="prod__cat">Smútočné väzby</p>
+            <h3>Smútočný veniec, priemer 60 cm</h3>
+            <p class="prod__desc">Chryzantémy, ruže a ihličie na drôtenom základe. Doručíme do domu smútku alebo na cintorín na dohodnutý čas.</p>
+            <p class="prod__stock">Dostupnosť: <b>na objednávku, do 24 hodín</b></p>
+            <div class="field">
+              <label for="v-smutvenec">Stuha</label>
+              <select id="v-smutvenec" data-variant="stuha">
+                <option data-delta="0" data-label="bez nápisu">Bez nápisu</option>
+                <option data-delta="6" data-label="s tlačeným nápisom">S tlačeným nápisom</option>
+              </select>
+            </div>
             <div class="prod__buy">
               <span class="price" data-price-out>45,00 €</span>
               <button class="btn btn--sm" type="button" data-add>Do košíka</button>
@@ -1024,14 +1136,53 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="balenie" data-cat="darceky" data-price="39.00" data-name="Darčekové balenie s kyticou a sviečkou" data-rv>
-          <div class="art art--tile art--clay pat-blocks">
-            <p class="art__kick">Darčekové balenia</p>
+        <article class="prod" data-product="ikebana" data-cat="smutocne" data-occ="smutocne" data-price="35.00" data-name="Smútočná ikebana" data-rv>
+          <!-- FOTO: smútočná ikebana široká 50 cm položená na rovnom podklade, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
+            <p class="art__kick">Smútočné väzby</p>
+            <p class="art__big">50</p>
+            <p class="art__note">cm šírka, vo florexovej hmote</p>
+          </figure>
+          <div class="prod__body">
+            <p class="prod__cat">Smútočné väzby</p>
+            <h3>Smútočná ikebana</h3>
+            <p class="prod__desc">Aranžmán vo florexovej hmote so šírkou približne 50 cm. Nepotrebuje vázu, postaví sa priamo k urne alebo na hrob.</p>
+            <p class="prod__stock">Dostupnosť: <b>na objednávku, do 24 hodín</b></p>
+            <div class="prod__buy">
+              <span class="price" data-price-out>35,00 €</span>
+              <button class="btn btn--sm" type="button" data-add>Do košíka</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="prod" data-product="venec" data-cat="darceky" data-occ="podakovanie" data-price="38.00" data-name="Veniec na dvere, priemer 40 cm" data-rv>
+          <!-- FOTO: prútený veniec na dvere so sušenými kvetmi, priemer 40 cm, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
+            <p class="art__kick">Darčeky</p>
+            <p class="art__big">Ø 40</p>
+            <p class="art__note">cm prútený základ a sušené kvety</p>
+          </figure>
+          <div class="prod__body">
+            <p class="prod__cat">Darčeky</p>
+            <h3>Veniec na dvere, priemer 40 cm</h3>
+            <p class="prod__desc">Prútený základ, sušené kvety a stuha. Farby prispôsobíme podľa vzorky, ktorú prinesiete do predajne.</p>
+            <p class="prod__stock">Dostupnosť: <b>na objednávku, 3 dni</b></p>
+            <div class="prod__buy">
+              <span class="price" data-price-out>38,00 €</span>
+              <button class="btn btn--sm" type="button" data-add>Do košíka</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="prod" data-product="balenie" data-cat="darceky" data-occ="narodeniny vyrocie podakovanie" data-price="39.00" data-name="Darčekové balenie s kyticou a sviečkou" data-rv>
+          <!-- FOTO: otvorená darčeková krabica s kyticou, sviečkou a pohárom medu, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
+            <p class="art__kick">Darčeky</p>
             <p class="art__big">3</p>
             <p class="art__note">kusy v krabici: kytica, sviečka, med</p>
-          </div>
+          </figure>
           <div class="prod__body">
-            <p class="prod__cat">Darčekové balenia</p>
+            <p class="prod__cat">Darčeky</p>
             <h3>Darčekové balenie s kyticou a sviečkou</h3>
             <p class="prod__desc">Menšia kytica, sójová sviečka a pohár medu v darčekovej krabici. Kartičku napíšeme podľa vašej poznámky.</p>
             <p class="prod__stock">Dostupnosť: <b>na sklade</b></p>
@@ -1042,14 +1193,15 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="krabica" data-cat="darceky" data-price="27.50" data-name="Kvetinová krabica, priemer 20 cm" data-rv>
-          <div class="art art--tile art--warm pat-dots">
-            <p class="art__kick">Darčekové balenia</p>
+        <article class="prod" data-product="krabica" data-cat="darceky" data-occ="narodeniny vyrocie" data-price="27.50" data-name="Kvetinová krabica, priemer 20 cm" data-rv>
+          <!-- FOTO: okrúhla kvetinová krabica s priemerom 20 cm s naaranžovanými kvetmi, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
+            <p class="art__kick">Darčeky</p>
             <p class="art__big">Ø 20</p>
             <p class="art__note">cm, aranžmán bez potreby vázy</p>
-          </div>
+          </figure>
           <div class="prod__body">
-            <p class="prod__cat">Darčekové balenia</p>
+            <p class="prod__cat">Darčeky</p>
             <h3>Kvetinová krabica, priemer 20 cm</h3>
             <p class="prod__desc">Kvety naaranžované priamo v krabici s florexovou hmotou. Vázu netreba, stačí raz za tri dni doliať vodu.</p>
             <p class="prod__stock">Dostupnosť: <b>na sklade</b></p>
@@ -1060,14 +1212,15 @@ textarea{min-height:7.5rem;resize:vertical}
           </div>
         </article>
 
-        <article class="prod" data-product="poukaz" data-cat="darceky" data-price="30.00" data-name="Darčekový poukaz" data-rv>
-          <div class="art art--tile art--stone pat-diag">
-            <p class="art__kick">Darčekové balenia</p>
+        <article class="prod" data-product="poukaz" data-cat="darceky" data-occ="narodeniny vyrocie podakovanie svadba" data-price="30.00" data-name="Darčekový poukaz" data-rv>
+          <!-- FOTO: darčekový poukaz vytlačený na kartóne vedľa otvorenej obálky, rovnaký orez a pozadie ako ostatné produkty -->
+          <figure class="obraz obraz--produkt art art--tile pat-grid">
+            <p class="art__kick">Darčeky</p>
             <p class="art__big">30 €</p>
             <p class="art__note">platnosť 12 mesiacov, aj na viac nákupov</p>
-          </div>
+          </figure>
           <div class="prod__body">
-            <p class="prod__cat">Darčekové balenia</p>
+            <p class="prod__cat">Darčeky</p>
             <h3>Darčekový poukaz</h3>
             <p class="prod__desc">Poukaz na ľubovoľný tovar z ponuky. Vytlačíme ho na kartón a vložíme do obálky, pripraviť ho vieme na počkanie. Nevyčerpaný zvyšok ostáva na poukaze.</p>
             <p class="prod__stock">Dostupnosť: <b>vystavíme ihneď</b></p>
@@ -1088,15 +1241,98 @@ textarea{min-height:7.5rem;resize:vertical}
 
       </div>
 
-      <p class="shop__note">Sezónne kvety sa podľa dostupnosti môžu líšiť v zložení, veľkosť aj farebné ladenie však vždy dodržíme. Smútočné väzby a firemné objednávky riešime individuálne cez <a href="#kontakt">kontaktný formulár</a> alebo telefonicky na čísle <a href="tel:+421940176592">0940 176 592</a>.</p>
+      <p class="shop__note">Zloženie sezónnej kytice sa podľa dostupnosti kvetov mení, veľkosť aj farebné ladenie dodržíme. Svadobnú výzdobu, pravidelný rozvoz do prevádzok a väzby nad rámec tejto ponuky dohodneme cez <a href="#kontakt">kontaktný formulár</a> alebo telefonicky na čísle <a href="tel:+421940176592">0940 176 592</a>.</p>
     </div>
   </section>
 
-  <!-- ================= 03 CENNÍK ================= -->
-  <section class="section" id="cennik">
+  <!-- ================= 03 PRÍLEŽITOSTI ================= -->
+  <section class="section" id="prilezitosti">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>03</b> Cenník</p>
+        <p class="eyebrow"><b>03</b> Príležitosti</p>
+        <h2>Nákup podľa príležitosti</h2>
+        <p>Po kliknutí sa ponuka zúži na položky, ktoré na danú príležitosť viažeme najčastejšie.</p>
+      </div>
+
+      <div class="occ-grid">
+        <a class="occ" href="#ponuka" data-occ="narodeniny" data-rv>
+          <!-- FOTO: farebná sezónna kytica na narodeniny, rovnaký orez a pozadie ako ostatné príležitosti -->
+          <figure class="obraz obraz--prilezitost art art--tile pat-dots">
+            <p class="art__kick">Narodeniny</p>
+            <p class="art__big">od 18,90 €</p>
+            <p class="art__note">sezónna kytica, 15 stoniek</p>
+          </figure>
+          <div class="occ__body">
+            <h3>Narodeniny</h3>
+            <p>Objednávku prijatú do 12:00 doručíme v ten istý deň. Kartičku napíšeme ručne podľa vašej poznámky.</p>
+            <p class="occ__go">Zobraziť v ponuke</p>
+          </div>
+        </a>
+
+        <a class="occ" href="#ponuka" data-occ="vyrocie" data-rv>
+          <!-- FOTO: kytica z ruží na výročie, rovnaký orez a pozadie ako ostatné príležitosti -->
+          <figure class="obraz obraz--prilezitost art art--tile pat-dots">
+            <p class="art__kick">Výročie</p>
+            <p class="art__big">od 15,40 €</p>
+            <p class="art__note">kytica z ruží, 2,20 € za stonku</p>
+          </figure>
+          <div class="occ__body">
+            <h3>Výročie</h3>
+            <p>Ruže s dĺžkou stonky 50 cm v červenej, krémovej alebo ružovej. Zabalenie do papiera a stuhy je v cene.</p>
+            <p class="occ__go">Zobraziť v ponuke</p>
+          </div>
+        </a>
+
+        <a class="occ" href="#ponuka" data-occ="podakovanie" data-rv>
+          <!-- FOTO: izbová rastlina v keramickom kvetináči ako darček na poďakovanie, rovnaký orez a pozadie -->
+          <figure class="obraz obraz--prilezitost art art--tile pat-dots">
+            <p class="art__kick">Poďakovanie</p>
+            <p class="art__big">od 22,00 €</p>
+            <p class="art__note">izbová rastlina v keramickom kvetináči</p>
+          </figure>
+          <div class="occ__body">
+            <h3>Poďakovanie</h3>
+            <p>Do zásielky nedávame doklad s cenou. Rozvoz v meste stojí 4,90 €, nad 60 € je zadarmo.</p>
+            <p class="occ__go">Zobraziť v ponuke</p>
+          </div>
+        </a>
+
+        <a class="occ" href="#ponuka" data-occ="svadba" data-rv>
+          <!-- FOTO: svadobná kytica z krémových ruží držaná v ruke, rovnaký orez a pozadie ako ostatné príležitosti -->
+          <figure class="obraz obraz--prilezitost art art--tile pat-dots">
+            <p class="art__kick">Svadba</p>
+            <p class="art__big">69,00 €</p>
+            <p class="art__note">svadobná kytica, pierko pre ženícha v cene</p>
+          </figure>
+          <div class="occ__body">
+            <h3>Svadba</h3>
+            <p>Kyticu naviažeme do 5 dní. Celodennú výzdobu od 180,00 € objednávajte 4 týždne vopred.</p>
+            <p class="occ__go">Zobraziť v ponuke</p>
+          </div>
+        </a>
+
+        <a class="occ" href="#ponuka" data-occ="smutocne" data-rv>
+          <!-- FOTO: smútočný veniec a ikebana pripravené v predajni, rovnaký orez a pozadie ako ostatné príležitosti -->
+          <figure class="obraz obraz--prilezitost art art--tile pat-dots">
+            <p class="art__kick">Smútočné väzby</p>
+            <p class="art__big">od 35,00 €</p>
+            <p class="art__note">ikebana 35,00 €, veniec Ø 60 cm od 45,00 €</p>
+          </figure>
+          <div class="occ__body">
+            <h3>Smútočné väzby</h3>
+            <p>Naviažeme do 24 hodín a doručíme do domu smútku alebo na cintorín na dohodnutý čas.</p>
+            <p class="occ__go">Zobraziť v ponuke</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 CENNÍK ================= -->
+  <section class="section section--alt" id="cennik">
+    <div class="wrap">
+      <div class="sec-head" data-rv>
+        <p class="eyebrow"><b>04</b> Cenník</p>
         <h2>Cenník z pultu a väzby na objednávku</h2>
         <p>Ceny sú konečné vrátane DPH a platia pri odbere v predajni. Doprava sa počíta zvlášť podľa spôsobu doručenia.</p>
       </div>
@@ -1142,17 +1378,88 @@ textarea{min-height:7.5rem;resize:vertical}
 
       <ul class="notelist" data-rv>
         <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Kytica viazaná na počkanie z toho, čo je v ten deň vo vedrách, stojí od 12,00 €.</span></li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Poplatok 1,50 € za zabalenie platí pri kvetoch kupovaných po stonke. Pri kyticiach z e-shopu je zabalenie v cene.</span></li>
         <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Cenu väčšej väzby povieme vopred, po dohode zloženia a veľkosti. Nič nedoúčtujeme dodatočne.</span></li>
         <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Pri objednávke nad 60 € je rozvoz v meste v cene.</span></li>
       </ul>
     </div>
   </section>
 
-  <!-- ================= 04 SEZÓNA ================= -->
+  <!-- ================= 05 RECENZIE ================= -->
+  <section class="section" id="recenzie">
+    <div class="wrap">
+      <div class="sec-head" data-rv>
+        <p class="eyebrow"><b>05</b> Recenzie</p>
+        <h2>Čo napísali zákazníci</h2>
+        <p>Pri každej recenzii je meno, dátum objednávky a to, čo si zákazník objednal.</p>
+      </div>
+
+      <div class="obraz-rada" data-rv>
+        <!-- FOTO: kytica z ruží u zákazníčky doma vo váze, fotka od zákazníka -->
+        <figure class="obraz obraz--zakaznik art art--tile pat-diag">
+          <p class="art__kick">Od zákazníkov</p>
+          <p class="art__big">15:20</p>
+          <p class="art__note">kytica z ruží doručená 14. augusta</p>
+        </figure>
+        <!-- FOTO: svadobná kytica na mieste obradu, fotka od zákazníka -->
+        <figure class="obraz obraz--zakaznik art art--tile pat-diag">
+          <p class="art__kick">Od zákazníkov</p>
+          <p class="art__big">8:00</p>
+          <p class="art__note">svadobná kytica na mieste 2. augusta</p>
+        </figure>
+        <!-- FOTO: monstera doma u zákazníčky mesiac po kúpe, fotka od zákazníka -->
+        <figure class="obraz obraz--zakaznik art art--tile pat-diag">
+          <p class="art__kick">Od zákazníkov</p>
+          <p class="art__big">70 cm</p>
+          <p class="art__note">monstera mesiac po kúpe, s tromi novými listami</p>
+        </figure>
+      </div>
+
+      <div class="rev-grid">
+        <article class="rev" data-rv>
+          <p class="rev__what">Kytica z ruží, rozvoz v meste</p>
+          <p>Objednávku som zadala o 10:40, doručili ju v ten istý deň o 15:20. Vodič manželovi vopred zavolal, takže bol pri telefóne.</p>
+          <p class="rev__meta"><b>Jana Kováčová</b><span>14. augusta 2026</span></p>
+        </article>
+
+        <article class="rev" data-rv>
+          <p class="rev__what">Svadobná kytica a pierka</p>
+          <p>Zloženie sme potvrdili tri týždne vopred. Na mieste bolo všetko o 8:00, ako sme sa dohodli, kytica vydržala celý deň v horúčave.</p>
+          <p class="rev__meta"><b>Martin Šimko</b><span>2. augusta 2026</span></p>
+        </article>
+
+        <article class="rev" data-rv>
+          <p class="rev__what">Monstera, výška 70 cm</p>
+          <p>Rastlinu mi presadili priamo v predajni za 4 €. Na kartičke bolo napísané, ako často zalievať, po mesiaci má tri nové listy.</p>
+          <p class="rev__meta"><b>Zuzana Hrušková</b><span>27. júla 2026</span></p>
+        </article>
+
+        <article class="rev" data-rv>
+          <p class="rev__what">Smútočný veniec, priemer 60 cm</p>
+          <p>Objednával som večer, na druhý deň o 10:00 bol veniec v dome smútku. Stuhu s tlačeným nápisom stihli za jeden deň.</p>
+          <p class="rev__meta"><b>Peter Michalec</b><span>9. júla 2026</span></p>
+        </article>
+
+        <article class="rev" data-rv>
+          <p class="rev__what">Sezónna kytica, rozvoz v meste</p>
+          <p>Kytica prišla o hodinu neskôr, ako sme sa dohodli. Zavolali mi ešte pred termínom a rozvoz 4,90 € mi neúčtovali.</p>
+          <p class="rev__meta"><b>Lucia Bednárová</b><span>21. júna 2026</span></p>
+        </article>
+
+        <article class="rev" data-rv>
+          <p class="rev__what">Darčekový poukaz, hodnota 50 €</p>
+          <p>Poukaz mi vystavili pri pulte za päť minút. Dcéra ho vyčerpala na dvakrát, zvyšok jej nechali napísaný na zadnej strane.</p>
+          <p class="rev__meta"><b>Eva Ondrušová</b><span>3. júna 2026</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 06 SEZÓNA ================= -->
   <section class="section section--dark" id="sezona">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>04</b> Sezóna</p>
+        <p class="eyebrow"><b>06</b> Sezóna</p>
         <h2>Čo býva v sezóne a kedy objednať vopred</h2>
         <p>Rezané kvety naberáme trikrát do týždňa. Mimo sezóny dopĺňame ponuku dovozom, sortiment sa preto počas roka mení.</p>
       </div>
@@ -1200,11 +1507,11 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 05 AKO VIAŽEME ================= -->
+  <!-- ================= 07 AKO VIAŽEME ================= -->
   <section class="section" id="vazba">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>05</b> Ako to prebieha</p>
+        <p class="eyebrow"><b>07</b> Ako to prebieha</p>
         <h2>Od zadania po odovzdanie</h2>
         <p>Väčšinu kytíc viažeme na počkanie. Pri väčších väzbách sa dohodneme na termíne a zloženie potvrdíme vopred.</p>
       </div>
@@ -1234,11 +1541,11 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 06 OBJEDNÁVKA V E-SHOPE ================= -->
+  <!-- ================= 08 OBJEDNÁVKA V E-SHOPE ================= -->
   <section class="section section--alt" id="objednavka">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>06</b> Objednávka</p>
+        <p class="eyebrow"><b>08</b> Objednávka</p>
         <h2>Ako prebieha nákup v e-shope</h2>
         <p>Košík na tejto stránke je funkčný. Prepočítava počty kusov, dopravu aj celkovú sumu presne tak, ako na ostrom e-shope.</p>
       </div>
@@ -1294,11 +1601,11 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 07 DOPRAVA A PLATBA ================= -->
+  <!-- ================= 09 DOPRAVA A PLATBA ================= -->
   <section class="section" id="doprava">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>07</b> Doprava a platba</p>
+        <p class="eyebrow"><b>09</b> Doprava a platba</p>
         <h2>Ceny dopravy a spôsoby platby</h2>
         <p>Presný čas doručenia potvrdíme telefonicky. V rámci mesta rozvážame vlastným autom, mimo mesta posielame kuriérom.</p>
       </div>
@@ -1343,21 +1650,22 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 08 POUKAZY A FIREMNÉ OBJEDNÁVKY ================= -->
+  <!-- ================= 10 POUKAZY A FIREMNÉ OBJEDNÁVKY ================= -->
   <section class="section section--alt" id="poukazy">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>08</b> Poukazy, firmy a skupiny</p>
+        <p class="eyebrow"><b>10</b> Poukazy, firmy a skupiny</p>
         <h2>Darčekové poukazy, firemné a skupinové objednávky</h2>
         <p>Ak neviete vybrať konkrétnu kyticu, vystavíme poukaz. Prevádzkam a kanceláriám dodávame kvety pravidelne, pre skupiny robíme kurzy väzby.</p>
       </div>
 
       <div class="two-col two-col--art">
-        <div class="art art--panel art--dark pat-arc" data-rv>
+        <!-- FOTO: darčekový poukaz vytlačený na kartóne vedľa obálky, položený na pracovnom stole v predajni -->
+        <figure class="obraz art art--panel art--dark pat-arc" data-rv>
           <p class="art__kick">Darčekový poukaz</p>
           <p class="art__big">12 mesiacov</p>
           <p class="art__note">platnosť od dátumu vystavenia, čerpať sa dá aj na viackrát</p>
-        </div>
+        </figure>
 
         <div class="cols cols--2">
           <div class="infobox" data-rv>
@@ -1397,7 +1705,7 @@ textarea{min-height:7.5rem;resize:vertical}
             <h3>Svadby a smútočné väzby</h3>
             <ul>
               <li>Svadby: kytica, pierka, výzdoba stolov a oblúka, obhliadka miesta po dohode.</li>
-              <li>Zálohu 30 % z ceny platíte pri potvrdení termínu, zvyšok pred odovzdaním.</li>
+              <li>Pri objednávke nad 200 € platíte zálohu 30 % pri potvrdení termínu, zvyšok pred odovzdaním.</li>
               <li>Smútočné vence a ikebany naviažeme do 24 hodín.</li>
               <li>Na požiadanie doručíme priamo na miesto obradu.</li>
             </ul>
@@ -1408,26 +1716,27 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 09 PREDAJŇA ================= -->
+  <!-- ================= 11 PREDAJŇA ================= -->
   <section class="section" id="predajna">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>09</b> Predajňa</p>
+        <p class="eyebrow"><b>11</b> Predajňa</p>
         <h2>Kde nás nájdete a kedy máme otvorené</h2>
         <p>Predajňa je na Záhradnej ulici, parkovať sa dá priamo pred vchodom. Ak neviete, čo vybrať, povedzte nám príležitosť a rozpočet, kyticu naviažeme na počkanie.</p>
       </div>
 
       <div class="two-col">
         <div>
-          <div class="art art--wide art--dark pat-blocks" data-rv>
+          <!-- FOTO: interiér predajne od vchodu, vľavo regál s rastlinami, vpravo chladená vitrína, vzadu pracovný stôl -->
+          <figure class="obraz art art--wide art--dark pat-blocks" data-rv>
             <p class="art__kick">Záhradná 12, Bratislava</p>
             <p class="art__big">Predajňa<br>a väzbáreň</p>
             <ul class="art__rows">
               <li><span>Pult s rezanými kvetmi</span><b>chladená vitrína</b></li>
-              <li><span>Regál s izbovými rastlinami</span><b>vyše 30 druhov</b></li>
+              <li><span>Regál s izbovými rastlinami</span><b>30 druhov</b></li>
               <li><span>Stôl na väzbu</span><b>viažeme pred vami</b></li>
             </ul>
-          </div>
+          </figure>
 
           <div class="prose" style="margin-top:2rem" data-rv>
             <h3>Ako to u nás vyzerá</h3>
@@ -1435,15 +1744,6 @@ textarea{min-height:7.5rem;resize:vertical}
             <p>V zadnej časti je väzbáreň so zásobou kvetináčov, stúh a papiera. Sem sa dostanú aj kvety, ktoré sa nepredali včas: sušíme ich a používame do trvácnych väzieb a vencov.</p>
           </div>
 
-          <div class="prose" style="margin-top:1.8rem" data-rv>
-            <h3>Kto sa vám bude venovať</h3>
-            <ul class="notelist">
-              <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Viazač alebo viazačka kvetov: denné kytice, svadobné a smútočné väzby.</span></li>
-              <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Kolega pri pulte: poradenstvo, výber kvetov, príjem objednávok.</span></li>
-              <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Vodič rozvozu: príprava zásielok a doručovanie po meste.</span></li>
-              <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Starostlivosť o izbové rastliny: presádzanie, hnojenie, kontrola škodcov.</span></li>
-            </ul>
-          </div>
         </div>
 
         <div>
@@ -1463,10 +1763,10 @@ textarea{min-height:7.5rem;resize:vertical}
             <table class="tbl tbl--text">
               <caption>Dobré vedieť</caption>
               <tbody>
-                <tr><th scope="row">Najlepší čas na výber</th><td>ráno po závoze, medzi 8:00 a 10:00, keď je pult najplnší</td></tr>
-                <tr><th scope="row">Pred sviatkami</th><td>pred Dňom matiek a Dušičkami odporúčame objednať tri dni vopred</td></tr>
+                <tr><th scope="row">Kedy je vo vitríne najviac kvetov</th><td>ráno po závoze, medzi 8:00 a 10:00</td></tr>
+                <tr><th scope="row">Pred sviatkami</th><td>pred Dňom matiek objednávajte tri dni vopred, pred Dušičkami päť dní</td></tr>
                 <tr><th scope="row">Objednávka telefonicky</th><td>počas otváracích hodín na čísle 0940 176 592, kyticu pripravíme na dohodnutý čas</td></tr>
-                <tr><th scope="row">Odloženie kytice</th><td>hotovú kyticu podržíme vo vode v chlade do konca dňa</td></tr>
+                <tr><th scope="row">Odloženie kytice</th><td>hotovú kyticu podržíme vo vode v chlade dva dni</td></tr>
               </tbody>
             </table>
           </div>
@@ -1481,21 +1781,55 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 10 AKO SA K NÁM DOSTANETE ================= -->
+  <!-- ================= 12 AKO SA K NÁM DOSTANETE ================= -->
   <section class="section section--alt" id="cesta">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>10</b> Cesta k nám</p>
+        <p class="eyebrow"><b>12</b> Cesta k nám</p>
         <h2>Parkovanie, doprava a bezbariérový prístup</h2>
-        <p>Sme na pokojnej ulici kúsok od centra, mimo hlavnej cesty. Autom, mestskou dopravou aj na bicykli sa k nám dostanete bez komplikácií.</p>
+        <p>Predajňa je na Záhradnej 12. Pred vchodom sú štyri parkovacie miesta, zastávka mestskej dopravy je 200 metrov na tej istej ulici.</p>
       </div>
 
       <div class="two-col two-col--art">
-        <div class="art art--panel art--warm pat-grid" data-rv>
-          <p class="art__kick">Priamo pred vchodom</p>
-          <p class="art__big">4 miesta</p>
-          <p class="art__note">parkovanie pred predajňou, ďalšie na parkovisku za rohom</p>
-        </div>
+        <figure class="plan" data-rv>
+          <svg viewBox="0 0 380 280" role="img" aria-label="Plánik ulice: predajňa Steblo na Záhradnej 12, pred vchodom štyri parkovacie miesta, parkovisko 80 metrov za rohom, zastávka mestskej dopravy 200 metrov na tej istej ulici.">
+            <rect x="0" y="0" width="380" height="280" fill="#FCFAF5"/>
+
+            <rect x="0" y="170" width="380" height="44" fill="#EAE5DB"/>
+            <path d="M0 170h380M0 214h380" stroke="#C2BAA8" stroke-width="1"/>
+            <path d="M0 192h380" stroke="#C2BAA8" stroke-width="1.5" stroke-dasharray="11 7"/>
+            <text x="10" y="208" font-size="9" fill="#5C574F" letter-spacing="1.4">ZÁHRADNÁ ULICA</text>
+
+            <rect x="20" y="40" width="150" height="90" fill="#1F3A2E"/>
+            <text x="34" y="80" font-size="17" fill="#EFEBE3" font-family="Georgia,'Times New Roman',serif">Steblo</text>
+            <text x="34" y="100" font-size="10" fill="#BFCBC0">Záhradná 12</text>
+            <rect x="80" y="126" width="30" height="6" fill="#E9BFA6"/>
+            <text x="72" y="150" font-size="9" fill="#8A3E22">vchod z ulice</text>
+
+            <rect x="178" y="118" width="9" height="9" fill="#C2BAA8"/>
+            <text x="192" y="126" font-size="9" fill="#5C574F">stojan na bicykle</text>
+            <text x="192" y="150" font-size="9" fill="#5C574F">chodník bez schodov</text>
+
+            <rect x="214" y="172" width="30" height="21" fill="#FCFAF5" stroke="#C2BAA8"/>
+            <rect x="248" y="172" width="30" height="21" fill="#FCFAF5" stroke="#C2BAA8"/>
+            <rect x="282" y="172" width="30" height="21" fill="#FCFAF5" stroke="#C2BAA8"/>
+            <rect x="316" y="172" width="30" height="21" fill="#FCFAF5" stroke="#C2BAA8"/>
+            <text x="214" y="166" font-size="9" fill="#1E1C19">4 miesta, prvá hodina zdarma</text>
+
+            <rect x="250" y="20" width="120" height="60" fill="#EAE5DB" stroke="#C2BAA8"/>
+            <text x="262" y="46" font-size="11" fill="#1E1C19">Parkovisko</text>
+            <text x="262" y="64" font-size="10" fill="#5C574F">80 m za rohom</text>
+
+            <rect x="250" y="228" width="120" height="44" fill="#FCFAF5" stroke="#C2BAA8"/>
+            <text x="262" y="249" font-size="11" fill="#1E1C19">Zastávka MHD</text>
+            <text x="262" y="265" font-size="10" fill="#5C574F">200 m, tá istá ulica</text>
+
+            <path d="M28 240h112" stroke="#8A3E22" stroke-width="1.5"/>
+            <path d="M20 240l10-5v10Z" fill="#8A3E22"/>
+            <text x="20" y="262" font-size="10" fill="#5C574F">do centra 10 minút pešo</text>
+          </svg>
+          <figcaption>Predajňa je na Záhradnej 12, vchod je priamo z ulice. Pred vchodom sú štyri parkovacie miesta, väčšie parkovisko je 80 metrov za rohom a zastávka mestskej dopravy 200 metrov na tej istej ulici.</figcaption>
+        </figure>
 
         <div class="cols cols--2">
           <div class="infobox" data-rv>
@@ -1511,7 +1845,7 @@ textarea{min-height:7.5rem;resize:vertical}
             <h3>Mestskou dopravou</h3>
             <ul>
               <li>Najbližšia zastávka je na tej istej ulici, asi 200 metrov od predajne.</li>
-              <li>Z hlavnej stanice je to pešo približne desať minút rovnou cestou.</li>
+              <li>Do centra je to pešo približne desať minút rovnou cestou.</li>
               <li>Od zastávky vedie chodník bez schodov a bez prechodu cez cestu.</li>
             </ul>
           </div>
@@ -1538,13 +1872,13 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 11 STAROSTLIVOSŤ ================= -->
+  <!-- ================= 13 STAROSTLIVOSŤ ================= -->
   <section class="section section--dark" id="starostlivost">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>11</b> Starostlivosť</p>
+        <p class="eyebrow"><b>13</b> Starostlivosť</p>
         <h2>Ako predĺžiť životnosť kvetov doma</h2>
-        <p>Ku každej väčšej väzbe a ku každej rastline pribalíme kartičku so starostlivosťou. Toto je to najdôležitejšie z nej.</p>
+        <p>Ku každej väčšej väzbe a ku každej rastline pribalíme kartičku so starostlivosťou. Tu je jej obsah.</p>
       </div>
 
       <div class="two-col two-col--art">
@@ -1611,11 +1945,11 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 12 ČASTÉ OTÁZKY ================= -->
+  <!-- ================= 14 ČASTÉ OTÁZKY ================= -->
   <section class="section" id="otazky">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>12</b> Časté otázky</p>
+        <p class="eyebrow"><b>14</b> Časté otázky</p>
         <h2>Na čo sa nás pýtate najčastejšie</h2>
         <p>Ak tu odpoveď nenájdete, napíšte nám cez formulár nižšie alebo zavolajte počas otváracích hodín.</p>
       </div>
@@ -1633,7 +1967,7 @@ textarea{min-height:7.5rem;resize:vertical}
           <summary>Viem si objednať doručenie na konkrétnu hodinu?</summary>
           <div class="faq__answer">
             <p>Pri rozvoze v meste si viete zvoliť dvojhodinové okno, napríklad medzi 14:00 a 16:00. Presnejší čas potvrdíme telefonicky ráno v deň doručenia.</p>
-            <p>Doručenie na presnú minútu, napríklad počas obradu alebo oslavy, vieme dohodnúť individuálne pri objednávke nad 60 €.</p>
+            <p>Doručenie na presný čas, napríklad pred začiatkom obradu alebo oslavy, dohodneme telefonicky pri objednávke nad 60 €.</p>
           </div>
         </details>
 
@@ -1688,13 +2022,13 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 13 PODMIENKY A STORNO ================= -->
+  <!-- ================= 15 PODMIENKY A STORNO ================= -->
   <section class="section section--alt" id="podmienky">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>13</b> Podmienky</p>
+        <p class="eyebrow"><b>15</b> Podmienky</p>
         <h2>Storno, reklamácie a platobné podmienky</h2>
-        <p>Kvety sú tovar, ktorý sa kazí, preto máme jasne dané lehoty. Vždy sa snažíme nájsť riešenie, s ktorým odídete spokojní.</p>
+        <p>Rezané kvety sa rýchlo kazia, preto sú lehoty na zrušenie a reklamáciu kratšie ako pri bežnom tovare.</p>
       </div>
 
       <div class="cols cols--2">
@@ -1734,20 +2068,20 @@ textarea{min-height:7.5rem;resize:vertical}
             <li>Meno, adresu a telefón používame len na doručenie objednávky.</li>
             <li>Telefón adresáta slúži výhradne na dohodnutie odovzdania.</li>
             <li>Údaje neposkytujeme tretím stranám okrem kuriéra, ktorý zásielku doručuje.</li>
-            <li>Objednávky uchovávame kvôli účtovníctvu, potom ich mažeme.</li>
+            <li>Objednávky uchovávame desať rokov kvôli účtovníctvu, potom ich vymažeme.</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= 14 KARIÉRA ================= -->
+  <!-- ================= 16 KARIÉRA ================= -->
   <section class="section section--dark" id="kariera">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>14</b> Hľadáme kolegu</p>
+        <p class="eyebrow"><b>16</b> Hľadáme kolegu</p>
         <h2>Voľné miesto: predaj a väzba kvetov</h2>
-        <p>Hľadáme človeka do predajne, ktorý sa nebojí skorého vstávania a rád pracuje rukami. Skúsenosť s väzbou je výhodou, nie podmienkou. Zvyšok doučíme.</p>
+        <p>Hľadáme kolegu na väzbu a predaj v predajni. Skúsenosť s väzbou je výhodou, nie podmienkou, zaúčanie trvá približne mesiac.</p>
       </div>
 
       <div class="two-col two-col--art">
@@ -1793,11 +2127,11 @@ textarea{min-height:7.5rem;resize:vertical}
     </div>
   </section>
 
-  <!-- ================= 15 KONTAKT ================= -->
+  <!-- ================= 17 KONTAKT ================= -->
   <section class="section" id="kontakt">
     <div class="wrap">
       <div class="sec-head" data-rv>
-        <p class="eyebrow"><b>15</b> Kontakt</p>
+        <p class="eyebrow"><b>17</b> Kontakt</p>
         <h2>Napíšte nám, čo potrebujete</h2>
         <p>Svadby, smútočné väzby a pravidelný rozvoz do prevádzok riešime individuálne. Na dopyty odpovedáme počas otváracích hodín.</p>
       </div>
@@ -1834,7 +2168,7 @@ textarea{min-height:7.5rem;resize:vertical}
               <input type="checkbox" id="f-suhlas" name="suhlas">
               <span>Súhlasím so spracovaním údajov na účel odpovede na dopyt.</span>
             </label>
-            <p class="form-note">Správa príde do schránky predajne. Odpovedáme do 24 hodín, cez víkend v najbližší pracovný deň. Ak potrebujete odpoveď hneď, zavolajte na 0940 176 592.</p>
+            <p class="form-note">Správa príde do schránky predajne. Na dopyty odpovedáme do 24 hodín, cez víkend v najbližší pracovný deň, na prihlášky do práce do troch pracovných dní. Ak potrebujete odpoveď hneď, zavolajte na 0940 176 592.</p>
             <button class="btn btn--wide" type="submit">Odoslať dopyt</button>
           </form>
 
@@ -1924,12 +2258,18 @@ textarea{min-height:7.5rem;resize:vertical}
       <div>
         <h2>Kvetinárstvo Steblo</h2>
         <p>Kytice, izbové rastliny a svadobné väzby s rozvozom po meste. Vymyslený podnik. Názov, adresa, telefón, ceny aj otváracie hodiny sú ilustračné a slúžia ako ukážka webu.</p>
+        <div class="footer__cta">
+          <a class="btn btn--terra" href="#ponuka">Objednať kyticu</a>
+          <a class="tel" href="tel:+421940176592">0940 176 592</a>
+        </div>
       </div>
       <div>
         <h2>Na stránke</h2>
         <ul>
           <li><a href="#ponuka">Ponuka</a></li>
+          <li><a href="#prilezitosti">Príležitosti</a></li>
           <li><a href="#cennik">Cenník</a></li>
+          <li><a href="#recenzie">Recenzie</a></li>
           <li><a href="#sezona">Sezóna</a></li>
           <li><a href="#vazba">Ako viažeme</a></li>
           <li><a href="#objednavka">Objednávka</a></li>
@@ -2101,7 +2441,7 @@ textarea{min-height:7.5rem;resize:vertical}
         a.setAttribute("aria-current", "true");
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    ["ponuka", "cennik", "doprava", "predajna", "otazky", "kontakt"].forEach(function (id) {
+    ["ponuka", "prilezitosti", "cennik", "doprava", "predajna", "otazky", "kontakt"].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) io.observe(el);
     });
@@ -2110,21 +2450,43 @@ textarea{min-height:7.5rem;resize:vertical}
   /* ---------- filtre ponuky ---------- */
   var chips = $$(".chip");
   var prods = $$(".prod");
+  var occLinks = $$(".occ");
   var shopCount = $("#shopCount");
-  function applyFilter(val) {
+  var occNazov = {
+    narodeniny: "narodeniny",
+    vyrocie: "výročie",
+    podakovanie: "poďakovanie",
+    svadba: "svadbu",
+    smutocne: "smútočné väzby"
+  };
+
+  function applyFilter(druh, val) {
     var shown = 0;
-    chips.forEach(function (c) { c.setAttribute("aria-pressed", c.dataset.filter === val ? "true" : "false"); });
+    chips.forEach(function (c) {
+      c.setAttribute("aria-pressed", (druh === "cat" && c.dataset.filter === val) ? "true" : "false");
+    });
+    occLinks.forEach(function (a) {
+      a.classList.toggle("is-on", druh === "occ" && a.dataset.occ === val);
+    });
     prods.forEach(function (p) {
-      var hide = val !== "all" && p.dataset.cat !== val;
+      var hide;
+      if (druh === "occ") hide = (" " + (p.dataset.occ || "") + " ").indexOf(" " + val + " ") === -1;
+      else hide = val !== "all" && p.dataset.cat !== val;
       p.classList.toggle("is-hidden", hide);
       if (!hide) shown++;
     });
-    if (shopCount) shopCount.textContent = "Zobrazených " + shown + " z " + prods.length + " položiek";
+    if (shopCount) {
+      shopCount.textContent = "Zobrazených " + shown + " z " + prods.length + " položiek"
+        + (druh === "occ" ? ", príležitosť: " + (occNazov[val] || val) : "");
+    }
   }
   chips.forEach(function (c) {
-    c.addEventListener("click", function () { applyFilter(c.dataset.filter); });
+    c.addEventListener("click", function () { applyFilter("cat", c.dataset.filter); });
   });
-  applyFilter("all");
+  occLinks.forEach(function (a) {
+    a.addEventListener("click", function () { applyFilter("occ", a.dataset.occ); });
+  });
+  applyFilter("cat", "all");
 
   /* ---------- ceny variantov ---------- */
   prods.forEach(function (card) {

@@ -145,11 +145,15 @@ body{
   color:var(--muted);font-weight:600;padding:9px 0;border-bottom:1px solid transparent;
 }
 .nav a:hover{color:var(--text);border-bottom-color:var(--accent)}
-.nav .nav-tel{
-  color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:.08em;
-  border-bottom-color:rgba(210,139,109,.5);
+/* rezervacia a telefon stoja MIMO rozbalovacieho menu, aby ostali
+   viditelne na kazdej sirke obrazovky a nezmizli do tlacidla menu */
+.head-cta{display:flex;align-items:center;gap:14px;flex:none}
+.head-tel{
+  color:var(--text);text-decoration:none;font-weight:700;font-size:12.5px;
+  letter-spacing:.08em;font-variant-numeric:tabular-nums;white-space:nowrap;
+  border-bottom:1px solid rgba(210,139,109,.5);
 }
-.nav .nav-tel:hover{color:var(--accent-2);border-bottom-color:var(--accent-2)}
+.head-tel:hover{color:var(--accent-2);border-bottom-color:var(--accent-2)}
 
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
@@ -424,6 +428,26 @@ h1 .h1-lead{
   border:1px solid var(--line-2);border-radius:var(--r);padding:2px 8px;
   font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;
 }
+.dish-meta{
+  display:flex;flex-wrap:wrap;gap:2px 16px;margin-top:7px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--muted-2);font-variant-numeric:tabular-nums;
+}
+.alerg{margin-top:44px;padding-top:24px;border-top:1px solid var(--line-2)}
+.alerg h3{font-family:var(--serif);font-size:1.35rem;font-weight:600;margin-bottom:10px}
+.alerg p{font-size:14px;color:var(--muted);line-height:1.7;max-width:64ch}
+.alerg-list{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:0 32px;margin:18px 0;
+}
+.alerg-list li{
+  display:flex;gap:12px;align-items:baseline;padding:8px 0;
+  border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);line-height:1.5;
+}
+.alerg-list b{
+  color:var(--accent-2);font-weight:700;font-variant-numeric:tabular-nums;
+  min-width:22px;flex:none;
+}
 .menu-foot{
   margin-top:36px;padding-top:20px;border-top:1px solid var(--line);
   display:flex;flex-wrap:wrap;gap:8px 32px;font-size:13.5px;color:var(--muted-2);
@@ -451,6 +475,10 @@ h1 .h1-lead{
 .course span{
   display:block;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--muted-2);margin-bottom:4px;font-weight:700;
+}
+.course .al{
+  display:block;margin-top:5px;font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:700;font-variant-numeric:tabular-nums;
 }
 .daily-note{margin-top:30px;font-size:14.5px;color:var(--muted-2);max-width:62ch;line-height:1.7}
 
@@ -480,8 +508,14 @@ h1 .h1-lead{
    ============================================================ */
 .rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .rooms .art{height:100%;min-height:280px}
-.rooms .wide{grid-column:span 2}
-.rooms .wide .art{min-height:340px}
+.rooms .wide{grid-column:span 2;min-height:340px}
+
+/* ============================================================
+   MIESTA PRE FOTOGRAFIE
+   ============================================================ */
+.obraz{margin:0}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.gallery .obraz{height:100%;min-height:320px}
 
 /* ============================================================
    OTVÁRACIE HODINY
@@ -741,6 +775,11 @@ html:not(.js) .stepper button{display:none}
 .foot-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px 32px;flex:1 1 520px;max-width:620px}
 .foot-nav a{font-size:13.5px;color:var(--muted);text-decoration:none}
 .foot-nav a:hover{color:var(--accent-2)}
+.foot-cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;
+  padding-bottom:30px;margin-bottom:32px;border-bottom:1px solid var(--line);
+}
+.foot-cta .fc-text{flex:1 1 300px;max-width:52ch;font-size:14.5px;color:var(--muted);line-height:1.65}
 .foot-bottom{
   margin-top:36px;padding-top:20px;border-top:1px solid var(--line);
   display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;
@@ -775,6 +814,9 @@ html:not(.js) .stepper button{display:none}
   :root{--nav:62px}
   /* bez tohto sa tlacidlo menu nikdy nezobrazi a navigacia je na mobile nedostupna */
   .js .nav-toggle{display:flex}
+  /* zbali sa iba navigacia, rezervacia a telefon ostavaju v hlavicke */
+  .head-cta{order:2;margin-left:auto}
+  .nav-toggle{order:3;margin-left:0}
   .nav{
     position:absolute;left:0;right:0;top:100%;
     flex-direction:column;align-items:stretch;gap:0;margin-left:0;
@@ -790,8 +832,19 @@ html:not(.js) .stepper button{display:none}
   .dishes{grid-template-columns:1fr}
   .two{grid-template-columns:1fr}
 }
+/* na uzkom displeji ide hlavicka do dvoch riadkov: znacka s tlacidlom menu
+   hore, telefon a Rezervovat stol pod tym - obe ostavaju stale viditelne */
+@media (max-width:700px){
+  :root{--nav:112px}
+  .head-in{flex-wrap:wrap;row-gap:10px;padding-top:10px;padding-bottom:12px}
+  .nav-toggle{order:2;margin-left:auto}
+  .head-cta{order:3;flex:1 1 100%;margin-left:0;gap:10px}
+  .head-cta .btn{flex:1 1 auto;width:auto}
+  .head-tel{flex:0 0 auto;font-size:13px}
+}
 @media (max-width:640px){
   :root{--bar:56px}
+  .gallery{grid-template-columns:1fr}
   body{font-size:16px}
   .demobar{font-size:11.5px;gap:1px 10px;padding:6px 14px;line-height:1.35}
   .demobar .db-sep{display:none}
@@ -822,6 +875,10 @@ a.btn.btn-solid,button.btn.btn-solid{color:var(--accent-ink)}
 a.btn.btn-solid:hover,button.btn.btn-solid:hover{color:var(--accent-ink)}
 a.btn.btn-ghost,button.btn.btn-ghost{color:var(--text)}
 a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
+.head-cta a.btn.btn-solid,.foot-cta a.btn.btn-solid{color:var(--accent-ink)}
+.head-cta a.btn.btn-solid:hover,.foot-cta a.btn.btn-solid:hover{color:var(--accent-ink)}
+.head-cta a.btn.btn-ghost,.foot-cta a.btn.btn-ghost{color:var(--text)}
+.head-cta a.btn.btn-ghost:hover,.foot-cta a.btn.btn-ghost:hover{color:var(--accent-2)}
 </style>
 </head>
 <body>
@@ -856,12 +913,13 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
       <a href="#menu">Večerný lístok</a>
       <a href="#denne">Denné menu</a>
       <a href="#priestor">Priestor</a>
-      <a href="#podujatia">Podujatia</a>
-      <a href="#cennik">Cenník</a>
       <a href="#kontakt">Kontakt</a>
-      <a class="nav-tel" href="tel:+421903214760">0903 214 760</a>
-      <a class="btn btn-solid btn-sm" href="#rezervacia">Rezervovať stôl</a>
     </nav>
+
+    <div class="head-cta">
+      <a class="head-tel" href="tel:+421903214760">0903 214 760</a>
+      <a class="btn btn-solid btn-sm" href="#rezervacia">Rezervovať stôl</a>
+    </div>
   </div>
 </header>
 
@@ -981,7 +1039,6 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
             <li><b>17.00</b><span>Prvé večerné rezervácie a otvorená vinotéka</span></li>
             <li><b>21.30</b><span>Posledná objednávka v pondelok až štvrtok</span></li>
           </ol>
-          <p class="art-note">Rovnaký postup držíme každý deň, aj keď je sála plná.</p>
         </div>
       </div>
     </div>
@@ -1410,6 +1467,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
           <li>samostatný účet alebo jedna faktúra na firmu</li>
           <li>projektor a plátno v hlavnej sále</li>
           <li>menovky na stoly a rozpis sedenia podľa vášho zoznamu</li>
+          <li>záloha 10 € na osobu pri potvrdení termínu, odpočíta sa z účtu</li>
         </ul>
         <p class="card-meta">Od 15 hostí</p>
       </div>
@@ -1418,8 +1476,8 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
         <p>Osem až dvanásť hostí posadíme za spojený stôl v hlavnej sále.</p>
         <ul class="ticks">
           <li>do 12 hostí sa objednáva bežne z lístka</li>
-          <li>nad 12 hostí dohodneme menu vopred</li>
-          <li>záloha 10 € na osobu, odpočíta sa z konečného účtu</li>
+          <li>nad 12 hostí dohodneme menu vopred a berieme zálohu</li>
+          <li>do 12 hostí je zrušenie bez poplatku kedykoľvek pred termínom</li>
           <li>stôl držíme 20 minút od dohodnutého času</li>
         </ul>
         <p class="card-meta">8 až 12 hostí</p>
@@ -1574,9 +1632,8 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
           štyri hodiny denne cez obedy, pondelok až piatok. Vhodné aj popri škole.
         </p>
         <p>
-          Rozpis zmien dávame dva týždne dopredu a nemeníme ho na poslednú chvíľu.
-          Jedlo počas zmeny je samozrejmosť, dva víkendy v mesiaci máte voľné.
-          Mzdu dohodneme podľa praxe pri osobnom stretnutí.
+          Rozpis zmien dávame dva týždne dopredu. Jedlo počas zmeny máte zadarmo,
+          dva víkendy v mesiaci voľné. Mzdu dohodneme podľa praxe pri osobnom stretnutí.
         </p>
         <p>
           Ozvite sa cez <a class="tlink" href="#kontakt">kontaktný formulár</a> a do správy
@@ -1608,7 +1665,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
               <li><b>2 týž.</b><span>Rozpis zmien dopredu, bez zmien na poslednú chvíľu</span></li>
               <li><b>2×</b><span>Voľné víkendy v mesiaci</span></li>
               <li><b>14 dní</b><span>Zaškolenie pre nového človeka v sále</span></li>
-              <li><b>3 dni</b><span>Do troch pracovných dní odpovieme na prihlášku</span></li>
+              <li><b>24 hod.</b><span>Do 24 hodín odpovieme na prihlášku z formulára</span></li>
             </ol>
           </div>
         </div>
@@ -1622,7 +1679,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
     <div class="sec-head reveal">
       <p class="eyebrow"><span class="num">10</span>Postup</p>
       <h2 class="sec" id="h-postup">Ako prebieha rezervácia</h2>
-      <p class="lead">Štyri kroky od výberu termínu po prestretý stôl. Pri skupinách nad 12 hostí pribudne dohoda o menu.</p>
+      <p class="lead">Výber termínu, potvrdenie telefonicky, doladenie detailov, príchod. Pri skupinách nad 12 hostí pribudne dohoda o menu a záloha 10 € na osobu.</p>
     </div>
 
     <div class="two reveal">
@@ -1658,7 +1715,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
           <span class="st-n">04</span>
           <h3>Prídete a stôl je pripravený</h3>
           <p>
-            Stôl držíme 15 minút od dohodnutého času, pri skupinách 20 minút.
+            Stôl držíme 15 minút od dohodnutého času, od ôsmich hostí 20 minút.
             Ak meškáte viac, zavolajte a podržíme ho.
             <span class="st-when">V deň rezervácie</span>
           </p>
@@ -1857,16 +1914,16 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
     <div class="sec-head reveal">
       <p class="eyebrow"><span class="num">12</span>Podmienky</p>
       <h2 class="sec" id="h-podm">Storno podmienky a platba</h2>
-      <p class="lead">Aby nevznikali nedorozumenia, tu je všetko, čo pri rezervácii, rušení a platení platí.</p>
+      <p class="lead">Lehoty na zrušenie, výška zálohy, spôsoby platby a pravidlá pre deti a psy.</p>
     </div>
 
     <div class="three reveal">
       <div>
         <h3 class="sub-h">Rezervácia a storno</h3>
         <dl class="deflist">
-          <div><dt>Držanie stola</dt><dd>Rezervovaný stôl držíme 15 minút od dohodnutého času, pri skupinách 20 minút. Ak meškáte viac, zavolajte a stôl podržíme.</dd></div>
+          <div><dt>Držanie stola</dt><dd>Rezervovaný stôl držíme 15 minút od dohodnutého času, od ôsmich hostí 20 minút. Ak meškáte viac, zavolajte a stôl podržíme.</dd></div>
           <div><dt>Zrušenie</dt><dd>Rezerváciu do 12 hostí zrušíte bez poplatku telefonicky kedykoľvek pred termínom.</dd></div>
-          <div><dt>Skupiny nad 12 hostí</dt><dd>Zrušenie alebo zmena počtu najneskôr 48 hodín pred termínom. Neskôr účtujeme zálohu 10 € na osobu.</dd></div>
+          <div><dt>Skupiny nad 12 hostí</dt><dd>Pri potvrdení termínu berieme zálohu 10 € na osobu a odpočítame ju z účtu. Zrušiť alebo zmeniť počet hostí sa dá najneskôr 48 hodín pred termínom, neskôr záloha prepadá.</dd></div>
           <div><dt>Zmena termínu</dt><dd>Presun rezervácie na iný deň je bez poplatku, ak nám dáte vedieť aspoň v deň rezervácie do 12.00.</dd></div>
         </dl>
       </div>
@@ -2006,7 +2063,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
       <details>
         <summary>Ako dlho držíte rezervovaný stôl?</summary>
         <div class="answer">
-          <p>Pätnásť minút od dohodnutého času, pri skupinách nad osem hostí dvadsať minút. Ak viete, že budete meškať viac, zavolajte a stôl podržíme.</p>
+          <p>Pätnásť minút od dohodnutého času, od ôsmich hostí dvadsať minút. Ak viete, že budete meškať viac, zavolajte a stôl podržíme.</p>
         </div>
       </details>
 
@@ -2021,7 +2078,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
       <details>
         <summary>Ako riešite alergie?</summary>
         <div class="answer">
-          <p>Zoznam alergénov je uvedený pri každom jedle v tlačenom lístku. Pri objednávke povedzte obsluhe, čoho sa alergia týka; kuchyňa jedlo upraví alebo odporučí iné.</p>
+          <p>Čísla alergénov sú uvedené pri každom jedle vo <a class="tlink" href="#menu">večernom lístku</a> aj v dennom menu, ich <a class="tlink" href="#alergeny">zoznam nájdete pod lístkom</a>. Pri objednávke povedzte obsluhe, čoho sa alergia týka; kuchyňa jedlo upraví alebo odporučí iné.</p>
           <p>Orechy, maslo a múku používame v kuchyni denne, preto pri závažných alergiách nevieme zaručiť úplnú neprítomnosť stôp. Radšej nám to povedzte vopred pri rezervácii.</p>
         </div>
       </details>
@@ -2099,7 +2156,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
 
         <ul class="social">
           <li><b>Facebook</b><span>Reštaurácia Dubová</span></li>
-          <li><b>Instagram</b><span>@restauracia.dubova</span></li>
+          <li><b>Instagram</b><span>@restauracia_dubova</span></li>
           <li><b>Denné menu</b><span>Zverejňujeme v pondelok ráno na tejto stránke</span></li>
         </ul>
       </div>
@@ -2139,8 +2196,9 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
           </div>
         </div>
 
+        <!-- FOTO: vchod do reštaurácie z Dubovej ulice, drevený prístrešok terasy, večerné osvetlenie -->
         <div class="contact-art" style="margin-top:24px">
-          <div class="art art--warm">
+          <figure class="obraz art art--warm">
             <svg class="art-geo" viewBox="0 0 500 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
               <g stroke="#ECEFE9" stroke-opacity=".05">
                 <path d="M50 0 V400"/><path d="M100 0 V400"/><path d="M150 0 V400"/><path d="M200 0 V400"/>
@@ -2163,7 +2221,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
               </div>
               <p class="art-meta"><span>Zastávka 3 min pešo</span><span>Parkovisko 80 m</span></p>
             </div>
-          </div>
+          </figure>
         </div>
       </div>
     </div>
@@ -2222,6 +2280,11 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
 <!-- ===================== PÄTA ===================== -->
 <footer class="foot">
   <div class="wrap">
+    <div class="foot-cta">
+      <p class="fc-text">Rezervácie berieme telefonicky počas otváracích hodín, formulár na stránke funguje aj mimo nich. Bežnú rezerváciu potvrdíme do jednej hodiny.</p>
+      <a class="btn btn-solid" href="#rezervacia">Rezervovať stôl</a>
+      <a class="btn btn-ghost" href="tel:+421903214760">Zavolať 0903 214 760</a>
+    </div>
     <div class="foot-in">
       <div class="foot-id">
         <a class="brand" href="#uvod">
@@ -2240,6 +2303,7 @@ a.btn.btn-ghost:hover,button.btn.btn-ghost:hover{color:var(--accent-2)}
         <a href="#menu">Večerný lístok</a>
         <a href="#denne">Denné menu</a>
         <a href="#priestor">Priestor</a>
+        <a href="#galeria">Galéria</a>
         <a href="#hodiny">Otváracie hodiny</a>
         <a href="#podujatia">Skupinové akcie</a>
         <a href="#cennik">Cenník</a>

@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Autoservis 12 — autoservis a pneuservis</title>
-<meta name="description" content="Autoservis 12: servis osobných vozidiel a dodávok do 3,5 t, pneuservis, diagnostika, klimatizácia a príprava na STK. Cenník práce, podmienky a objednanie termínu online. Ukážkový web od apoliak.online.">
+<meta name="description" content="Autoservis 12: servis osobných vozidiel a dodávok do 3,5 t, pneuservis, diagnostika, klimatizácia a príprava na STK vo Vzorovom Meste. Cenník práce, otváracie hodiny a objednanie termínu. Ukážkový web od apoliak.online.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="author" content="Alex Poliak — apoliak.online">
 <meta name="theme-color" content="#1a1e23">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="sk_SK">
 <meta property="og:title" content="Autoservis 12 — autoservis a pneuservis (ukážkový web)">
-<meta property="og:description" content="Servis, pneuservis, diagnostika, klimatizácia a príprava na STK. Cenník práce a objednanie termínu online. Ukážkový web vymysleného podniku od Alexa Poliaka, apoliak.online.">
+<meta property="og:description" content="Servis, pneuservis, diagnostika, klimatizácia a príprava na STK. Cenník práce, otváracie hodiny a objednanie termínu. Ukážkový web vymysleného podniku od Alexa Poliaka, apoliak.online.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1e23'/%3E%3Crect x='6' y='9' width='20' height='2.5' fill='%23d9a41c'/%3E%3Crect x='6' y='15' width='20' height='2.5' fill='%23e8ebee'/%3E%3Crect x='6' y='21' width='12' height='2.5' fill='%236b7480'/%3E%3C/svg%3E">
 <style>
 /* ==========================================================================
@@ -52,7 +52,7 @@
   --focus:var(--brick);
 
   --bar-h:38px;
-  --rail-h:64px;
+  --rail-h:58px;
 
   --sans:system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --mono:ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
@@ -65,7 +65,7 @@
 html{
   overflow-x:clip;
   scroll-behavior:smooth;
-  scroll-padding-top:calc(var(--bar-h) + var(--rail-h) + 14px);
+  scroll-padding-top:calc(var(--bar-h) + var(--rail-h) + 62px);
   -webkit-text-size-adjust:100%;
 }
 body{
@@ -130,10 +130,14 @@ a:hover{color:var(--brick-strong)}
   .demo-bar{font-size:10.5px;letter-spacing:.06em;gap:6px 10px;padding:7px 12px}
   .demo-bar .bar-long{font-size:11px}
 }
+/* pásik sa na užších oknách zalamuje do dvoch riadkov, hlavička musí sadnúť pod neho */
+@media (max-width:900px){ :root{--bar-h:62px} }
 
 /* ---------- kostra: bočný stĺpec + obsah ---------- */
 .shell{display:block}
 .rail-col{background:var(--surface)}
+/* pod 1080 px sa obal vypúšťa, aby lepkavá hlavička mala kam cestovať */
+@media (max-width:1079px){ .rail-col{display:contents} }
 .rail{
   position:sticky;top:var(--bar-h);z-index:60;
   background:var(--surface);border-bottom:1px solid var(--line);
@@ -160,13 +164,33 @@ a:hover{color:var(--brick-strong)}
   font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
 }
 .nav-btn svg{width:17px;height:17px;stroke:var(--ink);fill:none;stroke-width:1.5}
-.nav-toggle:focus-visible + .nav-btn{outline:3px solid var(--focus);outline-offset:2px}
+.nav-toggle:focus-visible ~ .rail-top .nav-btn{outline:3px solid var(--focus);outline-offset:2px}
 
-.rail-nav{
-  border-top:1px solid var(--line);
-  max-height:0;overflow:hidden;visibility:hidden;
+/* hlavná akcia a telefón: napevno v hlavičke na každej šírke */
+.rail-act{
+  display:flex;align-items:stretch;gap:1px;
+  background:var(--line);border-top:1px solid var(--line);
 }
-.nav-toggle:checked ~ .rail-nav{max-height:min(74vh,640px);overflow:auto;visibility:visible}
+.rail-act > *{flex:1 1 0;min-width:0}
+.rail-tel{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  min-height:47px;padding:8px 12px;
+  background:var(--surface);color:var(--ink);text-decoration:none;
+  font-size:16.5px;font-weight:650;letter-spacing:.01em;font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.rail-tel svg{width:17px;height:17px;flex:none;stroke:var(--ink-2);fill:none;stroke-width:1.6}
+.rail-tel:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.rail-book{min-height:47px;padding:10px 14px;font-size:15.5px;border-radius:0;white-space:nowrap}
+@media (max-width:400px){
+  .rail-tel{font-size:15px;gap:7px;padding:8px 6px}
+  .rail-tel svg{width:15px;height:15px}
+  .rail-book{font-size:14px;padding:10px 6px}
+}
+
+.rail-drop{max-height:0;overflow:hidden;visibility:hidden}
+.nav-toggle:checked ~ .rail-drop{max-height:min(70vh,600px);overflow:auto;visibility:visible}
+.rail-nav{border-top:1px solid var(--line)}
 .rail-nav ol{list-style:none;margin:0;padding:0;counter-reset:n}
 .rail-nav a{
   display:flex;align-items:baseline;gap:12px;
@@ -192,12 +216,17 @@ a:hover{color:var(--brick-strong)}
   .rail-col{border-right:1px solid var(--line);align-self:stretch}
   .rail{
     position:sticky;top:var(--bar-h);border-bottom:none;
-    display:flex;flex-direction:column;min-height:calc(100vh - var(--bar-h));
+    display:flex;flex-direction:column;
+    min-height:calc(100vh - var(--bar-h));
+    max-height:calc(100vh - var(--bar-h));
   }
   .rail-top{display:block;padding:26px 28px 20px;min-height:0}
   .brand{margin:0}
-  .nav-btn,.nav-toggle{display:none}
-  .rail-nav{max-height:none;overflow:visible;visibility:visible;border-top:1px solid var(--line)}
+  .nav-btn,.nav-toggle,.rail-act{display:none}
+  .rail-drop{
+    max-height:none;overflow:visible;visibility:visible;
+    display:flex;flex-direction:column;flex:1 1 auto;min-height:0;
+  }
   .rail-nav a{padding:11px 28px;font-size:15.5px}
   .rail-foot{margin-top:auto}
 }
@@ -338,22 +367,6 @@ section{padding-block:clamp(52px,6.5vw,86px)}
 .on-dark .sec-head p,.on-dark .sub-head p{color:var(--on-dark-muted)}
 .band-dark a:not(.btn){color:var(--brick-lift)}
 .band-dark a:not(.btn):hover{color:#eebba6}
-
-/* ---------- služby ---------- */
-.svc{border-top:1px solid var(--line)}
-.svc-row{
-  display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,.58fr);gap:20px 40px;
-  padding:26px 0;border-bottom:1px solid var(--line);
-}
-.svc-row .n{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--muted);display:block;margin-bottom:8px}
-.svc-row p{margin:0 0 14px;color:var(--ink-2);font-size:16px}
-.svc-row ul{list-style:none;margin:0;padding:0}
-.svc-row li{
-  padding:7px 0 7px 18px;position:relative;border-top:1px solid var(--line);
-  font-size:15px;color:var(--ink-2);
-}
-.svc-row li::before{content:"";position:absolute;left:0;top:15px;width:8px;height:1px;background:var(--brick)}
-@media (max-width:760px){ .svc-row{grid-template-columns:1fr;gap:12px} }
 
 /* ---------- cenník ---------- */
 .pricing{background:var(--surface);border-block:1px solid var(--line)}
@@ -541,7 +554,8 @@ textarea{min-height:96px;resize:vertical}
 ::placeholder{color:#6b7480;opacity:1}
 .hint{color:var(--muted);font-size:14px;margin:8px 0 0}
 
-.summary{background:var(--surface);border:1px solid var(--line-strong);position:sticky;top:calc(var(--bar-h) + 20px)}
+.summary{background:var(--surface);border:1px solid var(--line-strong);position:sticky;top:calc(var(--bar-h) + var(--rail-h) + 60px)}
+@media (min-width:1080px){ .summary{top:calc(var(--bar-h) + 20px)} }
 @media (max-width:1000px){ .summary{position:static} }
 .summary-top{background:var(--graphite);color:var(--on-dark);padding:14px 20px}
 .summary-top h3{font-size:17px;font-weight:600}
@@ -616,9 +630,6 @@ textarea{min-height:96px;resize:vertical}
 .note-box h3{margin-bottom:10px}
 .note-box p{margin:0 0 12px;color:var(--ink-2);font-size:15.5px;max-width:76ch}
 .note-box p:last-child{margin-bottom:0}
-.social{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
-.social li{border:1px solid var(--line-strong);background:var(--surface);padding:10px 14px;font-size:15.5px}
-.social .k{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 
 /* ---------- autor ukážky (skutočné údaje) ---------- */
 .author{background:var(--graphite);color:var(--on-dark);border-top:1px solid var(--graphite-4);padding-block:clamp(46px,6vw,72px)}
@@ -655,6 +666,21 @@ footer{background:var(--deep);color:var(--on-dark-muted);padding:34px 0 44px;fon
 .foot-links{display:flex;gap:18px;flex-wrap:wrap}
 .foot-links a{color:var(--on-dark-muted);text-decoration:none;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 .foot-links a:hover{color:var(--on-dark);text-decoration:underline}
+.foot-cta{
+  width:min(1180px,100% - clamp(40px,8vw,112px));margin:0 auto 26px;padding-bottom:24px;
+  border-bottom:1px solid #2a2f36;
+  display:flex;flex-wrap:wrap;gap:16px 30px;align-items:center;justify-content:space-between;
+}
+.foot-cta p{margin:0}
+.foot-cta-k{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--on-dark-muted);margin-bottom:4px;
+}
+.foot-cta-tel{
+  font-size:clamp(24px,3vw,30px);font-weight:650;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;text-decoration:none;
+}
+.foot-cta-tel:hover{text-decoration:underline;text-underline-offset:5px}
 .foot-note{
   width:min(1180px,100% - clamp(40px,8vw,112px));margin:24px auto 0;padding-top:18px;
   border-top:1px solid #2a2f36;font-size:13.5px;
@@ -797,6 +823,113 @@ section{padding-block:clamp(64px,8vw,118px)}
 .kbox a.tel{color:var(--ink);text-decoration:none;font-weight:650;font-variant-numeric:tabular-nums}
 .kbox a.tel:hover{text-decoration:underline;text-underline-offset:3px;color:var(--ink)}
 
+/* rozmery tlačidla v hlavičke musia prebiť základné .btn (definované vyššie) */
+.rail-act .rail-book{min-height:47px;padding:10px 14px;font-size:15.5px;border-radius:0}
+@media (max-width:400px){ .rail-act .rail-book{font-size:14px;padding:10px 6px} }
+
+/* ---------- veľké karty okruhov služieb ---------- */
+.okruhy{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,296px),1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);
+}
+.okruh{background:var(--surface);display:flex;flex-direction:column;padding:26px 24px 24px}
+.okruh-ikona{
+  width:42px;height:42px;flex:none;margin-bottom:16px;
+  stroke:var(--brick);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+}
+.okruh h3{font-size:21px;margin-bottom:10px}
+.okruh > p{margin:0 0 16px;color:var(--ink-2);font-size:15.5px}
+.okruh ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.okruh li{
+  position:relative;padding:8px 0 8px 16px;border-bottom:1px solid var(--line);
+  font-size:15px;color:var(--ink-2);
+}
+.okruh li::before{content:"";position:absolute;left:0;top:16px;width:8px;height:1px;background:var(--brick)}
+.okruh-foot{margin-top:auto;padding-top:18px;display:grid;gap:12px}
+.okruh-cena{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.okruh-cena b{font-size:25px;font-weight:650;letter-spacing:-.022em;font-variant-numeric:tabular-nums}
+.okruh-cena span{
+  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+}
+.okruh-foot .btn{width:100%}
+.svc-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:clamp(24px,3vw,32px)}
+
+/* ---------- miesta pripravené pre fotografie prevádzky ---------- */
+figure.obraz{margin:0}
+.obraz-ram{
+  position:relative;overflow:hidden;isolation:isolate;border-radius:2px;
+  aspect-ratio:4/3;border:1px solid var(--graphite-4);
+  display:grid;align-content:end;gap:8px;
+  padding:clamp(20px,2.6vw,30px);
+  background:
+    radial-gradient(120% 92% at 84% 6%,rgba(217,164,28,.16) 0%,rgba(217,164,28,0) 58%),
+    linear-gradient(155deg,#2d343c 0%,#1f242a 46%,#13161a 100%);
+  color:var(--on-dark);
+}
+.obraz-ram::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(232,235,238,.05) 0 1px,transparent 1px 30px),
+    repeating-linear-gradient(90deg,rgba(232,235,238,.05) 0 1px,transparent 1px 30px);
+}
+.obraz-ram::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:var(--noise);opacity:.2;mix-blend-mode:overlay;
+}
+.obraz-ram > *{position:relative;z-index:2}
+.obraz-kick{
+  margin:0;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--on-dark-muted);
+}
+.obraz-slovo{margin:0;font-size:clamp(28px,4.4vw,44px);font-weight:650;line-height:1.04;letter-spacing:-.03em}
+.obraz-rule{width:min(220px,56%);height:1px;background:rgba(232,235,238,.22)}
+.obraz figcaption{margin-top:12px;color:var(--ink-2);font-size:14.5px;max-width:58ch}
+.on-dark .obraz figcaption{color:var(--on-dark-muted)}
+.obraz-par{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));
+  gap:clamp(20px,2.6vw,32px);margin-top:clamp(30px,3.6vw,44px);
+}
+
+/* geometria kompozícií: každý obrazový blok má vlastnú */
+.obraz-geo{position:absolute;inset:0;z-index:1;pointer-events:none}
+.geo-arc{
+  position:absolute;right:-14%;top:-30%;width:min(460px,74%);aspect-ratio:1;border-radius:50%;
+  background:repeating-radial-gradient(circle at 50% 50%,rgba(232,235,238,.12) 0 1px,transparent 1px 24px);
+}
+.geo-bars{
+  position:absolute;left:0;top:0;width:100%;height:52%;
+  background:repeating-linear-gradient(90deg,rgba(232,235,238,.09) 0 2px,transparent 2px 40px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,0) 100%);
+}
+.geo-diag{
+  position:absolute;right:0;top:0;width:62%;height:100%;
+  background:repeating-linear-gradient(-45deg,rgba(224,174,42,.26) 0 1px,transparent 1px 12px);
+  -webkit-mask-image:linear-gradient(to bottom left,#000 0%,rgba(0,0,0,0) 72%);
+  mask-image:linear-gradient(to bottom left,#000 0%,rgba(0,0,0,0) 72%);
+}
+.geo-frame{position:absolute;left:6%;top:8%;width:44%;height:46%;border:1px solid rgba(232,235,238,.16)}
+.geo-dot{position:absolute;right:12%;bottom:18%;width:78px;height:78px;border:1px solid rgba(224,174,42,.5);border-radius:50%}
+
+/* ---------- situačná mapa ---------- */
+.mapa{
+  border:1px solid var(--line-strong);background:var(--surface);
+  overflow-x:auto;overflow-y:hidden;
+}
+.mapa svg{display:block;width:100%;min-width:400px;height:auto}
+.mapa-legenda{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.mapa-legenda li{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline;
+  font-size:15px;color:var(--ink-2);
+}
+.mapa-legenda .zn{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.mapa-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(26px,3.4vw,44px);align-items:start}
+.mapa-grid > *{min-width:0}
+@media (max-width:900px){ .mapa-grid{grid-template-columns:minmax(0,1fr)} }
+
 /* ==========================================================================
    Poistka na tlačidlá: farba textu tlačidla musí prebiť pravidlá pre odkazy
    ========================================================================== */
@@ -850,6 +983,8 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
   <!-- ===================== bočný stĺpec ===================== -->
   <div class="rail-col">
     <header class="rail">
+      <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Zobraziť menu">
+
       <div class="rail-top">
         <a class="brand" href="#hero">
           <span class="brand-mark" aria-hidden="true"><span></span></span>
@@ -858,49 +993,58 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
             <small>Servis a pneuservis</small>
           </span>
         </a>
-        <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Zobraziť menu">
         <label class="nav-btn" for="navToggle">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
           Menu
         </label>
       </div>
 
-      <nav class="rail-nav" id="hlavnaNav" aria-label="Hlavná navigácia">
-        <ol>
-          <li><a href="#sluzby">Služby</a></li>
-          <li><a href="#cennik">Cenník práce</a></li>
-          <li><a href="#postup">Priebeh opravy</a></li>
-          <li><a href="#sezona">Sezónny servis</a></li>
-          <li><a href="#objednanie">Objednanie termínu</a></li>
-          <li><a href="#firmy">Firemné vozidlá</a></li>
-          <li><a href="#poukazy">Darčekové poukazy</a></li>
-          <li><a href="#podmienky">Záruka a podmienky</a></li>
-          <li><a href="#platba">Platba a fakturácia</a></li>
-          <li><a href="#storno">Zrušenie termínu</a></li>
-          <li><a href="#faq">Časté otázky</a></li>
-          <li><a href="#prevadzka">Otváracie hodiny</a></li>
-          <li><a href="#prijazd">Príjazd a parkovanie</a></li>
-          <li><a href="#dielna">Dielňa a vybavenie</a></li>
-          <li><a href="#kariera">Voľné miesta</a></li>
-          <li><a href="#kontakt">Kontaktný formulár</a></li>
-        </ol>
-      </nav>
+      <div class="rail-act">
+        <a class="rail-tel" href="tel:+421910703168" aria-label="Zavolať na 0910 703 168">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h3.6l1.8 4.5-2.2 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-2.2 4.5 1.8V18a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 5.7 2 2 0 0 1 5 3.5z"/></svg>
+          0910 703 168
+        </a>
+        <a class="btn btn-primary rail-book" href="#objednanie">Objednať termín</a>
+      </div>
 
-      <div class="rail-foot">
-        <div class="kv">
-          <span class="k">Telefón dielne</span>
-          <a class="v" href="tel:+421910703168">0910 703 168</a>
+      <div class="rail-drop">
+        <nav class="rail-nav" id="hlavnaNav" aria-label="Hlavná navigácia">
+          <ol>
+            <li><a href="#sluzby">Služby</a></li>
+            <li><a href="#cennik">Cenník práce</a></li>
+            <li><a href="#postup">Priebeh opravy</a></li>
+            <li><a href="#sezona">Sezónny servis</a></li>
+            <li><a href="#objednanie">Objednanie termínu</a></li>
+            <li><a href="#firmy">Firemné vozidlá</a></li>
+            <li><a href="#poukazy">Darčekové poukazy</a></li>
+            <li><a href="#podmienky">Záruka a podmienky</a></li>
+            <li><a href="#platba">Platba a fakturácia</a></li>
+            <li><a href="#storno">Zrušenie termínu</a></li>
+            <li><a href="#faq">Časté otázky</a></li>
+            <li><a href="#prevadzka">Hodiny, adresa a mapa</a></li>
+            <li><a href="#prijazd">Príjazd a parkovanie</a></li>
+            <li><a href="#dielna">Dielňa a vybavenie</a></li>
+            <li><a href="#kariera">Voľné miesta</a></li>
+            <li><a href="#kontakt">Kontaktný formulár</a></li>
+          </ol>
+        </nav>
+
+        <div class="rail-foot">
+          <div class="kv">
+            <span class="k">Telefón dielne</span>
+            <a class="v" href="tel:+421910703168">0910 703 168</a>
+          </div>
+          <div class="kv">
+            <span class="k">Adresa</span>
+            <span class="v">Priemyselná 12<br>Vzorové Mesto</span>
+          </div>
+          <div class="kv">
+            <span class="k">Otvorené</span>
+            <span class="v">Po – Št 7:30 – 17:00<br>Pi 7:30 – 16:00<br>So 8:00 – 12:00, Ne zatvorené</span>
+          </div>
+          <a class="btn btn-primary rail-cta" href="#objednanie">Objednať termín</a>
+          <a class="btn btn-line rail-cta" href="#kontakt">Napísať správu</a>
         </div>
-        <div class="kv">
-          <span class="k">Adresa</span>
-          <span class="v">Priemyselná 12<br>Vzorové Mesto</span>
-        </div>
-        <div class="kv">
-          <span class="k">Otvorené</span>
-          <span class="v">Po – Pi 7:30 – 17:00<br>So 8:00 – 12:00</span>
-        </div>
-        <a class="btn btn-primary rail-cta" href="#objednanie">Objednať termín</a>
-        <a class="btn btn-line rail-cta" href="#kontakt">Napísať správu</a>
       </div>
     </header>
   </div>
@@ -915,8 +1059,8 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="hero-in">
             <div class="hero-main">
               <span class="tag">Priemyselná 12, Vzorové Mesto</span>
-              <h1 id="h1">Autoservis a pneuservis pre osobné vozidlá a dodávky</h1>
-              <p class="hero-lead">Servisné prehliadky, opravy motora a podvozku, pneuservis, diagnostika a servis klimatizácie. Vozidlo najprv skontrolujeme a cenu opravy vám potvrdíme písomne pred začiatkom práce.</p>
+              <h1 id="h1">Autoservis a pneuservis vo Vzorovom Meste</h1>
+              <p class="hero-lead">Servisné prehliadky, opravy motora a podvozku, pneuservis, diagnostika, klimatizácia a príprava na STK pre osobné vozidlá a dodávky do 3,5 t. Cenu práce aj dielov dostanete písomne pred začiatkom opravy.</p>
 
               <div class="hero-cta">
                 <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
@@ -925,7 +1069,8 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
 
               <ul class="hero-points">
                 <li>Písomný odhad práce aj dielov pred začiatkom opravy</li>
-                <li>Vymenené diely odkladáme a pri prevzatí ukážeme</li>
+                <li>Záruka 24 mesiacov na každý úkon, ktorý v dielni urobíme</li>
+                <li>Vymenené diely odkladáme a pri prevzatí vozidla ukážeme</li>
                 <li>Doklad s rozpisom vykonanej práce a použitých dielov</li>
               </ul>
             </div>
@@ -939,13 +1084,14 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
               </div>
               <dl class="hp-list">
                 <div><dt>Adresa</dt><dd>Priemyselná 12<br>Vzorové Mesto</dd></div>
-                <div><dt>Otvorené</dt><dd>Po – Pi 7:30 – 17:00<br>So 8:00 – 12:00, Ne zatvorené</dd></div>
-                <div><dt>Príjem vozidiel</dt><dd>Do 45 minút pred zatvorením</dd></div>
+                <div><dt>Otvorené</dt><dd>Po – Št 7:30 – 17:00<br>Pi 7:30 – 16:00<br>So 8:00 – 12:00, Ne zatvorené</dd></div>
+                <div><dt>Obedná prestávka</dt><dd>12:00 – 13:00, vozidlá nepreberáme</dd></div>
+                <div><dt>Príjem vozidiel</dt><dd>Končí 45 minút pred zatvorením</dd></div>
                 <div><dt>Vozidlá</dt><dd>Osobné vozidlá a dodávky do 3,5 t</dd></div>
                 <div><dt>Kapacita</dt><dd>4 stojiská, jedno pre pneuservis</dd></div>
               </dl>
               <div class="hp-foot">
-                <a class="btn btn-primary" href="#objednanie">Vybrať termín online</a>
+                <a class="btn btn-primary" href="#objednanie">Vybrať termín v kalendári</a>
                 <a class="btn btn-line" href="#kontakt">Napísať cez formulár</a>
               </div>
             </aside>
@@ -966,81 +1112,104 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>01</b> Služby</span>
             <h2 id="h-sluzby">Čo robíme v dielni</h2>
-            <p>Pracujeme s osobnými vozidlami a dodávkami do 3,5 tony. Ak na opravu nemáme vybavenie, povieme vám to pri prehliadke a prehliadku neúčtujeme.</p>
+            <p>Pracujeme s osobnými vozidlami a dodávkami do 3,5 tony. Ak na opravu nemáme vybavenie, povieme vám to pri prehliadke a prehliadku neúčtujeme. Uvedené ceny sú za prácu vrátane DPH, diely sa účtujú samostatne.</p>
           </div>
 
-          <div class="svc reveal">
-            <article class="svc-row">
-              <div><span class="n">01</span><h3>Mechanický servis</h3></div>
-              <div>
-                <p>Pravidelná údržba aj väčšie opravy. Cenu dielu poviete vopred, aby ste vedeli, na čom ste.</p>
-                <ul>
-                  <li>Výmena oleja, filtrov a prevádzkových kvapalín</li>
-                  <li>Brzdy, tlmiče, výfuk, riadenie a podvozok</li>
-                  <li>Rozvody, spojka, vodné čerpadlo</li>
-                </ul>
+          <div class="okruhy reveal">
+            <article class="okruh">
+              <svg class="okruh-ikona" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v2.2M12 18.2v2.2M3.6 12h2.2M18.2 12h2.2M6.1 6.1l1.6 1.6M16.3 16.3l1.6 1.6M17.9 6.1l-1.6 1.6M7.7 16.3l-1.6 1.6"/></svg>
+              <h3>Mechanický servis</h3>
+              <p>Pravidelná údržba aj väčšie opravy. Cenu dielu vám povieme skôr, než ho objednáme.</p>
+              <ul>
+                <li>Výmena oleja, filtrov a prevádzkových kvapalín</li>
+                <li>Brzdy, tlmiče, výfuk, riadenie a podvozok</li>
+                <li>Rozvody, spojka, vodné čerpadlo</li>
+              </ul>
+              <div class="okruh-foot">
+                <p class="okruh-cena"><b>od 25 €</b><span>od 30 minút</span></p>
+                <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
               </div>
             </article>
 
-            <article class="svc-row">
-              <div><span class="n">02</span><h3>Pneuservis</h3></div>
-              <div>
-                <p>Prezutie a vyváženie robíme na počkanie, ak je voľné stojisko. Sezónne pneumatiky vám uskladníme v hale.</p>
-                <ul>
-                  <li>Prezutie a vyváženie kolies od 13 do 20 palcov</li>
-                  <li>Oprava defektu, kontrola ventilov a tlaku</li>
-                  <li>Uskladnenie kompletu na sezónu</li>
-                </ul>
+            <article class="okruh">
+              <svg class="okruh-ikona" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="3.4"/><path d="M12 3.4v5.2M12 15.4v5.2M3.4 12h5.2M15.4 12h5.2"/></svg>
+              <h3>Pneuservis</h3>
+              <p>Prezutie a vyváženie robíme na počkanie, ak je voľné stojisko. Komplet uskladníme v hale za 29 € na šesť mesiacov.</p>
+              <ul>
+                <li>Prezutie a vyváženie kolies od 13 do 20 palcov</li>
+                <li>Oprava defektu, kontrola ventilov a tlaku</li>
+                <li>Uskladnenie kompletu na sezónu</li>
+              </ul>
+              <div class="okruh-foot">
+                <p class="okruh-cena"><b>od 44 €</b><span>45 minút</span></p>
+                <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
               </div>
             </article>
 
-            <article class="svc-row">
-              <div><span class="n">03</span><h3>Diagnostika</h3></div>
-              <div>
-                <p>Načítame chybové kódy a premeriame hodnoty počas jazdy. Zápis z merania dostanete k dokladu.</p>
-                <ul>
-                  <li>Čítanie a mazanie chybových kódov</li>
-                  <li>Meranie tlaku, emisií a hodnôt v prevádzke</li>
-                  <li>Hľadanie chýb elektroinštalácie</li>
-                </ul>
+            <article class="okruh">
+              <svg class="okruh-ikona" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.4 17.4a8.6 8.6 0 1 1 17.2 0"/><path d="M12 17.4l4.2-5.6"/><circle cx="12" cy="17.4" r="1.3"/><path d="M12 5.6v1.8M5.9 8.2l1.3 1.3M18.1 8.2l-1.3 1.3"/></svg>
+              <h3>Diagnostika</h3>
+              <p>Načítame chybové kódy a hodnoty premeriame aj počas jazdy. Zápis z merania dostanete k dokladu.</p>
+              <ul>
+                <li>Čítanie a mazanie chybových kódov</li>
+                <li>Meranie tlaku, emisií a hodnôt v prevádzke</li>
+                <li>Hľadanie chýb elektroinštalácie</li>
+              </ul>
+              <div class="okruh-foot">
+                <p class="okruh-cena"><b>od 39 €</b><span>45 minút</span></p>
+                <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
               </div>
             </article>
 
-            <article class="svc-row">
-              <div><span class="n">04</span><h3>Klimatizácia</h3></div>
-              <div>
-                <p>Ak klimatizácia nechladí, najprv hľadáme netesnosť. Chladivo dopĺňame až po kontrole okruhu.</p>
-                <ul>
-                  <li>Kontrola tlaku a tesnosti okruhu</li>
-                  <li>Plnenie chladiva R134a a R1234yf</li>
-                  <li>Výmena peľového filtra a dezinfekcia</li>
-                </ul>
+            <article class="okruh">
+              <svg class="okruh-ikona" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2v17.6M4.4 7.6l15.2 8.8M19.6 7.6L4.4 16.4"/><path d="M9.5 5.1L12 7.4l2.5-2.3M9.5 18.9L12 16.6l2.5 2.3M5.1 11.2l-.9 3.2 3.2.9M18.9 11.2l.9 3.2-3.2.9"/></svg>
+              <h3>Klimatizácia</h3>
+              <p>Ak klimatizácia nechladí, najprv hľadáme netesnosť. Chladivo dopĺňame až po kontrole okruhu.</p>
+              <ul>
+                <li>Kontrola tlaku a tesnosti okruhu</li>
+                <li>Plnenie chladiva R134a a R1234yf</li>
+                <li>Výmena peľového filtra a dezinfekcia</li>
+              </ul>
+              <div class="okruh-foot">
+                <p class="okruh-cena"><b>od 29 €</b><span>40 minút</span></p>
+                <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
               </div>
             </article>
 
-            <article class="svc-row">
-              <div><span class="n">05</span><h3>Príprava na STK</h3></div>
-              <div>
-                <p>Vozidlo prejdeme podľa bodov, ktoré sa na kontrole hodnotia. Nájdené chyby opravíme po vašom súhlase.</p>
-                <ul>
-                  <li>Kontrola pred technickou a emisnou kontrolou</li>
-                  <li>Nastavenie svetiel a geometria kolies</li>
-                  <li>Odvoz na stanicu po dohode</li>
-                </ul>
+            <article class="okruh">
+              <svg class="okruh-ikona" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4.2" width="14" height="16.6"/><path d="M9 4.2V2.9h6v1.3"/><path d="M8.6 10.6l1.7 1.7 3.5-3.5M8.6 16.2h6.8"/></svg>
+              <h3>Príprava na STK</h3>
+              <p>Vozidlo prejdeme podľa bodov, ktoré sa na kontrole hodnotia. Nájdené chyby opravíme až po vašom súhlase.</p>
+              <ul>
+                <li>Kontrola pred technickou a emisnou kontrolou</li>
+                <li>Nastavenie svetiel a geometria kolies</li>
+                <li>Odvoz na stanicu po dohode</li>
+              </ul>
+              <div class="okruh-foot">
+                <p class="okruh-cena"><b>od 49 €</b><span>90 minút</span></p>
+                <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
               </div>
             </article>
 
-            <article class="svc-row">
-              <div><span class="n">06</span><h3>Elektrika a batéria</h3></div>
-              <div>
-                <p>Ak vozidlo ráno neštartuje, zmeriame batériu aj dobíjanie, kým začneme vymieňať diely.</p>
-                <ul>
-                  <li>Test batérie, alternátora a štartéra pod záťažou</li>
-                  <li>Výmena akumulátora aj s prekódovaním</li>
-                  <li>Hľadanie skratov a strát prúdu pri státí</li>
-                </ul>
+            <article class="okruh">
+              <svg class="okruh-ikona" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="7.4" width="16.4" height="9.6"/><path d="M19.2 10.5h2v3.4h-2"/><path d="M11.9 9.2l-2.3 3.6h3.2l-1.7 3"/></svg>
+              <h3>Elektrika a batéria</h3>
+              <p>Ak vozidlo ráno neštartuje, zmeriame batériu, alternátor aj štartér skôr, než začneme meniť diely.</p>
+              <ul>
+                <li>Test batérie, alternátora a štartéra pod záťažou</li>
+                <li>Výmena akumulátora aj s prekódovaním</li>
+                <li>Hľadanie skratov a strát prúdu pri státí</li>
+              </ul>
+              <div class="okruh-foot">
+                <p class="okruh-cena"><b>od 12 €</b><span>20 minút</span></p>
+                <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
               </div>
             </article>
+          </div>
+
+          <div class="svc-cta reveal">
+            <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
+            <a class="btn btn-line" href="#cennik">Celý cenník práce</a>
           </div>
         </div>
       </section>
@@ -1056,7 +1225,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
 
           <div class="tbl-wrap reveal">
             <table class="price">
-              <caption>Bežné úkony, čas v dielni a cena práce od. Ukážkové hodnoty.</caption>
+              <caption>Cena práce vrátane DPH pre osobné vozidlo. Diely a materiál sa účtujú samostatne.</caption>
               <thead>
                 <tr>
                   <th scope="col">Úkon</th>
@@ -1093,7 +1262,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
 
           <div class="tbl-wrap reveal">
             <table class="price">
-              <caption>Pneuservis podľa rozmeru kolesa. Ukážkové hodnoty.</caption>
+              <caption>Pneuservis podľa rozmeru kolesa, ceny sú vrátane DPH.</caption>
               <thead>
                 <tr>
                   <th scope="col">Položka</th>
@@ -1115,6 +1284,11 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
             </table>
           </div>
           <p class="price-note">Ak pneumatiky kupujete u nás, prezutie je zahrnuté v cene sady. Pneumatiky, ktoré si prinesiete, prezujeme rovnako, len s bežnou sadzbou podľa rozmeru.</p>
+
+          <div class="svc-cta reveal">
+            <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
+            <a class="btn btn-line" href="tel:+421910703168">Zavolať 0910 703 168</a>
+          </div>
         </div>
       </section>
 
@@ -1124,7 +1298,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>03</b> Priebeh</span>
             <h2 id="h-postup">Ako prebieha oprava</h2>
-            <p>Päť krokov od objednania po prevzatie vozidla. Postup je pri každej oprave rovnaký, aby ste vedeli, čo nasleduje a kedy sa vám ozveme.</p>
+            <p>Päť krokov od objednania po prevzatie vozidla. Postup je pri každej oprave rovnaký, aj pri drobnom úkone za 12 €.</p>
           </div>
 
           <div class="steps reveal">
@@ -1163,7 +1337,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>04</b> Sezóna</span>
             <h2 id="h-sezona">Sezónny servis počas roka</h2>
-            <p>Dielňa má cez rok dve špičky: jarné a jesenné prezúvanie. Ak viete, čo vás čaká, termín si zvládnete dohodnúť skôr, než sa čakacia doba natiahne na týždeň.</p>
+            <p>Dielňa má cez rok dve špičky: marec až apríl a október až november. V týchto mesiacoch býva pneuservis obsadený aj týždeň dopredu, preto sa v nich objednávajte skôr.</p>
           </div>
 
           <div class="season reveal">
@@ -1207,6 +1381,11 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                 <li>Ošetrenie tesnení a zámkov</li>
               </ul>
             </div>
+          </div>
+
+          <div class="svc-cta reveal">
+            <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
+            <a class="btn btn-line" href="tel:+421910703168">Zavolať 0910 703 168</a>
           </div>
         </div>
       </section>
@@ -1268,8 +1447,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                       <option>14:30</option><option>15:00</option><option>15:30</option>
                     </select>
                   </div>
-                  <p class="hint" id="hintCasy">Prečiarknuté časy sú obsadené. V nedeľu je zatvorené.</p>
-                  <p class="hint">V ostrej verzii sa dostupnosť termínov napája na diár prevádzky, takže formulár ponúka len naozaj voľné časy.</p>
+                  <p class="hint" id="hintCasy">Prečiarknuté časy sú obsadené. V nedeľu je zatvorené a od 12:00 do 13:00 je obedná prestávka.</p>
                 </div>
               </fieldset>
 
@@ -1341,13 +1519,13 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>06</b> Firmy</span>
             <h2 id="h-firmy">Firemné vozidlá a flotily</h2>
-            <p>Ak máte na starosti viac vozidiel, potrebujete držať termíny a mať prehľad o nákladoch. Toto sú podmienky, za akých servisujeme firemné vozidlá.</p>
+            <p>Podmienky pre firmy so servisnou dohodou: pevná sadzba práce na rok, zľava 5 až 15 % podľa počtu vozidiel a jedna mesačná faktúra so splatnosťou 14 dní.</p>
           </div>
 
           <div class="cards reveal">
             <div class="card">
               <span class="n">01</span>
-              <h3>Firemné vozidlá a flotily</h3>
+              <h3>Prednostné termíny a fakturácia</h3>
               <p>Pre firmy so servisnou dohodou držíme termíny prednostne, aby vozidlo stálo čo najkratšie.</p>
               <ul>
                 <li>Dohodnutá sadzba práce na celý rok</li>
@@ -1387,7 +1565,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
 
           <div class="tbl-wrap reveal">
             <table class="price">
-              <caption>Podmienky pre firemné vozidlá. Ukážkové hodnoty.</caption>
+              <caption>Termín, fakturácia a zľava podľa počtu vozidiel v dohode.</caption>
               <thead>
                 <tr>
                   <th scope="col">Počet vozidiel v dohode</th>
@@ -1418,14 +1596,14 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>07</b> Poukazy</span>
             <h2 id="h-poukazy">Darčekové poukazy</h2>
-            <p>Poukaz vystavíme na počkanie na sumu alebo na konkrétny úkon z cenníka. Hodí sa pre niekoho, kto trávi veľa času za volantom a servis odkladá.</p>
+            <p>Poukaz vystavíme na počkanie, a to na sumu alebo na konkrétny úkon z cenníka. Platí 12 mesiacov od dňa vystavenia a je prenosný.</p>
           </div>
 
           <div class="split">
             <div class="reveal">
               <div class="tbl-wrap">
                 <table class="price">
-                  <caption>Hodnoty poukazov a čo sa z nich dá pokryť. Ukážkové hodnoty.</caption>
+                  <caption>Hodnoty poukazov a úkony z cenníka, ktoré z nich pokryjete.</caption>
                   <thead>
                     <tr>
                       <th scope="col">Poukaz</th>
@@ -1459,7 +1637,6 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
 
               <div class="sub-head" style="margin-top:26px">
                 <h3>Pravidlá uplatnenia</h3>
-                <p>Aby ste vedeli, s čím rátať pri odovzdaní poukazu v dielni.</p>
               </div>
               <dl class="terms">
                 <div>
@@ -1487,7 +1664,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>08</b> Podmienky</span>
             <h2 id="h-podmienky">Záruka a podmienky opravy</h2>
-            <p>Aby ste vedeli dopredu, na čom ste. Nič z toho nie je schované v malých písmenách, platí to pre každú opravu rovnako.</p>
+            <p>Záruka 24 mesiacov na prácu, reklamácia vybavená do 30 dní a žiadna práca navyše bez vášho súhlasu. Rovnako to platí pre každú opravu.</p>
           </div>
 
           <div class="split">
@@ -1503,7 +1680,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                 </div>
                 <div>
                   <dt>Záruka na prácu a diely</dt>
-                  <dd>Na vykonanú prácu dávame záruku 24 mesiacov. Na diely platí záruka výrobcu uvedená na doklade. Ak si diel prinesiete vlastný, ručíme za montáž, nie za samotný diel.</dd>
+                  <dd>Na vykonanú prácu dávame záruku 24 mesiacov. Na diely platí záruka výrobcu, jej dĺžka je uvedená na doklade.</dd>
                 </div>
                 <div>
                   <dt>Vymenené diely</dt>
@@ -1548,7 +1725,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                 <li>Záručný list na prácu</li>
                 <li>Zápis do servisnej knihy</li>
               </ul>
-              <p class="ops-note" style="margin-top:16px">Ak si vymenené diely chcete nechať, povedzte nám to pri objednaní termínu. Inak ich po prevzatí vozidla odovzdáme na likvidáciu.</p>
+              <p class="ops-note" style="margin-top:16px">Ak si vymenené diely nevyžiadate, po prevzatí vozidla ich odovzdáme na likvidáciu.</p>
             </div>
           </div>
         </div>
@@ -1567,7 +1744,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
             <div class="reveal">
               <div class="tbl-wrap">
                 <table class="price">
-                  <caption>Kedy a ako sa platí. Ukážkové podmienky.</caption>
+                  <caption>Kedy a čím sa platí podľa druhu opravy.</caption>
                   <thead>
                     <tr>
                       <th scope="col">Situácia</th>
@@ -1590,7 +1767,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
             <div class="reveal">
               <div class="sub-head" style="margin-top:0">
                 <h3>Čím sa dá zaplatiť</h3>
-                <p>Terminál je priamo v príjme vozidiel, nemusíte hľadať bankomat.</p>
+                <p>Platobný terminál je priamo v príjme vozidiel.</p>
               </div>
               <ul class="chips">
                 <li>Hotovosť</li>
@@ -1610,10 +1787,6 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                   <dt>Zmena sumy oproti odhadu</dt>
                   <dd>Konečná suma sa od odhadu líšiť nemôže, ak ste nesúhlasili s ďalšou prácou. Každé rozšírenie opravy si potvrdzujeme telefonicky.</dd>
                 </div>
-                <div>
-                  <dt>Nevyzdvihnuté vozidlo</dt>
-                  <dd>Hotové vozidlo môžete nechať v areáli tri pracovné dni bez poplatku. Dlhšie státie si dohodneme vopred.</dd>
-                </div>
               </dl>
             </div>
           </div>
@@ -1626,7 +1799,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>10</b> Termíny</span>
             <h2 id="h-storno">Zrušenie a presun termínu</h2>
-            <p>Termín viete zrušiť aj presunúť. Čím skôr sa ozvete, tým skôr uvoľnené stojisko obsadí niekto, kto čaká na najbližší voľný čas.</p>
+            <p>Termín zrušíte aj presuniete bez poplatku, a to aj v deň opravy. Stojisko po vás držíme 30 minút.</p>
           </div>
 
           <ol class="flow reveal">
@@ -1705,7 +1878,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
             <details>
               <summary><span class="q-n">05</span>Môžem počas opravy počkať v dielni?</summary>
               <div class="a">
-                <p>Áno, pri vstupe je čakáreň s výhľadom do haly, wifi a teplým nápojom. Pri kratších úkonoch do hodiny to väčšina ľudí prečká na mieste.</p>
+                <p>Áno, pri vstupe je čakáreň s výhľadom do haly, pripojením na internet a kávou. Pri úkonoch do hodiny to väčšina ľudí prečká na mieste.</p>
                 <p>Pri opravách nad dve hodiny odporúčame vozidlo nechať a vrátiť sa. Zavoláme vám, hneď ako bude hotové.</p>
               </div>
             </details>
@@ -1752,7 +1925,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
         <div class="pad">
           <div class="sec-head reveal">
             <span class="tag"><b>12</b> Prevádzka</span>
-            <h2 id="h-prev">Otváracie hodiny a kontakt</h2>
+            <h2 id="h-prev">Otváracie hodiny, adresa a mapa</h2>
             <p>Príjem vozidiel končí 45 minút pred zatvorením. Kľúče mimo otváracích hodín viete odovzdať do schránky pri vstupe, ak sa dohodneme vopred.</p>
           </div>
 
@@ -1776,7 +1949,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                 </tbody>
               </table>
 
-              <p class="ops-note" style="margin-top:16px">Obedná prestávka je od 12:00 do 13:00, dielňa v tom čase nepreberá vozidlá. V marci a apríli a potom v októbri a novembri býva pneuservis obsadený aj týždeň dopredu, termín si preto dohodnite skôr.</p>
+              <p class="ops-note" style="margin-top:16px">Obedná prestávka je od 12:00 do 13:00, dielňa v tom čase nepreberá vozidlá. Príjem vozidiel končí 45 minút pred zatvorením.</p>
             </div>
 
             <div class="reveal">
@@ -1811,8 +1984,74 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                 </li>
               </ul>
 
-              <p class="ops-note">Adresa aj kontaktné údaje sú v tejto ukážke ilustratívne. Písomné správy vybavuje príjmový technik, odpoveď posielame do 24 hodín počas pracovných dní.</p>
+              <p class="ops-note">Písomné správy vybavuje príjmový technik, odpoveď posielame do 24 hodín počas pracovných dní.</p>
             </div>
+          </div>
+
+          <div class="sub-head reveal">
+            <h3>Kde nás nájdete</h3>
+            <p>Dielňa stojí v areáli za budovou skladu, z hlavného ťahu ju nevidno.</p>
+          </div>
+
+          <div class="mapa-grid">
+            <div class="reveal">
+              <div class="mapa">
+                <svg viewBox="0 0 560 480" role="img" aria-label="Situačný plán: z hlavného ťahu odbočíte na Priemyselnú ulicu, vjazd do areálu je medzi budovou skladu a halou autoservisu, parkovisko je pred halou.">
+                  <rect x="0" y="0" width="560" height="480" fill="#e9ebed"></rect>
+
+                  <g fill="none" stroke="#b9c0c7" stroke-width="46"><path d="M0 62H560"></path></g>
+                  <g fill="none" stroke="#ffffff" stroke-width="42"><path d="M0 62H560"></path></g>
+                  <g fill="none" stroke="#b9c0c7" stroke-width="40"><path d="M96 62V212H560"></path></g>
+                  <g fill="none" stroke="#ffffff" stroke-width="36"><path d="M96 62V212H560"></path></g>
+
+                  <text x="140" y="69" font-size="20" fill="#3a424b" font-family="system-ui, Segoe UI, Arial, sans-serif">Hlavný ťah cez mesto</text>
+                  <text x="140" y="219" font-size="20" fill="#3a424b" font-family="system-ui, Segoe UI, Arial, sans-serif">Priemyselná</text>
+
+                  <circle cx="180" cy="138" r="10" fill="#7d5f10"></circle>
+                  <text x="200" y="132" font-size="17" fill="#3a424b" font-family="system-ui, Segoe UI, Arial, sans-serif">Zastávka Priemyselná</text>
+                  <text x="200" y="156" font-size="15" fill="#5a6470" font-family="system-ui, Segoe UI, Arial, sans-serif">asi 200 m pešo</text>
+
+                  <rect x="246" y="264" width="298" height="198" fill="#dde1e5" stroke="#8c949d" stroke-dasharray="7 6"></rect>
+                  <text x="256" y="288" font-size="14" fill="#5a6470" letter-spacing="2" font-family="system-ui, Segoe UI, Arial, sans-serif">AREÁL</text>
+
+                  <rect x="262" y="300" width="104" height="134" fill="#1a1e23"></rect>
+                  <text x="314" y="372" font-size="18" fill="#e8ebee" text-anchor="middle" font-family="system-ui, Segoe UI, Arial, sans-serif">Sklad</text>
+
+                  <rect x="390" y="300" width="142" height="80" fill="#1a1e23"></rect>
+                  <rect x="390" y="300" width="6" height="80" fill="#d9a41c"></rect>
+                  <text x="406" y="332" font-size="18" fill="#e8ebee" font-family="system-ui, Segoe UI, Arial, sans-serif">Autoservis 12</text>
+                  <text x="406" y="357" font-size="15" fill="#a9b2bc" font-family="system-ui, Segoe UI, Arial, sans-serif">Priemyselná 12</text>
+
+                  <rect x="390" y="396" width="142" height="26" fill="#ffffff" stroke="#8c949d"></rect>
+                  <g stroke="#8c949d"><path d="M408 396v26M426 396v26M444 396v26M462 396v26M480 396v26M498 396v26M516 396v26"></path></g>
+                  <text x="390" y="446" font-size="16" fill="#5a6470" font-family="system-ui, Segoe UI, Arial, sans-serif">Parkovanie, 8 miest</text>
+
+                  <path d="M378 236v50" stroke="#7d5f10" stroke-width="4" fill="none"></path>
+                  <path d="M378 296l-9-16h18z" fill="#7d5f10"></path>
+                  <text x="392" y="258" font-size="17" fill="#7d5f10" font-family="system-ui, Segoe UI, Arial, sans-serif">Vjazd do areálu</text>
+                </svg>
+              </div>
+
+              <ul class="mapa-legenda">
+                <li><span class="zn">Odbočka</span><span>Z hlavného ťahu odbočte na Priemyselnú ulicu.</span></li>
+                <li><span class="zn">Vjazd</span><span>Vjazd do areálu je medzi skladom a halou.</span></li>
+                <li><span class="zn">Parkovisko</span><span>Osem vyznačených miest pred halou.</span></li>
+              </ul>
+            </div>
+
+            <!-- FOTO: budova dielne z Priemyselnej ulice, aby bol vidieť vjazd do areálu a označenie prevádzky -->
+            <figure class="obraz reveal">
+              <div class="obraz-ram">
+                <span class="obraz-geo" aria-hidden="true">
+                  <span class="geo-arc"></span>
+                  <span class="geo-diag"></span>
+                </span>
+                <p class="obraz-kick">Vjazd z Priemyselnej ulice</p>
+                <p class="obraz-slovo">Priemyselná 12</p>
+                <span class="obraz-rule" aria-hidden="true"></span>
+              </div>
+              <figcaption>Na čele haly je označenie prevádzky a číslo 12. Brána do areálu je otvorená počas otváracích hodín.</figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -1823,7 +2062,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>13</b> Príjazd</span>
             <h2 id="h-prijazd">Príjazd, parkovanie a vstup</h2>
-            <p>Dielňa stojí v areáli za skladom, preto sa oplatí vedieť, kde odbočiť a kde zaparkovať. Nižšie je všetko, čo potrebujete pred prvou návštevou.</p>
+            <p>Sem sa dostanete autom aj autobusom, parkovanie je bez poplatku a vstup je bez schodov. Kľúče viete odovzdať aj mimo otváracích hodín.</p>
           </div>
 
           <div class="cards cards-dark reveal">
@@ -1887,14 +2126,13 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>14</b> Dielňa</span>
             <h2 id="h-dielna">Dielňa, vybavenie a ľudia</h2>
-            <p>Malá prevádzka, v ktorej sa o vaše vozidlo stará ten istý človek od príjmu po odovzdanie. Nižšie je, čo máme v hale a kto čo robí.</p>
+            <p>Malá prevádzka so štyrmi stojiskami, v ktorej sa o vaše vozidlo stará ten istý človek od príjmu po odovzdanie.</p>
           </div>
 
           <div class="split">
             <div class="reveal">
               <h3 style="margin-bottom:12px">Priestor a vybavenie</h3>
               <p style="color:var(--ink-2)">Hala má štyri stojiská. Tri sú určené na mechanické opravy, štvrté je vyhradené pre pneuservis, aby prezúvanie nezdržiavalo dlhšie opravy. Sklad pneumatík je v tej istej budove, takže uskladnený komplet vieme pripraviť ešte pred vaším príchodom.</p>
-              <p style="color:var(--ink-2)">Čakáreň je hneď pri príjme a má výhľad do haly, takže na vozidlo dovidíte aj počas práce.</p>
               <ul class="chips" style="margin-top:20px">
                 <li>Dvojstĺpový zdvihák</li>
                 <li>Nožnicový zdvihák</li>
@@ -1929,16 +2167,35 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
             </div>
           </div>
 
-          <div class="sub-head reveal">
-            <h3>Kde nás nájdete inde</h3>
-            <p>Krátke oznamy o sezónnych termínoch a o tom, kedy máme voľné stojisko, dávame aj mimo webu.</p>
+          <div class="obraz-par reveal">
+            <!-- FOTO: pohľad do haly na dvojstĺpový zdvihák s vozidlom, aby bolo vidieť skutočné stojiská a vybavenie -->
+            <figure class="obraz">
+              <div class="obraz-ram">
+                <span class="obraz-geo" aria-hidden="true">
+                  <span class="geo-bars"></span>
+                  <span class="geo-dot"></span>
+                </span>
+                <p class="obraz-kick">Hala a stojiská</p>
+                <p class="obraz-slovo">4 stojiská</p>
+                <span class="obraz-rule" aria-hidden="true"></span>
+              </div>
+              <figcaption>Vjazdová brána má výšku 3,2 metra, prejde ňou aj dodávka do 3,5 t. Sklad pneumatík je v tej istej budove.</figcaption>
+            </figure>
+
+            <!-- FOTO: príjmový technik pri preberaní vozidla v príjme, aby bolo vidieť ľudí, ktorí opravu robia -->
+            <figure class="obraz">
+              <div class="obraz-ram">
+                <span class="obraz-geo" aria-hidden="true">
+                  <span class="geo-frame"></span>
+                  <span class="geo-diag"></span>
+                </span>
+                <p class="obraz-kick">Príjem vozidiel</p>
+                <p class="obraz-slovo">Jeden technik</p>
+                <span class="obraz-rule" aria-hidden="true"></span>
+              </div>
+              <figcaption>Príjem vozidiel je prvá miestnosť pri vstupe. Čakáreň vedľa neho má výhľad do haly, takže na vozidlo dovidíte aj počas práce.</figcaption>
+            </figure>
           </div>
-          <ul class="social reveal">
-            <li><span class="k">Facebook</span>Autoservis 12</li>
-            <li><span class="k">Instagram</span>autoservis12</li>
-            <li><span class="k">Telefón</span>0910 703 168</li>
-          </ul>
-          <p class="ops-note" style="margin-top:16px">Názvy profilov sú v tejto ukážke ilustratívne, rovnako ako ostatné údaje podniku.</p>
         </div>
       </section>
 
@@ -1948,7 +2205,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>15</b> Kariéra</span>
             <h2 id="h-kariera">Voľné miesta v dielni</h2>
-            <p>Sme malá prevádzka, kde jeden človek vedie opravu od príjmu po odovzdanie. Hľadáme dvoch kolegov, ktorí chcú robiť poriadne a bez naháňania.</p>
+            <p>Hľadáme dvoch kolegov do štvorstojiskovej haly: automechanika na plný úväzok a pneuservisného technika na sezónu s možnosťou ostať natrvalo.</p>
           </div>
 
           <div class="cards cards-dark reveal">
@@ -1958,8 +2215,8 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
               <p>Servisné prehliadky, brzdy, podvozok, rozvody a spojky na osobných vozidlách a dodávkach do 3,5 t.</p>
               <ul>
                 <li>Prax aspoň dva roky v servise alebo vyučenie v odbore</li>
-                <li>Pondelok až piatok, 7:30 – 17:00</li>
-                <li>Soboty len počas jarnej a jesennej špičky, za príplatok</li>
+                <li>Pondelok až štvrtok 7:30 – 17:00, piatok do 16:00</li>
+                <li>Soboty 8:00 – 12:00 v striedaní, v sezónnej špičke za príplatok</li>
                 <li>Vodičské oprávnenie skupiny B</li>
               </ul>
             </div>
@@ -1977,11 +2234,11 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
             <div class="card">
               <span class="n">Čo ponúkame</span>
               <h3>Podmienky práce</h3>
-              <p>Prevádzka je stabilná a rozrobené opravy po niekom inom nepreberáte.</p>
+              <p>Opravu vediete od príjmu po odovzdanie, rozrobené vozidlá po niekom inom nepreberáte.</p>
               <ul>
                 <li>Nástroje a pracovné oblečenie od zamestnávateľa</li>
                 <li>Zaškolenie na diagnostiku a na plničku klimatizácie</li>
-                <li>Nadčasy nevyžadujeme, dielňa zatvára o 17:00</li>
+                <li>Nadčasy nevyžadujeme, dielňa zatvára najneskôr o 17:00</li>
                 <li>Mzdu dohodneme podľa praxe pri osobnom stretnutí</li>
               </ul>
             </div>
@@ -2001,7 +2258,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
           <div class="sec-head reveal">
             <span class="tag"><b>16</b> Kontakt</span>
             <h2 id="h-kontakt">Napíšte nám správu</h2>
-            <p>Formulár použite, keď sa potrebujete na niečo spýtať, zrušiť termín alebo si vyžiadať cenu opravy. Na telefón sa nedovoláte len vtedy, keď sme pri vozidle.</p>
+            <p>Formulár použite, keď sa potrebujete na niečo spýtať, zrušiť termín alebo si vyžiadať cenu opravy. Odpovedáme do 24 hodín počas pracovných dní.</p>
           </div>
 
           <div class="kontakt-grid">
@@ -2036,7 +2293,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
                 <dl>
                   <div><dt>Telefón dielne</dt><dd><a class="tel" href="tel:+421910703168">0910 703 168</a></dd></div>
                   <div><dt>Adresa</dt><dd>Priemyselná 12<br>Vzorové Mesto</dd></div>
-                  <div><dt>Otváracie hodiny</dt><dd>Po – Pi 7:30 – 17:00<br>So 8:00 – 12:00<br>Ne zatvorené</dd></div>
+                  <div><dt>Otváracie hodiny</dt><dd>Po – Št 7:30 – 17:00<br>Pi 7:30 – 16:00<br>So 8:00 – 12:00<br>Ne zatvorené</dd></div>
                   <div><dt>Príjem vozidiel</dt><dd>Končí 45 minút pred zatvorením</dd></div>
                   <div><dt>Obedná prestávka</dt><dd>12:00 – 13:00, vozidlá nepreberáme</dd></div>
                 </dl>
@@ -2096,6 +2353,10 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
 </aside>
 
 <footer>
+  <div class="foot-cta">
+    <p><span class="foot-cta-k">Objednanie termínu a príjem vozidiel</span><a class="foot-cta-tel" href="tel:+421910703168">0910 703 168</a></p>
+    <a class="btn btn-primary" href="#objednanie">Objednať termín</a>
+  </div>
   <div class="foot-in">
     <p><strong>Autoservis 12</strong> — autoservis a pneuservis, ukážkový web</p>
     <nav class="foot-links" aria-label="Pätičková navigácia">
@@ -2106,11 +2367,11 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
       <a href="#objednanie">Objednanie</a>
       <a href="#firmy">Firmy</a>
       <a href="#poukazy">Poukazy</a>
-      <a href="#podmienky">Podmienky</a>
       <a href="#platba">Platba</a>
       <a href="#storno">Termíny</a>
+      <a href="#podmienky">Záruka a reklamácie</a>
       <a href="#faq">Otázky</a>
-      <a href="#prevadzka">Hodiny</a>
+      <a href="#prevadzka">Hodiny a mapa</a>
       <a href="#prijazd">Príjazd</a>
       <a href="#dielna">Dielňa</a>
       <a href="#kariera">Voľné miesta</a>
@@ -2120,7 +2381,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
   </div>
   <div class="foot-in" style="margin-top:22px">
     <p>Priemyselná 12, Vzorové Mesto &nbsp;·&nbsp; <a href="tel:+421910703168">0910 703 168</a></p>
-    <p>Po – Pi 7:30 – 17:00 &nbsp;·&nbsp; So 8:00 – 12:00 &nbsp;·&nbsp; Ne zatvorené</p>
+    <p>Po – Št 7:30 – 17:00 &nbsp;·&nbsp; Pi 7:30 – 16:00 &nbsp;·&nbsp; So 8:00 – 12:00 &nbsp;·&nbsp; Ne zatvorené</p>
   </div>
   <p class="foot-note">Autoservis 12 je vymyslený podnik. Táto stránka je ukážka práce, nie web existujúcej firmy. Ceny, otváracie hodiny, adresa aj kontakty podniku sú ilustratívne. Ukážku navrhol a naprogramoval Alex Poliak, <a href="tel:+421902464022">0902 464 022</a>, <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
 </footer>
@@ -2136,6 +2397,21 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
   var DNI_SKR = ["Ne","Po","Ut","St","Št","Pi","So"];
   var MESIACE = ["januára","februára","marca","apríla","mája","júna","júla","augusta","septembra","októbra","novembra","decembra"];
   var MES_SKR = ["jan","feb","mar","apr","máj","jún","júl","aug","sep","okt","nov","dec"];
+
+  /* ---------- lepkavá hlavička sadá presne pod pásik ukážky ---------- */
+  (function vyskaPasika() {
+    var bar = $(".demo-bar");
+    if (!bar) { return; }
+    function nastav() {
+      document.documentElement.style.removeProperty("--bar-h");
+      var h = Math.round(bar.getBoundingClientRect().height);
+      if (h > 0) { document.documentElement.style.setProperty("--bar-h", h + "px"); }
+    }
+    nastav();
+    window.addEventListener("resize", nastav);
+    window.addEventListener("orientationchange", nastav);
+    window.addEventListener("load", nastav);
+  })();
 
   /* ---------- jemné prechody pri scrollovaní ---------- */
   (function reveal() {
@@ -2424,7 +2700,7 @@ a.btn.btn-ink,button.btn.btn-ink,a.btn.btn-ink:hover,a.btn.btn-ink:visited{
     var hint = $("#hintCasy");
     if (hint) {
       hint.textContent = volnych
-        ? "Voľné termíny v tento deň: " + volnych + ". Prečiarknuté časy sú obsadené."
+        ? "Voľné termíny v tento deň: " + volnych + ". Prečiarknuté časy sú obsadené, od 12:00 do 13:00 je obedná prestávka."
         : "V tento deň je dielňa plne obsadená. Vyberte prosím iný deň.";
     }
   }

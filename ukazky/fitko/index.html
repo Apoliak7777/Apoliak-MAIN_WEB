@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fitness centrum Halová — posilňovňa a skupinové tréningy</title>
-<meta name="description" content="Fitness centrum Halová — ukážkový web: rozvrh skupinových tréningov s filtrovaním, cenník, vybavenie haly, doprava a parkovanie, podmienky a storno, časté otázky a rezervačný formulár. Vymyslený podnik. Ukážku navrhol a naprogramoval Alex Poliak, apoliak.online.">
+<meta name="description" content="Fitness centrum Halová, Halová 7 Bratislava — skúšobný tréning za 0 €, rozvrh 20 skupinových tréningov s filtrovaním, cenník od 5 €, otváracie hodiny po dňoch, tréneri, situačný plán s parkovaním, storno podmienky a rezervačný formulár. Vymyslený podnik. Ukážku navrhol a naprogramoval Alex Poliak, apoliak.online.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fitness centrum Halová — ukážkový web">
-<meta property="og:description" content="Rozvrh skupinových tréningov, cenník, vybavenie, doprava a rezervácia. Vymyslený podnik — ukážkový web od Alexa Poliaka, apoliak.online.">
+<meta property="og:description" content="Skúšobný tréning za 0 €, rozvrh 20 skupinových tréningov, cenník, otváracie hodiny, tréneri a parkovanie. Vymyslený podnik — ukážkový web od Alexa Poliaka, apoliak.online.">
 <meta property="og:locale" content="sk_SK">
 <meta property="og:site_name" content="Fitness centrum Halová — ukážkový web">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230D0F12'/%3E%3Crect%20x='5.5'%20y='5.5'%20width='21'%20height='21'%20fill='none'%20stroke='%237C9CBF'%20stroke-width='2'/%3E%3Crect%20x='12'%20y='12'%20width='8'%20height='8'%20fill='%237C9CBF'/%3E%3C/svg%3E">
@@ -43,7 +43,7 @@
   --text:      #E8EBEE;
   --muted:     #9BA5B0;
   --accent:    #7C9CBF;
-  --on-plate:  #B4BDC6;
+  --on-obraz:  #B4BDC6;
 
   --f-sans: system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
   --f-mono: ui-monospace,'Cascadia Mono','Segoe UI Mono','SF Mono',Consolas,'Liberation Mono',monospace;
@@ -273,9 +273,33 @@ a{color:var(--accent);}
 .btn--ghost:hover{background:transparent;color:var(--accent);border-color:var(--accent);}
 .btn--sm{font-size:13.5px;padding:8px 14px;}
 .nav .btn{flex:none;}
-/* CTA je v hlavičke dvakrát zámerne: .nav__mcta žije v rozbaľovacom menu,
-   .nav__cta v lište. Vždy je viditeľné len jedno. */
-.nav__links .nav__mcta{display:none;}
+
+/* dvojica akcií v hlavičke: telefón + hlavné tlačidlo.
+   Ostáva viditeľná na každej šírke, nikdy sa neschová do menu. */
+.nav__act{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:none;
+}
+.nav__tel{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--f-mono);
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:-.01em;
+  color:var(--text);
+  text-decoration:none;
+  white-space:nowrap;
+  border:1px solid var(--line-2);
+  border-radius:var(--r);
+  padding:9px 13px;
+}
+.nav__tel svg{flex:none;fill:var(--accent);}
+.nav__tel:hover{border-color:var(--accent);color:var(--accent);}
+.nav__tel:hover svg{fill:currentColor;}
 
 .burger{
   display:none;
@@ -341,11 +365,15 @@ a{color:var(--accent);}
 .js .reveal--d3{transition-delay:.21s;}
 
 /* ==========================================================================
-   KOMPOZIČNÉ PLOCHY
-   Vrstvy: prechod v odtieňoch značky -> vlásočnicový vzor -> vektorová
+   OBRAZOVÉ MIESTA (figure.obraz)
+   Každý <figure class="obraz"> je pripravené miesto pre fotografiu
+   prevádzky. Nad každým je HTML komentár FOTO s tým, čo tam patrí.
+   Kým fotka nie je, plochu drží vlastná kompozícia:
+   prechod v odtieňoch značky -> vlásočnicový vzor -> vektorová
    geometria -> sum -> typografia. Text sedí na najtmavšej časti plochy.
    ========================================================================== */
-.plate{
+figure{margin:0;}
+.obraz{
   position:relative;
   overflow:hidden;
   isolation:isolate;
@@ -361,34 +389,34 @@ a{color:var(--accent);}
   justify-content:flex-end;
   padding:clamp(20px,3vw,30px);
 }
-.plate__art,
-.plate__noise{
+.obraz__art,
+.obraz__noise{
   position:absolute;
   inset:0;
   pointer-events:none;
 }
-.plate__art{
+.obraz__art{
   background-image:var(--art,none);
   background-size:100% 100%;
   background-repeat:no-repeat;
 }
-.plate__noise{
+.obraz__noise{
   background-image:var(--noise);
   background-size:140px 140px;
   opacity:.05;
 }
-.plate__body{position:relative;z-index:1;}
-.plate__kicker{
+.obraz__body{position:relative;z-index:1;}
+.obraz__kicker{
   display:block;
   font-family:var(--f-mono);
   font-size:11px;
   line-height:1.7;
   letter-spacing:.16em;
   text-transform:uppercase;
-  color:var(--on-plate);
+  color:var(--on-obraz);
   margin-bottom:10px;
 }
-.plate__big{
+.obraz__big{
   margin:0;
   font-family:var(--f-mono);
   font-size:clamp(40px,6.4vw,66px);
@@ -397,88 +425,94 @@ a{color:var(--accent);}
   letter-spacing:-.03em;
   color:var(--accent);
 }
-.plate__big--txt{
+.obraz__big--txt{
   font-family:var(--f-sans);
   font-size:clamp(28px,4.2vw,44px);
   letter-spacing:-.02em;
 }
-.plate__title{
+.obraz__title{
   margin:12px 0 0;
   font-size:clamp(17px,1.8vw,19px);
+  font-weight:600;
+  line-height:1.32;
+  letter-spacing:-.008em;
   color:var(--text);
 }
-.plate__txt{
+.obraz__txt{
   margin:10px 0 0;
   font-size:14.5px;
   line-height:1.55;
-  color:var(--on-plate);
+  color:var(--on-obraz);
   max-width:44ch;
 }
-.plate__specs{
+.obraz__specs{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
   margin-top:16px;
 }
-.plate__specs li{
+.obraz__specs li{
   font-family:var(--f-mono);
   font-size:11px;
   line-height:1.7;
   letter-spacing:.06em;
-  color:var(--on-plate);
+  color:var(--on-obraz);
   border:1px solid rgba(232,235,238,.22);
   border-radius:var(--r);
   padding:2px 8px;
 }
 
 /* varianty: vzor + geometria + uhol prechodu */
-.plate--a{
+.obraz--a{
   --art:var(--art-arcs);
   --fa:152deg;
   --pat:repeating-linear-gradient(0deg,rgba(232,235,238,.035) 0 1px,transparent 1px 26px),
         repeating-linear-gradient(90deg,rgba(232,235,238,.035) 0 1px,transparent 1px 26px);
 }
-.plate--b{
+.obraz--b{
   --art:var(--art-blocks);
   --fa:118deg;
   --pat:repeating-linear-gradient(135deg,rgba(232,235,238,.045) 0 1px,transparent 1px 9px);
 }
-.plate--c{
+.obraz--c{
   --art:var(--art-rings);
   --fa:196deg;
   --pat:radial-gradient(rgba(232,235,238,.10) 1px,transparent 1.3px);
   background-size:15px 15px,auto,auto;
 }
-.plate--d{
+.obraz--d{
   --art:var(--art-split);
   --fa:96deg;
   --pat:repeating-linear-gradient(0deg,rgba(232,235,238,.035) 0 1px,transparent 1px 7px);
 }
-.plate--e{
+.obraz--e{
   --art:var(--art-bars);
   --fa:166deg;
   --pat:repeating-linear-gradient(90deg,rgba(232,235,238,.035) 0 1px,transparent 1px 44px);
 }
-.plate--f{
+.obraz--f{
   --art:var(--art-frame);
   --fa:132deg;
   --pat:repeating-linear-gradient(45deg,rgba(232,235,238,.04) 0 1px,transparent 1px 11px);
 }
 
 /* rozmery plôch */
-.plate--card{min-height:clamp(260px,26vw,320px);}
-.plate--strip{
-  min-height:112px;
-  justify-content:center;
-  padding:18px 20px;
+.obraz--card{min-height:clamp(260px,26vw,320px);}
+.obraz--wide{
+  min-height:clamp(230px,32vw,420px);
+  margin-bottom:clamp(28px,4vw,46px);
+}
+.obraz--portret{
+  min-height:clamp(190px,20vw,230px);
+  padding:20px;
   border:0;
   border-bottom:1px solid var(--line);
   border-radius:0;
 }
-.plate--addr{min-height:190px;}
+.obraz--addr{min-height:190px;}
 
-.plate__row{display:flex;align-items:baseline;gap:16px;}
-.plate__idx{
+.obraz__row{display:flex;flex-direction:column;gap:2px;}
+.obraz__idx{
   font-family:var(--f-mono);
   font-size:clamp(30px,4vw,40px);
   font-weight:700;
@@ -486,10 +520,10 @@ a{color:var(--accent);}
   letter-spacing:-.02em;
   color:var(--accent);
 }
-.plate__role{
-  font-size:14px;
-  line-height:1.45;
-  color:var(--on-plate);
+.obraz__role{
+  font-size:13px;
+  line-height:1.5;
+  color:var(--on-obraz);
   font-family:var(--f-mono);
   letter-spacing:.1em;
   text-transform:uppercase;
@@ -657,12 +691,12 @@ a{color:var(--accent);}
   line-height:1.7;
   letter-spacing:.16em;
   text-transform:uppercase;
-  color:var(--on-plate);
+  color:var(--on-obraz);
   margin-bottom:14px;
 }
 .band__txt{
   margin:0;
-  color:var(--on-plate);
+  color:var(--on-obraz);
   font-size:16px;
   max-width:52ch;
 }
@@ -959,6 +993,24 @@ tbody td{padding:15px 14px;vertical-align:top;}
 .role__body{padding:22px 22px 26px;}
 .role .label{display:block;color:var(--accent);margin-bottom:10px;}
 .role p{color:var(--muted);font-size:14.5px;margin:10px 0 0;}
+.role .role__spec{
+  margin:6px 0 0;
+  font-family:var(--f-mono);
+  font-size:12.5px;
+  line-height:1.6;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.role .role__tel{
+  margin:16px 0 0;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  font-size:14px;
+  color:var(--muted);
+}
+.role__tel a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(124,156,191,.45);}
+.role__tel a:hover{border-bottom-color:var(--accent);}
 .role ul{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
 .role ul li{
   font-family:var(--f-mono);
@@ -1024,6 +1076,63 @@ tbody td{padding:15px 14px;vertical-align:top;}
 .access h3{font-size:18px;}
 .access p{color:var(--muted);font-size:14.5px;margin:10px 0 0;}
 .access .label{display:block;color:var(--accent);margin-bottom:12px;}
+
+/* ---------- SITUAČNÝ PLÁN ---------- */
+.mapa{
+  margin-top:clamp(20px,2.6vw,28px);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  background:var(--surface);
+  padding:clamp(16px,2.4vw,26px);
+}
+.mapa__box{max-width:620px;margin-inline:auto;}
+.mapa svg{display:block;width:100%;height:auto;}
+.mapa figcaption{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.mapa figcaption b{color:var(--text);font-weight:600;}
+
+/* ---------- PÁS S HLAVNOU AKCIOU ---------- */
+.cta{
+  position:relative;
+  overflow:hidden;
+  border-block:1px solid var(--line);
+  background-color:#10141A;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(232,235,238,.03) 0 1px, transparent 1px 68px),
+    linear-gradient(76deg, rgba(124,156,191,.24) 0%, rgba(124,156,191,.06) 52%, rgba(13,15,18,.92) 100%);
+  padding-block:clamp(44px,6vw,76px);
+}
+.cta__noise{
+  position:absolute;inset:0;
+  background-image:var(--noise);
+  background-size:140px 140px;
+  opacity:.05;
+  pointer-events:none;
+}
+.cta__in{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);
+  gap:clamp(24px,4vw,52px);
+  align-items:center;
+}
+.cta .label{display:block;color:var(--on-obraz);margin-bottom:14px;}
+.cta p{
+  margin:16px 0 0;
+  color:var(--on-obraz);
+  font-size:16px;
+  line-height:1.62;
+  max-width:56ch;
+}
+.cta__act{display:flex;flex-wrap:wrap;gap:12px;}
+.cta__act .btn{flex:1 1 auto;justify-content:center;}
 
 /* ---------- PODMIENKY ---------- */
 .terms{
@@ -1114,8 +1223,8 @@ tbody td{padding:15px 14px;vertical-align:top;}
   border-bottom:1px solid var(--line);
 }
 .info__block:last-child{border-bottom:0;}
-.info__plate{padding:0;}
-.info__plate .plate{border:0;border-radius:0;}
+.info__obraz{padding:0;}
+.info__obraz .obraz{border:0;border-radius:0;}
 .info dl{margin:0;}
 .info dt{
   font-family:var(--f-mono);
@@ -1398,10 +1507,16 @@ footer{
   .author__in{grid-template-columns:1fr;}
   .author__card{max-width:560px;}
   .band__in{grid-template-columns:1fr;align-items:start;}
+  .cta__in{grid-template-columns:1fr;align-items:start;}
+  .cta__act{max-width:520px;}
 }
 @media (max-width:900px){
-  :root{--anchor:118px;}
+  /* hlavička sa láme do dvoch riadkov: značka a menu hore,
+     telefón a hlavné tlačidlo v samostatnom riadku pod tým —
+     tlačidlo tak ostáva viditeľné aj na mobile a nemizne do menu */
+  :root{--anchor:172px;}
   .facts > div{padding-inline:var(--pad);}
+  .nav__in{flex-wrap:wrap;min-height:0;padding-block:12px 0;gap:12px;}
   .nav__links{
     display:none;
     position:absolute;
@@ -1412,6 +1527,7 @@ footer{
     background:var(--bg-2);
     border-bottom:1px solid var(--line);
     padding:6px var(--pad) 20px;
+    z-index:2;
   }
   .nav__links.is-open{display:flex;}
   .nav__links a{
@@ -1419,10 +1535,16 @@ footer{
     font-size:16px;
     border-bottom:1px solid var(--line);
   }
-  .nav__links .btn{margin-top:16px;justify-content:center;}
-  .nav__links .nav__mcta{display:inline-flex;}
   .burger{display:inline-flex;}
-  .nav .nav__cta{display:none;}
+  .nav__act{
+    order:3;
+    width:100%;
+    gap:8px;
+    padding:10px 0 12px;
+    border-top:1px solid var(--line);
+  }
+  .nav__act .nav__tel{flex:1 1 40%;justify-content:center;padding-block:11px;}
+  .nav__act .btn{flex:1 1 55%;justify-content:center;padding-block:11px;}
   .job{grid-template-columns:1fr;}
 }
 @media (max-width:760px){
@@ -1474,11 +1596,14 @@ footer{
 }
 @media (max-width:560px){
   /* pásik ukážky sa tu láme do dvoch riadkov, kotvy musia zísť nižšie */
-  :root{--anchor:166px;}
+  :root{--anchor:214px;}
   .fgrid{grid-template-columns:1fr;}
   .author__cta .btn{flex:1 1 100%;}
   .hero__cta .btn{flex:1 1 100%;}
+  .cta__act .btn{flex:1 1 100%;}
   .subgrid dl{grid-template-columns:minmax(0,1fr) auto;}
+  .nav__tel{font-size:13px;padding-inline:8px;}
+  .nav__act .btn{font-size:13px;padding-inline:10px;}
 }
 @media (max-width:400px){
   .facts{grid-template-columns:minmax(0,1fr);}
@@ -1497,7 +1622,7 @@ footer{
 
 /* ---------- tlač ---------- */
 @media print{
-  .topstack,form,.burger,.filters,.c-act,.plate__art,.plate__noise,.band__noise{display:none;}
+  .topstack,form,.burger,.filters,.c-act,.obraz__art,.obraz__noise,.band__noise{display:none;}
   body{background:#fff;color:#000;}
 }
 
@@ -1536,6 +1661,19 @@ html body .btn--ghost:hover{
   color:var(--accent);
   background:transparent;
   border-color:var(--accent);
+}
+/* na ploche s prechodom (pás s hlavnou akciou) je obrys svetlejší,
+   aby druhé tlačidlo nesplynulo s podkladom; text #E8EBEE má
+   voči najsvetlejšiemu bodu prechodu (rgb 42 53 66) kontrast 9,4 : 1 */
+html body .cta__act .btn--ghost{
+  color:var(--text);
+  background:transparent;
+  border-color:rgba(232,235,238,.55);
+}
+html body .cta__act .btn--ghost:hover{
+  color:#0B0E11;
+  background:var(--text);
+  border-color:var(--text);
 }
 html body .btn{text-decoration:none;}
 </style>
@@ -1584,12 +1722,18 @@ html body .btn{text-decoration:none;}
         <a href="#vybavenie">Vybavenie</a>
         <a href="#treneri">Tréneri</a>
         <a href="#doprava">Ako k nám</a>
-        <a href="#otazky">Otázky</a>
         <a href="#kontakt">Kontakt</a>
-        <a class="btn btn--sm nav__mcta" href="#kontakt">Rezervovať tréning</a>
       </div>
 
-      <a class="btn btn--sm nav__cta" href="#kontakt">Rezervovať tréning</a>
+      <div class="nav__act">
+        <a class="nav__tel" href="tel:+421911620455">
+          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"></path>
+          </svg>
+          0911 620 455
+        </a>
+        <a class="btn btn--sm nav__cta" href="#kontakt">Skúšobný tréning</a>
+      </div>
     </div>
   </nav>
 </div>
@@ -1613,15 +1757,12 @@ html body .btn{text-decoration:none;}
 
     <div class="wrap hero__mid">
       <p class="hero__lead">
-        Hala s rozlohou 900 m² na jednom podlaží, otvorená každý deň — v pracovné dni už od piatej ráno.
-        V rozvrhu je <b>20 skupinových tréningov týždenne</b> — sila, intervaly,
-        kondícia, mobilita a box. Do posilňovne sa chodí bez rezervácie,
-        na skupinový tréning s miestom zarezervovaným vopred.
+        Hala 900 m² na jednom podlaží, v pracovné dni otvorená od 05:00 do 23:00,
+        v rozvrhu <b>20 skupinových tréningov týždenne</b> a prvý tréning s trénerom za 0 €.
       </p>
       <div class="hero__cta">
-        <a class="btn" href="#kontakt">Rezervovať skúšobný tréning</a>
-        <a class="btn btn--ghost" href="#rozvrh">Pozrieť rozvrh</a>
-        <a class="btn btn--ghost" href="tel:+421911620455">0911 620 455</a>
+        <a class="btn" href="#kontakt">Skúšobný tréning</a>
+        <a class="btn btn--ghost" href="#cennik">Cenník</a>
       </div>
     </div>
 
@@ -1660,18 +1801,18 @@ html body .btn{text-decoration:none;}
         <span class="label">Priebeh dňa</span>
         <h2>Deň v hale hodinu po hodine</h2>
         <p>
-          Ak si vyberáte čas na cvičenie, toto je rozloženie bežného pracovného dňa.
-          Cez víkend je hala pokojná celý deň okrem doobedňajších skupinových tréningov.
+          Rozloženie bežného pracovného dňa. Cez víkend býva v hale najviac ľudí
+          medzi 09:00 a 12:00, keď idú skupinové tréningy.
         </p>
       </div>
 
       <ol class="tline reveal">
         <li><span class="tline__t">05:00</span><span class="tline__d">Otvárame. Recepcia, šatne aj sauna sú od prvej minúty v prevádzke.</span></li>
-        <li><span class="tline__t">06:00</span><span class="tline__d">Prvý skupinový tréning dňa. V pondelok, stredu a piatok je silový.</span></li>
-        <li><span class="tline__t">09:00</span><span class="tline__d">Najpokojnejšie hodiny. V hale býva do dvadsať ľudí, klietky sú voľné.</span></li>
+        <li><span class="tline__t">06:00</span><span class="tline__d">Ranná sila v pondelok a v stredu, v piatok o 06:30. V utorok a vo štvrtok začína rozvrh mobilitou o 07:00.</span></li>
+        <li><span class="tline__t">09:00</span><span class="tline__d">Najpokojnejšie hodiny dňa. V hale býva do dvadsiatich ľudí a klietky sú voľné.</span></li>
         <li><span class="tline__t">12:00</span><span class="tline__d">Obedná špička. Obsadené bývajú hlavne bežecké pásy a veslá.</span></li>
-        <li><span class="tline__t">16:30</span><span class="tline__d">Začína popoludňajší blok skupinových tréningov v štúdiu a funkčnej zóne.</span></li>
-        <li><span class="tline__t">17:00</span><span class="tline__d">Najsilnejšia hodina dňa. V pondelok a stredu odporúčame rezerváciu.</span></li>
+        <li><span class="tline__t">16:30</span><span class="tline__d">Začína popoludňajší blok skupinových tréningov v štúdiu a vo funkčnej zóne.</span></li>
+        <li><span class="tline__t">17:00</span><span class="tline__d">Najviac ľudí za deň. V pondelok a v stredu sa na klietku čaká aj desať minút.</span></li>
         <li><span class="tline__t">19:30</span><span class="tline__d">Hala sa vyprázdňuje, na klietky ani lavice sa nečaká.</span></li>
         <li><span class="tline__t">21:00</span><span class="tline__d">Sauna a ľadová vaňa bez čakania. Tichá miestnosť je voľná.</span></li>
         <li><span class="tline__t">22:15</span><span class="tline__d">Posledný vstup do haly. Sauna sa vypína o 22:30.</span></li>
@@ -1687,10 +1828,23 @@ html body .btn{text-decoration:none;}
         <span class="label">Rozvrh</span>
         <h2>Rozvrh skupinových tréningov</h2>
         <p>
-          Rozvrh platí každý týždeň. Pri každom termíne je uvedený priestor a počet miest.
-          Rezervácia sa otvára sedem dní vopred. Filtrovať sa dá podľa dňa aj podľa typu tréningu.
+          Rozvrh platí každý týždeň. Pri každom termíne je uvedený priestor a počet miest,
+          rezervácia sa otvára sedem dní vopred. Tréning je v cene členstva za 55 € mesačne
+          alebo za 3 € k jednorazovému vstupu.
         </p>
       </div>
+
+      <!-- FOTO: skupinový tréning vo funkčnej zóne, celá skupina v pohybe, tréner v popredí koriguje techniku, široký záber na celú šírku sekcie -->
+      <figure class="obraz obraz--a obraz--wide reveal">
+        <span class="obraz__art" aria-hidden="true"></span>
+        <span class="obraz__noise" aria-hidden="true"></span>
+        <figcaption class="obraz__body">
+          <span class="obraz__kicker">Skupinové tréningy</span>
+          <p class="obraz__big">20</p>
+          <p class="obraz__title">termínov týždenne v piatich typoch tréningu</p>
+          <p class="obraz__txt">Sila 6 termínov, kondícia 4, mobilita 4, intervaly 3, box 3. Kapacita skupiny je od 8 do 20 miest.</p>
+        </figcaption>
+      </figure>
 
       <div class="filters">
         <div class="filters__group" role="group" aria-label="Filter podľa dňa">
@@ -1955,9 +2109,9 @@ html body .btn{text-decoration:none;}
         <span class="label">Cenník</span>
         <h2>Cenník vstupov a členstiev</h2>
         <p>
-          Ceny sú konečné, vrátane DPH. Bez zápisného a bez viazanosti.
-          Mesačné členstvo si viete pozastaviť počas choroby alebo dovolenky.
-          V každom vstupe je sauna aj ľadová vaňa.
+          Ceny sú konečné vrátane DPH, zápisné neúčtujeme a členstvo je bez viazanosti.
+          Mesačné členstvo sa dá pozastaviť až na 30 dní v roku. V každom vstupe
+          je sauna aj ľadová vaňa.
         </p>
       </div>
 
@@ -2061,7 +2215,8 @@ html body .btn{text-decoration:none;}
             <dt>Požičanie uteráka</dt><dd>1 €</dd>
             <dt>Dlhodobá skrinka</dt><dd>4 € / mesiac</dd>
             <dt>Skupinový tréning k jednorazovému vstupu</dt><dd>3 €</dd>
-            <dt>Prenájom štúdia pre uzavretú skupinu</dt><dd>90 € / 60 min</dd>
+            <dt>Prenájom štúdia pre skupinu bez trénera</dt><dd>60 € / 60 min</dd>
+            <dt>Prenájom štúdia pre skupinu s trénerom</dt><dd>90 € / 60 min</dd>
             <dt>Darčekový poukaz</dt><dd>od 20 €</dd>
           </dl>
         </div>
@@ -2071,27 +2226,27 @@ html body .btn{text-decoration:none;}
             <li>Fínska sauna a ľadová vaňa</li>
             <li>Skrinka na jeden deň a sprchy</li>
             <li>Pitná voda a wifi v celej hale</li>
-            <li>Poradenstvo trénera pri technike cviku</li>
+            <li>Rada trénera pri technike cviku od 09:00 do 20:00</li>
             <li>Parkovanie pred halou počas tréningu</li>
           </ul>
         </div>
         <div>
-          <h3>Sezónne informácie</h3>
+          <h3>Sviatky a zmeny</h3>
           <ul class="tick">
-            <li>V júli a auguste sa ranné tréningy posúvajú na 06:30</li>
-            <li>Od septembra do mája pribúda sobotný okruh o 08:00</li>
             <li>Počas štátnych sviatkov je otvorené 08:00 – 20:00</li>
             <li>24. a 25. decembra a 1. januára je zatvorené</li>
             <li>Zmeny v rozvrhu visia na recepcii týždeň vopred</li>
+            <li>Posledný vstup je 45 minút pred zatvorením</li>
+            <li>Cenník platí od 1. januára, ceny meníme raz ročne</li>
           </ul>
         </div>
       </div>
 
       <p class="price__note">
-        <strong>Platba:</strong> kartou alebo v hotovosti na recepcii, firemné členstvá na faktúru
-        so splatnosťou 14 dní. Členstvo sa platí na začiatku obdobia a neobnovuje sa automaticky.
-        Ceny sú konečné vrátane DPH, zápisné neúčtujeme. Podrobnosti o storne a pozastavení
-        členstva nájdete v <a href="#podmienky">podmienkach</a>.
+        <strong>Platba:</strong> kartou (Visa, Mastercard) alebo v hotovosti na recepcii,
+        firemné členstvá na faktúru so splatnosťou 14 dní. Členstvo sa platí na začiatku
+        obdobia a neobnovuje sa automaticky — tri dni pred koncom pošleme pripomienku SMS správou.
+        Podrobnosti o storne a pozastavení členstva nájdete v <a href="#podmienky">podmienkach</a>.
       </p>
     </div>
   </section>
@@ -2105,8 +2260,8 @@ html body .btn{text-decoration:none;}
         <p class="band__big">05:00 — 23:00</p>
       </div>
       <p class="band__txt">
-        <strong>V sobotu 07:00 — 21:00, v nedeľu 08:00 — 20:00.</strong> Recepcia s trénerom
-        je v hale každý deň od 09:00 do 20:00, posledný vstup je 45 minút pred zatvorením
+        <strong>V sobotu 07:00 — 21:00, v nedeľu 08:00 — 20:00.</strong> Tréner je v hale
+        každý deň od 09:00 do 20:00, posledný vstup je 45 minút pred zatvorením
         a sauna sa vypína pol hodiny pred koncom.
       </p>
     </div>
@@ -2123,6 +2278,18 @@ html body .btn{text-decoration:none;}
           je gumová v hrúbke 30 mm. Medzi zónami nie je schod ani prah.
         </p>
       </div>
+
+      <!-- FOTO: široký záber do haly od vchodu — v popredí klietky a plošiny silovej zóny, za nimi kardio zóna, vidieť celú šírku priestoru a svetlá pod stropom -->
+      <figure class="obraz obraz--e obraz--wide reveal">
+        <span class="obraz__art" aria-hidden="true"></span>
+        <span class="obraz__noise" aria-hidden="true"></span>
+        <figcaption class="obraz__body">
+          <span class="obraz__kicker">Pohľad do haly</span>
+          <p class="obraz__big">900 m²</p>
+          <p class="obraz__title">šesť zón na jednom podlaží, bez schodov a prahov</p>
+          <p class="obraz__txt">14 klietok, 6 plošín, 18 kardio strojov, dráha 20 m, ring 5 × 5 m a jednoručky od 2 do 60 kg.</p>
+        </figcaption>
+      </figure>
 
       <ul class="zones reveal">
         <li>
@@ -2178,52 +2345,56 @@ html body .btn{text-decoration:none;}
       </div>
 
       <div class="spaces">
-        <article class="plate plate--b plate--card reveal">
-          <span class="plate__art" aria-hidden="true"></span>
-          <span class="plate__noise" aria-hidden="true"></span>
-          <div class="plate__body">
-            <span class="plate__kicker">Šatne</span>
-            <p class="plate__big">120</p>
-            <h3 class="plate__title">skriniek v dvoch šatniach</h3>
-            <p class="plate__txt">Osem spŕch v každej šatni, lavice, sušiče a dve samostatné kabínky na prezlečenie.</p>
-            <ul class="plate__specs"><li>Sprchy 8 + 8</li><li>Kabínky 2</li></ul>
-          </div>
-        </article>
+        <!-- FOTO: pohľad do šatne v celej dĺžke — rady skriniek, lavica v strede, otvorené dvere do sprchovej časti -->
+        <figure class="obraz obraz--b obraz--card reveal">
+          <span class="obraz__art" aria-hidden="true"></span>
+          <span class="obraz__noise" aria-hidden="true"></span>
+          <figcaption class="obraz__body">
+            <span class="obraz__kicker">Šatne</span>
+            <p class="obraz__big">120</p>
+            <p class="obraz__title">skriniek v dvoch šatniach</p>
+            <p class="obraz__txt">Osem spŕch v každej šatni, lavice, sušiče a dve samostatné kabínky na prezlečenie.</p>
+            <ul class="obraz__specs"><li>Sprchy 8 + 8</li><li>Kabínky 2</li></ul>
+          </figcaption>
+        </figure>
 
-        <article class="plate plate--c plate--card reveal reveal--d1">
-          <span class="plate__art" aria-hidden="true"></span>
-          <span class="plate__noise" aria-hidden="true"></span>
-          <div class="plate__body">
-            <span class="plate__kicker">Regenerácia</span>
-            <p class="plate__big">90 °C</p>
-            <h3 class="plate__title">fínska sauna a ľadová vaňa</h3>
-            <p class="plate__txt">Sauna pre dvanásť ľudí, vaňa s vodou okolo ôsmich stupňov, oddychová lavica pri okne.</p>
-            <ul class="plate__specs"><li>Vaňa 8 °C</li><li>12 miest</li></ul>
-          </div>
-        </article>
+        <!-- FOTO: interiér fínskej sauny s lavicami z dreva a vedľa nej ľadová vaňa, záber od dverí -->
+        <figure class="obraz obraz--c obraz--card reveal reveal--d1">
+          <span class="obraz__art" aria-hidden="true"></span>
+          <span class="obraz__noise" aria-hidden="true"></span>
+          <figcaption class="obraz__body">
+            <span class="obraz__kicker">Regenerácia</span>
+            <p class="obraz__big">90 °C</p>
+            <p class="obraz__title">fínska sauna a ľadová vaňa</p>
+            <p class="obraz__txt">Sauna pre dvanásť ľudí, vaňa s vodou okolo ôsmich stupňov, oddychová lavica pri okne.</p>
+            <ul class="obraz__specs"><li>Vaňa 8 °C</li><li>12 miest</li></ul>
+          </figcaption>
+        </figure>
 
-        <article class="plate plate--f plate--card reveal">
-          <span class="plate__art" aria-hidden="true"></span>
-          <span class="plate__noise" aria-hidden="true"></span>
-          <div class="plate__body">
-            <span class="plate__kicker">Recepcia</span>
-            <p class="plate__big plate__big--txt">Káva, voda,<br>uterák</p>
-            <h3 class="plate__title">otvorená od 9:00 do 20:00</h3>
-            <p class="plate__txt">Predaj permanentiek a poukazov, požičanie uteráka za euro, pitná voda zdarma.</p>
-          </div>
-        </article>
+        <!-- FOTO: recepčný pult s obsluhou, v pozadí vstup do haly a tabuľa s rozvrhom -->
+        <figure class="obraz obraz--f obraz--card reveal">
+          <span class="obraz__art" aria-hidden="true"></span>
+          <span class="obraz__noise" aria-hidden="true"></span>
+          <figcaption class="obraz__body">
+            <span class="obraz__kicker">Recepcia</span>
+            <p class="obraz__big obraz__big--txt">Káva, voda,<br>uterák</p>
+            <p class="obraz__title">obsadená počas celých otváracích hodín</p>
+            <p class="obraz__txt">Predaj permanentiek a poukazov, požičanie uteráka za euro, pitná voda zdarma.</p>
+          </figcaption>
+        </figure>
 
-        <article class="plate plate--d plate--card reveal reveal--d1">
-          <span class="plate__art" aria-hidden="true"></span>
-          <span class="plate__noise" aria-hidden="true"></span>
-          <div class="plate__body">
-            <span class="plate__kicker">Tichá miestnosť</span>
-            <p class="plate__big">0 dB</p>
-            <h3 class="plate__title">bez hudby a bez strojov</h3>
-            <p class="plate__txt">Podložky, valce a gumy na pretiahnutie po tréningu. Vojsť sa dá kedykoľvek počas otváracích hodín.</p>
-            <ul class="plate__specs"><li>Valce</li><li>Podložky</li><li>Gumy</li></ul>
-          </div>
-        </article>
+        <!-- FOTO: tichá miestnosť s podložkami a valcami na zemi, tlmené svetlo, bez strojov -->
+        <figure class="obraz obraz--d obraz--card reveal reveal--d1">
+          <span class="obraz__art" aria-hidden="true"></span>
+          <span class="obraz__noise" aria-hidden="true"></span>
+          <figcaption class="obraz__body">
+            <span class="obraz__kicker">Tichá miestnosť</span>
+            <p class="obraz__big">40 m²</p>
+            <p class="obraz__title">bez hudby a bez strojov</p>
+            <p class="obraz__txt">Podložky, valce a gumy na pretiahnutie po tréningu. Vojsť sa dá kedykoľvek počas otváracích hodín.</p>
+            <ul class="obraz__specs"><li>Valce</li><li>Podložky</li><li>Gumy</li></ul>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -2235,8 +2406,9 @@ html body .btn{text-decoration:none;}
         <span class="label">Prvá návšteva</span>
         <h2>Ako prebieha prvá návšteva</h2>
         <p>
-          Nemusíte nič vopred platiť ani nič podpisovať. Stačí prísť pätnásť minút
-          pred dohodnutým časom a priniesť si obuv na prezutie.
+          Skúšobný tréning stojí 0 € a nič sa pri ňom neplatí ani nepodpisuje.
+          Príďte pätnásť minút pred dohodnutým časom, prineste si čistú športovú obuv
+          a uterák — uterák požičiavame za 1 €.
         </p>
       </div>
 
@@ -2251,11 +2423,11 @@ html body .btn{text-decoration:none;}
         </li>
         <li>
           <h3>Skúšobný tréning</h3>
-          <p>Zdarma. Buď skupinový podľa rozvrhu, alebo individuálne prejdenie techniky základných cvikov.</p>
+          <p>Za 0 €. Buď skupinový tréning podľa rozvrhu, alebo prejdenie techniky drepu, tlaku a mŕtveho ťahu s trénerom.</p>
         </li>
         <li>
           <h3>Rozhodnete sa</h3>
-          <p>Vyberiete si jednorazový vstup, permanentku alebo členstvo. Bez viazanosti a bez zápisného.</p>
+          <p>Vyberiete si jednorazový vstup za 7 €, desať vstupov za 60 € alebo členstvo od 29 € mesačne. Bez viazanosti a bez zápisného.</p>
         </li>
       </ol>
     </div>
@@ -2268,77 +2440,85 @@ html body .btn{text-decoration:none;}
         <span class="label">Tréneri</span>
         <h2>Tréneri v hale</h2>
         <p>
-          Počas otváracích hodín je v hale aspoň jeden tréner. Poradí vám s technikou
-          aj bez objednania. Osobný tréning si dohodnete na recepcii alebo telefonicky.
+          Od 09:00 do 20:00 je v hale tréner a s technikou cviku poradí aj bez objednania.
+          Osobný tréning stojí 28 € za hodinu, dohodnete si ho na recepcii alebo na čísle 0911 620 455.
         </p>
       </div>
 
       <div class="roles reveal">
         <article class="role">
-          <div class="plate plate--e plate--strip">
-            <span class="plate__art" aria-hidden="true"></span>
-            <span class="plate__noise" aria-hidden="true"></span>
-            <div class="plate__body plate__row">
-              <span class="plate__idx">01</span>
-              <span class="plate__role">Sila</span>
-            </div>
-          </div>
+          <!-- FOTO: portrét Mareka Bartoša v silovej zóne pri klietke, po pás, pohľad do objektívu -->
+          <figure class="obraz obraz--e obraz--portret">
+            <span class="obraz__art" aria-hidden="true"></span>
+            <span class="obraz__noise" aria-hidden="true"></span>
+            <figcaption class="obraz__body obraz__row">
+              <span class="obraz__idx">6</span>
+              <span class="obraz__role">tréningov v rozvrhu</span>
+            </figcaption>
+          </figure>
           <div class="role__body">
-            <span class="label">Pozícia 01</span>
-            <h3>Tréner silového tréningu</h3>
-            <p>Vedie silové tréningy a nácvik techniky. Zostaví plán na osem týždňov a upraví ho podľa vášho postupu.</p>
-            <ul><li>Drep</li><li>Mŕtvy ťah</li><li>Tlak</li></ul>
+            <h3>Marek Bartoš</h3>
+            <p class="role__spec">Silový tréning a technika</p>
+            <p>Vedie Rannú silu v pondelok, v stredu a v piatok, techniku mŕtveho ťahu v utorok, techniku drepu vo štvrtok a sobotný silový test. Zostaví plán na osem týždňov a po ôsmich týždňoch ho prepíše podľa nameraných čísel.</p>
+            <ul><li>Drep</li><li>Mŕtvy ťah</li><li>Tlak na lavičke</li></ul>
+            <p class="role__tel">Osobný tréning 28 € / hodina · <a href="tel:+421911620455">0911 620 455</a></p>
           </div>
         </article>
 
         <article class="role">
-          <div class="plate plate--b plate--strip">
-            <span class="plate__art" aria-hidden="true"></span>
-            <span class="plate__noise" aria-hidden="true"></span>
-            <div class="plate__body plate__row">
-              <span class="plate__idx">02</span>
-              <span class="plate__role">Kondícia</span>
-            </div>
-          </div>
+          <!-- FOTO: portrét Lucie Hruškovej vo funkčnej zóne pri veslovacom trenažéri, po pás -->
+          <figure class="obraz obraz--b obraz--portret">
+            <span class="obraz__art" aria-hidden="true"></span>
+            <span class="obraz__noise" aria-hidden="true"></span>
+            <figcaption class="obraz__body obraz__row">
+              <span class="obraz__idx">7</span>
+              <span class="obraz__role">tréningov v rozvrhu</span>
+            </figcaption>
+          </figure>
           <div class="role__body">
-            <span class="label">Pozícia 02</span>
-            <h3>Kondičný tréner</h3>
-            <p>Stavia okruhy, intervaly a testy vytrvalosti. Tempo skupiny upraví podľa úrovne prihlásených.</p>
+            <h3>Lucia Hrušková</h3>
+            <p class="role__spec">Intervaly a kondícia</p>
+            <p>Vedie všetky tri intervalové tréningy, kondičný okruh v utorok, kettlebell vo štvrtok, sobotný okruh vo dvojiciach a nedeľnú vytrvalosť. Na začiatku každého tréningu ukáže ľahšiu aj ťažšiu verziu cviku.</p>
             <ul><li>Intervaly</li><li>Kettlebell</li><li>Veslo</li></ul>
+            <p class="role__tel">Osobný tréning 28 € / hodina · <a href="tel:+421911620455">0911 620 455</a></p>
           </div>
         </article>
 
         <article class="role">
-          <div class="plate plate--c plate--strip">
-            <span class="plate__art" aria-hidden="true"></span>
-            <span class="plate__noise" aria-hidden="true"></span>
-            <div class="plate__body plate__row">
-              <span class="plate__idx">03</span>
-              <span class="plate__role">Mobilita</span>
-            </div>
-          </div>
+          <!-- FOTO: portrét Zuzany Krajčovej v štúdiu na podložke, po pás -->
+          <figure class="obraz obraz--c obraz--portret">
+            <span class="obraz__art" aria-hidden="true"></span>
+            <span class="obraz__noise" aria-hidden="true"></span>
+            <figcaption class="obraz__body obraz__row">
+              <span class="obraz__idx">4</span>
+              <span class="obraz__role">tréningov v rozvrhu</span>
+            </figcaption>
+          </figure>
           <div class="role__body">
-            <span class="label">Pozícia 03</span>
-            <h3>Inštruktor mobility</h3>
-            <p>Vedie tréningy zamerané na rozsah pohybu a dych. Odporúčame ich ľuďom so sedavou prácou.</p>
-            <ul><li>Bedrá</li><li>Ramená</li><li>Dych</li></ul>
+            <h3>Zuzana Krajčová</h3>
+            <p class="role__spec">Mobilita a dych</p>
+            <p>Vedie mobilitu v utorok a vo štvrtok o 07:00, sobotnú mobilitu s valcom a nedeľnú regeneračnú mobilitu. Tréningy sú vhodné aj pre úplných začiatočníkov a pre ľudí so sedavou prácou.</p>
+            <ul><li>Bedrá</li><li>Ramená</li><li>Hrudná chrbtica</li></ul>
+            <p class="role__tel">Osobný tréning 28 € / hodina · <a href="tel:+421911620455">0911 620 455</a></p>
           </div>
         </article>
 
         <article class="role">
-          <div class="plate plate--d plate--strip">
-            <span class="plate__art" aria-hidden="true"></span>
-            <span class="plate__noise" aria-hidden="true"></span>
-            <div class="plate__body plate__row">
-              <span class="plate__idx">04</span>
-              <span class="plate__role">Box</span>
-            </div>
-          </div>
+          <!-- FOTO: portrét Tomáša Viciana v ringu pri vreciach, po pás -->
+          <figure class="obraz obraz--d obraz--portret">
+            <span class="obraz__art" aria-hidden="true"></span>
+            <span class="obraz__noise" aria-hidden="true"></span>
+            <figcaption class="obraz__body obraz__row">
+              <span class="obraz__idx">3</span>
+              <span class="obraz__role">tréningov v rozvrhu</span>
+            </figcaption>
+          </figure>
           <div class="role__body">
-            <span class="label">Pozícia 04</span>
-            <h3>Tréner boxu</h3>
-            <p>Učí postoj, prácu nôh a údery. Do sparingu púšťa až po zvládnutí obrany.</p>
-            <ul><li>Technika</li><li>Práca nôh</li><li>Sparing</li></ul>
+            <h3>Tomáš Vician</h3>
+            <p class="role__spec">Box</p>
+            <p>Vedie box pre začiatočníkov v pondelok, riadený sparing v stredu a boxerskú kondíciu v piatok. Do sparingu púšťa až po zvládnutí obrany, na tréningy požičiava rukavice.</p>
+            <ul><li>Postoj</li><li>Práca nôh</li><li>Sparing</li></ul>
+            <p class="role__tel">Osobný tréning 28 € / hodina · <a href="tel:+421911620455">0911 620 455</a></p>
           </div>
         </article>
       </div>
@@ -2652,14 +2832,14 @@ html body .btn{text-decoration:none;}
 
       <div class="contact">
         <div class="info">
-          <div class="info__block info__plate">
-            <div class="plate plate--c plate--addr">
-              <span class="plate__art" aria-hidden="true"></span>
-              <span class="plate__noise" aria-hidden="true"></span>
-              <div class="plate__body">
-                <span class="plate__kicker">Nájdete nás</span>
-                <p class="plate__big plate__big--txt">Halová 7</p>
-                <p class="plate__txt">831 04 Bratislava · parkovisko pred halou · zastávka 200 metrov · vchod bez schodu</p>
+          <div class="info__block info__obraz">
+            <div class="obraz obraz--c obraz--addr">
+              <span class="obraz__art" aria-hidden="true"></span>
+              <span class="obraz__noise" aria-hidden="true"></span>
+              <div class="obraz__body">
+                <span class="obraz__kicker">Nájdete nás</span>
+                <p class="obraz__big obraz__big--txt">Halová 7</p>
+                <p class="obraz__txt">831 04 Bratislava · parkovisko pred halou · zastávka 200 metrov · vchod bez schodu</p>
               </div>
             </div>
           </div>

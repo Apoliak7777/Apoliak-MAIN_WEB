@@ -181,8 +181,8 @@ section{scroll-margin-top:var(--stick,148px)}
 .demobar a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
 
 .site-head{background:var(--deep);border-bottom:1px solid var(--hair);position:relative}
-.head__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink-strong)}
+.head__in{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink-strong);margin-right:auto}
 .brand__mark{
   width:34px;height:34px;flex:none;border:1px solid var(--brass);
   display:grid;place-items:center;font-family:var(--mono);font-weight:700;color:var(--brass);font-size:1rem;
@@ -195,9 +195,20 @@ section{scroll-margin-top:var(--stick,148px)}
   font-size:.92rem;padding:9px 11px;border-radius:2px;
 }
 .nav-list a:hover{color:var(--brass)}
-.nav-cta a{border:1px solid var(--brass);color:var(--brass);font-weight:700;margin-left:10px}
-.nav-cta a:hover{background:var(--brass);color:var(--on-brass)}
 .nav-toggle{display:none}
+
+/* dominantná akcia + telefón: v hlavičke na každej obrazovke, aj na mobile mimo menu */
+.head__act{display:flex;align-items:center;gap:9px;flex:none}
+.head__tel{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;
+  font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.01em;
+  color:var(--brass);text-decoration:none;
+  border:1px solid var(--brass-deep);border-radius:2px;padding:12px 14px;
+  transition:border-color .16s ease,color .16s ease;
+}
+.head__tel svg{width:15px;height:15px;flex:none}
+.head__tel:hover{border-color:var(--brass);color:var(--brass-hi)}
+.btn.head__cta{padding:13px 22px}
 
 /* ---------- 6. PLOCHY: GRAFICKÉ KOMPOZÍCIE ---------- */
 .plate{
@@ -343,13 +354,32 @@ section{scroll-margin-top:var(--stick,148px)}
   font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;
   border:1px solid var(--line);color:var(--muted);padding:7px 12px;
 }
-.crew{margin-top:26px;border-top:1px solid var(--line)}
-.crew div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 18px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line-soft)}
-.crew dt{font-weight:600;color:var(--title)}
-.crew dd{margin:0;font-family:var(--mono);font-size:.86rem;color:var(--muted);text-align:right}
+/* ---------- 8b. OBRAZOVÉ MIESTA ---------- */
+.obraz{margin:0;display:block}
+.obraz figcaption{margin-top:11px;color:var(--muted);font-size:.9rem;max-width:44ch}
+
+/* ---------- 8c. BARBERI ---------- */
+.crew{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.bar .plate{aspect-ratio:3/4}
+.bar h3{margin:16px 0 3px}
+.bar__role{margin:0 0 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.bar__list{border-top:1px solid var(--line-soft)}
+.bar__list li{padding:9px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.91rem}
+.bar__list li b{color:var(--title);font-weight:600}
+.bar__ig{margin:12px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+
+/* ---------- 8d. GALÉRIA PRÁC ---------- */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.gal .plate{aspect-ratio:4/3}
 
 /* ---------- 9. CENNÍK ---------- */
 .pl{border-top:1px solid var(--line)}
+.pl__grp{
+  margin:clamp(26px,3.2vw,40px) 0 0;padding:12px 0 0;border-top:2px solid var(--acc);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--title);font-weight:700;
+}
+.pl>.pl__grp:first-child{margin-top:0;border-top:0;padding-top:0}
 .pl__row{
   display:grid;grid-template-columns:minmax(0,1fr) 108px 96px 132px;
   gap:6px 24px;align-items:baseline;padding:19px 0;border-bottom:1px solid var(--line);
@@ -470,6 +500,9 @@ section{scroll-margin-top:var(--stick,148px)}
 .daychip:hover{border-color:var(--brass)}
 .daychip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
 .daychip[aria-pressed="true"] b{color:var(--on-brass)}
+.daychip:disabled{color:#8A9198;border-color:var(--hair-soft);background:transparent;cursor:not-allowed}
+.daychip:disabled b{color:#8A9198}
+.daychip:disabled:hover{border-color:var(--hair-soft)}
 
 .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
 .slot{
@@ -627,6 +660,8 @@ html.js .rv.in{opacity:1;transform:none}
   .book{grid-template-columns:1fr}
   .sum{position:static}
   .prods{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .crew{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
   .vouch{grid-template-columns:1fr}
   .about{grid-template-columns:1fr}
   .hours{grid-template-columns:1fr}
@@ -650,7 +685,10 @@ html.js .rv.in{opacity:1;transform:none}
   html.js .nav-list[data-open="false"]{display:none}
   html.js .nav-list a{padding:13px 4px;border-bottom:1px solid var(--hair-soft);border-radius:0}
   html.js .nav-list li:last-child a{border-bottom:0}
-  html.js .nav-cta a{margin:10px 0 0;text-align:center;padding:12px}
+  /* tlačidlo aj telefón ostávajú viditeľné, do menu sa neskrývajú */
+  .head__act{order:5;flex:1 0 100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .head__tel{padding:12px 6px}
+  .btn.head__cta{width:100%;padding:13px 10px}
   html.js .nav-toggle{
     display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:700;
     background:transparent;border:1px solid var(--hair);color:var(--ink-body);
@@ -672,6 +710,8 @@ html.js .rv.in{opacity:1;transform:none}
   body{font-size:16px}
   .steps{grid-template-columns:1fr}
   .prods{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr}
+  .gal .plate{aspect-ratio:16/9}
   .kit{grid-template-columns:1fr}
   .grid2{grid-template-columns:1fr}
   .facts dl{grid-template-columns:1fr}
@@ -738,14 +778,19 @@ html.js .rv.in{opacity:1;transform:none}
       <nav aria-label="Hlavná navigácia">
         <ul class="nav-list" id="hlavne-menu" data-open="false">
           <li><a href="#cennik">Cenník</a></li>
-          <li><a href="#navsteva">Návšteva</a></li>
-          <li><a href="#produkty">Produkty</a></li>
+          <li><a href="#barberi">Barberi</a></li>
           <li><a href="#hodiny">Hodiny</a></li>
-          <li><a href="#otazky">Otázky</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
-          <li class="nav-cta"><a href="#objednanie">Objednať sa</a></li>
         </ul>
       </nav>
+
+      <div class="head__act">
+        <a class="head__tel" href="tel:+421919507244" aria-label="Zavolať na číslo 0919 507 244">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6 3Z"/></svg>
+          0919 507 244
+        </a>
+        <a class="btn btn--brass head__cta" href="#objednanie">Objednať sa</a>
+      </div>
     </div>
   </header>
 </div>
@@ -767,16 +812,16 @@ html.js .rv.in{opacity:1;transform:none}
       <aside class="hero__corner" aria-label="Objednanie telefonicky">
         <p class="k">Objednanie</p>
         <p class="v"><a href="tel:+421919507244">0919 507 244</a></p>
-        <p class="s">Voláme späť do konca otváracích hodín. Termín si viete vybrať aj priamo na tejto stránke.</p>
+        <p class="s">Dovoláte sa počas otváracích hodín, mimo nich napíšte SMS. Termín si viete vybrať aj priamo na tejto stránke.</p>
       </aside>
     </div>
 
     <div class="hero__body">
       <div>
-        <p class="hero__lede">Strih nožnicami aj strojčekom, tvarovanie brady a klasické mokré holenie britvou s horúcim uterákom. Pracujeme výhradne na objednané termíny, na jedného zákazníka je vyhradených 30 až 60 minút.</p>
+        <p class="hero__lede">Strih nožnicami aj strojčekom, tvarovanie brady a klasické mokré holenie britvou s horúcim uterákom. Pracujeme výhradne na objednané termíny, blok je podľa služby 15 až 90 minút.</p>
         <div class="btns">
-          <a class="btn btn--brass" href="#objednanie">Vybrať termín</a>
-          <a class="btn btn--ghost" href="#cennik">Cenník služieb</a>
+          <a class="btn btn--brass" href="#objednanie">Objednať sa</a>
+          <a class="btn btn--ghost" href="#cennik">Pozrieť cenník</a>
         </div>
       </div>
       <ul class="hero__meta" aria-label="Otváracie hodiny">
@@ -792,7 +837,7 @@ html.js .rv.in{opacity:1;transform:none}
     <div class="wrap">
       <dl>
         <div><dt>Pracoviská</dt><dd>4 kreslá a kút na holenie</dd></div>
-        <div><dt>Strih od</dt><dd>22 € / 30 minút</dd></div>
+        <div><dt>Klasický strih</dt><dd>22 € za 30 minút</dd></div>
         <div><dt>Objednanie</dt><dd>na stránke alebo telefonicky</dd></div>
         <div><dt>Platba</dt><dd>karta, telefón, hotovosť</dd></div>
       </dl>
@@ -813,9 +858,8 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="about">
       <div class="rv">
-        <p>Holičstvo má štyri kreslá, dve umývacie misy a samostatný kút na holenie britvou. Na jedného zákazníka je vyhradených 30 až 60 minút podľa služby, takže sa v čakárni nehromadia ľudia a termín začína v dohodnutý čas.</p>
-        <p>Strihá sa nožnicami aj strojčekom, prechody dorábame britvou. Pri každom prvom termíne začíname krátkou konzultáciou nad tvarom hlavy, hustotou vlasov a tým, koľko času ste ochotní venovať úprave doma. Podľa toho navrhneme dĺžku a interval ďalších návštev.</p>
-        <p>Na holenie používame horúci uterák, tvrdé mydlo a rovnú britvu s vymeniteľnou čepeľou. Po každom zákazníkovi sa nástroje čistia a dezinfikujú, obliečka na kresle a uterák sa menia.</p>
+        <p>Štyri kreslá, dve umývacie misy a samostatný kút na holenie britvou. Blok je vyhradený podľa služby na 15 až 90 minút a začína v dohodnutý čas.</p>
+        <p>Strihá sa nožnicami aj strojčekom, prechody dorábame britvou. Pri prvej návšteve prejdeme tvar hlavy, hustotu vlasov a čas, ktorý úprave venujete doma, a podľa toho určíme dĺžku a interval ďalších termínov.</p>
         <ul class="chips">
           <li>strih nožnicami</li>
           <li>prechody strojčekom</li>
@@ -827,20 +871,19 @@ html.js .rv.in{opacity:1;transform:none}
       </div>
 
       <div class="rv">
-        <div class="plate plate--rule about__plate">
-          <div class="plate__type">
-            <p class="plate__word">Interval medzi strihmi</p>
-            <p class="plate__num">3&ndash;5</p>
-            <p class="plate__big">týždňov pri kratších strihoch, 6 až 8 týždňov pri dlhších</p>
+        <!-- FOTO: interiér holičstva — štyri kreslá pri stene so zrkadlami, tmavé drevo, mosadzné lampy -->
+        <figure class="obraz">
+          <div class="plate plate--rule about__plate">
+            <div class="plate__type">
+              <p class="plate__word">Krátka 6, prízemie</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">kreslá pri jednej stene, kút na holenie oddelený</p>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <dl class="crew">
-          <div><dt>Hlavný holič</dt><dd>strih, holenie, brada</dd></div>
-          <div><dt>Holič</dt><dd>strih, brada</dd></div>
-          <div><dt>Holič</dt><dd>strih, detské strihy</dd></div>
-          <div><dt>Učeň</dt><dd>strih pod dohľadom, &minus;30 % z ceny</dd></div>
-        </dl>
+          <figcaption>Hlavná miestnosť. Vstup z ulice je bez schodu, dvere majú 90 cm.</figcaption>
+        </figure>
       </div>
     </div>
   </div>
@@ -853,11 +896,13 @@ html.js .rv.in{opacity:1;transform:none}
       <p class="shead__idx">02</p>
       <div class="shead__main">
         <h2>Služby a cenník</h2>
-        <p class="lede">Uvedený čas je celý vyhradený blok vrátane konzultácie, umytia a dočistenia pracoviska. Ceny sú konečné, nič sa k nim nepripočítava.</p>
+        <p class="lede">Uvedený čas je celý vyhradený blok vrátane konzultácie a dočistenia pracoviska. Ceny sú konečné a platia sa po službe.</p>
       </div>
     </header>
 
     <div class="pl rv">
+      <p class="pl__grp">Jednotlivé služby</p>
+
       <div class="pl__row">
         <div>
           <h3>Klasický pánsky strih</h3>
@@ -876,16 +921,6 @@ html.js .rv.in{opacity:1;transform:none}
         <p class="pl__min">45 minút</p>
         <p class="pl__eur">27 €</p>
         <p class="pl__go"><a href="#objednanie" data-sluzba="Strih strojčekom s prechodom">Objednať</a></p>
-      </div>
-
-      <div class="pl__row">
-        <div>
-          <h3>Strih a úprava brady</h3>
-          <p>Kompletná návšteva: strih, tvarovanie brady britvou, olej a balzam.</p>
-        </div>
-        <p class="pl__min">60 minút</p>
-        <p class="pl__eur">36 €</p>
-        <p class="pl__go"><a href="#objednanie" data-sluzba="Strih a úprava brady">Objednať</a></p>
       </div>
 
       <div class="pl__row">
@@ -937,26 +972,269 @@ html.js .rv.in{opacity:1;transform:none}
         <p class="pl__eur">9 €</p>
         <p class="pl__go"><a href="#objednanie" data-sluzba="Zastrihnutie kontúr medzi strihmi">Objednať</a></p>
       </div>
+
+      <p class="pl__grp">Balíky</p>
+
+      <div class="pl__row">
+        <div>
+          <h3>Strih a brada</h3>
+          <p>Klasický strih, tvarovanie brady britvou, olej a balzam. Samostatne 38 €.</p>
+        </div>
+        <p class="pl__min">60 minút</p>
+        <p class="pl__eur">36 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Strih a brada">Objednať</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Strih a holenie britvou</h3>
+          <p>Klasický strih a mokré holenie s dvomi horúcimi uterákmi. Samostatne 47 €.</p>
+        </div>
+        <p class="pl__min">70 minút</p>
+        <p class="pl__eur">42 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Strih a holenie britvou">Objednať</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Strih, brada a holenie britvou</h3>
+          <p>Strih, tvarovanie brady a doholenie krku a líc britvou. Samostatne 63 €.</p>
+        </div>
+        <p class="pl__min">90 minút</p>
+        <p class="pl__eur">55 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Strih, brada a holenie britvou">Objednať</a></p>
+      </div>
     </div>
 
     <div class="pl__foot rv">
       <div>
-        <h4>Príplatky za rozsah</h4>
-        <p>Umytie a úprava účesu +6 € a 15 minút. Umytie, úprava účesu a horúci uterák +12 € a 30 minút. Voliteľné pri každej službe.</p>
+        <h4>Rozsah návštevy</h4>
+        <p>Úprava účesu fénom a prípravkom +6 € a 15 minút. Úprava účesu s horúcim uterákom a zábalom +12 € a 30 minút. Rozsah si volíte pri objednaní.</p>
       </div>
       <div>
         <h4>Strih u učňa</h4>
-        <p>Rovnaký úkon pod dohľadom holiča so zľavou 30 % z ceny. Vyhradený čas je o 15 minút dlhší.</p>
+        <p>Klasický strih a strih s prechodom pod dohľadom holiča so zľavou 30 % z ceny. Vyhradený čas je o 15 minút dlhší, objednáva sa na čísle 0919 507 244.</p>
       </div>
       <div>
         <h4>Čo je v cene</h4>
-        <p>Konzultácia, umytie pri službách nad 30 minút, dočistenie kontúr a káva alebo voda počas čakania.</p>
+        <p>Konzultácia, umytie pri službách od 30 minút, dočistenie kontúr britvou a voda alebo káva počas čakania.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 04 PRIEBEH NÁVŠTEVY ===== -->
+<!-- ===== BARBERI ===== -->
+<section class="sec sec--deep" id="barberi">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">03</p>
+      <div class="shead__main">
+        <h2>Barberi</h2>
+        <p class="lede">Konkrétneho holiča si viete vybrať pri objednaní. Pri konkrétnom mene býva najbližší voľný termín spravidla o niekoľko dní neskôr než pri ktoromkoľvek voľnom kresle.</p>
+      </div>
+    </header>
+
+    <div class="crew">
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri svojom kresle, tmavé pozadie, pohľad do objektívu -->
+        <figure class="obraz">
+          <div class="plate plate--arc">
+            <div class="plate__type">
+              <p class="plate__word">Kreslo 01</p>
+              <div>
+                <p class="plate__num">MH</p>
+                <p class="plate__big">strih, brada, holenie britvou</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Marek Hajduk</h3>
+        <p class="bar__role">Holič</p>
+        <ul class="bar__list">
+          <li><b>Robí:</b> klasický strih, strih s prechodom, holenie britvou.</li>
+          <li><b>Strihá:</b> pondelok až piatok.</li>
+          <li><b>Najviac voľných termínov:</b> pondelok a utorok doobeda.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostrie.marek</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri práci, detail rúk s nožnicami -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">Kreslo 02</p>
+              <div>
+                <p class="plate__num">TB</p>
+                <p class="plate__big">prechody, brada, tvarovanie</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Tomáš Bencúr</h3>
+        <p class="bar__role">Holič</p>
+        <ul class="bar__list">
+          <li><b>Robí:</b> strih s prechodom, úprava brady a fúzov, balíky.</li>
+          <li><b>Strihá:</b> utorok až sobota.</li>
+          <li><b>Najviac voľných termínov:</b> streda doobeda.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostrie.tomas</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča, ktorý strihá dieťa v kresle s podsedákom -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">Kreslo 03</p>
+              <div>
+                <p class="plate__num">PK</p>
+                <p class="plate__big">strih, detské strihy</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Peter Krajči</h3>
+        <p class="bar__role">Holič</p>
+        <ul class="bar__list">
+          <li><b>Robí:</b> klasický strih, detské strihy od štyroch rokov.</li>
+          <li><b>Strihá:</b> pondelok, streda, piatok, sobota.</li>
+          <li><b>Najviac voľných termínov:</b> sobota po 11:00.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostrie.peter</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét učňa pri príprave pracoviska -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">Kreslo 04</p>
+              <div>
+                <p class="plate__num">AŠ</p>
+                <p class="plate__big">strih pod dohľadom holiča</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Adam Šimko</h3>
+        <p class="bar__role">Učeň</p>
+        <ul class="bar__list">
+          <li><b>Robí:</b> klasický strih a strih s prechodom pod dohľadom holiča.</li>
+          <li><b>Cena:</b> o 30 % nižšia, vyhradený čas o 15 minút dlhší.</li>
+          <li><b>Objednanie:</b> telefonicky na 0919 507 244, nie cez formulár.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostrie.adam</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NAŠA PRÁCA ===== -->
+<section class="sec" id="praca">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">04</p>
+      <div class="shead__main">
+        <h2>Naša práca</h2>
+        <p class="lede">Šesť záberov z prevádzky. Pri každom je uvedená služba, dĺžka bloku a cena z cenníka.</p>
+      </div>
+    </header>
+
+    <div class="gal rv">
+      <!-- FOTO: detail prechodu na bokoch, pohľad zozadu na čerstvo dostrihanú hlavu -->
+      <figure class="obraz">
+        <div class="plate plate--wedge">
+          <div class="plate__type">
+            <p class="plate__word">Prechod</p>
+            <div>
+              <p class="plate__num">0,5</p>
+              <p class="plate__big">mm na spodku, plynulý nábeh do dĺžky vrchu</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Strih strojčekom s prechodom. 45 minút, 27 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: klasický strih nožnicami, pohľad z boku po dokončení -->
+      <figure class="obraz">
+        <div class="plate plate--grid">
+          <div class="plate__type">
+            <p class="plate__word">Nožnice</p>
+            <div>
+              <p class="plate__num">30</p>
+              <p class="plate__big">minútový blok vrátane umytia a vysušenia</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Klasický pánsky strih s dočistením kontúr britvou. 22 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: detail vytvarovanej brady, línia na lícach a krku -->
+      <figure class="obraz">
+        <div class="plate plate--ring">
+          <div class="plate__type">
+            <p class="plate__word">Brada</p>
+            <div>
+              <p class="plate__num">25</p>
+              <p class="plate__big">minút na skrátenie, líniu a olej</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Úprava brady a fúzov britvou. 16 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: mokré holenie britvou, horúci uterák na tvári zákazníka -->
+      <figure class="obraz">
+        <div class="plate plate--arc">
+          <div class="plate__type">
+            <p class="plate__word">Holenie</p>
+            <div>
+              <p class="plate__num">02</p>
+              <p class="plate__big">horúce uteráky a chladivý zábal na záver</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Mokré holenie britvou v dvoch smeroch. 40 minút, 25 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: dieťa v kresle s podsedákom počas strihu -->
+      <figure class="obraz">
+        <div class="plate plate--dot">
+          <div class="plate__type">
+            <p class="plate__word">Deti</p>
+            <div>
+              <p class="plate__num">04</p>
+              <p class="plate__big">roky a viac, podsedák do kresla</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Detský strih do 12 rokov. 25 minút, 15 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: kút na holenie — kreslo, ohrievač uterákov, britvy na poličke -->
+      <figure class="obraz">
+        <div class="plate plate--hatch">
+          <div class="plate__type">
+            <p class="plate__word">Kút na holenie</p>
+            <div>
+              <p class="plate__num">01</p>
+              <p class="plate__big">oddelené kreslo s vlastným vetraním</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Ohrievač uterákov a britvy s jednorazovou čepeľou.</figcaption>
+      </figure>
+    </div>
+
+    <div class="btns rv" style="margin-top:clamp(26px,3.2vw,36px)">
+      <a class="btn btn--brass" href="#objednanie">Objednať sa</a>
+      <a class="btn btn--ghost" href="tel:+421919507244">Zavolať 0919 507 244</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRIEBEH NÁVŠTEVY ===== -->
 <section class="sec sec--deep" id="navsteva">
   <div class="wrap">
     <header class="shead rv">
@@ -988,8 +1266,8 @@ html.js .rv.in{opacity:1;transform:none}
       </li>
       <li>
         <span class="n">Krok 04</span>
-        <h3>Umytie a úprava účesu</h3>
-        <p>Umytie pri miske, vysušenie a nanesenie prípravku. Ukážeme, ako účes doma zopakovať za dve minúty.</p>
+        <h3>Umytie a sušenie</h3>
+        <p>Umytie pri miske a vysušenie, pri službách od 30 minút je v cene. Prípravok nanesieme a postup na doma ukážeme pri predĺženom rozsahu.</p>
         <span class="t">10 minút</span>
       </li>
       <li>
@@ -1015,43 +1293,52 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="rooms">
       <article class="rv">
-        <div class="plate plate--grid">
-          <div class="plate__type">
-            <p class="plate__word">Pracoviská</p>
-            <div>
-              <p class="plate__num">04</p>
-              <p class="plate__big">kreslá s vlastným zrkadlom</p>
+        <!-- FOTO: rad štyroch kresiel so zrkadlami, pohľad pozdĺž steny -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">Pracoviská</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">kreslá s vlastným zrkadlom</p>
+              </div>
             </div>
           </div>
-        </div>
+        </figure>
         <h3>Strihacia časť</h3>
         <p>Štyri kreslá pozdĺž jednej steny, každé s vlastným zrkadlom, osvetlením a odsávaním vlasov z podlahy.</p>
       </article>
 
       <article class="rv">
-        <div class="plate plate--ring">
-          <div class="plate__type">
-            <p class="plate__word">Umývacie misy</p>
-            <div>
-              <p class="plate__num">02</p>
-              <p class="plate__big">sklápacie misy s opierkou krku</p>
+        <!-- FOTO: umývací kút s dvomi sklápacími misami a opierkou krku -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">Umývacie misy</p>
+              <div>
+                <p class="plate__num">02</p>
+                <p class="plate__big">sklápacie misy s opierkou krku</p>
+              </div>
             </div>
           </div>
-        </div>
+        </figure>
         <h3>Umývací kút</h3>
         <p>Dve misy s nastaviteľnou opierkou. Voda sa temperuje na 37 °C, šampón vyberáme podľa typu vlasov.</p>
       </article>
 
       <article class="rv">
-        <div class="plate plate--hatch">
-          <div class="plate__type">
-            <p class="plate__word">Čakáreň</p>
-            <div>
-              <p class="plate__num">06</p>
-              <p class="plate__big">miest na sedenie a vešiak</p>
+        <!-- FOTO: čakáreň s lavicou, vešiakom a poličkou na produkty -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">Čakáreň</p>
+              <div>
+                <p class="plate__num">06</p>
+                <p class="plate__big">miest na sedenie a vešiak</p>
+              </div>
             </div>
           </div>
-        </div>
+        </figure>
         <h3>Čakáreň</h3>
         <p>Šesť miest, vešiak, nabíjačka na telefón a pitná voda. V lete je otvorený dvor s dvomi lavicami.</p>
       </article>
@@ -1060,7 +1347,7 @@ html.js .rv.in{opacity:1;transform:none}
     <dl class="kit rv">
       <div>
         <dt>Hygiena nástrojov</dt>
-        <dd>Čepele britvy sú jednorazové. Hrebene, nožnice a strihacie hlavice sa po každom zákazníkovi čistia a dezinfikujú.</dd>
+        <dd>Čepele britvy sú jednorazové. Hrebene, nožnice a strihacie hlavice sa po každom zákazníkovi čistia a dezinfikujú, obliečka na kresle a uterák sa menia.</dd>
       </div>
       <div>
         <dt>Bezbariérový vstup</dt>
@@ -1091,12 +1378,15 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="prods">
       <article class="prod rv">
-        <div class="plate plate--wedge">
-          <div class="plate__type">
-            <p class="plate__word">01 &middot; Pasta</p>
-            <p class="plate__big">Matná pasta<br>100 ml</p>
+        <!-- FOTO: téglik matnej pasty na tmavom podklade, otvorené veko -->
+        <figure class="obraz">
+          <div class="plate plate--wedge">
+            <div class="plate__type">
+              <p class="plate__word">01 &middot; Pasta</p>
+              <p class="plate__big">Matná pasta<br>100 ml</p>
+            </div>
           </div>
-        </div>
+        </figure>
         <div class="prod__body">
           <h3>Matná pasta na vlasy</h3>
           <p>Stredná fixácia bez lesku. Vhodná na kratšie strihy s textúrou, dá sa preformovať počas dňa.</p>
@@ -1105,12 +1395,15 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <div class="plate plate--dot">
-          <div class="plate__type">
-            <p class="plate__word">02 &middot; Pomáda</p>
-            <p class="plate__big">Pomáda na vodnej báze<br>100 ml</p>
+        <!-- FOTO: plechovka pomády s viditeľnou etiketou, bočný pohľad -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">02 &middot; Pomáda</p>
+              <p class="plate__big">Pomáda na vodnej báze<br>100 ml</p>
+            </div>
           </div>
-        </div>
+        </figure>
         <div class="prod__body">
           <h3>Pomáda na vodnej báze</h3>
           <p>Silná fixácia s leskom, zmyje sa obyčajnou vodou. Na sčesané a klasické účesy s pútcom.</p>
@@ -1119,12 +1412,15 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <div class="plate plate--ring">
-          <div class="plate__type">
-            <p class="plate__word">03 &middot; Olej</p>
-            <p class="plate__big">Olej na bradu<br>30 ml</p>
+        <!-- FOTO: sklenená fľaštička oleja s kvapkadlom, odlesk svetla -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">03 &middot; Olej</p>
+              <p class="plate__big">Olej na bradu<br>30 ml</p>
+            </div>
           </div>
-        </div>
+        </figure>
         <div class="prod__body">
           <h3>Olej na bradu</h3>
           <p>Zmes jojobového a mandľového oleja. Tri kvapky do dlane ráno, zjemní chĺpky a upokojí pokožku.</p>
@@ -1133,12 +1429,15 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <div class="plate plate--hatch">
-          <div class="plate__type">
-            <p class="plate__word">04 &middot; Balzam</p>
-            <p class="plate__big">Balzam na bradu<br>60 ml</p>
+        <!-- FOTO: téglik balzamu, vedľa neho drevený hrebeň -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">04 &middot; Balzam</p>
+              <p class="plate__big">Balzam na bradu<br>60 ml</p>
+            </div>
           </div>
-        </div>
+        </figure>
         <div class="prod__body">
           <h3>Balzam na bradu</h3>
           <p>Hustejší ako olej, drží tvar dlhšej brady. Odporúčame na brady od piatich centimetrov.</p>
@@ -1147,12 +1446,15 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <div class="plate plate--rule">
-          <div class="plate__type">
-            <p class="plate__word">05 &middot; Šampón</p>
-            <p class="plate__big">Šampón pre mastné vlasy<br>250 ml</p>
+        <!-- FOTO: fľaša šampónu pri umývacej mise -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">05 &middot; Šampón</p>
+              <p class="plate__big">Šampón pre mastné vlasy<br>250 ml</p>
+            </div>
           </div>
-        </div>
+        </figure>
         <div class="prod__body">
           <h3>Šampón pre mastné vlasy</h3>
           <p>Bez silikónov, s mätovým výťažkom. Ten istý, ktorý používame pri umývaní v prevádzke.</p>
@@ -1161,12 +1463,15 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <div class="plate plate--grid">
-          <div class="plate__type">
-            <p class="plate__word">06 &middot; Kefa</p>
-            <p class="plate__big">Kefa z diviačích štetín<br>drevené telo</p>
+        <!-- FOTO: kefa z diviačích štetín zhora, viditeľné drevené telo -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">06 &middot; Kefa</p>
+              <p class="plate__big">Kefa z diviačích štetín<br>drevené telo</p>
+            </div>
           </div>
-        </div>
+        </figure>
         <div class="prod__body">
           <h3>Kefa z diviačích štetín</h3>
           <p>Na denné česanie brady aj kratších vlasov. Rozotrie olej rovnomerne až ku koreňom.</p>
@@ -1184,7 +1489,7 @@ html.js .rv.in{opacity:1;transform:none}
       <p class="shead__idx">06</p>
       <div class="shead__main">
         <h2>Starostlivosť o vlasy a bradu doma</h2>
-        <p class="lede">To, čo si odnesiete z kresla, vydrží len vtedy, ak sa doma pracuje rovnako. Toto je postup, ktorý pri každom strihu ukazujeme priamo na vašich vlasoch.</p>
+        <p class="lede">Postup, ktorý pri strihu ukazujeme priamo na vašich vlasoch. Pri každom kroku je uvedené dávkovanie aj čas.</p>
       </div>
     </header>
 
@@ -1206,18 +1511,8 @@ html.js .rv.in{opacity:1;transform:none}
       </div>
       <div>
         <span class="n">04</span>
-        <h3>Brada a olej</h3>
-        <p>Tri kvapky oleja ráno na suchú bradu, pri brade nad päť centimetrov použite radšej balzam. Rozotrite od pokožky ku koncom a prečešte kefou. Kontúry na krku a lícach neupravujte doma, medzi návštevami ich dočistíme za 9 €.</p>
-      </div>
-      <div>
-        <span class="n">05</span>
-        <h3>Česanie a kefa</h3>
-        <p>Kefa z prírodných štetín rozotrie mazivo z pokožky po celej dĺžke a nahradí časť prípravku. Stačí jedna minúta ráno. Hustý hrebeň používajte na mokré vlasy, kefu vždy až na suché.</p>
-      </div>
-      <div>
-        <span class="n">06</span>
-        <h3>Kedy prísť znova</h3>
-        <p>Krátky strih s prechodom vyzerá ako v deň strihania tri až päť týždňov, dlhší strih šesť až osem. Ak neviete odhadnúť interval, zapíšeme vám ďalší termín rovno pri platbe a v prípade potreby ho posunieme.</p>
+        <h3>Brada a kefa</h3>
+        <p>Tri kvapky oleja ráno na suchú bradu, pri brade nad päť centimetrov použite balzam. Rozotrite od pokožky ku koncom a prečešte kefou, stačí jedna minúta. Hustý hrebeň patrí na mokré vlasy, kefa vždy až na suché. Kontúry na krku a lícach neupravujte doma, medzi návštevami ich dočistíme za 9 €.</p>
       </div>
     </div>
   </div>
@@ -1326,7 +1621,7 @@ html.js .rv.in{opacity:1;transform:none}
         <ul class="rules" style="margin-top:22px">
           <li><b>01</b><span>Prestávka na obed nie je, kreslá sa striedajú.</span></li>
           <li><b>02</b><span>Vo sviatok máme zatvorené, náhradný termín ponúkneme deň vopred.</span></li>
-          <li><b>03</b><span>Posledné objednanie: 30 až 60 minút pred zatvorením podľa služby.</span></li>
+          <li><b>03</b><span>Posledný termín začína 15 až 90 minút pred zatvorením podľa dĺžky služby.</span></li>
           <li><b>04</b><span>Na čísle 0919 507 244 sa dovoláte počas otváracích hodín, mimo nich napíšte SMS.</span></li>
         </ul>
       </div>
@@ -1352,20 +1647,40 @@ html.js .rv.in{opacity:1;transform:none}
           <div class="field">
             <label for="f-sluzba">Vyberte službu</label>
             <select id="f-sluzba" name="sluzba">
-              <option value="Klasický pánsky strih" data-min="30" data-cena="22" selected>Klasický pánsky strih &mdash; 30 min, 22 €</option>
-              <option value="Strih strojčekom s prechodom" data-min="45" data-cena="27">Strih strojčekom s prechodom &mdash; 45 min, 27 €</option>
-              <option value="Strih a úprava brady" data-min="60" data-cena="36">Strih a úprava brady &mdash; 60 min, 36 €</option>
-              <option value="Holenie britvou s horúcim uterákom" data-min="40" data-cena="25">Holenie britvou &mdash; 40 min, 25 €</option>
-              <option value="Úprava brady a fúzov" data-min="25" data-cena="16">Úprava brady a fúzov &mdash; 25 min, 16 €</option>
-              <option value="Detský strih do 12 rokov" data-min="25" data-cena="15">Detský strih do 12 rokov &mdash; 25 min, 15 €</option>
-              <option value="Strih pre seniorov nad 65 rokov" data-min="30" data-cena="17">Strih pre seniorov nad 65 rokov &mdash; 30 min, 17 €</option>
-              <option value="Zastrihnutie kontúr medzi strihmi" data-min="15" data-cena="9">Zastrihnutie kontúr &mdash; 15 min, 9 €</option>
+              <optgroup label="Jednotlivé služby">
+                <option value="Klasický pánsky strih" data-min="30" data-cena="22" selected>Klasický pánsky strih &mdash; 30 min, 22 €</option>
+                <option value="Strih strojčekom s prechodom" data-min="45" data-cena="27">Strih strojčekom s prechodom &mdash; 45 min, 27 €</option>
+                <option value="Holenie britvou s horúcim uterákom" data-min="40" data-cena="25">Holenie britvou &mdash; 40 min, 25 €</option>
+                <option value="Úprava brady a fúzov" data-min="25" data-cena="16">Úprava brady a fúzov &mdash; 25 min, 16 €</option>
+                <option value="Detský strih do 12 rokov" data-min="25" data-cena="15">Detský strih do 12 rokov &mdash; 25 min, 15 €</option>
+                <option value="Strih pre seniorov nad 65 rokov" data-min="30" data-cena="17">Strih pre seniorov nad 65 rokov &mdash; 30 min, 17 €</option>
+                <option value="Zastrihnutie kontúr medzi strihmi" data-min="15" data-cena="9">Zastrihnutie kontúr &mdash; 15 min, 9 €</option>
+              </optgroup>
+              <optgroup label="Balíky">
+                <option value="Strih a brada" data-min="60" data-cena="36">Strih a brada &mdash; 60 min, 36 €</option>
+                <option value="Strih a holenie britvou" data-min="70" data-cena="42">Strih a holenie britvou &mdash; 70 min, 42 €</option>
+                <option value="Strih, brada a holenie britvou" data-min="90" data-cena="55">Strih, brada a holenie britvou &mdash; 90 min, 55 €</option>
+              </optgroup>
             </select>
           </div>
         </fieldset>
 
         <fieldset class="fset">
-          <legend>2. Rozsah a dĺžka</legend>
+          <legend>2. Holič</legend>
+          <div class="field">
+            <label for="f-holic">Vyberte holiča</label>
+            <select id="f-holic" name="holic">
+              <option value="Ktorýkoľvek voľný" data-dni="1,2,3,4,5,6" selected>Ktorýkoľvek voľný &mdash; najviac termínov</option>
+              <option value="Marek Hajduk" data-dni="1,2,3,4,5">Marek Hajduk &mdash; pondelok až piatok</option>
+              <option value="Tomáš Bencúr" data-dni="2,3,4,5,6">Tomáš Bencúr &mdash; utorok až sobota</option>
+              <option value="Peter Krajči" data-dni="1,3,5,6">Peter Krajči &mdash; pondelok, streda, piatok, sobota</option>
+            </select>
+          </div>
+          <p class="note" style="margin:10px 0 0">Strih u učňa so zľavou 30 % objednávame telefonicky na čísle 0919 507 244.</p>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>3. Rozsah a dĺžka</legend>
           <div class="opts">
             <label class="opt">
               <input type="radio" name="rozsah" value="Základ" data-min="0" data-cena="0" checked>
@@ -1377,26 +1692,26 @@ html.js .rv.in{opacity:1;transform:none}
               <input type="radio" name="rozsah" value="Predĺžený" data-min="15" data-cena="6">
               <b>Predĺžený</b>
               <em>+15 min &middot; +6 €</em>
-              <span>Umytie vlasov a úprava účesu s ukážkou postupu.</span>
+              <span>Úprava účesu fénom a prípravkom s ukážkou postupu na doma.</span>
             </label>
             <label class="opt">
               <input type="radio" name="rozsah" value="Kompletný" data-min="30" data-cena="12">
               <b>Kompletný</b>
               <em>+30 min &middot; +12 €</em>
-              <span>Umytie, úprava účesu a horúci uterák so záverečným zábalom.</span>
+              <span>Úprava účesu, horúci uterák a chladivý zábal na záver.</span>
             </label>
           </div>
         </fieldset>
 
         <fieldset class="fset">
-          <legend>3. Deň</legend>
+          <legend>4. Deň</legend>
           <div class="chipsrow" id="obj-dni" role="group" aria-label="Výber dňa">
             <p class="note" style="margin:0">Bez zapnutého skriptu termín dohodneme telefonicky na čísle 0919 507 244 počas otváracích hodín.</p>
           </div>
         </fieldset>
 
         <fieldset class="fset">
-          <legend>4. Čas začiatku</legend>
+          <legend>5. Čas začiatku</legend>
           <div class="slots" id="obj-casy" role="group" aria-label="Výber času">
             <p class="note" style="grid-column:1/-1;margin:0">Voľné časy vám povieme pri telefonáte na čísle 0919 507 244, prípadne odpíšeme na SMS do konca otváracích hodín.</p>
           </div>
@@ -1405,7 +1720,7 @@ html.js .rv.in{opacity:1;transform:none}
         </fieldset>
 
         <fieldset class="fset">
-          <legend>5. Kontakt</legend>
+          <legend>6. Kontakt</legend>
           <div class="grid2">
             <div class="field">
               <label for="f-meno">Meno a priezvisko</label>
@@ -1441,6 +1756,7 @@ html.js .rv.in{opacity:1;transform:none}
         <h3>Zhrnutie termínu</h3>
         <dl class="sum__rows">
           <div><dt>Služba</dt><dd id="s-sluzba">Klasický pánsky strih</dd></div>
+          <div><dt>Holič</dt><dd id="s-holic">Ktorýkoľvek voľný</dd></div>
           <div><dt>Rozsah</dt><dd id="s-rozsah">Základ</dd></div>
           <div><dt>Dĺžka</dt><dd id="s-dlzka">30 minút</dd></div>
           <div><dt>Deň</dt><dd id="s-den">nevybraný</dd></div>
@@ -2231,7 +2547,7 @@ html.js .rv.in{opacity:1;transform:none}
     var dnes = HODINY[den];
     if(dnes && min >= dnes[0] && min < dnes[1]){
       nadpis.textContent = "Teraz otvorené";
-      text.textContent = "Dnes strihame do " + cas(dnes[1]) + ". Posledný termín začína podľa dĺžky služby 30 až 60 minút pred zatvorením.";
+      text.textContent = "Dnes strihame do " + cas(dnes[1]) + ". Posledný termín začína podľa dĺžky služby 15 až 90 minút pred zatvorením.";
       return;
     }
     if(dnes && min < dnes[0]){

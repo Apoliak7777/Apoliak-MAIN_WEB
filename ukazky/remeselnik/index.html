@@ -49,7 +49,8 @@
   --stack:101px;
   --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
 }
-@media (max-width:760px){:root{--stack:120px}}
+/* záložná hodnota, kým skript nezmeria skutočnú výšku lepiaceho pásu */
+@media (max-width:760px){:root{--stack:152px}}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden;background:var(--dark-3)}
@@ -121,6 +122,14 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 /* tmavá hlavička: plné tlačidlo musí byť mosadzné, inak splynie s pozadím */
 .hdr .btn.btn-solid{background:#C8955C;color:#14100D;border-color:#C8955C}
 .hdr .btn.btn-solid:hover{background:#DFAE75;border-color:#DFAE75;color:#14100D}
+/* telefón ako tlačidlo — vždy vlastná farba textu, nikdy zdedená z .nav a / .foot a */
+.btn.btn-tel{background:transparent;color:#EDE8E0;border-color:rgba(237,232,224,.34);font-family:var(--mono);font-weight:400;letter-spacing:.03em}
+.btn.btn-tel:hover{border-color:#C8955C;color:#DFAE75}
+/* päta je tmavá: plné tlačidlo musí byť mosadzné a border-bottom sa musí prebiť nad .foot a */
+.foot .btn.btn-solid{background:#C8955C;color:#14100D;border-color:#C8955C;border-bottom-color:#C8955C}
+.foot .btn.btn-solid:hover{background:#DFAE75;color:#14100D;border-color:#DFAE75;border-bottom-color:#DFAE75}
+.foot .btn.btn-tel{color:#EDE8E0;border-color:rgba(237,232,224,.34);border-bottom-color:rgba(237,232,224,.34)}
+.foot .btn.btn-tel:hover{color:#DFAE75;border-color:#C8955C;border-bottom-color:#C8955C}
 
 /* ================= PÁSIK UKÁŽKY + HLAVIČKA ================= */
 .top{position:fixed;top:0;left:0;right:0;z-index:60}
@@ -143,7 +152,10 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 @media (max-width:760px){.demobar{letter-spacing:.02em;font-size:.68rem}}
 
 .hdr{background:var(--dark);border-bottom:1px solid var(--line-dark)}
-.hdr-in{display:flex;align-items:center;gap:20px;min-height:64px}
+.hdr-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;min-height:64px;padding-top:8px;padding-bottom:8px}
+/* hlavná akcia + telefón: viditeľné na každej šírke, nikdy sa neschovajú do menu */
+.hdr-act{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto}
+.hdr-act .btn{white-space:normal;text-align:center}
 .brand{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--on-dark);margin-right:auto;padding:10px 0}
 .brand b{font-size:1.02rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .brand span{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-3)}
@@ -166,7 +178,7 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 }
 .nav a:hover{color:var(--on-dark)}
 .nav a.on{color:var(--accent-2);border-bottom-color:var(--accent-2)}
-.hdr .btn{padding:10px 16px;font-size:.85rem}
+.hdr .btn{padding:10px 14px;font-size:.83rem}
 .burger{display:none}
 
 @media (max-width:1180px){
@@ -181,9 +193,6 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
   .js .nav{flex-direction:column;align-items:stretch;gap:0}
   .js .nav a{padding:13px 0;border-bottom:1px solid var(--line-dark);font-size:1rem}
   .js .nav a.on{border-bottom-color:var(--accent-2)}
-  .js .nav-cta{margin-top:18px}
-  .js .nav-cta .btn{width:100%}
-  .js .hdr-cta{display:none}
   .js .burger{
     display:flex;flex-direction:column;justify-content:center;gap:5px;
     width:44px;height:40px;padding:0 10px;background:transparent;
@@ -193,14 +202,22 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
   .js .burger[aria-expanded="true"] i:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
   .js .burger[aria-expanded="true"] i:nth-child(2){opacity:0}
   .js .burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-  .nav-cta{display:none}
-  .js .navwrap.open .nav-cta{display:block}
+  .hdr .btn{padding:10px 14px;font-size:.82rem}
 }
-@media (min-width:1181px){.nav-cta{display:none}}
+/* úzky displej: hlavná akcia a telefón sa presunú na vlastný riadok, nezmiznú */
+@media (max-width:700px){
+  .hdr-in{gap:6px 12px}
+  .brand{margin-right:0;padding:6px 0}
+  .burger{order:2;margin-left:auto}
+  .hdr-act{order:3;width:100%;margin-left:0;margin-bottom:2px}
+  .hdr-act .btn{flex:1 1 130px;padding:10px 10px;font-size:.8rem}
+}
 
 /* ================= DIZAJNOVÉ PLOCHY ================= */
-.plate{
-  position:relative;overflow:hidden;isolation:isolate;
+/* OBRAZOVÉ MIESTA — každý prvok .obraz je pripravená plocha pre fotografiu.
+   Kompozícia je z vrstvených prechodov, geometrie a typografie, nič sa nedokresľuje. */
+.obraz{
+  position:relative;overflow:hidden;isolation:isolate;margin:0;
   display:flex;flex-direction:column;
   border:1px solid var(--line-dark);
   --gc:rgba(200,149,92,.12);
@@ -213,19 +230,19 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
     radial-gradient(120% 92% at 100% 0%, rgba(200,149,92,.12) 0%, rgba(200,149,92,0) 58%),
     linear-gradient(147deg,#2E2721 0%,#241E19 44%,#191410 100%);
 }
-.plate::before{
+.obraz::before{
   content:"";position:absolute;inset:0;z-index:-3;
   background-image:
     repeating-linear-gradient(90deg,rgba(237,232,224,.05) 0 1px,transparent 1px 34px),
     repeating-linear-gradient(0deg,rgba(237,232,224,.05) 0 1px,transparent 1px 34px);
 }
-.plate::after{
+.obraz::after{
   content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background-image:var(--noise);opacity:.1;mix-blend-mode:screen;
 }
-.plate .g{position:absolute;inset:0;z-index:-2;pointer-events:none}
+.obraz .g{position:absolute;inset:0;z-index:-2;pointer-events:none}
 
-.plate-l{
+.obraz-l{
   border-color:var(--line);
   --gc:rgba(156,90,47,.13);
   --gc2:rgba(22,19,15,.09);
@@ -237,12 +254,12 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
     radial-gradient(120% 92% at 0% 0%, rgba(156,90,47,.09) 0%, rgba(156,90,47,0) 60%),
     linear-gradient(147deg,#F2EEE7 0%,#E7E1D7 46%,#DCD5C9 100%);
 }
-.plate-l::before{
+.obraz-l::before{
   background-image:
     repeating-linear-gradient(90deg,rgba(22,19,15,.055) 0 1px,transparent 1px 34px),
     repeating-linear-gradient(0deg,rgba(22,19,15,.055) 0 1px,transparent 1px 34px);
 }
-.plate-l::after{opacity:.08;mix-blend-mode:multiply}
+.obraz-l::after{opacity:.08;mix-blend-mode:multiply}
 
 /* geometrické a vlásočnicové vzory */
 .g-arc{background:
@@ -275,16 +292,16 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
   linear-gradient(90deg, transparent 0 58%, var(--gc) 58% 100%),
   repeating-linear-gradient(0deg, var(--gc2) 0 1px, transparent 1px 12px);}
 
-.plate-in{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;min-height:0;padding:clamp(20px,2.6vw,30px)}
-.plate-kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--p-acc);margin:0}
-.plate-big{margin:auto 0 0;font-size:clamp(1.7rem,4.4vw,2.9rem);font-weight:600;letter-spacing:-.02em;line-height:1.04;color:var(--p-txt);padding-top:26px}
-.plate-foot{
+.obraz-in{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;min-height:0;padding:clamp(20px,2.6vw,30px)}
+.obraz-kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--p-acc);margin:0}
+.obraz-big{margin:auto 0 0;font-size:clamp(1.7rem,4.4vw,2.9rem);font-weight:600;letter-spacing:-.02em;line-height:1.04;color:var(--p-txt);padding-top:26px}
+.obraz-foot{
   margin:18px 0 0;padding-top:14px;border-top:1px solid var(--p-line);
   display:flex;flex-wrap:wrap;gap:4px 18px;
   font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--p-sub);
 }
-.plate-wide{min-height:clamp(210px,26vw,290px)}
-.plate-wide .plate-big{font-size:clamp(1.9rem,5vw,3.1rem)}
+.obraz-wide{min-height:clamp(210px,26vw,290px)}
+.obraz-wide .obraz-big{font-size:clamp(1.9rem,5vw,3.1rem)}
 
 /* ================= ÚVOD ================= */
 .hero{padding:clamp(52px,7vw,96px) 0 clamp(54px,7vw,96px)}
@@ -395,11 +412,13 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 @media (min-width:680px){.gal{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1020px){.gal{grid-template-columns:repeat(3,1fr)}}
 .work[hidden]{display:none}
-.work .plate{aspect-ratio:4/3}
+.work .obraz{aspect-ratio:4/3}
 .work h3{margin:18px 0 12px;font-size:1.02rem}
 .work dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.87rem}
 .work dt{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding-top:3px}
 .work dd{margin:0;color:var(--ink-2)}
+.work dd.cena{font-family:var(--mono);font-size:.95rem;color:var(--ink);font-variant-numeric:tabular-nums}
+.gal-note{margin:clamp(22px,3vw,30px) 0 0;font-size:.9rem;color:var(--ink-3);max-width:74ch;border-left:1px solid var(--accent);padding-left:18px}
 
 /* ================= MATERIÁLY ================= */
 .tblwrap{margin-top:clamp(30px,4vw,46px);overflow-x:auto;border:1px solid var(--line-dark)}
@@ -588,11 +607,57 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 @media (min-width:760px){.foot-top{grid-template-columns:repeat(3,1fr)}}
 .foot-top h4{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin-bottom:10px;font-weight:400}
 .foot-top p{margin:0 0 3px;color:var(--on-dark-2);line-height:1.62}
+.foot-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.foot .btn{padding:11px 16px;font-size:.83rem}
+.foot .hours li{font-size:.85rem;padding:5px 0}
 .foot-in{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
 .foot p{margin:0;max-width:60ch;line-height:1.6}
 .foot strong{color:var(--on-dark-2);font-weight:600}
 .foot a{color:var(--accent-2);text-decoration:none;border-bottom:1px solid rgba(200,149,92,.4)}
 .foot a:hover{color:#E2BA85;border-bottom-color:#E2BA85}
+
+/* ================= OPAKOVANÁ HLAVNÁ AKCIA ================= */
+.ctaband{
+  margin:clamp(34px,5vw,54px) 0 0;padding:clamp(22px,3vw,32px);
+  background:var(--paper);border:1px solid var(--line-2);border-top:2px solid var(--accent);
+  border-radius:2px;display:grid;gap:20px;
+}
+@media (min-width:900px){.ctaband{grid-template-columns:1.25fr auto;align-items:center;gap:34px}}
+.ctaband h3{margin-bottom:8px}
+.ctaband p{margin:0;font-size:.95rem;color:var(--ink-3);max-width:56ch}
+.ctaband-btns{display:flex;flex-wrap:wrap;gap:10px}
+/* svetlý pruh: tlačidlá majú vlastnú farbu textu, aby ich neprebilo pravidlo pre odkazy */
+.ctaband .btn.btn-solid{background:#16130F;color:#FAF8F5;border-color:#16130F}
+.ctaband .btn.btn-solid:hover{background:#8E5029;border-color:#8E5029;color:#FDFBF7}
+.ctaband .btn.btn-line{background:transparent;color:#16130F;border-color:#C6BEB0}
+.ctaband .btn.btn-line:hover{border-color:#16130F;color:#16130F}
+
+/* ================= OTVÁRACIE HODINY PO DŇOCH ================= */
+.hours{list-style:none;margin:0;padding:0}
+.hours li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:7px 0;border-bottom:1px solid var(--line-dark);font-size:.93rem;color:var(--on-dark-2);
+}
+.hours li:last-child{border-bottom:0}
+.hours b{font-family:var(--mono);font-weight:400;font-size:.86rem;color:var(--on-dark);white-space:nowrap}
+.hours .off b{color:var(--on-dark-3)}
+
+/* ================= SCHÉMA PRÍJAZDU ================= */
+.mapa{margin:clamp(26px,3.4vw,40px) 0 0;padding:12px;border:1px solid var(--line-dark);background:var(--dark-2)}
+.mapa-scroll{overflow-x:auto}
+.mapa-scroll:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+.mapa svg{display:block;width:100%;min-width:470px;height:auto}
+.mapa figcaption{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--on-dark-3);margin:12px 2px 2px;line-height:1.7;
+}
+
+/* ================= PRÍLOHA V DOPYTE ================= */
+.filerow{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.filein{position:absolute;opacity:0;width:1px;height:1px}
+.card .filerow .btn{width:auto;margin-top:0;cursor:pointer}
+.filein:focus-visible + .btn{outline:2px solid var(--accent);outline-offset:2px}
+.filename{flex:1 1 150px;min-width:0;font-size:.86rem;color:var(--ink-3);word-break:break-word}
 
 /* ================= ODHALENIE PRI SKROLOVANÍ ================= */
 .js .rv{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
@@ -630,10 +695,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         <span>Stolárstvo</span>
       </a>
 
-      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="navwrap" aria-label="Otvoriť menu">
-        <i></i><i></i><i></i>
-      </button>
-
       <div class="navwrap" id="navwrap">
         <nav class="nav" aria-label="Hlavná navigácia">
           <a href="#vyroba">Výroba</a>
@@ -645,10 +706,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
           <a href="#otazky">Otázky</a>
           <a href="#kontakt">Kontakt</a>
         </nav>
-        <div class="nav-cta"><a class="btn btn-solid" href="#dopyt">Poslať dopyt</a></div>
       </div>
 
-      <div class="hdr-cta"><a class="btn btn-solid" href="#dopyt">Poslať dopyt</a></div>
+      <div class="hdr-act">
+        <a class="btn btn-tel" href="tel:+421918445271" aria-label="Zavolať do dielne na číslo 0918 445 271">0918 445 271</a>
+        <a class="btn btn-solid" href="#ponuka">Nezáväzná cenová ponuka</a>
+      </div>
+
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="navwrap" aria-label="Otvoriť menu">
+        <i></i><i></i><i></i>
+      </button>
     </div>
   </header>
 </div>
@@ -658,7 +725,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <span>Remeselná 12, Ukážkové mesto</span>
     <span>Pondelok až piatok 8:00 – 16:30</span>
     <span>Sobota po dohode</span>
-    <span><a href="tel:+421918445271">0918 445 271</a></span>
+    <span>Zameranie u vás aj cenová ponuka zdarma</span>
   </div>
 </div>
 
@@ -670,10 +737,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="hero-top">
       <p class="lbl">Stolárska dielňa, Ukážkové mesto</p>
       <h1>Nábytok na mieru z vlastnej dielne</h1>
-      <p class="hero-lead">Kuchynské linky, vstavané skrine a nábytok do bytov a rodinných domov zameriame u vás, vyrobíme vo vlastnej dielni a namontujeme.</p>
+      <p class="hero-lead">Kuchynské linky, vstavané skrine a nábytok do bytov a rodinných domov zameriame u vás, vyrobíme vo vlastnej dielni a namontujeme. Zameranie aj cenová ponuka sú zdarma a nezáväzné.</p>
       <div class="hero-cta">
-        <a class="btn btn-solid" href="#dopyt">Napísať dopyt</a>
-        <a class="btn btn-line" href="#kalkulacka">Spočítať orientačnú cenu</a>
+        <a class="btn btn-solid" href="#ponuka">Nezáväzná cenová ponuka</a>
+        <a class="btn btn-line" href="tel:+421918445271">Zavolať 0918 445 271</a>
       </div>
     </div>
 
@@ -699,9 +766,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         <p class="band-n">Základné vyhotovenie</p>
       </li>
       <li class="band-c">
-        <p class="band-k">Telefón do dielne</p>
-        <p class="band-v mono"><a href="tel:+421918445271">0918 445 271</a></p>
-        <p class="band-n">Po – Pi 8:00 – 16:30</p>
+        <p class="band-k">Cenová ponuka</p>
+        <p class="band-v">Do 5 dní</p>
+        <p class="band-n">Písomne, od zamerania</p>
       </li>
     </ul>
   </div>
@@ -712,8 +779,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   <div class="wrap">
     <div class="sec-head rv">
       <p class="lbl">Výroba</p>
-      <h2>Čo vyrábame</h2>
-      <p class="lead">Šesť okruhov zákaziek. Uvedené ceny sú vstupné a platia pre základné vyhotovenie bez spotrebičov a atypických úprav.</p>
+      <h2>Čo vyrábame a čo to stojí</h2>
+      <p class="lead">Sedem okruhov zákaziek. Uvedené ceny sú vstupné, platia pre základné vyhotovenie z lamina, bez spotrebičov a atypických úprav, a zahŕňajú korpus, čelo, bežné kovanie a montáž.</p>
     </div>
 
     <div class="list">
@@ -765,6 +832,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       <article class="item rv">
         <p class="item-n">06</p>
         <div>
+          <h3>Detské a študentské izby</h3>
+          <p>Postele s úložným priestorom, písacie stoly, police a skrine. Hrany zaobľujeme polomerom 3 mm, používame laky bez rozpúšťadiel.</p>
+        </div>
+        <p class="item-price"><small>Cena od</small>380 € / m² čela</p>
+      </article>
+
+      <article class="item rv">
+        <p class="item-n">07</p>
+        <div>
           <h3>Zákazky do starších domov</h3>
           <p>Nerovné steny, šikmé stropy, hrubé parapety a dvere mimo pravého uhla. Každý diel režeme podľa skutočného merania na mieste.</p>
         </div>
@@ -779,43 +855,43 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="sec-head rv">
       <p class="lbl">Postup</p>
       <h2>Priebeh zákazky</h2>
-      <p class="lead">Výroba sa začne až po tom, ako odsúhlasíte návrh, cenu a termín.</p>
+      <p class="lead">Šesť krokov od prvého telefonátu po odovzdanie. Výroba sa začne až po tom, ako odsúhlasíte návrh, cenu a termín.</p>
     </div>
 
     <div class="gr gr-3 rv">
       <article class="gc">
         <p class="gc-n">Krok 1</p>
         <h3>Obhliadka a zameranie</h3>
-        <p>Prídeme k vám, odmeriame priestor, skontrolujeme rovinu stien a polohu rozvodov. Zameranie trvá približne hodinu.</p>
+        <p>Termín dohodneme do 3 pracovných dní od dopytu. Odmeriame priestor, skontrolujeme rovinu stien a polohu rozvodov, prinesieme vzorky dýh, lamina, lakov a kovania. Trvá približne hodinu a je zdarma.</p>
       </article>
       <article class="gc">
         <p class="gc-n">Krok 2</p>
-        <h3>Návrh a cenová ponuka</h3>
-        <p>Dostanete nákres s rozmermi a rozpis ceny po položkách: korpusy, čelá, kovanie, pracovná doska, doprava a montáž.</p>
+        <h3>Nákres, 3D pohľad a cenová ponuka</h3>
+        <p>Do 5 pracovných dní od zamerania dostanete nákres s rozmermi, 3D pohľad na zostavu a rozpis ceny po položkách: korpusy, čelá, kovanie, pracovná doska, doprava a montáž. Ponuka je nezáväzná.</p>
       </article>
       <article class="gc">
         <p class="gc-n">Krok 3</p>
-        <h3>Výber materiálu</h3>
-        <p>Vzorky dreva, dýh a dekorov si pozriete naživo. Poradíme, ktorý povrch znesie vlhkosť v kúpeľni a ktorý teplo pri sporáku.</p>
+        <h3>Zmluva a záloha 40 %</h3>
+        <p>Cenová ponuka platí 30 dní, termín montáže z nej držíme rezervovaný 10 dní. V zmluve je cena, rozsah prác aj dátum montáže. Pri podpise platíte zálohu 40 % na materiál a kovanie.</p>
       </article>
       <article class="gc">
         <p class="gc-n">Krok 4</p>
         <h3>Výroba v dielni</h3>
-        <p>Formátovanie, olepovanie hrán, brúsenie a povrchová úprava. Zákazku skladáme nasucho ešte v dielni.</p>
+        <p>Trvá 5 až 8 týždňov. Formátovanie, olepovanie hrán, brúsenie a povrchová úprava. Zákazku skladáme nasucho ešte v dielni, aby sa odchýlky riešili tu a nie u vás.</p>
       </article>
       <article class="gc">
         <p class="gc-n">Krok 5</p>
         <h3>Montáž</h3>
-        <p>Dovoz, ustavenie do roviny, dorezanie líšt ku stene, nastavenie pántov a zásuviek. Obaly a odrezky odvezieme.</p>
+        <p>Podľa veľkosti zákazky 1 až 2 dni. Dovoz, ustavenie do roviny, dorezanie líšt ku stene, nastavenie pántov a zásuviek. Obaly a odrezky odvezieme.</p>
       </article>
       <article class="gc">
         <p class="gc-n">Krok 6</p>
-        <h3>Odovzdanie</h3>
-        <p>Spolu skontrolujeme každé dvierka a zásuvku. Dostanete návod na údržbu povrchu a záručný list.</p>
+        <h3>Odovzdanie a doplatok 60 %</h3>
+        <p>Spolu skontrolujeme každé dvierka a zásuvku. Doplatok 60 % zaplatíte do 7 dní po odovzdaní. Dostanete návod na údržbu povrchu a záručný list na 24 mesiacov.</p>
       </article>
     </div>
 
-    <p class="note rv" style="margin:32px 0 0;font-size:.93rem;color:var(--on-dark-2);max-width:74ch;border-left:1px solid var(--accent-2);padding-left:18px">Od zamerania po montáž prejde zvyčajne 6 až 9 týždňov. Dĺžka závisí od materiálu a dodania kovania. Presný termín je uvedený v zmluve.</p>
+    <p class="note rv" style="margin:32px 0 0;font-size:.93rem;color:var(--on-dark-2);max-width:74ch;border-left:1px solid var(--accent-2);padding-left:18px">Od podpisu zmluvy po montáž prejde 6 až 9 týždňov. Dĺžka závisí od materiálu a dodania kovania. Presný dátum montáže je uvedený v zmluve.</p>
   </div>
 </section>
 
@@ -825,162 +901,348 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="gal-head rv">
       <div class="sec-head">
         <p class="lbl">Realizácie</p>
-        <h2>Vybrané zákazky</h2>
+        <h2>Vybrané zákazky a ich ceny</h2>
       </div>
       <div class="chips" id="chips" role="group" aria-label="Filter realizácií podľa typu">
         <button class="chip" type="button" data-cat="all" aria-pressed="true">Všetko</button>
         <button class="chip" type="button" data-cat="kuchyne" aria-pressed="false">Kuchyne</button>
-        <button class="chip" type="button" data-cat="skrine" aria-pressed="false">Skrine</button>
-        <button class="chip" type="button" data-cat="nabytok" aria-pressed="false">Nábytok</button>
+        <button class="chip" type="button" data-cat="skrine" aria-pressed="false">Vstavané skrine</button>
+        <button class="chip" type="button" data-cat="obyvacky" aria-pressed="false">Obývačky a spálne</button>
+        <button class="chip" type="button" data-cat="kupelne" aria-pressed="false">Kúpeľne</button>
+        <button class="chip" type="button" data-cat="detske" aria-pressed="false">Detské izby</button>
+        <button class="chip" type="button" data-cat="prevadzky" aria-pressed="false">Prevádzky</button>
       </div>
     </div>
 
     <div class="gal" id="gal">
       <article class="work rv" data-cat="kuchyne">
-        <div class="plate plate-l">
+        <!-- FOTO: hotová kuchynská linka v tvare L, celkový pohľad od jedálenského stola -->
+        <figure class="obraz obraz-l">
           <span class="g g-arc" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Kuchyňa v tvare L</p>
-            <p class="plate-big">Dub</p>
-            <p class="plate-foot"><span>Kompaktná doska</span></p>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Kuchyňa v tvare L</p>
+            <p class="obraz-big">Dub</p>
+            <p class="obraz-foot"><span>Kompaktná doska</span></p>
           </div>
-        </div>
+        </figure>
         <h3>Kuchynská linka v tvare L</h3>
         <dl>
+          <dt>Priestor</dt><dd>Byt, 3. poschodie</dd>
           <dt>Materiál</dt><dd>Dubová dyha, kompaktná doska</dd>
           <dt>Rozmer</dt><dd>3,2 m + 1,8 m</dd>
-          <dt>Termín</dt><dd>7 týždňov</dd>
-        </dl>
-      </article>
-
-      <article class="work rv" data-cat="skrine">
-        <div class="plate plate-l">
-          <span class="g g-diag" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Vstavaná skriňa</p>
-            <p class="plate-big">Orech</p>
-            <p class="plate-foot"><span>Posuvné dvere</span><span>2,4 × 2,6 m</span></p>
-          </div>
-        </div>
-        <h3>Vstavaná skriňa do chodby</h3>
-        <dl>
-          <dt>Materiál</dt><dd>Orechová dyha, posuvné dvere</dd>
-          <dt>Rozmer</dt><dd>2,4 × 2,6 m</dd>
-          <dt>Termín</dt><dd>5 týždňov</dd>
-        </dl>
-      </article>
-
-      <article class="work rv" data-cat="nabytok">
-        <div class="plate plate-l">
-          <span class="g g-rings" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Jedálenský stôl</p>
-            <p class="plate-big">Masív 40 mm</p>
-            <p class="plate-foot"><span>Olejovaný povrch</span></p>
-          </div>
-        </div>
-        <h3>Jedálenský stôl</h3>
-        <dl>
-          <dt>Materiál</dt><dd>Dubový masív 40 mm, olej</dd>
-          <dt>Rozmer</dt><dd>220 × 95 cm</dd>
-          <dt>Termín</dt><dd>4 týždne</dd>
-        </dl>
-      </article>
-
-      <article class="work rv" data-cat="nabytok">
-        <div class="plate plate-l">
-          <span class="g g-dots" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Knižnica po strop</p>
-            <p class="plate-big">3,4 m</p>
-            <p class="plate-foot"><span>Dub a lamino</span></p>
-          </div>
-        </div>
-        <h3>Knižnica cez celú stenu</h3>
-        <dl>
-          <dt>Materiál</dt><dd>Dub, spodná časť lamino</dd>
-          <dt>Rozmer</dt><dd>3,4 × 2,5 m</dd>
-          <dt>Termín</dt><dd>6 týždňov</dd>
+          <dt>Výroba</dt><dd>7 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">7 400 €</dd>
         </dl>
       </article>
 
       <article class="work rv" data-cat="kuchyne">
-        <div class="plate plate-l">
-          <span class="g g-hatch" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Skrinka pod umývadlo</p>
-            <p class="plate-big">Jaseň</p>
-            <p class="plate-foot"><span>Vodoodolná úprava</span></p>
-          </div>
-        </div>
-        <h3>Skrinka pod umývadlo</h3>
-        <dl>
-          <dt>Materiál</dt><dd>Jaseňová dyha, vodoodolná úprava</dd>
-          <dt>Rozmer</dt><dd>90 × 55 cm</dd>
-          <dt>Termín</dt><dd>3 týždne</dd>
-        </dl>
-      </article>
-
-      <article class="work rv" data-cat="skrine">
-        <div class="plate plate-l">
-          <span class="g g-bars" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Pracovný kút</p>
-            <p class="plate-big">180 cm</p>
-            <p class="plate-foot"><span>Lamino a dubová doska</span></p>
-          </div>
-        </div>
-        <h3>Pracovný kút s policami</h3>
-        <dl>
-          <dt>Materiál</dt><dd>Lamino, doska z dubového masívu</dd>
-          <dt>Rozmer</dt><dd>180 × 75 cm</dd>
-          <dt>Termín</dt><dd>4 týždne</dd>
-        </dl>
-      </article>
-
-      <article class="work rv" data-cat="skrine">
-        <div class="plate plate-l">
-          <span class="g g-blocks" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Zostava s lavicou</p>
-            <p class="plate-big">Predsieň</p>
-            <p class="plate-foot"><span>Lamino</span><span>Dubové sedadlo</span></p>
-          </div>
-        </div>
-        <h3>Predsieňová zostava s lavicou</h3>
-        <dl>
-          <dt>Materiál</dt><dd>Lamino, sedadlo z dubového masívu</dd>
-          <dt>Rozmer</dt><dd>2,1 × 2,4 m</dd>
-          <dt>Termín</dt><dd>5 týždňov</dd>
-        </dl>
-      </article>
-
-      <article class="work rv" data-cat="kuchyne">
-        <div class="plate plate-l">
+        <!-- FOTO: kuchyňa v podkroví, horné skrinky zarezané pod šikminu -->
+        <figure class="obraz obraz-l">
           <span class="g g-cross" aria-hidden="true"></span>
-          <div class="plate-in">
-            <p class="plate-kicker">Kuchyňa v podkroví</p>
-            <p class="plate-big">Šikmina</p>
-            <p class="plate-foot"><span>Atypické horné skrinky</span></p>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Kuchyňa v podkroví</p>
+            <p class="obraz-big">Šikmina</p>
+            <p class="obraz-foot"><span>Atypické horné skrinky</span></p>
           </div>
-        </div>
+        </figure>
         <h3>Kuchyňa do podkrovia</h3>
         <dl>
+          <dt>Priestor</dt><dd>Podkrovie rodinného domu</dd>
           <dt>Materiál</dt><dd>Lakované MDF, dubová doska</dd>
           <dt>Rozmer</dt><dd>2,8 m, sklon 42°</dd>
-          <dt>Termín</dt><dd>8 týždňov</dd>
+          <dt>Výroba</dt><dd>8 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">5 400 €</dd>
         </dl>
+      </article>
+
+      <article class="work rv" data-cat="kuchyne">
+        <!-- FOTO: rovná kuchynská linka v panelákovom byte, pohľad spredu -->
+        <figure class="obraz obraz-l">
+          <span class="g g-bars" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Rovná linka</p>
+            <p class="obraz-big">3,0 m</p>
+            <p class="obraz-foot"><span>Lamino</span><span>Bez horných skriniek</span></p>
+          </div>
+        </figure>
+        <h3>Rovná linka do panelákového bytu</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Byt, kuchyňa 6 m²</dd>
+          <dt>Materiál</dt><dd>Lamino, laminovaná doska</dd>
+          <dt>Rozmer</dt><dd>3,0 m</dd>
+          <dt>Výroba</dt><dd>5 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">2 900 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="skrine">
+        <!-- FOTO: vstavaná skriňa v chodbe s posuvnými dverami, zatvorená -->
+        <figure class="obraz obraz-l">
+          <span class="g g-diag" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Vstavaná skriňa</p>
+            <p class="obraz-big">Orech</p>
+            <p class="obraz-foot"><span>Posuvné dvere</span><span>2,4 × 2,6 m</span></p>
+          </div>
+        </figure>
+        <h3>Vstavaná skriňa do chodby</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Chodba v byte</dd>
+          <dt>Materiál</dt><dd>Orechová dyha, posuvné dvere</dd>
+          <dt>Rozmer</dt><dd>2,4 × 2,6 m</dd>
+          <dt>Výroba</dt><dd>5 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">3 100 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="skrine">
+        <!-- FOTO: šatník pod šikminou v spálni, otvorené dvere s vnútorným členením -->
+        <figure class="obraz obraz-l">
+          <span class="g g-hatch" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Šatník pod šikminu</p>
+            <p class="obraz-big">3,1 m</p>
+            <p class="obraz-foot"><span>Otváracie dvere</span><span>Výsuvná tyč</span></p>
+          </div>
+        </figure>
+        <h3>Šatník pod šikminu</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Spálňa v podkroví</dd>
+          <dt>Materiál</dt><dd>Lamino, dubové úchytky</dd>
+          <dt>Rozmer</dt><dd>3,1 × 2,3 m</dd>
+          <dt>Výroba</dt><dd>5 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">2 650 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="skrine">
+        <!-- FOTO: predsieňová zostava so závesnou lavicou a vešiakovou stenou -->
+        <figure class="obraz obraz-l">
+          <span class="g g-blocks" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Zostava s lavicou</p>
+            <p class="obraz-big">Predsieň</p>
+            <p class="obraz-foot"><span>Lamino</span><span>Dubové sedadlo</span></p>
+          </div>
+        </figure>
+        <h3>Predsieňová zostava s lavicou</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Predsieň rodinného domu</dd>
+          <dt>Materiál</dt><dd>Lamino, sedadlo z dubového masívu</dd>
+          <dt>Rozmer</dt><dd>2,1 × 2,4 m</dd>
+          <dt>Výroba</dt><dd>5 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">2 480 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="obyvacky">
+        <!-- FOTO: jedálenský stôl z dubového masívu, pohľad na hranu dosky a spoj nohy -->
+        <figure class="obraz obraz-l">
+          <span class="g g-rings" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Jedálenský stôl</p>
+            <p class="obraz-big">Masív 40 mm</p>
+            <p class="obraz-foot"><span>Olejovaný povrch</span></p>
+          </div>
+        </figure>
+        <h3>Jedálenský stôl</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Obývačka s jedálňou</dd>
+          <dt>Materiál</dt><dd>Dubový masív 40 mm, olej</dd>
+          <dt>Rozmer</dt><dd>220 × 95 cm</dd>
+          <dt>Výroba</dt><dd>4 týždne</dd>
+          <dt>Cena</dt><dd class="cena">1 780 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="obyvacky">
+        <!-- FOTO: knižnica cez celú stenu od podlahy po strop, zaplnené police -->
+        <figure class="obraz obraz-l">
+          <span class="g g-dots" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Knižnica po strop</p>
+            <p class="obraz-big">3,4 m</p>
+            <p class="obraz-foot"><span>Dub a lamino</span></p>
+          </div>
+        </figure>
+        <h3>Knižnica cez celú stenu</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Obývačka, stena 3,4 m</dd>
+          <dt>Materiál</dt><dd>Dub, spodná časť lamino</dd>
+          <dt>Rozmer</dt><dd>3,4 × 2,5 m</dd>
+          <dt>Výroba</dt><dd>6 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">3 950 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="obyvacky">
+        <!-- FOTO: pracovný kút s policami a doskou z dubového masívu pri okne -->
+        <figure class="obraz obraz-l">
+          <span class="g g-bars" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Pracovný kút</p>
+            <p class="obraz-big">180 cm</p>
+            <p class="obraz-foot"><span>Lamino a dubová doska</span></p>
+          </div>
+        </figure>
+        <h3>Pracovný kút s policami</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Spálňa, kút pri okne</dd>
+          <dt>Materiál</dt><dd>Lamino, doska z dubového masívu</dd>
+          <dt>Rozmer</dt><dd>180 × 75 cm</dd>
+          <dt>Výroba</dt><dd>4 týždne</dd>
+          <dt>Cena</dt><dd class="cena">1 200 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="kupelne">
+        <!-- FOTO: skrinka pod umývadlo, detail olepenej hrany a zásuvky s výrezom na sifón -->
+        <figure class="obraz obraz-l">
+          <span class="g g-hatch" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Skrinka pod umývadlo</p>
+            <p class="obraz-big">Jaseň</p>
+            <p class="obraz-foot"><span>Vodoodolná úprava</span></p>
+          </div>
+        </figure>
+        <h3>Skrinka pod umývadlo</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Kúpeľňa v byte</dd>
+          <dt>Materiál</dt><dd>Jaseňová dyha, vodoodolná úprava</dd>
+          <dt>Rozmer</dt><dd>90 × 55 cm</dd>
+          <dt>Výroba</dt><dd>3 týždne</dd>
+          <dt>Cena</dt><dd class="cena">620 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="kupelne">
+        <!-- FOTO: kúpeľňová zostava so zrkadlovou skrinkou a osvetlením, rozsvietené -->
+        <figure class="obraz obraz-l">
+          <span class="g g-arc" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Kúpeľňová zostava</p>
+            <p class="obraz-big">2,2 m</p>
+            <p class="obraz-foot"><span>Lakované MDF</span><span>Zrkadlová skrinka</span></p>
+          </div>
+        </figure>
+        <h3>Kúpeľňová zostava so zrkadlovou skrinkou</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Kúpeľňa v rodinnom dome</dd>
+          <dt>Materiál</dt><dd>Lakované MDF, LED osvetlenie</dd>
+          <dt>Rozmer</dt><dd>2,2 m</dd>
+          <dt>Výroba</dt><dd>4 týždne</dd>
+          <dt>Cena</dt><dd class="cena">2 150 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="detske">
+        <!-- FOTO: detská izba s posteľou, úložnými zásuvkami a policami nad stolom -->
+        <figure class="obraz obraz-l">
+          <span class="g g-dots" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Detská izba</p>
+            <p class="obraz-big">Preglejka</p>
+            <p class="obraz-foot"><span>Priznaná hrana</span><span>Zaoblené rohy</span></p>
+          </div>
+        </figure>
+        <h3>Detská izba s posteľou a policami</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Detská izba 12 m²</dd>
+          <dt>Materiál</dt><dd>Preglejka s viditeľnou hranou, lak bez rozpúšťadiel</dd>
+          <dt>Rozmer</dt><dd>3,6 × 2,4 m</dd>
+          <dt>Výroba</dt><dd>6 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">3 900 €</dd>
+        </dl>
+      </article>
+
+      <article class="work rv" data-cat="prevadzky">
+        <!-- FOTO: recepčný pult v ordinácii, pohľad zo strany čakárne -->
+        <figure class="obraz obraz-l">
+          <span class="g g-diag" aria-hidden="true"></span>
+          <div class="obraz-in">
+            <p class="obraz-kicker">Recepčný pult</p>
+            <p class="obraz-big">2,6 m</p>
+            <p class="obraz-foot"><span>Kompaktná doska</span><span>Montáž cez víkend</span></p>
+          </div>
+        </figure>
+        <h3>Recepčný pult do ordinácie</h3>
+        <dl>
+          <dt>Priestor</dt><dd>Čakáreň, prevádzka</dd>
+          <dt>Materiál</dt><dd>Kompaktná doska, dubová dyha</dd>
+          <dt>Rozmer</dt><dd>2,6 m</dd>
+          <dt>Výroba</dt><dd>5 týždňov</dd>
+          <dt>Cena</dt><dd class="cena">3 600 €</dd>
+        </dl>
+      </article>
+    </div>
+
+    <p class="gal-note rv">Uvedená cena je konečná za hotovú a namontovanú zákazku v tom materiáli a rozmere, ktorý je pri nej napísaný. Vaša cena vyjde inak podľa rozmerov, materiálu a kovania. Presnú sumu dostanete po zameraní.</p>
+
+    <div class="ctaband rv">
+      <div>
+        <h3>Cenová ponuka na vašu zákazku</h3>
+        <p>Zameranie u vás aj cenová ponuka sú zdarma a nezáväzné. Termín zamerania dohodneme do 3 pracovných dní, ponuku dostanete do 5 pracovných dní od zamerania.</p>
+      </div>
+      <div class="ctaband-btns">
+        <a class="btn btn-solid" href="#ponuka">Nezáväzná cenová ponuka</a>
+        <a class="btn btn-line" href="tel:+421918445271">Zavolať 0918 445 271</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ====== ČO SI VIETE OVERIŤ ====== -->
+<section class="sec" id="referencie">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="lbl">Referencie</p>
+      <h2>Čo si viete overiť pred podpisom</h2>
+      <p class="lead">Štyri veci, ktoré si viete pozrieť a overiť skôr, ako niečo podpíšete. Na každú stačí jeden telefonát na 0918 445 271.</p>
+    </div>
+
+    <div class="gr rv">
+      <article class="gc">
+        <p class="gc-n">01</p>
+        <h3>Obhliadka hotovej zákazky</h3>
+        <p>Dohodneme vám obhliadku hotovej kuchyne alebo skrine priamo u zákazníka, ktorý s návštevou súhlasí. Termín hľadáme do dvoch týždňov od vašej žiadosti a ideme s vami.</p>
+      </article>
+      <article class="gc">
+        <p class="gc-n">02</p>
+        <h3>Telefónne čísla na predchádzajúcich zákazníkov</h3>
+        <p>Na požiadanie dáme čísla na dvoch zákazníkov s podobnou zákazkou, ktorí súhlasili, že ich číslo môžeme posunúť ďalej. Zavoláte im sami a bez nás.</p>
+      </article>
+      <article class="gc">
+        <p class="gc-n">03</p>
+        <h3>Rozrobené zákazky v dielni</h3>
+        <p>V dielni si pozriete rozrobené korpusy, hotové diely pred naložením na auto aj vzorkovňu. Príďte od pondelka do piatka od 8:00 do 16:30, ideálne po telefonickom dohovore.</p>
+      </article>
+      <article class="gc">
+        <p class="gc-n">04</p>
+        <h3>Čo dostanete písomne</h3>
+        <p>Pred výrobou zmluvu s cenou, rozsahom prác a dátumom montáže. Po odovzdaní záručný list na 24 mesiacov, návod na údržbu povrchu a doklad o platbe.</p>
       </article>
     </div>
   </div>
 </section>
+
 <!-- ====== MATERIÁLY ====== -->
 <section class="sec dark" id="materialy">
   <div class="wrap">
     <div class="sec-head rv">
       <p class="lbl">Materiály</p>
-      <h2>Materiály a orientačné ceny čiel</h2>
-      <p class="lead">Vzorky prinesieme na obhliadku. Ceny sú za meter štvorcový čelnej plochy v základnom vyhotovení, bez kovania. Sú ukážkové a slúžia na porovnanie materiálov medzi sebou.</p>
+      <h2>Materiály a ceny čiel</h2>
+      <p class="lead">Vzorky prinesieme na obhliadku. Ceny sú za meter štvorcový plochy samotného čela vrátane povrchovej úpravy, bez korpusu, kovania a montáže. Slúžia na porovnanie materiálov medzi sebou, celkové ceny hotových zákaziek nájdete vyššie pri jednotlivých druhoch nábytku a pri realizáciách.</p>
+    </div>
+
+    <div class="rv" style="margin-top:clamp(30px,4vw,44px)">
+      <!-- FOTO: makro detail olepenej hrany čela, spoja korpusu a tlmeného pántu zblízka -->
+      <figure class="obraz obraz-wide">
+        <span class="g g-hatch" aria-hidden="true"></span>
+        <div class="obraz-in">
+          <p class="obraz-kicker">Detail vyhotovenia</p>
+          <p class="obraz-big">Hrana, spoj<br>a kovanie zblízka</p>
+          <p class="obraz-foot"><span>Hrana 2 mm po celom obvode</span><span>Tlmený pánt</span><span>Olejovaný povrch</span></p>
+        </div>
+      </figure>
     </div>
 
     <div class="tblwrap rv" tabindex="0" role="region" aria-label="Tabuľka materiálov, dá sa posúvať do strán">
@@ -1189,20 +1451,39 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     </div>
 
     <div class="duo rv">
-      <div class="plate plate-wide">
+      <!-- FOTO: pohľad do dielne, formátovacia píla a rozrezané dosky pripravené na olepenie -->
+      <figure class="obraz obraz-wide">
         <span class="g g-bars" aria-hidden="true"></span>
-        <div class="plate-in">
-          <p class="plate-kicker">Jedna hala</p>
-          <p class="plate-big">Od dosky<br>po hotovú montáž</p>
-          <p class="plate-foot"><span>Formátovacia píla</span><span>Olepovačka hrán</span><span>Oddelená lakovňa</span></p>
+        <div class="obraz-in">
+          <p class="obraz-kicker">Jedna hala</p>
+          <p class="obraz-big">Od dosky<br>po hotovú montáž</p>
+          <p class="obraz-foot"><span>Formátovacia píla</span><span>Olepovačka hrán</span><span>Oddelená lakovňa</span></p>
         </div>
-      </div>
+      </figure>
       <div class="duo-txt">
         <h3>Priestor</h3>
         <p>Hala má oddelenú časť na rezanie a olepovanie a samostatnú miestnosť na povrchovú úpravu, aby sa pri striekaní nedostal do laku prach z pílenia. Odsávanie ide od každého stroja zvlášť.</p>
         <p>Dosky skladujeme naležato v temperovanom sklade, aby sa pred spracovaním neskrútili. Väčšie zákazky skladáme nasucho ešte v dielni, takže prípadné odchýlky riešime tu a nie u vás v byte.</p>
         <p>Vzorkovňa je hneď pri vstupe. Nájdete v nej vzorky dýh, lamina, lakov aj kovania, takže si viete ohmatať povrch a vyskúšať, ako sa zásuvka dovierne.</p>
       </div>
+    </div>
+
+    <div class="duo rv" style="margin-top:clamp(28px,4vw,52px)">
+      <div class="duo-txt">
+        <h3>Kto zákazku vedie</h3>
+        <p>Celú zákazku vedie jeden človek, vedúci dielne. Cez neho ide návrh, termín aj každá zmena, takže to isté nemusíte vysvetľovať viacerým ľuďom.</p>
+        <p>Zastihnete ho na čísle 0918 445 271 od pondelka do piatka od 8:00 do 16:30. Ak je pri stroji alebo na montáži, ozve sa v ten istý deň.</p>
+        <p>Do dielne sa dá prísť pozrieť rozrobenú zákazku aj hotové diely pred naložením na auto. Termín si dohodnite telefonicky, v hale sa pracuje so strojmi a medzi pracoviskami vás sprevádzame.</p>
+      </div>
+      <!-- FOTO: vedúci dielne pri kontrole hotového dielu na montážnom stole -->
+      <figure class="obraz obraz-wide">
+        <span class="g g-rings" aria-hidden="true"></span>
+        <div class="obraz-in">
+          <p class="obraz-kicker">Jeden človek na zákazku</p>
+          <p class="obraz-big">Od zamerania<br>po odovzdanie</p>
+          <p class="obraz-foot"><span>Vedúci dielne</span><span>0918 445 271</span><span>Po – Pi 8:00 – 16:30</span></p>
+        </div>
+      </figure>
     </div>
 
     <div class="list">
@@ -1260,14 +1541,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     </div>
 
     <div class="rv" style="margin-top:clamp(30px,4vw,44px)">
-      <div class="plate plate-l plate-wide">
+      <!-- FOTO: vytlačený darčekový poukaz položený na dubovej doske v dielni -->
+      <figure class="obraz obraz-l obraz-wide">
         <span class="g g-blocks" aria-hidden="true"></span>
-        <div class="plate-in">
-          <p class="plate-kicker">Darčekový poukaz</p>
-          <p class="plate-big">100 · 200 · 500 €</p>
-          <p class="plate-foot"><span>Platnosť 12 mesiacov</span><span>Prenosný</span><span>Vystavíme na počkanie</span></p>
+        <div class="obraz-in">
+          <p class="obraz-kicker">Darčekový poukaz</p>
+          <p class="obraz-big">100 · 200 · 500 €</p>
+          <p class="obraz-foot"><span>Platnosť 12 mesiacov</span><span>Prenosný</span><span>Vystavíme na počkanie</span></p>
         </div>
-      </div>
+      </figure>
     </div>
 
     <div class="gr gr-3 rv">
@@ -1313,7 +1595,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="sec-head rv">
       <p class="lbl">Podmienky</p>
       <h2>Platba, zmeny, doprava a záruka</h2>
-      <p class="lead">Všetko podstatné je napísané aj v zmluve, ktorú dostanete pred začiatkom výroby. Tu je zhrnuté to, na čo sa pýtajú najčastejšie.</p>
+      <p class="lead">Tie isté podmienky sú napísané v zmluve, ktorú dostanete pred začiatkom výroby.</p>
     </div>
 
     <div class="gr rv">
@@ -1371,7 +1653,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="sec-head rv">
       <p class="lbl">Otázky</p>
       <h2>Časté otázky</h2>
-      <p class="lead">Ak tu odpoveď nenájdete, napíšte nám do dopytu a odpíšeme konkrétne k vášmu priestoru.</p>
+      <p class="lead">Ak tu odpoveď nenájdete, napíšte nám do formulára cenovej ponuky. Odpovedáme do 24 hodín.</p>
     </div>
 
     <div class="faq rv">
@@ -1427,18 +1709,54 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="sec-head rv">
       <p class="lbl">Cesta k nám</p>
       <h2>Ako sa k nám dostanete</h2>
-      <p class="lead">Do dielne sa dá prísť pozrieť rozrobené zákazky aj vzorky. Ideálne po dohode termínu, aby mal na vás kto čas. V hale sa pracuje so strojmi, preto vás medzi pracoviskami sprevádzame.</p>
+      <p class="lead">Dielňa je otvorená od pondelka do piatka od 8:00 do 16:30, v sobotu po dohode. Príchod si dohodnite telefonicky na 0918 445 271.</p>
     </div>
 
-    <div class="rv" style="margin-top:clamp(30px,4vw,44px)">
-      <div class="plate plate-wide">
-        <span class="g g-cross" aria-hidden="true"></span>
-        <div class="plate-in">
-          <p class="plate-kicker">Adresa dielne</p>
-          <p class="plate-big">Remeselná 12</p>
-          <p class="plate-foot"><span>Ukážkové mesto</span><span>Po – Pi 8:00 – 16:30</span><span>Vjazd z bočnej ulice</span></p>
-        </div>
+    <figure class="mapa rv">
+      <div class="mapa-scroll" tabindex="0" role="region" aria-label="Schéma príjazdu, dá sa posúvať do strán">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Schéma príjazdu: z hlavnej cesty odbočíte na bočnú ulicu, do areálu sa vchádza bránou z bočnej ulice, za bránou vpravo sú tri parkovacie miesta a vstup do vzorkovne. Zastávka Remeselná je pri hlavnej ceste, štyri minúty pešo.">
+          <g fill="none" stroke="#5C5347" stroke-width="1">
+            <path d="M0 44H520M0 74H520"/>
+            <path d="M64 74V300M94 74V300"/>
+          </g>
+          <path d="M0 59H520" fill="none" stroke="#4A4038" stroke-width="1" stroke-dasharray="12 10"/>
+          <rect x="120" y="100" width="384" height="182" fill="rgba(237,232,224,.03)" stroke="#6A6055" stroke-width="1" stroke-dasharray="5 5"/>
+          <rect x="196" y="112" width="296" height="102" fill="rgba(200,149,92,.08)" stroke="#C8955C" stroke-width="1"/>
+          <path d="M120 148V196" fill="none" stroke="#C8955C" stroke-width="3"/>
+          <path d="M96 172h16M106 168l7 4-7 4" fill="none" stroke="#C8955C" stroke-width="1"/>
+          <path d="M124 172H160V262" fill="none" stroke="#8A7E70" stroke-width="1" stroke-dasharray="6 6"/>
+          <g fill="none" stroke="#9C9184" stroke-width="1">
+            <rect x="176" y="238" width="36" height="20"/>
+            <rect x="216" y="238" width="36" height="20"/>
+            <rect x="256" y="238" width="36" height="20"/>
+          </g>
+          <rect x="384" y="26" width="9" height="16" fill="#C8955C"/>
+          <circle cx="240" cy="214" r="5" fill="#C8955C"/>
+          <g font-family="ui-monospace, Consolas, monospace" letter-spacing="1.2">
+            <text x="8" y="36" font-size="12" fill="#9C9184">HLAVNÁ CESTA</text>
+            <text x="376" y="39" font-size="11" fill="#C8955C" text-anchor="end">ZASTÁVKA REMESELNÁ · 4 MIN PEŠO</text>
+            <text transform="translate(86 118) rotate(90)" font-size="11" fill="#9C9184">BOČNÁ ULICA</text>
+            <text transform="translate(112 150) rotate(90)" font-size="11" fill="#C8955C">BRÁNA</text>
+            <text x="212" y="146" font-size="14" fill="#EDE8E0">DIELŇA · REMESELNÁ 12</text>
+            <text x="212" y="168" font-size="11" fill="#9C9184">VZORKOVŇA HNEĎ PRI VSTUPE</text>
+            <text x="252" y="208" font-size="11" fill="#C8955C">VSTUP DO VZORKOVNE</text>
+            <text x="176" y="230" font-size="11" fill="#9C9184">PARKOVANIE · 3 MIESTA PRE NÁVŠTEVY</text>
+          </g>
+        </svg>
       </div>
+      <figcaption>Schéma príjazdu. Vjazd je bránou z bočnej ulice, nie z hlavnej cesty. Za bránou pokračujte vpravo k parkovaniu.</figcaption>
+    </figure>
+
+    <div class="rv" style="margin-top:clamp(26px,3.4vw,40px)">
+      <!-- FOTO: otvorená brána do areálu z bočnej ulice, s tabuľou na fasáde a vjazdom na dvor -->
+      <figure class="obraz obraz-wide">
+        <span class="g g-cross" aria-hidden="true"></span>
+        <div class="obraz-in">
+          <p class="obraz-kicker">Adresa dielne</p>
+          <p class="obraz-big">Remeselná 12</p>
+          <p class="obraz-foot"><span>Ukážkové mesto</span><span>Po – Pi 8:00 – 16:30</span><span>Vjazd z bočnej ulice</span></p>
+        </div>
+      </figure>
     </div>
 
     <div class="gr rv">
@@ -1472,7 +1790,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="sec-head rv">
       <p class="lbl">Kariéra</p>
       <h2>Hľadáme kolegov do dielne</h2>
-      <p class="lead">Pracuje sa na jednu zmenu, od pondelka do piatka. Nadčasy sú výnimka, nie pravidlo, a vopred sa dohodnú.</p>
+      <p class="lead">Pracuje sa na jednu zmenu, od pondelka do piatka od 8:00 do 16:30. Nadčasy sa dohadujú vopred.</p>
     </div>
 
     <div class="gr gr-3 rv">
@@ -1481,7 +1799,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         <h3>Stolár do dielne</h3>
         <ul>
           <li>Formátovanie dosiek, olepovanie hrán, vŕtanie a kompletizácia korpusov.</li>
-          <li>Pracovný čas 7:00 – 15:30, jedna zmena.</li>
+          <li>Pracovný čas 8:00 – 16:30, jedna zmena.</li>
           <li>Vyučenie v odbore alebo prax na dielenských strojoch.</li>
           <li>Mzdu dohodneme podľa praxe pri osobnom stretnutí.</li>
         </ul>
@@ -1493,7 +1811,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
           <li>Montáže prevažne v okolí dielne, návrat na noc domov.</li>
           <li>Práca vo dvojici, dodávku aj náradie dodáme.</li>
           <li>Vodičský preukaz skupiny B je podmienka.</li>
-          <li>Zaučíme aj bez praxe, ak máte cit pre presnú prácu.</li>
+          <li>Zaučíme aj bez praxe, zaučenie na montážach trvá približne tri mesiace.</li>
         </ul>
       </article>
       <article class="gc">
@@ -1510,26 +1828,29 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 
     <div class="subhead rv">
       <h3>Ako sa prihlásiť</h3>
-      <p>Napíšte pár viet o tom, čo ste doteraz robili, do <a href="#dopyt">formulára v sekcii Dopyt</a>, zavolajte na 0918 445 271 alebo príďte osobne na Remeselnú 12 počas pracovných hodín. Životopis nie je podmienka.</p>
+      <p>Napíšte pár viet o tom, čo ste doteraz robili, do <a href="#ponuka">formulára na konci stránky</a>, zavolajte na 0918 445 271 alebo príďte osobne na Remeselnú 12 od pondelka do piatka od 8:00 do 16:30. Životopis nie je podmienka.</p>
       <p>Ozveme sa do týždňa a dohodneme stretnutie priamo v dielni, aby ste videli stroje aj rozrobené zákazky, na ktorých by ste robili.</p>
     </div>
   </div>
 </section>
-<!-- ====== DOPYT ====== -->
-<section class="sec dark" id="dopyt">
+<!-- ====== NEZÁVÄZNÁ CENOVÁ PONUKA ====== -->
+<section class="sec dark" id="ponuka">
   <div class="wrap">
     <div class="form-grid">
       <div class="form-side rv">
-        <p class="lbl">Dopyt</p>
-        <h2>Napíšte nám zadanie</h2>
-        <p class="lead" style="margin-top:16px">Stačí pár viet a približné rozmery. Správa príde do schránky dielne a odpovedáme do 24 hodín.</p>
+        <p class="lbl">Cenová ponuka</p>
+        <h2>Nezáväzná cenová ponuka</h2>
+        <p class="lead" style="margin-top:16px">Napíšte zadanie a približné rozmery. Odpovieme do 24 hodín, termín zamerania dohodneme do 3 pracovných dní a ponuku dostanete do 5 pracovných dní od zamerania. Zameranie aj ponuka sú zdarma a k ničomu vás nezaväzujú.</p>
         <ul>
-          <li><span aria-hidden="true">01</span><span>Fotografie priestoru pomôžu, ale nie sú podmienka.</span></li>
-          <li><span aria-hidden="true">02</span><span>Ak máte hornú hranicu rozpočtu, napíšte ju do popisu.</span></li>
-          <li><span aria-hidden="true">03</span><span>Vzorky materiálov prinesieme na obhliadku.</span></li>
-          <li><span aria-hidden="true">04</span><span>Ak potrebujete stihnúť pevný termín, uveďte ho hneď v prvej správe.</span></li>
-          <li><span aria-hidden="true">05</span><span>Radšej zavoláte? Vytočte 0918 445 271 počas pracovných hodín.</span></li>
+          <li><span aria-hidden="true">01</span><span>Pôdorys alebo fotografie priestoru priložte rovno k dopytu, ponuka bude presnejšia.</span></li>
+          <li><span aria-hidden="true">02</span><span>Ak máte hornú hranicu rozpočtu, napíšte ju. Podľa nej vyberieme materiál a kovanie.</span></li>
+          <li><span aria-hidden="true">03</span><span>Ak potrebujete stihnúť pevný termín, uveďte dátum už v prvej správe.</span></li>
+          <li><span aria-hidden="true">04</span><span>Vzorky dýh, lamina, lakov a kovania prinesieme na obhliadku.</span></li>
+          <li><span aria-hidden="true">05</span><span>Radšej zavoláte? Vytočte 0918 445 271 od pondelka do piatka od 8:00 do 16:30.</span></li>
         </ul>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:26px">
+          <a class="btn btn-tel" href="tel:+421918445271">Zavolať 0918 445 271</a>
+        </div>
       </div>
 
       <div class="card rv" id="formCard">
@@ -1543,31 +1864,69 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
                 <input type="tel" name="telefon" autocomplete="tel" placeholder="Číslo, na ktorom vás zastihneme" required>
               </label>
             </div>
-            <label class="f"><span>Obec alebo mesto</span>
-              <input type="text" name="obec" autocomplete="address-level2" placeholder="Kde je zákazka">
-            </label>
-            <label class="f"><span>Typ zákazky</span>
-              <select name="typ">
-                <option>Kuchynská linka</option>
-                <option>Vstavaná skriňa alebo šatník</option>
-                <option>Nábytok do obývačky alebo spálne</option>
-                <option>Kúpeľňová zostava</option>
-                <option>Vybavenie prevádzky</option>
-                <option>Zatiaľ neviem</option>
-              </select>
-            </label>
-            <label class="f"><span>Správa a popis zákazky</span>
+            <div class="two">
+              <label class="f"><span>Miesto montáže</span>
+                <input type="text" name="obec" autocomplete="address-level2" placeholder="Obec alebo mesto, kde je zákazka">
+              </label>
+              <label class="f"><span>Typ priestoru</span>
+                <select name="priestor">
+                  <option>Byt</option>
+                  <option>Rodinný dom</option>
+                  <option>Podkrovie</option>
+                  <option>Prevádzka</option>
+                </select>
+              </label>
+            </div>
+            <div class="two">
+              <label class="f"><span>Typ zákazky</span>
+                <select name="typ">
+                  <option>Kuchynská linka</option>
+                  <option>Vstavaná skriňa alebo šatník</option>
+                  <option>Nábytok do obývačky alebo spálne</option>
+                  <option>Kúpeľňová zostava</option>
+                  <option>Detská izba</option>
+                  <option>Vybavenie prevádzky</option>
+                  <option>Zatiaľ neviem</option>
+                </select>
+              </label>
+              <label class="f"><span>Približné rozmery</span>
+                <input type="text" name="rozmery" placeholder="Napríklad 3,2 m + 1,8 m">
+              </label>
+            </div>
+            <div class="two">
+              <label class="f"><span>Predstava rozpočtu</span>
+                <select name="rozpocet">
+                  <option>Do 2 000 €</option>
+                  <option>2 000 – 5 000 €</option>
+                  <option>5 000 – 10 000 €</option>
+                  <option>Nad 10 000 €</option>
+                  <option>Zatiaľ neviem</option>
+                </select>
+              </label>
+              <label class="f"><span>Kedy potrebujete hotovo</span>
+                <input type="text" name="termin" placeholder="Mesiac alebo konkrétny dátum">
+              </label>
+            </div>
+            <label class="f"><span>Popis zákazky</span>
               <textarea name="popis" placeholder="Napríklad: kuchyňa v tvare L, približne 3,2 m a 1,8 m, byt na treťom poschodí, svetlé drevo, tlmené zásuvky."></textarea>
             </label>
-            <button class="btn btn-solid" type="submit">Odoslať dopyt</button>
-            <p class="hint">Správa príde do schránky dielne a odpoveď dostanete do 24 hodín. Na tejto ukážkovej stránke sa formulár neodosiela a žiadne údaje sa neukladajú.</p>
+            <div class="f">
+              <span>Pôdorys alebo fotografie priestoru</span>
+              <div class="filerow">
+                <input class="filein" type="file" id="priloha" name="priloha" multiple accept="image/*,.pdf">
+                <label class="btn btn-line" for="priloha">Vybrať súbory</label>
+                <span class="filename" id="prilohaTxt">Zatiaľ nie je vybraný žiadny súbor</span>
+              </div>
+            </div>
+            <button class="btn btn-solid" type="submit">Odoslať nezáväzný dopyt</button>
+            <p class="hint">Správa príde do schránky dielne a odpoveď dostanete do 24 hodín. Na tejto ukážkovej stránke sa formulár neodosiela, súbory sa nikam nenahrávajú a žiadne údaje sa neukladajú.</p>
           </form>
         </div>
 
         <div class="sent" id="sentBox" role="status" aria-live="polite">
           <span class="sent-lbl">Ukážka odoslania</span>
           <h3>Takto by vyzeralo potvrdenie</h3>
-          <p>Ďakujeme za správu. Na ostrom webe by v tejto chvíli dopyt prišiel do schránky dielne a odpoveď by ste dostali do 24 hodín. Tu sa nič neodoslalo a žiadne údaje sa neuložili.</p>
+          <p>Ďakujeme za dopyt. Na ostrom webe by v tejto chvíli prišiel do schránky dielne, odpoveď by ste dostali do 24 hodín a termín zamerania do 3 pracovných dní. Tu sa nič neodoslalo a žiadne údaje sa neuložili.</p>
           <p style="margin-bottom:22px">Chcete takýto web pre svoj podnik? Nájdete ma na <a href="https://apoliak.online" target="_blank" rel="noopener" style="color:#9C5A2F">apoliak.online</a>.</p>
           <button class="btn btn-line" type="button" id="againBtn">Vyskúšať formulár znova</button>
         </div>
@@ -1595,13 +1954,19 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
       <div class="col rv">
         <h3>Telefón</h3>
         <p class="fake"><a href="tel:+421918445271">0918 445 271</a> <span class="sub">Vedúci dielne, počas pracovných hodín</span></p>
-        <p class="rem">Mimo pracovných hodín využite <a href="#dopyt">formulár dopytu</a>. Správa príde do schránky dielne a odpovedáme do 24 hodín.</p>
+        <p class="rem">Mimo pracovných hodín využite <a href="#ponuka">formulár cenovej ponuky</a>. Správa príde do schránky dielne a odpovedáme do 24 hodín.</p>
       </div>
       <div class="col rv">
         <h3>Otváracie hodiny</h3>
-        <p>Pondelok až piatok: 8:00 – 16:30</p>
-        <p>Sobota: po dohode</p>
-        <p>Nedeľa: zatvorené</p>
+        <ul class="hours">
+          <li><span>Pondelok</span><b>8:00 – 16:30</b></li>
+          <li><span>Utorok</span><b>8:00 – 16:30</b></li>
+          <li><span>Streda</span><b>8:00 – 16:30</b></li>
+          <li><span>Štvrtok</span><b>8:00 – 16:30</b></li>
+          <li><span>Piatok</span><b>8:00 – 16:30</b></li>
+          <li><span>Sobota</span><b>po dohode</b></li>
+          <li class="off"><span>Nedeľa</span><b>zatvorené</b></li>
+        </ul>
         <p class="rem">Obhliadky u zákazníkov robíme aj po 17:00, termín dohodneme telefonicky.</p>
       </div>
       <div class="col rv">
@@ -1671,19 +2036,30 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         <h4>Stolárstvo Rovina</h4>
         <p>Remeselná 12</p>
         <p>Ukážkové mesto</p>
-        <p><a href="tel:+421918445271">0918 445 271</a></p>
+        <p>Zameranie u vás aj cenová ponuka zdarma</p>
+        <div class="foot-cta">
+          <a class="btn btn-solid" href="#ponuka">Nezáväzná cenová ponuka</a>
+          <a class="btn btn-tel" href="tel:+421918445271">0918 445 271</a>
+        </div>
       </div>
       <div>
         <h4>Otváracie hodiny</h4>
-        <p>Pondelok až piatok: 8:00 – 16:30</p>
-        <p>Sobota: po dohode</p>
-        <p>Nedeľa: zatvorené</p>
+        <ul class="hours">
+          <li><span>Pondelok</span><b>8:00 – 16:30</b></li>
+          <li><span>Utorok</span><b>8:00 – 16:30</b></li>
+          <li><span>Streda</span><b>8:00 – 16:30</b></li>
+          <li><span>Štvrtok</span><b>8:00 – 16:30</b></li>
+          <li><span>Piatok</span><b>8:00 – 16:30</b></li>
+          <li><span>Sobota</span><b>po dohode</b></li>
+          <li class="off"><span>Nedeľa</span><b>zatvorené</b></li>
+        </ul>
       </div>
       <div>
         <h4>Na stránke nájdete</h4>
-        <p><a href="#vyroba">Výroba a ceny</a> &middot; <a href="#kalkulacka">Kalkulačka</a></p>
+        <p><a href="#vyroba">Výroba a ceny</a> &middot; <a href="#realizacie">Realizácie s cenami</a></p>
+        <p><a href="#kalkulacka">Kalkulačka</a> &middot; <a href="#materialy">Materiály</a></p>
         <p><a href="#podmienky">Platba, storno a záruka</a></p>
-        <p><a href="#cesta">Cesta a parkovanie</a> &middot; <a href="#dopyt">Dopyt</a></p>
+        <p><a href="#cesta">Cesta a parkovanie</a> &middot; <a href="#kontakt">Otváracie hodiny</a></p>
       </div>
     </div>
     <div class="foot-in">
@@ -1935,6 +2311,20 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   var card = doc.getElementById("formCard");
   var sent = doc.getElementById("sentBox");
   var again = doc.getElementById("againBtn");
+
+  /* príloha: názov súboru vypisujeme sami, aby bol text vždy po slovensky */
+  var priloha = doc.getElementById("priloha");
+  var prilohaTxt = doc.getElementById("prilohaTxt");
+  var PRAZDNE = "Zatiaľ nie je vybraný žiadny súbor";
+  function vypisPrilohu(){
+    if(!prilohaTxt) return;
+    var n = (priloha && priloha.files) ? priloha.files.length : 0;
+    if(n === 0){ prilohaTxt.textContent = PRAZDNE; }
+    else if(n === 1){ prilohaTxt.textContent = priloha.files[0].name; }
+    else if(n < 5){ prilohaTxt.textContent = "Vybrané " + n + " súbory"; }
+    else { prilohaTxt.textContent = "Vybraných " + n + " súborov"; }
+  }
+  if(priloha && prilohaTxt){ priloha.addEventListener("change", vypisPrilohu); }
   if(dopyt && card && sent){
     dopyt.addEventListener("submit", function(e){
       e.preventDefault();
@@ -1950,6 +2340,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         card.classList.remove("done");
         sent.classList.remove("show");
         dopyt.reset();
+        vypisPrilohu();
         var first = dopyt.querySelector("input");
         if(first) first.focus();
       });

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zubná ambulancia Vrbová — súkromná stomatologická ambulancia, Modra</title>
-<meta name="description" content="Súkromná zubná ambulancia v Modre: rozsah ošetrení, cenník, úhrada zo zdravotného poistenia, výkony nehradené poisťovňou, ordinačné hodiny a objednanie termínu. Ukážkový web od apoliak.online.">
+<meta name="description" content="Súkromná zubná ambulancia v Modre: lekári, rozsah ošetrení, cenník s cenami, čo hradí poisťovňa a čo doplácate, ordinačné hodiny a objednanie termínu. Ukážkový web od apoliak.online.">
 <meta name="color-scheme" content="light">
 
 <meta property="og:type" content="website">
@@ -235,6 +235,20 @@ a:hover{ color:var(--ink); }
 }
 .menu a:hover{ background:var(--sage-050); color:var(--sage); }
 
+/* Objednanie a telefón sú v hlavičke na každej šírke, nikdy nie v hamburgeri. */
+.navact{ display:flex; align-items:center; gap:8px; flex:none; }
+
+.navtel{
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--white); border:1px solid var(--line-2); color:var(--ink);
+  text-decoration:none; font-size:14.5px; font-weight:600;
+  padding:10px 15px; border-radius:var(--r); white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.navtel:hover{ border-color:var(--sage); color:var(--sage); }
+.navtel svg{ flex:none; display:block; }
+.navtel .navtel__short{ display:none; }
+
 .navcta{
   display:inline-flex; align-items:center; justify-content:center;
   background:var(--sage); color:#fff; text-decoration:none;
@@ -250,9 +264,10 @@ a:hover{ color:var(--ink); }
 }
 .navtoggle svg{ display:block; }
 
-@media (max-width:1040px){
+@media (max-width:1080px){
   .nav{ position:relative; }
-  .navtoggle{ display:inline-flex; }
+  .navtoggle{ display:inline-flex; order:2; }
+  .navact{ order:1; }
   .menu{
     display:none; position:absolute; left:0; right:0; top:100%;
     flex-direction:column; align-items:stretch; gap:0;
@@ -262,11 +277,23 @@ a:hover{ color:var(--ink); }
   .menu.is-open{ display:flex; }
   .menu a{ padding:12px 8px; border-bottom:1px solid var(--line); border-radius:0; }
   .menu li:last-child a{ border-bottom:0; }
-  .menu .navcta{ margin-top:12px; padding:13px 18px; }
-  .nav .navcta--desk{ display:none; }
 }
-@media (min-width:1041px){ .menu .navcta--mob{ display:none; } }
+@media (max-width:620px){
+  .nav__in{ gap:10px; }
+  .brand__sub{ display:none; }
+  .brand__name{ font-size:16.5px; }
+  .navtel{ padding:10px 12px; font-size:14px; }
+  .navtel .navtel__full{ display:none; }
+  .navtel .navtel__short{ display:inline; }
+  .navcta{ padding:11px 14px; font-size:14px; }
+  .navtoggle{ padding:10px 11px; }
+  .navtoggle .navtoggle__t{ display:none; }
+}
+@media (max-width:520px){
+  .brand > span{ display:none; }
+}
 html:not(.js) .navtoggle{ display:none; }
+html:not(.js) .nav__in{ flex-wrap:wrap; }
 html:not(.js) .menu{ display:flex; position:static; flex-direction:row; flex-wrap:wrap; padding:0 0 10px; border:0; background:none; }
 html:not(.js) .menu a{ border-bottom:0; }
 
@@ -369,8 +396,8 @@ html:not(.js) .menu a{ border-bottom:0; }
   position:absolute; font-size:10.5px; letter-spacing:.19em; text-transform:uppercase;
   color:var(--ink-soft); font-weight:600;
 }
-.plan-road--h .plan-road__name{ left:16px; top:50%; transform:transageY(-50%); }
-.plan-road--v .plan-road__name{ top:18px; left:50%; transform:transageX(-50%); writing-mode:vertical-rl; }
+.plan-road--h .plan-road__name{ left:16px; top:50%; transform:translateY(-50%); }
+.plan-road--v .plan-road__name{ top:18px; left:50%; transform:translateX(-50%); writing-mode:vertical-rl; }
 .plan-mark{
   position:absolute; z-index:2; left:60%; top:56%;
   display:flex; align-items:center; gap:9px;
@@ -424,6 +451,8 @@ html:not(.js) .menu a{ border-bottom:0; }
   position:relative; z-index:3; display:flex; flex-direction:column; width:100%;
   padding:clamp(24px,3vw,38px);
 }
+/* eyebrow v tmavom paneli musí byť svetlý, inak splynie s pozadím */
+.herocard .cveyebrow{ color:var(--on-sage-mut); }
 .herocard__name{
   font-family:var(--serif); font-weight:400;
   font-size:clamp(21px,2.2vw,27px); line-height:1.2; letter-spacing:-.015em;
@@ -856,6 +885,14 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
 
 /* ================= PÄTIČKA ================= */
 .footer{ background:var(--ink); color:#C9CBCF; padding:clamp(40px,5vw,64px) 0 28px; }
+.footer__act{
+  display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+  padding-bottom:clamp(28px,3.4vw,40px); margin-bottom:clamp(28px,3.4vw,40px);
+  border-bottom:1px solid #2A2D31;
+}
+.footer__act > p{ flex:1 1 280px; margin:0; }
+.footer__act .btn{ flex:none; }
+@media (max-width:520px){ .footer__act .btn{ width:100%; } }
 .footer h3{ color:#fff; font-size:12px; letter-spacing:.19em; text-transform:uppercase; font-family:var(--sans); font-weight:700; margin-bottom:14px; }
 .footer__grid{ display:grid; grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr)); gap:32px; }
 @media (max-width:1000px){ .footer__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
@@ -874,8 +911,159 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
   font-size:13.5px; color:#A7ABB1;
 }
 
+/* ================= ZDRAVOTNÉ POISŤOVNE — PÁS ================= */
+.payers{ background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.payers__in{
+  display:grid; grid-template-columns:minmax(0,auto) minmax(0,1fr);
+  gap:18px clamp(24px,4vw,56px); align-items:center;
+  padding-block:clamp(20px,2.6vw,30px);
+}
+@media (max-width:900px){ .payers__in{ grid-template-columns:minmax(0,1fr); } }
+.payers__lead{
+  margin:0; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.payers__lead span{
+  display:block; margin-top:7px; max-width:26ch;
+  font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; color:var(--ink-soft);
+}
+.payers__row{ display:flex; flex-wrap:wrap; gap:10px; }
+.payer{
+  flex:1 1 190px; min-width:0;
+  display:flex; align-items:center; gap:12px;
+  background:var(--white); border:1px solid var(--line); padding:11px 13px;
+}
+.payer__mark{
+  flex:none; width:40px; height:40px; display:grid; place-items:center;
+  background:var(--sage-050); border:1px solid var(--sage-100);
+  font-family:var(--serif); font-size:14px; letter-spacing:.02em; color:var(--sage);
+}
+.payer b{ display:block; font-size:14.5px; font-weight:600; line-height:1.25; color:var(--ink); }
+.payer span{ display:block; margin-top:2px; font-size:12.5px; color:var(--ink-soft); }
+
+/* ================= MIESTA PRIPRAVENÉ NA FOTOGRAFIE =================
+   Každá plocha je samostatná kompozícia: vrstvený prechod, geometria
+   a typografia, ktorá nesie číslo alebo popis. Žiadna výplň.
+------------------------------------------------------------------- */
+.obraz{ margin:0; }
+.obraz__plate{
+  position:relative; overflow:hidden; isolation:isolate;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  aspect-ratio:4/5; min-height:230px;
+  padding:clamp(14px,2vw,20px);
+  border:1px solid var(--line);
+  background:linear-gradient(154deg,#F8F7F4 0%,#EBEFEA 54%,#D9E1D9 100%);
+}
+.obraz__plate::after{
+  content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+  background-image:var(--noise); opacity:.12; mix-blend-mode:multiply;
+}
+.obraz__geo{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:
+    radial-gradient(circle at 50% 33%, rgba(255,255,255,.92) 0 21%, transparent 21.4%),
+    repeating-linear-gradient(to bottom, rgba(56,73,63,.07) 0 1px, transparent 1px 13px),
+    radial-gradient(130% 85% at 104% -4%, rgba(56,73,63,.13), transparent 58%);
+}
+.obraz__geo--plan{
+  background-image:
+    linear-gradient(to right, rgba(56,73,63,.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56,73,63,.1) 1px, transparent 1px),
+    radial-gradient(120% 90% at 8% 100%, rgba(56,73,63,.12), transparent 60%);
+  background-size:38px 38px, 38px 38px, auto;
+}
+.obraz__geo--arc{
+  background-image:
+    repeating-radial-gradient(circle at 100% 0, transparent 0 30px, rgba(56,73,63,.14) 30px 31px),
+    radial-gradient(120% 90% at 20% 10%, rgba(255,255,255,.8), transparent 62%);
+}
+.obraz__mono{
+  position:absolute; z-index:2; left:0; right:0; top:33%; transform:translateY(-50%);
+  text-align:center; font-family:var(--serif); line-height:1;
+  font-size:clamp(38px,6vw,56px); letter-spacing:.06em; color:var(--sage);
+}
+.obraz__tag{
+  position:relative; z-index:2;
+  font-size:10.5px; letter-spacing:.19em; text-transform:uppercase; font-weight:700;
+  color:var(--sage); padding-top:11px; border-top:1px solid rgba(56,73,63,.24);
+}
+.obraz__big{
+  position:relative; z-index:2; margin-top:10px;
+  font-family:var(--serif); font-size:clamp(30px,4.2vw,42px); line-height:1; color:var(--ink);
+}
+.obraz__note{ position:relative; z-index:2; margin-top:6px; font-size:13.5px; color:var(--ink-soft); }
+.obraz figcaption{ margin-top:11px; font-size:13.5px; line-height:1.55; color:var(--ink-soft); max-width:46ch; }
+.obraz--wide .obraz__plate{ aspect-ratio:4/3; min-height:200px; }
+
+/* dvojplocha na stav pred ošetrením a po ňom */
+.obraz--dvoj .obraz__plate{
+  aspect-ratio:16/10; min-height:190px;
+  display:grid; grid-template-columns:1fr 1fr; padding:0;
+}
+.obraz__half{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:clamp(14px,2vw,20px);
+  border-right:1px solid rgba(56,73,63,.24);
+}
+.obraz__half:last-child{ border-right:0; background:rgba(255,255,255,.42); }
+@media (max-width:620px){ .obraz--dvoj .obraz__plate{ aspect-ratio:4/3; } }
+.obraz__half b{ font-size:10.5px; letter-spacing:.19em; text-transform:uppercase; font-weight:700; color:var(--sage); }
+.obraz__half span{ margin-top:5px; font-size:13.5px; color:var(--ink-soft); }
+
+.obrazy{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(18px,2.4vw,28px); margin-top:clamp(28px,3.4vw,44px);
+}
+@media (max-width:900px){ .obrazy{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){ .obrazy{ grid-template-columns:minmax(0,1fr); } }
+
+/* ================= TÍM ================= */
+.team{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(20px,2.6vw,32px); }
+@media (max-width:1000px){ .team{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){
+  .team{ grid-template-columns:minmax(0,1fr); }
+  .member .obraz{ max-width:280px; }
+}
+.member h3{ margin-top:16px; font-size:18px; }
+.member__role{
+  margin:7px 0 10px; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.member p{ font-size:14.5px; color:var(--ink-soft); }
+.member__do{ margin-top:13px; border-top:1px solid var(--line); }
+.member__do li{
+  position:relative; padding:8px 0 0 15px; font-size:13.5px; color:var(--ink-soft);
+}
+.member__do li::before{ content:""; position:absolute; left:0; top:1.05em; width:8px; height:1px; background:var(--line-2); }
+
+/* ================= UKÁŽKY PRÁC ================= */
+.works{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(22px,3vw,40px); }
+@media (max-width:820px){ .works{ grid-template-columns:minmax(0,1fr); } }
+.work h3{ margin-top:16px; font-size:18px; }
+.work p{ margin-top:8px; font-size:14.5px; color:var(--ink-soft); }
+.work__meta{ margin-top:14px; border-top:1px solid var(--line); }
+.work__meta > div{
+  display:flex; justify-content:space-between; gap:16px;
+  padding:9px 0; border-bottom:1px solid var(--line); font-size:14px;
+}
+.work__meta dt{ color:var(--ink-soft); }
+.work__meta dd{ margin:0; color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
+
+/* ================= HODNOTENIA ================= */
+.reviews{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:900px){ .reviews{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:620px){ .reviews{ grid-template-columns:minmax(0,1fr); } }
+.review{ display:flex; flex-direction:column; background:var(--white); padding:clamp(20px,2.6vw,28px); margin:0; }
+.section--tint .review{ background:var(--white); }
+.stars{ display:flex; gap:3px; }
+.stars svg{ width:14px; height:14px; display:block; fill:var(--sage); }
+.review blockquote{ margin:14px 0 0; font-size:15.5px; line-height:1.6; color:var(--ink); }
+.review figcaption{ margin-top:auto; padding-top:16px; font-size:13.5px; color:var(--ink-soft); }
+.review figcaption b{ display:block; font-weight:600; color:var(--ink); font-size:14.5px; }
+
 /* ================= POHYB ================= */
-.js .rev{ opacity:0; transform:transageY(12px); transition:opacity .5s ease, transform .5s ease; }
+.js .rev{ opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease; }
 .js .rev.is-in{ opacity:1; transform:none; }
 
 @media (prefers-reduced-motion: reduce){
@@ -911,8 +1099,23 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
 .btn.btn--light:focus, a.btn.btn--light:focus{ color:var(--sage); }
 
 .navcta, a.navcta, .navcta:hover, a.navcta:hover, .navcta:focus{ color:#FFFFFF; }
-.menu .navcta, .menu a.navcta, .menu .navcta:hover{ color:#FFFFFF; }
+.navtel, a.navtel, .navtel:focus{ color:var(--ink); }
+.navtel:hover, a.navtel:hover{ color:var(--sage); }
 .navtoggle, button.navtoggle{ color:var(--ink); }
+
+/* v pätičke je pozadie takmer čierne — salviové tlačidlo by na ňom zaniklo,
+   preto tam ide svetlé tlačidlo a telefón s bielym rámom */
+.footer .btn.btn--ghost, .footer a.btn.btn--ghost,
+.footer .btn.btn--ghost:focus, .footer a.btn.btn--ghost:focus{
+  color:#FFFFFF; border-color:rgba(255,255,255,.55); background:transparent;
+}
+.footer .btn.btn--ghost:hover, .footer a.btn.btn--ghost:hover{
+  color:#FFFFFF; border-color:#FFFFFF; background:rgba(255,255,255,.1);
+}
+.footer .btn.btn--light, .footer a.btn.btn--light,
+.footer .btn.btn--light:hover, .footer a.btn.btn--light:hover,
+.footer .btn.btn--light:focus, .footer a.btn.btn--light:focus{ color:var(--sage); background:#FFFFFF; border-color:#FFFFFF; }
+.footer .btn.btn--light:hover, .footer a.btn.btn--light:hover{ background:var(--sage-050); border-color:var(--sage-050); }
 .chip{ color:var(--ink); }
 .chip:hover{ color:var(--sage); }
 .chip[aria-pressed="true"], .chip[aria-pressed="true"]:hover{ color:#FFFFFF; }
@@ -934,7 +1137,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
 
   <nav class="nav" aria-label="Hlavná navigácia">
     <div class="wrap nav__in">
-      <a class="brand" href="#uvod">
+      <a class="brand" href="#uvod" aria-label="Ambulancia Vrbová, úvod stránky">
         <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
           <rect x=".75" y=".75" width="38.5" height="38.5" rx="2" fill="none" stroke="#38493F" stroke-width="1.5"/>
           <rect x="10.5" y="8.5" width="19" height="23" fill="none" stroke="#38493F" stroke-width="1.2"/>
@@ -946,22 +1149,27 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
         </span>
       </a>
 
-      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="menu">
+      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Otvoriť menu">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-        Menu
+        <span class="navtoggle__t">Menu</span>
       </button>
 
       <ul class="menu" id="menu">
         <li><a href="#osetrenia">Ošetrenia</a></li>
+        <li><a href="#lekari">Lekári</a></li>
         <li><a href="#cennik">Cenník</a></li>
-        <li><a href="#poistovne">Poisťovne</a></li>
-        <li><a href="#priebeh">Prvá návšteva</a></li>
         <li><a href="#otazky">Otázky</a></li>
         <li><a href="#kontakt">Hodiny a kontakt</a></li>
-        <li><a class="navcta navcta--mob" href="#objednanie">Objednať termín</a></li>
       </ul>
 
-      <a class="navcta navcta--desk" href="#objednanie">Objednať termín</a>
+      <div class="navact">
+        <a class="navtel" href="tel:+421949512087" aria-label="Volať 0949 512 087">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+          <span class="navtel__full">0949 512 087</span>
+          <span class="navtel__short">Volať</span>
+        </a>
+        <a class="navcta" href="#objednanie">Objednať sa</a>
+      </div>
     </div>
   </nav>
 </div>
@@ -1010,8 +1218,8 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
         <p class="lead hero__lead">Ošetrujeme dospelých aj deti. Objednávame na presný čas. Pred každým výkonom vám povieme, čo bude nasledovať, ako dlho to potrvá a koľko za to zaplatíte.</p>
 
         <div class="hero__cta">
-          <a class="btn btn--primary" href="#objednanie">Objednať ošetrenie</a>
-          <a class="btn btn--ghost" href="#cennik">Cenník ošetrení</a>
+          <a class="btn btn--primary" href="#objednanie">Objednať sa</a>
+          <a class="btn btn--ghost" href="tel:+421949512087">Zavolať 0949 512 087</a>
         </div>
 
         <ul class="hero__points">
@@ -1042,9 +1250,34 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
       </div>
       <div>
         <dt>Objednanie</dt>
-        <dd><a href="#objednanie">Formulár na tejto stránke</a><span>termín potvrdíme telefonicky</span></dd>
+        <dd><a href="#objednanie">Formulár na tejto stránke</a><span>termín potvrdíme telefonicky do jedného pracovného dňa</span></dd>
       </div>
     </dl>
+  </section>
+
+  <!-- ================= ZDRAVOTNÉ POISŤOVNE — PÁS ================= -->
+  <section class="payers" aria-label="Zdravotné poisťovne, s ktorými máme zmluvu">
+    <div class="wrap payers__in">
+      <p class="payers__lead">Zmluvné poisťovne<span>Preventívnu prehliadku a základné ošetrenie účtujeme priamo poisťovni.</span></p>
+      <ul class="payers__row">
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">25</span>
+          <span><b>Všeobecná zdravotná poisťovňa</b><span>kód 25 · zmluva na zubné lekárstvo</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">24</span>
+          <span><b>Dôvera zdravotná poisťovňa</b><span>kód 24 · zmluva na zubné lekárstvo</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">27</span>
+          <span><b>Union zdravotná poisťovňa</b><span>kód 27 · zmluva na zubné lekárstvo</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">EÚ</span>
+          <span><b>Európsky preukaz poistenca</b><span>ošetríme aj poistenca z inej krajiny EÚ</span></span>
+        </li>
+      </ul>
+    </div>
   </section>
 
   <!-- ================= ROZSAH OŠETRENÍ ================= -->
@@ -1147,15 +1380,168 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     </div>
   </section>
 
+  <!-- ================= LEKÁRI A PERSONÁL ================= -->
+  <section class="section section--tint" id="lekari">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>03</b>Lekári</p>
+          <h2>Kto vás bude ošetrovať</h2>
+        </div>
+        <p class="lead">Ošetrenie vedie od plánu po hotovú prácu ten istý lekár. Meno lekára vám povieme pri objednaní a uvedieme ho aj v potvrdení termínu.</p>
+      </div>
+
+      <ul class="team rev">
+        <li class="member">
+          <!-- FOTO: portrét MDDr. Zuzany Hruškovej v ordinácii, po pás, bez rúška -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">ZH</span>
+              <span class="obraz__tag">Zubná lekárka</span>
+            </div>
+          </figure>
+          <h3>MDDr. Zuzana Hrušková</h3>
+          <p class="member__role">Zubná lekárka, vedie ambulanciu</p>
+          <p>Robí vstupné prehliadky a zostavuje písomný plán ošetrenia s cenou. Venuje sa záchovnej stomatológii a protetike.</p>
+          <ul class="member__do">
+            <li>vstupné a kontrolné prehliadky</li>
+            <li>biele výplne a dostavby zubov</li>
+            <li>ošetrenie koreňových kanálikov</li>
+            <li>korunky, mostíky a snímateľné náhrady</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét MDDr. Adama Krajčíra pri kresle, po pás -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">AK</span>
+              <span class="obraz__tag">Zubný lekár</span>
+            </div>
+          </figure>
+          <h3>MDDr. Adam Krajčír</h3>
+          <p class="member__role">Zubný lekár, deti a akútne stavy</p>
+          <p>Ošetruje deti od tretieho roku a vedie ranný blok na akútnu bolesť. Pri ošetrení dieťaťa je rodič v miestnosti.</p>
+          <ul class="member__do">
+            <li>prehliadky detí od 3 rokov</li>
+            <li>ošetrenie mliečnych zubov a pečatenie rýh</li>
+            <li>akútna bolesť a úraz zuba</li>
+            <li>extrakcie</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét Bc. Lucie Šimkovej v ordinácii dentálnej hygieny -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">LŠ</span>
+              <span class="obraz__tag">Dentálna hygienička</span>
+            </div>
+          </figure>
+          <h3>Bc. Lucia Šimková</h3>
+          <p class="member__role">Dentálna hygienička</p>
+          <p>Pracuje v druhej ordinácii, na jedno sedenie má vyhradených 60 minút. Pri fixnom strojčeku 75 minút.</p>
+          <ul class="member__do">
+            <li>odstránenie zubného kameňa a povlaku</li>
+            <li>pieskovanie a leštenie</li>
+            <li>hygiena pri fixnom strojčeku</li>
+            <li>nácvik techniky čistenia</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét Jany Bartošovej na recepcii pri objednávkovom kalendári -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--plan" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">JB</span>
+              <span class="obraz__tag">Recepcia</span>
+            </div>
+          </figure>
+          <h3>Jana Bartošová</h3>
+          <p class="member__role">Recepcia a objednávanie</p>
+          <p>Dvíha telefón počas ordinačných hodín, vedie kalendár termínov a deň vopred posiela pripomienku krátkou správou.</p>
+          <ul class="member__do">
+            <li>objednanie, presun a zrušenie termínu</li>
+            <li>potvrdenie termínu do jedného pracovného dňa</li>
+            <li>výpisy zo zdravotnej dokumentácie</li>
+            <li>darčekové poukazy a firemné prehliadky</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="notebox notebox--white rev">
+        <h3>Zubná asistentka pri každom ošetrení</h3>
+        <p>Pri výkone je v ordinácii lekár a zubná asistentka. Asistentka pripravuje nástroje, vedie sterilizáciu v autokláve triedy B a zaznamenáva každý cyklus. Nikdy neošetrujeme dvoch pacientov naraz.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= UKÁŽKY PRÁC ================= -->
+  <section class="section section--line" id="prace">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>04</b>Práce</p>
+          <h2>Ukážky prác a ich cena</h2>
+        </div>
+        <p class="lead">Dva bežné postupy s počtom návštev a cenou zloženou z položiek cenníka. Rovnaký rozpis dostanete písomne pred začiatkom práce.</p>
+      </div>
+
+      <div class="works rev">
+        <article class="work">
+          <!-- FOTO: predný zub pred ošetrením a po nasadení korunky, rovnaký záber a rovnaké svetlo -->
+          <figure class="obraz obraz--dvoj">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <div class="obraz__half"><b>Pred</b><span>zub po úraze, odlomený roh a stará výplň</span></div>
+              <div class="obraz__half"><b>Po</b><span>dostavba a keramická korunka vo farbe susedných zubov</span></div>
+            </div>
+          </figure>
+          <h3>Korunka na prednom zube</h3>
+          <p>Prvá návšteva: prehliadka, snímka a plán. Druhá: dostavba zuba a odtlačok pre laboratórium. Tretia: skúška a nasadenie hotovej korunky.</p>
+          <dl class="work__meta">
+            <div><dt>Počet návštev</dt><dd>3</dd></div>
+            <div><dt>Čas od odtlačku po nasadenie</dt><dd>10 – 14 dní</dd></div>
+            <div><dt>Cena podľa cenníka</dt><dd class="num">440 €</dd></div>
+            <div><dt>Záruka na prácu</dt><dd>24 mesiacov</dd></div>
+          </dl>
+        </article>
+
+        <article class="work">
+          <!-- FOTO: chrup pred dentálnou hygienou a po nej, rovnaký záber a rovnaké svetlo -->
+          <figure class="obraz obraz--dvoj">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+              <div class="obraz__half"><b>Pred</b><span>zubný kameň a povlak nad okrajom ďasna</span></div>
+              <div class="obraz__half"><b>Po</b><span>vyčistený chrup a domáce bielenie so šablónami</span></div>
+            </div>
+          </figure>
+          <h3>Hygiena a domáce bielenie</h3>
+          <p>Prvá návšteva: kompletná hygiena a odtlačok na šablóny. Druhá: odovzdanie šablón a gélu s postupom. Tretia: kontrola výsledku po dvoch týždňoch.</p>
+          <dl class="work__meta">
+            <div><dt>Počet návštev</dt><dd>3</dd></div>
+            <div><dt>Dĺžka bielenia doma</dt><dd>14 dní</dd></div>
+            <div><dt>Cena podľa cenníka</dt><dd class="num">240 €</dd></div>
+            <div><dt>Kontrola po bielení</dt><dd>v cene</dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= CENNÍK OŠETRENÍ ================= -->
   <section class="section section--line" id="cennik">
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>03</b>Cenník</p>
+          <p class="eyebrow"><b>05</b>Cenník</p>
           <h2>Cenník ošetrení</h2>
         </div>
-        <p class="lead">Ceny sú orientačné. Konkrétnu sumu uvedieme v pláne ošetrenia pred začiatkom výkonu. Časť výkonov je hradená z verejného zdravotného poistenia, pri ostatných vopred uvedieme výšku doplatku.</p>
+        <p class="lead">Ceny platia pre samoplatcov a pre výkony nad rámec úhrady z poistenia. Ak je výkon hradený, platíte iba doplatok. Konkrétnu sumu vám povieme pred začiatkom ošetrenia a je aj v písomnom pláne.</p>
       </div>
 
       <div class="pricegroup rev">
@@ -1165,13 +1551,13 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             <span class="prow__name">Vstupná prehliadka a plán ošetrenia</span>
             <span class="prow__time">30 minút</span>
             <span class="prow__price num">od 35 €</span>
-            <span class="prow__desc">Kontrola chrupu a ďasien, zápis do dokumentácie a písomný plán ďalších krokov.</span>
+            <span class="prow__desc">Kontrola chrupu a ďasien, zápis do dokumentácie a písomný plán ďalších krokov. Poistencom je jedna preventívna prehliadka za kalendárny rok hradená poisťovňou, cena platí pre samoplatcov a pre druhú prehliadku v roku.</span>
           </li>
           <li class="prow">
             <span class="prow__name">Kontrolná prehliadka</span>
             <span class="prow__time">20 minút</span>
             <span class="prow__price num">od 25 €</span>
-            <span class="prow__desc">Pravidelná kontrola pre pacientov, ktorých máme v evidencii.</span>
+            <span class="prow__desc">Pravidelná kontrola pre pacientov, ktorých máme v evidencii. Pre samoplatcov a nad rámec hradenej prehliadky.</span>
           </li>
           <li class="prow">
             <span class="prow__name">Konzultácia bez ošetrenia</span>
@@ -1251,6 +1637,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             <span class="prow__name">Extrakcia zuba</span>
             <span class="prow__time">30 minút</span>
             <span class="prow__price num">od 45 €</span>
+            <span class="prow__desc">Jednoduchá extrakcia je poistencom hradená z poistenia, cena platí pre samoplatcov a pre chirurgické vybratie zuba.</span>
           </li>
         </ul>
       </div>
@@ -1278,7 +1665,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             <span class="prow__name">Akútne ošetrenie pri bolesti</span>
             <span class="prow__time">30 minút</span>
             <span class="prow__price num">od 45 €</span>
-            <span class="prow__desc">Cieľom je zbaviť vás bolesti. Definitívne ošetrenie doriešime v ďalšom termíne.</span>
+            <span class="prow__desc">Prvou úlohou je zbaviť vás bolesti, definitívne ošetrenie doriešime v ďalšom termíne. Poistencom je akútne ošetrenie hradené z poistenia, cena platí pre samoplatcov.</span>
           </li>
         </ul>
       </div>
@@ -1333,7 +1720,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>04</b>Úhrada</p>
+          <p class="eyebrow"><b>06</b>Úhrada</p>
           <h2>Zdravotné poisťovne</h2>
         </div>
         <p class="lead">Máme zmluvu so všetkými tromi zdravotnými poisťovňami na Slovensku. Pri objednaní sa spýtame, v ktorej ste poistení, a pri každom výkone vopred povieme, čo je hradené a aký je doplatok.</p>
@@ -1368,7 +1755,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             </div>
             <div>
               <h3>Čo si pacient dopláca</h3>
-              <p>Nadštandardné materiály, biele fotokompozitné výplne v plnom rozsahu, dentálna hygiena, protetika, bielenie a výkony nad rámec zoznamu zdravotných výkonov. Presnú sumu nájdete v cenníku nižšie.</p>
+              <p>Nadštandardné materiály, biele fotokompozitné výplne v plnom rozsahu, dentálna hygiena, protetika, bielenie a výkony nad rámec zoznamu zdravotných výkonov. Sumy nájdete v <a href="#cennik">cenníku ošetrení</a>.</p>
             </div>
             <div>
               <h3>Ak preukaz nemáte pri sebe</h3>
@@ -1395,51 +1782,50 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     </div>
   </section>
 
-  <!-- ================= VÝKONY NEHRADENÉ POISŤOVŇOU ================= -->
-  <section class="section" id="nehradene">
+  <!-- ================= ČO HRADÍ POISŤOVŇA A ČO DOPLÁCATE ================= -->
+  <section class="section" id="doplatky">
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>05</b>Doplatky</p>
-          <h2>Výkony nehradené poisťovňou</h2>
+          <p class="eyebrow"><b>07</b>Doplatky</p>
+          <h2>Čo hradí poisťovňa a čo doplácate</h2>
         </div>
-        <p class="lead">Tieto výkony si pacient hradí v plnej výške bez ohľadu na poisťovňu. Sumu poviete vopred a je súčasťou písomného plánu ošetrenia.</p>
+        <p class="lead">Prehľad pre poistenca so zmluvnou poisťovňou. Sumu doplatku vám povieme pred začiatkom ošetrenia a je súčasťou písomného plánu.</p>
       </div>
 
       <div class="tablewrap rev">
         <table class="ptable">
-          <caption>Ceny platia pre jedno sedenie a jeden zub, ak nie je uvedené inak. Sumy sú konečné, nepripočítavame k nim materiál ani manipulačný poplatok.</caption>
+          <caption>Rozsah úhrady vychádza z platného zoznamu zdravotných výkonov a z podmienok vašej poisťovne. Samoplatca hradí celú sumu z cenníka ošetrení.</caption>
           <thead>
             <tr>
               <th scope="col">Výkon</th>
-              <th scope="col">Rozsah</th>
-              <th scope="col">Cena</th>
+              <th scope="col">Úhrada z poistenia</th>
+              <th scope="col">Doplatok pacienta</th>
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Kompletná dentálna hygiena</th><td>jedno sedenie, 60 minút</td><td class="num">60 €</td></tr>
-            <tr><th scope="row">Hygiena pri fixnom strojčeku</th><td>jedno sedenie, 75 minút</td><td class="num">75 €</td></tr>
-            <tr><th scope="row">Pieskovanie nad rámec hygieny</th><td>celý chrup</td><td class="num">20 €</td></tr>
-            <tr><th scope="row">Biela výplň, jednoplôšková</th><td>jeden zub</td><td class="num">55 €</td></tr>
-            <tr><th scope="row">Biela výplň, viacplôšková</th><td>jeden zub</td><td class="num">75 €</td></tr>
-            <tr><th scope="row">Ošetrenie koreňových kanálikov</th><td>jeden zub, podľa počtu kanálikov</td><td class="num">120 – 190 €</td></tr>
-            <tr><th scope="row">Dostavba zuba pred korunkou</th><td>jeden zub</td><td class="num">90 €</td></tr>
-            <tr><th scope="row">Keramická korunka</th><td>jeden zub, vrátane laboratória</td><td class="num">350 €</td></tr>
-            <tr><th scope="row">Mostík</th><td>cena za jeden člen</td><td class="num">300 €</td></tr>
-            <tr><th scope="row">Snímateľná náhrada</th><td>jedna čeľusť</td><td class="num">420 €</td></tr>
-            <tr><th scope="row">Domáce bielenie so šablónami</th><td>obe čeľuste, dve návštevy</td><td class="num">180 €</td></tr>
-            <tr><th scope="row">Ordinačné bielenie</th><td>obe čeľuste, jedno sedenie</td><td class="num">220 €</td></tr>
-            <tr><th scope="row">Pečatenie ryhy stáleho zuba</th><td>jeden zub</td><td class="num">25 €</td></tr>
-            <tr><th scope="row">Výpis zo zdravotnej dokumentácie</th><td>na žiadosť pacienta</td><td class="num">15 €</td></tr>
-            <tr><th scope="row">Vyšetrenie na žiadosť pacienta bez indikácie</th><td>15 minút</td><td class="num">20 €</td></tr>
-            <tr><th scope="row">Nedostavenie sa bez zrušenia termínu</th><td>rezervovaný čas nad 30 minút</td><td class="num">20 €</td></tr>
+            <tr><th scope="row">Preventívna prehliadka, raz za kalendárny rok</th><td>hradená, ak ste boli na prehliadke aj vlani</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Druhá a ďalšia prehliadka v tom istom roku</th><td>nehradí sa</td><td class="num">od 25 €</td></tr>
+            <tr><th scope="row">Röntgenová snímka pri indikácii lekárom</th><td>hradená v plnom rozsahu</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Ošetrenie kazu, základná výplň</th><td>hradená v plnom rozsahu</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Ošetrenie kazu, biela výplň jednoplôšková</th><td>hradené základné prevedenie</td><td class="num">30 €</td></tr>
+            <tr><th scope="row">Ošetrenie kazu, biela výplň viacplôšková</th><td>hradené základné prevedenie</td><td class="num">45 €</td></tr>
+            <tr><th scope="row">Jednoduchá extrakcia zuba</th><td>hradená v plnom rozsahu</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Akútne ošetrenie pri bolesti</th><td>hradené v plnom rozsahu</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Ošetrenie koreňových kanálikov</th><td>nehradí sa</td><td class="num">od 120 €</td></tr>
+            <tr><th scope="row">Dentálna hygiena</th><td>nehradí sa</td><td class="num">od 60 €</td></tr>
+            <tr><th scope="row">Korunka, mostík, snímateľná náhrada</th><td>nehradí sa</td><td class="num">od 300 €</td></tr>
+            <tr><th scope="row">Bielenie zubov</th><td>nehradí sa</td><td class="num">od 180 €</td></tr>
+            <tr><th scope="row">Výpis zo zdravotnej dokumentácie</th><td>nehradí sa</td><td class="num">15 €</td></tr>
+            <tr><th scope="row">Vyšetrenie na žiadosť pacienta bez indikácie</th><td>nehradí sa</td><td class="num">20 €</td></tr>
+            <tr><th scope="row">Druhé a ďalšie nedostavenie sa bez zrušenia termínu</th><td>nehradí sa</td><td class="num">20 €</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="notebox notebox--white rev">
-        <h3>Doplatok pri hradenom výkone</h3>
-        <p>Ak je výkon hradený z poistenia len v základnom prevedení, hradíte iba rozdiel za nadštandardný materiál. Napríklad pri ošetrení zubného kazu poisťovňa uhradí základnú výplň a vy doplácate rozdiel za bielu fotokompozitnú výplň. Rozdiel poviete vopred a uvedieme ho aj na doklade.</p>
+        <h3>Ako doplatok vzniká</h3>
+        <p>Pri ošetrení kazu poisťovňa uhradí výplň v základnom prevedení. Ak chcete bielu fotokompozitnú výplň, doplácate iba rozdiel: 30 € pri jednoplôškovej a 45 € pri viacplôškovej. Samoplatca zaplatí celú sumu z <a href="#cennik">cenníka ošetrení</a>, teda 55 € a 75 €. Rozdiel vám povieme pred ošetrením a uvedieme ho aj na doklade.</p>
       </div>
     </div>
   </section>
@@ -1449,10 +1835,10 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="band__grid">
         <div class="rev">
-          <p class="eyebrow"><b>06</b>Organizácia práce</p>
+          <p class="eyebrow"><b>08</b>Organizácia práce</p>
           <h2 id="pas-h" class="band__claim">Ako pracujeme s termínmi a cenou</h2>
         </div>
-        <p class="lead rev">Neordinujeme na poradovníky. Každý pacient má vlastný termín a pred výkonom vie, čo sa bude robiť, ako dlho to potrvá a koľko zaplatí. Termíny plánujeme tak, aby sa v čakárni nestretávalo viac ľudí, ako je nutné.</p>
+        <p class="lead rev">Neordinujeme na poradovníky. Každý pacient má vlastný termín a pred výkonom vie, čo sa bude robiť, ako dlho to potrvá a koľko zaplatí. Termíny plánujeme s odstupom, v čakárni čakajú naraz najviac dvaja objednaní pacienti.</p>
       </div>
 
       <ul class="stats rev">
@@ -1468,7 +1854,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>07</b>Priebeh</p>
+          <p class="eyebrow"><b>09</b>Priebeh</p>
           <h2>Prvá návšteva</h2>
         </div>
         <p class="lead">Prvá návšteva trvá 30 až 45 minút a končí sa plánom ošetrenia. Rozsiahlejšie výkony robíme až v ďalších termínoch.</p>
@@ -1504,15 +1890,71 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     </div>
   </section>
 
-  <!-- ================= OBJEDNANIE (interaktívna časť) ================= -->
-  <section class="section" id="objednanie">
+  <!-- ================= HODNOTENIA PACIENTOV ================= -->
+  <section class="section section--line" id="hodnotenia">
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>08</b>Objednanie</p>
+          <p class="eyebrow"><b>10</b>Hodnotenia</p>
+          <h2>Hodnotenia pacientov</h2>
+        </div>
+        <p class="lead">Hodnotenie môže napísať každý, kto u nás bol ošetrený. Neupravujeme ich a nemažeme. Nižšie sú tri z profilu ambulancie na Google.</p>
+      </div>
+
+      <div class="reviews rev">
+        <figure class="review">
+          <span class="stars" role="img" aria-label="5 z 5 hviezdičiek">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+          </span>
+          <blockquote><p>Cenu za korunku som mala napísanú na papieri pred prvým vŕtaním a na konci sedela do eura. Termíny na odtlačok a nasadenie mi dali hneď pri prvej návšteve.</p></blockquote>
+          <figcaption><b>Martina H.</b>Korunka na prednom zube, tri návštevy</figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars" role="img" aria-label="5 z 5 hviezdičiek">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+          </span>
+          <blockquote><p>Volal som ráno o ôsmej s bolesťou a o pol desiatej som už sedel v kresle. Zub sa zachránil, doriešili sme ho v druhom termíne o týždeň.</p></blockquote>
+          <figcaption><b>Peter K.</b>Akútne ošetrenie v deň telefonátu</figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars" role="img" aria-label="4 z 5 hviezdičiek">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z" opacity=".28"/></svg>
+          </span>
+          <blockquote><p>Dcéra bola prvýkrát u zubára, prvá návšteva bola len o tom, že si sadla do kresla a nič sa nerobilo. Objednací termín sme čakali tri týždne, to je jediné mínus.</p></blockquote>
+          <figcaption><b>Zuzana B.</b>Prehliadka dieťaťa, 4 roky</figcaption>
+        </figure>
+      </div>
+
+      <div class="notebox rev">
+        <h3>Napíšte hodnotenie na Google</h3>
+        <p>Ak ste u nás boli, otvorte profil Ambulancia Vrbová na Google a napíšte hodnotenie. Zaberie to dve minúty a ďalším pacientom to pomôže pri výbere. Ak ste s ošetrením spokojní neboli, povedzte nám to najprv priamo, na mieste alebo na 0949 512 087 — chybu vieme opraviť iba vtedy, keď o nej vieme. Hodnotenia na tejto stránke sú ukážkové, rovnako ako celý web.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OBJEDNANIE (interaktívna časť) ================= -->
+  <section class="section section--line" id="objednanie">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>11</b>Objednanie</p>
           <h2>Objednanie ošetrenia</h2>
         </div>
-        <p class="lead">Formulár nie je záväzná rezervácia. Správa príde do schránky ambulancie a odpoveď posielame do 24 hodín. Presný čas dohodneme telefonicky. Ak potrebujete termín ešte dnes, volajte na 0949 512 087.</p>
+        <p class="lead">Formulár nie je záväzná rezervácia. Správa príde do schránky ambulancie a termín potvrdíme telefonicky do jedného pracovného dňa. Ak potrebujete termín ešte dnes, volajte na 0949 512 087.</p>
       </div>
 
       <div class="book__grid">
@@ -1565,7 +2007,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
                   <div class="chips" id="chips" role="group" aria-label="Najbližšie ordinačné dni"></div>
                 </div>
                 <div class="field">
-                  <label for="cast">Časť dňa</label>
+                  <label for="cast">Časť dňa <span class="hint">v stredu ordinujeme do 15:00, v piatok do 13:00</span></label>
                   <select id="cast" name="cast">
                     <option value="8:00 – 11:00">8:00 – 11:00</option>
                     <option value="11:00 – 14:00">11:00 – 14:00</option>
@@ -1599,12 +2041,12 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             </fieldset>
 
             <button class="btn btn--primary btn--wide" type="submit">Odoslať žiadosť o termín</button>
-            <p class="formnote">Správa príde do schránky ambulancie a odpoveď posielame do 24 hodín v pracovné dni. Toto je ukážkový web, formulár nič neodosiela ani neukladá.</p>
+            <p class="formnote">Správa príde do schránky ambulancie a odpoveď posielame do jedného pracovného dňa. Toto je ukážkový web, formulár nič neodosiela ani neukladá.</p>
           </form>
 
           <div class="sent" id="sent" role="status" aria-live="polite">
             <h3>Nič sa neodoslalo, ide o ukážku</h3>
-            <p>Takto by v ostrej verzii vyzeralo potvrdenie po odoslaní. V ostrej verzii príde správa do schránky ambulancie a odpoveď dostanete do 24 hodín. Tu sa žiadne údaje neposielajú ani neukladajú.</p>
+            <p>Takto by v ostrej verzii vyzeralo potvrdenie po odoslaní. V ostrej verzii príde správa do schránky ambulancie a odpoveď dostanete do jedného pracovného dňa. Tu sa žiadne údaje neposielajú ani neukladajú.</p>
             <div class="sent__recap" id="recap"></div>
             <button class="btn btn--ghost" type="button" id="back">Späť na formulár</button>
           </div>
@@ -1625,7 +2067,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             <span>Orientačná cena</span>
             <b id="s-price" class="num">od 35 €</b>
           </div>
-          <p class="summary__note">Presnú sumu uvedieme v pláne ošetrenia po prehliadke. Odpoveď na odoslanú správu posielame do 24 hodín v pracovné dni.</p>
+          <p class="summary__note">Presnú sumu uvedieme v pláne ošetrenia po prehliadke. Odpoveď na odoslanú správu posielame do jedného pracovného dňa.</p>
           <p class="summary__call">Radšej telefonicky?<a href="tel:+421949512087">0949 512 087</a><a href="tel:+421336472510">033/647 25 10</a></p>
         </aside>
       </div>
@@ -1637,8 +2079,8 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>09</b>Podmienky</p>
-          <h2>Platba, doklad a storno</h2>
+          <p class="eyebrow"><b>12</b>Podmienky</p>
+          <h2>Platba, záruka a storno</h2>
         </div>
         <p class="lead">Pravidlá, na ktoré sa najčastejšie pýtate pri telefonáte. Platia rovnako pre nových aj pre evidovaných pacientov a nemeníme ich počas ošetrenia.</p>
       </div>
@@ -1669,7 +2111,11 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
         </div>
         <div class="card2">
           <h3>Meškanie a nedostavenie sa</h3>
-          <p>Ak meškáte viac ako 15 minút, nemusíme stihnúť celý plánovaný rozsah a ošetrenie skrátime. Pri opakovanom nedostavení sa bez zrušenia účtujeme 20 € za rezervovaný čas nad 30 minút.</p>
+          <p>Ak meškáte viac ako 15 minút, nemusíme stihnúť celý plánovaný rozsah a ošetrenie skrátime. Prvé nedostavenie sa neúčtujeme. Pri druhom a ďalšom účtujeme 20 € za rezervovaný čas.</p>
+        </div>
+        <div class="card2">
+          <h3>Záruka na zhotovenú prácu</h3>
+          <p>Na korunky, mostíky a snímateľné náhrady platí záruka 24 mesiacov, na výplne 12 mesiacov. V záruke prácu opravíme alebo zhotovíme znova bez doplatku. Podmienkou je kontrolná prehliadka raz za pol roka. Záruka sa nevzťahuje na úraz a na zásah iného zubného lekára.</p>
         </div>
         <div class="card2">
           <h3>Záloha pri protetike</h3>
@@ -1684,7 +2130,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>10</b>Poukazy</p>
+          <p class="eyebrow"><b>13</b>Poukazy</p>
           <h2>Darčekové poukazy a firemné prehliadky</h2>
         </div>
         <p class="lead">Poukaz vystavíme na konkrétny výkon alebo na zvolenú sumu. Pre zamestnávateľov plánujeme preventívne prehliadky v bloku termínov.</p>
@@ -1746,7 +2192,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>11</b>Ambulancia</p>
+          <p class="eyebrow"><b>14</b>Ambulancia</p>
           <h2>Priestor a vybavenie</h2>
         </div>
         <p class="lead">Malá ambulancia s dvomi kreslami. Nikto nečaká na chodbe a nikto neošetruje dvoch pacientov naraz.</p>
@@ -1764,8 +2210,8 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
               <p>Sedem miest na sedenie, miesto na kočík, pitná voda a vešiak. Detský kút je oddelený od miest pre dospelých.</p>
             </div>
             <div>
-              <h3>Kto sa vám venuje</h3>
-              <p>Zubný lekár, dentálna hygienička, zubná asistentka a kolegyňa na recepcii, ktorá vybavuje objednávky a telefón. Ošetrenie vedie od začiatku do konca ten istý lekár, nestriedame sa v priebehu plánu.</p>
+              <h3>Kto vás ošetrí</h3>
+              <p>Plán aj hotovú prácu vedie ten istý lekár, v priebehu plánu sa nestriedame. Mená a rozdelenie práce sú v sekcii <a href="#lekari">Kto vás bude ošetrovať</a>.</p>
             </div>
             <div>
               <h3>Sterilizácia a materiál</h3>
@@ -1797,6 +2243,38 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
           </div>
         </div>
       </div>
+
+      <div class="obrazy rev">
+        <!-- FOTO: čakáreň od vchodu, so sedením a detským kútom -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo obraz__geo--plan" aria-hidden="true"></span>
+            <span class="obraz__tag">Čakáreň</span>
+            <span class="obraz__big">Detský kút</span>
+            <span class="obraz__note">oddelený od miest pre dospelých</span>
+          </div>
+        </figure>
+
+        <!-- FOTO: ordinácia s kreslom a röntgenom, záber od dverí -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo" aria-hidden="true"></span>
+            <span class="obraz__tag">Ordinácia</span>
+            <span class="obraz__big">Röntgen</span>
+            <span class="obraz__note">intraorálny, snímka bez chodenia inam</span>
+          </div>
+        </figure>
+
+        <!-- FOTO: sterilizačná časť s autoklávom a zabalenými nástrojmi -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+            <span class="obraz__tag">Sterilizácia</span>
+            <span class="obraz__big">Trieda B</span>
+            <span class="obraz__note">autokláv, každý cyklus zaznamenávame</span>
+          </div>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -1805,7 +2283,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>12</b>Cesta k nám</p>
+          <p class="eyebrow"><b>15</b>Cesta k nám</p>
           <h2>Ako sa k nám dostanete a parkovanie</h2>
         </div>
         <p class="lead">Budova stojí na rohu ulíc Vrbová a Hlavná. Vchod do ambulancie je z dvora, nie z hlavnej ulice. Ak vchod nenájdete, zavolajte na 0949 512 087 a navedieme vás.</p>
@@ -1826,6 +2304,10 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
 
         <div>
           <div class="infolist">
+            <div>
+              <h3>Adresa a mapa</h3>
+              <p>Vrbová 8, 900 01 Modra. <a href="https://www.google.com/maps/search/?api=1&amp;query=Vrbov%C3%A1+8%2C+900+01+Modra" target="_blank" rel="noopener">Otvoriť adresu v Google Mapách</a> a navigovať až pred budovu. Vchod do ambulancie je potom z dvora.</p>
+            </div>
             <div>
               <h3>Autom a parkovanie</h3>
               <p>Priamo vo dvore sú štyri parkovacie miesta vyhradené pre pacientov, jedno z nich je vyhradené pre držiteľov preukazu ŤZP. Ďalšie voľné státie býva na Vrbovej ulici. Parkovanie je bezplatné a bez časového obmedzenia.</p>
@@ -1857,10 +2339,10 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>13</b>Otázky</p>
+          <p class="eyebrow"><b>16</b>Otázky</p>
           <h2>Časté otázky</h2>
         </div>
-        <p class="lead">Ak tu odpoveď nenájdete, napíšte ju do správy vo formulári alebo sa spýtajte pri telefonáte. Na správy odpovedáme do 24 hodín v pracovné dni.</p>
+        <p class="lead">Ak tu odpoveď nenájdete, napíšte ju do správy vo formulári alebo sa spýtajte pri telefonáte. Na správy odpovedáme do jedného pracovného dňa.</p>
       </div>
 
       <div class="qa rev">
@@ -1882,7 +2364,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
         </details>
         <details>
           <summary>Ako zruším alebo presuniem termín?<span class="sign" aria-hidden="true"></span></summary>
-          <div class="answer"><p>Zavolajte na 0949 512 087 alebo na pevnú linku 033/647 25 10 aspoň 24 hodín vopred. Náhradný termín dohodneme priamo počas telefonátu. Ak sa nedovoláte, napíšte správu cez formulár a ozveme sa do 24 hodín.</p></div>
+          <div class="answer"><p>Zavolajte na 0949 512 087 alebo na pevnú linku 033/647 25 10 aspoň 24 hodín vopred. Náhradný termín dohodneme priamo počas telefonátu. Ak sa nedovoláte, napíšte správu cez formulár a ozveme sa do jedného pracovného dňa.</p></div>
         </details>
         <details>
           <summary>Čo ak nemám pri sebe preukaz poistenca?<span class="sign" aria-hidden="true"></span></summary>
@@ -1913,10 +2395,10 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="sechead rev">
         <div>
-          <p class="eyebrow"><b>14</b>Kontakt</p>
+          <p class="eyebrow"><b>17</b>Kontakt</p>
           <h2>Ordinačné hodiny a kontakt</h2>
         </div>
-        <p class="lead">Telefón dvíhame počas ordinačných hodín. Ak práve ošetrujeme, zavolajte o chvíľu neskôr alebo pošlite správu cez formulár na tejto stránke. Odpovedáme do 24 hodín v pracovné dni.</p>
+        <p class="lead">Telefón dvíhame počas ordinačných hodín. Ak práve ošetrujeme, zavolajte o chvíľu neskôr alebo pošlite správu cez formulár na tejto stránke. Odpovedáme do jedného pracovného dňa.</p>
       </div>
 
       <div class="twocol">
@@ -1924,7 +2406,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
           <h3 class="blocktitle">Ordinačné hodiny</h3>
           <div class="tablewrap">
             <table class="hours" id="hours">
-              <caption>Obedňajšia prestávka 12:00 – 12:30. Posledného pacienta objednávame 45 minút pred koncom ordinačných hodín. Počas štátnych sviatkov je ambulancia zatvorená.</caption>
+              <caption>Obedňajšia prestávka 12:00 – 12:30. Termín plánujeme tak, aby sa ošetrenie skončilo do konca ordinačných hodín. Počas štátnych sviatkov je ambulancia zatvorená.</caption>
               <tbody>
                 <tr data-day="1"><th scope="row">Pondelok</th><td>8:00 – 17:00</td></tr>
                 <tr data-day="2"><th scope="row">Utorok</th><td>8:00 – 17:00</td></tr>
@@ -1940,7 +2422,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
           <dl class="clist">
             <div>
               <dt>Adresa</dt>
-              <dd>Vrbová 8, 900 01 Modra<small>prízemie, vstup z dvora</small></dd>
+              <dd>Vrbová 8, 900 01 Modra<small>prízemie, vstup z dvora · <a href="https://www.google.com/maps/search/?api=1&amp;query=Vrbov%C3%A1+8%2C+900+01+Modra" target="_blank" rel="noopener">otvoriť v Google Mapách</a></small></dd>
             </div>
             <div>
               <dt>Mobil</dt>
@@ -1952,7 +2434,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             </div>
             <div>
               <dt>Správa cez formulár</dt>
-              <dd><a href="#objednanie">Objednanie ošetrenia</a><small>správa príde do schránky ambulancie, odpovedáme do 24 hodín</small></dd>
+              <dd><a href="#objednanie">Objednanie ošetrenia</a><small>správa príde do schránky ambulancie, odpovedáme do jedného pracovného dňa</small></dd>
             </div>
             <div>
               <dt>Sociálne siete</dt>
@@ -2008,7 +2490,7 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
     <div class="wrap">
       <div class="band__grid">
         <div class="rev">
-          <p class="eyebrow"><b>15</b>Kariéra</p>
+          <p class="eyebrow"><b>18</b>Kariéra</p>
           <h2 id="kariera-h">Voľné pracovné miesta</h2>
           <p class="lead" style="margin-top:18px;">Ordinujeme v pracovné dni, víkendy ani sviatky neslúžime. Pracuje sa na jedného pacienta, nie na dvoch naraz. Napíšte nám cez formulár na tejto stránke a dohodneme si osobné stretnutie, ozveme sa do jedného týždňa.</p>
           <div class="hero__cta">
@@ -2020,10 +2502,8 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
         <div class="rev">
           <h3 class="blocktitle">Otvorené pozície</h3>
           <ul class="roles">
-            <li>Dentálna hygienička <span>plný alebo skrátený úväzok</span></li>
-            <li>Zubná asistentka <span>plný úväzok, zaučíme aj bez praxe</span></li>
-            <li>Recepcia a objednávanie <span>skrátený úväzok, dopoludnia</span></li>
-            <li>Zubný lekár <span>spolupráca podľa dohody</span></li>
+            <li>Druhá dentálna hygienička <span>skrátený úväzok, tri dni v týždni</span></li>
+            <li>Zubná asistentka, zástup <span>počas dovoleniek a práceneschopnosti</span></li>
           </ul>
           <p class="lead" style="margin-top:22px;">Do správy uveďte pozíciu, ktorá vás zaujala, a čas, kedy vám vyhovuje telefonát. Životopis stačí priniesť na stretnutie.</p>
         </div>
@@ -2077,6 +2557,12 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
 
 <footer class="footer">
   <div class="wrap">
+    <div class="footer__act">
+      <p>Termín potvrdíme telefonicky do jedného pracovného dňa. Pri akútnej bolesti volajte hneď ráno, blok držíme každý ordinačný deň.</p>
+      <a class="btn btn--light" href="#objednanie">Objednať sa</a>
+      <a class="btn btn--ghost" href="tel:+421949512087">Zavolať 0949 512 087</a>
+    </div>
+
     <div class="footer__grid">
       <div>
         <div class="footer__brand">
@@ -2090,19 +2576,22 @@ input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-
             <span class="brand__sub">Zubné lekárstvo</span>
           </span>
         </div>
-        <p>Vymyslená ambulancia vytvorená pre potreby ukážky webu. Názov, adresa, ceny aj kontaktné čísla sú ilustračné.</p>
+        <p>Vymyslená ambulancia vytvorená pre potreby ukážky webu. Názov, adresa, mená, hodnotenia, ceny aj kontaktné čísla sú ilustračné.</p>
       </div>
 
       <div>
         <h3>Sekcie</h3>
         <ul>
           <li><a href="#osetrenia">Rozsah ošetrení</a></li>
+          <li><a href="#lekari">Kto vás bude ošetrovať</a></li>
+          <li><a href="#prace">Ukážky prác a ich cena</a></li>
           <li><a href="#cennik">Cenník ošetrení</a></li>
           <li><a href="#poistovne">Zdravotné poisťovne</a></li>
-          <li><a href="#nehradene">Výkony nehradené poisťovňou</a></li>
+          <li><a href="#doplatky">Čo hradí poisťovňa</a></li>
           <li><a href="#priebeh">Prvá návšteva</a></li>
+          <li><a href="#hodnotenia">Hodnotenia pacientov</a></li>
           <li><a href="#objednanie">Objednanie ošetrenia</a></li>
-          <li><a href="#platba">Platba, doklad a storno</a></li>
+          <li><a href="#platba">Platba, záruka a storno</a></li>
           <li><a href="#poukazy">Darčekové poukazy</a></li>
           <li><a href="#ambulancia">Priestor a vybavenie</a></li>
           <li><a href="#doprava">Cesta k nám a parkovanie</a></li>

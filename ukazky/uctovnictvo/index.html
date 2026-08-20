@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SALDIA — účtovníctvo, mzdy a dane, Bratislava</title>
-<meta name="description" content="Účtovná kancelária SALDIA, Mýtna 21, Bratislava: jednoduché a podvojné účtovníctvo, mzdy a daňové priznania za mesačný paušál od 39 eur. Kalkulačka paušálu, cenník, termíny počas roka a podmienky spolupráce. Ukážkový web od apoliak.online.">
+<meta name="description" content="Účtovná kancelária SALDIA, Mýtna 21, Bratislava: jednoduché a podvojné účtovníctvo, mzdy a daňové priznania za mesačný paušál od 39 eur. Cenník, kalkulačka paušálu, otváracie hodiny a nezáväzná ponuka do dvoch pracovných dní. Ukážkový web od apoliak.online.">
 <meta name="color-scheme" content="light">
 
 <meta property="og:type" content="website">
@@ -201,29 +201,30 @@ a{ color:inherit; }
 .menu a[aria-current="true"]::after{ transform:scaleX(1); }
 .menu a[aria-current="true"]{ color:var(--acc); }
 
-.nav-tel{
-  display:inline-flex; align-items:baseline; gap:8px; text-decoration:none;
-  white-space:nowrap; margin-left:10px; padding:10px 4px;
-}
-.nav-tel .l{
-  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut);
-}
-.nav-tel .v{ font-family:var(--serif); font-size:17px; color:var(--ink); }
-.nav-tel:hover .v{ color:var(--acc); }
-.nav-tel::after{ display:none; }
+/* telefón a hlavné tlačidlo sú mimo rozbaľovacieho menu, takže ostávajú
+   viditeľné na každej šírke obrazovky vrátane mobilu */
+.nav-act{ display:flex; align-items:center; gap:10px; margin-left:14px; }
 
-.nav-cta{
-  display:inline-flex; align-items:center;
-  border:1px solid var(--ink); color:var(--ink);
-  padding:10px 16px; font-size:14.5px; text-decoration:none; border-radius:2px;
-  white-space:nowrap; margin-left:14px;
+.nav .nav-act .nav-tel{
+  display:inline-flex; flex-direction:column; gap:2px; text-decoration:none;
+  white-space:nowrap; padding:6px 4px;
 }
-.nav-cta:hover{ background:var(--ink); color:#ffffff; }
-.nav-cta::after{ display:none; }
-/* .menu a má vyššiu špecificitu než .nav-cta, preto sa farba textu tlačidla
-   nastavuje ešte raz selektorom, ktorý ju bezpečne prebije */
-.menu a.nav-cta{ color:var(--ink); }
-.menu a.nav-cta:hover{ background:var(--ink); color:#ffffff; }
+.nav .nav-act .nav-tel .l{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut-2);
+}
+.nav .nav-act .nav-tel .v{ font-family:var(--serif); font-size:17px; color:var(--ink); }
+.nav .nav-act .nav-tel:hover .v{ color:var(--acc); }
+
+/* Hlavné tlačidlo. Dvojtriedny selektor s prefixom .nav má vyššiu
+   špecificitu než akékoľvek pravidlo pre odkazy, takže biely text
+   na mosadznom podklade sa nedá prebiť (kontrast 6,2:1). */
+.nav .nav-act .nav-cta{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--acc); border:1px solid var(--acc); color:#ffffff;
+  padding:11px 18px; font-size:14.5px; font-weight:600; letter-spacing:.01em;
+  text-decoration:none; border-radius:2px; white-space:nowrap;
+}
+.nav .nav-act .nav-cta:hover{ background:#63491a; border-color:#63491a; color:#ffffff; }
 
 .burger{
   display:none; background:transparent; border:1px solid var(--line-2);
@@ -240,7 +241,8 @@ a{ color:inherit; }
 @media (max-width: 1180px){
   .nav{ position:relative; }
   .nav-in{ min-height:58px; }
-  .burger{ display:inline-flex; }
+  .burger{ display:inline-flex; order:4; }
+  .nav-act{ order:3; }
   .menu{
     display:none; position:absolute; left:0; right:0; top:100%;
     flex-direction:column; align-items:stretch; gap:0;
@@ -251,9 +253,25 @@ a{ color:inherit; }
   .menu.is-open{ display:flex; }
   .menu a{ padding:14px 2px; border-bottom:1px solid var(--line); font-size:16px; }
   .menu a::after{ display:none; }
-  .nav-tel{ margin:14px 0 0; padding:0; gap:10px; }
-  .nav-tel .v{ font-size:20px; }
-  .nav-cta{ margin:14px 0 0; justify-content:center; padding:14px 16px; }
+}
+/* pod 700 px sa telefón a tlačidlo presunú do druhého riadku hlavičky,
+   aby sa na úzkom displeji zmestili celé a nikam sa neschovali */
+@media (max-width: 700px){
+  .nav-in{ flex-wrap:wrap; padding-bottom:10px; column-gap:10px; }
+  .burger{ order:2; }
+  .nav-act{ order:3; width:100%; margin-left:0; gap:8px; }
+  .nav .nav-act .nav-tel{
+    flex:none; flex-direction:row; align-items:center;
+    border:1px solid var(--line-2); border-radius:2px; padding:9px 13px;
+  }
+  .nav .nav-act .nav-tel .l{ display:none; }
+  .nav .nav-act .nav-tel .v{ line-height:1.2; }
+  .nav .nav-act .nav-cta{ flex:1 1 auto; padding:12px 10px; }
+}
+@media (max-width: 380px){
+  .nav .nav-act .nav-tel .v{ font-size:15.5px; }
+  .nav .nav-act .nav-tel{ padding:9px 10px; }
+  .nav .nav-act .nav-cta{ font-size:14px; padding:12px 6px; }
 }
 /* ================= SPOLOČNÉ SEKCIE ================= */
 
@@ -318,6 +336,9 @@ section{ scroll-margin-top:calc(var(--stack, 112px) + 12px); }
 .btn.btn-light:hover{ background:#ffffff; border-color:#ffffff; color:var(--ink); }
 .btn.btn-ghost{ background:transparent; color:var(--on-dark-str); border-color:var(--line-dark-2); }
 .btn.btn-ghost:hover{ border-color:var(--acc-2); color:var(--acc-2); background:transparent; }
+/* akcentové tlačidlo na tmavom páse: tmavý text na mosadzi, 7,9:1 */
+.btn.btn-acc2{ background:var(--acc-2); color:#14181c; border-color:var(--acc-2); }
+.btn.btn-acc2:hover{ background:#d8b87e; border-color:#d8b87e; color:#14181c; }
 
 /* ================= HERO — obálka časopisu =================
    Obrovská sadzba nadpisu prekrýva veľkú farebnú plochu vpravo hore,
@@ -357,6 +378,12 @@ h1{
 }
 h1 .l{ display:block; }
 h1 .l2{ margin-left:clamp(0px, 4.5vw, 96px); }
+h1 .l3{
+  font-family:var(--sans); font-weight:600;
+  font-size:clamp(14px, 2.2vw, 25px); letter-spacing:.2em; text-transform:uppercase;
+  line-height:1.3; color:var(--acc);
+  margin:clamp(14px,1.8vw,22px) 0 0 clamp(0px, 9vw, 192px);
+}
 
 .hero-rule{
   height:1px; background:var(--line-2); border:0; margin:clamp(26px,3.4vw,46px) 0 0;
@@ -616,6 +643,57 @@ a.inl:hover{ border-bottom-color:var(--acc); }
 .card li::before{
   content:""; position:absolute; left:0; top:.68em; width:7px; height:1px; background:var(--acc);
 }
+
+/* karta služby: geometrická značka, odrážky a cena v pätke karty */
+.card-ico{
+  display:flex; align-items:center; justify-content:center;
+  width:46px; height:46px; border:1px solid var(--line-2); border-radius:2px;
+  background:var(--surface);
+}
+.card-ico svg{ display:block; }
+.card-price{
+  margin-top:18px; padding-top:14px; border-top:1px solid var(--line);
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+}
+.card-price .k{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mut-2); }
+.card-price .v{ font-family:var(--serif); font-size:19px; color:var(--acc); text-align:right; }
+
+/* miesto pre fotografiu: vlastná kompozícia, nie ilustrácia predmetu */
+.obraz{ margin:0; }
+.obraz .ram{
+  position:relative; overflow:hidden; border:1px solid var(--line); border-radius:var(--r);
+  background:linear-gradient(154deg, var(--paper) 0%, var(--paper-2) 52%, var(--paper-3) 100%);
+}
+.obraz .ram::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--grain); background-size:150px 150px; opacity:.05;
+}
+.obraz .ram svg{ display:block; width:100%; height:auto; }
+.obraz figcaption{
+  margin-top:10px; font-size:13.5px; line-height:1.5; color:var(--ink-mut);
+}
+.band-dark .obraz figcaption{ color:var(--on-dark-mut); }
+
+/* orientačný plán príchodu */
+.plan{ border:1px solid var(--line); border-radius:var(--r); background:var(--surface); overflow:hidden; }
+.plan svg{ display:block; width:100%; height:auto; }
+.plan-key{
+  list-style:none; margin:0; padding:14px clamp(14px,2vw,20px);
+  border-top:1px solid var(--line); background:var(--paper);
+  display:flex; flex-wrap:wrap; gap:8px 22px; font-size:13.5px; color:var(--ink-mut-2);
+}
+.plan-key b{ color:var(--acc); font-weight:600; letter-spacing:.06em; }
+
+/* záverečný pás s hlavnou akciou */
+.cta-band{ background:var(--dark); color:var(--on-dark); }
+.cta-in{
+  display:grid; grid-template-columns:1.25fr auto; gap:clamp(20px,3vw,44px);
+  align-items:center; padding-block:clamp(38px,5vw,62px);
+}
+@media (max-width: 860px){ .cta-in{ grid-template-columns:1fr; } }
+.cta-in h2{ font-size:clamp(24px,3.2vw,36px); color:var(--on-dark-str); }
+.cta-in p{ margin:14px 0 0; font-size:16px; color:var(--on-dark); max-width:56ch; }
+.cta-btns{ display:flex; flex-wrap:wrap; gap:12px; }
 
 /* ================= TABUĽKY ================= */
 
@@ -1052,28 +1130,30 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
         </span>
         <span class="brand-txt">
           <span class="brand-name">SALDIA</span>
-          <span class="brand-sub">Účtovníctvo a mzdy · Bratislava</span>
+          <span class="brand-sub">Účtovníctvo · Bratislava</span>
         </span>
       </a>
+
+      <div class="menu" id="menu">
+        <a href="#sluzby">Služby</a>
+        <a href="#cennik">Cenník</a>
+        <a href="#kalkulacka">Kalkulačka</a>
+        <a href="#referencie">Referencie</a>
+        <a href="#otazky">Otázky</a>
+      </div>
+
+      <div class="nav-act">
+        <a class="nav-tel" href="tel:+421915268730">
+          <span class="l">Telefón</span><span class="v num">0915 268 730</span>
+        </a>
+        <a class="nav-cta" href="#kontakt">Nezáväzná ponuka</a>
+      </div>
 
       <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Otvoriť menu">
         <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
           <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.5"/>
         </svg>
       </button>
-
-      <div class="menu" id="menu">
-        <a href="#sluzby">Služby</a>
-        <a href="#cennik">Paušály</a>
-        <a href="#kalkulacka">Kalkulačka</a>
-        <a href="#postup">Postup</a>
-        <a href="#terminy">Termíny</a>
-        <a href="#otazky">Otázky</a>
-        <a class="nav-tel" href="tel:+421915268730">
-          <span class="l">Telefón</span><span class="v num">0915 268 730</span>
-        </a>
-        <a class="nav-cta" href="#kontakt">Nezáväzný dopyt</a>
-      </div>
     </div>
   </nav>
 </div>
@@ -1119,9 +1199,9 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 
   <div class="wrap hero-in">
     <p class="hero-kicker">Účtovná kancelária · Mýtna 21, Bratislava</p>
-    <h1><span class="l l1">Účtovníctvo,</span><span class="l l2">mzdy a dane</span></h1>
+    <h1><span class="l l1">Účtovníctvo,</span><span class="l l2">mzdy a dane</span><span class="l l3">Bratislava a online</span></h1>
     <hr class="hero-rule">
-    <p class="hero-sub">Pre živnostníkov a malé spoločnosti s ručením obmedzeným
+    <p class="hero-sub">Pre živnostníkov a spoločnosti s ručením obmedzeným
       do desiatich zamestnancov.</p>
 
     <div class="hero-body">
@@ -1130,11 +1210,11 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
           daňové priznania. Doklady mi posielate raz mesačne, cenu dohodneme vopred ako pevný
           mesačný paušál.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#kalkulacka">Spočítať mesačný paušál</a>
-          <a class="btn btn-line" href="#kontakt">Nezáväzný dopyt</a>
+          <a class="btn btn-acc" href="#kontakt">Nezáväzná ponuka</a>
+          <a class="btn btn-line" href="#kalkulacka">Spočítať paušál</a>
         </div>
-        <p class="hero-meta">Agendu preberiem aj v priebehu roka, kontrola prevzatých dát je
-          bez poplatku. Výpovedná lehota je jeden mesiac.</p>
+        <p class="hero-meta">Ponuku pošlem do dvoch pracovných dní. Agendu preberiem aj v priebehu
+          roka, kontrola prevzatých dát je bez poplatku, výpovedná lehota je jeden mesiac.</p>
       </div>
 
       <aside class="hero-badge">
@@ -1194,8 +1274,8 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
       <div class="plate-in">
         <p class="plate-kicker">Mesačný rytmus</p>
         <h2 class="plate-h" id="rytmus-nadpis">Každý mesiac tie isté štyri dátumy</h2>
-        <p class="plate-note">Nič nevymýšľame odznova. Vy strážite dva dátumy, zvyšok je na mne.
-          Termíny vám pripomeniem tri dni vopred.</p>
+        <p class="plate-note">Vy strážite dva dátumy: 3. a 10. deň v mesiaci. Oba vám pripomeniem
+          tri dni vopred, zvyšné dva termíny sú na mne.</p>
         <ol class="cyklus-grid">
           <li>
             <span class="cyklus-day num">3.</span>
@@ -1235,66 +1315,120 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
       </div>
     </header>
 
-    <div class="tblwrap reveal">
-      <table class="tbl-stack">
-        <caption>Prehľad služieb a cien. Všetky ceny sú uvedené bez DPH.</caption>
-        <thead>
-          <tr>
-            <th scope="col">Služba</th>
-            <th scope="col">Čo obsahuje</th>
-            <th scope="col">Pre koho</th>
-            <th scope="col">Cena</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Jednoduché účtovníctvo</th>
-            <td data-l="Čo obsahuje">Peňažný denník, kniha pohľadávok a záväzkov, evidencia majetku a odpisy, kniha jázd, podklady k ročnému priznaniu</td>
-            <td data-l="Pre koho">Živnostníci a subjekty bez povinnosti podvojného účtovníctva</td>
-            <td class="val acc" data-l="Cena">v paušále od 39 € / mesiac</td>
-          </tr>
-          <tr>
-            <th scope="row">Podvojné účtovníctvo</th>
-            <td data-l="Čo obsahuje">Hlavná kniha a denník, saldokonto odberateľov a dodávateľov, DPH a kontrolný výkaz, účtovná závierka a poznámky</td>
-            <td data-l="Pre koho">Spoločnosti s ručením obmedzeným</td>
-            <td class="val acc" data-l="Cena">v paušále od 69 € / mesiac</td>
-          </tr>
-          <tr>
-            <th scope="row">Mzdy a personalistika</th>
-            <td data-l="Čo obsahuje">Výpočet miezd, výplatné pásky, prihlášky a odhlášky do poisťovní, mesačné výkazy, dohody o prácach mimo pracovného pomeru</td>
-            <td data-l="Pre koho">Firmy so zamestnancami a dohodármi</td>
-            <td class="val acc" data-l="Cena">12 € / osoba / mesiac</td>
-          </tr>
-          <tr>
-            <th scope="row">Daňové priznania a výkazy</th>
-            <td data-l="Čo obsahuje">Priznanie k dani z príjmov fyzickej aj právnickej osoby, priznanie k DPH, kontrolný a súhrnný výkaz, daň z motorových vozidiel</td>
-            <td data-l="Pre koho">Klienti s mesačným paušálom aj jednorazovo</td>
-            <td class="val acc" data-l="Cena">DPH v paušále, ročné priznanie od 90 €</td>
-          </tr>
-          <tr>
-            <th scope="row">Prevzatie agendy od iného účtovníka</th>
-            <td data-l="Čo obsahuje">Prevzatie dát, kontrola otvorených položiek, majetku a mzdových listov, písomný zoznam toho, čo treba dorovnať</td>
-            <td data-l="Pre koho">Firmy, ktoré menia účtovníka aj v priebehu roka</td>
-            <td class="val acc" data-l="Cena">bez poplatku</td>
-          </tr>
-          <tr>
-            <th scope="row">Rekonštrukcia účtovníctva</th>
-            <td data-l="Čo obsahuje">Doplnenie chýbajúcich období, dodatočné priznania a opravné výkazy</td>
-            <td data-l="Pre koho">Firmy s nepodanými výkazmi alebo s výzvou z daňového úradu</td>
-            <td class="val" data-l="Cena">podľa rozsahu, cena vopred</td>
-          </tr>
-          <tr>
-            <th scope="row">Zastupovanie pri kontrole</th>
-            <td data-l="Čo obsahuje">Príprava podkladov, komunikácia s úradom, vysvetlenia k výzvam a k rozdielom vo výkazoch</td>
-            <td data-l="Pre koho">Klienti s mesačným paušálom</td>
-            <td class="val acc" data-l="Cena">v paušále, mimo paušálu 35 € / hodina</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="cards">
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M7 8h12M7 12h12M7 16h7" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 16h3" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Jednoduché účtovníctvo</h3>
+        <p>Pre živnostníkov a subjekty bez povinnosti účtovať podvojne.</p>
+        <ul>
+          <li>Peňažný denník, kniha pohľadávok a záväzkov</li>
+          <li>Evidencia majetku, odpisy a kniha jázd</li>
+          <li>Podklady k ročnému daňovému priznaniu</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">v paušále od 39 € / mesiac</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M6 8h4M6 12h4M16 8h4" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 12h4" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Podvojné účtovníctvo</h3>
+        <p>Pre spoločnosti s ručením obmedzeným a neziskové organizácie.</p>
+        <ul>
+          <li>Hlavná kniha, denník a saldokonto</li>
+          <li>Priznanie k DPH a kontrolný výkaz</li>
+          <li>Účtovná závierka vrátane poznámok</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">v paušále od 69 € / mesiac</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M4 22V11M9.667 22V7M15.333 22v-9" stroke="#14181c" stroke-width="1.4"/>
+            <path d="M21 22V4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M2.5 23.5h21" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Mzdy a personalistika</h3>
+        <p>Pre firmy so zamestnancami aj s dohodármi.</p>
+        <ul>
+          <li>Výpočet miezd, výplatné pásky a mesačné výkazy</li>
+          <li>Prihlášky a odhlášky do poisťovní</li>
+          <li>Dohody o prácach mimo pracovného pomeru</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">12 € / osoba / mesiac</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M6 20L20 6" stroke="#7a5c22" stroke-width="1.6"/>
+            <circle cx="8" cy="8" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="18" cy="18" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Dane, DPH a výkazy</h3>
+        <p>Pre klientov s paušálom aj pre jednorazové podanie.</p>
+        <ul>
+          <li>Priznanie k dani z príjmov fyzickej aj právnickej osoby</li>
+          <li>Priznanie k DPH, kontrolný a súhrnný výkaz</li>
+          <li>Daň z motorových vozidiel za 25 €</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">DPH v paušále, ročné priznanie od 90 €</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="2.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <rect x="15.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M11 13h4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M13 11l2 2-2 2" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Prevzatie agendy a rekonštrukcia</h3>
+        <p>Pre firmy, ktoré menia účtovníka aj v priebehu roka.</p>
+        <ul>
+          <li>Kontrola otvorených položiek, majetku a mzdových listov</li>
+          <li>Písomný zoznam toho, čo treba dorovnať</li>
+          <li>Doplnenie nepodaných období a opravné výkazy</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">prevzatie bez poplatku</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <circle cx="13" cy="13" r="10.5" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="13" cy="13" r="5.5" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v5M13 18.5v5" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Zastupovanie pri kontrole</h3>
+        <p>Pre klientov s mesačným paušálom, keď príde výzva alebo kontrola.</p>
+        <ul>
+          <li>Príprava podkladov a odpoveď na výzvu</li>
+          <li>Komunikácia s úradom na základe plnomocenstva</li>
+          <li>Vysvetlenie rozdielov vo výkazoch</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">v paušále, inak 35 € / hodina</span></p>
+      </article>
     </div>
 
-    <p class="tbl-note">Nerobím audit, účtovníctvo akciových spoločností ani znalecké posudky.
-      Ak takúto agendu potrebujete, poviem to na úvodnom hovore.</p>
+    <p class="tbl-note">Ceny sú bez DPH. Nerobím audit, účtovníctvo akciových spoločností ani znalecké
+      posudky. Ak takúto agendu potrebujete, poviem to na úvodnom hovore a odporučím kolegu.</p>
   </div>
 </section>
 
@@ -1304,7 +1438,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
     <header class="sec-head">
       <p class="sec-idx"><b class="num">02</b> Pre koho</p>
       <div>
-        <h2 class="sec-h">Odvetvia, ktoré poznám do detailu</h2>
+        <h2 class="sec-h">Pre koho účtujem</h2>
         <p class="lead">Pri každom type podnikania sa opakujú iné otázky. Nižšie je to, čo pri danom
           odvetví riešim navyše oproti bežnému zaúčtovaniu dokladov.</p>
       </div>
@@ -1378,8 +1512,8 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
       </article>
     </div>
 
-    <p class="tbl-note">Nezmestili ste sa do žiadnej kategórie? Napíšte, čo robíte. Ak by som vašej
-      agende nerozumela, poviem to hneď a odporučím kolegu so správnou špecializáciou.</p>
+    <p class="tbl-note">Nezmestili ste sa do žiadnej kategórie? Napíšte, čo robíte. Ak vašej agende
+      nerozumiem, poviem to na úvodnom hovore a odporučím kolegu so správnou špecializáciou.</p>
   </div>
 </section>
 
@@ -1542,6 +1676,67 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 
     <p class="tbl-note">Fakturujem raz mesačne, so splatnosťou 14 dní. Ceny v tejto ukážke sú
       ilustračné. Konkrétnu ponuku dostanete po prehliadke vzorky dokladov.</p>
+
+    <p style="margin-top:22px"><a class="btn btn-acc" href="#kontakt">Nezáväzná ponuka</a></p>
+  </div>
+</section>
+
+<!-- ================= REFERENCIE ================= -->
+<section class="sec band-alt" id="referencie">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">04</b> Referencie</p>
+      <div>
+        <h2 class="sec-h">Traja klienti a ceny, ktoré platia</h2>
+        <p class="lead">Namiesto pochvalných viet uvádzam rozsah agendy a mesačnú sumu na faktúre.
+          Každú z nich si viete prepočítať v kalkulačke nižšie.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <p class="card-no num">01</p>
+        <h3>Stavebná firma, s. r. o.</h3>
+        <p>Šesť zamestnancov, fakturácia práce aj materiálu, dve firemné vozidlá.</p>
+        <ul>
+          <li>120 dokladov mesačne</li>
+          <li>Mzdy pre 6 osôb</li>
+          <li>Platiteľ DPH, mesačné priznanie</li>
+          <li>Agendu som prevzala v auguste, prvý mesiac spracovaný do 20. dňa</li>
+        </ul>
+        <p class="card-price"><span class="k">Platí mesačne</span><span class="v num">213 € · paušál Rozšírený</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">02</p>
+        <h3>E-shop, s. r. o.</h3>
+        <p>Predaj cez platobnú bránu a dobierky, vratky a predaj koncovým zákazníkom v dvoch štátoch EÚ.</p>
+        <ul>
+          <li>180 dokladov mesačne po nastavení automatického importu</li>
+          <li>Jeden zamestnanec</li>
+          <li>Platiteľ DPH a režim OSS</li>
+          <li>Párovanie výplat z brány s objednávkami raz týždenne</li>
+        </ul>
+        <p class="card-price"><span class="k">Platí mesačne</span><span class="v num">219 € · paušál Rozšírený</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">03</p>
+        <h3>Konzultant v IT, živnostník</h3>
+        <p>Fakturuje dvom klientom, z toho jednému podnikateľovi v Rakúsku.</p>
+        <ul>
+          <li>14 dokladov mesačne</li>
+          <li>Bez zamestnancov</li>
+          <li>Neplatiteľ DPH, registrácia podľa § 7a a súhrnný výkaz</li>
+          <li>Ročné priznanie fakturujem samostatne, od 90 €</li>
+        </ul>
+        <p class="card-price"><span class="k">Platí mesačne</span><span class="v num">39 € · paušál Štart</span></p>
+      </article>
+    </div>
+
+    <p class="tbl-note">Mená klientov neuvádzam, mlčanlivosť sa vzťahuje aj na to, kto je klientom
+      kancelárie. Ak chcete referenciu od človeka, pred podpisom zmluvy vám dám telefónne čísla
+      na dvoch klientov, ktorí s tým súhlasili.</p>
   </div>
 </section>
 
@@ -1549,7 +1744,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec band-dark" id="kalkulacka">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">04</b> Kalkulačka</p>
+      <p class="sec-idx"><b class="num">05</b> Kalkulačka</p>
       <div>
         <h2 class="sec-h">Kalkulačka mesačného paušálu</h2>
         <p class="lead">Nastavte štyri hodnoty a uvidíte cenu podľa cenníka vyššie. Pri spoločnosti
@@ -1631,7 +1826,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
     <div class="calc-foot">
       <p>Výsledok je orientačný. Konečnú cenu potvrdím po tom, ako sa pozriem na vzorku vašich dokladov,
         spravidla do dvoch pracovných dní.</p>
-      <a class="btn btn-light" href="#kontakt">Chcem presnú ponuku</a>
+      <a class="btn btn-light" href="#kontakt">Nezáväzná ponuka</a>
     </div>
 
     <noscript>
@@ -1645,7 +1840,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec" id="postup">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">05</b> Postup</p>
+      <p class="sec-idx"><b class="num">06</b> Postup</p>
       <div>
         <h2 class="sec-h">Postup spolupráce</h2>
         <p class="lead">Rovnaký postup platí pre nového klienta aj pre prechod od iného účtovníka.
@@ -1705,11 +1900,11 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec band-alt" id="podklady">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">06</b> Podklady</p>
+      <p class="sec-idx"><b class="num">07</b> Podklady</p>
       <div>
         <h2 class="sec-h">Podklady, ktoré od vás potrebujem</h2>
-        <p class="lead">Zoznam je krátky a každý mesiac rovnaký. Účtovný program si kupovať nemusíte,
-          výstupy dostávate v PDF.</p>
+        <p class="lead">Každý mesiac ten istý zoznam šiestich položiek. Účtovný program si kupovať
+          nemusíte, výstupy dostávate v PDF.</p>
       </div>
     </header>
 
@@ -1720,7 +1915,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
           <dt>Prijaté a vydané faktúry</dt>
           <dd>Sken alebo PDF, pomenované číslom dokladu.</dd>
           <dt>Bankové výpisy</dt>
-          <dd>Za celý mesiac, v PDF alebo v exporte z internet bankingu.</dd>
+          <dd>Za celý mesiac, v PDF alebo v exporte z internetového bankovníctva.</dd>
           <dt>Pokladničné doklady</dt>
           <dd>Vrátane dokladov z eKasy, ak predávate na predajni.</dd>
           <dt>Podklady k mzdám</dt>
@@ -1762,7 +1957,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec" id="terminy">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">07</b> Termíny</p>
+      <p class="sec-idx"><b class="num">08</b> Termíny</p>
       <div>
         <h2 class="sec-h">Rok v účtovníctve, mesiac po mesiaci</h2>
         <p class="lead">Aby ste vedeli, čo sa kedy deje a kedy sa ozvem. Zákonné lehoty strážim ja,
@@ -1898,7 +2093,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec band-alt" id="kancelaria">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">08</b> Kancelária</p>
+      <p class="sec-idx"><b class="num">09</b> Kancelária</p>
       <div>
         <h2 class="sec-h">Adresa, príchod a parkovanie</h2>
         <p class="lead">Väčšina agendy beží na diaľku, klientov mám po celom Slovensku. Ak sa chcete
@@ -1929,9 +2124,112 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
       </div>
     </div>
 
-    <div class="two">
+    <h3 class="sub-h" id="hodiny">Otváracie hodiny po dňoch</h3>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Otváracie hodiny kancelárie na Mýtnej 21. Sviatky sú zatvorené, oznamujem to týždeň vopred.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Deň</th>
+            <th scope="col">Telefón</th>
+            <th scope="col">Osobné stretnutia</th>
+            <th scope="col">Schránka na doklady</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Pondelok</th>
+            <td class="val num" data-l="Telefón">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobné stretnutia">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Utorok</th>
+            <td class="val num" data-l="Telefón">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobné stretnutia">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Streda</th>
+            <td class="val num" data-l="Telefón">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobné stretnutia">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Štvrtok</th>
+            <td class="val num" data-l="Telefón">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobné stretnutia">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Piatok</th>
+            <td class="val num" data-l="Telefón">9.00 – 16.00</td>
+            <td data-l="Osobné stretnutia">deň vyhradený na spracovanie a podania</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Sobota</th>
+            <td data-l="Telefón">zatvorené</td>
+            <td data-l="Osobné stretnutia">zatvorené</td>
+            <td data-l="Schránka na doklady">zatvorené</td>
+          </tr>
+          <tr>
+            <th scope="row">Nedeľa</th>
+            <td data-l="Telefón">zatvorené</td>
+            <td data-l="Osobné stretnutia">zatvorené</td>
+            <td data-l="Schránka na doklady">zatvorené</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-note">Osobné stretnutie je vždy po dohode termínu vopred, nie na počkanie.
+      Schránku pri vchode vyberám každý pracovný deň o 16.00 a prevzatie potvrdím správou.
+      Online stretnutie trvá tridsať minút, odkaz na videohovor pošlem v potvrdení termínu.</p>
+
+    <div class="two" style="margin-top:clamp(30px,4vw,46px)">
       <div>
-        <h3>Cesta a parkovanie</h3>
+        <!-- FOTO: budova na Mýtnej 21 zvonku, vchod z ulice so zvončekom SALDIA -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 420" role="img" focusable="false"
+                 aria-label="Kompozícia s adresou kancelárie: Mýtna 21, prízemie.">
+              <defs>
+                <linearGradient id="obr1a" x1="0" y1="0" x2="0.7" y2="1">
+                  <stop offset="0" stop-color="#eeeae1"/>
+                  <stop offset="0.55" stop-color="#e6e6e4"/>
+                  <stop offset="1" stop-color="#dcdfe3"/>
+                </linearGradient>
+                <radialGradient id="obr1b" cx="0.82" cy="0.16" r="0.7">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.16"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="420" fill="url(#obr1a)"/>
+              <rect width="640" height="420" fill="url(#obr1b)"/>
+              <g stroke="#14181c" stroke-opacity="0.08">
+                <path d="M0 70H640M0 140H640M0 210H640M0 280H640M0 350H640"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.20">
+                <circle cx="524" cy="66" r="96"/>
+                <circle cx="524" cy="66" r="158"/>
+                <circle cx="524" cy="66" r="220"/>
+              </g>
+              <path d="M640 130 L640 420 L360 420 Z" fill="#7a5c22" fill-opacity="0.07"/>
+              <rect x="52" y="96" width="2" height="232" fill="#14181c" fill-opacity="0.16"/>
+              <text x="84" y="214" font-family="Georgia, serif" font-size="104" fill="#14181c"
+                    fill-opacity="0.9" letter-spacing="-3">21</text>
+              <text x="86" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="23"
+                    letter-spacing="9" fill="#7a5c22">MÝTNA</text>
+              <text x="86" y="300" font-family="Segoe UI, Arial, sans-serif" font-size="18"
+                    letter-spacing="2" fill="#474e56">811 07 Bratislava</text>
+            </svg>
+          </div>
+          <figcaption>Kancelária je na prízemí, vchod priamo z ulice, zvonček SALDIA.</figcaption>
+        </figure>
+
+        <h3 style="margin-top:34px">Cesta a parkovanie</h3>
         <ul class="ticks">
           <li><b>Autom:</b> dve vyhradené parkovacie miesta vo dvore budovy, pre klientov prvé dve
             hodiny bez poplatku. Vjazd je z Mýtnej, závoru otvorím po zazvonení.</li>
@@ -1946,27 +2244,67 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
           <li><b>S kočíkom:</b> vchodové dvere sa dajú zaistiť otvorené, v kancelárii je miesto
             na odloženie kočíka.</li>
         </ul>
-
-        <h3 style="margin-top:34px">Kedy je otvorené</h3>
-        <ul class="ticks">
-          <li><b>Osobné stretnutia:</b> pondelok až štvrtok od 9.00 do 15.00, vždy po dohode termínu.</li>
-          <li><b>Telefón:</b> pondelok až piatok od 9.00 do 16.00, číslo
-            <a class="inl num" href="tel:+421915268730">0915 268 730</a>.</li>
-          <li><b>Piatok:</b> vyhradený na spracovanie a podania, preto v piatok nestretávam klientov.</li>
-          <li><b>Odovzdanie dokladov bez stretnutia:</b> uzamykateľná schránka pri vchode,
-            vyberám ju každý pracovný deň o 16.00 a prevzatie potvrdím správou.</li>
-          <li><b>Online stretnutie:</b> tridsať minút videohovorom, odkaz vám pošlem v potvrdení
-            termínu, nič si inštalovať nemusíte.</li>
-        </ul>
       </div>
 
       <div>
-        <h3>Kto pracuje na vašej agende</h3>
+        <div class="plan reveal">
+          <svg viewBox="0 0 520 330" role="img" focusable="false"
+               aria-label="Orientačný plán: budova Mýtna 21 s vchodom z ulice, vjazd do dvora s dvoma parkovacími miestami a zastávka mestskej dopravy tri minúty pešo.">
+            <rect width="520" height="330" fill="#f5f6f8"/>
+
+            <rect x="0" y="172" width="520" height="60" fill="#e6e9ec"/>
+            <path d="M0 172H520M0 232H520" stroke="#c0c5cb" stroke-width="1.2"/>
+            <path d="M0 202H520" stroke="#c0c5cb" stroke-width="1.4" stroke-dasharray="16 12"/>
+            <text x="16" y="223" font-family="Segoe UI, Arial, sans-serif" font-size="17"
+                  letter-spacing="4" fill="#535a62">MÝTNA</text>
+
+            <rect x="110" y="14" width="210" height="64" fill="#ffffff" fill-opacity="0.7"
+                  stroke="#7a5c22" stroke-width="1.2" stroke-dasharray="7 5"/>
+            <rect x="126" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <rect x="190" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <text x="256" y="56" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Dvor</text>
+
+            <rect x="110" y="78" width="210" height="94" fill="#7a5c22" fill-opacity="0.10"
+                  stroke="#7a5c22" stroke-width="1.4"/>
+            <text x="128" y="118" font-family="Georgia, serif" font-size="26" fill="#14181c">Mýtna 21</text>
+            <text x="128" y="144" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">SALDIA · prízemie</text>
+
+            <rect x="206" y="166" width="18" height="10" fill="#7a5c22"/>
+            <text x="234" y="194" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Vchod</text>
+
+            <path d="M92 256V44" stroke="#7a5c22" stroke-width="2"/>
+            <path d="M92 36l6 12H86z" fill="#7a5c22"/>
+            <text x="16" y="282" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Vjazd do dvora</text>
+
+            <rect x="300" y="240" width="98" height="10" fill="#7a5c22" fill-opacity="0.42"/>
+            <text x="300" y="274" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Zastávka MHD</text>
+            <text x="300" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#535a62">3 minúty pešo</text>
+          </svg>
+          <ul class="plan-key">
+            <li><b>Dvor</b> 2 miesta, prvé 2 hodiny bez poplatku</li>
+            <li><b>Ulica</b> automat pri vchode, 2 € za hodinu</li>
+            <li><b>Vchod</b> z Mýtnej, bez schodov</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:34px">Prvé stretnutie</h3>
+        <p class="p-narrow">Prineste výpis z účtu za posledný mesiac a päť typických faktúr.
+          Z toho viem povedať objem dokladov aj konečnú cenu paušálu. Stretnutie trvá dvadsať
+          až tridsať minút a neúčtujem ho.</p>
+        <p class="p-narrow">To isté prejdeme aj videohovorom alebo telefonicky. Podklady mi vtedy
+          pošlete cez zdieľaný priečinok.</p>
+        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Dohodnúť termín stretnutia</a></p>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Kto pracuje na vašej agende</h3>
+    <div class="two">
+      <div>
         <ul class="roles">
           <li>
             <span class="role-t">Účtovníčka vašej firmy</span>
-            <span class="role-d">Jedna osoba, ktorá vedie celý váš rok a s ktorou riešite všetko priamo.
-              Pozná vašu agendu, takže nemusíte veci vysvetľovať dvakrát.</span>
+            <span class="role-d">Jedna osoba vedie vašu agendu celý rok a odpovedá vám priamo,
+              do 24 hodín v pracovné dni.</span>
           </li>
           <li>
             <span class="role-t">Mzdová účtovníčka</span>
@@ -1980,18 +2318,52 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
           </li>
           <li>
             <span class="role-t">Zástup počas dovolenky</span>
-            <span class="role-d">Termíny bežia aj v lete. Počas neprítomnosti preberá agendu kolegyňa,
-              ktorá má prístup k rovnakým podkladom, a vy o tom viete dopredu.</span>
+            <span class="role-d">Počas neprítomnosti preberá agendu kolegyňa s prístupom k rovnakým
+              podkladom. Jej meno a číslo dostanete najneskôr týždeň vopred.</span>
           </li>
         </ul>
+      </div>
 
-        <h3 style="margin-top:34px">Prvé stretnutie</h3>
-        <p class="p-narrow">Na úvodné stretnutie stačí, ak prinesiete výpis z účtu za posledný mesiac
-          a niekoľko typických faktúr. Z toho viem povedať objem dokladov aj konečnú cenu paušálu.
-          Stretnutie trvá dvadsať až tridsať minút a je bezplatné.</p>
-        <p class="p-narrow">Ak sa vám do Bratislavy nechce, presne to isté prejdeme videohovorom
-          alebo telefonicky. Podklady mi vtedy pošlete cez zdieľaný priečinok.</p>
-        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Dohodnúť termín stretnutia</a></p>
+      <div>
+        <!-- FOTO: účtovníčka a mzdová účtovníčka v kancelárii, skutočný tím, nie stock -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 400" role="img" focusable="false"
+                 aria-label="Kompozícia so značkou kancelárie SALDIA.">
+              <defs>
+                <linearGradient id="obr2a" x1="0.1" y1="0" x2="0.9" y2="1">
+                  <stop offset="0" stop-color="#e9eaec"/>
+                  <stop offset="0.5" stop-color="#e4e3df"/>
+                  <stop offset="1" stop-color="#d9dce0"/>
+                </linearGradient>
+                <radialGradient id="obr2b" cx="0.18" cy="0.86" r="0.72">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.15"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="400" fill="url(#obr2a)"/>
+              <rect width="640" height="400" fill="url(#obr2b)"/>
+              <g stroke="#14181c" stroke-opacity="0.07">
+                <path d="M80 0V400M180 0V400M280 0V400M380 0V400M480 0V400M580 0V400"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.22">
+                <circle cx="118" cy="336" r="74"/>
+                <circle cx="118" cy="336" r="126"/>
+                <circle cx="118" cy="336" r="178"/>
+              </g>
+              <path d="M0 0 L246 0 L0 246 Z" fill="#14181c" fill-opacity="0.05"/>
+              <g stroke="#14181c" stroke-opacity="0.55">
+                <path d="M330 150h226" stroke-width="2"/>
+                <path d="M330 186h226" stroke-width="2"/>
+                <path d="M330 222h132" stroke-width="2"/>
+              </g>
+              <path d="M478 222h78" stroke="#7a5c22" stroke-width="3"/>
+              <text x="330" y="122" font-family="Georgia, serif" font-size="30"
+                    letter-spacing="12" fill="#14181c">SALDIA</text>
+            </svg>
+          </div>
+          <figcaption>Účtovníčka a mzdová účtovníčka, ktoré vedú agendu klientov kancelárie.</figcaption>
+        </figure>
       </div>
     </div>
   </div>
@@ -2001,7 +2373,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec" id="platby">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">09</b> Platba</p>
+      <p class="sec-idx"><b class="num">10</b> Platba</p>
       <div>
         <h2 class="sec-h">Fakturácia a spôsob platby</h2>
         <p class="lead">Platí sa raz mesačne, prevodom na účet. Nižšie je presne to, kedy faktúra
@@ -2094,7 +2466,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec band-alt" id="storno">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">10</b> Storno</p>
+      <p class="sec-idx"><b class="num">11</b> Storno</p>
       <div>
         <h2 class="sec-h">Zmena termínu, storno a ukončenie spolupráce</h2>
         <p class="lead">Termín sa dá presunúť aj zrušiť. Spoluprácu ukončíte k poslednému dňu
@@ -2174,7 +2546,6 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
             prídete vy.</li>
           <li><b>Opravné a dodatočné podania</b> po mojej chybe robím bez poplatku.</li>
         </ul>
-        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Opýtať sa na podmienky</a></p>
       </div>
     </div>
   </div>
@@ -2184,11 +2555,10 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec band-dark" id="ochrana">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">11</b> Údaje</p>
+      <p class="sec-idx"><b class="num">12</b> Údaje</p>
       <div>
         <h2 class="sec-h">Doklady, mlčanlivosť a ochrana údajov</h2>
-        <p class="lead">Účtovníctvo znamená prístup k číslam, ktoré nechcete mať nikde inde.
-          Tu je, kde vaše dáta žijú, kto sa k nim dostane a ako dlho ich držím.</p>
+        <p class="lead">Kde sú vaše doklady uložené, kto sa k nim dostane a ako dlho ich uchovávam.</p>
       </div>
     </header>
 
@@ -2233,11 +2603,11 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec" id="kariera">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">12</b> Kariéra</p>
+      <p class="sec-idx"><b class="num">13</b> Kariéra</p>
       <div>
         <h2 class="sec-h">Voľné miesto a odborná prax</h2>
-        <p class="lead">Klientov pribúda rýchlejšie, než stíham sama. Hľadám niekoho, kto vie viesť
-          podvojné účtovníctvo samostatne a nebojí sa napísať klientovi skôr, než sa niečo pokazí.</p>
+        <p class="lead">Hľadám jedného človeka, ktorý vie viesť podvojné účtovníctvo samostatne.
+          Portfólio je 15 až 20 klientov, mzda od 1 400 € v hrubom pri plnom úväzku.</p>
       </div>
     </header>
 
@@ -2292,7 +2662,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
 <section class="sec band-alt" id="otazky">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">13</b> Otázky</p>
+      <p class="sec-idx"><b class="num">14</b> Otázky</p>
       <div>
         <h2 class="sec-h">Časté otázky</h2>
         <p class="lead">Odpovede na to, na čo sa klienti pýtajú pred podpisom zmluvy.</p>
@@ -2389,13 +2759,28 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
   </div>
 </section>
 
+<!-- ================= ZÁVEREČNÁ VÝZVA ================= -->
+<section class="cta-band" aria-labelledby="ponuka-nadpis">
+  <div class="wrap cta-in">
+    <div>
+      <h2 id="ponuka-nadpis">Nezáväzná ponuka do dvoch pracovných dní</h2>
+      <p>Napíšte typ subjektu, približný počet dokladov a či máte zamestnancov. Pošlem pevnú
+        mesačnú cenu a rozsah služieb v jednom dokumente. Ponuka platí 30 dní.</p>
+    </div>
+    <div class="cta-btns">
+      <a class="btn btn-acc2" href="#kontakt">Nezáväzná ponuka</a>
+      <a class="btn btn-ghost num" href="tel:+421915268730">Zavolať 0915 268 730</a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= KONTAKT ================= -->
-<section class="sec" id="kontakt">
+<section class="sec" id="kontakt" style="border-top:0">
   <div class="wrap">
     <header class="sec-head">
-      <p class="sec-idx"><b class="num">14</b> Kontakt</p>
+      <p class="sec-idx"><b class="num">15</b> Kontakt</p>
       <div>
-        <h2 class="sec-h">Kontakt a nezáväzný dopyt</h2>
+        <h2 class="sec-h">Kontakt a nezáväzná ponuka</h2>
         <p class="lead">Napíšte, čo podnikáte a v akom stave je účtovníctvo. Ozvem sa a poviem,
           čo budem potrebovať a koľko bude mesačný paušál stáť.</p>
       </div>
@@ -2518,7 +2903,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
               ani neukladá.</span>
           </label>
 
-          <button class="btn btn-acc" type="submit" style="width:100%">Odoslať dopyt</button>
+          <button class="btn btn-acc" type="submit" style="width:100%">Chcem nezáväznú ponuku</button>
           <p class="form-note">Ukážkový formulár. Na ostrom webe by správa prišla do schránky
             účtovnej kancelárie a odpoveď by ste dostali do 24 hodín. Ak to súri, zavolajte
             na <a class="inl num" href="tel:+421915268730">0915 268 730</a>.</p>
@@ -2603,14 +2988,16 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
         <span class="foot-brand">SALDIA</span>
         <p class="foot-desc">Jednoduché a podvojné účtovníctvo, mzdy a daňové priznania
           pre živnostníkov a malé spoločnosti. Kancelária v Bratislave, klienti z celého Slovenska.</p>
+        <p style="margin-top:18px"><a class="btn btn-acc2" href="#kontakt">Nezáväzná ponuka</a></p>
       </div>
       <div>
         <h3>Kancelária</h3>
         <ul class="foot-addr">
-          <li>Mýtna 21<br>811 07 Bratislava</li>
+          <li>SALDIA, s. r. o.<br>Mýtna 21<br>811 07 Bratislava</li>
           <li><a class="num" href="tel:+421915268730">0915 268 730</a>
             <span>Pondelok až piatok, 9.00 – 16.00</span></li>
           <li>Osobné stretnutia<span>Pondelok až štvrtok, 9.00 – 15.00, po dohode</span></li>
+          <li class="num">IČO 52 418 037<span>DIČ 2121038475 · IČ DPH SK2121038475</span></li>
         </ul>
       </div>
       <div>
@@ -2619,6 +3006,7 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
           <li><a href="#sluzby">Rozsah služieb</a></li>
           <li><a href="#odvetvia">Pre koho účtujem</a></li>
           <li><a href="#cennik">Mesačné paušály</a></li>
+          <li><a href="#referencie">Referencie a ceny</a></li>
           <li><a href="#kalkulacka">Kalkulačka paušálu</a></li>
           <li><a href="#postup">Postup spolupráce</a></li>
           <li><a href="#podklady">Podklady od klienta</a></li>
@@ -2629,22 +3017,25 @@ footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64p
         <ul>
           <li><a href="#terminy">Termíny počas roka</a></li>
           <li><a href="#kancelaria">Adresa a parkovanie</a></li>
+          <li><a href="#hodiny">Otváracie hodiny</a></li>
           <li><a href="#platby">Fakturácia a platba</a></li>
           <li><a href="#storno">Storno a ukončenie</a></li>
           <li><a href="#ochrana">Ochrana údajov</a></li>
+          <li><a href="#otazky">Časté otázky</a></li>
           <li><a href="#kariera">Kariéra a prax</a></li>
         </ul>
       </div>
     </div>
 
     <div class="foot-note">
-      <span>© <span class="num">2026</span> SALDIA · Mýtna 21, 811 07 Bratislava · ukážkový web</span>
+      <span>© <span class="num">2026</span> SALDIA, s. r. o. · Mýtna 21, 811 07 Bratislava ·
+        <span class="num">IČO 52 418 037</span> · ukážkový web</span>
       <span>Web navrhol a naprogramoval <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></span>
     </div>
 
     <p class="disclaimer"><b>Upozornenie:</b> SALDIA je vymyslená účtovná kancelária vytvorená ako ukážka
-      webu. Názov, adresa, ceny, termíny aj kontaktné údaje sú ilustračné a nepatria žiadnej existujúcej
-      firme. Chcete podobný web pre svoj podnik? Pozrite
+      webu. Názov, adresa, IČO, DIČ, ceny, termíny aj kontaktné údaje sú ilustračné a nepatria žiadnej
+      existujúcej firme. Chcete podobný web pre svoj podnik? Pozrite
       <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
   </div>
 </footer>

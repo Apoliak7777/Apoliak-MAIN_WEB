@@ -46,10 +46,11 @@
 
 html{
   scroll-behavior:smooth;
-  scroll-padding-top:96px;
+  scroll-padding-top:104px;
   -webkit-text-size-adjust:100%;
   overflow-x:hidden;
 }
+@media (max-width:620px){ html{scroll-padding-top:132px} }
 
 body{
   margin:0;
@@ -75,6 +76,7 @@ h3{font-size:clamp(1.08rem,1.6vw,1.24rem)}
 p{margin:0 0 1em}
 a{color:inherit}
 ul,ol{margin:0;padding:0}
+figure{margin:0}
 
 .wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
 @media (max-width:520px){ .wrap{width:min(100% - 28px,var(--wrap))} }
@@ -94,7 +96,7 @@ ul,ol{margin:0;padding:0}
   border-bottom:1px solid var(--line);
 }
 .site-head__wrap{position:relative}
-.site-head__in{display:flex;align-items:center;gap:1rem;min-height:64px}
+.site-head__in{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;min-height:64px}
 
 .brand{display:inline-flex;flex-direction:column;text-decoration:none;flex:0 0 auto}
 .brand__name{font-family:var(--serif);font-size:1.3rem;letter-spacing:.12em;text-transform:uppercase;line-height:1}
@@ -109,8 +111,17 @@ ul,ol{margin:0;padding:0}
 .nav-list a:hover{border-bottom-color:var(--ink)}
 .nav-list a[aria-current="true"]{border-bottom-color:var(--accent);color:var(--accent)}
 
+/* Hlavná akcia a telefón: v hlavičke na každej šírke, nikdy nie v hamburgeri. */
+.head-act{display:flex;align-items:center;gap:.7rem;flex:0 0 auto;margin-left:1.1rem}
+.head-tel{
+  font-weight:600;font-size:.95rem;font-variant-numeric:tabular-nums;white-space:nowrap;
+  color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--accent);padding-bottom:2px;
+}
+.head-tel:hover{color:var(--accent)}
+
 .nav-toggle{
-  display:none;margin-left:auto;align-items:center;gap:.5rem;
+  display:none;align-items:center;gap:.5rem;flex:0 0 auto;
   background:transparent;color:var(--ink);
   border:1px solid var(--line);border-radius:var(--radius);
   padding:.5rem .8rem;font:inherit;font-size:.9rem;cursor:pointer;
@@ -139,7 +150,19 @@ ul,ol{margin:0;padding:0}
   .nav-list{flex-direction:column;align-items:stretch;gap:0}
   .nav-list li{border-bottom:1px solid var(--line-soft)}
   .nav-list a{display:block;padding:.75rem 0;font-size:1rem}
-  .site-nav .btn{margin-top:.9rem;width:100%}
+  .js .head-act{margin-left:auto}
+}
+
+/* Na mobile ide hlavička do dvoch riadkov, aby tlačidlo aj telefón ostali viditeľné. */
+@media (max-width:620px){
+  .site-head__in{min-height:0;padding:.6rem 0;row-gap:.55rem}
+  .brand{flex:1 1 auto;min-width:0}
+  .head-act{order:3;flex:1 0 100%;margin-left:0;gap:.5rem}
+  .head-act .btn{flex:1 1 auto}
+  .head-tel{
+    flex:1 1 auto;text-align:center;padding:.5rem .5rem;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  }
 }
 
 /* ---------- TLAČIDLÁ ---------- */
@@ -157,6 +180,9 @@ ul,ol{margin:0;padding:0}
 .btn--outline:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .btn--light{background:transparent;color:var(--on-dark);border-color:var(--on-dark-muted)}
 .btn--light:hover{background:var(--on-dark);color:var(--ink);border-color:var(--on-dark)}
+/* Hlavná akcia na tmavom podklade: svetlý akcent + tmavý text (kontrast 6,3:1). */
+.btn--accent-light{background:var(--accent-tint);color:var(--ink);border-color:var(--accent-tint)}
+.btn--accent-light:hover{background:var(--on-dark);color:var(--ink);border-color:var(--on-dark)}
 .btn--sm{padding:.5rem 1rem;font-size:.88rem}
 .btn--wide{width:100%}
 
@@ -213,8 +239,10 @@ ul,ol{margin:0;padding:0}
 .section--dark .card p{color:var(--on-dark-muted)}
 
 /* ==========================================================================
-   DIZAJNOVÉ KOMPOZÍCIE
+   DIZAJNOVÉ KOMPOZÍCIE / OBRAZOVÉ MIESTA
    Vrstvené gradienty, geometria, vlásočnicové vzory a typografické panely.
+   Každá kompozícia je <figure class="obraz art …"> a je pripravená na to,
+   aby sa neskôr nahradila fotografiou (viď komentáre FOTO v HTML).
    ========================================================================== */
 .art{
   position:relative;display:flex;overflow:hidden;isolation:isolate;
@@ -328,6 +356,7 @@ ul,ol{margin:0;padding:0}
 .hero__text{max-width:56ch;margin:0 auto 2.3rem;color:var(--muted);font-size:clamp(1.02rem,1.35vw,1.14rem)}
 .hero__cta{display:flex;gap:.7rem;flex-wrap:wrap}
 .hero .hero__cta{justify-content:center}
+.hero__map{margin:1.5rem 0 0;font-size:.94rem}
 
 /* ---------- PÁS S ÚDAJMI ---------- */
 .facts{
@@ -376,9 +405,54 @@ ul,ol{margin:0;padding:0}
 }
 .price-list .name{font-weight:600}
 .price-list .desc{display:block;font-weight:400;font-size:.88rem;color:var(--muted);margin-top:.15rem}
+.price-list .meta{
+  display:block;font-weight:400;font-size:.8rem;color:var(--muted);
+  margin-top:.25rem;letter-spacing:.02em;font-variant-numeric:tabular-nums;
+}
 .price-list .price{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
 .price-note{margin:1.1rem 0 0;font-size:.88rem;color:var(--muted)}
 .price-note a{color:var(--accent);font-weight:600}
+
+/* ---------- ALERGÉNY ---------- */
+.aleg{
+  margin-top:clamp(2.2rem,4vw,3.2rem);
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface);padding:clamp(1.2rem,2.4vw,1.7rem);
+}
+.aleg h3{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1rem}
+.aleg ol{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem 1.6rem}
+@media (max-width:900px){ .aleg ol{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:520px){ .aleg ol{grid-template-columns:1fr} }
+.aleg li{font-size:.92rem;color:var(--muted);display:flex;gap:.6rem;align-items:baseline}
+.aleg li b{
+  flex:0 0 auto;min-width:1.5rem;color:var(--ink);font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.aleg p{margin:1.1rem 0 0;font-size:.88rem;color:var(--muted)}
+
+/* ---------- OBRAZOVÉ MIESTA S CENOU ---------- */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.5rem)}
+@media (max-width:900px){ .gal{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .gal{grid-template-columns:1fr} }
+.gal__item{display:flex;flex-direction:column;min-width:0}
+.gal__item .obraz{flex:1 1 auto}
+.gal__buy{
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem 1rem;flex-wrap:wrap;
+  margin:.9rem 0 0;
+}
+.gal__price{font-family:var(--serif);font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.gal__cap{margin:.8rem 0 0;font-size:.92rem;color:var(--muted)}
+.section--dark .gal__cap{color:var(--on-dark-muted)}
+
+/* ---------- ODKAZ NA MAPU ---------- */
+.maplink{
+  display:inline-flex;align-items:center;gap:.45rem;
+  color:var(--accent);font-weight:600;text-decoration:none;
+  border-bottom:1px solid var(--accent);
+}
+.maplink:hover{color:var(--accent-dark);border-bottom-color:var(--accent-dark)}
+.maplink--dark{color:var(--accent-tint);border-bottom-color:var(--accent-tint)}
+.maplink--dark:hover{color:var(--on-dark);border-bottom-color:var(--on-dark)}
 
 /* ---------- DENNÉ MENU ---------- */
 .days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
@@ -653,6 +727,9 @@ table.hours tr[data-today="true"] th{box-shadow:inset 3px 0 0 var(--accent)}
 .foot-links a{color:var(--on-dark);text-decoration:none}
 .foot-links a:hover{text-decoration:underline}
 .foot-grid p a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px;font-variant-numeric:tabular-nums}
+.foot-act{margin-top:1.3rem;display:flex;gap:.6rem;flex-wrap:wrap}
+.foot-pay{margin:1.3rem 0 0;padding-top:1.1rem;border-top:1px solid var(--dark-line);max-width:34ch}
+.foot-pay b{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark);margin-bottom:.35rem}
 .foot-note{margin:2.2rem 0 0;padding-top:1.4rem;border-top:1px solid var(--dark-line);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.85rem}
 .foot-note a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px}
 
@@ -717,6 +794,8 @@ a.btn--outline,button.btn--outline{color:var(--ink)}
 a.btn--outline:hover,button.btn--outline:hover{color:var(--bg)}
 a.btn--light,button.btn--light{color:var(--on-dark)}
 a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
+a.btn--accent-light,button.btn--accent-light{color:var(--ink)}
+a.btn--accent-light:hover,button.btn--accent-light:hover{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -731,12 +810,6 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <span class="brand__sub">Kaviareň a pizzeria</span>
       </a>
 
-      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mainnav">
-        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Menu
-      </button>
-
       <nav class="site-nav" id="mainnav" aria-label="Hlavná navigácia">
         <ul class="nav-list">
           <li><a href="#ponuka">Ponuka</a></li>
@@ -747,8 +820,18 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
           <li><a href="#otazky">Otázky</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
         </ul>
-        <a class="btn btn--sm" href="#objednavka">Rezervovať stôl</a>
       </nav>
+
+      <div class="head-act">
+        <a class="btn btn--sm" href="#objednavka">Objednať</a>
+        <a class="head-tel" href="tel:+421905337118">0905 337 118</a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mainnav">
+        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Menu
+      </button>
     </div>
   </div>
 </header>
@@ -762,12 +845,13 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       <p class="hero__meta">Lipová 8, 821 01 Bratislava</p>
       <span class="hero__rule" aria-hidden="true"></span>
       <h1>Kaviareň a pizzeria na Lipovej</h1>
-      <p class="hero__text">Ráno káva a raňajky, na obed denné menu za 8,90 &euro;, večer pizza z kamennej pece do 21:15.</p>
+      <p class="hero__text">Raňajky do 11:00, denné menu 11:00 &ndash; 14:30 za 8,90 &euro;, pizza z kamennej pece do 21:15, v piatok a v sobotu do 22:15.</p>
       <div class="hero__cta">
-        <a class="btn" href="#objednavka">Rezervovať stôl</a>
+        <a class="btn" href="#objednavka">Objednať</a>
         <a class="btn btn--outline" href="#ponuka">Ponuka a ceny</a>
         <a class="btn btn--outline" href="tel:+421905337118">0905 337 118</a>
       </div>
+      <p class="hero__map"><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Lipov%C3%A1+8,+821+01+Bratislava" target="_blank" rel="noopener">Zobraziť Lipovú 8 na mape</a></p>
     </div>
 
     <dl class="facts">
@@ -781,7 +865,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       </div>
       <div>
         <dt>Rezervácie a odber</dt>
-        <dd><a href="tel:+421905337118">0905 337 118</a><small>Objednávku na odber pripravíme do 15 minút</small></dd>
+        <dd><a href="tel:+421905337118">0905 337 118</a><small>Objednávku na odber pripravíme spravidla do 15 minút</small></dd>
       </div>
       <div>
         <dt>Platba</dt>
@@ -799,23 +883,23 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <p class="eyebrow"><span class="eyebrow__n">01</span>Cenník</p>
         <h2>Ponuka a ceny</h2>
       </div>
-      <p class="lead">Ceny sú konečné vrátane obsluhy. Pizza má priemer 33 cm, väčšia veľkosť 45 cm je za príplatok 3,20 &euro;. Zoznam alergénov je pri každej položke v tlačenom lístku.</p>
+      <p class="lead">Ceny sú konečné vrátane obsluhy. Pizza má priemer 33 cm, väčšia veľkosť 45 cm je za príplatok 3,20 &euro;. Pri každej položke je gramáž a čísla alergénov, ich zoznam nájdete pod cenníkom.</p>
     </div>
 
     <div class="price-cols reveal">
       <div class="price-col">
         <h3>Káva a nápoje</h3>
         <ul class="price-list">
-          <li><span class="name">Espresso<span class="desc">Zmes Brazília a Etiópia</span></span><span class="price">1,60 &euro;</span></li>
-          <li><span class="name">Doppio<span class="desc">Dvojité espresso</span></span><span class="price">2,10 &euro;</span></li>
-          <li><span class="name">Cappuccino<span class="desc">180 ml</span></span><span class="price">2,70 &euro;</span></li>
-          <li><span class="name">Flat white<span class="desc">Dvojité ristretto a mlieko</span></span><span class="price">2,90 &euro;</span></li>
-          <li><span class="name">Latte<span class="desc">Vysoký pohár, 300 ml</span></span><span class="price">2,90 &euro;</span></li>
-          <li><span class="name">Filtrovaná káva<span class="desc">Prelievaná, várka dňa</span></span><span class="price">3,20 &euro;</span></li>
-          <li><span class="name">Cold brew<span class="desc">Lúhovaná 16 hodín</span></span><span class="price">3,40 &euro;</span></li>
-          <li><span class="name">Domáca limonáda<span class="desc">Bazová alebo uhorková, 0,4 l</span></span><span class="price">3,20 &euro;</span></li>
-          <li><span class="name">Čaj sypaný<span class="desc">Šesť druhov, kanvica 0,5 l</span></span><span class="price">2,60 &euro;</span></li>
-          <li><span class="name">Horúca čokoláda<span class="desc">Horká, 0,25 l</span></span><span class="price">3,10 &euro;</span></li>
+          <li><span class="name">Espresso<span class="desc">Zmes Brazília a Etiópia</span><span class="meta">30 ml &middot; bez alergénov</span></span><span class="price">1,60 &euro;</span></li>
+          <li><span class="name">Doppio<span class="desc">Dvojité espresso</span><span class="meta">60 ml &middot; bez alergénov</span></span><span class="price">2,10 &euro;</span></li>
+          <li><span class="name">Cappuccino<span class="desc">Espresso a mliečna pena</span><span class="meta">180 ml &middot; alergény 7</span></span><span class="price">2,70 &euro;</span></li>
+          <li><span class="name">Flat white<span class="desc">Dvojité ristretto a mlieko</span><span class="meta">200 ml &middot; alergény 7</span></span><span class="price">2,90 &euro;</span></li>
+          <li><span class="name">Latte<span class="desc">Vysoký pohár</span><span class="meta">300 ml &middot; alergény 7</span></span><span class="price">2,90 &euro;</span></li>
+          <li><span class="name">Filtrovaná káva<span class="desc">Prelievaná, várka dňa</span><span class="meta">250 ml &middot; bez alergénov</span></span><span class="price">3,20 &euro;</span></li>
+          <li><span class="name">Cold brew<span class="desc">Lúhovaná 16 hodín</span><span class="meta">250 ml &middot; bez alergénov</span></span><span class="price">3,40 &euro;</span></li>
+          <li><span class="name">Domáca limonáda<span class="desc">Bazová alebo uhorková</span><span class="meta">0,4 l &middot; bez alergénov</span></span><span class="price">3,20 &euro;</span></li>
+          <li><span class="name">Čaj sypaný<span class="desc">Šesť druhov, kanvica</span><span class="meta">0,5 l &middot; bez alergénov</span></span><span class="price">2,60 &euro;</span></li>
+          <li><span class="name">Horúca čokoláda<span class="desc">Horká</span><span class="meta">0,25 l &middot; alergény 7</span></span><span class="price">3,10 &euro;</span></li>
         </ul>
         <p class="price-note">Rastlinné mlieko +0,40 &euro;, sirup +0,30 &euro;.</p>
       </div>
@@ -823,29 +907,29 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       <div class="price-col">
         <h3>Pizza</h3>
         <ul class="price-list">
-          <li><span class="name">Margherita<span class="desc">Paradajkový základ, mozzarella, bazalka</span></span><span class="price">7,20 &euro;</span></li>
-          <li><span class="name">Bianca<span class="desc">Ricotta, cesnak, rozmarín, olivový olej</span></span><span class="price">8,40 &euro;</span></li>
-          <li><span class="name">Funghi<span class="desc">Šampiňóny, tymian, smotanový základ</span></span><span class="price">8,90 &euro;</span></li>
-          <li><span class="name">Ortolana<span class="desc">Grilovaná zelenina, olivy, rukola</span></span><span class="price">9,20 &euro;</span></li>
-          <li><span class="name">Salame piccante<span class="desc">Pikantná saláma, chilli, oregano</span></span><span class="price">9,40 &euro;</span></li>
-          <li><span class="name">Napoletana<span class="desc">Ančovičky, kapary, oregano</span></span><span class="price">9,60 &euro;</span></li>
-          <li><span class="name">Quattro formaggi<span class="desc">Štyri druhy syra</span></span><span class="price">10,80 &euro;</span></li>
-          <li><span class="name">Prosciutto e rucola<span class="desc">Sušená šunka, rukola, parmezán</span></span><span class="price">10,90 &euro;</span></li>
-          <li><span class="name">Pistacchio<span class="desc">Pistáciové pesto, mozzarella, ricotta</span></span><span class="price">11,50 &euro;</span></li>
-          <li><span class="name">Zeleninová bez syra<span class="desc">Vegánska, pečená paprika a cuketa</span></span><span class="price">8,80 &euro;</span></li>
+          <li><span class="name">Margherita<span class="desc">Paradajkový základ, mozzarella, bazalka</span><span class="meta">380 g &middot; alergény 1, 7</span></span><span class="price">7,20 &euro;</span></li>
+          <li><span class="name">Bianca<span class="desc">Ricotta, cesnak, rozmarín, olivový olej</span><span class="meta">390 g &middot; alergény 1, 7</span></span><span class="price">8,40 &euro;</span></li>
+          <li><span class="name">Funghi<span class="desc">Šampiňóny, tymian, smotanový základ</span><span class="meta">420 g &middot; alergény 1, 7</span></span><span class="price">8,90 &euro;</span></li>
+          <li><span class="name">Ortolana<span class="desc">Grilovaná zelenina, olivy, rukola</span><span class="meta">450 g &middot; alergény 1, 7</span></span><span class="price">9,20 &euro;</span></li>
+          <li><span class="name">Salame piccante<span class="desc">Pikantná saláma, chilli, oregano</span><span class="meta">440 g &middot; alergény 1, 7</span></span><span class="price">9,40 &euro;</span></li>
+          <li><span class="name">Napoletana<span class="desc">Ančovičky, kapary, oregano</span><span class="meta">430 g &middot; alergény 1, 4, 7</span></span><span class="price">9,60 &euro;</span></li>
+          <li><span class="name">Quattro formaggi<span class="desc">Mozzarella, gorgonzola, parmezán, ovčí syr</span><span class="meta">470 g &middot; alergény 1, 7</span></span><span class="price">10,80 &euro;</span></li>
+          <li><span class="name">Prosciutto e rucola<span class="desc">Sušená šunka, rukola, parmezán</span><span class="meta">430 g &middot; alergény 1, 7</span></span><span class="price">10,90 &euro;</span></li>
+          <li><span class="name">Pistacchio<span class="desc">Pistáciové pesto, mozzarella, ricotta</span><span class="meta">460 g &middot; alergény 1, 7, 8</span></span><span class="price">11,50 &euro;</span></li>
+          <li><span class="name">Zeleninová bez syra<span class="desc">Vegánska, pečená paprika a cuketa</span><span class="meta">410 g &middot; alergény 1</span></span><span class="price">8,80 &euro;</span></li>
         </ul>
-        <p class="price-note">Veľkosť 45 cm +3,20 &euro;. Bezlepkové cesto +1,50 &euro;. Vlastné zloženie nájdete v <a href="#konfigurator">konfigurátore</a>.</p>
+        <p class="price-note">Gramáž platí pre priemer 33 cm. Veľkosť 45 cm +3,20 &euro;. Bezlepkové cesto +1,50 &euro;. Vlastné zloženie nájdete v <a href="#konfigurator">konfigurátore</a>.</p>
       </div>
 
       <div class="price-col">
         <h3>K tomu</h3>
         <ul class="price-list">
-          <li><span class="name">Croissant<span class="desc">Pečený každé ráno na mieste</span></span><span class="price">2,10 &euro;</span></li>
-          <li><span class="name">Focaccia s rozmarínom<span class="desc">Z pizzového cesta, morská soľ</span></span><span class="price">4,20 &euro;</span></li>
-          <li><span class="name">Olivy a chlieb<span class="desc">Malé jedlo k vínu</span></span><span class="price">3,80 &euro;</span></li>
-          <li><span class="name">Tiramisu<span class="desc">Bez alkoholu</span></span><span class="price">4,50 &euro;</span></li>
-          <li><span class="name">Ricottový cheesecake<span class="desc">So sezónnym ovocím</span></span><span class="price">4,60 &euro;</span></li>
-          <li><span class="name">Zrnková káva, 250 g<span class="desc">Balenie na doma</span></span><span class="price">9,90 &euro;</span></li>
+          <li><span class="name">Croissant<span class="desc">Pečený každé ráno na mieste</span><span class="meta">70 g &middot; alergény 1, 3, 7</span></span><span class="price">2,10 &euro;</span></li>
+          <li><span class="name">Focaccia s rozmarínom<span class="desc">Z pizzového cesta, morská soľ</span><span class="meta">220 g &middot; alergény 1</span></span><span class="price">4,20 &euro;</span></li>
+          <li><span class="name">Olivy a chlieb<span class="desc">Kváskový chlieb, olivy, olivový olej</span><span class="meta">180 g &middot; alergény 1</span></span><span class="price">3,80 &euro;</span></li>
+          <li><span class="name">Tiramisu<span class="desc">Bez alkoholu</span><span class="meta">140 g &middot; alergény 1, 3, 7</span></span><span class="price">4,50 &euro;</span></li>
+          <li><span class="name">Ricottový cheesecake<span class="desc">So sezónnym ovocím</span><span class="meta">130 g &middot; alergény 1, 3, 7</span></span><span class="price">4,60 &euro;</span></li>
+          <li><span class="name">Zrnková káva<span class="desc">Balenie na doma, celé zrno</span><span class="meta">250 g &middot; bez alergénov</span></span><span class="price">9,90 &euro;</span></li>
         </ul>
         <p class="price-note">Obal na odber +0,30 &euro;.</p>
       </div>
@@ -853,12 +937,12 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       <div class="price-col">
         <h3>Raňajky do 11:00</h3>
         <ul class="price-list">
-          <li><span class="name">Praženica z troch vajec<span class="desc">S kváskovým chlebom</span></span><span class="price">6,40 &euro;</span></li>
-          <li><span class="name">Chlieb s avokádom<span class="desc">Kváskový, cherry paradajky, semienka</span></span><span class="price">6,90 &euro;</span></li>
-          <li><span class="name">Hrianky s ricottou a medom<span class="desc">Dva kusy</span></span><span class="price">5,40 &euro;</span></li>
-          <li><span class="name">Jogurt s granolou<span class="desc">Pečená granola, sezónne ovocie</span></span><span class="price">4,80 &euro;</span></li>
-          <li><span class="name">Ovsená kaša<span class="desc">Na vode alebo na mlieku</span></span><span class="price">4,20 &euro;</span></li>
-          <li><span class="name">Raňajkový tanier<span class="desc">Vajce, syr, zelenina, pečivo</span></span><span class="price">8,60 &euro;</span></li>
+          <li><span class="name">Praženica z troch vajec<span class="desc">S kváskovým chlebom</span><span class="meta">260 g &middot; alergény 1, 3, 7</span></span><span class="price">6,40 &euro;</span></li>
+          <li><span class="name">Chlieb s avokádom<span class="desc">Kváskový, cherry paradajky, sezamové semienka</span><span class="meta">280 g &middot; alergény 1, 11</span></span><span class="price">6,90 &euro;</span></li>
+          <li><span class="name">Hrianky s ricottou a medom<span class="desc">Dva kusy</span><span class="meta">180 g &middot; alergény 1, 7</span></span><span class="price">5,40 &euro;</span></li>
+          <li><span class="name">Jogurt s granolou<span class="desc">Pečená granola, sezónne ovocie</span><span class="meta">300 g &middot; alergény 1, 7, 8</span></span><span class="price">4,80 &euro;</span></li>
+          <li><span class="name">Ovsená kaša<span class="desc">Na vode alebo na mlieku</span><span class="meta">300 g &middot; alergény 1, na mlieku aj 7</span></span><span class="price">4,20 &euro;</span></li>
+          <li><span class="name">Raňajkový tanier<span class="desc">Vajce, syr, zelenina, pečivo</span><span class="meta">380 g &middot; alergény 1, 3, 7</span></span><span class="price">8,60 &euro;</span></li>
         </ul>
         <p class="price-note">Raňajky podávame od 7:30 do 11:00, cez víkend do 12:00.</p>
       </div>
@@ -866,12 +950,12 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       <div class="price-col">
         <h3>Šaláty a polievky</h3>
         <ul class="price-list">
-          <li><span class="name">Polievka dňa<span class="desc">Aj mimo denného menu</span></span><span class="price">3,60 &euro;</span></li>
-          <li><span class="name">Caprese<span class="desc">Mozzarella, paradajky, bazalka</span></span><span class="price">7,40 &euro;</span></li>
-          <li><span class="name">Šalát s rukolou a hruškou<span class="desc">Orechy, parmezán, med</span></span><span class="price">7,90 &euro;</span></li>
-          <li><span class="name">Šalát s pečenou cuketou<span class="desc">Cícer, ricotta, citrónový dresing</span></span><span class="price">8,20 &euro;</span></li>
-          <li><span class="name">Bruschetta<span class="desc">Tri kusy, paradajky a cesnak</span></span><span class="price">5,20 &euro;</span></li>
-          <li><span class="name">Pečivo navyše<span class="desc">Kváskový chlieb, dva krajce</span></span><span class="price">1,40 &euro;</span></li>
+          <li><span class="name">Polievka dňa<span class="desc">Aj mimo denného menu</span><span class="meta">0,33 l &middot; alergény pri každom dni v rozpise denného menu</span></span><span class="price">3,60 &euro;</span></li>
+          <li><span class="name">Caprese<span class="desc">Mozzarella, paradajky, bazalka</span><span class="meta">280 g &middot; alergény 7</span></span><span class="price">7,40 &euro;</span></li>
+          <li><span class="name">Šalát s rukolou a hruškou<span class="desc">Orechy, parmezán, med</span><span class="meta">260 g &middot; alergény 7, 8</span></span><span class="price">7,90 &euro;</span></li>
+          <li><span class="name">Šalát s pečenou cuketou<span class="desc">Cícer, ricotta, citrónový dresing</span><span class="meta">300 g &middot; alergény 7</span></span><span class="price">8,20 &euro;</span></li>
+          <li><span class="name">Bruschetta<span class="desc">Tri kusy, paradajky a cesnak</span><span class="meta">210 g &middot; alergény 1</span></span><span class="price">5,20 &euro;</span></li>
+          <li><span class="name">Pečivo navyše<span class="desc">Kváskový chlieb, dva krajce</span><span class="meta">90 g &middot; alergény 1</span></span><span class="price">1,40 &euro;</span></li>
         </ul>
         <p class="price-note">Šaláty pripravíme aj vo veľkej porcii ako hlavné jedlo, +2,00 &euro;.</p>
       </div>
@@ -879,15 +963,87 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       <div class="price-col">
         <h3>Víno, pivo a nealko</h3>
         <ul class="price-list">
-          <li><span class="name">Víno biele alebo červené<span class="desc">Pohár 0,15 l</span></span><span class="price">3,40 &euro;</span></li>
-          <li><span class="name">Víno, fľaša<span class="desc">0,75 l, tri druhy</span></span><span class="price">16,50 &euro;</span></li>
-          <li><span class="name">Prosecco<span class="desc">Pohár 0,15 l</span></span><span class="price">4,20 &euro;</span></li>
-          <li><span class="name">Čapované pivo<span class="desc">0,5 l</span></span><span class="price">2,60 &euro;</span></li>
-          <li><span class="name">Nealkoholické pivo<span class="desc">Fľaša 0,33 l</span></span><span class="price">2,40 &euro;</span></li>
-          <li><span class="name">Minerálka<span class="desc">0,33 l, jemne perlivá</span></span><span class="price">1,80 &euro;</span></li>
-          <li><span class="name">Džús<span class="desc">Pomaranč alebo jablko, 0,25 l</span></span><span class="price">2,20 &euro;</span></li>
+          <li><span class="name">Víno biele alebo červené<span class="desc">Pohár</span><span class="meta">0,15 l &middot; alergény 12</span></span><span class="price">3,40 &euro;</span></li>
+          <li><span class="name">Víno, fľaša<span class="desc">Tri druhy</span><span class="meta">0,75 l &middot; alergény 12</span></span><span class="price">16,50 &euro;</span></li>
+          <li><span class="name">Prosecco<span class="desc">Pohár</span><span class="meta">0,15 l &middot; alergény 12</span></span><span class="price">4,20 &euro;</span></li>
+          <li><span class="name">Čapované pivo<span class="desc">Svetlý ležiak</span><span class="meta">0,5 l &middot; alergény 1</span></span><span class="price">2,60 &euro;</span></li>
+          <li><span class="name">Nealkoholické pivo<span class="desc">Fľaša</span><span class="meta">0,33 l &middot; alergény 1</span></span><span class="price">2,40 &euro;</span></li>
+          <li><span class="name">Minerálka<span class="desc">Jemne perlivá</span><span class="meta">0,33 l &middot; bez alergénov</span></span><span class="price">1,80 &euro;</span></li>
+          <li><span class="name">Džús<span class="desc">Pomaranč alebo jablko</span><span class="meta">0,25 l &middot; bez alergénov</span></span><span class="price">2,20 &euro;</span></li>
         </ul>
         <p class="price-note">Vodu z kohútika podávame k jedlu zdarma.</p>
+      </div>
+    </div>
+
+    <div class="aleg reveal">
+      <h3>Alergény podľa čísel v cenníku</h3>
+      <ol>
+        <li><b>1</b>Obilniny obsahujúce lepok</li>
+        <li><b>3</b>Vajcia</li>
+        <li><b>4</b>Ryby</li>
+        <li><b>7</b>Mlieko</li>
+        <li><b>8</b>Orechy</li>
+        <li><b>9</b>Zeler</li>
+        <li><b>11</b>Sezamové semená</li>
+        <li><b>12</b>Oxid siričitý a siričitany</li>
+      </ol>
+      <p>Čísla sú uvedené pri každej položke cenníka aj pri každom dni denného menu. Ak potrebujete jedlo bez konkrétnej suroviny, povedzte to pri objednávke, zloženie s vami obsluha prejde.</p>
+    </div>
+
+    <div class="sub-head reveal"><h3>Pizza z pece &ndash; gramáž, alergény a cena</h3></div>
+    <div class="gal reveal">
+      <div class="gal__item">
+        <!-- FOTO: celá Margherita zhora na drevenej doske, viditeľné tmavé škvrny na okraji cesta -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Pizza 33 cm</p>
+            <p class="art__word">Margherita</p>
+            <p class="art__cap">Paradajkový základ, mozzarella, bazalka.</p>
+            <p class="art__foot">380 g &middot; alergény 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">7,20 &euro;</span><a class="btn btn--sm" href="#objednavka">Objednať</a></p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: Salame piccante v peci tesne pred vybratím, plameň vzadu -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Pizza 33 cm</p>
+            <p class="art__word">Salame piccante</p>
+            <p class="art__cap">Pikantná saláma, chilli, oregano.</p>
+            <p class="art__foot">440 g &middot; alergény 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">9,40 &euro;</span><a class="btn btn--sm" href="#objednavka">Objednať</a></p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: Quattro formaggi rozkrojená na štyri diely, ťahajúci sa syr -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Pizza 33 cm</p>
+            <p class="art__word">Quattro formaggi</p>
+            <p class="art__cap">Mozzarella, gorgonzola, parmezán, ovčí syr.</p>
+            <p class="art__foot">470 g &middot; alergény 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">10,80 &euro;</span><a class="btn btn--sm" href="#objednavka">Objednať</a></p>
       </div>
     </div>
 
@@ -899,8 +1055,8 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       </div>
       <div class="card">
         <h3>Diéty a alergény</h3>
-        <p>Bezlepkové cesto pripravujeme na oddelenej doske, prevádzka však nie je bezlepková a úplné vylúčenie stôp múky nevieme zaručiť.</p>
-        <p>Vegánske jedlá sú v lístku označené. Rastlinné mlieko máme ovsené aj mandľové. Zoznam alergénov ku každej položke nájdete v tlačenom lístku a obsluha vám ho vie prejsť s vami.</p>
+        <p>Bezlepkové cesto pripravujeme na oddelenej doske za príplatok 1,50 &euro;, prevádzka však nie je bezlepková a úplné vylúčenie stôp múky nevieme zaručiť.</p>
+        <p>Vegánske jedlá sú v cenníku pomenované: zeleninová pizza bez syra, ovsená kaša na vode a šalát s pečenou cuketou bez ricotty. Rastlinné mlieko máme ovsené aj mandľové za 0,40 &euro;.</p>
       </div>
     </div>
   </div>
@@ -922,6 +1078,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <dl>
           <div><dt>Polievka</dt><dd>Pečená paradajková s krutónmi</dd></div>
           <div><dt>Hlavné jedlo</dt><dd>Margherita s cherry paradajkami</dd></div>
+          <div><dt>Alergény</dt><dd>1, 7</dd></div>
         </dl>
         <p class="day__price">8,90 &euro;</p>
       </div>
@@ -930,6 +1087,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <dl>
           <div><dt>Polievka</dt><dd>Cesnaková so syrom a tymianom</dd></div>
           <div><dt>Hlavné jedlo</dt><dd>Funghi so smotanovým základom</dd></div>
+          <div><dt>Alergény</dt><dd>1, 7</dd></div>
         </dl>
         <p class="day__price">8,90 &euro;</p>
       </div>
@@ -938,6 +1096,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <dl>
           <div><dt>Polievka</dt><dd>Šošovicová s koreňovou zeleninou</dd></div>
           <div><dt>Hlavné jedlo</dt><dd>Salame piccante s oreganom</dd></div>
+          <div><dt>Alergény</dt><dd>1, 7, 9</dd></div>
         </dl>
         <p class="day__price">8,90 &euro;</p>
       </div>
@@ -946,6 +1105,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <dl>
           <div><dt>Polievka</dt><dd>Hrášková s mätou</dd></div>
           <div><dt>Hlavné jedlo</dt><dd>Ortolana s grilovanou cuketou</dd></div>
+          <div><dt>Alergény</dt><dd>1, 7</dd></div>
         </dl>
         <p class="day__price">8,90 &euro;</p>
       </div>
@@ -954,6 +1114,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <dl>
           <div><dt>Polievka</dt><dd>Tekvicová s praženými semienkami</dd></div>
           <div><dt>Hlavné jedlo</dt><dd>Pistacchio s ricottou</dd></div>
+          <div><dt>Alergény</dt><dd>1, 7, 8</dd></div>
         </dl>
         <p class="day__price">8,90 &euro;</p>
       </div>
@@ -1130,7 +1291,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <p class="eyebrow"><span class="eyebrow__n">04</span>O prevádzke</p>
         <h2>Prevádzka, priestor a kuchyňa</h2>
       </div>
-      <p class="lead">Kaviareň so 42 miestami na sedenie a terasou vo dvore. Cesto pripravujeme deň vopred, pizzu pečieme v kamennej peci.</p>
+      <p class="lead">Kaviareň so 42 miestami na sedenie a terasou pre 24 ľudí vo dvore. Cesto kysne 48 hodín v chlade, pizzu pečieme v kamennej peci pri 430 stupňoch.</p>
     </div>
 
     <div class="split reveal">
@@ -1157,7 +1318,8 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       </div>
 
       <div>
-        <div class="art art--wide">
+        <!-- FOTO: ruky pizzára naťahujúce vykysnuté cesto na pomúčenej doske, detail -->
+        <figure class="obraz art art--wide">
           <span class="art__l art__l--grid" aria-hidden="true"></span>
           <span class="art__l art__l--warm" aria-hidden="true"></span>
           <span class="art__l art__l--grain" aria-hidden="true"></span>
@@ -1165,14 +1327,15 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
           <div class="art__in">
             <p class="art__eyebrow">Cesto</p>
             <p class="art__num">48<small>hodín v chlade</small></p>
-            <p class="art__cap">Cesto miesime deň vopred a necháme ho pomaly kysnúť dva dni. Preto je tenké, ľahké a po upečení sa nelepí.</p>
+            <p class="art__cap">Cesto miesime dva dni pred pečením a necháme ho kysnúť pri 4 stupňoch. Naťahujeme ho ručne, nepoužívame valec.</p>
           </div>
-        </div>
+        </figure>
       </div>
     </div>
 
     <div class="art-row reveal">
-      <div class="art art--dark art--square">
+      <!-- FOTO: ústie kamennej pece s ohňom, pizza na lopate tesne pred vložením -->
+      <figure class="obraz art art--dark art--square">
         <span class="art__l art__l--hatch" aria-hidden="true"></span>
         <span class="art__l art__l--warm" aria-hidden="true"></span>
         <span class="art__l art__l--grain" aria-hidden="true"></span>
@@ -1182,9 +1345,10 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
           <p class="art__num">430<small>stupňov Celzia</small></p>
           <p class="art__cap">Pri tejto teplote je pizza hotová za 90 sekúnd a okraj má tmavé škvrny.</p>
         </div>
-      </div>
+      </figure>
 
-      <div class="art art--square">
+      <!-- FOTO: šálka cappuccina zhora na bare, vedľa pákový stroj -->
+      <figure class="obraz art art--square">
         <span class="art__l art__l--dots" aria-hidden="true"></span>
         <span class="art__l art__l--slash" aria-hidden="true"></span>
         <span class="art__l art__l--grain" aria-hidden="true"></span>
@@ -1194,9 +1358,10 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
           <p class="art__num">6<small>druhov kávy denne</small></p>
           <p class="art__cap">Espresso zmes, filtrovaná várka dňa, cold brew a tri druhy mliečnych káv.</p>
         </div>
-      </div>
+      </figure>
 
-      <div class="art art--square">
+      <!-- FOTO: terasa vo dvore s obsadenými stolmi a plachtou proti slnku -->
+      <figure class="obraz art art--square">
         <span class="art__l art__l--grid" aria-hidden="true"></span>
         <span class="art__l art__l--warm" aria-hidden="true"></span>
         <span class="art__l art__l--grain" aria-hidden="true"></span>
@@ -1204,16 +1369,30 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         <div class="art__in">
           <p class="art__eyebrow">Terasa vo dvore</p>
           <p class="art__num">24<small>miest, apríl až október</small></p>
-          <p class="art__cap">Tichý dvor bez áut, prístup rampou, v lete tieň od plachty.</p>
+          <p class="art__cap">Do dvora nevchádzajú autá, prístup je rampou, v lete je nad stolmi plachta.</p>
         </div>
-      </div>
+      </figure>
     </div>
 
     <div class="sub-head reveal"><h3>Priestor a kto v ňom pracuje</h3></div>
     <div class="split split--top reveal">
       <div>
         <p>Hlavná sála má vysoké okná do ulice a dlhý dubový stôl pre desať ľudí, ktorý sa dá spojiť aj rozdeliť. Pri okne sú štyri dvojmiestne stoly so zásuvkami, vzadu tichšia časť s mäkkými lavicami. Bar je hneď pri vchode, takže objednávku na odber vybavíte bez toho, aby ste prechádzali celou sálou.</p>
-        <p>Terasa vo dvore je oddelená od ulice, preto je tam ticho aj cez špičku. Priestor medzi stolmi je široký, aby prešiel vozík aj kočík.</p>
+        <p>Terasa vo dvore je od ulice oddelená priechodom a autá do dvora nevchádzajú. Medzi stolmi je 90 centimetrov, prejde tadiaľ vozík aj kočík.</p>
+
+        <!-- FOTO: barista a pizzár za barom počas zmeny, pohľad zo sály -->
+        <figure class="obraz art art--wide" style="margin-top:1.8rem">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Obedná zmena</p>
+            <p class="art__num">5<small>ľudí v prevádzke</small></p>
+            <p class="art__cap">Barista, pizzár, príprava v kuchyni, obsluha a človek na výdaji objednávok na odber. Mimo obeda sú na zmene štyria.</p>
+          </div>
+        </figure>
       </div>
       <div>
         <ul class="roles">
@@ -1238,12 +1417,127 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
     </div>
   </div>
 </section>
+<!-- ============ GALÉRIA PRIESTORU ============ -->
+<section class="section section--dark" id="galeria">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">05</span>Priestor a terasa</p>
+        <h2>Ako to u nás vyzerá</h2>
+      </div>
+      <p class="lead">Sála má 42 miest, terasa vo dvore 24. Pod každým záberom je údaj, ktorý sa vám pri plánovaní návštevy zíde.</p>
+    </div>
+
+    <div class="gal reveal">
+      <div class="gal__item">
+        <!-- FOTO: hlavná sála s vysokými oknami do ulice, dlhý dubový stôl v strede -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Hlavná sála</p>
+            <p class="art__word">Dlhý stôl</p>
+            <p class="art__foot">42 miest vnútri</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Dubový stôl pre desať ľudí sa dá spojiť aj rozdeliť. Pri okne sú štyri dvojmiestne stoly so zásuvkou.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: ranné pečivo na pulte pri bare, croissanty v koši -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Ráno</p>
+            <p class="art__word">Pečivo na pulte</p>
+            <p class="art__foot">od 7:30 do vypredania</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Croissant pečieme každé ráno na mieste, stojí 2,10 &euro;. Raňajky podávame do 11:00, cez víkend do 12:00.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: terasa vo dvore z výšky, stoly pod plachtou -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Terasa vo dvore</p>
+            <p class="art__word">Bez áut</p>
+            <p class="art__foot">24 miest, apríl až október</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Na terasu vedie z dvora rampa. Psi sú na terase bez obmedzenia, vodu im dáme na požiadanie.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: bar pri vchode, obsluha odovzdáva zabalenú objednávku na odber -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Výdaj</p>
+            <p class="art__word">Bar pri vchode</p>
+            <p class="art__foot">spravidla do 15 minút</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Objednávku na odber preberiete hneď pri dverách. Cez obed a v piatok večer to trvá do 25 minút, obal stojí 0,30 &euro;.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: tichšia časť vzadu s mäkkými lavicami, človek s notebookom -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Zadná časť</p>
+            <p class="art__word">Lavice a zásuvky</p>
+            <p class="art__foot">Wi-Fi zdarma</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Zásuvka je pri dlhom stole aj pri okne. Medzi 11:00 a 14:30 prosíme nechať veľké stoly obedom.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: pizza 45 cm na stole pre dvoch, rozkrojená na osem dielov -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Na zdieľanie</p>
+            <p class="art__word">Pizza 45 cm</p>
+            <p class="art__foot">Margherita 10,40 &euro;</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Veľkosť 45 cm je za príplatok 3,20 &euro; ku každej pizze z cenníka. Vlastné zloženie si poskladáte v konfigurátore.</p>
+      </div>
+    </div>
+
+    <div class="hero__cta" style="margin-top:clamp(2.2rem,4vw,3rem)">
+      <a class="btn btn--accent-light" href="#objednavka">Objednať</a>
+      <a class="btn btn--light" href="tel:+421905337118">0905 337 118</a>
+    </div>
+  </div>
+</section>
 <!-- ============ DENNÝ RYTMUS ============ -->
 <section class="section section--alt" id="rytmus">
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">05</span>Priebeh dňa</p>
+        <p class="eyebrow"><span class="eyebrow__n">06</span>Priebeh dňa</p>
         <h2>Denný rytmus prevádzky</h2>
       </div>
       <p class="lead">Kaviareň, obedy a večerná pec sa striedajú v pevných časoch. Podľa nich si viete naplánovať návštevu aj prevzatie objednávky.</p>
@@ -1300,7 +1594,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">06</span>Cesta k nám</p>
+        <p class="eyebrow"><span class="eyebrow__n">07</span>Cesta k nám</p>
         <h2>Ako sa k nám dostanete</h2>
       </div>
       <p class="lead">Sme na rohu Lipovej a Sadovej, vstup je priamo z Lipovej ulice. Terasa je vo dvore za budovou, prejdete k nej priechodom vedľa vchodu.</p>
@@ -1308,7 +1602,8 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
 
     <div class="split reveal">
       <div>
-        <div class="art art--tall">
+        <!-- FOTO: vchod z Lipovej ulice s tabuľou podniku a stojanom na bicykle -->
+        <figure class="obraz art art--tall">
           <span class="art__l art__l--grid" aria-hidden="true"></span>
           <span class="art__l art__l--slash" aria-hidden="true"></span>
           <span class="art__l art__l--grain" aria-hidden="true"></span>
@@ -1323,7 +1618,8 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
               <li><b>dvor</b><span>Terasa za budovou, prístup rampou</span></li>
             </ul>
           </div>
-        </div>
+        </figure>
+        <p style="margin:1.2rem 0 0"><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Lipov%C3%A1+8,+821+01+Bratislava" target="_blank" rel="noopener">Otvoriť Lipovú 8 v mape</a></p>
       </div>
 
       <div>
@@ -1358,7 +1654,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">07</span>Prevádzkové časy</p>
+        <p class="eyebrow"><span class="eyebrow__n">08</span>Prevádzkové časy</p>
         <h2>Otváracie hodiny</h2>
       </div>
       <p class="lead">Kuchyňa prijíma posledné objednávky 45 minút pred zatvorením kaviarne. Zmeny počas sviatkov oznamujeme vopred na dverách prevádzky.</p>
@@ -1424,7 +1720,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">08</span>Poukazy a väčšie akcie</p>
+        <p class="eyebrow"><span class="eyebrow__n">09</span>Poukazy a väčšie akcie</p>
         <h2>Poukazy, firemné obedy a uzavreté akcie</h2>
       </div>
       <p class="lead">Poukaz kúpite pri bare počas otváracích hodín. Firemné obedy a uzavreté akcie dohadujeme cez formulár, aby ste mali podmienky písomne.</p>
@@ -1451,13 +1747,14 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
           </li>
         </ul>
         <div class="hero__cta" style="margin-top:2rem">
-          <a class="btn" href="#objednavka">Napísať požiadavku</a>
+          <a class="btn btn--accent-light" href="#objednavka">Objednať</a>
           <a class="btn btn--light" href="#podmienky">Podmienky a storno</a>
         </div>
       </div>
 
       <div>
-        <div class="art art--tall">
+        <!-- FOTO: darčekový poukaz položený na stole vedľa šálky espressa -->
+        <figure class="obraz art art--tall">
           <span class="art__l art__l--hatch" aria-hidden="true"></span>
           <span class="art__l art__l--warm" aria-hidden="true"></span>
           <span class="art__l art__l--grain" aria-hidden="true"></span>
@@ -1469,7 +1766,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
             <p class="art__cap">Na kávu, obed aj na pizzu pre dvoch. Vystavíme ho pri bare na počkanie a doplníme meno, ak si to želáte.</p>
             <p class="art__foot">Lipová &middot; kaviareň a pizzeria</p>
           </div>
-        </div>
+        </figure>
       </div>
     </div>
   </div>
@@ -1479,10 +1776,10 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">09</span>Rezervácia a objednávka</p>
+        <p class="eyebrow"><span class="eyebrow__n">10</span>Rezervácia a objednávka</p>
         <h2>Rezervácia stola a objednávka na odber</h2>
       </div>
-      <p class="lead">Vyplňte formulár a ozveme sa. Pri objednávke na odber uveďte čas, na ktorý má byť pripravená. Kto potrebuje odpoveď hneď, nech zavolá na 0905 337 118.</p>
+      <p class="lead">Vyplňte formulár a ozveme sa do 24 hodín. Pri objednávke na odber uveďte čas, na ktorý ju máme pripraviť. Ak potrebujete odpoveď hneď, zavolajte na 0905 337 118.</p>
     </div>
 
     <div class="order">
@@ -1577,7 +1874,11 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
         </div>
         <div class="aside-box">
           <h3>Čo napísať do správy</h3>
-          <p>Detskú stoličku, alergiu, bezlepkové cesto, oslavu alebo čas prevzatia objednávky. Čím konkrétnejšie, tým rýchlejšie potvrdíme.</p>
+          <p>Detskú stoličku, alergiu podľa čísla z cenníka, bezlepkové cesto za 1,50 &euro;, oslavu alebo čas prevzatia objednávky na odber.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Platba</h3>
+          <p>Karta, hotovosť aj stravovacie karty. Pri stravovacej karte nevraciame rozdiel v hotovosti, firmám vystavíme mesačnú faktúru so splatnosťou 14 dní.</p>
         </div>
       </div>
     </div>
@@ -1588,7 +1889,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">10</span>Časté otázky</p>
+        <p class="eyebrow"><span class="eyebrow__n">11</span>Časté otázky</p>
         <h2>Časté otázky a odpovede</h2>
       </div>
       <p class="lead">Ak tu odpoveď nenájdete, napíšte nám cez formulár alebo zavolajte na 0905 337 118.</p>
@@ -1636,10 +1937,10 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">11</span>Podmienky</p>
+        <p class="eyebrow"><span class="eyebrow__n">12</span>Podmienky</p>
         <h2>Rezervácia, storno a platba</h2>
       </div>
-      <p class="lead">Aby bolo jasné, na čom sme. Pravidlá platia rovnako pre jednotlivcov aj pre skupiny, líšia sa len lehoty.</p>
+      <p class="lead">Pravidlá platia rovnako pre jednotlivcov aj pre skupiny, líšia sa len lehoty na zrušenie rezervácie.</p>
     </div>
 
     <div class="grid-3 reveal">
@@ -1665,7 +1966,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
       </div>
       <div class="card">
         <h3>Alergény a suroviny</h3>
-        <p>Zoznam alergénov je pri každej položke v tlačenom lístku. Zloženie jedla vám obsluha prejde aj slovne.</p>
+        <p>Čísla alergénov sú pri každej položke cenníka a pri každom dni denného menu, ich zoznam nájdete <a href="#ponuka">pod cenníkom</a>. Zloženie jedla vám obsluha prejde aj slovne.</p>
         <p>Suroviny sa počas roka menia podľa sezóny, preto sa môže líšiť ovocie v dezerte alebo zelenina na šaláte.</p>
       </div>
       <div class="card">
@@ -1681,7 +1982,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <p class="eyebrow"><span class="eyebrow__n">12</span>Hľadáme kolegu</p>
+        <p class="eyebrow"><span class="eyebrow__n">13</span>Hľadáme kolegu</p>
         <h2>Práca u nás</h2>
       </div>
       <p class="lead">Prax vítame, ale nie je podmienkou, zaškolíme vás na mieste. Napíšte pár riadkov o sebe cez formulár a vyberte typ požiadavky Práca u nás.</p>
@@ -1745,7 +2046,7 @@ a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
 <section class="section section--dark" id="kontakt">
   <div class="wrap contact">
     <div>
-      <p class="eyebrow"><span class="eyebrow__n">13</span>Kontakt</p>
+      <p class="eyebrow"><span class="eyebrow__n">14</span>Kontakt</p>
       <h2>Lipová 8, Bratislava</h2>
       <p class="lead">Vstup je z Lipovej ulice, terasa sa nachádza vo dvore. Zastávka MHD je 30 metrov od vchodu, parkovať sa dá na Sadovej ulici.</p>
       <dl class="contact-list">
