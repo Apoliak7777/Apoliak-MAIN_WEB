@@ -179,7 +179,8 @@ Content lives directly in the HTML:
 | Package and add-on prices                       | the `#cennik` section in `index.html`                  |
 | Benefit, service, process and FAQ copy          | the `#vyhody`, `#sluzby`, `#postup`, `#otazky` sections |
 | E-mail and phone number                         | the `#kontakt` section and the JSON-LD block in `<head>` |
-| Form target address                             | the `mailto:` in `script.js`                           |
+| Form target address                             | the `ADRESA` constant in `script.js`                   |
+| Support address for clients                     | `support@apoliak.online` in `#kontakt`, footer, demos  |
 | `<title>`, meta description, OG and Twitter tags | the `<head>` of each page                             |
 | Structured data                                 | the JSON-LD block in the home page `<head>`            |
 | Domain for GitHub Pages                         | the `CNAME` file (plus `sitemap.xml` and canonical URL) |
@@ -190,17 +191,19 @@ Content lives directly in the HTML:
 
 | Anchor      | Section        | Content                                                        |
 | ----------- | -------------- | -------------------------------------------------------------- |
-| -           | Hero           | Headline, primary CTA and a link to the demos                   |
+| -           | Hero           | Headline, primary CTA, a no-strings microline and four facts    |
 | -           | Marquee        | Business segments the sites are built for                       |
-| `#vyhody`   | Benefits       | Nine reasons to work with me and what the site really delivers  |
-| `#sluzby`   | Services       | Scope of work - concept, design, code, copy, launch             |
-| `#postup`   | Process        | Steps from first contact to going live                          |
-| `#cennik`   | Pricing        | Starter, Standard and Pro - what is and is not in the price     |
 | `#ukazky`   | Demos          | Teaser with three live previews and a link into the gallery     |
-| `#projekty` | Projects       | Other things built along the way                                |
+| `#vyhody`   | Benefits       | Six reasons to work with me, one paragraph each                 |
+| `#sluzby`   | Services       | Scope of work - concept, design, code, copy, launch             |
+| `#cennik`   | Pricing        | Starter, Standard and Pro; the in-price lists sit in `<details>` |
+| `#postup`   | Process        | Steps from first contact to going live                          |
+| -           | About          | Who builds the sites and what stands in for testimonials        |
 | `#otazky`   | FAQ            | Native `<details>` questions, working without JavaScript        |
-| `#kontakt`  | Contact        | Free consultation, enquiry form, e-mail and phone               |
-| -           | Footer         | Links, privacy policy, automatic year                           |
+| `#kontakt`  | Contact        | Free consultation, form with a fallback, both addresses, phone  |
+| `#projekty` | Projects       | Other things built along the way                                |
+| -           | Footer         | Links, both addresses, privacy policy, automatic year           |
+| -           | Mobile bar     | Fixed Call and Free consultation below 720 px wide              |
 
 Navigation across the home page is same-page via hash links; the gallery, the demos, the 404 and the privacy page are separate addresses.
 
@@ -296,6 +299,6 @@ GPL-3.0 is a strong copyleft license intended for software. Applied to this webs
 
 <div align="center">
 
-Built by **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [info@apoliak.online](mailto:info@apoliak.online) - 0902 464 022
+Built by **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
 
 </div>

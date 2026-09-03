@@ -58,7 +58,7 @@ Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfon
 - 🖼️ **Živé náhľady namiesto obrázkov** - v ráme každej karty beží samotná ukážka v `<iframe>` zmenšenom cez `transform: scale()`; mierku dopočíta `script.js` z reálnej šírky rámu. Náhľad tak nemôže zostarnúť voči ukážke a nepribúda ani jeden obrázkový súbor. Rámy sú `loading="lazy"`, `pointer-events: none` a mimo poradia tabulátora.
 - 🎛️ **Interaktívne prvky bez knižníc** - prepínanie jedálneho lístka, konfigurátor pizze, filtrovanie rozvrhu, objednávanie termínov, cenové kalkulačky a nákupný košík sú napísané v čistom JavaScripte.
 - 🎨 **Vlastný tmavý dizajn** - hnedo-uhlíkové pozadie s mosadzným akcentom, jemné SVG zrno cez celú plochu a pätkové nadpisy s kurzívou. Žiadna grafika sa nesťahuje, všetko je CSS a inline SVG.
-- ✉️ **Kontaktný formulár** - polia meno, kontakt, typ podniku a správa sa po odoslaní poskladajú do predmetu a tela e-mailu a otvoria e-mailový program návštevníka. Žiadny backend, žiadne odosielanie údajov tretej strane.
+- ✉️ **Kontaktný formulár so zálohou** - polia meno, kontakt, typ podniku, balíček a správa sa po odoslaní poskladajú do predmetu a tela e-mailu a otvoria e-mailový program návštevníka. Keď sa program neotvorí (stránka nestratí fokus ani sa neskryje), odkryje sa panel s hotovým textom na skopírovanie, telefónom a adresou - dopyt sa tak nestratí. Žiadny backend, žiadne odosielanie údajov tretej strane.
 - ♿ **Prístupnosť podľa WCAG AA** - kontrastné pomery sú overené a zapísané pri tokenoch, stránka má skip-link, jeden `h1`, viditeľné focus stavy a `scroll-padding-top`, aby kotvy nekončili pod sticky hlavičkou.
 - 👁️ **Odhalenie sekcií pri scrollovaní** - `IntersectionObserver` pridáva triedu `.in` prvkom `.rv`. Efekt sa aktivuje len ak inline skript v hlavičke nastaví triedu `js` na `<html>`, takže bez JavaScriptu je obsah normálne viditeľný.
 - 🐢 **Rešpekt k `prefers-reduced-motion`** - pri zapnutom nastavení sa obsah odhalí naraz a prechody sa vypnú.
@@ -105,7 +105,7 @@ Apoliak-MAIN_WEB/
 ├── index.html                    # hlavná stránka (41 KB)
 ├── styles.css                    # spoločné štýly pre hlavnú stránku,
 │                                 # galériu, 404 aj GDPR stránku (30 KB)
-├── script.js                     # spoločný skript (5 KB)
+├── script.js                     # spoločný skript (9 KB)
 ├── ukazky/
 │   ├── index.html                # galéria ukážok s filtrovaním (27 KB)
 │   ├── restauracia/index.html    # 20 samostatných ukážkových webov,
@@ -179,7 +179,8 @@ Obsahové veci sa menia priamo v HTML:
 | Ceny balíkov a doplnkov                       | sekcia `#cennik` v `index.html`                     |
 | Texty výhod, služieb, postupu a otázok        | sekcie `#vyhody`, `#sluzby`, `#postup`, `#otazky`   |
 | E-mail a telefón                              | sekcia `#kontakt` a JSON-LD blok v `<head>`         |
-| Cieľová adresa formulára                      | `mailto:` v `script.js`                             |
+| Cieľová adresa formulára                      | konštanta `ADRESA` v `script.js`                    |
+| Adresa podpory pre klientov                   | `support@apoliak.online` v `#kontakt`, patičke a ukážkach |
 | `<title>`, meta description, OG a Twitter tagy | `<head>` každej stránky                            |
 | Štruktúrované dáta                            | JSON-LD blok v `<head>` hlavnej stránky             |
 | Doména pre GitHub Pages                       | súbor `CNAME` (plus `sitemap.xml` a canonical URL)  |
@@ -190,17 +191,19 @@ Obsahové veci sa menia priamo v HTML:
 
 | Kotva       | Sekcia          | Obsah                                                              |
 | ----------- | --------------- | ------------------------------------------------------------------ |
-| -           | Hero            | Nadpis, hlavné CTA a odkaz na ukážky                                |
+| -           | Hero            | Nadpis, hlavné CTA, mikrotext o nezáväznosti a štyri fakty          |
 | -           | Bežiaci pás     | Segmenty podnikov, pre ktoré weby robím                             |
-| `#vyhody`   | Výhody          | Deväť dôvodov pracovať so mnou a čo z webu podnik reálne má         |
-| `#sluzby`   | Služby          | Rozsah práce - návrh, dizajn, kód, texty, nasadenie                 |
-| `#postup`   | Postup          | Kroky spolupráce od prvého kontaktu po spustenie                    |
-| `#cennik`   | Cenník          | Balíky Starter, Standard, Pro - čo je a čo nie je v cene            |
 | `#ukazky`   | Ukážky          | Teaser s tromi živými náhľadmi a odkazom do galérie                 |
-| `#projekty` | Projekty        | Ďalšie veci, ktoré som postavil                                     |
+| `#vyhody`   | Výhody          | Šesť dôvodov pracovať so mnou, jeden odsek na dôvod                 |
+| `#sluzby`   | Služby          | Rozsah práce - návrh, dizajn, kód, texty, nasadenie                 |
+| `#cennik`   | Cenník          | Balíky Starter, Standard, Pro; zoznamy v cene sú v `<details>`      |
+| `#postup`   | Postup          | Kroky spolupráce od prvého kontaktu po spustenie                    |
+| -           | O mne           | Kto weby robí a čo stojí namiesto referencií                        |
 | `#otazky`   | Časté otázky    | Natívne `<details>` otázky, fungujú aj bez JavaScriptu              |
-| `#kontakt`  | Kontakt         | Konzultácia zadarmo, formulár dopytu, e-mail a telefón              |
-| -           | Pätička         | Odkazy, ochrana osobných údajov, automatický rok                    |
+| `#kontakt`  | Kontakt         | Konzultácia zadarmo, formulár so zálohou, obe adresy a telefón      |
+| `#projekty` | Projekty        | Ďalšie veci, ktoré som postavil                                     |
+| -           | Pätička         | Odkazy, obe adresy, ochrana osobných údajov, automatický rok        |
+| -           | Lišta na mobile | Fixné Zavolať a Konzultácia zadarmo pod 720 px šírky                |
 
 Navigácia po hlavnej stránke je same-page cez hash odkazy; galéria, ukážky, 404 a GDPR stránka sú samostatné adresy.
 
@@ -271,7 +274,7 @@ Po zmene domény treba upraviť `CNAME`, canonical URL, Open Graph adresy a `sit
 
 ## ⚠️ Známe obmedzenia
 
-- **Formulár nemá backend** - odoslanie poskladá `mailto:` odkaz a otvorí e-mailový program návštevníka. Ak návštevník nemá nastavený e-mailový klient, musí napísať priamo na uvedenú adresu. Nič sa neukladá a neexistuje nič, čo by správy prijímalo na serveri.
+- **Formulár nemá backend** - odoslanie poskladá `mailto:` odkaz a otvorí e-mailový program návštevníka. Ak sa neotvorí, odkryje sa záložný panel s textom správy na skopírovanie a s telefónom, ale samotné odoslanie ostáva na návštevníkovi. Nič sa neukladá a neexistuje nič, čo by správy prijímalo na serveri.
 - **Kontaktné údaje sú v markupe v čistom texte**, kde ich scrapery bez problémov prečítajú. Neexistuje ochrana proti spamu.
 - **Ukážkové weby sú návrhy vymyslených podnikov** - názvy, adresy, otváracie hodiny aj ceny sú ilustračné. Nezbierajú žiadne údaje, ich formuláre, rezervácie ani košíky nikam nič neodosielajú a po obnovení stránky sa stav stráca.
 - **Ukážky nemajú ani jednu fotografiu** - všetko nesie typografia, farba a geometria. Pri reálnej zákazke fotografie dodáva klient a nahrádzajú tieto plochy.
@@ -296,6 +299,6 @@ GPL-3.0 je silné copyleft licencovanie určené pre softvér. Aplikované na te
 
 <div align="center">
 
-Vytvoril **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [info@apoliak.online](mailto:info@apoliak.online) - 0902 464 022
+Vytvoril **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
 
 </div>
