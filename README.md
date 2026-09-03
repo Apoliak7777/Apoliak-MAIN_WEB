@@ -41,7 +41,7 @@
 
 ## 🔎 Prehľad
 
-Apoliak MAIN WEB je ručne písaný statický web, ktorý prezentuje tvorbu webstránok na mieru pre malé podniky - reštaurácie, kaviarne, salóny, autoservisy, ambulancie a podobné prevádzky. Obsahuje výhody, služby, postup spolupráce, cenník, časté otázky a kontaktný formulár. Celý obsah je v slovenčine (`<html lang="sk">`).
+Apoliak MAIN WEB je ručne písaný statický web, ktorý prezentuje tvorbu webstránok na mieru pre malé podniky - reštaurácie, kaviarne, salóny, autoservisy, ambulancie a podobné prevádzky. Obsahuje ukážky, výhody, služby, postup spolupráce, cenník, časté otázky a kontakt. Celý obsah je v slovenčine (`<html lang="sk">`).
 
 Podstatnou časťou webu je galéria **dvadsiatich ukážkových webov**. Každý je samostatná stránka vymysleného podniku s vlastnou farebnosťou, rozložením a funkčným interaktívnym prvkom, takže návštevník si vie priamo preklikať, ako môže vyzerať jeho vlastný web.
 
@@ -58,7 +58,7 @@ Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfon
 - 🖼️ **Živé náhľady namiesto obrázkov** - v ráme každej karty beží samotná ukážka v `<iframe>` zmenšenom cez `transform: scale()`; mierku dopočíta `script.js` z reálnej šírky rámu. Náhľad tak nemôže zostarnúť voči ukážke a nepribúda ani jeden obrázkový súbor. Rámy sú `loading="lazy"`, `pointer-events: none` a mimo poradia tabulátora.
 - 🎛️ **Interaktívne prvky bez knižníc** - prepínanie jedálneho lístka, konfigurátor pizze, filtrovanie rozvrhu, objednávanie termínov, cenové kalkulačky a nákupný košík sú napísané v čistom JavaScripte.
 - 🎨 **Vlastný tmavý dizajn** - hnedo-uhlíkové pozadie s mosadzným akcentom, jemné SVG zrno cez celú plochu a pätkové nadpisy s kurzívou. Žiadna grafika sa nesťahuje, všetko je CSS a inline SVG.
-- ✉️ **Kontaktný formulár so zálohou** - polia meno, kontakt, typ podniku, balíček a správa sa po odoslaní poskladajú do predmetu a tela e-mailu a otvoria e-mailový program návštevníka. Keď sa program neotvorí (stránka nestratí fokus ani sa neskryje), odkryje sa panel s hotovým textom na skopírovanie, telefónom a adresou - dopyt sa tak nestratí. Žiadny backend, žiadne odosielanie údajov tretej strane.
+- ✉️ **Priamy kontakt namiesto formulára** - stránka nemá formulár. Ten by cez `mailto:` slúboval odoslanie, ktoré vie splniť len u návštevníka s nastaveným e-mailovým programom; kto má poštu vo webovom prehliadači, tomu by kliknutie neurobilo nič. Namiesto neho stojí adresa veľkým písmom, tlačidlá na e-mail, telefón a SMS a zoznam toho, čo do správy napísať.
 - ♿ **Prístupnosť podľa WCAG AA** - kontrastné pomery sú overené a zapísané pri tokenoch, stránka má skip-link, jeden `h1`, viditeľné focus stavy a `scroll-padding-top`, aby kotvy nekončili pod sticky hlavičkou.
 - 👁️ **Odhalenie sekcií pri scrollovaní** - `IntersectionObserver` pridáva triedu `.in` prvkom `.rv`. Efekt sa aktivuje len ak inline skript v hlavičke nastaví triedu `js` na `<html>`, takže bez JavaScriptu je obsah normálne viditeľný.
 - 🐢 **Rešpekt k `prefers-reduced-motion`** - pri zapnutom nastavení sa obsah odhalí naraz a prechody sa vypnú.
@@ -105,7 +105,7 @@ Apoliak-MAIN_WEB/
 ├── index.html                    # hlavná stránka (41 KB)
 ├── styles.css                    # spoločné štýly pre hlavnú stránku,
 │                                 # galériu, 404 aj GDPR stránku (30 KB)
-├── script.js                     # spoločný skript (9 KB)
+├── script.js                     # spoločný skript (5 KB)
 ├── ukazky/
 │   ├── index.html                # galéria ukážok s filtrovaním (27 KB)
 │   ├── restauracia/index.html    # 20 samostatných ukážkových webov,
@@ -179,7 +179,7 @@ Obsahové veci sa menia priamo v HTML:
 | Ceny balíkov a doplnkov                       | sekcia `#cennik` v `index.html`                     |
 | Texty výhod, služieb, postupu a otázok        | sekcie `#vyhody`, `#sluzby`, `#postup`, `#otazky`   |
 | E-mail a telefón                              | sekcia `#kontakt` a JSON-LD blok v `<head>`         |
-| Cieľová adresa formulára                      | konštanta `ADRESA` v `script.js`                    |
+| Hlavná adresa a telefón                       | blok `.kontakt-blok` v `#kontakt`, patička a JSON-LD |
 | Adresa podpory pre klientov                   | `support@apoliak.online` v `#kontakt`, patičke a ukážkach |
 | `<title>`, meta description, OG a Twitter tagy | `<head>` každej stránky                            |
 | Štruktúrované dáta                            | JSON-LD blok v `<head>` hlavnej stránky             |
@@ -200,8 +200,7 @@ Obsahové veci sa menia priamo v HTML:
 | `#postup`   | Postup          | Kroky spolupráce od prvého kontaktu po spustenie                    |
 | -           | O mne           | Kto weby robí a čo stojí namiesto referencií                        |
 | `#otazky`   | Časté otázky    | Natívne `<details>` otázky, fungujú aj bez JavaScriptu              |
-| `#kontakt`  | Kontakt         | Konzultácia zadarmo, formulár so zálohou, obe adresy a telefón      |
-| `#projekty` | Projekty        | Ďalšie veci, ktoré som postavil                                     |
+| `#kontakt`  | Kontakt         | Konzultácia zadarmo, adresa, telefón, SMS a čo do správy napísať   |
 | -           | Pätička         | Odkazy, obe adresy, ochrana osobných údajov, automatický rok        |
 | -           | Lišta na mobile | Fixné Zavolať a Konzultácia zadarmo pod 720 px šírky                |
 
@@ -274,7 +273,7 @@ Po zmene domény treba upraviť `CNAME`, canonical URL, Open Graph adresy a `sit
 
 ## ⚠️ Známe obmedzenia
 
-- **Formulár nemá backend** - odoslanie poskladá `mailto:` odkaz a otvorí e-mailový program návštevníka. Ak sa neotvorí, odkryje sa záložný panel s textom správy na skopírovanie a s telefónom, ale samotné odoslanie ostáva na návštevníkovi. Nič sa neukladá a neexistuje nič, čo by správy prijímalo na serveri.
+- **Stránka nezbiera žiadne údaje** - nemá formulár ani backend. Návštevník píše z vlastnej pošty alebo volá. Neexistuje nič, čo by správy prijímalo na serveri.
 - **Kontaktné údaje sú v markupe v čistom texte**, kde ich scrapery bez problémov prečítajú. Neexistuje ochrana proti spamu.
 - **Ukážkové weby sú návrhy vymyslených podnikov** - názvy, adresy, otváracie hodiny aj ceny sú ilustračné. Nezbierajú žiadne údaje, ich formuláre, rezervácie ani košíky nikam nič neodosielajú a po obnovení stránky sa stav stráca.
 - **Ukážky nemajú ani jednu fotografiu** - všetko nesie typografia, farba a geometria. Pri reálnej zákazke fotografie dodáva klient a nahrádzajú tieto plochy.

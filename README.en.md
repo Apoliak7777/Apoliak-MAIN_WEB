@@ -41,7 +41,7 @@
 
 ## 🔎 Overview
 
-Apoliak MAIN WEB is a hand-written static site presenting custom website work for small businesses - restaurants, cafés, salons, garages, medical practices and the like. It covers the benefits, the services, how a project runs, pricing, an FAQ and a contact form. All content is in Slovak (`<html lang="sk">`).
+Apoliak MAIN WEB is a hand-written static site presenting custom website work for small businesses - restaurants, cafés, salons, garages, medical practices and the like. It covers the demos, the benefits, the services, how a project runs, pricing, an FAQ and the contact details. All content is in Slovak (`<html lang="sk">`).
 
 A major part of the site is a gallery of **twenty demo websites**. Each one is a standalone page for a fictional business with its own colour scheme, layout and a working interactive feature, so a visitor can click through and see what their own site could look like.
 
@@ -58,7 +58,7 @@ The site makes not a single external network request: no CDN, no web fonts, no a
 - 🖼️ **Live previews instead of images** - the frame on every card runs the demo itself in an `<iframe>` scaled down with `transform: scale()`; `script.js` derives the factor from the frame's real width. A preview can therefore never go stale against its demo, and not a single image file is added. The frames are `loading="lazy"`, `pointer-events: none` and out of the tab order.
 - 🎛️ **Interactions without libraries** - menu switching, a pizza builder, schedule filtering, appointment booking, price calculators and a shopping cart are all written in plain JavaScript.
 - 🎨 **Custom dark design** - a warm charcoal background with a brass accent, a subtle SVG grain across the whole surface, and serif headings with italics. Nothing is downloaded; it is all CSS and inline SVG.
-- ✉️ **Contact form** - name, contact detail, business type and message are assembled into an e-mail subject and body that open in the visitor's mail client. No backend, no data sent to a third party.
+- ✉️ **Direct contact instead of a form** - there is no form. Through `mailto:` a form would promise a send it can only deliver for a visitor with a configured mail client; anyone reading mail in a browser tab would click and get nothing. In its place stand the address in large type, buttons for e-mail, phone and SMS, and a short list of what to put in the message.
 - ♿ **WCAG AA accessibility** - contrast ratios are verified and noted next to the tokens; the page has a skip link, a single `h1`, visible focus states and `scroll-padding-top` so anchors do not land under the sticky header.
 - 👁️ **Scroll reveal** - an `IntersectionObserver` adds the `.in` class to `.rv` elements. The effect only engages once the inline script in the head sets the `js` class on `<html>`, so without JavaScript the content is simply visible.
 - 🐢 **Respect for `prefers-reduced-motion`** - with the setting on, content is revealed at once and transitions are turned off.
@@ -179,7 +179,7 @@ Content lives directly in the HTML:
 | Package and add-on prices                       | the `#cennik` section in `index.html`                  |
 | Benefit, service, process and FAQ copy          | the `#vyhody`, `#sluzby`, `#postup`, `#otazky` sections |
 | E-mail and phone number                         | the `#kontakt` section and the JSON-LD block in `<head>` |
-| Form target address                             | the `ADRESA` constant in `script.js`                   |
+| Main address and phone                          | the `.kontakt-blok` in `#kontakt`, footer and JSON-LD  |
 | Support address for clients                     | `support@apoliak.online` in `#kontakt`, footer, demos  |
 | `<title>`, meta description, OG and Twitter tags | the `<head>` of each page                             |
 | Structured data                                 | the JSON-LD block in the home page `<head>`            |
@@ -200,8 +200,7 @@ Content lives directly in the HTML:
 | `#postup`   | Process        | Steps from first contact to going live                          |
 | -           | About          | Who builds the sites and what stands in for testimonials        |
 | `#otazky`   | FAQ            | Native `<details>` questions, working without JavaScript        |
-| `#kontakt`  | Contact        | Free consultation, form with a fallback, both addresses, phone  |
-| `#projekty` | Projects       | Other things built along the way                                |
+| `#kontakt`  | Contact        | Free consultation, address, phone, SMS and what to write in     |
 | -           | Footer         | Links, both addresses, privacy policy, automatic year           |
 | -           | Mobile bar     | Fixed Call and Free consultation below 720 px wide              |
 
