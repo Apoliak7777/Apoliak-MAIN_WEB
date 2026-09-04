@@ -120,32 +120,58 @@
     var hsCasovac = null;
     var hotovo = function () { show.classList.remove("nacitava"); };
     if (hsIfr) { hsIfr.addEventListener("load", hotovo); }
+
+    var ukazCip = function (cip) {
+      var cesta = cip.getAttribute("href");
+      var nazov = cip.getAttribute("data-nazov") || "";
+      if (hsIfr && hsIfr.getAttribute("src") !== cesta) {
+        show.classList.add("nacitava");
+        hsIfr.setAttribute("title", "Živý náhľad ukážky " + nazov);
+        hsIfr.setAttribute("src", cesta);
+        clearTimeout(hsCasovac);
+        hsCasovac = setTimeout(hotovo, 2500);         /* poistka, keby load nedobehol */
+      }
+      if (hsOpen) {
+        hsOpen.setAttribute("href", cesta);
+        hsOpen.setAttribute("aria-label", "Otvoriť ukážku " + nazov + " v plnej veľkosti");
+      }
+      if (hsUrl) { hsUrl.textContent = cip.getAttribute("data-url") || ""; }
+      if (hsNazov) { hsNazov.textContent = nazov; }
+      if (hsInt) { hsInt.textContent = cip.getAttribute("data-int") || ""; }
+      for (var c = 0; c < cipy.length; c++) {
+        if (cipy[c] === cip) { cipy[c].setAttribute("aria-current", "true"); }
+        else { cipy[c].removeAttribute("aria-current"); }
+      }
+    };
+
     Array.prototype.forEach.call(cipy, function (cip) {
       cip.addEventListener("click", function (e) {
         if (!hsIfr) { return; }                       /* bez rámu ostáva chip odkazom */
         e.preventDefault();
-        var cesta = cip.getAttribute("href");
-        var nazov = cip.getAttribute("data-nazov") || "";
-        if (hsIfr.getAttribute("src") !== cesta) {
-          show.classList.add("nacitava");
-          hsIfr.setAttribute("title", "Živý náhľad ukážky " + nazov);
-          hsIfr.setAttribute("src", cesta);
-          clearTimeout(hsCasovac);
-          hsCasovac = setTimeout(hotovo, 2500);       /* poistka, keby load nedobehol */
-        }
-        if (hsOpen) {
-          hsOpen.setAttribute("href", cesta);
-          hsOpen.setAttribute("aria-label", "Otvoriť ukážku " + nazov + " v plnej veľkosti");
-        }
-        if (hsUrl) { hsUrl.textContent = cip.getAttribute("data-url") || ""; }
-        if (hsNazov) { hsNazov.textContent = nazov; }
-        if (hsInt) { hsInt.textContent = cip.getAttribute("data-int") || ""; }
-        for (var c = 0; c < cipy.length; c++) {
-          if (cipy[c] === cip) { cipy[c].setAttribute("aria-current", "true"); }
-          else { cipy[c].removeAttribute("aria-current"); }
-        }
+        ukazCip(cip);
       });
     });
+
+    /* Pri každom načítaní stránky sa v ráme ukáže iná ukážka než naposledy,
+       aby návštevník (aj Alex pri F5) videl, že ich je viac. Iframe nemá v HTML
+       src — nastaví sa až tu, nech sa predvolená ukážka nesťahuje zbytočne dvakrát.
+       Bez JavaScriptu ho nahrádza rám v <noscript>. Posledná voľba sa pamätá
+       v sessionStorage (len pre túto kartu, nie je to cookie a nikam sa neposiela). */
+    if (hsIfr && cipy.length) {
+      var KLUC = "hs-ukazka";
+      var posledna = null;
+      try { posledna = window.sessionStorage.getItem(KLUC); } catch (err) { posledna = null; }
+      var kandidati = [];
+      for (var k = 0; k < cipy.length; k++) {
+        if (cipy[k].getAttribute("href") !== posledna) { kandidati.push(cipy[k]); }
+      }
+      if (!kandidati.length) { kandidati = Array.prototype.slice.call(cipy); }
+      var nahodny = kandidati[Math.floor(Math.random() * kandidati.length)];
+      try { window.sessionStorage.setItem(KLUC, nahodny.getAttribute("href")); } catch (err) { /* súkromný režim */ }
+      ukazCip(nahodny);
+    } else if (hsIfr && !hsIfr.getAttribute("src")) {
+      hsIfr.setAttribute("src", hsIfr.getAttribute("data-src") || "ukazky/salon/");
+    }
   }
 
   /* Náhľady v galérii: v ráme beží zmenšená skutočná stránka.
