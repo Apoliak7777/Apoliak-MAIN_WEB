@@ -8,14 +8,14 @@
 
 # 🅰️ Apoliak - MAIN WEB
 
-**Statický web freelance tvorby webstránok pre malé podniky, aj s galériou dvadsiatich preklikateľných ukážkových webov. Čisté HTML, CSS a vanilla JavaScript.**
+**Statický web freelance tvorby webstránok pre malé podniky, aj s galériou 44 preklikateľných ukážkových webov. Čisté HTML, CSS a vanilla JavaScript.**
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=flat-square&logo=githubpages&logoColor=white)
 ![Bez závislostí](https://img.shields.io/badge/závislosti-0-22c55e?style=flat-square)
-![Ukážky](https://img.shields.io/badge/uk%C3%A1%C5%BEkov%C3%A9%20weby-20-e9b45f?style=flat-square)
+![Ukážky](https://img.shields.io/badge/uk%C3%A1%C5%BEkov%C3%A9%20weby-44-e9b45f?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)
 
 [Živý web](https://apoliak.online) - [Galéria ukážok](https://apoliak.online/ukazky/) - [Rýchly štart](#-rýchly-štart) - [Štruktúra](#-štruktúra-projektu)
@@ -43,7 +43,7 @@
 
 Apoliak MAIN WEB je ručne písaný statický web, ktorý prezentuje tvorbu webstránok na mieru pre malé podniky - reštaurácie, kaviarne, salóny, autoservisy, ambulancie a podobné prevádzky. Obsahuje ukážky, výhody, služby, postup spolupráce, cenník, časté otázky a kontakt. Celý obsah je v slovenčine (`<html lang="sk">`).
 
-Podstatnou časťou webu je galéria **dvadsiatich ukážkových webov**. Každý je samostatná stránka vymysleného podniku s vlastnou farebnosťou, rozložením a funkčným interaktívnym prvkom, takže návštevník si vie priamo preklikať, ako môže vyzerať jeho vlastný web.
+Podstatnou časťou webu je galéria **44 ukážkových webov**. Každý je samostatná stránka vymysleného podniku s vlastnou farebnosťou, rozložením a funkčným interaktívnym prvkom, takže návštevník si vie priamo preklikať, ako môže vyzerať jeho vlastný web.
 
 Projekt zámerne nepoužíva žiadny framework, bundler ani build krok. Sú to obyčajné súbory, ktoré sa dajú otvoriť priamo v prehliadači a nasadiť skopírovaním na akýkoľvek statický hosting. Beží na GitHub Pages pod vlastnou doménou definovanou v súbore `CNAME`.
 
@@ -53,7 +53,7 @@ Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfon
 
 ## ✨ Funkcie
 
-- 🏪 **Dvadsať ukážkových webov** - kompletné weby vymyslených podnikov, každý ako jeden sebestačný HTML súbor s vlastnou paletou, typografiou a funkčnou interakciou (pozri [Ukážkové weby](#-ukážkové-weby)).
+- 🏪 **44 ukážkových webov** - kompletné weby vymyslených podnikov, každý ako jeden sebestačný HTML súbor s vlastnou paletou, typografiou a funkčnou interakciou (pozri [Ukážkové weby](#-ukážkové-weby)).
 - 🔎 **Galéria s filtrovaním** - `ukazky/index.html` triedi ukážky podľa kategórie; filtre prepínajú `hidden` na kartách, držia `aria-pressed` v synchrone a hlásia počet zobrazených ukážok do živého textu.
 - 🖼️ **Živé náhľady namiesto obrázkov** - v ráme každej karty beží samotná ukážka v `<iframe>` zmenšenom cez `transform: scale()`; mierku dopočíta `script.js` z reálnej šírky rámu. Náhľad tak nemôže zostarnúť voči ukážke a nepribúda ani jeden obrázkový súbor. Rámy sú `loading="lazy"`, `pointer-events: none` a mimo poradia tabulátora.
 - 🎛️ **Interaktívne prvky bez knižníc** - prepínanie jedálneho lístka, konfigurátor pizze, filtrovanie rozvrhu, objednávanie termínov, cenové kalkulačky a nákupný košík sú napísané v čistom JavaScripte.
@@ -108,26 +108,50 @@ Apoliak-MAIN_WEB/
 ├── script.js                     # spoločný skript (5 KB)
 ├── ukazky/
 │   ├── index.html                # galéria ukážok s filtrovaním (27 KB)
-│   ├── restauracia/index.html    # 20 samostatných ukážkových webov,
-│   ├── kaviaren/index.html       # každý ako jeden sebestačný súbor
-│   ├── cukraren/index.html
-│   ├── penzion/index.html
-│   ├── fitko/index.html
-│   ├── salon/index.html
-│   ├── barber/index.html
-│   ├── wellness/index.html
-│   ├── fotoatelier/index.html
-│   ├── autoskola/index.html
-│   ├── remeselnik/index.html
-│   ├── autoservis/index.html
-│   ├── stavebna/index.html
+│   ├── advokat/index.html
 │   ├── ambulancia/index.html
-│   ├── veterina/index.html
-│   ├── optika/index.html
+│   ├── autodiely/index.html
+│   ├── autoservis/index.html
+│   ├── autoskola/index.html
+│   ├── barber/index.html
+│   ├── calunnictvo/index.html
+│   ├── cukraren/index.html
+│   ├── doprava/index.html
+│   ├── elektrikar/index.html
+│   ├── farma/index.html
+│   ├── fitko/index.html
+│   ├── fotoatelier/index.html
+│   ├── fotovoltika/index.html
+│   ├── instalater/index.html
+│   ├── internet/index.html
+│   ├── jazykovka/index.html
+│   ├── kaviaren/index.html
+│   ├── krajcirstvo/index.html
+│   ├── kulturak/index.html
 │   ├── kvetinarstvo/index.html
+│   ├── laboratorium/index.html
+│   ├── obec/index.html
+│   ├── odpady/index.html
+│   ├── optika/index.html
+│   ├── penzion/index.html
+│   ├── plasty/index.html
+│   ├── pocitace/index.html
+│   ├── poistovaci/index.html
+│   ├── poradca/index.html
+│   ├── projektant/index.html
 │   ├── reality/index.html
+│   ├── reklamka/index.html
+│   ├── remeselnik/index.html
+│   ├── restauracia/index.html
+│   ├── salon/index.html
+│   ├── stavebna/index.html
+│   ├── strojarstvo/index.html
 │   ├── uctovnictvo/index.html
-│   └── advokat/index.html
+│   ├── velkoobchod/index.html
+│   ├── veterina/index.html
+│   ├── wellness/index.html
+│   ├── zabava/index.html
+│   └── zamocnictvo/index.html
 ├── 404.html                      # vlastná stránka pre neexistujúce adresy
 ├── ochrana-osobnych-udajov.html  # zásady ochrany osobných údajov
 ├── og-image.png                  # náhľad pri zdieľaní, 1200 × 630
@@ -140,7 +164,7 @@ Apoliak-MAIN_WEB/
 └── README.en.md                  # anglická verzia tohto súboru
 ```
 
-Priečinok `ukazky/` má spolu asi 1,9 MB. Žiadne buildy, žiadne node_modules, žiadne stiahnuté assety.
+Priečinok `ukazky/` má spolu asi 4,5 MB. Žiadne buildy, žiadne node_modules, žiadne stiahnuté assety.
 
 ---
 
@@ -225,30 +249,54 @@ Navigácia po hlavnej stránke je same-page cez hash odkazy; galéria, ukážky,
 
 ## 🏪 Ukážkové weby
 
-Dvadsať kompletných webov vymyslených podnikov - **nejde o reálnych klientov ani referencie**. Každá ukážka je jeden sebestačný HTML súbor s vlastnou farebnosťou a rozložením, so sticky pásikom s odkazom späť na `apoliak.online` a s funkčným interaktívnym prvkom.
+44 kompletných webov vymyslených podnikov - **nejde o reálnych klientov ani referencie**. Každá ukážka je jeden sebestačný HTML súbor s vlastnou farebnosťou a rozložením, so sticky pásikom s odkazom späť na `apoliak.online` a s funkčným interaktívnym prvkom.
 
-| Priečinok      | Podnik                            | Kategória          | Interaktívny prvok                            |
-| -------------- | --------------------------------- | ------------------ | --------------------------------------------- |
-| `restauracia`  | Reštaurácia Dubová                | Gastro a ubytovanie | Prepínanie jedálneho lístka, rezervácia stola |
-| `kaviaren`     | Lipová (kaviareň a pizzeria)      | Gastro a ubytovanie | Konfigurátor pizze s prepočtom ceny           |
-| `cukraren`     | Pekáreň a cukráreň Kôrka          | Gastro a ubytovanie | Konfigurátor torty s cenou a termínom         |
-| `penzion`      | Penzión Hrebeň                    | Gastro a ubytovanie | Rezervácia s prepočtom nocí a ceny            |
-| `fitko`        | Fitness centrum Halová            | Služby             | Filtrovanie rozvrhu tréningov                 |
-| `salon`        | Salón Brezová                     | Služby             | Rezervácia termínu so súhrnnou cenou          |
-| `barber`       | Holičstvo Ostrie                  | Služby             | Objednanie podľa služby a dĺžky               |
-| `wellness`     | Wellness Salvia                   | Služby             | Rezervácia procedúry so súhrnom               |
-| `fotoatelier`  | Fotoateliér Škála                 | Služby             | Výber balíčka a počtu fotografií              |
-| `autoskola`    | Autoškola Rondel                  | Služby             | Prihláška s prepočtom ceny kurzu              |
-| `remeselnik`   | Stolárstvo Rovina                 | Remeslo            | Kalkulačka ceny zákazky                       |
-| `autoservis`   | Autoservis 12                     | Remeslo            | Objednanie termínu s cenou úkonu              |
-| `stavebna`     | Stavebná firma KVADER             | Remeslo            | Kalkulačka ceny podľa plochy                  |
-| `ambulancia`   | Zubná ambulancia Vrbová           | Zdravie            | Objednanie ošetrenia                          |
-| `veterina`     | Veterinárna klinika Alveron       | Zdravie            | Objednanie podľa druhu zvieraťa               |
-| `optika`       | Optika Meridián                   | Zdravie            | Objednanie na meranie zraku                   |
-| `kvetinarstvo` | Kvetinárstvo Steblo               | Obchod a firmy     | Plne funkčný nákupný košík                    |
-| `reality`      | Kamenec reality                   | Obchod a firmy     | Filter ponuky a hypotekárna kalkulačka        |
-| `uctovnictvo`  | SALDIA (účtovníctvo a mzdy)       | Obchod a firmy     | Kalkulačka mesačného paušálu                  |
-| `advokat`      | Advokátska kancelária Meritum     | Obchod a firmy     | Dopyt s odhadom odmeny                        |
+| Priečinok      | Podnik                        | Kategória           | Interaktívny prvok |
+| -------------- | ----------------------------- | ------------------- | ------------------ |
+| `cukraren` | Pekáreň a cukráreň Kôrka | Gastro a ubytovanie | Konfigurátor torty s prepočtom ceny podľa veľkosti |
+| `kaviaren` | Lipová | Gastro a ubytovanie | Konfigurátor pizze |
+| `penzion` | Penzión Hrebeň | Gastro a ubytovanie | Rezervácia s prepočtom počtu nocí a celkovej ceny vrátane… |
+| `restauracia` | Reštaurácia Dubová | Gastro a ubytovanie | Jedálny lístok sa prepína po kategóriách a rezerváciu… |
+| `autoskola` | Autoškola Rondel | Služby | Prihláška s prepočtom ceny kurzu podľa skupiny vodičského… |
+| `barber` | Holičstvo Ostrie | Služby | Objednanie podľa vybranej služby a jej dĺžky |
+| `fitko` | Fitness centrum Halová | Služby | Rozvrh skupinových tréningov sa filtruje podľa dňa aj typu… |
+| `fotoatelier` | Fotoateliér Škála | Služby | Výber balíčka a počtu upravených fotografií s okamžitým… |
+| `krajcirstvo` | Ateliér Steh | Služby | Kalkulačka úprav |
+| `salon` | Salón Brezová | Služby | Rezervácia termínu s okamžitým súhrnom vybraných úkonov |
+| `wellness` | Wellness Salvia | Služby | Rezervácia procedúry so súhrnom |
+| `zabava` | Kolkáreň Deviatka | Služby | Rezervácia dráhy |
+| `autoservis` | Autoservis 12 | Remeslo a stavba | Objednanie termínu s cenou úkonu vopred |
+| `calunnictvo` | Čalúnnictvo Pružina | Remeslo a stavba | Kalkulačka prečalúnenia podľa kusa a látky |
+| `elektrikar` | Elektro Fáza | Remeslo a stavba | Kalkulačka rozsahu elektroinštalácie |
+| `instalater` | Teplo a Voda | Remeslo a stavba | Porovnávač zdrojov tepla |
+| `remeselnik` | Stolárstvo Rovina | Remeslo a stavba | Kalkulačka ceny zákazky podľa rozmerov |
+| `stavebna` | Stavebná firma KVADER | Remeslo a stavba | Kalkulačka ceny podľa plochy a rozsahu prác |
+| `zamocnictvo` | Kovanie Šesťhran | Remeslo a stavba | Konfigurátor brány s náhľadom |
+| `ambulancia` | Zubná ambulancia Vrbová | Zdravie | Objednanie ošetrenia s výberom výkonu a rozlíšením |
+| `optika` | Optika Meridián | Zdravie | Objednanie na meranie zraku s výberom typu vyšetrenia a… |
+| `veterina` | Veterinárna klinika Alveron | Zdravie | Objednanie podľa druhu a veľkosti zvieraťa |
+| `farma` | Dvor Rozsocha | Obchod a predaj | Skladačka debničky so sezónnym kalendárom |
+| `kvetinarstvo` | Kvetinárstvo Steblo | Obchod a predaj | Plne funkčný nákupný košík |
+| `reality` | Kamenec reality | Obchod a predaj | Filter ponuky nehnuteľností a hypotekárna kalkulačka s… |
+| `velkoobchod` | Paleta Vzor | Obchod a predaj | B2B cenník s množstevnými pásmami |
+| `advokat` | Advokátska kancelária Meritum | Firmy a kancelárie | Dopyt s odhadom odmeny podľa typu veci |
+| `poistovaci` | Štít maklér | Firmy a kancelárie | Porovnávač poistenia |
+| `poradca` | Kompas financie | Firmy a kancelárie | Kalkulačka sporenia so zloženým úročením |
+| `projektant` | Rysá projekcia | Firmy a kancelárie | Sprievodca stavebným povolením |
+| `reklamka` | Studio Prietlač | Firmy a kancelárie | Kalkulačka tlače s grafom |
+| `uctovnictvo` | SALDIA | Firmy a kancelárie | Kalkulačka mesačného paušálu podľa počtu dokladov |
+| `autodiely` | Kotva Automotive | Výroba a technika | Portál pre odberateľov so sledovaním zákazky |
+| `fotovoltika` | Slnovrat energia | Výroba a technika | Kalkulačka návratnosti s grafom bilancie po rokoch |
+| `laboratorium` | Skúšobňa Etalón | Výroba a technika | Výber skúšky |
+| `plasty` | Polyform | Výroba a technika | Kalkulačka série |
+| `pocitace` | Bit a Byte | Výroba a technika | Diagnostika podľa príznakov |
+| `strojarstvo` | Obrobňa Merkur | Výroba a technika | Kalkulačka dielca podľa materiálu |
+| `doprava` | Traťová | Doprava a odpady | Kalkulačka prepravy z trasy a objemu |
+| `odpady` | Zberná Vzor | Doprava a odpady | Objednávka kontajnera |
+| `internet` | Vlnka net | Vzdelávanie a obec | Overenie pokrytia podľa obce |
+| `jazykovka` | Slovosled | Vzdelávanie a obec | Rozraďovací test z ôsmich otázok |
+| `kulturak` | Kino Orbis | Vzdelávanie a obec | Program s rezerváciou konkrétneho sedadla |
+| `obec` | Obec Rakytie | Vzdelávanie a obec | Sprievodca životnými situáciami |
 
 > [!NOTE]
 > Ukážky sú zámerne bez fotografií. Plochy, kde by inak boli, nesú vlastnú kompozíciu - vrstvené prechody, geometriu, vlásočnicové vzory a typografiu. Stránky nikam nič neodosielajú, formuláre a košíky sú návrhové makety.
@@ -278,7 +326,7 @@ Po zmene domény treba upraviť `CNAME`, canonical URL, Open Graph adresy a `sit
 - **Ukážkové weby sú návrhy vymyslených podnikov** - názvy, adresy, otváracie hodiny aj ceny sú ilustračné. Nezbierajú žiadne údaje, ich formuláre, rezervácie ani košíky nikam nič neodosielajú a po obnovení stránky sa stav stráca.
 - **Ukážky nemajú ani jednu fotografiu** - všetko nesie typografia, farba a geometria. Pri reálnej zákazke fotografie dodáva klient a nahrádzajú tieto plochy.
 - **Obsah je duplikovaný v HTML** - ceny, kontakt aj texty sú zapísané natvrdo na viacerých miestach (markup, meta tagy, JSON-LD). Zmena znamená prejsť všetky výskyty ručne.
-- **Každá ukážka má vlastnú kópiu štýlov aj skriptov** vo svojom súbore. Je to zámer, aby bola prenositeľná, ale znamená to, že spoločná zmena sa musí urobiť dvadsaťkrát.
+- **Každá ukážka má vlastnú kópiu štýlov aj skriptov** vo svojom súbore. Je to zámer, aby bola prenositeľná, ale znamená to, že spoločná zmena sa musí urobiť 44krát.
 - **Žiadne automatické kontroly** - v repe nie sú testy, lintery, formatter config ani GitHub Actions workflow. Kvalita stojí na manuálnej kontrole.
 - **Bez pripojenia nie sú fallbacky tretích strán**, ale ani nie sú potrebné - stránka nepoužíva žiadne externé zdroje.
 

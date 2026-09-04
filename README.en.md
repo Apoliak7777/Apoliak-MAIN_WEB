@@ -8,14 +8,14 @@
 
 # 🅰️ Apoliak - MAIN WEB
 
-**A static site for a freelance web-design practice serving small businesses, with a gallery of twenty fully clickable demo websites. Plain HTML, CSS and vanilla JavaScript.**
+**A static site for a freelance web-design practice serving small businesses, with a gallery of 44 fully clickable demo websites. Plain HTML, CSS and vanilla JavaScript.**
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=flat-square&logo=githubpages&logoColor=white)
 ![No dependencies](https://img.shields.io/badge/dependencies-0-22c55e?style=flat-square)
-![Demos](https://img.shields.io/badge/demo%20sites-20-e9b45f?style=flat-square)
+![Demos](https://img.shields.io/badge/demo%20sites-44-e9b45f?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)
 
 [Live site](https://apoliak.online) - [Demo gallery](https://apoliak.online/ukazky/) - [Quick start](#-quick-start) - [Structure](#-project-structure)
@@ -43,7 +43,7 @@
 
 Apoliak MAIN WEB is a hand-written static site presenting custom website work for small businesses - restaurants, cafés, salons, garages, medical practices and the like. It covers the demos, the benefits, the services, how a project runs, pricing, an FAQ and the contact details. All content is in Slovak (`<html lang="sk">`).
 
-A major part of the site is a gallery of **twenty demo websites**. Each one is a standalone page for a fictional business with its own colour scheme, layout and a working interactive feature, so a visitor can click through and see what their own site could look like.
+A major part of the site is a gallery of **44 demo websites**. Each one is a standalone page for a fictional business with its own colour scheme, layout and a working interactive feature, so a visitor can click through and see what their own site could look like.
 
 The project deliberately uses no framework, no bundler and no build step. These are plain files that open straight in a browser and deploy by copying them onto any static host. It runs on GitHub Pages under a custom domain defined in the `CNAME` file.
 
@@ -108,7 +108,7 @@ Apoliak-MAIN_WEB/
 ├── script.js                     # shared script (5 KB)
 ├── ukazky/                       # "ukazky" = demos
 │   ├── index.html                # demo gallery with filtering (27 KB)
-│   ├── restauracia/index.html    # 20 standalone demo sites,
+│   ├── restauracia/index.html    # 44 standalone demo sites,
 │   ├── kaviaren/index.html       # each one a self-contained file
 │   ├── cukraren/index.html
 │   ├── penzion/index.html
@@ -227,28 +227,52 @@ Navigation across the home page is same-page via hash links; the gallery, the de
 
 Twenty complete sites for fictional businesses - **not real clients and not references**. Each demo is a single self-contained HTML file with its own colours and layout, a sticky strip linking back to `apoliak.online`, and one working interactive feature.
 
-| Folder         | Business                              | Category           | Interactive feature                     |
-| -------------- | ------------------------------------- | ------------------ | --------------------------------------- |
-| `restauracia`  | Reštaurácia Dubová (restaurant)       | Food and lodging   | Menu switching, table booking           |
-| `kaviaren`     | Lipová (café and pizzeria)            | Food and lodging   | Pizza builder with live price           |
-| `cukraren`     | Pekáreň a cukráreň Kôrka (bakery)     | Food and lodging   | Cake builder with price and pickup date |
-| `penzion`      | Penzión Hrebeň (guest house)          | Food and lodging   | Booking with night and price calculation |
-| `fitko`        | Fitness centrum Halová (gym)          | Services           | Class schedule filtering                |
-| `salon`        | Salón Brezová (hair and beauty)       | Services           | Appointment booking with running total  |
-| `barber`       | Holičstvo Ostrie (barbershop)         | Services           | Booking by service and duration         |
-| `wellness`     | Wellness Salvia (massage and sauna)   | Services           | Treatment booking with summary          |
-| `fotoatelier`  | Fotoateliér Škála (photo studio)      | Services           | Package and photo count picker          |
-| `autoskola`    | Autoškola Rondel (driving school)     | Services           | Application with course price estimate  |
-| `remeselnik`   | Stolárstvo Rovina (joinery)           | Trades             | Ballpark price calculator               |
-| `autoservis`   | Autoservis 12 (garage)                | Trades             | Appointment booking with job price      |
-| `stavebna`     | Stavebná firma KVADER (builder)       | Trades             | Price calculator by floor area          |
-| `ambulancia`   | Zubná ambulancia Vrbová (dental)      | Health             | Treatment booking                       |
-| `veterina`     | Veterinárna klinika Alveron (vet)     | Health             | Booking by type of animal               |
-| `optika`       | Optika Meridián (optician)            | Health             | Eye test appointment booking            |
-| `kvetinarstvo` | Kvetinárstvo Steblo (florist)         | Retail and offices | Fully working shopping cart             |
-| `reality`      | Kamenec reality (estate agency)       | Retail and offices | Listing filter and mortgage calculator  |
-| `uctovnictvo`  | SALDIA (bookkeeping and payroll)      | Retail and offices | Monthly retainer calculator             |
-| `advokat`      | Advokátska kancelária Meritum (law)   | Retail and offices | Enquiry with fee estimate               |
+| Folder         | Business                                 | Category             | Interactive feature                            |
+| -------------- | ---------------------------------------- | -------------------- | ---------------------------------------------- |
+| `cukraren`     | Pekáreň a cukráreň Kôrka (bakery)        | Food and lodging     | Cake builder with price and pickup date        |
+| `kaviaren`     | Lipová (café and pizzeria)               | Food and lodging     | Pizza builder with live price                  |
+| `penzion`      | Penzión Hrebeň (guest house)             | Food and lodging     | Booking with night and price calculation       |
+| `restauracia`  | Reštaurácia Dubová (restaurant)          | Food and lodging     | Menu switching, table booking                  |
+| `autoskola`    | Autoškola Rondel (driving school)        | Services             | Enrolment with course price calculation        |
+| `barber`       | Holičstvo Ostrie (barber shop)           | Services             | Booking by service and duration                |
+| `fitko`        | Fitness centrum Halová (gym)             | Services             | Class timetable filtering                      |
+| `fotoatelier`  | Fotoateliér Škála (photo studio)         | Services             | Package and photo count picker                 |
+| `krajcirstvo`  | Ateliér Steh (tailor)                    | Services             | Alteration calculator with price and lead time |
+| `salon`        | Salón Brezová (hair and beauty)          | Services             | Appointment booking with price summary         |
+| `wellness`     | Wellness Salvia (spa)                    | Services             | Treatment booking with summary                 |
+| `zabava`       | Kolkáreň Deviatka (bowling)              | Services             | Lane booking by day, time and party size       |
+| `autoservis`   | Autoservis 12 (car and tyre service)     | Trades and building  | Booking with per-job price                     |
+| `calunnictvo`  | Čalúnnictvo Pružina (upholstery)         | Trades and building  | Reupholstery calculator by piece and fabric    |
+| `elektrikar`   | Elektro Fáza (electrician)               | Trades and building  | Wiring scope and on-site days calculator       |
+| `instalater`   | Teplo a Voda (heating and plumbing)      | Trades and building  | Ten-year heat source comparison                |
+| `remeselnik`   | Stolárstvo Rovina (joinery)              | Trades and building  | Job price calculator                           |
+| `stavebna`     | Stavebná firma KVADER (builder)          | Trades and building  | Price calculator by floor area                 |
+| `zamocnictvo`  | Kovanie Šesťhran (metalwork)             | Trades and building  | Gate configurator with drawn preview           |
+| `ambulancia`   | Zubná ambulancia Vrbová (dental)         | Health               | Treatment booking                              |
+| `optika`       | Optika Meridián (optician)               | Health               | Eye test booking                               |
+| `veterina`     | Veterinárna klinika Alveron (vet)        | Health               | Booking by animal species                      |
+| `farma`        | Dvor Rozsocha (farm shop)                | Retail               | Produce box builder and seasonal calendar      |
+| `kvetinarstvo` | Kvetinárstvo Steblo (florist)            | Retail               | Fully working shopping cart                    |
+| `reality`      | Kamenec reality (estate agency)          | Retail               | Listing filter and mortgage calculator         |
+| `velkoobchod`  | Paleta Vzor (wholesaler)                 | Retail               | B2B price list with quantity tiers             |
+| `advokat`      | Advokátska kancelária Meritum (law firm) | Firms and offices    | Enquiry with fee estimate                      |
+| `poistovaci`   | Štít maklér (insurance broker)           | Firms and offices    | Three-way insurance quote comparison           |
+| `poradca`      | Kompas financie (financial adviser)      | Firms and offices    | Compound interest savings calculator           |
+| `projektant`   | Rysá projekcia (design and surveying)    | Firms and offices    | Building permit document guide                 |
+| `reklamka`     | Studio Prietlač (print and signage)      | Firms and offices    | Print calculator with unit price chart         |
+| `uctovnictvo`  | SALDIA (bookkeeping and payroll)         | Firms and offices    | Monthly retainer calculator                    |
+| `autodiely`    | Kotva Automotive (automotive supplier)   | Manufacturing        | Order tracking with timeline                   |
+| `fotovoltika`  | Slnovrat energia (solar power)           | Manufacturing        | Payback calculator with yearly balance         |
+| `laboratorium` | Skúšobňa Etalón (testing laboratory)     | Manufacturing        | Test picker with standard, price and lead time |
+| `plasty`       | Polyform (injection moulding)            | Manufacturing        | Batch calculator showing tooling amortisation  |
+| `pocitace`     | Bit a Byte (computer repair)             | Manufacturing        | Fault diagnosis from symptoms                  |
+| `strojarstvo`  | Obrobňa Merkur (CNC machining)           | Manufacturing        | Part calculator by material and batch          |
+| `doprava`      | Traťová (haulage and removals)           | Transport and waste  | Transport calculator and shipment tracking     |
+| `odpady`       | Zberná Vzor (waste and skips)            | Transport and waste  | Skip order with disposal pricing               |
+| `internet`     | Vlnka net (internet provider)            | Education and public | Coverage check by village                      |
+| `jazykovka`    | Slovosled (language school)              | Education and public | Placement test with level result               |
+| `kulturak`     | Kino Orbis (cinema and culture)          | Education and public | Programme and seat picker                      |
+| `obec`         | Obec Rakytie (municipal office)          | Education and public | Life-situation document guide                  |
 
 > [!NOTE]
 > The demos deliberately carry no photographs. The areas where photos would normally sit hold a composition of their own - layered gradients, geometry, hairline patterns and typography. The pages send nothing anywhere; the forms and carts are design mock-ups.
@@ -278,7 +302,7 @@ After a domain change, update `CNAME`, the canonical URL, the Open Graph address
 - **The demo sites are designs for fictional businesses** - names, addresses, opening hours and prices are illustrative. They collect no data, their forms, bookings and carts submit nowhere, and their state is lost on reload.
 - **The demos carry no photographs at all** - typography, colour and geometry do all the work. On a real commission the client supplies photos, which then replace those areas.
 - **Content is duplicated across the HTML** - prices, contact details and copy are hardcoded in several places (markup, meta tags, JSON-LD). Changing them means walking through every occurrence by hand.
-- **Each demo carries its own copy of the styles and scripts** inside its file. That is intentional for portability, but a shared change has to be made twenty times.
+- **Each demo carries its own copy of the styles and scripts** inside its file. That is intentional for portability, but a shared change has to be made 44 times.
 - **No automated checks** - the repo contains no tests, linters, formatter config or GitHub Actions workflow. Quality rests on manual review.
 - **There are no third-party fallbacks offline**, nor are any needed - the site uses no external resources at all.
 
