@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kovanie Šesťhran — zámočníctvo, brány a zábradlia</title>
+<meta name="description" content="Kovanie Šesťhran: zákazková kovovýroba vo Vzorovom Meste. Posuvné a krídlové brány, ploty, zábradlia, schodiská, prístrešky a mreže. Konfigurátor brány s cenou, cenník a zameranie zadarmo. Ukážkový web od apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#111111">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Kovanie Šesťhran — zámočníctvo, brány a zábradlia (ukážkový web)">
+<meta property="og:description" content="Brány, ploty, zábradlia a zákazková kovovýroba. S konfigurátorom brány, ktorý počíta cenu z rozmerov a výbavy. Ukážkový web vymysleného podniku od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231b1d21'/%3E%3Cpath d='M16 4l9 5v14l-9 5-9-5V9z' fill='none' stroke='%23e05a2b' stroke-width='2.6' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   Kovanie Šesťhran — ukážkový web
+   Jeden sebestačný súbor: vlastné štýly aj skript, žiadny externý zdroj.
+   Plochy, kde by inak boli fotografie, nesie geometria a typografia.
+   ========================================================================== */
+
+:root{
+  --paper:#f0f0f1;
+  --surface:#ffffff;
+  --surface-3:#f7f7f8;
+  --ink:#141519;
+  --ink-body:#33363d;
+  --muted:#5f636c;
+  --line:#d8d9dc;
+  --line-strong:#b9bbc0;
+  --line-input:#8d9098;
+  --tma:#1b1d21;
+  --tma-2:#24272c;
+  --tma-hlbka:#0e0f12;
+  --na-tme:#e9eaec;
+  --na-tme-muted:#a2a6ae;
+  --na-tme-line:#33373e;
+  --akcent:#e05a2b;
+  --akcent-hover:#c44a1f;
+  --akcent-tmavy:#a63c15;
+  --akcent-hlbky:#7d2c0e;
+  --akcent-svetly:#f5895f;
+  --na-akcente:#1a0d06;
+  --karta-pas:linear-gradient(90deg,#a63c15,#e05a2b);
+  --ikona-bg:rgba(166,60,21,.09);
+  --ikona-line:rgba(166,60,21,.24);
+  --focus-tien:rgba(166,60,21,.2);
+  --znacka-bg:#e05a2b;
+  --znacka-tag-bg:rgba(224,90,43,.13);
+  --znacka-tag-line:rgba(224,90,43,.32);
+  --suhrn-bg:linear-gradient(165deg,#24272c,#1b1d21);
+  --form-vstup-bg:rgba(0,0,0,.32);
+  --hero-bg:radial-gradient(950px 460px at 78% -8%,rgba(224,90,43,.16),transparent 60%),linear-gradient(168deg,#1b1d21 0%,#24272c 52%,#0e0f12 100%);
+  --hero-vzor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M-10 50L50 -10M0 60L60 0M10 70L70 10' stroke='%23ffffff' stroke-opacity='.045' stroke-width='8'/%3E%3C/svg%3E");
+  --sipka-select:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%235f636c'/%3E%3C/svg%3E");
+  --sipka-select-tma:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23a2a6ae'/%3E%3C/svg%3E");
+  --hero-ink:#a2a6ae;
+  --hero-nadpis:#ffffff;
+  --hero-zvyraznenie:#e05a2b;
+  --hero-line:#33373e;
+  --hlavicka-bg:rgba(27,29,33,.94);
+  --hlavicka-ink:#e9eaec;
+  --hlavicka-ink-hover:#ffffff;
+  --hlavicka-muted:#a2a6ae;
+  --hlavicka-line:#33373e;
+  --nav-btn-bg:rgba(255,255,255,.03);
+  --nav-hover-bg:rgba(255,255,255,.07);
+  --nav-drop-bg:#24272c;
+
+  --focus:var(--akcent-tmavy);
+  --bar-h:38px;
+  --head-h:66px;
+
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+  --sans:system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + var(--head-h) + 14px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+body{margin:0;background:var(--paper);color:var(--ink-body);font-family:var(--sans);font-size:16.5px;line-height:1.68;-webkit-tap-highlight-color:transparent}
+
+h1,h2,h3,h4{color:var(--ink);line-height:1.15;margin:0;font-weight:700;letter-spacing:-.018em}
+h1,h2{font-family:var(--sans)}
+h1{font-size:clamp(34px,6vw,60px)}
+h2{font-size:clamp(26px,3.5vw,40px)}
+h3{font-size:clamp(18px,2vw,22px)}
+h4{font-size:16px}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--akcent-tmavy);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--akcent-hlbky)}
+ul,ol{margin:0;padding:0}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}
+
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+@media (max-width:640px){.wrap{width:min(1180px,100% - 28px)}}
+
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--tma);color:var(--na-tme);padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none}
+.skip:focus{left:10px;top:10px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- pásik ukážky ---------- */
+.demo-bar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;background:var(--tma-hlbka);color:var(--na-tme-muted);padding:9px 16px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.demo-bar a{color:var(--akcent);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.demo-bar a:hover{color:var(--akcent-svetly)}
+.demo-bar .sep{color:var(--na-tme-line)}
+.demo-bar .bar-tag{background:var(--akcent);color:var(--na-akcente);border-radius:999px;padding:3px 10px;letter-spacing:.1em}
+.demo-bar .bar-long{color:var(--na-tme-muted);text-transform:none;letter-spacing:.02em;font-size:12px}
+@media (max-width:520px){.demo-bar{font-size:10.5px;letter-spacing:.06em;gap:6px 10px;padding:7px 12px}.demo-bar .bar-long{display:none}}
+
+/* ---------- hlavička ---------- */
+.top{position:sticky;top:0;z-index:50;background:var(--hlavicka-bg);backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--hlavicka-line)}
+.top-in{display:flex;align-items:center;gap:18px;min-height:var(--head-h)}
+.brand{display:flex;align-items:center;gap:11px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;margin-right:auto}
+.brand:hover{color:var(--hlavicka-ink-hover)}
+.brand-mark{width:39px;height:39px;flex:none;border-radius:10px;background:var(--znacka-bg);display:grid;place-items:center}
+.brand-mark svg{width:22px;height:22px}
+.brand b{display:block;font-size:17px;line-height:1.15;font-family:var(--sans)}
+.brand small{display:block;font-size:11.5px;font-weight:600;color:var(--hlavicka-muted);letter-spacing:.05em;text-transform:uppercase}
+
+.nav-toggle{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+.nav-btn{display:none;align-items:center;gap:8px;cursor:pointer;color:var(--hlavicka-ink);border:1px solid var(--hlavicka-line);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:600;background:var(--nav-btn-bg)}
+.nav-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}
+.nav-btn:hover{border-color:var(--akcent);color:var(--akcent)}
+
+.hlavna-nav{display:flex;align-items:center;gap:2px}
+.hlavna-nav a{color:var(--hlavicka-muted);text-decoration:none;font-size:14px;font-weight:600;padding:8px 11px;border-radius:8px;white-space:nowrap}
+.hlavna-nav a:hover{color:var(--akcent);background:var(--nav-hover-bg)}
+
+.top-act{display:flex;align-items:center;gap:10px}
+.top-tel{display:inline-flex;align-items:center;gap:8px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;font-size:15px;white-space:nowrap}
+.top-tel svg{width:18px;height:18px;fill:var(--akcent)}
+.top-tel:hover{color:var(--akcent)}
+
+@media (max-width:1080px){
+  .nav-btn{display:inline-flex}
+  .hlavna-nav{position:absolute;left:0;right:0;top:100%;display:block;background:var(--nav-drop-bg);border-bottom:1px solid var(--hlavicka-line);padding:10px 20px 18px;max-height:0;overflow:hidden;visibility:hidden}
+  .nav-toggle:checked ~ .hlavna-nav{max-height:78vh;overflow:auto;visibility:visible;padding-block:14px 20px}
+  .hlavna-nav a{display:block;padding:11px 8px;border-bottom:1px solid var(--hlavicka-line);border-radius:0;font-size:15px}
+  .hlavna-nav a:last-child{border-bottom:0}
+}
+@media (max-width:720px){.top-tel span{display:none}}
+@media (max-width:420px){.brand small{display:none}}
+
+/* ---------- tlačidlá ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid transparent;border-radius:10px;padding:12.5px 22px;font-size:15px;font-weight:700;font-family:inherit;text-decoration:none;cursor:pointer;line-height:1.2;transition:transform .12s ease,background .16s ease,border-color .16s ease,color .16s ease}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:18px;height:18px;fill:currentColor;flex:none}
+.btn-primary{background:var(--akcent);color:var(--na-akcente);border-color:var(--akcent)}
+.btn-primary:hover{background:var(--akcent-hover);border-color:var(--akcent-hover);color:var(--na-akcente)}
+.btn-line{background:transparent;color:var(--na-tme);border-color:rgba(255,255,255,.28)}
+.btn-line:hover{border-color:var(--akcent);color:var(--akcent)}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--akcent-tmavy);color:var(--akcent-tmavy)}
+.btn-tmavy{background:var(--tma);color:var(--na-tme);border-color:var(--tma)}
+.btn-tmavy:hover{background:var(--tma-2);border-color:var(--tma-2);color:#fff}
+.btn-lg{padding:15px 26px;font-size:16px}
+
+/* ---------- sekcie ---------- */
+section{padding:clamp(52px,7vw,90px) 0}
+.on-dark{background:var(--tma);color:var(--na-tme-muted)}
+.on-dark h2,.on-dark h3,.on-dark h4{color:var(--na-tme)}
+.on-dark a{color:var(--akcent)}
+.on-dark a:hover{color:var(--akcent-svetly)}
+.alt{background:var(--surface-3)}
+
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--akcent-tmavy);margin:0 0 14px}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--akcent-tmavy);border-radius:2px}
+.on-dark .eyebrow{color:var(--akcent)}
+.on-dark .eyebrow::before{background:var(--akcent)}
+
+.sec-head{max-width:750px;margin-bottom:clamp(28px,4vw,44px)}
+.sec-head p{font-size:clamp(16.5px,1.6vw,18.5px);color:var(--muted);margin-top:14px}
+.on-dark .sec-head p{color:var(--na-tme-muted)}
+
+.reveal{opacity:1;transform:none}
+.js-reveal .reveal{opacity:0;transform:translateY(18px)}
+.js-reveal .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,.7,.3,1)}
+@media (prefers-reduced-motion: reduce){.js-reveal .reveal{opacity:1;transform:none;transition:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;background:var(--hero-bg);color:var(--hero-ink);padding:clamp(44px,6vw,78px) 0 clamp(50px,6.5vw,90px)}
+.hero::before{content:"";position:absolute;inset:0;background-image:var(--hero-vzor);opacity:.9;pointer-events:none}
+.hero .wrap{position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(30px,4vw,58px);align-items:center}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+.hero h1{color:var(--hero-nadpis);margin-bottom:20px}
+.hero h1 em{font-style:var(--sans);color:var(--hero-zvyraznenie)}
+.hero-lead{font-size:clamp(17px,1.9vw,20px);color:var(--hero-ink);max-width:58ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:32px;padding-top:24px;border-top:1px solid var(--hero-line)}
+.hero-facts div{min-width:116px}
+.hero-facts b{display:block;color:var(--hero-nadpis);font-size:24px;line-height:1.2;letter-spacing:-.02em;font-family:var(--sans)}
+.hero-facts span{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--hero-ink)}
+
+/* ---------- karty ---------- */
+.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:18px}
+.karta{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 24px 24px;overflow:hidden;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.karta:hover{border-color:var(--akcent-tmavy);transform:translateY(-3px);box-shadow:0 18px 40px -28px rgba(0,0,0,.4)}
+.karta::before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:var(--karta-pas);transform:scaleX(0);transform-origin:left;transition:transform .28s ease}
+.karta:hover::before{transform:scaleX(1)}
+.karta-ikona{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;background:var(--ikona-bg);border:1px solid var(--ikona-line)}
+.karta-ikona svg{width:23px;height:23px;fill:none;stroke:var(--akcent-tmavy);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.karta h3{margin-bottom:9px}
+.karta p{color:var(--muted);font-size:15.5px}
+.karta-cena{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);background:var(--ikona-bg);border-radius:7px;padding:5px 11px;font-weight:600}
+
+/* ---------- tabuľka ---------- */
+.tab-obal{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+caption{text-align:left;padding:16px 20px 0;color:var(--muted);font-size:13.5px}
+th,td{padding:13px 20px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-3)}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono);font-size:14px;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-3)}
+td b{color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+/* ---------- kroky ---------- */
+.kroky{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:20px;counter-reset:k}
+.krok{position:relative;padding-top:22px;border-top:2px solid var(--line);counter-increment:k}
+.krok::before{content:counter(k,decimal-leading-zero);position:absolute;top:-13px;left:0;background:var(--paper);padding-right:12px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--akcent-tmavy);letter-spacing:.06em}
+.alt .krok::before{background:var(--surface-3)}
+.krok h3{font-size:18px;margin-bottom:8px}
+.krok p{color:var(--muted);font-size:15px}
+
+/* ---------- formulárové prvky (spoločné pre interakcie) ---------- */
+.pole{margin-bottom:22px}
+.pole:last-child{margin-bottom:0}
+.pole > .lbl{display:block;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:11px}
+.pole .hint{font-size:13.5px;color:var(--muted);margin:-4px 0 11px}
+
+.volby{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:9px}
+.volba{position:relative}
+.volba input{position:absolute;opacity:0;width:0;height:0}
+.volba span{display:block;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;cursor:pointer;background:var(--surface);font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.35;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.volba span small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:3px}
+.volba input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg);color:var(--akcent-hlbky)}
+.volba input:checked + span small{color:var(--akcent-hlbky)}
+.volba input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.volba span:hover{border-color:var(--line-input)}
+
+.doplnky{display:grid;gap:9px}
+.dopl{position:relative}
+.dopl input{position:absolute;opacity:0;width:0;height:0}
+.dopl span{display:flex;align-items:flex-start;gap:12px;cursor:pointer;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;background:var(--surface);font-size:14.5px;color:var(--ink);transition:border-color .15s ease,background .15s ease}
+.dopl span::before{content:"";flex:none;width:19px;height:19px;margin-top:2px;border-radius:5px;border:1.5px solid var(--line-input);background:var(--surface);background-position:center;background-repeat:no-repeat;background-size:14px}
+.dopl input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg)}
+.dopl input:checked + span::before{border-color:var(--akcent-tmavy);background-color:var(--akcent-tmavy);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 6L9 17l-5-5' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.dopl input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.dopl b{display:block;font-weight:700}
+.dopl small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.dopl .p{margin-left:auto;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);font-weight:700;white-space:nowrap;padding-left:10px}
+
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date],select,textarea{width:100%;font-family:inherit;font-size:15.5px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line-input);border-radius:10px;padding:12px 14px;line-height:1.4}
+textarea{min-height:108px;resize:vertical}
+select{appearance:none;background-image:var(--sipka-select);background-repeat:no-repeat;background-position:right 10px center;background-size:22px;padding-right:38px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--akcent-tmavy);box-shadow:0 0 0 3px var(--focus-tien)}
+
+.rozsah-riadok{display:flex;align-items:center;gap:16px}
+.rozsah-riadok input[type=range]{flex:1;accent-color:var(--akcent-tmavy);height:26px}
+.rozsah-hod{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--ink);min-width:104px;text-align:right}
+
+/* ---------- súhrn (pravý panel interakcií) ---------- */
+.kalk{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:clamp(20px,3vw,36px);align-items:start}
+@media (max-width:920px){.kalk{grid-template-columns:1fr}}
+.kalk-panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,32px)}
+.suhrn{position:sticky;top:calc(var(--bar-h) + var(--head-h) + 16px);background:var(--suhrn-bg);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px);color:var(--na-tme-muted);box-shadow:0 26px 60px -34px rgba(0,0,0,.7)}
+@media (max-width:920px){.suhrn{position:static}}
+.suhrn h3{color:#fff;margin-bottom:6px}
+.suhrn-note{font-size:13.5px;color:var(--na-tme-muted);margin-bottom:20px}
+.suhrn-riadky{border-top:1px solid var(--na-tme-line);margin-bottom:18px}
+.suhrn-riadok{display:flex;gap:14px;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--na-tme-line);font-size:14.5px}
+.suhrn-riadok .k{color:var(--na-tme-muted)}
+.suhrn-riadok .v{color:#fff;font-weight:600;text-align:right;font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.suhrn-spolu{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:16px 0 4px}
+.suhrn-spolu .k{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted)}
+.suhrn-spolu .v{font-size:clamp(28px,4vw,38px);font-weight:800;color:var(--akcent);letter-spacing:-.025em;line-height:1}
+.suhrn-cas{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid var(--na-tme-line);font-size:14px}
+.suhrn-cas svg{width:17px;height:17px;fill:var(--akcent);flex:none;margin-top:3px}
+.suhrn-cas b{color:#fff}
+.suhrn .btn{width:100%;margin-top:20px}
+.suhrn-disk{font-size:12.5px;color:var(--na-tme-muted);margin-top:14px;line-height:1.55}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;gap:12px;max-width:900px}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.faq-item summary{cursor:pointer;list-style:none;padding:19px 54px 19px 22px;position:relative;font-weight:700;color:var(--ink);font-size:16.5px;line-height:1.45}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"";position:absolute;right:22px;top:50%;width:13px;height:13px;margin-top:-8px;border-right:2.2px solid var(--akcent-tmavy);border-bottom:2.2px solid var(--akcent-tmavy);transform:rotate(45deg);transition:transform .2s ease}
+.faq-item[open] summary::after{transform:rotate(-135deg);margin-top:-3px}
+.faq-item summary:hover{color:var(--akcent-tmavy)}
+.faq-telo{padding:0 22px 20px;color:var(--muted);font-size:15.5px}
+.faq-telo p:first-child{margin-top:-4px}
+
+/* ---------- kontakt ---------- */
+.kont-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,3.5vw,46px)}
+@media (max-width:860px){.kont-grid{grid-template-columns:1fr}}
+.kont-list{list-style:none;display:grid;gap:18px;margin-top:24px}
+.kont-list li{display:flex;gap:14px;align-items:flex-start}
+.kont-list svg{width:21px;height:21px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.kont-list .k{display:block;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:2px}
+.kont-list a,.kont-list .v{color:#fff;font-size:16.5px;font-weight:600;text-decoration:none}
+.kont-list a:hover{color:var(--akcent)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-obal{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.form-obal label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--na-tme);margin-bottom:8px}
+.form-obal input,.form-obal select,.form-obal textarea{background:var(--form-vstup-bg);border-color:var(--na-tme-line);color:var(--na-tme)}
+.form-obal input::placeholder,.form-obal textarea::placeholder{color:var(--na-tme-muted)}
+.form-obal input:focus,.form-obal select:focus,.form-obal textarea:focus{border-color:var(--akcent);box-shadow:0 0 0 3px var(--focus-tien)}
+.form-obal select{background-image:var(--sipka-select-tma)}
+.form-note{font-size:13px;color:var(--na-tme-muted);margin-top:14px}
+.kont-pozn{margin-top:26px;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);font-size:14px;line-height:1.6;color:var(--na-tme-muted)}
+.kont-pozn strong{display:block;margin-top:8px;color:var(--na-tme)}
+.kont-pozn a{font-weight:700}
+
+.hlaska{display:none;margin-top:16px;border-radius:11px;padding:15px 18px;font-size:15px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.26);color:var(--na-tme)}
+.hlaska.vidno{display:block}
+.hlaska.chyba{background:rgba(220,90,70,.18);border-color:rgba(255,140,120,.44)}
+.hlaska b{color:#fff;display:block;margin-bottom:3px}
+
+/* ---------- autor ukážky ---------- */
+.author{background:var(--tma-hlbka);padding:clamp(52px,7vw,90px) 0;color:var(--na-tme-muted)}
+.author-in{width:min(1180px,100% - 40px);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(26px,4vw,52px);align-items:start}
+@media (max-width:900px){.author-in{grid-template-columns:1fr}}
+@media (max-width:640px){.author-in{width:min(1180px,100% - 28px)}}
+.author .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--akcent);background:var(--znacka-tag-bg);border:1px solid var(--znacka-tag-line);border-radius:999px;padding:5px 13px;margin-bottom:16px}
+.author h2{color:#fff;margin-bottom:14px}
+.author-lead{color:var(--na-tme-muted);font-size:16.5px;max-width:56ch}
+.author-claim{font-size:clamp(19px,2.4vw,25px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-top:18px;font-family:var(--sans)}
+.author-card{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.author-card h3{color:#fff;font-size:21px;margin-bottom:3px;font-family:var(--sans)}
+.author-card .role{display:block;font-size:13px;color:var(--na-tme-muted);letter-spacing:.05em;margin-bottom:20px}
+.author-list{list-style:none;display:grid;gap:16px}
+.author-list li{display:flex;gap:13px;align-items:flex-start}
+.author-list svg{width:20px;height:20px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.author-list .k{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:1px}
+.author-list a{color:#fff;font-weight:600;text-decoration:none;font-size:15.5px}
+.author-list a:hover{color:var(--akcent)}
+.author-list .sep{color:var(--na-tme-line);margin:0 7px}
+
+/* ---------- pätička ---------- */
+footer{background:var(--tma-hlbka);color:var(--na-tme-muted);padding:0 0 40px;font-size:14.5px;border-top:1px solid var(--na-tme-line)}
+.foot-cta{width:min(1180px,100% - 40px);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding:30px 0;border-bottom:1px solid var(--na-tme-line)}
+@media (max-width:640px){.foot-cta{width:min(1180px,100% - 28px)}}
+.foot-cta p{margin:0}
+.foot-cta-k{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.foot-cta-tel{color:#fff;font-size:25px;font-weight:800;text-decoration:none}
+.foot-cta-tel:hover{color:var(--akcent)}
+.foot-in{width:min(1180px,100% - 40px);margin:26px auto 0;display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;align-items:flex-start}
+@media (max-width:640px){.foot-in{width:min(1180px,100% - 28px)}}
+.foot-in p{margin:0}
+.foot-in strong{color:#fff}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot-links a{color:var(--na-tme-muted);text-decoration:none;font-size:14px}
+.foot-links a:hover{color:var(--akcent)}
+.foot-note{width:min(1180px,100% - 40px);margin:26px auto 0;padding-top:20px;border-top:1px solid var(--na-tme-line);font-size:13px;color:var(--na-tme-muted);line-height:1.6}
+@media (max-width:640px){.foot-note{width:min(1180px,100% - 28px)}}
+
+
+/* technický výkres namiesto fotografie */
+.vykres{position:relative;aspect-ratio:1/.9;border-radius:16px;overflow:hidden;background:#14161a;border:1px solid var(--na-tme-line);box-shadow:0 30px 70px -32px rgba(0,0,0,.85)}
+.vykres svg{position:absolute;inset:0;width:100%;height:100%}
+.vykres-tag{position:absolute;left:18px;bottom:18px;z-index:3;background:rgba(14,15,18,.86);border:1px solid var(--na-tme-line);border-radius:11px;padding:11px 15px;backdrop-filter:blur(6px)}
+.vykres-tag b{display:block;color:#fff;font-size:15px}
+.vykres-tag span{font-size:12px;color:var(--na-tme-muted);font-family:var(--mono)}
+
+/* náhľad brány v konfigurátore */
+.nahlad{background:#14161a;border:1px solid var(--na-tme-line);border-radius:14px;padding:18px;margin-bottom:20px}
+.nahlad svg{display:block;width:100%;height:auto}
+.nahlad-popis{font-family:var(--mono);font-size:12.5px;color:var(--na-tme-muted);margin-top:12px;text-align:center}
+
+</style>
+<script>
+(function(){
+  try{
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      document.documentElement.className += " js-reveal";
+    }
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===================== pásik ukážky ===================== -->
+<div class="demo-bar" role="note">
+  <span class="bar-tag">Ukážkový web</span>
+  <span class="bar-long">Takýto web pre vás spravím.</span>
+  <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+</div>
+
+<!-- ===================== hlavička ===================== -->
+<header class="top">
+  <div class="wrap top-in">
+    <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Zobraziť menu">
+    <a class="brand" href="#hero">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5l8.2 4.7v9.6L12 21.5 3.8 16.8V7.2z" fill="none" stroke="#1a0d06" stroke-width="2.2" stroke-linejoin="round"/></svg></span>
+      <span>
+        <b>Kovanie Šesťhran</b>
+        <small>Zámočníctvo · brány · zábradlia</small>
+      </span>
+    </a>
+
+    <nav class="hlavna-nav" id="hlavnaNav" aria-label="Hlavná navigácia">
+      <a href="#sluzby">Čo vyrábame</a>
+      <a href="#konfigurator">Naceniť bránu</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#dielna">Dielňa</a>
+      <a href="#postup">Postup</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="top-act">
+      <label class="nav-btn" for="navToggle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </label>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===================== hero ===================== -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Zákazková kovovýroba od roku 2003</p>
+        <h1>Brána, ktorá bude <em>stáť</em> aj o tridsať rokov.</h1>
+        <p class="hero-lead">Vyrábame na mieru: posuvné a krídlové brány, ploty, zábradlia, schodiská a prístrešky. Zameriame u vás, vyrobíme vo vlastnej dielni a namontujeme. Bez subdodávateľov.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="#konfigurator">Naceniť bránu</a>
+          <a class="btn btn-line btn-lg" href="#cennik">Pozrieť cenník</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>22</b><span>rokov v dielni</span></div>
+          <div><b>1 600+</b><span>hotových zákaziek</span></div>
+          <div><b>10 rokov</b><span>záruka proti hrdzi</span></div>
+          <div><b>0 €</b><span>zameranie</span></div>
+        </div>
+      </div>
+
+      <div class="vykres" aria-hidden="true">
+        <svg viewBox="0 0 400 360" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="kov" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#5c6169"/><stop offset=".5" stop-color="#9aa1ab"/>
+              <stop offset="1" stop-color="#4a4f57"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#33373e" stroke-width="1" fill="none">
+            <path d="M0 40h400M0 80h400M0 120h400M0 160h400M0 200h400M0 240h400M0 280h400M0 320h400"/>
+            <path d="M40 0v360M80 0v360M120 0v360M160 0v360M200 0v360M240 0v360M280 0v360M320 0v360M360 0v360"/>
+          </g>
+          <!-- kótovacie čiary -->
+          <g stroke="#e05a2b" stroke-width="1.4" fill="none">
+            <path d="M56 78h268M56 74v8M324 74v8"/>
+            <path d="M40 96v186M36 96h8M36 282h8"/>
+          </g>
+          <text x="180" y="68" fill="#f5895f" font-family="monospace" font-size="14">4 000 mm</text>
+          <text x="8" y="196" fill="#f5895f" font-family="monospace" font-size="14" transform="rotate(-90 14 196)">1 800</text>
+          <!-- rám brány -->
+          <rect x="56" y="96" width="268" height="186" fill="none" stroke="url(#kov)" stroke-width="7"/>
+          <!-- výplň zvislá -->
+          <g stroke="url(#kov)" stroke-width="4">
+            <path d="M84 110v158M112 110v158M140 110v158M168 110v158M196 110v158M224 110v158M252 110v158M280 110v158"/>
+          </g>
+          <path d="M56 190h268" stroke="url(#kov)" stroke-width="5"/>
+          <!-- vodiaca lišta a koliesko -->
+          <path d="M40 294h340" stroke="#5c6169" stroke-width="6"/>
+          <circle cx="96" cy="290" r="10" fill="none" stroke="#e05a2b" stroke-width="3"/>
+          <circle cx="284" cy="290" r="10" fill="none" stroke="#e05a2b" stroke-width="3"/>
+          <!-- stĺpik -->
+          <rect x="336" y="86" width="18" height="208" fill="url(#kov)"/>
+        </svg>
+        <div class="vykres-tag">
+          <b>Posuvná brána, samonosná</b>
+          <span>4 000 × 1 800 mm · pozink + komaxit RAL 7016</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== sluzby ===================== -->
+<section id="sluzby">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Čo vyrábame</p>
+      <h2>Všetko, čo sa dá zvariť z ocele</h2>
+      <p>Nemáme katalóg, z ktorého si vyberáte. Prídeme, zameriame a vyrobíme presne to, čo sa na vaše miesto hodí — aj keď je krivé, v svahu alebo netypické.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 20V8h18v12"/><path d="M7 8v12M11 8v12M15 8v12M19 8v12M3 14h18"/></svg></div>
+        <h3>Posuvné a krídlové brány</h3>
+        <p>Samonosné aj koľajnicové, s pohonom alebo bez. Vyrábame aj do svahu, kde bežná brána nezavrie — vtedy sa robí zdvíhací mechanizmus.</p>
+        <span class="karta-cena">od 980 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M4 21V6M20 21V6M4 9h16M4 14h16M4 19h16M12 6v15"/></svg></div>
+        <h3>Ploty a plotové výplne</h3>
+        <p>Ťahokov, tyčovina, žalúziové lamely alebo kombinácia s drevom. Vyrábame v poliach, takže sa dajú dopĺňať aj po rokoch.</p>
+        <span class="karta-cena">od 92 €/bm</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 18h18M6 18V9M18 18V9M3 9h18M9 18v-5M15 18v-5"/></svg></div>
+        <h3>Zábradlia a madlá</h3>
+        <p>Na schody, terasy aj balkóny. Robíme aj nerezové a kombinácie so sklom. Dodržíme výšku aj medzery podľa normy, aby to prešlo kolaudáciou.</p>
+        <span class="karta-cena">od 120 €/bm</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 21V3M3 21h18M6 18h4v3M10 15h4v6M14 12h4v9"/></svg></div>
+        <h3>Oceľové schodiská</h3>
+        <p>Priame, točité aj vonkajšie požiarne. Stupne z ryhovaného plechu, roštu alebo s drevenými nášľapmi podľa toho, kam idú.</p>
+        <span class="karta-cena">od 1 400 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M2 12l10-7 10 7"/><path d="M5 12v9M19 12v9M5 21h14"/></svg></div>
+        <h3>Prístrešky a pergoly</h3>
+        <p>Na auto, terasu aj nad vchod. Zastrešenie polykarbonátom alebo trapézovým plechom, kotvenie počítame na sneh podľa oblasti.</p>
+        <span class="karta-cena">od 1 250 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 9h16M4 14h16M9 4v16M14 4v16"/></svg></div>
+        <h3>Mreže a zabezpečenie</h3>
+        <p>Na okná, pivnice aj výklady. Vieme ich spraviť tak, aby sa zvnútra dali otvoriť — to je vec, na ktorú sa pri požiarnej kontrole pýtajú.</p>
+        <span class="karta-cena">od 145 €/m²</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== konfigurátor brány ===================== -->
+<section id="konfigurator" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Orientačná cena</p>
+      <h2>Naceňte si bránu</h2>
+      <p>Naklikajte rozmery a výbavu. Cena aj náhľad sa menia hneď. Presnú ponuku dáme po
+      zameraní — býva rovnaká alebo nižšia, keď sú stĺpiky už hotové.</p>
+    </div>
+
+    <div class="kalk">
+      <div class="kalk-panel reveal">
+        <div class="pole">
+          <span class="lbl" id="l-typ">Typ brány</span>
+          <div class="volby" role="radiogroup" aria-labelledby="l-typ">
+            <label class="volba"><input type="radio" name="typ" value="posuvna" data-zaklad="980" data-koef="1" checked><span>Posuvná<small>samonosná, pojazd bokom</small></span></label>
+            <label class="volba"><input type="radio" name="typ" value="kridlova" data-zaklad="820" data-koef="0.92"><span>Krídlová<small>dve krídla dovnútra</small></span></label>
+            <label class="volba"><input type="radio" name="typ" value="jednokridlova" data-zaklad="540" data-koef="0.7"><span>Jednokrídlová<small>bránka pre peších</small></span></label>
+          </div>
+        </div>
+
+        <div class="pole">
+          <label class="lbl" for="sirka">Šírka vjazdu</label>
+          <div class="rozsah-riadok">
+            <input type="range" id="sirka" min="1000" max="7000" step="100" value="4000" aria-describedby="sirka-hod">
+            <output class="rozsah-hod" id="sirka-hod" for="sirka">4 000 mm</output>
+          </div>
+        </div>
+
+        <div class="pole">
+          <label class="lbl" for="vyska">Výška brány</label>
+          <div class="rozsah-riadok">
+            <input type="range" id="vyska" min="1000" max="2400" step="100" value="1800" aria-describedby="vyska-hod">
+            <output class="rozsah-hod" id="vyska-hod" for="vyska">1 800 mm</output>
+          </div>
+        </div>
+
+        <div class="pole">
+          <span class="lbl" id="l-vypln">Výplň</span>
+          <div class="volby" role="radiogroup" aria-labelledby="l-vypln">
+            <label class="volba"><input type="radio" name="vypln" value="tycovina" data-priplatok="0" checked><span>Tyčovina<small>klasické zvislé prúty</small></span></label>
+            <label class="volba"><input type="radio" name="vypln" value="lamely" data-priplatok="85"><span>Vodorovné lamely<small>moderný vzhľad, nevidno dnu</small></span></label>
+            <label class="volba"><input type="radio" name="vypln" value="tahokov" data-priplatok="120"><span>Ťahokov<small>priehľadný, pevný</small></span></label>
+            <label class="volba"><input type="radio" name="vypln" value="drevo" data-priplatok="165"><span>S drevom<small>smrekové latky v ráme</small></span></label>
+          </div>
+        </div>
+
+        <div class="pole">
+          <span class="lbl" id="l-povrch">Povrchová úprava</span>
+          <div class="volby" role="radiogroup" aria-labelledby="l-povrch">
+            <label class="volba"><input type="radio" name="povrch" value="zaklad" data-koef="1" checked><span>Základný náter<small>na dofarbenie svojpomocne</small></span></label>
+            <label class="volba"><input type="radio" name="povrch" value="komaxit" data-koef="1.18"><span>Komaxit<small>vypaľovaná farba, RAL podľa výberu</small></span></label>
+            <label class="volba"><input type="radio" name="povrch" value="pozink" data-koef="1.34"><span>Pozink + komaxit<small>10 rokov záruka proti hrdzi</small></span></label>
+          </div>
+        </div>
+
+        <div class="pole">
+          <span class="lbl">Výbava</span>
+          <div class="doplnky">
+            <label class="dopl"><input type="checkbox" name="dopl" value="pohon" data-cena="640"><span><b>Elektrický pohon<span class="sr"> — 640 €</span></b><small>vrátane dvoch diaľkových ovládačov</small><span class="p">640 €</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="fotobunky" data-cena="120"><span><b>Fotobunky a maják<span class="sr"> — 120 €</span></b><small>brána sa zastaví, keď niečo prejde</small><span class="p">120 €</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="stlpiky" data-cena="380"><span><b>Nové stĺpiky a základy<span class="sr"> — 380 €</span></b><small>keď ešte nestoja alebo sú zhnité</small><span class="p">380 €</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="branka" data-cena="490"><span><b>Bránka pre peších<span class="sr"> — 490 €</span></b><small>v rovnakom dizajne, 1 000 mm</small><span class="p">490 €</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="videovratnik" data-cena="290"><span><b>Videovrátnik<span class="sr"> — 290 €</span></b><small>zvonček s kamerou a otváraním</small><span class="p">290 €</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="montaz" data-cena="0" data-percento="12"><span><b>Montáž u vás<span class="sr"> — 12 % z ceny</span></b><small>vrátane osadenia a nastavenia</small><span class="p">12 %</span></span></label>
+          </div>
+        </div>
+      </div>
+
+      <aside class="suhrn reveal" aria-live="polite">
+        <div class="nahlad">
+          <svg id="nahladSvg" viewBox="0 0 320 180" role="img" aria-label="Náhľad brány podľa zvolených rozmerov"></svg>
+          <p class="nahlad-popis" id="nahladPopis">—</p>
+        </div>
+
+        <h3>Orientačná cena</h3>
+        <p class="suhrn-note">Prepočítava sa hneď, ako niečo zmeníte.</p>
+
+        <div class="suhrn-riadky" id="suhrnRiadky"></div>
+
+        <div class="suhrn-spolu">
+          <span class="k">Spolu bez DPH</span>
+          <span class="v" id="cenaSpolu">0 €</span>
+        </div>
+
+        <p class="suhrn-cas">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span>Výroba: <b id="odhadCas">—</b></span>
+        </p>
+
+        <a class="btn btn-primary" href="#kontakt">Objednať zameranie zadarmo</a>
+        <p class="suhrn-disk">Cena je orientačná a bez DPH. Záväznú ponuku dáme po zameraní,
+        zvyčajne do troch pracovných dní.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== cenník ===================== -->
+<section id="cennik">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Cenník</p>
+      <h2>Ceny, od ktorých sa odrážame</h2>
+      <p>Kovovýroba na mieru sa presne nacení až po zameraní. Toto sú sadzby, z ktorých vychádzame — pri väčších zákazkách klesajú.</p>
+    </div>
+
+    <div class="tab-obal reveal">
+      <table>
+        <caption>Platné od 1. januára 2026. Ceny sú bez DPH.</caption>
+        <thead>
+          <tr><th scope="col">Položka</th><th scope="col">Rozsah</th><th scope="col">Cena</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Posuvná brána samonosná</b><small>do 4 m šírky, základný náter, bez pohonu</small></td><td>za kus</td><td>od 980 €</td></tr>
+          <tr><td><b>Krídlová brána</b><small>dve krídla do 4 m spolu, základný náter</small></td><td>za kus</td><td>od 820 €</td></tr>
+          <tr><td><b>Bránka pre peších</b><small>1 000 mm, v dizajne brány</small></td><td>za kus</td><td>od 490 €</td></tr>
+          <tr><td><b>Plotové pole</b><small>výška do 1,5 m, tyčovina</small></td><td>za bežný meter</td><td>od 92 €</td></tr>
+          <tr><td><b>Zábradlie</b><small>vnútorné aj vonkajšie, oceľ</small></td><td>za bežný meter</td><td>od 120 €</td></tr>
+          <tr><td><b>Zábradlie nerez so sklom</b><small>vrátane kotvenia</small></td><td>za bežný meter</td><td>od 260 €</td></tr>
+          <tr><td><b>Elektrický pohon brány</b><small>vrátane dvoch ovládačov a montáže</small></td><td>za sadu</td><td>640 €</td></tr>
+          <tr><td><b>Komaxit</b><small>vypaľovaná farba, odtieň RAL podľa výberu</small></td><td>príplatok</td><td>+18 %</td></tr>
+          <tr><td><b>Žiarový pozink + komaxit</b><small>10 rokov záruka proti prehrdzaveniu</small></td><td>príplatok</td><td>+34 %</td></tr>
+          <tr><td><b>Montáž u zákazníka</b><small>osadenie, nastavenie a odovzdanie</small></td><td>z ceny diela</td><td>12 %</td></tr>
+          <tr><td><b>Zameranie</b><small>v okruhu 30 km od dielne</small></td><td>za výjazd</td><td>0 €</td></tr>
+          <tr><td><b>Zvarová oprava</b><small>dovezené do dielne</small></td><td>za hodinu</td><td>28 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== dielňa ===================== -->
+<section id="dielna" class="on-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Dielňa</p>
+      <h2>Čo máme doma a čo to pre vás znamená</h2>
+      <p>Všetko robíme u seba. Neposielame prácu ďalej, takže termín, ktorý sľúbime, závisí len
+      od nás — a keď treba niečo predrobiť, spravíme to hneď.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M4 20l7-7M9 5l10 10M13 3l8 8-3 3-8-8z"/></svg></div>
+        <h3>CNC plazma do 20 mm</h3>
+        <p>Ornament, číslo domu aj netypický kus vypálime z plechu presne podľa výkresu. Pri
+        opakovaných dielcoch je to lacnejšie než ručné rezanie.</p>
+        <span class="karta-cena">vlastná</span>
+      </article>
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 17h18M5 17V9l7-4 7 4v8"/><path d="M9 17v-4h6v4"/></svg></div>
+        <h3>Ohraňovací lis 3 m</h3>
+        <p>Ohyby robíme na jeden záťah, takže nemusíme diel skladať zo zvarených kusov. Menej
+        zvarov znamená menej miest, kde môže začať hrdza.</p>
+        <span class="karta-cena">vlastný</span>
+      </article>
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M12 2v6M9 5l3-3 3 3"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M4 13h16"/></svg></div>
+        <h3>Zváranie MIG aj TIG</h3>
+        <p>Bežnú oceľ zvárame MIG, nerez a hliník TIG. Zvary brúsime — na pohľadovej strane
+        po nich nezostane hrča, ktorú by ste videli po nalakovaní.</p>
+        <span class="karta-cena">certifikovaní zvárači</span>
+      </article>
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 20h18M6 20V8h12v12"/><path d="M9 12h6M9 16h6"/></svg></div>
+        <h3>Vlastný montážny tím</h3>
+        <p>Montujú tí istí ľudia, čo bránu vyrobili. Keď na mieste niečo nesedí, vedia to opraviť
+        rovno, nie až po druhom výjazde.</p>
+        <span class="karta-cena">bez subdodávok</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== postup ===================== -->
+<section id="postup" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ako to prebieha</p>
+      <h2>Päť krokov od telefonátu po montáž</h2>
+    </div>
+
+    <div class="kroky">
+      <div class="krok reveal">
+        <h3>Zavoláte alebo napíšete</h3>
+        <p>Stačia približné rozmery a fotka miesta. Z nej vidíme viac než z popisu.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Prídeme zamerať</h3>
+        <p>Zadarmo v okruhu tridsať kilometrov. Meriame aj sklon terénu — pri bráne to rozhoduje.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Dostanete ponuku</h3>
+        <p>Do troch pracovných dní, položkovito. Platí 30 dní a počas výroby sa nemení.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Vyrobíme</h3>
+        <p>V našej dielni, zvyčajne tri až päť týždňov podľa zákazky a povrchovej úpravy.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Namontujeme a nastavíme</h3>
+        <p>Vrátane osadenia a zaškolenia na pohon. Odovzdáme záručný list a návod.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Časté otázky</p>
+      <h2>Na čo sa nás pýtate najčastejšie</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq-item reveal">
+        <summary>Ako dlho sa čaká na bránu?</summary>
+        <div class="faq-telo"><p>Od zamerania zvyčajne tri až päť týždňov. Pri základnom nátere kratšie, pri pozinku a komaxite dlhšie — samotné žiarové zinkovanie robí externá firma a to je jediná vec, ktorú nemáme pod kontrolou. Termín vám povieme v ponuke a držíme ho.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Musia byť stĺpiky hotové pred zameraním?</summary>
+        <div class="faq-telo"><p>Nemusia, ale ak nie sú, zameriame a stĺpiky spravíme my — je to samostatná položka. Ak ich robíte sami, poviete vám pri zameraní presnú rozteč aj hĺbku základov. Toto sa oplatí prekonzultovať skôr, než sa betónuje.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Prečo je pozink drahší, keď brána aj tak dostane farbu?</summary>
+        <div class="faq-telo"><p>Lebo komaxit je len povrch — keď ho niečo poškriabe, oceľ pod ním začne hrdzavieť. Pri pozinkovanej bráne je pod farbou zinok, ktorý oceľ chráni aj po poškriabaní. Preto na ňu dávame desať rokov záruky a na samotný komaxit tri.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Zvládne pohon bránu, ktorá ide do svahu?</summary>
+        <div class="faq-telo"><p>Posuvná áno, ak je koľajnica vodorovná a svah rieši samotný vjazd. Krídlová do svahu nezavrie — vtedy sa robí buď zdvíhací záves, alebo sa krídla otvárajú von. Toto je presne dôvod, prečo chodíme zamerať osobne.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Robíte aj opravy toho, čo vyrobil niekto iný?</summary>
+        <div class="faq-telo"><p>Áno. Zvarové opravy, výmena kolies na posuvnej bráne, dovarenie prehrdzaveného rámu aj nastavenie pohonu. Účtujeme po hodinách. Len pri veľmi starých konštrukciách vám poctivo povieme, keď sa oprava už neoplatí.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Vystavíte faktúru na firmu?</summary>
+        <div class="faq-telo"><p>Áno, sme platiteľ DPH. Firmám fakturujeme so splatnosťou 14 dní. Pri zákazkách nad 3 000 € žiadame zálohu 40 % na materiál, zvyšok po odovzdaní.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kontakt ===================== -->
+<section id="kontakt" class="on-dark">
+  <div class="wrap">
+    <div class="kont-grid">
+      <div class="reveal">
+        <p class="eyebrow">Kontakt</p>
+        <h2>Ozvite sa</h2>
+        <p style="margin-top:14px">Zavolajte alebo napíšte rozmery. Zameranie u vás je zadarmo a v okruhu tridsať kilometrov ho nepočítame ani do ceny.</p>
+
+        <ul class="kont-list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="k">Dielňa</span><span class="v">Kováčska 27, Vzorové Mesto</span></div></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span class="k">Pracovný čas</span><span class="v">Po – Pi 7:00 – 16:00 &nbsp;·&nbsp; So po dohode</span></div></li>
+        </ul>
+
+        <p class="kont-pozn">Telefón a e-mail podniku tu zámerne nie sú — je to
+        ukážkový web vymysleného podniku a nechceme, aby niekto volal alebo písal
+        na cudzie číslo. Na skutočnom webe by tu boli vaše kontakty.
+        <strong>Ak máte záujem o takýto web, napíšte na
+        <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>.</strong></p>
+      </div>
+
+      <div class="form-obal reveal">
+        <form id="dopyt" novalidate>
+          <div class="form-grid">
+            <div>
+              <label for="f-meno">Meno alebo firma</label>
+              <input type="text" id="f-meno" name="meno" placeholder="Ján Vzorový" autocomplete="name" required>
+            </div>
+            <div>
+              <label for="f-tel">Telefón</label>
+              <input type="tel" id="f-tel" name="tel" placeholder="vaše telefónne číslo" autocomplete="tel" required>
+            </div>
+            <div class="full">
+              <label for="f-mail">E-mail</label>
+              <input type="email" id="f-mail" name="mail" placeholder="jan@example.sk" autocomplete="email">
+            </div>
+            <div>
+              <label for="f-typ">Čo potrebujete</label>
+              <select id="f-typ" name="typ">
+                <option>Posuvná brána</option>
+                <option>Krídlová brána</option>
+                <option>Plot</option>
+                <option>Zábradlie</option>
+                <option>Schodisko</option>
+                <option>Prístrešok alebo pergola</option>
+                <option>Mreže a zabezpečenie</option>
+                <option>Iná kovová konštrukcia</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-rozmer">Rozmery</label>
+              <input type="text" id="f-rozmer" name="rozmer" placeholder="4 000 × 1 800 mm">
+            </div>
+            <div class="full">
+              <label for="f-sprava">Popis zákazky</label>
+              <textarea id="f-sprava" name="sprava" placeholder="Posuvná brána na vjazd, svah asi 5 %, chceme pohon a diaľkové ovládanie. Stĺpiky už stoja."></textarea>
+            </div>
+          </div>
+          <div class="hero-cta" style="margin-top:20px">
+            <button type="submit" class="btn btn-primary btn-lg">Odoslať dopyt</button>
+          </div>
+          <p class="form-note">Ozveme sa do dvoch pracovných dní a dohodneme zameranie. Je zadarmo a nezáväzné.</p>
+          <p class="hlaska" id="hlaska" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== autor ukážky, skutočné údaje ===================== -->
+<aside class="author" id="autor" aria-labelledby="h-autor">
+  <div class="author-in">
+    <div>
+      <span class="tag">Autor ukážky, nie je súčasť podniku Kovanie Šesťhran</span>
+      <h2 id="h-autor">Páči sa vám tento web?</h2>
+      <p class="author-lead">Túto ukážku navrhol a naprogramoval Alex Poliak. Rovnaký web pripravím aj pre vašu dielňu — s vaším sortimentom a konfigurátorom, ktorý počíta podľa vašich sadzieb za meter.</p>
+      <p class="author-claim">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      <p class="author-lead" style="margin-top:14px">Konzultácia je zadarmo a nezáväzne. Poviete mi, čo má web robiť, a ja vám na to poviem cenu aj termín. Až potom sa rozhodujete.</p>
+      <div class="hero-cta" style="margin:22px 0 0">
+        <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať na apoliak@apoliak.online</a>
+        <a class="btn btn-line" href="https://apoliak.online" target="_blank" rel="noopener">Pozrieť apoliak.online</a>
+      </div>
+    </div>
+
+    <div class="author-card">
+      <h3>Alex Poliak</h3>
+      <span class="role">Návrh a programovanie webu</span>
+      <ul class="author-list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">E-mail</span><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">Podpora</span><a href="mailto:support@apoliak.online">support@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17"/></svg><div><span class="k">Web</span><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></div></li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<footer>
+  <div class="foot-cta">
+    <p><span class="foot-cta-k">Chcete takýto web pre svoj podnik?</span><a class="foot-cta-tel" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></p>
+    <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať Alexovi</a>
+  </div>
+  <div class="foot-in">
+    <p><strong>Kovanie Šesťhran</strong> — Zámočníctvo · brány · zábradlia, ukážkový web</p>
+    <nav class="foot-links" aria-label="Pätičková navigácia">
+      <a href="#sluzby">Čo vyrábame</a>
+      <a href="#konfigurator">Naceniť bránu</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#dielna">Dielňa</a>
+      <a href="#postup">Postup</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#hero">Hore</a>
+    </nav>
+  </div>
+  <div class="foot-in" style="margin-top:22px">
+    <p>Kováčska 27, Vzorové Mesto</p>
+    <p>Po – Pi 7:00 – 16:00 &nbsp;·&nbsp; So po dohode &nbsp;·&nbsp; Ne zatvorené</p>
+  </div>
+  <p class="vyzva-napiste" style="margin:0 0 18px;padding:16px 18px;border-radius:12px;background:rgba(127,127,127,.12);border:1px solid rgba(127,127,127,.28);font-size:15px;line-height:1.6"><strong>Chcete takýto web pre svoj podnik?</strong> Napíšte na <a href="mailto:apoliak@apoliak.online" style="font-weight:700">apoliak@apoliak.online</a> — ozvem sa do jedného pracovného dňa a prvý návrh máte do troch dní. Kontakty vymysleného podniku sú na tejto stránke zámerne vynechané.</p>
+
+  <p class="foot-note">Kovanie Šesťhran je vymyslený podnik. Táto stránka je ukážka práce, nie web existujúcej firmy. Ceny, otváracie hodiny, adresa aj kontakty podniku sú ilustratívne. Konfigurátor brány je predvádzacia funkcia so zjednodušeným modelom cien a nenahrádza cenovú ponuku po zameraní. Kontaktné údaje podniku sú zámerne vynechané, aby nikto nevolal ani nepísal na cudzie číslo či adresu. Ukážku navrhol a naprogramoval Alex Poliak — <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>, <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---------- lepkavá hlavička sadá presne pod pásik ukážky ---------- */
+  (function vyskaPasika() {
+    var bar = $(".demo-bar");
+    var head = $(".top");
+    function nastav() {
+      var korene = document.documentElement.style;
+      korene.removeProperty("--bar-h");
+      korene.removeProperty("--head-h");
+      if (bar) {
+        var hb = Math.round(bar.getBoundingClientRect().height);
+        if (hb > 0) { korene.setProperty("--bar-h", hb + "px"); }
+      }
+      if (head) {
+        var hh = Math.round(head.getBoundingClientRect().height);
+        if (hh > 0) { korene.setProperty("--head-h", hh + "px"); }
+      }
+    }
+    nastav();
+    window.addEventListener("resize", nastav);
+    window.addEventListener("orientationchange", nastav);
+    window.addEventListener("load", nastav);
+  })();
+
+  /* ---------- jemné prechody pri scrollovaní ---------- */
+  (function reveal() {
+    var bloky = $$(".reveal");
+    if (!bloky.length) { return; }
+    function ukazVsetko() { bloky.forEach(function (b) { b.classList.add("in"); }); }
+    var redukovane = false;
+    try { redukovane = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (redukovane || !("IntersectionObserver" in window)) { ukazVsetko(); return; }
+    var io = new IntersectionObserver(function (zaznamy) {
+      zaznamy.forEach(function (z) {
+        if (z.isIntersecting) { z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    bloky.forEach(function (b) { io.observe(b); });
+    window.setTimeout(ukazVsetko, 2500);
+  })();
+
+  /* ---------- menu ---------- */
+  (function menu() {
+    var prepinac = $("#navToggle");
+    if (!prepinac) { return; }
+    $$("#hlavnaNav a").forEach(function (a) {
+      a.addEventListener("click", function () { prepinac.checked = false; });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { prepinac.checked = false; }
+    });
+  })();
+
+  /* ---------- pomocné funkcie pre interakcie ---------- */
+  function eur(n) { return Math.round(n).toLocaleString("sk-SK") + " €"; }
+  function eur2(n) { return n.toFixed(2).replace(".", ",") + " €"; }
+
+  function pridajRiadok(kam, k, v) {
+    var r = document.createElement("div");
+    r.className = "suhrn-riadok";
+    var sk = document.createElement("span");
+    sk.className = "k";
+    sk.textContent = k;
+    var sv = document.createElement("span");
+    sv.className = "v";
+    sv.textContent = v;
+    r.appendChild(sk);
+    r.appendChild(sv);
+    kam.appendChild(r);
+  }
+
+  function zaskrtnuty(meno) { return $("input[name='" + meno + "']:checked"); }
+
+
+  /* ---------- konfigurátor brány ---------- */
+  (function konfigurator() {
+    var sirka    = $("#sirka");
+    var vyska    = $("#vyska");
+    var sirkaHod = $("#sirka-hod");
+    var vyskaHod = $("#vyska-hod");
+    var riadky   = $("#suhrnRiadky");
+    var cenaSpolu = $("#cenaSpolu");
+    var odhadCas = $("#odhadCas");
+    var svg      = $("#nahladSvg");
+    var popis    = $("#nahladPopis");
+    if (!sirka || !vyska || !riadky) { return; }
+
+    var NAZVY_TYP = { posuvna: "Posuvná brána", kridlova: "Krídlová brána", jednokridlova: "Jednokrídlová bránka" };
+    var NAZVY_VYPLN = { tycovina: "Tyčovina", lamely: "Vodorovné lamely", tahokov: "Ťahokov", drevo: "Výplň s drevom" };
+    var NAZVY_POVRCH = { zaklad: "Základný náter", komaxit: "Komaxit", pozink: "Pozink + komaxit" };
+    var NAZVY_DOPL = {
+      pohon: "Elektrický pohon", fotobunky: "Fotobunky a maják",
+      stlpiky: "Stĺpiky a základy", branka: "Bránka pre peších",
+      videovratnik: "Videovrátnik", montaz: "Montáž u vás"
+    };
+
+    function mm(n) { return n.toLocaleString("sk-SK") + " mm"; }
+
+    function kresliNahlad(s, v, vypln) {
+      /* náhľad sa škáluje tak, aby brána vždy vyplnila plochu podobne */
+      var W = 320, H = 180, okraj = 26;
+      var pomer = s / v;
+      var w = W - okraj * 2;
+      var h = w / pomer;
+      if (h > H - okraj * 2) { h = H - okraj * 2; w = h * pomer; }
+      var x = (W - w) / 2, y = (H - h) / 2;
+
+      var out = '<rect width="320" height="180" fill="#0e0f12"/>';
+      /* terén */
+      out += '<path d="M0 ' + (y + h + 8) + 'H320" stroke="#33373e" stroke-width="2"/>';
+      /* rám */
+      out += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h +
+             '" fill="none" stroke="#9aa1ab" stroke-width="4"/>';
+
+      /* výplň */
+      var i;
+      if (vypln === "lamely") {
+        var pocetL = Math.max(4, Math.round(h / 9));
+        for (i = 1; i < pocetL; i++) {
+          var yy = y + h / pocetL * i;
+          out += '<path d="M' + (x + 3) + ' ' + yy + 'H' + (x + w - 3) +
+                 '" stroke="#6d747e" stroke-width="3"/>';
+        }
+      } else if (vypln === "tahokov") {
+        out += '<rect x="' + (x + 4) + '" y="' + (y + 4) + '" width="' + (w - 8) + '" height="' +
+               (h - 8) + '" fill="url(#mriezka)" opacity=".85"/>';
+        out += '<defs><pattern id="mriezka" width="9" height="9" patternUnits="userSpaceOnUse">' +
+               '<path d="M0 4.5h9M4.5 0v9" stroke="#6d747e" stroke-width="1.4"/></pattern></defs>';
+      } else if (vypln === "drevo") {
+        var pocetD = Math.max(5, Math.round(w / 14));
+        for (i = 0; i < pocetD; i++) {
+          var xd = x + 5 + (w - 10) / pocetD * i;
+          out += '<rect x="' + xd + '" y="' + (y + 5) + '" width="' + ((w - 10) / pocetD - 3) +
+                 '" height="' + (h - 10) + '" fill="#8a5a2b" opacity=".8"/>';
+        }
+      } else {
+        var pocetT = Math.max(5, Math.round(w / 13));
+        for (i = 1; i < pocetT; i++) {
+          var xx = x + w / pocetT * i;
+          out += '<path d="M' + xx + ' ' + (y + 3) + 'V' + (y + h - 3) +
+                 '" stroke="#6d747e" stroke-width="2.6"/>';
+        }
+        out += '<path d="M' + x + ' ' + (y + h / 2) + 'H' + (x + w) +
+               '" stroke="#9aa1ab" stroke-width="3"/>';
+      }
+
+      /* kóty */
+      out += '<path d="M' + x + ' ' + (y - 10) + 'H' + (x + w) + 'M' + x + ' ' + (y - 14) + 'v8M' +
+             (x + w) + ' ' + (y - 14) + 'v8" stroke="#e05a2b" stroke-width="1.2" fill="none"/>';
+      out += '<path d="M' + (x - 10) + ' ' + y + 'V' + (y + h) + 'M' + (x - 14) + ' ' + y +
+             'h8M' + (x - 14) + ' ' + (y + h) + 'h8" stroke="#e05a2b" stroke-width="1.2" fill="none"/>';
+
+      svg.innerHTML = out;
+    }
+
+    function prepocitaj() {
+      var s = parseInt(sirka.value, 10);
+      var v = parseInt(vyska.value, 10);
+      if (sirkaHod) { sirkaHod.textContent = mm(s); }
+      if (vyskaHod) { vyskaHod.textContent = mm(v); }
+
+      var oTyp = zaskrtnuty("typ");
+      var oVypln = zaskrtnuty("vypln");
+      var oPovrch = zaskrtnuty("povrch");
+      if (!oTyp || !oVypln || !oPovrch) { return; }
+
+      var plocha = (s / 1000) * (v / 1000);          /* m² */
+      var zaklad = parseFloat(oTyp.getAttribute("data-zaklad"));
+      var koefTyp = parseFloat(oTyp.getAttribute("data-koef"));
+      var priplatokVypln = parseFloat(oVypln.getAttribute("data-priplatok"));
+      var koefPovrch = parseFloat(oPovrch.getAttribute("data-koef"));
+
+      /* základ pokrýva bránu do 7,2 m², nad to sa priplácajú metre */
+      var referencia = 7.2;
+      var cenaZakladu = zaklad * koefTyp;
+      if (plocha > referencia) {
+        cenaZakladu += (plocha - referencia) * 165 * koefTyp;
+      }
+      var cenaVyplne = plocha * priplatokVypln;
+      var telo = (cenaZakladu + cenaVyplne) * koefPovrch;
+
+      riadky.innerHTML = "";
+      pridajRiadok(riadky, NAZVY_TYP[oTyp.value] + " · " + plocha.toFixed(1).replace(".", ",") + " m²", eur(cenaZakladu * koefPovrch));
+      if (priplatokVypln > 0) {
+        pridajRiadok(riadky, NAZVY_VYPLN[oVypln.value], eur(cenaVyplne * koefPovrch));
+      }
+      if (oPovrch.value !== "zaklad") {
+        pridajRiadok(riadky, NAZVY_POVRCH[oPovrch.value], "v cene vyššie");
+      }
+
+      var spolu = telo;
+      var tyzdne = 3;
+
+      $$("input[name='dopl']:checked").forEach(function (d) {
+        if (d.getAttribute("data-percento")) { return; }
+        var c = parseFloat(d.getAttribute("data-cena"));
+        spolu += c;
+        pridajRiadok(riadky, NAZVY_DOPL[d.value], eur(c));
+        if (d.value === "pohon" || d.value === "branka") { tyzdne += 1; }
+      });
+
+      var montaz = $("input[name='dopl'][value='montaz']:checked");
+      if (montaz) {
+        var cenaMontaze = spolu * 0.12;
+        spolu += cenaMontaze;
+        pridajRiadok(riadky, NAZVY_DOPL.montaz + " · 12 %", eur(cenaMontaze));
+      }
+
+      if (oPovrch.value === "pozink") { tyzdne += 2; }
+      else if (oPovrch.value === "komaxit") { tyzdne += 1; }
+
+      cenaSpolu.textContent = eur(spolu);
+      if (odhadCas) {
+        odhadCas.textContent = tyzdne + " – " + (tyzdne + 2) + " týždňov od zamerania";
+      }
+
+      kresliNahlad(s, v, oVypln.value);
+      if (popis) {
+        popis.textContent = mm(s) + " × " + mm(v) + " · " + NAZVY_VYPLN[oVypln.value] +
+          " · " + NAZVY_POVRCH[oPovrch.value];
+      }
+    }
+
+    $$("input[name='typ'],input[name='vypln'],input[name='povrch'],input[name='dopl']").forEach(function (i) {
+      i.addEventListener("change", prepocitaj);
+    });
+    sirka.addEventListener("input", prepocitaj);
+    vyska.addEventListener("input", prepocitaj);
+    prepocitaj();
+  })();
+
+
+  /* ---------- dopytový formulár: ukážka, nikam nič neodosiela ---------- */
+  (function formular() {
+    var form = $("#dopyt");
+    var hlaska = $("#hlaska");
+    if (!form || !hlaska) { return; }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var meno = $("#f-meno").value.trim();
+      var tel  = $("#f-tel").value.trim();
+
+      if (!meno || !tel) {
+        hlaska.className = "hlaska vidno chyba";
+        hlaska.innerHTML = "<b>Chýba meno alebo telefón.</b>Bez nich by sme sa vám nevedeli ozvať.";
+        return;
+      }
+
+      hlaska.className = "hlaska vidno";
+      hlaska.innerHTML = "<b>Ďakujeme, " + meno.split(" ")[0] + ".</b>" +
+        "Toto je ukážkový web, takže dopyt nikam neodišiel. Na skutočnom webe by v tejto chvíli pristál v schránke firmy.";
+      form.reset();
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

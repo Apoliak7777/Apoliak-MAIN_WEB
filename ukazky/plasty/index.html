@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polyform — vstrekovanie plastov a výroba foriem</title>
+<meta name="description" content="Polyform: vstrekovanie plastových dielov, výroba a údržba foriem, montáž zostáv vo Vzorovom Meste. Kalkulačka série s rozložením ceny formy, materiály od PP po technické plasty. Ukážkový web od apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#111111">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Polyform — vstrekovanie plastov a výroba foriem (ukážkový web)">
+<meta property="og:description" content="Vstrekovanie plastov a výroba foriem. S kalkulačkou, ktorá ukáže, ako sa cena formy rozloží do série. Ukážkový web vymysleného podniku od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f1e26'/%3E%3Cpath d='M8 8h16v6a8 8 0 0 1-16 0z' fill='%2322d3ee'/%3E%3Cpath d='M14 22h4v5h-4z' fill='%2322d3ee' opacity='.6'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   Polyform — ukážkový web
+   Jeden sebestačný súbor: vlastné štýly aj skript, žiadny externý zdroj.
+   Plochy, kde by inak boli fotografie, nesie geometria a typografia.
+   ========================================================================== */
+
+:root{
+  --paper:#eff3f4;
+  --surface:#ffffff;
+  --surface-3:#f7fafa;
+  --ink:#0c1a20;
+  --ink-body:#2d3e46;
+  --muted:#586c76;
+  --line:#d2dcdf;
+  --line-strong:#b2bfc4;
+  --line-input:#88979e;
+  --tma:#0f1e26;
+  --tma-2:#16303b;
+  --tma-hlbka:#071319;
+  --na-tme:#e4eff2;
+  --na-tme-muted:#96b3bd;
+  --na-tme-line:#1e3d4a;
+  --akcent:#22d3ee;
+  --akcent-hover:#06b6d4;
+  --akcent-tmavy:#0e7490;
+  --akcent-hlbky:#0c5c72;
+  --akcent-svetly:#67e8f9;
+  --na-akcente:#04181f;
+  --karta-pas:linear-gradient(90deg,#0e7490,#22d3ee);
+  --ikona-bg:rgba(14,116,144,.09);
+  --ikona-line:rgba(14,116,144,.24);
+  --focus-tien:rgba(14,116,144,.2);
+  --znacka-bg:#22d3ee;
+  --znacka-tag-bg:rgba(34,211,238,.13);
+  --znacka-tag-line:rgba(34,211,238,.32);
+  --suhrn-bg:linear-gradient(165deg,#16303b,#0f1e26);
+  --form-vstup-bg:rgba(0,0,0,.32);
+  --hero-bg:radial-gradient(940px 460px at 80% -8%,rgba(34,211,238,.16),transparent 60%),linear-gradient(168deg,#0f1e26 0%,#16303b 52%,#071319 100%);
+  --hero-vzor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3C/svg%3E");
+  --sipka-select:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23586c76'/%3E%3C/svg%3E");
+  --sipka-select-tma:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%2396b3bd'/%3E%3C/svg%3E");
+  --hero-ink:#96b3bd;
+  --hero-nadpis:#ffffff;
+  --hero-zvyraznenie:#22d3ee;
+  --hero-line:#1e3d4a;
+  --hlavicka-bg:rgba(15,30,38,.94);
+  --hlavicka-ink:#e4eff2;
+  --hlavicka-ink-hover:#ffffff;
+  --hlavicka-muted:#96b3bd;
+  --hlavicka-line:#1e3d4a;
+  --nav-btn-bg:rgba(255,255,255,.03);
+  --nav-hover-bg:rgba(255,255,255,.07);
+  --nav-drop-bg:#16303b;
+
+  --focus:var(--akcent-tmavy);
+  --bar-h:38px;
+  --head-h:66px;
+
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+  --sans:system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + var(--head-h) + 14px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+body{margin:0;background:var(--paper);color:var(--ink-body);font-family:var(--sans);font-size:16.5px;line-height:1.68;-webkit-tap-highlight-color:transparent}
+
+h1,h2,h3,h4{color:var(--ink);line-height:1.15;margin:0;font-weight:700;letter-spacing:-.018em}
+h1,h2{font-family:var(--sans)}
+h1{font-size:clamp(34px,6vw,60px)}
+h2{font-size:clamp(26px,3.5vw,40px)}
+h3{font-size:clamp(18px,2vw,22px)}
+h4{font-size:16px}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--akcent-tmavy);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--akcent-hlbky)}
+ul,ol{margin:0;padding:0}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}
+
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+@media (max-width:640px){.wrap{width:min(1180px,100% - 28px)}}
+
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--tma);color:var(--na-tme);padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none}
+.skip:focus{left:10px;top:10px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- pásik ukážky ---------- */
+.demo-bar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;background:var(--tma-hlbka);color:var(--na-tme-muted);padding:9px 16px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.demo-bar a{color:var(--akcent);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.demo-bar a:hover{color:var(--akcent-svetly)}
+.demo-bar .sep{color:var(--na-tme-line)}
+.demo-bar .bar-tag{background:var(--akcent);color:var(--na-akcente);border-radius:999px;padding:3px 10px;letter-spacing:.1em}
+.demo-bar .bar-long{color:var(--na-tme-muted);text-transform:none;letter-spacing:.02em;font-size:12px}
+@media (max-width:520px){.demo-bar{font-size:10.5px;letter-spacing:.06em;gap:6px 10px;padding:7px 12px}.demo-bar .bar-long{display:none}}
+
+/* ---------- hlavička ---------- */
+.top{position:sticky;top:0;z-index:50;background:var(--hlavicka-bg);backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--hlavicka-line)}
+.top-in{display:flex;align-items:center;gap:18px;min-height:var(--head-h)}
+.brand{display:flex;align-items:center;gap:11px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;margin-right:auto}
+.brand:hover{color:var(--hlavicka-ink-hover)}
+.brand-mark{width:39px;height:39px;flex:none;border-radius:10px;background:var(--znacka-bg);display:grid;place-items:center}
+.brand-mark svg{width:22px;height:22px}
+.brand b{display:block;font-size:17px;line-height:1.15;font-family:var(--sans)}
+.brand small{display:block;font-size:11.5px;font-weight:600;color:var(--hlavicka-muted);letter-spacing:.05em;text-transform:uppercase}
+
+.nav-toggle{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+.nav-btn{display:none;align-items:center;gap:8px;cursor:pointer;color:var(--hlavicka-ink);border:1px solid var(--hlavicka-line);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:600;background:var(--nav-btn-bg)}
+.nav-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}
+.nav-btn:hover{border-color:var(--akcent);color:var(--akcent)}
+
+.hlavna-nav{display:flex;align-items:center;gap:2px}
+.hlavna-nav a{color:var(--hlavicka-muted);text-decoration:none;font-size:14px;font-weight:600;padding:8px 11px;border-radius:8px;white-space:nowrap}
+.hlavna-nav a:hover{color:var(--akcent);background:var(--nav-hover-bg)}
+
+.top-act{display:flex;align-items:center;gap:10px}
+.top-tel{display:inline-flex;align-items:center;gap:8px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;font-size:15px;white-space:nowrap}
+.top-tel svg{width:18px;height:18px;fill:var(--akcent)}
+.top-tel:hover{color:var(--akcent)}
+
+@media (max-width:1080px){
+  .nav-btn{display:inline-flex}
+  .hlavna-nav{position:absolute;left:0;right:0;top:100%;display:block;background:var(--nav-drop-bg);border-bottom:1px solid var(--hlavicka-line);padding:10px 20px 18px;max-height:0;overflow:hidden;visibility:hidden}
+  .nav-toggle:checked ~ .hlavna-nav{max-height:78vh;overflow:auto;visibility:visible;padding-block:14px 20px}
+  .hlavna-nav a{display:block;padding:11px 8px;border-bottom:1px solid var(--hlavicka-line);border-radius:0;font-size:15px}
+  .hlavna-nav a:last-child{border-bottom:0}
+}
+@media (max-width:720px){.top-tel span{display:none}}
+@media (max-width:420px){.brand small{display:none}}
+
+/* ---------- tlačidlá ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid transparent;border-radius:10px;padding:12.5px 22px;font-size:15px;font-weight:700;font-family:inherit;text-decoration:none;cursor:pointer;line-height:1.2;transition:transform .12s ease,background .16s ease,border-color .16s ease,color .16s ease}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:18px;height:18px;fill:currentColor;flex:none}
+.btn-primary{background:var(--akcent);color:var(--na-akcente);border-color:var(--akcent)}
+.btn-primary:hover{background:var(--akcent-hover);border-color:var(--akcent-hover);color:var(--na-akcente)}
+.btn-line{background:transparent;color:var(--na-tme);border-color:rgba(255,255,255,.28)}
+.btn-line:hover{border-color:var(--akcent);color:var(--akcent)}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--akcent-tmavy);color:var(--akcent-tmavy)}
+.btn-tmavy{background:var(--tma);color:var(--na-tme);border-color:var(--tma)}
+.btn-tmavy:hover{background:var(--tma-2);border-color:var(--tma-2);color:#fff}
+.btn-lg{padding:15px 26px;font-size:16px}
+
+/* ---------- sekcie ---------- */
+section{padding:clamp(52px,7vw,90px) 0}
+.on-dark{background:var(--tma);color:var(--na-tme-muted)}
+.on-dark h2,.on-dark h3,.on-dark h4{color:var(--na-tme)}
+.on-dark a{color:var(--akcent)}
+.on-dark a:hover{color:var(--akcent-svetly)}
+.alt{background:var(--surface-3)}
+
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--akcent-tmavy);margin:0 0 14px}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--akcent-tmavy);border-radius:2px}
+.on-dark .eyebrow{color:var(--akcent)}
+.on-dark .eyebrow::before{background:var(--akcent)}
+
+.sec-head{max-width:750px;margin-bottom:clamp(28px,4vw,44px)}
+.sec-head p{font-size:clamp(16.5px,1.6vw,18.5px);color:var(--muted);margin-top:14px}
+.on-dark .sec-head p{color:var(--na-tme-muted)}
+
+.reveal{opacity:1;transform:none}
+.js-reveal .reveal{opacity:0;transform:translateY(18px)}
+.js-reveal .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,.7,.3,1)}
+@media (prefers-reduced-motion: reduce){.js-reveal .reveal{opacity:1;transform:none;transition:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;background:var(--hero-bg);color:var(--hero-ink);padding:clamp(44px,6vw,78px) 0 clamp(50px,6.5vw,90px)}
+.hero::before{content:"";position:absolute;inset:0;background-image:var(--hero-vzor);opacity:.9;pointer-events:none}
+.hero .wrap{position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(30px,4vw,58px);align-items:center}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+.hero h1{color:var(--hero-nadpis);margin-bottom:20px}
+.hero h1 em{font-style:var(--sans);color:var(--hero-zvyraznenie)}
+.hero-lead{font-size:clamp(17px,1.9vw,20px);color:var(--hero-ink);max-width:58ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:32px;padding-top:24px;border-top:1px solid var(--hero-line)}
+.hero-facts div{min-width:116px}
+.hero-facts b{display:block;color:var(--hero-nadpis);font-size:24px;line-height:1.2;letter-spacing:-.02em;font-family:var(--sans)}
+.hero-facts span{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--hero-ink)}
+
+/* ---------- karty ---------- */
+.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:18px}
+.karta{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 24px 24px;overflow:hidden;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.karta:hover{border-color:var(--akcent-tmavy);transform:translateY(-3px);box-shadow:0 18px 40px -28px rgba(0,0,0,.4)}
+.karta::before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:var(--karta-pas);transform:scaleX(0);transform-origin:left;transition:transform .28s ease}
+.karta:hover::before{transform:scaleX(1)}
+.karta-ikona{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;background:var(--ikona-bg);border:1px solid var(--ikona-line)}
+.karta-ikona svg{width:23px;height:23px;fill:none;stroke:var(--akcent-tmavy);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.karta h3{margin-bottom:9px}
+.karta p{color:var(--muted);font-size:15.5px}
+.karta-cena{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);background:var(--ikona-bg);border-radius:7px;padding:5px 11px;font-weight:600}
+
+/* ---------- tabuľka ---------- */
+.tab-obal{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+caption{text-align:left;padding:16px 20px 0;color:var(--muted);font-size:13.5px}
+th,td{padding:13px 20px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-3)}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono);font-size:14px;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-3)}
+td b{color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+/* ---------- kroky ---------- */
+.kroky{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:20px;counter-reset:k}
+.krok{position:relative;padding-top:22px;border-top:2px solid var(--line);counter-increment:k}
+.krok::before{content:counter(k,decimal-leading-zero);position:absolute;top:-13px;left:0;background:var(--paper);padding-right:12px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--akcent-tmavy);letter-spacing:.06em}
+.alt .krok::before{background:var(--surface-3)}
+.krok h3{font-size:18px;margin-bottom:8px}
+.krok p{color:var(--muted);font-size:15px}
+
+/* ---------- formulárové prvky (spoločné pre interakcie) ---------- */
+.pole{margin-bottom:22px}
+.pole:last-child{margin-bottom:0}
+.pole > .lbl{display:block;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:11px}
+.pole .hint{font-size:13.5px;color:var(--muted);margin:-4px 0 11px}
+
+.volby{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:9px}
+.volba{position:relative}
+.volba input{position:absolute;opacity:0;width:0;height:0}
+.volba span{display:block;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;cursor:pointer;background:var(--surface);font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.35;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.volba span small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:3px}
+.volba input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg);color:var(--akcent-hlbky)}
+.volba input:checked + span small{color:var(--akcent-hlbky)}
+.volba input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.volba span:hover{border-color:var(--line-input)}
+
+.doplnky{display:grid;gap:9px}
+.dopl{position:relative}
+.dopl input{position:absolute;opacity:0;width:0;height:0}
+.dopl span{display:flex;align-items:flex-start;gap:12px;cursor:pointer;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;background:var(--surface);font-size:14.5px;color:var(--ink);transition:border-color .15s ease,background .15s ease}
+.dopl span::before{content:"";flex:none;width:19px;height:19px;margin-top:2px;border-radius:5px;border:1.5px solid var(--line-input);background:var(--surface);background-position:center;background-repeat:no-repeat;background-size:14px}
+.dopl input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg)}
+.dopl input:checked + span::before{border-color:var(--akcent-tmavy);background-color:var(--akcent-tmavy);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 6L9 17l-5-5' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.dopl input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.dopl b{display:block;font-weight:700}
+.dopl small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.dopl .p{margin-left:auto;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);font-weight:700;white-space:nowrap;padding-left:10px}
+
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date],select,textarea{width:100%;font-family:inherit;font-size:15.5px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line-input);border-radius:10px;padding:12px 14px;line-height:1.4}
+textarea{min-height:108px;resize:vertical}
+select{appearance:none;background-image:var(--sipka-select);background-repeat:no-repeat;background-position:right 10px center;background-size:22px;padding-right:38px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--akcent-tmavy);box-shadow:0 0 0 3px var(--focus-tien)}
+
+.rozsah-riadok{display:flex;align-items:center;gap:16px}
+.rozsah-riadok input[type=range]{flex:1;accent-color:var(--akcent-tmavy);height:26px}
+.rozsah-hod{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--ink);min-width:104px;text-align:right}
+
+/* ---------- súhrn (pravý panel interakcií) ---------- */
+.kalk{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:clamp(20px,3vw,36px);align-items:start}
+@media (max-width:920px){.kalk{grid-template-columns:1fr}}
+.kalk-panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,32px)}
+.suhrn{position:sticky;top:calc(var(--bar-h) + var(--head-h) + 16px);background:var(--suhrn-bg);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px);color:var(--na-tme-muted);box-shadow:0 26px 60px -34px rgba(0,0,0,.7)}
+@media (max-width:920px){.suhrn{position:static}}
+.suhrn h3{color:#fff;margin-bottom:6px}
+.suhrn-note{font-size:13.5px;color:var(--na-tme-muted);margin-bottom:20px}
+.suhrn-riadky{border-top:1px solid var(--na-tme-line);margin-bottom:18px}
+.suhrn-riadok{display:flex;gap:14px;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--na-tme-line);font-size:14.5px}
+.suhrn-riadok .k{color:var(--na-tme-muted)}
+.suhrn-riadok .v{color:#fff;font-weight:600;text-align:right;font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.suhrn-spolu{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:16px 0 4px}
+.suhrn-spolu .k{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted)}
+.suhrn-spolu .v{font-size:clamp(28px,4vw,38px);font-weight:800;color:var(--akcent);letter-spacing:-.025em;line-height:1}
+.suhrn-cas{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid var(--na-tme-line);font-size:14px}
+.suhrn-cas svg{width:17px;height:17px;fill:var(--akcent);flex:none;margin-top:3px}
+.suhrn-cas b{color:#fff}
+.suhrn .btn{width:100%;margin-top:20px}
+.suhrn-disk{font-size:12.5px;color:var(--na-tme-muted);margin-top:14px;line-height:1.55}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;gap:12px;max-width:900px}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.faq-item summary{cursor:pointer;list-style:none;padding:19px 54px 19px 22px;position:relative;font-weight:700;color:var(--ink);font-size:16.5px;line-height:1.45}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"";position:absolute;right:22px;top:50%;width:13px;height:13px;margin-top:-8px;border-right:2.2px solid var(--akcent-tmavy);border-bottom:2.2px solid var(--akcent-tmavy);transform:rotate(45deg);transition:transform .2s ease}
+.faq-item[open] summary::after{transform:rotate(-135deg);margin-top:-3px}
+.faq-item summary:hover{color:var(--akcent-tmavy)}
+.faq-telo{padding:0 22px 20px;color:var(--muted);font-size:15.5px}
+.faq-telo p:first-child{margin-top:-4px}
+
+/* ---------- kontakt ---------- */
+.kont-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,3.5vw,46px)}
+@media (max-width:860px){.kont-grid{grid-template-columns:1fr}}
+.kont-list{list-style:none;display:grid;gap:18px;margin-top:24px}
+.kont-list li{display:flex;gap:14px;align-items:flex-start}
+.kont-list svg{width:21px;height:21px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.kont-list .k{display:block;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:2px}
+.kont-list a,.kont-list .v{color:#fff;font-size:16.5px;font-weight:600;text-decoration:none}
+.kont-list a:hover{color:var(--akcent)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-obal{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.form-obal label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--na-tme);margin-bottom:8px}
+.form-obal input,.form-obal select,.form-obal textarea{background:var(--form-vstup-bg);border-color:var(--na-tme-line);color:var(--na-tme)}
+.form-obal input::placeholder,.form-obal textarea::placeholder{color:var(--na-tme-muted)}
+.form-obal input:focus,.form-obal select:focus,.form-obal textarea:focus{border-color:var(--akcent);box-shadow:0 0 0 3px var(--focus-tien)}
+.form-obal select{background-image:var(--sipka-select-tma)}
+.form-note{font-size:13px;color:var(--na-tme-muted);margin-top:14px}
+.kont-pozn{margin-top:26px;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);font-size:14px;line-height:1.6;color:var(--na-tme-muted)}
+.kont-pozn strong{display:block;margin-top:8px;color:var(--na-tme)}
+.kont-pozn a{font-weight:700}
+
+.hlaska{display:none;margin-top:16px;border-radius:11px;padding:15px 18px;font-size:15px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.26);color:var(--na-tme)}
+.hlaska.vidno{display:block}
+.hlaska.chyba{background:rgba(220,90,70,.18);border-color:rgba(255,140,120,.44)}
+.hlaska b{color:#fff;display:block;margin-bottom:3px}
+
+/* ---------- autor ukážky ---------- */
+.author{background:var(--tma-hlbka);padding:clamp(52px,7vw,90px) 0;color:var(--na-tme-muted)}
+.author-in{width:min(1180px,100% - 40px);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(26px,4vw,52px);align-items:start}
+@media (max-width:900px){.author-in{grid-template-columns:1fr}}
+@media (max-width:640px){.author-in{width:min(1180px,100% - 28px)}}
+.author .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--akcent);background:var(--znacka-tag-bg);border:1px solid var(--znacka-tag-line);border-radius:999px;padding:5px 13px;margin-bottom:16px}
+.author h2{color:#fff;margin-bottom:14px}
+.author-lead{color:var(--na-tme-muted);font-size:16.5px;max-width:56ch}
+.author-claim{font-size:clamp(19px,2.4vw,25px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-top:18px;font-family:var(--sans)}
+.author-card{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.author-card h3{color:#fff;font-size:21px;margin-bottom:3px;font-family:var(--sans)}
+.author-card .role{display:block;font-size:13px;color:var(--na-tme-muted);letter-spacing:.05em;margin-bottom:20px}
+.author-list{list-style:none;display:grid;gap:16px}
+.author-list li{display:flex;gap:13px;align-items:flex-start}
+.author-list svg{width:20px;height:20px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.author-list .k{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:1px}
+.author-list a{color:#fff;font-weight:600;text-decoration:none;font-size:15.5px}
+.author-list a:hover{color:var(--akcent)}
+.author-list .sep{color:var(--na-tme-line);margin:0 7px}
+
+/* ---------- pätička ---------- */
+footer{background:var(--tma-hlbka);color:var(--na-tme-muted);padding:0 0 40px;font-size:14.5px;border-top:1px solid var(--na-tme-line)}
+.foot-cta{width:min(1180px,100% - 40px);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding:30px 0;border-bottom:1px solid var(--na-tme-line)}
+@media (max-width:640px){.foot-cta{width:min(1180px,100% - 28px)}}
+.foot-cta p{margin:0}
+.foot-cta-k{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.foot-cta-tel{color:#fff;font-size:25px;font-weight:800;text-decoration:none}
+.foot-cta-tel:hover{color:var(--akcent)}
+.foot-in{width:min(1180px,100% - 40px);margin:26px auto 0;display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;align-items:flex-start}
+@media (max-width:640px){.foot-in{width:min(1180px,100% - 28px)}}
+.foot-in p{margin:0}
+.foot-in strong{color:#fff}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot-links a{color:var(--na-tme-muted);text-decoration:none;font-size:14px}
+.foot-links a:hover{color:var(--akcent)}
+.foot-note{width:min(1180px,100% - 40px);margin:26px auto 0;padding-top:20px;border-top:1px solid var(--na-tme-line);font-size:13px;color:var(--na-tme-muted);line-height:1.6}
+@media (max-width:640px){.foot-note{width:min(1180px,100% - 28px)}}
+
+
+.forma{position:relative;aspect-ratio:1/.82;border-radius:16px;overflow:hidden;background:#0b1a21;border:1px solid var(--na-tme-line);box-shadow:0 30px 70px -32px rgba(0,0,0,.85)}
+.forma svg{position:absolute;inset:0;width:100%;height:100%}
+.forma-tag{position:absolute;left:16px;bottom:16px;z-index:3;background:rgba(7,19,25,.88);border:1px solid var(--na-tme-line);border-radius:11px;padding:11px 15px;backdrop-filter:blur(6px)}
+.forma-tag b{display:block;color:#fff;font-size:15px}
+.forma-tag span{font-size:12px;color:var(--na-tme-muted);font-family:var(--mono)}
+.rozklad{margin-top:18px;padding-top:16px;border-top:1px solid var(--na-tme-line)}
+.rozklad-nadpis{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:12px}
+.rozklad-riadok{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;font-size:13px;margin-bottom:7px}
+.rozklad-riadok .ks{font-family:var(--mono);color:var(--na-tme-muted);text-align:right}
+.rozklad-riadok .pruh{height:18px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;display:flex}
+.rozklad-riadok .pruh .forma-diel{background:var(--akcent-tmavy);height:100%}
+.rozklad-riadok .pruh .kus-diel{background:var(--akcent);height:100%}
+.rozklad-riadok .kus{font-family:var(--mono);color:#fff;font-weight:700;white-space:nowrap}
+.rozklad-riadok.tento .ks,.rozklad-riadok.tento .kus{color:var(--akcent)}
+.rozklad-legenda{display:flex;gap:16px;font-size:12px;color:var(--na-tme-muted);margin-top:10px}
+.rozklad-legenda span{display:flex;align-items:center;gap:6px}
+.rozklad-legenda i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.rl-f{background:var(--akcent-tmavy)}
+.rl-k{background:var(--akcent)}
+
+</style>
+<script>
+(function(){
+  try{
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      document.documentElement.className += " js-reveal";
+    }
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===================== pásik ukážky ===================== -->
+<div class="demo-bar" role="note">
+  <span class="bar-tag">Ukážkový web</span>
+  <span class="bar-long">Takýto web pre vás spravím.</span>
+  <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+</div>
+
+<!-- ===================== hlavička ===================== -->
+<header class="top">
+  <div class="wrap top-in">
+    <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Zobraziť menu">
+    <a class="brand" href="#hero">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14v5a7 7 0 0 1-14 0z" fill="#04181f"/><rect x="10" y="17" width="4" height="4" fill="#04181f" opacity=".7"/></svg></span>
+      <span>
+        <b>Polyform</b>
+        <small>Vstrekovanie plastov · formy</small>
+      </span>
+    </a>
+
+    <nav class="hlavna-nav" id="hlavnaNav" aria-label="Hlavná navigácia">
+      <a href="#sluzby">Čo robíme</a>
+      <a href="#kalkulacka">Kalkulačka</a>
+      <a href="#materialy">Materiály</a>
+      <a href="#stroje">Strojový park</a>
+      <a href="#postup">Postup</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="top-act">
+      <label class="nav-btn" for="navToggle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </label>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===================== hero ===================== -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Vstrekovanie plastov od roku 2004</p>
+        <h1>Forma sa zaplatí <em>sériou</em>.</h1>
+        <p class="hero-lead">Vstrekujeme plastové diely od desiatok gramov po dva kilogramy, vyrábame a udržiavame formy a montujeme hotové zostavy. Poradíme aj s tým, či sa vám vlastná forma vôbec oplatí.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="#kalkulacka">Spočítať sériu</a>
+          <a class="btn btn-line btn-lg" href="#materialy">Materiály</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>21</b><span>rokov vo výrobe</span></div>
+          <div><b>6</b><span>vstrekovacích strojov</span></div>
+          <div><b>40 – 650 t</b><span>uzatváracia sila</span></div>
+          <div><b>2 kg</b><span>max. hmotnosť dielu</span></div>
+        </div>
+      </div>
+
+      <div class="forma" aria-hidden="true">
+        <svg viewBox="0 0 400 330" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="ocel" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#456470"/><stop offset=".5" stop-color="#7e9aa4"/>
+              <stop offset="1" stop-color="#3a5761"/>
+            </linearGradient>
+            <linearGradient id="tavenina" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#67e8f9"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#1e3d4a" stroke-width="1" fill="none">
+            <path d="M0 55h400M0 110h400M0 165h400M0 220h400M0 275h400"/>
+          </g>
+          <!-- pevná a pohyblivá časť formy -->
+          <rect x="60" y="70" width="110" height="190" rx="4" fill="url(#ocel)"/>
+          <rect x="182" y="70" width="110" height="190" rx="4" fill="url(#ocel)"/>
+          <!-- dutina -->
+          <path d="M140 120h72v90h-72z" fill="#0f1e26"/>
+          <path d="M152 132h48v66h-48z" fill="url(#tavenina)" opacity=".9"/>
+          <!-- vtok -->
+          <path d="M40 165h100" stroke="url(#tavenina)" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="34" cy="165" r="12" fill="none" stroke="#22d3ee" stroke-width="3"/>
+          <!-- vyhadzovače -->
+          <g stroke="#96b3bd" stroke-width="3">
+            <path d="M292 140h48M292 165h48M292 190h48"/>
+          </g>
+          <!-- chladiace kanály -->
+          <g stroke="#67e8f9" stroke-width="2" stroke-dasharray="5 5" opacity=".75">
+            <path d="M84 96v168M112 96v168M240 96v168M268 96v168"/>
+          </g>
+          <!-- deliaca rovina -->
+          <path d="M176 50v230" stroke="#22d3ee" stroke-width="1.4" stroke-dasharray="10 5"/>
+          <text x="176" y="42" fill="#67e8f9" font-family="monospace" font-size="11" text-anchor="middle">deliaca rovina</text>
+          <text x="70" y="300" fill="#96b3bd" font-family="monospace" font-size="11">2 hniezda · cyklus 28 s</text>
+        </svg>
+        <div class="forma-tag">
+          <b>Dvojnásobná forma, rez</b>
+          <span>PP · 2 hniezda · cyklus 28 s · 640 t</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== sluzby ===================== -->
+<section id="sluzby">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Čo robíme</p>
+      <h2>Od modelu po hotovú zostavu</h2>
+      <p>Robíme celý reťazec — posúdenie dielu, formu, vstrekovanie aj montáž. Znamená to, že keď sa niečo pokazí, nehľadá sa, kto za to môže.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M5 5h14v5a7 7 0 0 1-14 0z"/><rect x="10" y="17" width="4" height="4"/></svg></div>
+        <h3>Vstrekovanie plastov</h3>
+        <p>Diely od desiatich gramov po dva kilogramy. Šesť strojov od 40 do 650 ton, takže sa nemusíme prispôsobovať tomu, čo máme voľné.</p>
+        <span class="karta-cena">od 0,08 €/ks</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1"/><path d="M12 6v12M7 10h2M15 10h2"/></svg></div>
+        <h3>Výroba foriem</h3>
+        <p>Jednonásobné aj viacnásobné, s horúcim aj studeným vtokom. Formy robíme tak, aby sa dali udržiavať — nie ako uzavretá čierna skrinka.</p>
+        <span class="karta-cena">od 4 200 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+        <h3>Údržba a oprava foriem</h3>
+        <p>Aj tých, ktoré vyrobil niekto iný. Čistenie, výmena vyhadzovačov, oprava deliacej roviny. Bez údržby forma po státisícoch cyklov začne robiť otrepy.</p>
+        <span class="karta-cena">od 180 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M12 3l9 5v8l-9 5-9-5V8z"/><path d="M12 12l9-4M12 12v9M12 12L3 8"/></svg></div>
+        <h3>Konštrukcia a posúdenie dielu</h3>
+        <p>Väčšina dielov, čo nám prídu, potrebuje drobné úpravy — úkosy, rovnomernú hrúbku steny, umiestnenie vtoku. Poradíme to zadarmo, ešte pred ponukou.</p>
+        <span class="karta-cena">0 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg></div>
+        <h3>Montáž a kompletizácia</h3>
+        <p>Zlepenie, zvarenie ultrazvukom, zalisovanie vložiek, balenie. Odberateľ dostane hotový celok, nie vrece dielov.</p>
+        <span class="karta-cena">podľa rozsahu</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 12h18"/><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/></svg></div>
+        <h3>Recyklácia vlastného odpadu</h3>
+        <p>Vtoky a nepodarky meleme a vraciame späť do výroby tam, kde to diel dovolí. Šetrí to materiál aj cenu — a povieme vám, v akom pomere sa to robí.</p>
+        <span class="karta-cena">do 20 % regranulátu</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kalkulacka ===================== -->
+<section id="kalkulacka" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Orientačná cena</p>
+      <h2>Spočítajte si sériu</h2>
+      <p>Zadajte diel a počet kusov. Uvidíte cenu formy, cenu za kus aj to najdôležitejšie — ako sa forma rozloží do série. Pri malých sériách tvorí forma väčšinu ceny.</p>
+    </div>
+
+    <div class="kalk">
+      <div class="kalk-panel reveal">
+        <div class="pole">
+          <span class="lbl" id="l-material">Materiál</span>
+          <div class="volby" role="radiogroup" aria-labelledby="l-material">
+            <label class="volba"><input type="radio" name="material" value="pp" data-cena-kg="1.6" data-cyklus="1" checked><span>Polypropylén (PP)<small>najbežnejší, lacný, húževnatý</small></span></label>
+            <label class="volba"><input type="radio" name="material" value="abs" data-cena-kg="2.4" data-cyklus="1.15"><span>ABS<small>pevný, dobre sa lakuje a lepí</small></span></label>
+            <label class="volba"><input type="radio" name="material" value="pa" data-cena-kg="3.8" data-cyklus="1.3"><span>Polyamid (PA6)<small>technický plast, odolný oteru</small></span></label>
+            <label class="volba"><input type="radio" name="material" value="pc" data-cena-kg="5.2" data-cyklus="1.45"><span>Polykarbonát<small>priehľadný a veľmi pevný, náročnejší</small></span></label>
+          </div>
+        </div>
+        <div class="pole">
+          <label class="lbl" for="hmotnost">Hmotnosť jedného dielu</label>
+          <p class="hint">Bez vtoku. Ak neviete, odhadnite z objemu — plasty majú hustotu okolo 1 g/cm³.</p>
+          <div class="rozsah-riadok">
+            <input type="range" id="hmotnost" min="5" max="2000" step="5" value="90" aria-describedby="hmotnost-hod">
+            <output class="rozsah-hod" id="hmotnost-hod" for="hmotnost">90 g</output>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="lbl" id="l-zlozitost">Zložitosť dielu a formy</span>
+          <p class="hint">Zložitosť dielu určuje cenu formy aj dĺžku cyklu.</p>
+          <div class="volby" role="radiogroup" aria-labelledby="l-zlozitost">
+            <label class="volba"><input type="radio" name="zlozitost" value="jednoduchy" data-cyklus="22" data-forma="4200" checked><span>Jednoduchý<small>bez podkosov, jedna deliaca rovina</small></span></label>
+            <label class="volba"><input type="radio" name="zlozitost" value="stredny" data-cyklus="32" data-forma="8600"><span>Stredný<small>posuvné čeľuste, viac vyhadzovačov</small></span></label>
+            <label class="volba"><input type="radio" name="zlozitost" value="zlozity" data-cyklus="45" data-forma="16400"><span>Zložitý<small>podkosy, závity, horúci vtok</small></span></label>
+          </div>
+        </div>
+        <div class="pole">
+          <label class="lbl" for="kusov">Séria</label>
+          <p class="hint">Posuvník ide po skokoch, ktoré sa v praxi objednávajú.</p>
+          <div class="rozsah-riadok">
+            <input type="range" id="kusov" min="1" max="34" step="1" value="18" aria-describedby="kusov-hod">
+            <output class="rozsah-hod" id="kusov-hod" for="kusov">18</output>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="lbl">K tomu</span>
+          <div class="doplnky">
+            <label class="dopl"><input type="checkbox" name="dopl" value="hniezda" data-forma-koef="1.65" data-hniezd="2"><span><b>Viacnásobná forma<span class="sr"> — +65 % k forme</span></b><small>dve hniezda — drahšia forma, polovičný čas na kus</small><span class="p">+65 % k forme</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="farba" data-material-priplatok="0.35"><span><b>Farbenie v hmote<span class="sr"> — +0,35 €/kg</span></b><small>namiesto lakovania; farba je v celom objeme</small><span class="p">+0,35 €/kg</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="montaz" data-kus-priplatok="0.12"><span><b>Montáž a balenie<span class="sr"> — +0,12 €/ks</span></b><small>zalisovanie vložiek a balenie po kusoch</small><span class="p">+0,12 €/ks</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="vzorky" data-jednorazovo="320"><span><b>Vzorkovanie a protokol<span class="sr"> — +320 €</span></b><small>prvé kusy na schválenie s meraním</small><span class="p">+320 €</span></span></label>
+          </div>
+        </div>
+      </div>
+
+      <aside class="suhrn reveal" aria-live="polite">
+        <h3>Orientačná cena</h3>
+        <p class="suhrn-note">Prepočítava sa hneď, ako niečo zmeníte.</p>
+
+        <div class="suhrn-riadky" id="suhrnRiadky"></div>
+
+        <div class="suhrn-spolu">
+          <span class="k">Cena za kus</span>
+          <span class="v" id="cenaSpolu">0 €</span>
+        </div>
+
+        <p class="suhrn-cas">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span>Forma bude hotová za: <b id="odhadCas">—</b></span>
+        </p>
+        <div class="rozklad">
+          <p class="rozklad-nadpis">Cena za kus podľa série</p>
+          <div id="rozklad"></div>
+          <div class="rozklad-legenda">
+            <span><i class="rl-f"></i> podiel formy</span>
+            <span><i class="rl-k"></i> materiál a stroj</span>
+          </div>
+        </div>
+
+        <a class="btn btn-primary" href="#kontakt">Poslať model a dopyt</a>
+        <p class="suhrn-disk">Ceny sú orientačné a bez DPH. Forma je jednorazová investícia — zostáva vám a pri opakovanej objednávke sa už neplatí. Záväznú ponuku dáme po posúdení modelu.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== materiály ===================== -->
+<section id="materialy" class="on-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Materiály</p>
+      <h2>Ktorý plast na čo</h2>
+      <p>Toto býva prvá otázka a väčšinou aj najdôležitejšia. Zlá voľba materiálu sa prejaví
+      až v prevádzke — a vtedy je forma už hotová.</p>
+    </div>
+
+    <div class="tab-obal reveal">
+      <table>
+        <caption>Prehľad materiálov, ktoré spracúvame najčastejšie.</caption>
+        <thead>
+          <tr><th scope="col">Materiál</th><th scope="col">Kedy ho voliť</th><th scope="col">Cena</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>PP — polypropylén</b><small>obaly, prepravky, diely do domácnosti</small></td><td>lacný, húževnatý, znesie ohyb</td><td>1,60 €/kg</td></tr>
+          <tr><td><b>PE — polyetylén</b><small>nádoby, fólie, hrubostenné diely</small></td><td>mäkší, odolný chemikáliám</td><td>1,50 €/kg</td></tr>
+          <tr><td><b>ABS</b><small>kryty prístrojov, pohľadové diely</small></td><td>pevný, dá sa lakovať a lepiť</td><td>2,40 €/kg</td></tr>
+          <tr><td><b>PA6 — polyamid</b><small>ozubené kolesá, klzné diely</small></td><td>odolný oteru, ale saje vlhkosť</td><td>3,80 €/kg</td></tr>
+          <tr><td><b>PA6 GF30</b><small>konštrukčné diely pod záťažou</small></td><td>so sklenými vláknami, tuhší</td><td>4,60 €/kg</td></tr>
+          <tr><td><b>PC — polykarbonát</b><small>priehľadné kryty, ochranné diely</small></td><td>priehľadný a veľmi odolný nárazu</td><td>5,20 €/kg</td></tr>
+          <tr><td><b>POM</b><small>presné mechanické diely</small></td><td>rozmerovo stály, klzný</td><td>4,10 €/kg</td></tr>
+          <tr><td><b>TPE</b><small>tesnenia, mäkčené úchopy</small></td><td>pružný, dá sa prevstrekovať na tvrdý diel</td><td>4,90 €/kg</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== stroje ===================== -->
+<section id="stroje" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Strojový park</p>
+      <h2>Šesť strojov od 40 do 650 ton</h2>
+      <p>Rozsah je dôležitý — malý diel na veľkom stroji je zbytočne drahý, veľký diel na malom sa nedá vstreknúť vôbec.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 7V5h10v2"/></svg></div>
+        <h3>40 a 90 ton</h3>
+        <p>Drobné diely do 60 g — spony, viečka, technické komponenty. Krátky cyklus, takže veľké série idú rýchlo.</p>
+        <span class="karta-cena">2 stroje</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 6V4h8v2"/></svg></div>
+        <h3>160 a 260 ton</h3>
+        <p>Najviac vyťažené stroje. Kryty, obaly, prepravky a väčšina toho, čo si predstavíte pod plastovým dielom.</p>
+        <span class="karta-cena">2 stroje</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M7 5V3h10v2"/></svg></div>
+        <h3>400 ton</h3>
+        <p>Väčšie pohľadové diely a viacnásobné formy. Sem ide výroba, keď potrebujete šesť kusov na jeden cyklus.</p>
+        <span class="karta-cena">1 stroj</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 4V2h12v2M7 20v2M17 20v2"/></svg></div>
+        <h3>650 ton</h3>
+        <p>Najväčší stroj — diely do dvoch kilogramov, prepravky a technické zostavy. Uzatváracia sila stačí aj na veľké plochy.</p>
+        <span class="karta-cena">1 stroj</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== postup ===================== -->
+<section id="postup">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ako to prebieha</p>
+      <h2>Päť krokov od modelu po sériu</h2>
+    </div>
+
+    <div class="kroky">
+      <div class="krok reveal">
+        <h3>Pošlete model</h3>
+        <p>STEP, prípadne aj len fotku a rozmery. Posúdime, či sa diel dá vstrekovať tak, ako je nakreslený.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Navrhneme úpravy</h3>
+        <p>Skoro vždy nejaké sú — úkosy, rovnomerná hrúbka steny, poloha vtoku. Bez nich by sa diel krútil alebo by na ňom boli prepadliny.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Dostanete ponuku</h3>
+        <p>Cena formy a cena za kus podľa série. Vždy ukážeme aj to, pri akom počte sa forma zaplatí.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Vyrobíme formu a odskúšame</h3>
+        <p>Šesť až dvanásť týždňov. Prvé kusy pošleme na schválenie s meracím protokolom skôr, než rozbehneme sériu.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Vyrábame a skladujeme</h3>
+        <p>Sériu dodávame naraz alebo po odvolávkach. Forma zostáva vám — pri ďalšej objednávke platíte už len kusy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Časté otázky</p>
+      <h2>Na čo sa nás pýtate najčastejšie</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq-item reveal">
+        <summary>Od akej série sa to oplatí?</summary>
+        <div class="faq-telo"><p>Závisí od ceny formy. Pri jednoduchom diele so 4 200 € formou sa oproti 3D tlači začne oplácať zhruba od tisíc kusov, pri zložitejších formách od piatich tisíc. Pod tisíc kusov vám povieme rovno, že lacnejšia bude iná technológia — a ktorá.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Komu patrí forma?</summary>
+        <div class="faq-telo"><p>Vám, keď ju zaplatíte. Máme ju u seba a udržiavame ju, ale je vaša a kedykoľvek si ju môžete odviezť. Píšeme to do zmluvy, lebo v odbore to nie je samozrejmé a je to vec, ktorú si treba ustrážiť.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Ako dlho forma vydrží?</summary>
+        <div class="faq-telo"><p>Oceľová forma zvládne stovky tisíc až milióny cyklov podľa materiálu dielu — plnené plasty so sklenými vláknami ju opotrebúvajú výrazne rýchlejšie. Pri pravidelnej údržbe žijú formy aj pätnásť rokov.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Prečo mi hovoríte, že diel treba prekresliť?</summary>
+        <div class="faq-telo"><p>Lebo väčšina modelov, ktoré prídu, je nakreslená pre 3D tlač alebo obrábanie. Vstrekovanie potrebuje úkosy na vybratie z formy a rovnomernú hrúbku steny — inak diel po vychladnutí zdeformuje alebo sa naň spraví prepadlina. Poradíme to zadarmo.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Robíte aj z recyklovaného materiálu?</summary>
+        <div class="faq-telo"><p>Áno a vlastné vtoky meleme a vraciame späť, zvyčajne do 20 %. Pri pohľadových a namáhaných dieloch to neodporúčame — vlastnosti sú horšie a farebne to nie je stabilné. Vždy vám povieme, aký podiel regranulátu v diele je.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Vieme si formu doniesť z inej firmy?</summary>
+        <div class="faq-telo"><p>Áno, robíme to bežne. Skontrolujeme, či pasuje na naše stroje, či sedí upínanie a chladenie, a odskúšame ju. Kontrola stojí 180 € a odpočítame ju z prvej výroby.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kontakt ===================== -->
+<section id="kontakt" class="on-dark">
+  <div class="wrap">
+    <div class="kont-grid">
+      <div class="reveal">
+        <p class="eyebrow">Kontakt</p>
+        <h2>Ozvite sa</h2>
+        <p style="margin-top:14px">Pošlite model dielu v STEP alebo aspoň fotku a rozmery. Povieme, či sa dá vstrekovať, čo treba zmeniť a koľko bude stáť forma.</p>
+
+        <ul class="kont-list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="k">Prevádzka</span><span class="v">Priemyselná 61, Vzorové Mesto</span></div></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span class="k">Kancelária</span><span class="v">Po – Pi 7:00 – 15:30</span></div></li>
+        </ul>
+
+        <p class="kont-pozn">Telefón a e-mail podniku tu zámerne nie sú — je to
+        ukážkový web vymysleného podniku a nechceme, aby niekto volal alebo písal
+        na cudzie číslo. Na skutočnom webe by tu boli vaše kontakty.
+        <strong>Ak máte záujem o takýto web, napíšte na
+        <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>.</strong></p>
+      </div>
+
+      <div class="form-obal reveal">
+        <form id="dopyt" novalidate>
+          <div class="form-grid">
+            <div>
+              <label for="f-meno">Meno alebo firma</label>
+              <input type="text" id="f-meno" name="meno" placeholder="Ján Vzorový" autocomplete="name" required>
+            </div>
+            <div>
+              <label for="f-tel">Telefón</label>
+              <input type="tel" id="f-tel" name="tel" placeholder="vaše telefónne číslo" autocomplete="tel" required>
+            </div>
+            <div class="full">
+              <label for="f-mail">E-mail</label>
+              <input type="email" id="f-mail" name="mail" placeholder="jan@example.sk" autocomplete="email">
+            </div>
+            <div>
+              <label for="f-seria">Predpokladaná séria</label>
+              <input type="text" id="f-seria" name="seria" placeholder="10 000 ks ročne">
+            </div>
+            <div>
+              <label for="f-material">Materiál</label>
+              <input type="text" id="f-material" name="material" placeholder="PP / ABS / neviem">
+            </div>
+            <div class="full">
+              <label for="f-sprava">Popis dielu</label>
+              <textarea id="f-sprava" name="sprava" placeholder="Kryt do prístroja, asi 120 × 80 × 40 mm, hmotnosť odhadom 90 g. Model v STEP pošlem mailom."></textarea>
+            </div>
+          </div>
+          <div class="hero-cta" style="margin-top:20px">
+            <button type="submit" class="btn btn-primary btn-lg">Odoslať dopyt</button>
+          </div>
+          <p class="form-note">Ozveme sa do dvoch pracovných dní. Posúdenie vyrobiteľnosti je zadarmo.</p>
+          <p class="hlaska" id="hlaska" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== autor ukážky, skutočné údaje ===================== -->
+<aside class="author" id="autor" aria-labelledby="h-autor">
+  <div class="author-in">
+    <div>
+      <span class="tag">Autor ukážky, nie je súčasť podniku Polyform</span>
+      <h2 id="h-autor">Páči sa vám tento web?</h2>
+      <p class="author-lead">Túto ukážku navrhol a naprogramoval Alex Poliak. Rovnaký web pripravím aj pre vašu prevádzku — s kalkulačkou, ktorá ukazuje rozloženie ceny formy podľa vašich sadzieb.</p>
+      <p class="author-claim">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      <p class="author-lead" style="margin-top:14px">Konzultácia je zadarmo a nezáväzne. Poviete mi, čo má web robiť, a ja vám na to poviem cenu aj termín. Až potom sa rozhodujete.</p>
+      <div class="hero-cta" style="margin:22px 0 0">
+        <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať na apoliak@apoliak.online</a>
+        <a class="btn btn-line" href="https://apoliak.online" target="_blank" rel="noopener">Pozrieť apoliak.online</a>
+      </div>
+    </div>
+
+    <div class="author-card">
+      <h3>Alex Poliak</h3>
+      <span class="role">Návrh a programovanie webu</span>
+      <ul class="author-list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">E-mail</span><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">Podpora</span><a href="mailto:support@apoliak.online">support@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17"/></svg><div><span class="k">Web</span><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></div></li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<footer>
+  <div class="foot-cta">
+    <p><span class="foot-cta-k">Chcete takýto web pre svoj podnik?</span><a class="foot-cta-tel" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></p>
+    <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať Alexovi</a>
+  </div>
+  <div class="foot-in">
+    <p><strong>Polyform</strong> — Vstrekovanie plastov · formy, ukážkový web</p>
+    <nav class="foot-links" aria-label="Pätičková navigácia">
+      <a href="#sluzby">Čo robíme</a>
+      <a href="#kalkulacka">Kalkulačka</a>
+      <a href="#materialy">Materiály</a>
+      <a href="#stroje">Strojový park</a>
+      <a href="#postup">Postup</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#hero">Hore</a>
+    </nav>
+  </div>
+  <div class="foot-in" style="margin-top:22px">
+    <p>Priemyselná 61, Vzorové Mesto</p>
+    <p>Výroba nepretržite, Po 6:00 – Pi 22:00 &nbsp;·&nbsp; kancelária Po – Pi 7:00 – 15:30</p>
+  </div>
+  <p class="vyzva-napiste" style="margin:0 0 18px;padding:16px 18px;border-radius:12px;background:rgba(127,127,127,.12);border:1px solid rgba(127,127,127,.28);font-size:15px;line-height:1.6"><strong>Chcete takýto web pre svoj podnik?</strong> Napíšte na <a href="mailto:apoliak@apoliak.online" style="font-weight:700">apoliak@apoliak.online</a> — ozvem sa do jedného pracovného dňa a prvý návrh máte do troch dní. Kontakty vymysleného podniku sú na tejto stránke zámerne vynechané.</p>
+
+  <p class="foot-note">Polyform je vymyslený podnik. Táto stránka je ukážka práce, nie web existujúcej firmy. Ceny, otváracie hodiny, adresa aj kontakty podniku sú ilustratívne. Kalkulačka série je predvádzacia funkcia so zjednodušeným modelom a nenahrádza cenovú ponuku po posúdení modelu dielu. Kontaktné údaje podniku sú zámerne vynechané, aby nikto nevolal ani nepísal na cudzie číslo či adresu. Ukážku navrhol a naprogramoval Alex Poliak — <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>, <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---------- lepkavá hlavička sadá presne pod pásik ukážky ---------- */
+  (function vyskaPasika() {
+    var bar = $(".demo-bar");
+    var head = $(".top");
+    function nastav() {
+      var korene = document.documentElement.style;
+      korene.removeProperty("--bar-h");
+      korene.removeProperty("--head-h");
+      if (bar) {
+        var hb = Math.round(bar.getBoundingClientRect().height);
+        if (hb > 0) { korene.setProperty("--bar-h", hb + "px"); }
+      }
+      if (head) {
+        var hh = Math.round(head.getBoundingClientRect().height);
+        if (hh > 0) { korene.setProperty("--head-h", hh + "px"); }
+      }
+    }
+    nastav();
+    window.addEventListener("resize", nastav);
+    window.addEventListener("orientationchange", nastav);
+    window.addEventListener("load", nastav);
+  })();
+
+  /* ---------- jemné prechody pri scrollovaní ---------- */
+  (function reveal() {
+    var bloky = $$(".reveal");
+    if (!bloky.length) { return; }
+    function ukazVsetko() { bloky.forEach(function (b) { b.classList.add("in"); }); }
+    var redukovane = false;
+    try { redukovane = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (redukovane || !("IntersectionObserver" in window)) { ukazVsetko(); return; }
+    var io = new IntersectionObserver(function (zaznamy) {
+      zaznamy.forEach(function (z) {
+        if (z.isIntersecting) { z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    bloky.forEach(function (b) { io.observe(b); });
+    window.setTimeout(ukazVsetko, 2500);
+  })();
+
+  /* ---------- menu ---------- */
+  (function menu() {
+    var prepinac = $("#navToggle");
+    if (!prepinac) { return; }
+    $$("#hlavnaNav a").forEach(function (a) {
+      a.addEventListener("click", function () { prepinac.checked = false; });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { prepinac.checked = false; }
+    });
+  })();
+
+  /* ---------- pomocné funkcie pre interakcie ---------- */
+  function eur(n) { return Math.round(n).toLocaleString("sk-SK") + " €"; }
+  function eur2(n) { return n.toFixed(2).replace(".", ",") + " €"; }
+
+  function pridajRiadok(kam, k, v) {
+    var r = document.createElement("div");
+    r.className = "suhrn-riadok";
+    var sk = document.createElement("span");
+    sk.className = "k";
+    sk.textContent = k;
+    var sv = document.createElement("span");
+    sv.className = "v";
+    sv.textContent = v;
+    r.appendChild(sk);
+    r.appendChild(sv);
+    kam.appendChild(r);
+  }
+
+  function zaskrtnuty(meno) { return $("input[name='" + meno + "']:checked"); }
+
+
+  /* ---------- kalkulačka série ---------- */
+  (function kalkulacka() {
+    var hmotnost = $("#hmotnost");
+    var kusov    = $("#kusov");
+    var riadky   = $("#suhrnRiadky");
+    var spolu    = $("#cenaSpolu");
+    var odhadCas = $("#odhadCas");
+    if (!hmotnost || !kusov || !riadky) { return; }
+
+    var SADZBA_STROJA = 32;   /* € za hodinu vstrekovacieho stroja aj s obsluhou */
+    var KROKY = [100,250,500,750,1000,1500,2000,3000,4000,5000,7500,10000,15000,20000,
+                 25000,30000,40000,50000,75000,100000,150000,200000,250000,300000,
+                 400000,500000,600000,750000,1000000,1250000,1500000,2000000,
+                 2500000,3000000];
+
+    function pocetKusov() {
+      var i = Math.min(KROKY.length - 1, Math.max(0, parseInt(kusov.value, 10) - 1));
+      return KROKY[i];
+    }
+
+    function cenaZaKus(ks, g, oMat, oZloz, hniezd, materialPripl, kusPripl) {
+      var cenaKg = parseFloat(oMat.getAttribute("data-cena-kg")) + materialPripl;
+      var koefCyklu = parseFloat(oMat.getAttribute("data-cyklus"));
+      var cyklus = parseFloat(oZloz.getAttribute("data-cyklus")) * koefCyklu;
+
+      /* materiál vrátane vtoku, ktorý sa čiastočne vracia späť */
+      var material = (g / 1000) * 1.12 * cenaKg;
+      /* strojový čas: cyklus sa delí počtom hniezd */
+      var stroj = (cyklus / hniezd) / 3600 * SADZBA_STROJA;
+      return material + stroj + kusPripl;
+    }
+
+    function prepocitaj() {
+      var g = parseInt(hmotnost.value, 10);
+      var ks = pocetKusov();
+      $("#hmotnost-hod").textContent = g.toLocaleString("sk-SK") + " g";
+      $("#kusov-hod").textContent = ks.toLocaleString("sk-SK") + " ks";
+
+      var oMat = zaskrtnuty("material");
+      var oZloz = zaskrtnuty("zlozitost");
+      if (!oMat || !oZloz) { return; }
+
+      var cenaFormy = parseFloat(oZloz.getAttribute("data-forma"));
+      var hniezd = 1;
+      var materialPripl = 0;
+      var kusPripl = 0;
+      var jednorazovo = 0;
+      var tyzdneNavyse = 0;
+
+      $$("input[name='dopl']:checked").forEach(function (d) {
+        if (d.getAttribute("data-forma-koef")) {
+          cenaFormy *= parseFloat(d.getAttribute("data-forma-koef"));
+          hniezd = parseInt(d.getAttribute("data-hniezd"), 10);
+          tyzdneNavyse += 2;
+        }
+        if (d.getAttribute("data-material-priplatok")) {
+          materialPripl += parseFloat(d.getAttribute("data-material-priplatok"));
+        }
+        if (d.getAttribute("data-kus-priplatok")) {
+          kusPripl += parseFloat(d.getAttribute("data-kus-priplatok"));
+        }
+        if (d.getAttribute("data-jednorazovo")) {
+          jednorazovo += parseFloat(d.getAttribute("data-jednorazovo"));
+        }
+      });
+
+      var zaKus = cenaZaKus(ks, g, oMat, oZloz, hniezd, materialPripl, kusPripl);
+      var vyroba = zaKus * ks;
+      var celkom = vyroba + cenaFormy + jednorazovo;
+      var sFormou = celkom / ks;
+
+      riadky.innerHTML = "";
+      pridajRiadok(riadky, "Forma" + (hniezd > 1 ? " · " + hniezd + " hniezda" : ""), eur(cenaFormy));
+      if (jednorazovo) { pridajRiadok(riadky, "Vzorkovanie a protokol", eur(jednorazovo)); }
+      pridajRiadok(riadky, "Výroba · " + ks.toLocaleString("sk-SK") + " ks", eur(vyroba));
+      pridajRiadok(riadky, "Cena za kus bez formy", eur2(zaKus));
+      pridajRiadok(riadky, "Celkom s formou", eur(celkom));
+
+      spolu.textContent = eur2(sFormou);
+
+      var tyzdne = (oZloz.value === "zlozity" ? 12 : (oZloz.value === "stredny" ? 9 : 6)) + tyzdneNavyse;
+      if (odhadCas) { odhadCas.textContent = tyzdne + " – " + (tyzdne + 3) + " týždňov"; }
+
+      kresliRozklad(ks, zaKus, cenaFormy + jednorazovo);
+    }
+
+    /* graf: ako sa forma rozpúšťa v sérii — najsilnejší argument tejto stránky */
+    function kresliRozklad(aktualne, zaKus, fixne) {
+      var box = $("#rozklad");
+      if (!box) { return; }
+      var vzorky = [1000, 5000, 25000, 100000, 500000];
+      if (vzorky.indexOf(aktualne) === -1) { vzorky.push(aktualne); }
+      vzorky.sort(function (a, b) { return a - b; });
+
+      var data = vzorky.map(function (ks) {
+        return { ks: ks, forma: fixne / ks, kus: zaKus, spolu: fixne / ks + zaKus };
+      });
+      var max = 0;
+      data.forEach(function (d) { if (d.spolu > max) { max = d.spolu; } });
+
+      box.innerHTML = "";
+      data.forEach(function (d) {
+        var r = document.createElement("div");
+        r.className = "rozklad-riadok" + (d.ks === aktualne ? " tento" : "");
+
+        var ksEl = document.createElement("span");
+        ksEl.className = "ks";
+        ksEl.textContent = d.ks >= 1000 ? Math.round(d.ks / 1000) + "k" : String(d.ks);
+
+        var pruh = document.createElement("div");
+        pruh.className = "pruh";
+        var f = document.createElement("span");
+        f.className = "forma-diel";
+        f.style.width = (d.forma / max * 100) + "%";
+        var k = document.createElement("span");
+        k.className = "kus-diel";
+        k.style.width = (d.kus / max * 100) + "%";
+        pruh.appendChild(f);
+        pruh.appendChild(k);
+
+        var kus = document.createElement("span");
+        kus.className = "kus";
+        kus.textContent = eur2(d.spolu);
+
+        r.appendChild(ksEl);
+        r.appendChild(pruh);
+        r.appendChild(kus);
+        box.appendChild(r);
+      });
+    }
+
+    $$("input[name='material'],input[name='zlozitost'],input[name='dopl']").forEach(function (i) {
+      i.addEventListener("change", prepocitaj);
+    });
+    hmotnost.addEventListener("input", prepocitaj);
+    kusov.addEventListener("input", prepocitaj);
+    prepocitaj();
+  })();
+
+
+  /* ---------- dopytový formulár: ukážka, nikam nič neodosiela ---------- */
+  (function formular() {
+    var form = $("#dopyt");
+    var hlaska = $("#hlaska");
+    if (!form || !hlaska) { return; }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var meno = $("#f-meno").value.trim();
+      var tel  = $("#f-tel").value.trim();
+
+      if (!meno || !tel) {
+        hlaska.className = "hlaska vidno chyba";
+        hlaska.innerHTML = "<b>Chýba meno alebo telefón.</b>Bez nich by sme sa vám nevedeli ozvať.";
+        return;
+      }
+
+      hlaska.className = "hlaska vidno";
+      hlaska.innerHTML = "<b>Ďakujeme, " + meno.split(" ")[0] + ".</b>" +
+        "Toto je ukážkový web, takže dopyt nikam neodišiel. Na skutočnom webe by v tejto chvíli pristál v schránke firmy.";
+      form.reset();
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

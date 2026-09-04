@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obrobňa Merkur — CNC sústruženie, frézovanie a zákazková výroba</title>
+<meta name="description" content="Obrobňa Merkur: CNC sústruženie a frézovanie, výroba dielcov na mieru, prototypy aj série vo Vzorovom Meste. Kalkulačka dielca, protokol o meraní a dodanie do desiatich dní. Ukážkový web od apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#111111">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Obrobňa Merkur — CNC sústruženie, frézovanie a zákazková výroba (ukážkový web)">
+<meta property="og:description" content="CNC obrábanie a zákazková strojárska výroba. S kalkulačkou, ktorá ukáže, ako cena za kus klesá so sériou. Ukážkový web vymysleného podniku od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317191c'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%2360a5fa' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%2360a5fa'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   Obrobňa Merkur — ukážkový web
+   Jeden sebestačný súbor: vlastné štýly aj skript, žiadny externý zdroj.
+   Plochy, kde by inak boli fotografie, nesie geometria a typografia.
+   ========================================================================== */
+
+:root{
+  --paper:#f1f2f3;
+  --surface:#ffffff;
+  --surface-3:#f8f9fa;
+  --ink:#111316;
+  --ink-body:#31363c;
+  --muted:#5d646c;
+  --line:#d8dade;
+  --line-strong:#b9bcc2;
+  --line-input:#8d9198;
+  --tma:#17191c;
+  --tma-2:#1f2328;
+  --tma-hlbka:#0c0d0f;
+  --na-tme:#e8eaec;
+  --na-tme-muted:#9ea4ac;
+  --na-tme-line:#2c3138;
+  --akcent:#60a5fa;
+  --akcent-hover:#3b82f6;
+  --akcent-tmavy:#1d4ed8;
+  --akcent-hlbky:#1e3a8a;
+  --akcent-svetly:#93c5fd;
+  --na-akcente:#08152a;
+  --karta-pas:linear-gradient(90deg,#1d4ed8,#60a5fa);
+  --ikona-bg:rgba(29,78,216,.08);
+  --ikona-line:rgba(29,78,216,.22);
+  --focus-tien:rgba(29,78,216,.18);
+  --znacka-bg:#60a5fa;
+  --znacka-tag-bg:rgba(96,165,250,.13);
+  --znacka-tag-line:rgba(96,165,250,.32);
+  --suhrn-bg:linear-gradient(165deg,#1f2328,#17191c);
+  --form-vstup-bg:rgba(0,0,0,.32);
+  --hero-bg:radial-gradient(920px 450px at 80% -8%,rgba(96,165,250,.15),transparent 60%),linear-gradient(168deg,#17191c 0%,#1f2328 52%,#0c0d0f 100%);
+  --hero-vzor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3C/svg%3E");
+  --sipka-select:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%235d646c'/%3E%3C/svg%3E");
+  --sipka-select-tma:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%239ea4ac'/%3E%3C/svg%3E");
+  --hero-ink:#9ea4ac;
+  --hero-nadpis:#ffffff;
+  --hero-zvyraznenie:#60a5fa;
+  --hero-line:#2c3138;
+  --hlavicka-bg:rgba(23,25,28,.94);
+  --hlavicka-ink:#e8eaec;
+  --hlavicka-ink-hover:#ffffff;
+  --hlavicka-muted:#9ea4ac;
+  --hlavicka-line:#2c3138;
+  --nav-btn-bg:rgba(255,255,255,.03);
+  --nav-hover-bg:rgba(255,255,255,.07);
+  --nav-drop-bg:#1f2328;
+
+  --focus:var(--akcent-tmavy);
+  --bar-h:38px;
+  --head-h:66px;
+
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+  --sans:system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + var(--head-h) + 14px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+body{margin:0;background:var(--paper);color:var(--ink-body);font-family:var(--sans);font-size:16.5px;line-height:1.68;-webkit-tap-highlight-color:transparent}
+
+h1,h2,h3,h4{color:var(--ink);line-height:1.15;margin:0;font-weight:700;letter-spacing:-.018em}
+h1,h2{font-family:var(--sans)}
+h1{font-size:clamp(34px,6vw,60px)}
+h2{font-size:clamp(26px,3.5vw,40px)}
+h3{font-size:clamp(18px,2vw,22px)}
+h4{font-size:16px}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--akcent-tmavy);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--akcent-hlbky)}
+ul,ol{margin:0;padding:0}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}
+
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+@media (max-width:640px){.wrap{width:min(1180px,100% - 28px)}}
+
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--tma);color:var(--na-tme);padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none}
+.skip:focus{left:10px;top:10px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- pásik ukážky ---------- */
+.demo-bar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;background:var(--tma-hlbka);color:var(--na-tme-muted);padding:9px 16px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.demo-bar a{color:var(--akcent);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.demo-bar a:hover{color:var(--akcent-svetly)}
+.demo-bar .sep{color:var(--na-tme-line)}
+.demo-bar .bar-tag{background:var(--akcent);color:var(--na-akcente);border-radius:999px;padding:3px 10px;letter-spacing:.1em}
+.demo-bar .bar-long{color:var(--na-tme-muted);text-transform:none;letter-spacing:.02em;font-size:12px}
+@media (max-width:520px){.demo-bar{font-size:10.5px;letter-spacing:.06em;gap:6px 10px;padding:7px 12px}.demo-bar .bar-long{display:none}}
+
+/* ---------- hlavička ---------- */
+.top{position:sticky;top:0;z-index:50;background:var(--hlavicka-bg);backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--hlavicka-line)}
+.top-in{display:flex;align-items:center;gap:18px;min-height:var(--head-h)}
+.brand{display:flex;align-items:center;gap:11px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;margin-right:auto}
+.brand:hover{color:var(--hlavicka-ink-hover)}
+.brand-mark{width:39px;height:39px;flex:none;border-radius:10px;background:var(--znacka-bg);display:grid;place-items:center}
+.brand-mark svg{width:22px;height:22px}
+.brand b{display:block;font-size:17px;line-height:1.15;font-family:var(--sans)}
+.brand small{display:block;font-size:11.5px;font-weight:600;color:var(--hlavicka-muted);letter-spacing:.05em;text-transform:uppercase}
+
+.nav-toggle{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+.nav-btn{display:none;align-items:center;gap:8px;cursor:pointer;color:var(--hlavicka-ink);border:1px solid var(--hlavicka-line);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:600;background:var(--nav-btn-bg)}
+.nav-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}
+.nav-btn:hover{border-color:var(--akcent);color:var(--akcent)}
+
+.hlavna-nav{display:flex;align-items:center;gap:2px}
+.hlavna-nav a{color:var(--hlavicka-muted);text-decoration:none;font-size:14px;font-weight:600;padding:8px 11px;border-radius:8px;white-space:nowrap}
+.hlavna-nav a:hover{color:var(--akcent);background:var(--nav-hover-bg)}
+
+.top-act{display:flex;align-items:center;gap:10px}
+.top-tel{display:inline-flex;align-items:center;gap:8px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;font-size:15px;white-space:nowrap}
+.top-tel svg{width:18px;height:18px;fill:var(--akcent)}
+.top-tel:hover{color:var(--akcent)}
+
+@media (max-width:1080px){
+  .nav-btn{display:inline-flex}
+  .hlavna-nav{position:absolute;left:0;right:0;top:100%;display:block;background:var(--nav-drop-bg);border-bottom:1px solid var(--hlavicka-line);padding:10px 20px 18px;max-height:0;overflow:hidden;visibility:hidden}
+  .nav-toggle:checked ~ .hlavna-nav{max-height:78vh;overflow:auto;visibility:visible;padding-block:14px 20px}
+  .hlavna-nav a{display:block;padding:11px 8px;border-bottom:1px solid var(--hlavicka-line);border-radius:0;font-size:15px}
+  .hlavna-nav a:last-child{border-bottom:0}
+}
+@media (max-width:720px){.top-tel span{display:none}}
+@media (max-width:420px){.brand small{display:none}}
+
+/* ---------- tlačidlá ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid transparent;border-radius:10px;padding:12.5px 22px;font-size:15px;font-weight:700;font-family:inherit;text-decoration:none;cursor:pointer;line-height:1.2;transition:transform .12s ease,background .16s ease,border-color .16s ease,color .16s ease}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:18px;height:18px;fill:currentColor;flex:none}
+.btn-primary{background:var(--akcent);color:var(--na-akcente);border-color:var(--akcent)}
+.btn-primary:hover{background:var(--akcent-hover);border-color:var(--akcent-hover);color:var(--na-akcente)}
+.btn-line{background:transparent;color:var(--na-tme);border-color:rgba(255,255,255,.28)}
+.btn-line:hover{border-color:var(--akcent);color:var(--akcent)}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--akcent-tmavy);color:var(--akcent-tmavy)}
+.btn-tmavy{background:var(--tma);color:var(--na-tme);border-color:var(--tma)}
+.btn-tmavy:hover{background:var(--tma-2);border-color:var(--tma-2);color:#fff}
+.btn-lg{padding:15px 26px;font-size:16px}
+
+/* ---------- sekcie ---------- */
+section{padding:clamp(52px,7vw,90px) 0}
+.on-dark{background:var(--tma);color:var(--na-tme-muted)}
+.on-dark h2,.on-dark h3,.on-dark h4{color:var(--na-tme)}
+.on-dark a{color:var(--akcent)}
+.on-dark a:hover{color:var(--akcent-svetly)}
+.alt{background:var(--surface-3)}
+
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--akcent-tmavy);margin:0 0 14px}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--akcent-tmavy);border-radius:2px}
+.on-dark .eyebrow{color:var(--akcent)}
+.on-dark .eyebrow::before{background:var(--akcent)}
+
+.sec-head{max-width:750px;margin-bottom:clamp(28px,4vw,44px)}
+.sec-head p{font-size:clamp(16.5px,1.6vw,18.5px);color:var(--muted);margin-top:14px}
+.on-dark .sec-head p{color:var(--na-tme-muted)}
+
+.reveal{opacity:1;transform:none}
+.js-reveal .reveal{opacity:0;transform:translateY(18px)}
+.js-reveal .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,.7,.3,1)}
+@media (prefers-reduced-motion: reduce){.js-reveal .reveal{opacity:1;transform:none;transition:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;background:var(--hero-bg);color:var(--hero-ink);padding:clamp(44px,6vw,78px) 0 clamp(50px,6.5vw,90px)}
+.hero::before{content:"";position:absolute;inset:0;background-image:var(--hero-vzor);opacity:.9;pointer-events:none}
+.hero .wrap{position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(30px,4vw,58px);align-items:center}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+.hero h1{color:var(--hero-nadpis);margin-bottom:20px}
+.hero h1 em{font-style:var(--sans);color:var(--hero-zvyraznenie)}
+.hero-lead{font-size:clamp(17px,1.9vw,20px);color:var(--hero-ink);max-width:58ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:32px;padding-top:24px;border-top:1px solid var(--hero-line)}
+.hero-facts div{min-width:116px}
+.hero-facts b{display:block;color:var(--hero-nadpis);font-size:24px;line-height:1.2;letter-spacing:-.02em;font-family:var(--sans)}
+.hero-facts span{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--hero-ink)}
+
+/* ---------- karty ---------- */
+.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:18px}
+.karta{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 24px 24px;overflow:hidden;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.karta:hover{border-color:var(--akcent-tmavy);transform:translateY(-3px);box-shadow:0 18px 40px -28px rgba(0,0,0,.4)}
+.karta::before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:var(--karta-pas);transform:scaleX(0);transform-origin:left;transition:transform .28s ease}
+.karta:hover::before{transform:scaleX(1)}
+.karta-ikona{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;background:var(--ikona-bg);border:1px solid var(--ikona-line)}
+.karta-ikona svg{width:23px;height:23px;fill:none;stroke:var(--akcent-tmavy);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.karta h3{margin-bottom:9px}
+.karta p{color:var(--muted);font-size:15.5px}
+.karta-cena{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);background:var(--ikona-bg);border-radius:7px;padding:5px 11px;font-weight:600}
+
+/* ---------- tabuľka ---------- */
+.tab-obal{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+caption{text-align:left;padding:16px 20px 0;color:var(--muted);font-size:13.5px}
+th,td{padding:13px 20px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-3)}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono);font-size:14px;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-3)}
+td b{color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+/* ---------- kroky ---------- */
+.kroky{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:20px;counter-reset:k}
+.krok{position:relative;padding-top:22px;border-top:2px solid var(--line);counter-increment:k}
+.krok::before{content:counter(k,decimal-leading-zero);position:absolute;top:-13px;left:0;background:var(--paper);padding-right:12px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--akcent-tmavy);letter-spacing:.06em}
+.alt .krok::before{background:var(--surface-3)}
+.krok h3{font-size:18px;margin-bottom:8px}
+.krok p{color:var(--muted);font-size:15px}
+
+/* ---------- formulárové prvky (spoločné pre interakcie) ---------- */
+.pole{margin-bottom:22px}
+.pole:last-child{margin-bottom:0}
+.pole > .lbl{display:block;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:11px}
+.pole .hint{font-size:13.5px;color:var(--muted);margin:-4px 0 11px}
+
+.volby{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:9px}
+.volba{position:relative}
+.volba input{position:absolute;opacity:0;width:0;height:0}
+.volba span{display:block;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;cursor:pointer;background:var(--surface);font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.35;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.volba span small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:3px}
+.volba input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg);color:var(--akcent-hlbky)}
+.volba input:checked + span small{color:var(--akcent-hlbky)}
+.volba input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.volba span:hover{border-color:var(--line-input)}
+
+.doplnky{display:grid;gap:9px}
+.dopl{position:relative}
+.dopl input{position:absolute;opacity:0;width:0;height:0}
+.dopl span{display:flex;align-items:flex-start;gap:12px;cursor:pointer;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;background:var(--surface);font-size:14.5px;color:var(--ink);transition:border-color .15s ease,background .15s ease}
+.dopl span::before{content:"";flex:none;width:19px;height:19px;margin-top:2px;border-radius:5px;border:1.5px solid var(--line-input);background:var(--surface);background-position:center;background-repeat:no-repeat;background-size:14px}
+.dopl input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg)}
+.dopl input:checked + span::before{border-color:var(--akcent-tmavy);background-color:var(--akcent-tmavy);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 6L9 17l-5-5' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.dopl input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.dopl b{display:block;font-weight:700}
+.dopl small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.dopl .p{margin-left:auto;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);font-weight:700;white-space:nowrap;padding-left:10px}
+
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date],select,textarea{width:100%;font-family:inherit;font-size:15.5px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line-input);border-radius:10px;padding:12px 14px;line-height:1.4}
+textarea{min-height:108px;resize:vertical}
+select{appearance:none;background-image:var(--sipka-select);background-repeat:no-repeat;background-position:right 10px center;background-size:22px;padding-right:38px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--akcent-tmavy);box-shadow:0 0 0 3px var(--focus-tien)}
+
+.rozsah-riadok{display:flex;align-items:center;gap:16px}
+.rozsah-riadok input[type=range]{flex:1;accent-color:var(--akcent-tmavy);height:26px}
+.rozsah-hod{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--ink);min-width:104px;text-align:right}
+
+/* ---------- súhrn (pravý panel interakcií) ---------- */
+.kalk{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:clamp(20px,3vw,36px);align-items:start}
+@media (max-width:920px){.kalk{grid-template-columns:1fr}}
+.kalk-panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,32px)}
+.suhrn{position:sticky;top:calc(var(--bar-h) + var(--head-h) + 16px);background:var(--suhrn-bg);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px);color:var(--na-tme-muted);box-shadow:0 26px 60px -34px rgba(0,0,0,.7)}
+@media (max-width:920px){.suhrn{position:static}}
+.suhrn h3{color:#fff;margin-bottom:6px}
+.suhrn-note{font-size:13.5px;color:var(--na-tme-muted);margin-bottom:20px}
+.suhrn-riadky{border-top:1px solid var(--na-tme-line);margin-bottom:18px}
+.suhrn-riadok{display:flex;gap:14px;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--na-tme-line);font-size:14.5px}
+.suhrn-riadok .k{color:var(--na-tme-muted)}
+.suhrn-riadok .v{color:#fff;font-weight:600;text-align:right;font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.suhrn-spolu{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:16px 0 4px}
+.suhrn-spolu .k{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted)}
+.suhrn-spolu .v{font-size:clamp(28px,4vw,38px);font-weight:800;color:var(--akcent);letter-spacing:-.025em;line-height:1}
+.suhrn-cas{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid var(--na-tme-line);font-size:14px}
+.suhrn-cas svg{width:17px;height:17px;fill:var(--akcent);flex:none;margin-top:3px}
+.suhrn-cas b{color:#fff}
+.suhrn .btn{width:100%;margin-top:20px}
+.suhrn-disk{font-size:12.5px;color:var(--na-tme-muted);margin-top:14px;line-height:1.55}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;gap:12px;max-width:900px}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.faq-item summary{cursor:pointer;list-style:none;padding:19px 54px 19px 22px;position:relative;font-weight:700;color:var(--ink);font-size:16.5px;line-height:1.45}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"";position:absolute;right:22px;top:50%;width:13px;height:13px;margin-top:-8px;border-right:2.2px solid var(--akcent-tmavy);border-bottom:2.2px solid var(--akcent-tmavy);transform:rotate(45deg);transition:transform .2s ease}
+.faq-item[open] summary::after{transform:rotate(-135deg);margin-top:-3px}
+.faq-item summary:hover{color:var(--akcent-tmavy)}
+.faq-telo{padding:0 22px 20px;color:var(--muted);font-size:15.5px}
+.faq-telo p:first-child{margin-top:-4px}
+
+/* ---------- kontakt ---------- */
+.kont-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,3.5vw,46px)}
+@media (max-width:860px){.kont-grid{grid-template-columns:1fr}}
+.kont-list{list-style:none;display:grid;gap:18px;margin-top:24px}
+.kont-list li{display:flex;gap:14px;align-items:flex-start}
+.kont-list svg{width:21px;height:21px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.kont-list .k{display:block;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:2px}
+.kont-list a,.kont-list .v{color:#fff;font-size:16.5px;font-weight:600;text-decoration:none}
+.kont-list a:hover{color:var(--akcent)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-obal{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.form-obal label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--na-tme);margin-bottom:8px}
+.form-obal input,.form-obal select,.form-obal textarea{background:var(--form-vstup-bg);border-color:var(--na-tme-line);color:var(--na-tme)}
+.form-obal input::placeholder,.form-obal textarea::placeholder{color:var(--na-tme-muted)}
+.form-obal input:focus,.form-obal select:focus,.form-obal textarea:focus{border-color:var(--akcent);box-shadow:0 0 0 3px var(--focus-tien)}
+.form-obal select{background-image:var(--sipka-select-tma)}
+.form-note{font-size:13px;color:var(--na-tme-muted);margin-top:14px}
+.kont-pozn{margin-top:26px;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);font-size:14px;line-height:1.6;color:var(--na-tme-muted)}
+.kont-pozn strong{display:block;margin-top:8px;color:var(--na-tme)}
+.kont-pozn a{font-weight:700}
+
+.hlaska{display:none;margin-top:16px;border-radius:11px;padding:15px 18px;font-size:15px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.26);color:var(--na-tme)}
+.hlaska.vidno{display:block}
+.hlaska.chyba{background:rgba(220,90,70,.18);border-color:rgba(255,140,120,.44)}
+.hlaska b{color:#fff;display:block;margin-bottom:3px}
+
+/* ---------- autor ukážky ---------- */
+.author{background:var(--tma-hlbka);padding:clamp(52px,7vw,90px) 0;color:var(--na-tme-muted)}
+.author-in{width:min(1180px,100% - 40px);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(26px,4vw,52px);align-items:start}
+@media (max-width:900px){.author-in{grid-template-columns:1fr}}
+@media (max-width:640px){.author-in{width:min(1180px,100% - 28px)}}
+.author .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--akcent);background:var(--znacka-tag-bg);border:1px solid var(--znacka-tag-line);border-radius:999px;padding:5px 13px;margin-bottom:16px}
+.author h2{color:#fff;margin-bottom:14px}
+.author-lead{color:var(--na-tme-muted);font-size:16.5px;max-width:56ch}
+.author-claim{font-size:clamp(19px,2.4vw,25px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-top:18px;font-family:var(--sans)}
+.author-card{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.author-card h3{color:#fff;font-size:21px;margin-bottom:3px;font-family:var(--sans)}
+.author-card .role{display:block;font-size:13px;color:var(--na-tme-muted);letter-spacing:.05em;margin-bottom:20px}
+.author-list{list-style:none;display:grid;gap:16px}
+.author-list li{display:flex;gap:13px;align-items:flex-start}
+.author-list svg{width:20px;height:20px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.author-list .k{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:1px}
+.author-list a{color:#fff;font-weight:600;text-decoration:none;font-size:15.5px}
+.author-list a:hover{color:var(--akcent)}
+.author-list .sep{color:var(--na-tme-line);margin:0 7px}
+
+/* ---------- pätička ---------- */
+footer{background:var(--tma-hlbka);color:var(--na-tme-muted);padding:0 0 40px;font-size:14.5px;border-top:1px solid var(--na-tme-line)}
+.foot-cta{width:min(1180px,100% - 40px);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding:30px 0;border-bottom:1px solid var(--na-tme-line)}
+@media (max-width:640px){.foot-cta{width:min(1180px,100% - 28px)}}
+.foot-cta p{margin:0}
+.foot-cta-k{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.foot-cta-tel{color:#fff;font-size:25px;font-weight:800;text-decoration:none}
+.foot-cta-tel:hover{color:var(--akcent)}
+.foot-in{width:min(1180px,100% - 40px);margin:26px auto 0;display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;align-items:flex-start}
+@media (max-width:640px){.foot-in{width:min(1180px,100% - 28px)}}
+.foot-in p{margin:0}
+.foot-in strong{color:#fff}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot-links a{color:var(--na-tme-muted);text-decoration:none;font-size:14px}
+.foot-links a:hover{color:var(--akcent)}
+.foot-note{width:min(1180px,100% - 40px);margin:26px auto 0;padding-top:20px;border-top:1px solid var(--na-tme-line);font-size:13px;color:var(--na-tme-muted);line-height:1.6}
+@media (max-width:640px){.foot-note{width:min(1180px,100% - 28px)}}
+
+
+.vykres{position:relative;aspect-ratio:1/.82;border-radius:16px;overflow:hidden;background:#101215;border:1px solid var(--na-tme-line);box-shadow:0 30px 70px -32px rgba(0,0,0,.85)}
+.vykres svg{position:absolute;inset:0;width:100%;height:100%}
+.vykres-tag{position:absolute;left:16px;bottom:16px;z-index:3;background:rgba(12,13,15,.88);border:1px solid var(--na-tme-line);border-radius:11px;padding:11px 15px;backdrop-filter:blur(6px)}
+.vykres-tag b{display:block;color:#fff;font-size:15px}
+.vykres-tag span{font-size:12px;color:var(--na-tme-muted);font-family:var(--mono)}
+.seria{margin-top:18px;padding-top:16px;border-top:1px solid var(--na-tme-line)}
+.seria-nadpis{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:12px}
+.seria-riadok{display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;font-size:13px;margin-bottom:7px}
+.seria-riadok .ks{font-family:var(--mono);color:var(--na-tme-muted);text-align:right}
+.seria-riadok .pruh{height:18px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
+.seria-riadok .pruh i{display:block;height:100%;background:linear-gradient(90deg,var(--akcent-tmavy),var(--akcent));transition:width .3s ease}
+.seria-riadok .kus{font-family:var(--mono);color:#fff;font-weight:700;white-space:nowrap}
+.seria-riadok.tento .ks,.seria-riadok.tento .kus{color:var(--akcent)}
+
+</style>
+<script>
+(function(){
+  try{
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      document.documentElement.className += " js-reveal";
+    }
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===================== pásik ukážky ===================== -->
+<div class="demo-bar" role="note">
+  <span class="bar-tag">Ukážkový web</span>
+  <span class="bar-long">Takýto web pre vás spravím.</span>
+  <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+</div>
+
+<!-- ===================== hlavička ===================== -->
+<header class="top">
+  <div class="wrap top-in">
+    <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Zobraziť menu">
+    <a class="brand" href="#hero">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.4" fill="none" stroke="#08152a" stroke-width="2.2"/><circle cx="12" cy="12" r="2.4" fill="#08152a"/></svg></span>
+      <span>
+        <b>Obrobňa Merkur</b>
+        <small>CNC obrábanie · zákazková výroba</small>
+      </span>
+    </a>
+
+    <nav class="hlavna-nav" id="hlavnaNav" aria-label="Hlavná navigácia">
+      <a href="#sluzby">Čo robíme</a>
+      <a href="#kalkulacka">Kalkulačka</a>
+      <a href="#stroje">Strojový park</a>
+      <a href="#kvalita">Kvalita</a>
+      <a href="#postup">Postup</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="top-act">
+      <label class="nav-btn" for="navToggle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </label>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===================== hero ===================== -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Zákazkové obrábanie od roku 1998</p>
+        <h1>Dielec podľa výkresu, <em>na stotinu</em>.</h1>
+        <p class="hero-lead">CNC sústruženie a frézovanie od jedného prototypu po sériu tisíc kusov. Ku každej zákazke dodáme protokol o meraní — nie tvrdenie, že to sedí.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="#kalkulacka">Naceniť dielec</a>
+          <a class="btn btn-line btn-lg" href="#stroje">Strojový park</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>27</b><span>rokov v obrábaní</span></div>
+          <div><b>±0,01 mm</b><span>bežná presnosť</span></div>
+          <div><b>10 dní</b><span>typický termín</span></div>
+          <div><b>100 %</b><span>meranie dielcov</span></div>
+        </div>
+      </div>
+
+      <div class="vykres" aria-hidden="true">
+        <svg viewBox="0 0 400 330" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#2c3138" stroke-width="1" fill="none">
+            <path d="M0 33h400M0 66h400M0 99h400M0 132h400M0 165h400M0 198h400M0 231h400M0 264h400M0 297h400"/>
+            <path d="M33 0v330M66 0v330M99 0v330M132 0v330M165 0v330M198 0v330M231 0v330M264 0v330M297 0v330M330 0v330M363 0v330"/>
+          </g>
+          <!-- os -->
+          <path d="M40 165h320" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="12 4 3 4"/>
+          <!-- rotačný dielec v reze -->
+          <g fill="none" stroke="#c9ced6" stroke-width="3">
+            <path d="M70 130h60v70H70zM130 112h90v106h-90zM220 138h70v54h-70zM290 122h44v86h-44z"/>
+          </g>
+          <!-- šrafovanie rezu -->
+          <g stroke="#5d646c" stroke-width="1" opacity=".8">
+            <path d="M74 200l56-70M86 200l56-70M98 200l56-70M110 200l20-25"/>
+            <path d="M232 192l58-54M244 192l46-42M256 192l34-30M268 192l22-18"/>
+          </g>
+          <!-- zápich a závit -->
+          <path d="M160 112v106M176 112v106" stroke="#c9ced6" stroke-width="2"/>
+          <g stroke="#60a5fa" stroke-width="1.6">
+            <path d="M296 130h32M296 138h32M296 146h32M296 154h32M296 162h32M296 170h32M296 178h32M296 186h32M296 194h32M296 202h32"/>
+          </g>
+          <!-- kóty -->
+          <g stroke="#60a5fa" stroke-width="1.2" fill="none">
+            <path d="M70 96h250M70 90v12M320 90v12"/>
+            <path d="M52 112v106M46 112h12M46 218h12"/>
+            <path d="M220 238h70M220 232v12M290 232v12"/>
+          </g>
+          <text x="180" y="86" fill="#93c5fd" font-family="monospace" font-size="12" text-anchor="middle">248,00</text>
+          <text x="34" y="168" fill="#93c5fd" font-family="monospace" font-size="12" text-anchor="middle" transform="rotate(-90 34 168)">Ø 62</text>
+          <text x="255" y="258" fill="#93c5fd" font-family="monospace" font-size="12" text-anchor="middle">M24×1,5</text>
+          <text x="300" y="300" fill="#9ea4ac" font-family="monospace" font-size="11">Ra 1,6 · tol. ±0,01</text>
+        </svg>
+        <div class="vykres-tag">
+          <b>Hriadeľ so závitom, séria 120 ks</b>
+          <span>C45 · sústruženie a frézovanie · Ra 1,6</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== sluzby ===================== -->
+<section id="sluzby">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Čo robíme</p>
+      <h2>Od jedného prototypu po sériu</h2>
+      <p>Berieme aj jeden kus. Pri prototype vieme, že sa naň čaká, tak ho nedávame na koniec radu — často je hotový do troch dní.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+        <h3>CNC sústruženie</h3>
+        <p>Rotačné dielce do priemeru 320 mm a dĺžky 900 mm. Poháňané nástroje, takže frézovanie aj vŕtanie ide na jedno upnutie — presnejšie a lacnejšie.</p>
+        <span class="karta-cena">od 42 €/hod.</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/></svg></div>
+        <h3>CNC frézovanie</h3>
+        <p>Trojosé aj štvorosé, plocha stola 1 000 × 500 mm. Formy, príruby, konzoly a všetko, čo nie je rotačné.</p>
+        <span class="karta-cena">od 48 €/hod.</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 7l5-4 5 4M7 17l5 4 5-4"/></svg></div>
+        <h3>Prototypy a kusová výroba</h3>
+        <p>Jeden kus podľa náčrtu aj podľa vzorky. Ak nemáte výkres, diel odmeriame a nakreslíme — dostanete ho aj v elektronickej podobe pre budúcnosť.</p>
+        <span class="karta-cena">od 60 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V8l6-4 6 4v12"/><path d="M10 20v-6h4v6"/></svg></div>
+        <h3>Sériová výroba</h3>
+        <p>Od päťdesiat kusov nastavujeme prípravky, čo výrazne zráža čas na kus. Pri opakovaných sériách si nastavenie držíme, takže druhá objednávka je lacnejšia.</p>
+        <span class="karta-cena">podľa série</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+        <h3>Opravy a renovácie dielov</h3>
+        <p>Keď sa originál už nevyrába. Odmeriame opotrebovaný kus, dopočítame pôvodné rozmery a vyrobíme náhradu — často lacnejšie než celý nový uzol.</p>
+        <span class="karta-cena">podľa rozsahu</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Meranie a protokol</h3>
+        <p>Každý dielec meriame, pri sérii štatisticky. Protokol o meraní posielame ku každej zákazke — je súčasťou ceny, nie príplatkom.</p>
+        <span class="karta-cena">v cene</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kalkulacka ===================== -->
+<section id="kalkulacka" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Orientačná cena</p>
+      <h2>Naceňte si dielec</h2>
+      <p>Zadajte materiál, veľkosť a sériu. Uvidíte cenu za kus aj celú zákazku — a hlavne to, ako prudko cena klesá pri väčšej sérii, lebo nastavenie stroja sa rozloží.</p>
+    </div>
+
+    <div class="kalk">
+      <div class="kalk-panel reveal">
+        <div class="pole">
+          <span class="lbl" id="l-material">Materiál</span>
+          <div class="volby" role="radiogroup" aria-labelledby="l-material">
+            <label class="volba"><input type="radio" name="material" value="konstrukcna" data-cena-kg="1.4" data-koef="1" checked><span>Konštrukčná oceľ<small>S235, S355 — najbežnejšia</small></span></label>
+            <label class="volba"><input type="radio" name="material" value="c45" data-cena-kg="1.9" data-koef="1.15"><span>Uhlíková oceľ C45<small>kalitelná, na hriadele</small></span></label>
+            <label class="volba"><input type="radio" name="material" value="nerez" data-cena-kg="5.8" data-koef="1.85"><span>Nerez 1.4301<small>horšie sa obrába, pomalší posuv</small></span></label>
+            <label class="volba"><input type="radio" name="material" value="hlinik" data-cena-kg="4.2" data-koef="0.7"><span>Hliník<small>rýchle obrábanie, drahší materiál</small></span></label>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="lbl" id="l-zlozitost">Zložitosť dielca</span>
+          <p class="hint">Zložitosť určuje čas na jeden kus aj čas na prípravu stroja.</p>
+          <div class="volby" role="radiogroup" aria-labelledby="l-zlozitost">
+            <label class="volba"><input type="radio" name="zlozitost" value="jednoduchy" data-cas="0.25" data-prip="45" checked><span>Jednoduchý<small>sústruženie, pár priemerov</small></span></label>
+            <label class="volba"><input type="radio" name="zlozitost" value="stredny" data-cas="0.55" data-prip="90"><span>Stredný<small>závity, zápichy, vŕtanie</small></span></label>
+            <label class="volba"><input type="radio" name="zlozitost" value="zlozity" data-cas="1.3" data-prip="180"><span>Zložitý<small>viac upnutí, tolerancie do 0,01</small></span></label>
+          </div>
+        </div>
+        <div class="pole">
+          <label class="lbl" for="hmotnost">Hmotnosť polotovaru na kus</label>
+          <p class="hint">Približne. Z nej počítame cenu materiálu vrátane odpadu.</p>
+          <div class="rozsah-riadok">
+            <input type="range" id="hmotnost" min="0.1" max="40" step="0.1" value="2.4" aria-describedby="hmotnost-hod">
+            <output class="rozsah-hod" id="hmotnost-hod" for="hmotnost">2.4 kg</output>
+          </div>
+        </div>
+        <div class="pole">
+          <label class="lbl" for="kusov">Počet kusov</label>
+          <p class="hint">Posuvník ide po skokoch, ktoré sa v praxi objednávajú.</p>
+          <div class="rozsah-riadok">
+            <input type="range" id="kusov" min="1" max="40" step="1" value="12" aria-describedby="kusov-hod">
+            <output class="rozsah-hod" id="kusov-hod" for="kusov">12</output>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="lbl">K tomu</span>
+          <div class="doplnky">
+            <label class="dopl"><input type="checkbox" name="dopl" value="kalenie" data-percento="18"><span><b>Tepelné spracovanie<span class="sr"> — +18 %</span></b><small>kalenie a popúšťanie u overeného partnera</small><span class="p">+18 %</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="povrch" data-percento="12"><span><b>Povrchová úprava<span class="sr"> — +12 %</span></b><small>černenie, zinkovanie alebo eloxovanie</small><span class="p">+12 %</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="protokol" data-cena="40"><span><b>Rozšírený merací protokol<span class="sr"> — +40 €</span></b><small>meranie všetkých kusov, nie výberové</small><span class="p">+40 €</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="expres" data-percento="35"><span><b>Expres do 5 dní<span class="sr"> — +35 %</span></b><small>vsunieme do plánu pred ostatné zákazky</small><span class="p">+35 %</span></span></label>
+          </div>
+        </div>
+      </div>
+
+      <aside class="suhrn reveal" aria-live="polite">
+        <h3>Orientačná cena</h3>
+        <p class="suhrn-note">Prepočítava sa hneď, ako niečo zmeníte.</p>
+
+        <div class="suhrn-riadky" id="suhrnRiadky"></div>
+
+        <div class="suhrn-spolu">
+          <span class="k">Spolu bez DPH</span>
+          <span class="v" id="cenaSpolu">0 €</span>
+        </div>
+
+        <p class="suhrn-cas">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span>Termín dodania: <b id="odhadCas">—</b></span>
+        </p>
+        <a class="btn btn-primary" href="#kontakt">Poslať výkres a dopyt</a>
+        <p class="suhrn-disk">Cena je orientačná a bez DPH. Záväznú ponuku dáme po posúdení výkresu — vplyv má aj tolerancia, drsnosť povrchu a to, či sa dá dielec vyrobiť na jedno upnutie.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== strojový park ===================== -->
+<section id="stroje" class="on-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Strojový park</p>
+      <h2>Na čom to vyrobíme</h2>
+      <p>Sedem strojov, všetky vlastné. Nič neposielame do kooperácie okrem tepelného
+      spracovania a povrchových úprav — a aj tam máme jedného stáleho partnera.</p>
+    </div>
+
+    <div class="tab-obal reveal">
+      <table>
+        <caption>Stav k septembru 2026.</caption>
+        <thead>
+          <tr><th scope="col">Stroj</th><th scope="col">Pracovný rozsah</th><th scope="col">Presnosť</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>CNC sústruh s poháňanými nástrojmi</b><small>frézovanie a vŕtanie na jedno upnutie</small></td><td>Ø 320 × 900 mm</td><td>±0,01 mm</td></tr>
+          <tr><td><b>CNC sústruh s podávačom tyčí</b><small>na dlhé série drobných dielcov</small></td><td>Ø 65 × 320 mm</td><td>±0,01 mm</td></tr>
+          <tr><td><b>Trojosé CNC obrábacie centrum</b><small>hlavný stroj na frézované dielce</small></td><td>1 000 × 500 × 500 mm</td><td>±0,015 mm</td></tr>
+          <tr><td><b>Štvorosé CNC centrum</b><small>otočný stôl, obrábanie z viacerých strán</small></td><td>600 × 400 × 400 mm</td><td>±0,015 mm</td></tr>
+          <tr><td><b>Univerzálny hrotový sústruh</b><small>na opravy a jednorazové kusy</small></td><td>Ø 400 × 1 500 mm</td><td>±0,05 mm</td></tr>
+          <tr><td><b>Pásová píla</b><small>delenie materiálu do priemeru 260 mm</small></td><td>Ø 260 mm</td><td>±0,5 mm</td></tr>
+          <tr><td><b>Súradnicový merací prístroj</b><small>protokoly a kontrola tolerancií</small></td><td>700 × 600 × 500 mm</td><td>±0,003 mm</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kvalita ===================== -->
+<section id="kvalita" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Kvalita</p>
+      <h2>Ako viete, že to naozaj sedí</h2>
+      <p>Toto je pri strojárskej výrobe dôležitejšie než cena. Chybný dielec v zostave stojí násobne viac, než ušetríte na cene za kus.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Meriame každý dielec</h3>
+        <p>Pri kusovej výrobe všetky, pri sérii prvý, posledný a štatistickú vzorku medzi. Nameraná hodnota ide do protokolu, nie do kolónky „vyhovuje“.</p>
+        <span class="karta-cena">100 % / štatisticky</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg></div>
+        <h3>Protokol ku každej zákazke</h3>
+        <p>S nameranými hodnotami kritických rozmerov, nie s pečiatkou. Odberateľ ho väčšinou potrebuje do vlastnej dokumentácie.</p>
+        <span class="karta-cena">v cene</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8.4-8 9-4.6-.6-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Dohľadateľnosť materiálu</h3>
+        <p>Ku každej tavbe si držíme atest. Keď sa o rok objaví problém, vieme povedať, z akého materiálu bol dielec a odkiaľ prišiel.</p>
+        <span class="karta-cena">atesty archivujeme</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+        <h3>Keď spravíme chybu</h3>
+        <p>Vyrobíme znova a expresne, na vlastné náklady. Za dvadsaťsedem rokov sa to stalo dvanásťkrát a zakaždým sme to riešili takto.</p>
+        <span class="karta-cena">bez diskusie</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== postup ===================== -->
+<section id="postup">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ako to prebieha</p>
+      <h2>Päť krokov od výkresu po dodanie</h2>
+    </div>
+
+    <div class="kroky">
+      <div class="krok reveal">
+        <h3>Pošlete výkres</h3>
+        <p>PDF, DWG aj STEP. Ak výkres nemáte, prineste vzorku — odmeriame ju a nakreslíme.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Posúdime vyrobiteľnosť</h3>
+        <p>Niekedy stačí zmeniť jednu tolerantnú kótu a cena klesne o tretinu. Vždy to napíšeme do ponuky ako návrh.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Dostanete ponuku</h3>
+        <p>Do dvoch pracovných dní s cenou za kus, celkom a termínom. Platí 30 dní.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Vyrobíme a zmeriame</h3>
+        <p>Pri sérii posielame prvý kus na schválenie skôr, než rozbehneme zvyšok — je to lacnejšie pre obe strany.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Dodáme s protokolom</h3>
+        <p>Osobne, kuriérom alebo vlastným autom. Protokol o meraní je súčasťou dodávky.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Časté otázky</p>
+      <h2>Na čo sa nás pýtate najčastejšie</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq-item reveal">
+        <summary>Vyrobíte aj jeden kus?</summary>
+        <div class="faq-telo"><p>Áno a je to bežná zákazka. Pri jednom kuse tvorí väčšinu ceny nastavenie stroja, takže cena za kus je vysoká — ale stále lacnejšia než zháňať originál, ktorý sa už nevyrába. V kalkulačke si to viete pekne porovnať.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Čo ak nemám výkres?</summary>
+        <div class="faq-telo"><p>Priveďte vzorku. Odmeriame ju na súradnicovom prístroji, dopočítame pôvodné rozmery tam, kde je diel opotrebovaný, a nakreslíme výkres. Ten vám zostáva — pri ďalšej objednávke ho už len pošlete.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Ako presne to viete vyrobiť?</summary>
+        <div class="faq-telo"><p>Bežne ±0,01 mm na CNC strojoch, pri brúsených plochách presnejšie. Dôležitejšie než číslo je ale to, že to naozaj zmeriame — presnosť, ktorú nikto neoveril, je len údaj v katalógu stroja.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Robíte aj tepelné spracovanie a povrchové úpravy?</summary>
+        <div class="faq-telo"><p>Sami nie, posielame k overenému partnerovi, s ktorým robíme dvanásť rokov. Je to v ponuke ako samostatná položka a predlžuje termín zhruba o týždeň. Zodpovednosť za výsledok nesieme my.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Aký je bežný termín?</summary>
+        <div class="faq-telo"><p>Pri kusovej výrobe tri až päť pracovných dní, pri sérii do sto kusov zhruba desať. Expres do piatich dní vieme takmer vždy, ale znamená to, že niekoho iného posunieme — preto je s príplatkom.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Skladujete pre nás vyrobené dielce?</summary>
+        <div class="faq-telo"><p>Áno, pri opakovaných zákazkách je to bežné. Vyrobíme väčšiu sériu naraz (lacnejšie) a odvolávate si ju po častiach podľa potreby. Skladovanie do troch mesiacov neúčtujeme.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kontakt ===================== -->
+<section id="kontakt" class="on-dark">
+  <div class="wrap">
+    <div class="kont-grid">
+      <div class="reveal">
+        <p class="eyebrow">Kontakt</p>
+        <h2>Ozvite sa</h2>
+        <p style="margin-top:14px">Pošlite výkres alebo model v STEP a povedzte počet kusov. Cenu dáme do dvoch pracovných dní. Ak výkres nemáte, prídeme si diel odmerať.</p>
+
+        <ul class="kont-list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="k">Prevádzka</span><span class="v">Strojárska 18, Vzorové Mesto</span></div></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span class="k">Prevádzka</span><span class="v">Po – Pi 6:00 – 18:00, dve zmeny</span></div></li>
+        </ul>
+
+        <p class="kont-pozn">Telefón a e-mail podniku tu zámerne nie sú — je to
+        ukážkový web vymysleného podniku a nechceme, aby niekto volal alebo písal
+        na cudzie číslo. Na skutočnom webe by tu boli vaše kontakty.
+        <strong>Ak máte záujem o takýto web, napíšte na
+        <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>.</strong></p>
+      </div>
+
+      <div class="form-obal reveal">
+        <form id="dopyt" novalidate>
+          <div class="form-grid">
+            <div>
+              <label for="f-meno">Meno alebo firma</label>
+              <input type="text" id="f-meno" name="meno" placeholder="Ján Vzorový" autocomplete="name" required>
+            </div>
+            <div>
+              <label for="f-tel">Telefón</label>
+              <input type="tel" id="f-tel" name="tel" placeholder="vaše telefónne číslo" autocomplete="tel" required>
+            </div>
+            <div class="full">
+              <label for="f-mail">E-mail</label>
+              <input type="email" id="f-mail" name="mail" placeholder="jan@example.sk" autocomplete="email">
+            </div>
+            <div>
+              <label for="f-ks">Počet kusov</label>
+              <input type="text" id="f-ks" name="ks" placeholder="1 prototyp / 250 ks">
+            </div>
+            <div>
+              <label for="f-material">Materiál</label>
+              <input type="text" id="f-material" name="material" placeholder="C45 / nerez 1.4301 / hliník">
+            </div>
+            <div class="full">
+              <label for="f-sprava">Popis dielca</label>
+              <textarea id="f-sprava" name="sprava" placeholder="Rotačný dielec Ø62, dĺžka 248, závit M24×1,5, tolerancia ±0,01 na priemere ložiskového sedla. Výkres pošlem mailom."></textarea>
+            </div>
+          </div>
+          <div class="hero-cta" style="margin-top:20px">
+            <button type="submit" class="btn btn-primary btn-lg">Odoslať dopyt</button>
+          </div>
+          <p class="form-note">Ponuku pošleme do dvoch pracovných dní. Výkresy berieme v PDF, DWG aj STEP.</p>
+          <p class="hlaska" id="hlaska" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== autor ukážky, skutočné údaje ===================== -->
+<aside class="author" id="autor" aria-labelledby="h-autor">
+  <div class="author-in">
+    <div>
+      <span class="tag">Autor ukážky, nie je súčasť podniku Obrobňa Merkur</span>
+      <h2 id="h-autor">Páči sa vám tento web?</h2>
+      <p class="author-lead">Túto ukážku navrhol a naprogramoval Alex Poliak. Rovnaký web pripravím aj pre vašu obrobňu — s kalkulačkou, ktorá počíta podľa vašich strojových sadzieb a časov.</p>
+      <p class="author-claim">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      <p class="author-lead" style="margin-top:14px">Konzultácia je zadarmo a nezáväzne. Poviete mi, čo má web robiť, a ja vám na to poviem cenu aj termín. Až potom sa rozhodujete.</p>
+      <div class="hero-cta" style="margin:22px 0 0">
+        <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať na apoliak@apoliak.online</a>
+        <a class="btn btn-line" href="https://apoliak.online" target="_blank" rel="noopener">Pozrieť apoliak.online</a>
+      </div>
+    </div>
+
+    <div class="author-card">
+      <h3>Alex Poliak</h3>
+      <span class="role">Návrh a programovanie webu</span>
+      <ul class="author-list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">E-mail</span><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">Podpora</span><a href="mailto:support@apoliak.online">support@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17"/></svg><div><span class="k">Web</span><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></div></li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<footer>
+  <div class="foot-cta">
+    <p><span class="foot-cta-k">Chcete takýto web pre svoj podnik?</span><a class="foot-cta-tel" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></p>
+    <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať Alexovi</a>
+  </div>
+  <div class="foot-in">
+    <p><strong>Obrobňa Merkur</strong> — CNC obrábanie · zákazková výroba, ukážkový web</p>
+    <nav class="foot-links" aria-label="Pätičková navigácia">
+      <a href="#sluzby">Čo robíme</a>
+      <a href="#kalkulacka">Kalkulačka</a>
+      <a href="#stroje">Strojový park</a>
+      <a href="#kvalita">Kvalita</a>
+      <a href="#postup">Postup</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#hero">Hore</a>
+    </nav>
+  </div>
+  <div class="foot-in" style="margin-top:22px">
+    <p>Strojárska 18, Vzorové Mesto</p>
+    <p>Po – Pi 6:00 – 18:00, dvojzmenná prevádzka &nbsp;·&nbsp; So po dohode</p>
+  </div>
+  <p class="vyzva-napiste" style="margin:0 0 18px;padding:16px 18px;border-radius:12px;background:rgba(127,127,127,.12);border:1px solid rgba(127,127,127,.28);font-size:15px;line-height:1.6"><strong>Chcete takýto web pre svoj podnik?</strong> Napíšte na <a href="mailto:apoliak@apoliak.online" style="font-weight:700">apoliak@apoliak.online</a> — ozvem sa do jedného pracovného dňa a prvý návrh máte do troch dní. Kontakty vymysleného podniku sú na tejto stránke zámerne vynechané.</p>
+
+  <p class="foot-note">Obrobňa Merkur je vymyslený podnik. Táto stránka je ukážka práce, nie web existujúcej firmy. Ceny, otváracie hodiny, adresa aj kontakty podniku sú ilustratívne. Kalkulačka dielca je predvádzacia funkcia so zjednodušeným modelom a nenahrádza cenovú ponuku po posúdení výkresu. Kontaktné údaje podniku sú zámerne vynechané, aby nikto nevolal ani nepísal na cudzie číslo či adresu. Ukážku navrhol a naprogramoval Alex Poliak — <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>, <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---------- lepkavá hlavička sadá presne pod pásik ukážky ---------- */
+  (function vyskaPasika() {
+    var bar = $(".demo-bar");
+    var head = $(".top");
+    function nastav() {
+      var korene = document.documentElement.style;
+      korene.removeProperty("--bar-h");
+      korene.removeProperty("--head-h");
+      if (bar) {
+        var hb = Math.round(bar.getBoundingClientRect().height);
+        if (hb > 0) { korene.setProperty("--bar-h", hb + "px"); }
+      }
+      if (head) {
+        var hh = Math.round(head.getBoundingClientRect().height);
+        if (hh > 0) { korene.setProperty("--head-h", hh + "px"); }
+      }
+    }
+    nastav();
+    window.addEventListener("resize", nastav);
+    window.addEventListener("orientationchange", nastav);
+    window.addEventListener("load", nastav);
+  })();
+
+  /* ---------- jemné prechody pri scrollovaní ---------- */
+  (function reveal() {
+    var bloky = $$(".reveal");
+    if (!bloky.length) { return; }
+    function ukazVsetko() { bloky.forEach(function (b) { b.classList.add("in"); }); }
+    var redukovane = false;
+    try { redukovane = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (redukovane || !("IntersectionObserver" in window)) { ukazVsetko(); return; }
+    var io = new IntersectionObserver(function (zaznamy) {
+      zaznamy.forEach(function (z) {
+        if (z.isIntersecting) { z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    bloky.forEach(function (b) { io.observe(b); });
+    window.setTimeout(ukazVsetko, 2500);
+  })();
+
+  /* ---------- menu ---------- */
+  (function menu() {
+    var prepinac = $("#navToggle");
+    if (!prepinac) { return; }
+    $$("#hlavnaNav a").forEach(function (a) {
+      a.addEventListener("click", function () { prepinac.checked = false; });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { prepinac.checked = false; }
+    });
+  })();
+
+  /* ---------- pomocné funkcie pre interakcie ---------- */
+  function eur(n) { return Math.round(n).toLocaleString("sk-SK") + " €"; }
+  function eur2(n) { return n.toFixed(2).replace(".", ",") + " €"; }
+
+  function pridajRiadok(kam, k, v) {
+    var r = document.createElement("div");
+    r.className = "suhrn-riadok";
+    var sk = document.createElement("span");
+    sk.className = "k";
+    sk.textContent = k;
+    var sv = document.createElement("span");
+    sv.className = "v";
+    sv.textContent = v;
+    r.appendChild(sk);
+    r.appendChild(sv);
+    kam.appendChild(r);
+  }
+
+  function zaskrtnuty(meno) { return $("input[name='" + meno + "']:checked"); }
+
+
+  /* ---------- kalkulačka dielca ---------- */
+  (function kalkulacka() {
+    var hmotnost = $("#hmotnost");
+    var kusov    = $("#kusov");
+    var riadky   = $("#suhrnRiadky");
+    var spolu    = $("#cenaSpolu");
+    var odhadCas = $("#odhadCas");
+    if (!hmotnost || !kusov || !riadky) { return; }
+
+    var SADZBA = 46;      /* € za strojovú hodinu */
+    var KROKY = [1,2,3,5,8,10,15,20,25,30,40,50,75,100,150,200,250,300,400,500,
+                 600,750,1000,1250,1500,2000,2500,3000,4000,5000,6000,7500,
+                 10000,12500,15000,20000,25000,30000,40000,50000];
+
+    function pocetKusov() {
+      var i = Math.min(KROKY.length - 1, Math.max(0, parseInt(kusov.value, 10) - 1));
+      return KROKY[i];
+    }
+
+    function cenaCelkom(ks, kg, oMat, oZloz) {
+      var koef = parseFloat(oMat.getAttribute("data-koef"));
+      var cenaKg = parseFloat(oMat.getAttribute("data-cena-kg"));
+      var casKus = parseFloat(oZloz.getAttribute("data-cas")) * koef;
+      var priprava = parseFloat(oZloz.getAttribute("data-prip")) * koef;
+
+      /* pri väčších sériách klesá čas na kus — zabehnutie a prípravky */
+      var ucenie = Math.pow(ks, -0.08);
+      var praca = ks * casKus * ucenie * SADZBA;
+      /* materiál vrátane 25 % odpadu */
+      var material = ks * kg * 1.25 * cenaKg;
+      return { praca: praca, material: material, priprava: priprava,
+               spolu: praca + material + priprava };
+    }
+
+    function prepocitaj() {
+      var kg = parseFloat(hmotnost.value);
+      var ks = pocetKusov();
+      $("#hmotnost-hod").textContent = kg.toFixed(1).replace(".", ",") + " kg";
+      $("#kusov-hod").textContent = ks.toLocaleString("sk-SK") + " ks";
+
+      var oMat = zaskrtnuty("material");
+      var oZloz = zaskrtnuty("zlozitost");
+      if (!oMat || !oZloz) { return; }
+
+      var c = cenaCelkom(ks, kg, oMat, oZloz);
+      var telo = c.spolu;
+
+      riadky.innerHTML = "";
+      pridajRiadok(riadky, "Obrábanie · " + ks.toLocaleString("sk-SK") + " ks", eur(c.praca));
+      pridajRiadok(riadky, "Materiál vrátane odpadu", eur(c.material));
+      pridajRiadok(riadky, "Nastavenie stroja", eur(c.priprava));
+
+      var spoluCena = telo;
+      var dniNavyse = 0;
+
+      $$("input[name='dopl']:checked").forEach(function (d) {
+        var percento = d.getAttribute("data-percento");
+        if (percento) {
+          var pripl = telo * (parseFloat(percento) / 100);
+          spoluCena += pripl;
+          pridajRiadok(riadky, {
+            kalenie: "Tepelné spracovanie", povrch: "Povrchová úprava", expres: "Expres"
+          }[d.value], eur(pripl));
+          if (d.value === "kalenie" || d.value === "povrch") { dniNavyse += 6; }
+        } else {
+          var cena = parseFloat(d.getAttribute("data-cena"));
+          spoluCena += cena;
+          pridajRiadok(riadky, "Rozšírený merací protokol", eur(cena));
+        }
+      });
+
+      pridajRiadok(riadky, "Cena za jeden kus", eur2(spoluCena / ks));
+      spolu.textContent = eur(spoluCena);
+
+      var expres = !!$("input[name='dopl'][value='expres']:checked");
+      var dni = Math.max(3, Math.round(3 + ks / 60 + dniNavyse));
+      if (expres) { dni = Math.max(3, Math.round(dni * 0.5)); }
+      if (odhadCas) { odhadCas.textContent = dni + " – " + (dni + 3) + " pracovných dní"; }
+    }
+
+    $$("input[name='material'],input[name='zlozitost'],input[name='dopl']").forEach(function (i) {
+      i.addEventListener("change", prepocitaj);
+    });
+    hmotnost.addEventListener("input", prepocitaj);
+    kusov.addEventListener("input", prepocitaj);
+    prepocitaj();
+  })();
+
+
+  /* ---------- dopytový formulár: ukážka, nikam nič neodosiela ---------- */
+  (function formular() {
+    var form = $("#dopyt");
+    var hlaska = $("#hlaska");
+    if (!form || !hlaska) { return; }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var meno = $("#f-meno").value.trim();
+      var tel  = $("#f-tel").value.trim();
+
+      if (!meno || !tel) {
+        hlaska.className = "hlaska vidno chyba";
+        hlaska.innerHTML = "<b>Chýba meno alebo telefón.</b>Bez nich by sme sa vám nevedeli ozvať.";
+        return;
+      }
+
+      hlaska.className = "hlaska vidno";
+      hlaska.innerHTML = "<b>Ďakujeme, " + meno.split(" ")[0] + ".</b>" +
+        "Toto je ukážkový web, takže dopyt nikam neodišiel. Na skutočnom webe by v tejto chvíli pristál v schránke firmy.";
+      form.reset();
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

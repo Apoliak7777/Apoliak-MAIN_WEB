@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kolkáreň Deviatka — bowling, biliard a šípky</title>
+<meta name="description" content="Kolkáreň Deviatka: šesť bowlingových dráh, biliard, šípky a bar vo Vzorovom Meste. Rezervácia dráhy online, firemné akcie, detské oslavy a ligy. Ukážkový web od apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#111111">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Kolkáreň Deviatka — bowling, biliard a šípky (ukážkový web)">
+<meta property="og:description" content="Bowling, biliard a šípky. S rezerváciou dráhy, ktorá hneď ukáže cenu podľa času a dňa. Ukážkový web vymysleného podniku od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23131a2b'/%3E%3Ccircle cx='16' cy='19' r='9' fill='%23fb923c'/%3E%3Ccircle cx='13' cy='16' r='1.6' fill='%23131a2b'/%3E%3Ccircle cx='18' cy='15' r='1.6' fill='%23131a2b'/%3E%3Ccircle cx='16' cy='20' r='1.6' fill='%23131a2b'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   Kolkáreň Deviatka — ukážkový web
+   Jeden sebestačný súbor: vlastné štýly aj skript, žiadny externý zdroj.
+   Plochy, kde by inak boli fotografie, nesie geometria a typografia.
+   ========================================================================== */
+
+:root{
+  --paper:#f1f2f5;
+  --surface:#ffffff;
+  --surface-3:#f8f9fb;
+  --ink:#111726;
+  --ink-body:#323b4f;
+  --muted:#5c6779;
+  --line:#d6dae2;
+  --line-strong:#b6bcc8;
+  --line-input:#8c94a3;
+  --tma:#131a2b;
+  --tma-2:#1c253a;
+  --tma-hlbka:#080c16;
+  --na-tme:#e7eaf2;
+  --na-tme-muted:#9aa4bb;
+  --na-tme-line:#243049;
+  --akcent:#fb923c;
+  --akcent-hover:#ea7c22;
+  --akcent-tmavy:#b45309;
+  --akcent-hlbky:#92400e;
+  --akcent-svetly:#fdba74;
+  --na-akcente:#2a1405;
+  --karta-pas:linear-gradient(90deg,#b45309,#fb923c);
+  --ikona-bg:rgba(180,83,9,.09);
+  --ikona-line:rgba(180,83,9,.24);
+  --focus-tien:rgba(180,83,9,.2);
+  --znacka-bg:#fb923c;
+  --znacka-tag-bg:rgba(251,146,60,.14);
+  --znacka-tag-line:rgba(251,146,60,.34);
+  --suhrn-bg:linear-gradient(165deg,#1c253a,#131a2b);
+  --form-vstup-bg:rgba(0,0,0,.32);
+  --hero-bg:radial-gradient(900px 440px at 78% -6%,rgba(251,146,60,.2),transparent 60%),radial-gradient(700px 380px at 6% 104%,rgba(56,189,248,.14),transparent 58%),linear-gradient(168deg,#131a2b 0%,#1c253a 52%,#080c16 100%);
+  --hero-vzor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='2' cy='2' r='1.4' fill='%23ffffff' fill-opacity='.07'/%3E%3C/svg%3E");
+  --sipka-select:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%235c6779'/%3E%3C/svg%3E");
+  --sipka-select-tma:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%239aa4bb'/%3E%3C/svg%3E");
+  --hero-ink:#9aa4bb;
+  --hero-nadpis:#ffffff;
+  --hero-zvyraznenie:#fb923c;
+  --hero-line:#243049;
+  --hlavicka-bg:rgba(19,26,43,.94);
+  --hlavicka-ink:#e7eaf2;
+  --hlavicka-ink-hover:#ffffff;
+  --hlavicka-muted:#9aa4bb;
+  --hlavicka-line:#243049;
+  --nav-btn-bg:rgba(255,255,255,.03);
+  --nav-hover-bg:rgba(255,255,255,.07);
+  --nav-drop-bg:#1c253a;
+
+  --focus:var(--akcent-tmavy);
+  --bar-h:38px;
+  --head-h:66px;
+
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+  --sans:system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + var(--head-h) + 14px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+body{margin:0;background:var(--paper);color:var(--ink-body);font-family:var(--sans);font-size:16.5px;line-height:1.68;-webkit-tap-highlight-color:transparent}
+
+h1,h2,h3,h4{color:var(--ink);line-height:1.15;margin:0;font-weight:700;letter-spacing:-.018em}
+h1,h2{font-family:var(--sans)}
+h1{font-size:clamp(34px,6vw,60px)}
+h2{font-size:clamp(26px,3.5vw,40px)}
+h3{font-size:clamp(18px,2vw,22px)}
+h4{font-size:16px}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--akcent-tmavy);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--akcent-hlbky)}
+ul,ol{margin:0;padding:0}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}
+
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+@media (max-width:640px){.wrap{width:min(1180px,100% - 28px)}}
+
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--tma);color:var(--na-tme);padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none}
+.skip:focus{left:10px;top:10px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- pásik ukážky ---------- */
+.demo-bar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;background:var(--tma-hlbka);color:var(--na-tme-muted);padding:9px 16px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.demo-bar a{color:var(--akcent);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.demo-bar a:hover{color:var(--akcent-svetly)}
+.demo-bar .sep{color:var(--na-tme-line)}
+.demo-bar .bar-tag{background:var(--akcent);color:var(--na-akcente);border-radius:999px;padding:3px 10px;letter-spacing:.1em}
+.demo-bar .bar-long{color:var(--na-tme-muted);text-transform:none;letter-spacing:.02em;font-size:12px}
+@media (max-width:520px){.demo-bar{font-size:10.5px;letter-spacing:.06em;gap:6px 10px;padding:7px 12px}.demo-bar .bar-long{display:none}}
+
+/* ---------- hlavička ---------- */
+.top{position:sticky;top:0;z-index:50;background:var(--hlavicka-bg);backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--hlavicka-line)}
+.top-in{display:flex;align-items:center;gap:18px;min-height:var(--head-h)}
+.brand{display:flex;align-items:center;gap:11px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;margin-right:auto}
+.brand:hover{color:var(--hlavicka-ink-hover)}
+.brand-mark{width:39px;height:39px;flex:none;border-radius:10px;background:var(--znacka-bg);display:grid;place-items:center}
+.brand-mark svg{width:22px;height:22px}
+.brand b{display:block;font-size:17px;line-height:1.15;font-family:var(--sans)}
+.brand small{display:block;font-size:11.5px;font-weight:600;color:var(--hlavicka-muted);letter-spacing:.05em;text-transform:uppercase}
+
+.nav-toggle{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+.nav-btn{display:none;align-items:center;gap:8px;cursor:pointer;color:var(--hlavicka-ink);border:1px solid var(--hlavicka-line);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:600;background:var(--nav-btn-bg)}
+.nav-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}
+.nav-btn:hover{border-color:var(--akcent);color:var(--akcent)}
+
+.hlavna-nav{display:flex;align-items:center;gap:2px}
+.hlavna-nav a{color:var(--hlavicka-muted);text-decoration:none;font-size:14px;font-weight:600;padding:8px 11px;border-radius:8px;white-space:nowrap}
+.hlavna-nav a:hover{color:var(--akcent);background:var(--nav-hover-bg)}
+
+.top-act{display:flex;align-items:center;gap:10px}
+.top-tel{display:inline-flex;align-items:center;gap:8px;color:var(--hlavicka-ink);text-decoration:none;font-weight:700;font-size:15px;white-space:nowrap}
+.top-tel svg{width:18px;height:18px;fill:var(--akcent)}
+.top-tel:hover{color:var(--akcent)}
+
+@media (max-width:1080px){
+  .nav-btn{display:inline-flex}
+  .hlavna-nav{position:absolute;left:0;right:0;top:100%;display:block;background:var(--nav-drop-bg);border-bottom:1px solid var(--hlavicka-line);padding:10px 20px 18px;max-height:0;overflow:hidden;visibility:hidden}
+  .nav-toggle:checked ~ .hlavna-nav{max-height:78vh;overflow:auto;visibility:visible;padding-block:14px 20px}
+  .hlavna-nav a{display:block;padding:11px 8px;border-bottom:1px solid var(--hlavicka-line);border-radius:0;font-size:15px}
+  .hlavna-nav a:last-child{border-bottom:0}
+}
+@media (max-width:720px){.top-tel span{display:none}}
+@media (max-width:420px){.brand small{display:none}}
+
+/* ---------- tlačidlá ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid transparent;border-radius:10px;padding:12.5px 22px;font-size:15px;font-weight:700;font-family:inherit;text-decoration:none;cursor:pointer;line-height:1.2;transition:transform .12s ease,background .16s ease,border-color .16s ease,color .16s ease}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:18px;height:18px;fill:currentColor;flex:none}
+.btn-primary{background:var(--akcent);color:var(--na-akcente);border-color:var(--akcent)}
+.btn-primary:hover{background:var(--akcent-hover);border-color:var(--akcent-hover);color:var(--na-akcente)}
+.btn-line{background:transparent;color:var(--na-tme);border-color:rgba(255,255,255,.28)}
+.btn-line:hover{border-color:var(--akcent);color:var(--akcent)}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--akcent-tmavy);color:var(--akcent-tmavy)}
+.btn-tmavy{background:var(--tma);color:var(--na-tme);border-color:var(--tma)}
+.btn-tmavy:hover{background:var(--tma-2);border-color:var(--tma-2);color:#fff}
+.btn-lg{padding:15px 26px;font-size:16px}
+
+/* ---------- sekcie ---------- */
+section{padding:clamp(52px,7vw,90px) 0}
+.on-dark{background:var(--tma);color:var(--na-tme-muted)}
+.on-dark h2,.on-dark h3,.on-dark h4{color:var(--na-tme)}
+.on-dark a{color:var(--akcent)}
+.on-dark a:hover{color:var(--akcent-svetly)}
+.alt{background:var(--surface-3)}
+
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--akcent-tmavy);margin:0 0 14px}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--akcent-tmavy);border-radius:2px}
+.on-dark .eyebrow{color:var(--akcent)}
+.on-dark .eyebrow::before{background:var(--akcent)}
+
+.sec-head{max-width:750px;margin-bottom:clamp(28px,4vw,44px)}
+.sec-head p{font-size:clamp(16.5px,1.6vw,18.5px);color:var(--muted);margin-top:14px}
+.on-dark .sec-head p{color:var(--na-tme-muted)}
+
+.reveal{opacity:1;transform:none}
+.js-reveal .reveal{opacity:0;transform:translateY(18px)}
+.js-reveal .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,.7,.3,1)}
+@media (prefers-reduced-motion: reduce){.js-reveal .reveal{opacity:1;transform:none;transition:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;background:var(--hero-bg);color:var(--hero-ink);padding:clamp(44px,6vw,78px) 0 clamp(50px,6.5vw,90px)}
+.hero::before{content:"";position:absolute;inset:0;background-image:var(--hero-vzor);opacity:.9;pointer-events:none}
+.hero .wrap{position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(30px,4vw,58px);align-items:center}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+.hero h1{color:var(--hero-nadpis);margin-bottom:20px}
+.hero h1 em{font-style:var(--sans);color:var(--hero-zvyraznenie)}
+.hero-lead{font-size:clamp(17px,1.9vw,20px);color:var(--hero-ink);max-width:58ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:32px;padding-top:24px;border-top:1px solid var(--hero-line)}
+.hero-facts div{min-width:116px}
+.hero-facts b{display:block;color:var(--hero-nadpis);font-size:24px;line-height:1.2;letter-spacing:-.02em;font-family:var(--sans)}
+.hero-facts span{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--hero-ink)}
+
+/* ---------- karty ---------- */
+.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:18px}
+.karta{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 24px 24px;overflow:hidden;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.karta:hover{border-color:var(--akcent-tmavy);transform:translateY(-3px);box-shadow:0 18px 40px -28px rgba(0,0,0,.4)}
+.karta::before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:var(--karta-pas);transform:scaleX(0);transform-origin:left;transition:transform .28s ease}
+.karta:hover::before{transform:scaleX(1)}
+.karta-ikona{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;background:var(--ikona-bg);border:1px solid var(--ikona-line)}
+.karta-ikona svg{width:23px;height:23px;fill:none;stroke:var(--akcent-tmavy);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.karta h3{margin-bottom:9px}
+.karta p{color:var(--muted);font-size:15.5px}
+.karta-cena{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);background:var(--ikona-bg);border-radius:7px;padding:5px 11px;font-weight:600}
+
+/* ---------- tabuľka ---------- */
+.tab-obal{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+caption{text-align:left;padding:16px 20px 0;color:var(--muted);font-size:13.5px}
+th,td{padding:13px 20px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-3)}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono);font-size:14px;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-3)}
+td b{color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+/* ---------- kroky ---------- */
+.kroky{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:20px;counter-reset:k}
+.krok{position:relative;padding-top:22px;border-top:2px solid var(--line);counter-increment:k}
+.krok::before{content:counter(k,decimal-leading-zero);position:absolute;top:-13px;left:0;background:var(--paper);padding-right:12px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--akcent-tmavy);letter-spacing:.06em}
+.alt .krok::before{background:var(--surface-3)}
+.krok h3{font-size:18px;margin-bottom:8px}
+.krok p{color:var(--muted);font-size:15px}
+
+/* ---------- formulárové prvky (spoločné pre interakcie) ---------- */
+.pole{margin-bottom:22px}
+.pole:last-child{margin-bottom:0}
+.pole > .lbl{display:block;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:11px}
+.pole .hint{font-size:13.5px;color:var(--muted);margin:-4px 0 11px}
+
+.volby{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:9px}
+.volba{position:relative}
+.volba input{position:absolute;opacity:0;width:0;height:0}
+.volba span{display:block;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;cursor:pointer;background:var(--surface);font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.35;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.volba span small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:3px}
+.volba input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg);color:var(--akcent-hlbky)}
+.volba input:checked + span small{color:var(--akcent-hlbky)}
+.volba input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.volba span:hover{border-color:var(--line-input)}
+
+.doplnky{display:grid;gap:9px}
+.dopl{position:relative}
+.dopl input{position:absolute;opacity:0;width:0;height:0}
+.dopl span{display:flex;align-items:flex-start;gap:12px;cursor:pointer;border:1.5px solid var(--line-strong);border-radius:11px;padding:13px 15px;background:var(--surface);font-size:14.5px;color:var(--ink);transition:border-color .15s ease,background .15s ease}
+.dopl span::before{content:"";flex:none;width:19px;height:19px;margin-top:2px;border-radius:5px;border:1.5px solid var(--line-input);background:var(--surface);background-position:center;background-repeat:no-repeat;background-size:14px}
+.dopl input:checked + span{border-color:var(--akcent-tmavy);background:var(--ikona-bg)}
+.dopl input:checked + span::before{border-color:var(--akcent-tmavy);background-color:var(--akcent-tmavy);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 6L9 17l-5-5' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.dopl input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.dopl b{display:block;font-weight:700}
+.dopl small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.dopl .p{margin-left:auto;font-family:var(--mono);font-size:13.5px;color:var(--akcent-hlbky);font-weight:700;white-space:nowrap;padding-left:10px}
+
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date],select,textarea{width:100%;font-family:inherit;font-size:15.5px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line-input);border-radius:10px;padding:12px 14px;line-height:1.4}
+textarea{min-height:108px;resize:vertical}
+select{appearance:none;background-image:var(--sipka-select);background-repeat:no-repeat;background-position:right 10px center;background-size:22px;padding-right:38px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--akcent-tmavy);box-shadow:0 0 0 3px var(--focus-tien)}
+
+.rozsah-riadok{display:flex;align-items:center;gap:16px}
+.rozsah-riadok input[type=range]{flex:1;accent-color:var(--akcent-tmavy);height:26px}
+.rozsah-hod{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--ink);min-width:104px;text-align:right}
+
+/* ---------- súhrn (pravý panel interakcií) ---------- */
+.kalk{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:clamp(20px,3vw,36px);align-items:start}
+@media (max-width:920px){.kalk{grid-template-columns:1fr}}
+.kalk-panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3vw,32px)}
+.suhrn{position:sticky;top:calc(var(--bar-h) + var(--head-h) + 16px);background:var(--suhrn-bg);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px);color:var(--na-tme-muted);box-shadow:0 26px 60px -34px rgba(0,0,0,.7)}
+@media (max-width:920px){.suhrn{position:static}}
+.suhrn h3{color:#fff;margin-bottom:6px}
+.suhrn-note{font-size:13.5px;color:var(--na-tme-muted);margin-bottom:20px}
+.suhrn-riadky{border-top:1px solid var(--na-tme-line);margin-bottom:18px}
+.suhrn-riadok{display:flex;gap:14px;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--na-tme-line);font-size:14.5px}
+.suhrn-riadok .k{color:var(--na-tme-muted)}
+.suhrn-riadok .v{color:#fff;font-weight:600;text-align:right;font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.suhrn-spolu{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:16px 0 4px}
+.suhrn-spolu .k{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted)}
+.suhrn-spolu .v{font-size:clamp(28px,4vw,38px);font-weight:800;color:var(--akcent);letter-spacing:-.025em;line-height:1}
+.suhrn-cas{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid var(--na-tme-line);font-size:14px}
+.suhrn-cas svg{width:17px;height:17px;fill:var(--akcent);flex:none;margin-top:3px}
+.suhrn-cas b{color:#fff}
+.suhrn .btn{width:100%;margin-top:20px}
+.suhrn-disk{font-size:12.5px;color:var(--na-tme-muted);margin-top:14px;line-height:1.55}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;gap:12px;max-width:900px}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.faq-item summary{cursor:pointer;list-style:none;padding:19px 54px 19px 22px;position:relative;font-weight:700;color:var(--ink);font-size:16.5px;line-height:1.45}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"";position:absolute;right:22px;top:50%;width:13px;height:13px;margin-top:-8px;border-right:2.2px solid var(--akcent-tmavy);border-bottom:2.2px solid var(--akcent-tmavy);transform:rotate(45deg);transition:transform .2s ease}
+.faq-item[open] summary::after{transform:rotate(-135deg);margin-top:-3px}
+.faq-item summary:hover{color:var(--akcent-tmavy)}
+.faq-telo{padding:0 22px 20px;color:var(--muted);font-size:15.5px}
+.faq-telo p:first-child{margin-top:-4px}
+
+/* ---------- kontakt ---------- */
+.kont-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,3.5vw,46px)}
+@media (max-width:860px){.kont-grid{grid-template-columns:1fr}}
+.kont-list{list-style:none;display:grid;gap:18px;margin-top:24px}
+.kont-list li{display:flex;gap:14px;align-items:flex-start}
+.kont-list svg{width:21px;height:21px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.kont-list .k{display:block;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:2px}
+.kont-list a,.kont-list .v{color:#fff;font-size:16.5px;font-weight:600;text-decoration:none}
+.kont-list a:hover{color:var(--akcent)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-obal{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.form-obal label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--na-tme);margin-bottom:8px}
+.form-obal input,.form-obal select,.form-obal textarea{background:var(--form-vstup-bg);border-color:var(--na-tme-line);color:var(--na-tme)}
+.form-obal input::placeholder,.form-obal textarea::placeholder{color:var(--na-tme-muted)}
+.form-obal input:focus,.form-obal select:focus,.form-obal textarea:focus{border-color:var(--akcent);box-shadow:0 0 0 3px var(--focus-tien)}
+.form-obal select{background-image:var(--sipka-select-tma)}
+.form-note{font-size:13px;color:var(--na-tme-muted);margin-top:14px}
+.kont-pozn{margin-top:26px;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);font-size:14px;line-height:1.6;color:var(--na-tme-muted)}
+.kont-pozn strong{display:block;margin-top:8px;color:var(--na-tme)}
+.kont-pozn a{font-weight:700}
+
+.hlaska{display:none;margin-top:16px;border-radius:11px;padding:15px 18px;font-size:15px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.26);color:var(--na-tme)}
+.hlaska.vidno{display:block}
+.hlaska.chyba{background:rgba(220,90,70,.18);border-color:rgba(255,140,120,.44)}
+.hlaska b{color:#fff;display:block;margin-bottom:3px}
+
+/* ---------- autor ukážky ---------- */
+.author{background:var(--tma-hlbka);padding:clamp(52px,7vw,90px) 0;color:var(--na-tme-muted)}
+.author-in{width:min(1180px,100% - 40px);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(26px,4vw,52px);align-items:start}
+@media (max-width:900px){.author-in{grid-template-columns:1fr}}
+@media (max-width:640px){.author-in{width:min(1180px,100% - 28px)}}
+.author .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--akcent);background:var(--znacka-tag-bg);border:1px solid var(--znacka-tag-line);border-radius:999px;padding:5px 13px;margin-bottom:16px}
+.author h2{color:#fff;margin-bottom:14px}
+.author-lead{color:var(--na-tme-muted);font-size:16.5px;max-width:56ch}
+.author-claim{font-size:clamp(19px,2.4vw,25px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-top:18px;font-family:var(--sans)}
+.author-card{background:rgba(255,255,255,.05);border:1px solid var(--na-tme-line);border-radius:16px;padding:clamp(22px,3vw,30px)}
+.author-card h3{color:#fff;font-size:21px;margin-bottom:3px;font-family:var(--sans)}
+.author-card .role{display:block;font-size:13px;color:var(--na-tme-muted);letter-spacing:.05em;margin-bottom:20px}
+.author-list{list-style:none;display:grid;gap:16px}
+.author-list li{display:flex;gap:13px;align-items:flex-start}
+.author-list svg{width:20px;height:20px;flex:none;margin-top:3px;fill:none;stroke:var(--akcent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.author-list .k{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--na-tme-muted);margin-bottom:1px}
+.author-list a{color:#fff;font-weight:600;text-decoration:none;font-size:15.5px}
+.author-list a:hover{color:var(--akcent)}
+.author-list .sep{color:var(--na-tme-line);margin:0 7px}
+
+/* ---------- pätička ---------- */
+footer{background:var(--tma-hlbka);color:var(--na-tme-muted);padding:0 0 40px;font-size:14.5px;border-top:1px solid var(--na-tme-line)}
+.foot-cta{width:min(1180px,100% - 40px);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding:30px 0;border-bottom:1px solid var(--na-tme-line)}
+@media (max-width:640px){.foot-cta{width:min(1180px,100% - 28px)}}
+.foot-cta p{margin:0}
+.foot-cta-k{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.foot-cta-tel{color:#fff;font-size:25px;font-weight:800;text-decoration:none}
+.foot-cta-tel:hover{color:var(--akcent)}
+.foot-in{width:min(1180px,100% - 40px);margin:26px auto 0;display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;align-items:flex-start}
+@media (max-width:640px){.foot-in{width:min(1180px,100% - 28px)}}
+.foot-in p{margin:0}
+.foot-in strong{color:#fff}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot-links a{color:var(--na-tme-muted);text-decoration:none;font-size:14px}
+.foot-links a:hover{color:var(--akcent)}
+.foot-note{width:min(1180px,100% - 40px);margin:26px auto 0;padding-top:20px;border-top:1px solid var(--na-tme-line);font-size:13px;color:var(--na-tme-muted);line-height:1.6}
+@media (max-width:640px){.foot-note{width:min(1180px,100% - 28px)}}
+
+
+.drahy{position:relative;aspect-ratio:1/.8;border-radius:16px;overflow:hidden;background:#0f1524;border:1px solid var(--na-tme-line);box-shadow:0 30px 70px -32px rgba(0,0,0,.85)}
+.drahy svg{position:absolute;inset:0;width:100%;height:100%}
+.drahy-tag{position:absolute;left:16px;bottom:16px;z-index:3;background:rgba(8,12,22,.88);border:1px solid var(--na-tme-line);border-radius:11px;padding:11px 15px;backdrop-filter:blur(6px)}
+.drahy-tag b{display:block;color:#fff;font-size:15px}
+.drahy-tag span{font-size:12px;color:var(--na-tme-muted);font-family:var(--mono)}
+
+</style>
+<script>
+(function(){
+  try{
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      document.documentElement.className += " js-reveal";
+    }
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===================== pásik ukážky ===================== -->
+<div class="demo-bar" role="note">
+  <span class="bar-tag">Ukážkový web</span>
+  <span class="bar-long">Takýto web pre vás spravím.</span>
+  <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+</div>
+
+<!-- ===================== hlavička ===================== -->
+<header class="top">
+  <div class="wrap top-in">
+    <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Zobraziť menu">
+    <a class="brand" href="#hero">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" fill="#2a1405"/><circle cx="9.5" cy="10.5" r="1.4" fill="#fb923c"/><circle cx="14" cy="9.5" r="1.4" fill="#fb923c"/><circle cx="12" cy="14.5" r="1.4" fill="#fb923c"/></svg></span>
+      <span>
+        <b>Kolkáreň Deviatka</b>
+        <small>Bowling · biliard · šípky</small>
+      </span>
+    </a>
+
+    <nav class="hlavna-nav" id="hlavnaNav" aria-label="Hlavná navigácia">
+      <a href="#rezervacia">Rezervácia</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#akcie">Firemné akcie</a>
+      <a href="#oslavy">Oslavy a ligy</a>
+      <a href="#bar">Bar</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="top-act">
+      <label class="nav-btn" for="navToggle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </label>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===================== hero ===================== -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Zábavné centrum od roku 2008</p>
+        <h1>Šesť dráh, dva stoly, <em>jeden večer</em>.</h1>
+        <p class="hero-lead">Bowling, biliard a šípky pod jednou strechou. Rezervujte si dráhu na presnú hodinu, objednajte firemnú akciu alebo príďte len tak — cez týždeň býva voľno.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="#rezervacia">Rezervovať dráhu</a>
+          <a class="btn btn-line btn-lg" href="#akcie">Firemné akcie</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>6</b><span>bowlingových dráh</span></div>
+          <div><b>2</b><span>biliardové stoly</span></div>
+          <div><b>do 24:00</b><span>otvorené v piatok a sobotu</span></div>
+          <div><b>od 12 €</b><span>hodina na dráhe</span></div>
+        </div>
+      </div>
+
+      <div class="drahy" aria-hidden="true">
+        <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="draha" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#c98f4e"/><stop offset="1" stop-color="#8a5f2f"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="320" fill="#0f1524"/>
+          <!-- dráhy v perspektíve -->
+          <path d="M60 320h80L172 40h-24z" fill="url(#draha)"/>
+          <path d="M150 320h80l16-280h-24z" fill="url(#draha)" opacity=".9"/>
+          <path d="M240 320h80L320 40h-24z" fill="url(#draha)" opacity=".8"/>
+          <!-- žľaby -->
+          <g fill="#243049">
+            <path d="M50 320h12L146 40h-8z"/><path d="M140 320h12l18-280h-8z"/>
+            <path d="M230 320h12l52-280h-8z"/><path d="M320 320h12L296 40h-8z"/>
+          </g>
+          <!-- kolky -->
+          <g fill="#e7eaf2">
+            <ellipse cx="158" cy="52" rx="4" ry="9"/><ellipse cx="168" cy="52" rx="4" ry="9"/>
+            <ellipse cx="163" cy="66" rx="4" ry="9"/>
+            <ellipse cx="234" cy="52" rx="4" ry="9"/><ellipse cx="244" cy="52" rx="4" ry="9"/>
+            <ellipse cx="239" cy="66" rx="4" ry="9"/>
+            <ellipse cx="304" cy="52" rx="4" ry="9"/><ellipse cx="314" cy="52" rx="4" ry="9"/>
+            <ellipse cx="309" cy="66" rx="4" ry="9"/>
+          </g>
+          <!-- gule -->
+          <circle cx="104" cy="250" r="18" fill="#fb923c"/>
+          <circle cx="98" cy="244" r="2.6" fill="#0f1524"/>
+          <circle cx="108" cy="242" r="2.6" fill="#0f1524"/>
+          <circle cx="104" cy="252" r="2.6" fill="#0f1524"/>
+          <circle cx="196" cy="278" r="16" fill="#38bdf8"/>
+          <!-- svetlá -->
+          <g fill="#fb923c" opacity=".28">
+            <circle cx="80" cy="30" r="26"/><circle cx="200" cy="26" r="26"/><circle cx="320" cy="30" r="26"/>
+          </g>
+        </svg>
+        <div class="drahy-tag">
+          <b>Šesť dráh s automatickým počítaním</b>
+          <span>mantinely pre deti · obrazovky nad dráhou</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== rezervacia ===================== -->
+<section id="rezervacia" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Rezervácia</p>
+      <h2>Rezervujte si dráhu</h2>
+      <p>Vyberte deň, čas a koľko vás bude. Cena sa prepočíta hneď — cez týždeň doobeda je hodina za polovicu oproti piatkovému večeru.</p>
+    </div>
+
+    <div class="kalk">
+      <div class="kalk-panel reveal">
+        <div class="pole">
+          <span class="lbl" id="l-den">Kedy prídete</span>
+          <div class="volby" role="radiogroup" aria-labelledby="l-den">
+            <label class="volba"><input type="radio" name="den" value="vtyzdni" data-koef="1" checked><span>Pondelok – štvrtok<small>najlacnejšie, býva voľno</small></span></label>
+            <label class="volba"><input type="radio" name="den" value="piatok" data-koef="1.45"><span>Piatok alebo sobota<small>najviac ľudí, rezervujte dopredu</small></span></label>
+            <label class="volba"><input type="radio" name="den" value="nedela" data-koef="1.15"><span>Nedeľa<small>rodinný deň, deti do 12 rokov zľava</small></span></label>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="lbl" id="l-cas">O koľkej</span>
+          <div class="volby" role="radiogroup" aria-labelledby="l-cas">
+            <label class="volba"><input type="radio" name="cas" value="skoro" data-koef="0.68" checked><span>do 17:00<small>šťastná hodina, o tretinu lacnejšie</small></span></label>
+            <label class="volba"><input type="radio" name="cas" value="vecer" data-koef="1"><span>17:00 – 20:00<small>najžiadanejší čas</small></span></label>
+            <label class="volba"><input type="radio" name="cas" value="nocne" data-koef="0.88"><span>po 20:00<small>posledné dráhy sa púšťajú o 22:30</small></span></label>
+          </div>
+        </div>
+        <div class="pole">
+          <label class="lbl" for="hodiny">Na koľko hodín</label>
+          <div class="rozsah-riadok">
+            <input type="range" id="hodiny" min="1" max="5" step="0.5" value="2" aria-describedby="hodiny-hod">
+            <output class="rozsah-hod" id="hodiny-hod" for="hodiny">2 h</output>
+          </div>
+        </div>
+        <div class="pole">
+          <label class="lbl" for="ludia">Koľko vás bude</label>
+          <p class="hint">Na jednu dráhu sa pohodlne zmestí šesť hráčov. Pri väčšej skupine rezervujeme viac dráh.</p>
+          <div class="rozsah-riadok">
+            <input type="range" id="ludia" min="1" max="24" step="1" value="6" aria-describedby="ludia-hod">
+            <output class="rozsah-hod" id="ludia-hod" for="ludia">6 ľudí</output>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="lbl">K tomu</span>
+          <div class="doplnky">
+            <label class="dopl"><input type="checkbox" name="dopl" value="topanky" data-na-osobu="2"><span><b>Prezuvky pre všetkých<span class="sr"> — 2 €/os.</span></b><small>povinné na dráhu, dezinfikujeme po každom</small><span class="p">2 €/os.</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="mantinely" data-cena="0"><span><b>Mantinely pre deti<span class="sr"> — 0 €</span></b><small>guľa nespadne do žľabu, deti to baví viac</small><span class="p">0 €</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="biliard" data-za-hodinu="8"><span><b>Biliardový stôl k tomu<span class="sr"> — 8 €/hod.</span></b><small>vedľa dráh, účtuje sa po hodinách</small><span class="p">8 €/hod.</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="obcerstvenie" data-na-osobu="6"><span><b>Občerstvenie na dráhu<span class="sr"> — 6 €/os.</span></b><small>misy na zdieľanie a nápoje</small><span class="p">6 €/os.</span></span></label>
+            <label class="dopl"><input type="checkbox" name="dopl" value="privatka" data-cena="60"><span><b>Celý priestor len pre vás<span class="sr"> — +60 €</span></b><small>všetkých šesť dráh, mimo piatku a soboty</small><span class="p">+60 €</span></span></label>
+          </div>
+        </div>
+      </div>
+
+      <aside class="suhrn reveal" aria-live="polite">
+        <h3>Cena rezervácie</h3>
+        <p class="suhrn-note">Prepočítava sa hneď, ako niečo zmeníte.</p>
+
+        <div class="suhrn-riadky" id="suhrnRiadky"></div>
+
+        <div class="suhrn-spolu">
+          <span class="k">Spolu</span>
+          <span class="v" id="cenaSpolu">0 €</span>
+        </div>
+
+        <p class="suhrn-cas">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span>Potrebujete dráh: <b id="odhadCas">—</b></span>
+        </p>
+        <a class="btn btn-primary" href="#kontakt">Rezervovať</a>
+        <p class="suhrn-disk">Rezervácia je nezáväzná a bezplatná. Potvrdíme ju telefonicky do dvoch hodín v otváracích hodinách. Ak neprídete a nezrušíte, nič vám neúčtujeme — len poprosíme, aby ste zavolali.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== cenník ===================== -->
+<section id="cennik">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Cenník</p>
+      <h2>Cenník</h2>
+      <p>Cena je za dráhu, nie za osobu — na jednu dráhu sa zmestí šesť hráčov. Prezuvky sú povinné a stoja 2 € na osobu.</p>
+    </div>
+
+    <div class="tab-obal reveal">
+      <table>
+        <caption>Platné od 1. januára 2026. Ceny sú bez DPH.</caption>
+        <thead>
+          <tr><th scope="col">Položka</th><th scope="col">Rozsah</th><th scope="col">Cena</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Bowling Po – Št do 17:00</b><small>šťastná hodina</small></td><td>dráha / hodina</td><td>12 €</td></tr>
+          <tr><td><b>Bowling Po – Št po 17:00</b><small></small></td><td>dráha / hodina</td><td>18 €</td></tr>
+          <tr><td><b>Bowling Pi – So do 17:00</b><small></small></td><td>dráha / hodina</td><td>18 €</td></tr>
+          <tr><td><b>Bowling Pi – So po 17:00</b><small>najžiadanejší čas, rezervujte dopredu</small></td><td>dráha / hodina</td><td>26 €</td></tr>
+          <tr><td><b>Bowling nedeľa</b><small>deti do 12 rokov polovica</small></td><td>dráha / hodina</td><td>21 €</td></tr>
+          <tr><td><b>Prezuvky</b><small>povinné, dezinfikujeme po každom použití</small></td><td>osoba</td><td>2 €</td></tr>
+          <tr><td><b>Biliard</b><small>dva stoly, pool 8</small></td><td>stôl / hodina</td><td>8 €</td></tr>
+          <tr><td><b>Šípky</b><small>elektronický terč</small></td><td>hodina</td><td>5 €</td></tr>
+          <tr><td><b>Detská oslava</b><small>2 hodiny dráha, torta a animátor</small></td><td>balík do 10 detí</td><td>89 €</td></tr>
+          <tr><td><b>Firemná akcia</b><small>3 hodiny, dve dráhy, občerstvenie</small></td><td>balík do 20 ľudí</td><td>290 €</td></tr>
+          <tr><td><b>Prenájom celého priestoru</b><small>mimo piatku a soboty</small></td><td>príplatok</td><td>60 €</td></tr>
+          <tr><td><b>Liga — zápisné na sezónu</b><small>12 kôl, október až marec</small></td><td>tím</td><td>180 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== akcie ===================== -->
+<section id="akcie">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Firemné akcie</p>
+      <h2>Keď treba tímovku, ktorá nie je trápna</h2>
+      <p>Bowling funguje aj na ľudí, ktorí nešportujú — nikto nemusí byť dobrý, aby sa bavil. Preto ho firmy volia častejšie než čokoľvek iné.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <h3>Do 20 ľudí</h3>
+        <p>Dve dráhy vedľa seba, tri hodiny, občerstvenie a vyhradený stôl. Zvládneme aj v pracovný deň podvečer.</p>
+        <span class="karta-cena">290 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M4 20V8l8-5 8 5v12z"/><path d="M9 20v-6h6v6"/></svg></div>
+        <h3>Celý priestor</h3>
+        <p>Šesť dráh, biliard, šípky aj bar len pre vás. Mimo piatku a soboty s príplatkom 60 €, v piatok a sobotu po dohode.</p>
+        <span class="karta-cena">od 350 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M12 3l3 6 6 1-4.5 4.5L18 21l-6-3-6 3 1.5-6.5L3 10l6-1z"/></svg></div>
+        <h3>Turnaj s výsledkovou tabuľou</h3>
+        <p>Rozdelíme na tímy, nastavíme systém a na obrazovkách beží priebežné poradie. Ceny pre víťazov vieme zabezpečiť.</p>
+        <span class="karta-cena">+40 €</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M6 3h12l1 18H5z"/><path d="M9 3v4M15 3v4"/></svg></div>
+        <h3>Jedlo a pitie</h3>
+        <p>Misy na zdieľanie, pizza z pece od susedov alebo teplá kuchyňa po dohode. Nápoje sa účtujú podľa spotreby, nie paušálom.</p>
+        <span class="karta-cena">od 6 €/os.</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== oslavy ===================== -->
+<section id="oslavy" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Oslavy a ligy</p>
+      <h2>Pre deti aj pre stálych hráčov</h2>
+      <p>Cez víkend doobeda patria dráhy deťom, večer ligám. Oboje si treba rezervovať dopredu — voľné termíny sa míňajú rýchlo.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M12 3l3 6 6 1-4.5 4.5L18 21l-6-3-6 3 1.5-6.5L3 10l6-1z"/></svg></div>
+        <h3>Detská oslava</h3>
+        <p>Dve hodiny na dráhe s mantinelmi, torta, nápoje a animátor. Rodičia si medzitým sadnú k baru a nemusia nič riešiť.</p>
+        <span class="karta-cena">89 € do 10 detí</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Bowlingová liga</h3>
+        <p>Dvanásť kôl od októbra do marca, hrá sa v utorok a stredu večer. Tímy po štyroch, systém každý s každým.</p>
+        <span class="karta-cena">180 € tím / sezóna</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M4 20V8l8-5 8 5v12z"/><path d="M9 20v-6h6v6"/></svg></div>
+        <h3>Školské akcie</h3>
+        <p>Triedne akcie a koncoročné výlety doobeda, keď je zavreté. Cena je polovičná, treba objednať aspoň týždeň dopredu.</p>
+        <span class="karta-cena">−50 %</span>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-ikona"><svg viewBox="0 0 24 24"><path d="M3 21h18M6 21V9l6-5 6 5v12"/></svg></div>
+        <h3>Tréning s inštruktorom</h3>
+        <p>Hodina s človekom, ktorý vám ukáže, ako guľu naozaj pustiť. Za jednu hodinu sa priemer zlepší o dvadsať bodov.</p>
+        <span class="karta-cena">20 €/hod.</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== bar ===================== -->
+<section id="bar">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Bar</p>
+      <h2>Nápoje a niečo pod zub</h2>
+      <p>Nie sme reštaurácia a netvárime sa tak. Robíme veci, ktoré sa dajú jesť rukou pri dráhe
+      a nevychladnú, kým dohráte kolo.</p>
+    </div>
+
+    <div class="tab-obal reveal">
+      <table>
+        <caption>Ceny s DPH. Nápoje sa účtujú podľa spotreby.</caption>
+        <thead>
+          <tr><th scope="col">Položka</th><th scope="col">Poznámka</th><th scope="col">Cena</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Čapované pivo 0,5 l</b><small>svetlý ležiak z regionálneho pivovaru</small></td><td>aj nealko</td><td>2,20 €</td></tr>
+          <tr><td><b>Nealko 0,33 l</b><small>kola, malinovka, minerálka</small></td><td></td><td>1,80 €</td></tr>
+          <tr><td><b>Káva</b><small>espresso, lungo, s mliekom</small></td><td></td><td>1,60 €</td></tr>
+          <tr><td><b>Misa na zdieľanie</b><small>hranolky, syrové tyčinky, krídelká</small></td><td>pre 3 – 4 ľudí</td><td>9,90 €</td></tr>
+          <tr><td><b>Nachos so salsou</b><small>klasika k bowlingu</small></td><td></td><td>5,40 €</td></tr>
+          <tr><td><b>Pizza 32 cm</b><small>z pece od susedov, doniesieme na dráhu</small></td><td>4 druhy</td><td>od 7,50 €</td></tr>
+          <tr><td><b>Detské menu</b><small>hranolky, kuracie prsty a nápoj</small></td><td>k oslave v cene</td><td>5,90 €</td></tr>
+          <tr><td><b>Občerstvenie na osobu</b><small>pri firemných akciách, misy a nápoj</small></td><td>balík</td><td>od 6 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Časté otázky</p>
+      <h2>Na čo sa nás pýtate najčastejšie</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq-item reveal">
+        <summary>Musím sa rezervovať?</summary>
+        <div class="faq-telo"><p>Cez týždeň väčšinou nie, býva voľno. V piatok a sobotu večer áno — bez rezervácie sa často nedostanete na dráhu vôbec. Rezervácia je bezplatná a nezáväzná, len prosíme zavolať, ak neprídete.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Máte niečo pre deti?</summary>
+        <div class="faq-telo"><p>Áno. Na každú dráhu vieme vysunúť mantinely, takže guľa nespadne do žľabu a deti zhadzujú kolky namiesto frustrácie. Máme aj ľahšie gule a rampu pre najmenších. V nedeľu majú deti do dvanástich rokov polovicu.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Koľko ľudí sa zmestí na jednu dráhu?</summary>
+        <div class="faq-telo"><p>Pohodlne šesť, pri ôsmich sa už čaká dlho. Pri väčšej skupine odporúčame dve dráhy vedľa seba — rezervačná kalkulačka vám to spočíta sama.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Sú prezuvky povinné?</summary>
+        <div class="faq-telo"><p>Áno, na dráhu sa v uliciach vstupovať nedá — povrch by sa poškodil a hlavne sa na ňom kĺže. Požičovné je 2 € a topánky dezinfikujeme po každom použití. Vlastné bowlingové topánky si samozrejme doniesť môžete.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Dá sa u vás fajčiť?</summary>
+        <div class="faq-telo"><p>Nie, v celom priestore je zákaz fajčenia vrátane elektronických cigariet. Vonku pri vchode je prístrešok s popolníkom.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Máte hracie automaty?</summary>
+        <div class="faq-telo"><p>Nie a ani ich mať nebudeme. Sme zábavné centrum pre rodiny a firemné akcie — bowling, biliard, šípky a bar. Hazardné hry sem nepatria a nie je to len marketing.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kontakt ===================== -->
+<section id="kontakt" class="on-dark">
+  <div class="wrap">
+    <div class="kont-grid">
+      <div class="reveal">
+        <p class="eyebrow">Kontakt</p>
+        <h2>Ozvite sa</h2>
+        <p style="margin-top:14px">Rezervácie berieme telefonicky aj cez formulár. V piatok a sobotu odporúčame rezervovať aspoň dva dni dopredu — vtedy býva plno.</p>
+
+        <ul class="kont-list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="k">Kde nás nájdete</span><span class="v">Športová 14, Vzorové Mesto</span></div></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span class="k">Otvorené</span><span class="v">Po – Št 15:00 – 22:00 &nbsp;·&nbsp; Pi – So 14:00 – 24:00</span></div></li>
+        </ul>
+
+        <p class="kont-pozn">Telefón a e-mail podniku tu zámerne nie sú — je to
+        ukážkový web vymysleného podniku a nechceme, aby niekto volal alebo písal
+        na cudzie číslo. Na skutočnom webe by tu boli vaše kontakty.
+        <strong>Ak máte záujem o takýto web, napíšte na
+        <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>.</strong></p>
+      </div>
+
+      <div class="form-obal reveal">
+        <form id="dopyt" novalidate>
+          <div class="form-grid">
+            <div>
+              <label for="f-meno">Meno alebo firma</label>
+              <input type="text" id="f-meno" name="meno" placeholder="Ján Vzorový" autocomplete="name" required>
+            </div>
+            <div>
+              <label for="f-tel">Telefón</label>
+              <input type="tel" id="f-tel" name="tel" placeholder="vaše telefónne číslo" autocomplete="tel" required>
+            </div>
+            <div class="full">
+              <label for="f-mail">E-mail</label>
+              <input type="email" id="f-mail" name="mail" placeholder="jan@example.sk" autocomplete="email">
+            </div>
+            <div>
+              <label for="f-kedy">Kedy</label>
+              <input type="text" id="f-kedy" name="kedy" placeholder="piatok 19:00">
+            </div>
+            <div>
+              <label for="f-pocet">Koľko vás bude</label>
+              <input type="text" id="f-pocet" name="pocet" placeholder="8 ľudí">
+            </div>
+            <div class="full">
+              <label for="f-sprava">Poznámka</label>
+              <textarea id="f-sprava" name="sprava" placeholder="Firemný večierok, radi by sme dve dráhy vedľa seba a niečo na jedenie. Sme väčšinou začiatočníci."></textarea>
+            </div>
+          </div>
+          <div class="hero-cta" style="margin-top:20px">
+            <button type="submit" class="btn btn-primary btn-lg">Odoslať dopyt</button>
+          </div>
+          <p class="form-note">Rezerváciu potvrdíme do dvoch hodín v otváracích hodinách. Je nezáväzná a bezplatná.</p>
+          <p class="hlaska" id="hlaska" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== autor ukážky, skutočné údaje ===================== -->
+<aside class="author" id="autor" aria-labelledby="h-autor">
+  <div class="author-in">
+    <div>
+      <span class="tag">Autor ukážky, nie je súčasť podniku Kolkáreň Deviatka</span>
+      <h2 id="h-autor">Páči sa vám tento web?</h2>
+      <p class="author-lead">Túto ukážku navrhol a naprogramoval Alex Poliak. Rovnaký web pripravím aj pre vašu prevádzku — s rezerváciou, ktorá počíta podľa vášho cenníka a otváracích hodín.</p>
+      <p class="author-claim">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      <p class="author-lead" style="margin-top:14px">Konzultácia je zadarmo a nezáväzne. Poviete mi, čo má web robiť, a ja vám na to poviem cenu aj termín. Až potom sa rozhodujete.</p>
+      <div class="hero-cta" style="margin:22px 0 0">
+        <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať na apoliak@apoliak.online</a>
+        <a class="btn btn-line" href="https://apoliak.online" target="_blank" rel="noopener">Pozrieť apoliak.online</a>
+      </div>
+    </div>
+
+    <div class="author-card">
+      <h3>Alex Poliak</h3>
+      <span class="role">Návrh a programovanie webu</span>
+      <ul class="author-list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">E-mail</span><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg><div><span class="k">Podpora</span><a href="mailto:support@apoliak.online">support@apoliak.online</a></div></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17"/></svg><div><span class="k">Web</span><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></div></li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<footer>
+  <div class="foot-cta">
+    <p><span class="foot-cta-k">Chcete takýto web pre svoj podnik?</span><a class="foot-cta-tel" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></p>
+    <a class="btn btn-primary" href="mailto:apoliak@apoliak.online">Napísať Alexovi</a>
+  </div>
+  <div class="foot-in">
+    <p><strong>Kolkáreň Deviatka</strong> — Bowling · biliard · šípky, ukážkový web</p>
+    <nav class="foot-links" aria-label="Pätičková navigácia">
+      <a href="#rezervacia">Rezervácia</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#akcie">Firemné akcie</a>
+      <a href="#oslavy">Oslavy a ligy</a>
+      <a href="#bar">Bar</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#hero">Hore</a>
+    </nav>
+  </div>
+  <div class="foot-in" style="margin-top:22px">
+    <p>Športová 14, Vzorové Mesto</p>
+    <p>Po – Št 15:00 – 22:00 &nbsp;·&nbsp; Pi – So 14:00 – 24:00 &nbsp;·&nbsp; Ne 14:00 – 21:00</p>
+  </div>
+  <p class="vyzva-napiste" style="margin:0 0 18px;padding:16px 18px;border-radius:12px;background:rgba(127,127,127,.12);border:1px solid rgba(127,127,127,.28);font-size:15px;line-height:1.6"><strong>Chcete takýto web pre svoj podnik?</strong> Napíšte na <a href="mailto:apoliak@apoliak.online" style="font-weight:700">apoliak@apoliak.online</a> — ozvem sa do jedného pracovného dňa a prvý návrh máte do troch dní. Kontakty vymysleného podniku sú na tejto stránke zámerne vynechané.</p>
+
+  <p class="foot-note">Kolkáreň Deviatka je vymyslený podnik. Táto stránka je ukážka práce, nie web existujúcej firmy. Ceny, otváracie hodiny, adresa aj kontakty podniku sú ilustratívne. Rezervačný formulár je predvádzací a nikam sa neodosiela. Kontaktné údaje podniku sú zámerne vynechané, aby nikto nevolal ani nepísal na cudzie číslo či adresu. Ukážku navrhol a naprogramoval Alex Poliak — <a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>, <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---------- lepkavá hlavička sadá presne pod pásik ukážky ---------- */
+  (function vyskaPasika() {
+    var bar = $(".demo-bar");
+    var head = $(".top");
+    function nastav() {
+      var korene = document.documentElement.style;
+      korene.removeProperty("--bar-h");
+      korene.removeProperty("--head-h");
+      if (bar) {
+        var hb = Math.round(bar.getBoundingClientRect().height);
+        if (hb > 0) { korene.setProperty("--bar-h", hb + "px"); }
+      }
+      if (head) {
+        var hh = Math.round(head.getBoundingClientRect().height);
+        if (hh > 0) { korene.setProperty("--head-h", hh + "px"); }
+      }
+    }
+    nastav();
+    window.addEventListener("resize", nastav);
+    window.addEventListener("orientationchange", nastav);
+    window.addEventListener("load", nastav);
+  })();
+
+  /* ---------- jemné prechody pri scrollovaní ---------- */
+  (function reveal() {
+    var bloky = $$(".reveal");
+    if (!bloky.length) { return; }
+    function ukazVsetko() { bloky.forEach(function (b) { b.classList.add("in"); }); }
+    var redukovane = false;
+    try { redukovane = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (redukovane || !("IntersectionObserver" in window)) { ukazVsetko(); return; }
+    var io = new IntersectionObserver(function (zaznamy) {
+      zaznamy.forEach(function (z) {
+        if (z.isIntersecting) { z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    bloky.forEach(function (b) { io.observe(b); });
+    window.setTimeout(ukazVsetko, 2500);
+  })();
+
+  /* ---------- menu ---------- */
+  (function menu() {
+    var prepinac = $("#navToggle");
+    if (!prepinac) { return; }
+    $$("#hlavnaNav a").forEach(function (a) {
+      a.addEventListener("click", function () { prepinac.checked = false; });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { prepinac.checked = false; }
+    });
+  })();
+
+  /* ---------- pomocné funkcie pre interakcie ---------- */
+  function eur(n) { return Math.round(n).toLocaleString("sk-SK") + " €"; }
+  function eur2(n) { return n.toFixed(2).replace(".", ",") + " €"; }
+
+  function pridajRiadok(kam, k, v) {
+    var r = document.createElement("div");
+    r.className = "suhrn-riadok";
+    var sk = document.createElement("span");
+    sk.className = "k";
+    sk.textContent = k;
+    var sv = document.createElement("span");
+    sv.className = "v";
+    sv.textContent = v;
+    r.appendChild(sk);
+    r.appendChild(sv);
+    kam.appendChild(r);
+  }
+
+  function zaskrtnuty(meno) { return $("input[name='" + meno + "']:checked"); }
+
+
+  /* ---------- rezervácia dráhy ---------- */
+  (function rezervacia() {
+    var hodiny = $("#hodiny");
+    var ludia  = $("#ludia");
+    var riadky = $("#suhrnRiadky");
+    var spolu  = $("#cenaSpolu");
+    var odhadCas = $("#odhadCas");
+    if (!hodiny || !ludia || !riadky) { return; }
+
+    var ZAKLAD = 18;      /* € za dráhu a hodinu vo večernom čase v týždni */
+    var NA_DRAHU = 6;     /* koľko ľudí sa zmestí */
+
+    var NAZVY_DOPL = {
+      topanky: "Prezuvky", mantinely: "Mantinely pre deti", biliard: "Biliardový stôl",
+      obcerstvenie: "Občerstvenie", privatka: "Celý priestor"
+    };
+
+    function prepocitaj() {
+      var h = parseFloat(hodiny.value);
+      var l = parseInt(ludia.value, 10);
+      $("#hodiny-hod").textContent = h.toFixed(1).replace(".", ",").replace(",0", "") + " h";
+      $("#ludia-hod").textContent = l + (l === 1 ? " človek" : (l < 5 ? " ľudia" : " ľudí"));
+
+      var oDen = zaskrtnuty("den");
+      var oCas = zaskrtnuty("cas");
+      if (!oDen || !oCas) { return; }
+
+      var drah = Math.ceil(l / NA_DRAHU);
+      var zaHodinu = ZAKLAD * parseFloat(oDen.getAttribute("data-koef")) *
+                     parseFloat(oCas.getAttribute("data-koef"));
+      var draha = zaHodinu * h * drah;
+
+      riadky.innerHTML = "";
+      pridajRiadok(riadky, drah + (drah === 1 ? " dráha" : " dráhy") + " · " +
+        h.toFixed(1).replace(".", ",").replace(",0", "") + " h", eur2(draha));
+      pridajRiadok(riadky, "Sadzba za dráhu a hodinu", eur2(zaHodinu));
+
+      var celkom = draha;
+
+      $$("input[name='dopl']:checked").forEach(function (d) {
+        var naOsobu = d.getAttribute("data-na-osobu");
+        var zaHod = d.getAttribute("data-za-hodinu");
+        var cena = d.getAttribute("data-cena");
+        var suma = 0;
+        var popis = NAZVY_DOPL[d.value];
+
+        if (naOsobu) {
+          suma = parseFloat(naOsobu) * l;
+          popis += " · " + l + " ľudí";
+        } else if (zaHod) {
+          suma = parseFloat(zaHod) * h;
+          popis += " · " + h.toFixed(1).replace(".", ",").replace(",0", "") + " h";
+        } else {
+          suma = parseFloat(cena);
+        }
+
+        celkom += suma;
+        pridajRiadok(riadky, popis, suma === 0 ? "zadarmo" : eur2(suma));
+      });
+
+      spolu.textContent = eur2(celkom);
+      pridajRiadok(riadky, "Na osobu", eur2(celkom / l));
+
+      if (odhadCas) {
+        odhadCas.textContent = drah + (drah === 1 ? " dráha" : (drah < 5 ? " dráhy" : " dráh")) +
+          " (na jednu sa zmestí šesť hráčov)";
+      }
+    }
+
+    $$("input[name='den'],input[name='cas'],input[name='dopl']").forEach(function (i) {
+      i.addEventListener("change", prepocitaj);
+    });
+    hodiny.addEventListener("input", prepocitaj);
+    ludia.addEventListener("input", prepocitaj);
+    prepocitaj();
+  })();
+
+
+  /* ---------- dopytový formulár: ukážka, nikam nič neodosiela ---------- */
+  (function formular() {
+    var form = $("#dopyt");
+    var hlaska = $("#hlaska");
+    if (!form || !hlaska) { return; }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var meno = $("#f-meno").value.trim();
+      var tel  = $("#f-tel").value.trim();
+
+      if (!meno || !tel) {
+        hlaska.className = "hlaska vidno chyba";
+        hlaska.innerHTML = "<b>Chýba meno alebo telefón.</b>Bez nich by sme sa vám nevedeli ozvať.";
+        return;
+      }
+
+      hlaska.className = "hlaska vidno";
+      hlaska.innerHTML = "<b>Ďakujeme, " + meno.split(" ")[0] + ".</b>" +
+        "Toto je ukážkový web, takže dopyt nikam neodišiel. Na skutočnom webe by v tejto chvíli pristál v schránke firmy.";
+      form.reset();
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

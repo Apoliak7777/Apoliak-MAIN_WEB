@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slovosled — jazyková škola</title>
+<meta name="description" content="Slovosled: kurzy angličtiny, nemčiny a španielčiny pre dospelých aj deti vo Vzorovom Meste. Rozraďovací test online, malé skupiny do šiestich ľudí, firemné kurzy a príprava na maturitu. Ukážkový web od apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#faf6ef">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Slovosled — jazyková škola (ukážkový web)">
+<meta property="og:description" content="Kurzy angličtiny, nemčiny a španielčiny, rozraďovací test priamo na stránke a rozvrh na semester. Ukážkový web vymysleného podniku od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23faf6ef'/%3E%3Cpath d='M6 8h20v14H14l-5 5v-5H6z' fill='none' stroke='%231d5b52' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M12 15h8' stroke='%23e2694f' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   Slovosled — ukážkový web jazykovej školy
+   Paleta: krémový papier, hlboká smaragdová a koralová
+   Zámerne SVETLÝ web — odlišuje sa od ostatných ukážok, ktoré stoja
+   na tmavom podklade. Bez externých zdrojov, bez fotografií.
+   ========================================================================== */
+
+:root{
+  --paper:#faf6ef;
+  --paper-2:#f3ece0;
+  --surface:#ffffff;
+  --surface-2:#fbf8f3;
+  --ink:#1a1c19;
+  --ink-body:#3b423a;
+  --muted:#6b7268;
+  --line:#e0d8ca;
+  --line-strong:#c9bfad;
+  --line-input:#a2988a;
+
+  /* smaragdová = značka, koralová = akcent a chyby, okrová = zvýraznenie */
+  --smaragd:#1d5b52;
+  --smaragd-2:#164a43;
+  --smaragd-3:#0e332e;
+  --smaragd-svetly:#57a396;
+  --koral:#e2694f;
+  --koral-tmavy:#b64730;
+  --koral-svetly:#f2a08b;
+  --okrova:#d9a441;
+  --okrova-tmava:#8a6413;
+
+  --on-smaragd:#eef7f4;
+  --on-smaragd-muted:#a9cbc3;
+  --on-smaragd-line:#2c6f64;
+
+  --ok:#1d5b52;
+  --focus:var(--smaragd);
+
+  --bar-h:38px;
+  --head-h:68px;
+
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+  --sans:system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
+
+  --linky:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 39.5h40' stroke='%231d5b52' stroke-opacity='.07' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + var(--head-h) + 14px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+body{margin:0;background:var(--paper);color:var(--ink-body);font-family:var(--sans);font-size:16.5px;line-height:1.7;-webkit-tap-highlight-color:transparent}
+
+h1,h2,h3,h4{color:var(--ink);line-height:1.16;margin:0;font-weight:700;letter-spacing:-.014em}
+h1,h2{font-family:var(--serif);font-weight:700;letter-spacing:-.02em}
+h1{font-size:clamp(34px,6vw,60px)}
+h2{font-size:clamp(26px,3.5vw,40px)}
+h3{font-size:clamp(18px,2vw,22px)}
+h4{font-size:16px}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--smaragd);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--koral-tmavy)}
+ul,ol{margin:0;padding:0}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+@media (max-width:640px){.wrap{width:min(1180px,100% - 28px)}}.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--smaragd);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none}.skip:focus{left:10px;top:10px}
+
+/* ===================== pásik ukážky ===================== */.demo-bar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;background:var(--smaragd-3);color:var(--on-smaragd-muted);padding:9px 16px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}.demo-bar a{color:var(--koral-svetly);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}.demo-bar a:hover{color:#ffc6b4}.demo-bar .sep{color:#4b7b73}.demo-bar .bar-tag{background:var(--koral);color:#fff;border-radius:999px;padding:3px 10px;letter-spacing:.1em}.demo-bar .bar-long{color:var(--on-smaragd-muted);text-transform:none;letter-spacing:.02em;font-size:12px}
+@media (max-width:520px){.demo-bar{font-size:10.5px;letter-spacing:.06em;gap:6px 10px;padding:7px 12px}.demo-bar .bar-long{display:none}}
+
+/* ===================== hlavička ===================== */.top{position:sticky;top:0;z-index:50;background:rgba(250,246,239,.93);backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line)}.top-in{display:flex;align-items:center;gap:18px;min-height:var(--head-h)}.brand{display:flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;font-weight:700;margin-right:auto}.brand:hover{color:var(--smaragd)}.brand-mark{width:40px;height:40px;flex:none;border-radius:11px;background:var(--smaragd);display:grid;place-items:center}.brand-mark svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}.brand b{display:block;font-size:17.5px;line-height:1.15;font-family:var(--serif)}.brand small{display:block;font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}.nav-toggle{position:absolute;opacity:0;pointer-events:none;width:0;height:0}.nav-btn{display:none;align-items:center;gap:8px;cursor:pointer;color:var(--ink);border:1px solid var(--line-strong);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:600;background:var(--surface)}.nav-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round}.nav-btn:hover{border-color:var(--smaragd);color:var(--smaragd)}.hlavna-nav{display:flex;align-items:center;gap:2px}.hlavna-nav a{color:var(--ink-body);text-decoration:none;font-size:14.5px;font-weight:600;padding:8px 11px;border-radius:8px;white-space:nowrap}.hlavna-nav a:hover{color:var(--smaragd);background:rgba(29,91,82,.08)}.top-act{display:flex;align-items:center;gap:10px}
+@media (max-width:1080px){.nav-btn{display:inline-flex}.hlavna-nav{position:absolute;left:0;right:0;top:100%;display:block;background:var(--surface);border-bottom:1px solid var(--line);padding:10px 20px 18px;max-height:0;overflow:hidden;visibility:hidden;box-shadow:0 20px 40px -30px rgba(26,28,25,.4)}.nav-toggle:checked ~.hlavna-nav{max-height:78vh;overflow:auto;visibility:visible;padding-block:14px 20px}.hlavna-nav a{display:block;padding:11px 8px;border-bottom:1px solid var(--line);border-radius:0;font-size:15px}.hlavna-nav a:last-child{border-bottom:0}
+}
+@media (max-width:760px){.top-act .btn{display:none}}
+@media (max-width:420px){.brand small{display:none}}
+
+/* ===================== tlačidlá ===================== */.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid transparent;border-radius:10px;padding:12.5px 22px;font-size:15px;font-weight:700;font-family:inherit;text-decoration:none;cursor:pointer;line-height:1.2;transition:transform .12s ease,background .16s ease,border-color .16s ease,color .16s ease}.btn:active{transform:translateY(1px)}.btn svg{width:18px;height:18px;fill:currentColor;flex:none}.btn-primary{background:var(--smaragd);color:#fff;border-color:var(--smaragd)}.btn-primary:hover{background:var(--smaragd-2);border-color:var(--smaragd-2);color:#fff}.btn-koral{background:var(--koral);color:#fff;border-color:var(--koral)}.btn-koral:hover{background:var(--koral-tmavy);border-color:var(--koral-tmavy);color:#fff}.btn-line{background:transparent;color:var(--smaragd);border-color:var(--line-strong)}.btn-line:hover{border-color:var(--smaragd);color:var(--smaragd-2);background:rgba(29,91,82,.05)}.btn-svetly{background:#fff;color:var(--smaragd);border-color:#fff}.btn-svetly:hover{background:var(--paper-2);border-color:var(--paper-2);color:var(--smaragd-2)}.btn-obrys{background:transparent;color:#fff;border-color:rgba(255,255,255,.42)}.btn-obrys:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,.08)}.btn-lg{padding:15px 26px;font-size:16px}
+
+/* ===================== sekcie ===================== */
+section{padding:clamp(52px,7vw,90px) 0}.tmava{background:var(--smaragd);color:var(--on-smaragd-muted)}.tmava h2,.tmava h3,.tmava h4{color:#fff}.tmava a{color:var(--koral-svetly)}.tmava a:hover{color:#ffc6b4}.alt{background:var(--paper-2)}.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--koral-tmavy);margin:0 0 14px}.eyebrow::before{content:"";width:26px;height:2px;background:var(--koral);border-radius:2px}.tmava .eyebrow{color:var(--koral-svetly)}.tmava .eyebrow::before{background:var(--koral-svetly)}.sec-head{max-width:740px;margin-bottom:clamp(28px,4vw,44px)}.sec-head p{font-size:clamp(16.5px,1.6vw,18.5px);color:var(--muted);margin-top:14px}.tmava .sec-head p{color:var(--on-smaragd-muted)}.reveal{opacity:1;transform:none}.js-reveal .reveal{opacity:0;transform:translateY(18px)}.js-reveal .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,.7,.3,1)}
+@media (prefers-reduced-motion: reduce){.js-reveal .reveal{opacity:1;transform:none;transition:none}}
+
+/* ===================== hero ===================== */.hero{position:relative;overflow:hidden;background:linear-gradient(178deg,var(--paper) 0%,var(--paper-2) 100%);padding:clamp(44px,6vw,76px) 0 clamp(48px,6vw,84px)}.hero::before{content:"";position:absolute;inset:0;background-image:var(--linky);opacity:.9;pointer-events:none}.hero .wrap{position:relative;z-index:2}.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(30px,4vw,56px);align-items:center}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:36px}}.hero h1{margin-bottom:20px}.hero h1 em{font-style:italic;color:var(--koral-tmavy)}.hero-lead{font-size:clamp(17px,1.9vw,20px);color:var(--muted);max-width:58ch}.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.hero-facts{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}.hero-facts div{min-width:118px}.hero-facts b{display:block;color:var(--smaragd);font-size:25px;line-height:1.2;letter-spacing:-.02em;font-family:var(--serif)}.hero-facts span{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+
+/* karta úrovní namiesto fotografie */.urovne-karta{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(24px,3vw,32px);box-shadow:0 30px 60px -40px rgba(26,28,25,.35)}.urovne-karta h3{font-family:var(--serif);font-size:21px;margin-bottom:4px}.urovne-karta > p{color:var(--muted);font-size:14.5px;margin-bottom:22px}.rebrik{list-style:none;display:grid;gap:2px}.rebrik li{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line)}.rebrik li:last-child{border-bottom:0}.rebrik .kod{font-family:var(--mono);font-size:15px;font-weight:700;color:#fff;background:var(--smaragd);border-radius:8px;padding:5px 0;text-align:center;letter-spacing:.02em}.rebrik li:nth-child(1).kod{background:#57a396}.rebrik li:nth-child(2).kod{background:#3f8579}.rebrik li:nth-child(3).kod{background:#2c6f64}.rebrik li:nth-child(4).kod{background:#1d5b52}.rebrik li:nth-child(5).kod{background:#164a43}.rebrik li:nth-child(6).kod{background:#0e332e}.rebrik .co{font-size:14.5px;color:var(--ink-body);line-height:1.5}.rebrik .co b{color:var(--ink);display:block;font-size:15px}
+
+/* ===================== jazyky ===================== */.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}.karta{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 24px 24px;overflow:hidden;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}.karta:hover{border-color:var(--smaragd-svetly);transform:translateY(-3px);box-shadow:0 18px 40px -28px rgba(26,28,25,.4)}.karta-vlajka{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;background:var(--paper-2);border:1px solid var(--line);font-family:var(--serif);font-size:20px;font-weight:700;color:var(--smaragd)}.karta h3{margin-bottom:9px;font-family:var(--serif)}.karta p{color:var(--muted);font-size:15.5px}.karta-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.stitok{font-size:12.5px;font-weight:600;background:var(--paper-2);border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--ink-body)}.stitok.zvyraznene{background:rgba(226,105,79,.12);border-color:rgba(226,105,79,.32);color:var(--koral-tmavy)}
+
+/* ===================== rozraďovací test ===================== */.test-obal{max-width:820px;margin-inline:auto}.test-karta{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(24px,3.4vw,38px);box-shadow:0 26px 54px -42px rgba(26,28,25,.4)}.test-lista{display:flex;align-items:center;gap:14px;margin-bottom:26px}.test-pruh{flex:1;height:8px;border-radius:5px;background:var(--paper-2);overflow:hidden;border:1px solid var(--line)}.test-pruh i{display:block;height:100%;background:linear-gradient(90deg,var(--smaragd-svetly),var(--smaragd));transition:width .35s cubic-bezier(.22,.7,.3,1)}
+@media (prefers-reduced-motion: reduce){.test-pruh i{transition:none}}.test-pocet{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--muted);white-space:nowrap}.otazka-cislo{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--koral-tmavy);margin-bottom:10px}.otazka-text{font-family:var(--serif);font-size:clamp(20px,2.6vw,27px);color:var(--ink);line-height:1.35;margin-bottom:6px}.otazka-podnadpis{font-size:14.5px;color:var(--muted);margin-bottom:22px}.odpovede{display:grid;gap:10px}.odpoved{
+  display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+  border:1.5px solid var(--line-strong);border-radius:12px;background:var(--surface);
+  padding:15px 18px;font-family:inherit;font-size:16px;color:var(--ink);cursor:pointer;
+  transition:border-color .15s ease,background .15s ease,transform .12s ease;
+}.odpoved:hover:not(:disabled){border-color:var(--smaragd);background:rgba(29,91,82,.05)}.odpoved:active:not(:disabled){transform:translateY(1px)}.odpoved .pismeno{
+  flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  background:var(--paper-2);border:1px solid var(--line);
+  font-family:var(--mono);font-size:14px;font-weight:700;color:var(--muted);
+}.odpoved:disabled{cursor:default;opacity:1}.odpoved.spravna{border-color:var(--smaragd);background:rgba(29,91,82,.1)}.odpoved.spravna .pismeno{background:var(--smaragd);border-color:var(--smaragd);color:#fff}.odpoved.zla{border-color:var(--koral);background:rgba(226,105,79,.1)}.odpoved.zla .pismeno{background:var(--koral);border-color:var(--koral);color:#fff}.odpoved .znacka{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted)}.odpoved.spravna .znacka{color:var(--smaragd)}.odpoved.zla .znacka{color:var(--koral-tmavy)}.test-spodok{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}.test-spodok p{margin:0;font-size:14px;color:var(--muted);flex:1 1 200px}
+
+/* výsledok testu */.vysledok{display:none}.vysledok.vidno{display:block}.vysledok-uroven{display:flex;flex-wrap:wrap;align-items:center;gap:16px 20px;margin-bottom:20px}.vysledok-kod{font-family:var(--mono);font-size:clamp(34px,6vw,50px);font-weight:700;color:#fff;background:var(--smaragd);border-radius:14px;padding:10px 22px;line-height:1.1;letter-spacing:.02em}.vysledok-uroven h3{font-family:var(--serif);font-size:clamp(21px,2.6vw,27px);margin-bottom:4px}.vysledok-uroven p{margin:0;color:var(--muted);font-size:15px}.vysledok-skore{font-family:var(--mono);font-size:14px;color:var(--muted);margin-bottom:20px}.odporucanie{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:20px}.odporucanie h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--koral-tmavy);margin-bottom:10px}.odporucanie .kurz{font-family:var(--serif);font-size:21px;color:var(--ink);margin-bottom:6px;font-weight:700}.odporucanie dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:14px 0 0;font-size:14.5px}.odporucanie dt{color:var(--muted)}.odporucanie dd{margin:0;color:var(--ink);font-weight:600}
+
+/* ===================== rozvrh ===================== */.rozvrh-obal{overflow-x:auto;border:1px solid var(--on-smaragd-line);border-radius:14px;background:rgba(255,255,255,.05)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:660px}
+caption{text-align:left;padding:16px 20px 0;color:var(--on-smaragd-muted);font-size:13.5px}
+th,td{padding:13px 18px;text-align:left;border-bottom:1px solid var(--on-smaragd-line);color:var(--on-smaragd)}
+th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--on-smaragd-muted);font-weight:700;background:rgba(0,0,0,.14)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(255,255,255,.05)}
+td.kod-uroven{font-family:var(--mono);font-size:12.5px;font-weight:700;background:var(--on-smaragd-line);border-radius:6px;padding:3px 8px;color:#fff;display:inline-block}
+td.volno{font-size:13px;color:var(--on-smaragd-muted);display:block;margin-top:2px}
+td.plno{color:var(--koral-svetly);font-weight:600}
+td:last-child{text-align:right;font-family:var(--mono);white-space:nowrap;font-size:14px}
+
+/* ===================== ceny ===================== */.cena-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:18px}.cena-karta{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:28px 26px;display:flex;flex-direction:column}.cena-karta.hlavna{border-color:var(--smaragd);box-shadow:0 0 0 4px rgba(29,91,82,.09)}.cena-znacka{display:inline-block;align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--koral);color:#fff;border-radius:999px;padding:4px 11px;margin-bottom:14px}.cena-karta h3{font-family:var(--serif);margin-bottom:6px}.cena-karta > p{color:var(--muted);font-size:14.5px;margin-bottom:18px}.cena-suma{font-family:var(--serif);font-size:38px;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-.03em}.cena-suma small{font-size:15px;font-weight:400;color:var(--muted);font-family:var(--sans);letter-spacing:0}.cena-zoznam{list-style:none;display:grid;gap:10px;margin:20px 0 24px;font-size:14.5px}.cena-zoznam li{display:flex;gap:10px;align-items:flex-start}.cena-zoznam li::before{content:"";flex:none;width:17px;height:17px;margin-top:3px;border-radius:50%;background:rgba(29,91,82,.14);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 6L9 17l-5-5' fill='none' stroke='%231d5b52' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-size:12px;background-position:center;background-repeat:no-repeat}.cena-karta .btn{margin-top:auto}
+
+/* ===================== lektori ===================== */.lektori{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.lektor{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px 22px}.lektor-mono{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--smaragd);color:#fff;font-family:var(--serif);font-size:21px;font-weight:700;margin-bottom:14px}.lektor h3{font-family:var(--serif);font-size:19px;margin-bottom:2px}.lektor .co{display:block;font-size:13px;color:var(--koral-tmavy);font-weight:600;letter-spacing:.03em;margin-bottom:12px}.lektor p{font-size:14.5px;color:var(--muted);margin:0}
+
+/* ===================== postup ===================== */.kroky{display:grid;grid-template-columns:repeat(auto-fit,minmax(226px,1fr));gap:20px;counter-reset:k}.krok{position:relative;padding-top:22px;border-top:2px solid var(--line);counter-increment:k}.krok::before{content:counter(k,decimal-leading-zero);position:absolute;top:-13px;left:0;background:var(--paper-2);padding-right:12px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--koral-tmavy);letter-spacing:.06em}.krok h3{font-size:18px;margin-bottom:8px;font-family:var(--serif)}.krok p{color:var(--muted);font-size:15px}
+
+/* ===================== FAQ ===================== */.faq{display:grid;gap:12px;max-width:880px}.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}.faq-item summary{cursor:pointer;list-style:none;padding:19px 54px 19px 22px;position:relative;font-weight:700;color:var(--ink);font-size:16.5px;line-height:1.45}.faq-item summary::-webkit-details-marker{display:none}.faq-item summary::after{content:"";position:absolute;right:22px;top:50%;width:13px;height:13px;margin-top:-8px;border-right:2.2px solid var(--smaragd);border-bottom:2.2px solid var(--smaragd);transform:rotate(45deg);transition:transform .2s ease}.faq-item[open] summary::after{transform:rotate(-135deg);margin-top:-3px}.faq-item summary:hover{color:var(--smaragd)}.faq-telo{padding:0 22px 20px;color:var(--muted);font-size:15.5px}.faq-telo p:first-child{margin-top:-4px}
+
+/* ===================== kontakt ===================== */.kont-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,3.5vw,46px)}
+@media (max-width:860px){.kont-grid{grid-template-columns:1fr}}.kont-list{list-style:none;display:grid;gap:18px;margin-top:24px}.kont-list li{display:flex;gap:14px;align-items:flex-start}.kont-list svg{width:21px;height:21px;flex:none;margin-top:3px;fill:none;stroke:var(--koral-svetly);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.kont-list .k{display:block;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--on-smaragd-muted);margin-bottom:2px}.kont-list a,.kont-list .v{color:#fff;font-size:16.5px;font-weight:600;text-decoration:none}.kont-list a:hover{color:var(--koral-svetly)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.form-grid .full{grid-column:1/-1}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}.form-obal{background:rgba(255,255,255,.07);border:1px solid var(--on-smaragd-line);border-radius:16px;padding:clamp(22px,3vw,30px)}.form-obal label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#fff;margin-bottom:8px}
+input[type=text],input[type=tel],input[type=email],select,textarea{width:100%;font-family:inherit;font-size:15.5px;border-radius:10px;padding:12px 14px;line-height:1.4;border:1.5px solid var(--line-input);background:var(--surface);color:var(--ink)}
+textarea{min-height:104px;resize:vertical}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%236b7268'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:22px;padding-right:38px}.form-obal input,.form-obal select,.form-obal textarea{background:rgba(14,51,46,.55);border-color:var(--on-smaragd-line);color:#fff}.form-obal input::placeholder,.form-obal textarea::placeholder{color:#83aaa2}.form-obal input:focus,.form-obal select:focus,.form-obal textarea:focus{outline:none;border-color:var(--koral-svetly);box-shadow:0 0 0 3px rgba(242,160,139,.25)}.form-obal select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23a9cbc3'/%3E%3C/svg%3E")}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--smaragd);box-shadow:0 0 0 3px rgba(29,91,82,.16)}.form-note{font-size:13px;color:var(--on-smaragd-muted);margin-top:14px}.hlaska{display:none;margin-top:16px;border-radius:11px;padding:15px 18px;font-size:15px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#e6f4f0}.hlaska.vidno{display:block}.hlaska b{color:#fff;display:block;margin-bottom:3px}
+
+/* ===================== autor ukážky ===================== */.author{background:var(--smaragd-3);padding:clamp(52px,7vw,90px) 0;color:var(--on-smaragd-muted)}.author-in{width:min(1180px,100% - 40px);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(26px,4vw,52px);align-items:start}
+@media (max-width:900px){.author-in{grid-template-columns:1fr}}
+@media (max-width:640px){.author-in{width:min(1180px,100% - 28px)}}.author .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--koral-svetly);background:rgba(226,105,79,.16);border:1px solid rgba(242,160,139,.35);border-radius:999px;padding:5px 13px;margin-bottom:16px}.author h2{color:#fff;margin-bottom:14px}.author-lead{color:var(--on-smaragd-muted);font-size:16.5px;max-width:56ch}.author-claim{font-size:clamp(19px,2.4vw,25px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-top:18px;font-family:var(--serif)}.author-card{background:rgba(255,255,255,.06);border:1px solid var(--on-smaragd-line);border-radius:16px;padding:clamp(22px,3vw,30px)}.author-card h3{color:#fff;font-size:21px;margin-bottom:3px;font-family:var(--serif)}.author-card .role{display:block;font-size:13px;color:var(--on-smaragd-muted);letter-spacing:.05em;margin-bottom:20px}.author-list{list-style:none;display:grid;gap:16px}.author-list li{display:flex;gap:13px;align-items:flex-start}.author-list svg{width:20px;height:20px;flex:none;margin-top:3px;fill:none;stroke:var(--koral-svetly);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.author-list .k{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--on-smaragd-muted);margin-bottom:1px}.author-list a{color:#fff;font-weight:600;text-decoration:none;font-size:15.5px}.author-list a:hover{color:var(--koral-svetly)}.author-list .sep{color:#4b7b73;margin:0 7px}
+
+/* ===================== pätička ===================== */
+footer{background:#0a2622;color:var(--on-smaragd-muted);padding:0 0 40px;font-size:14.5px}.foot-cta{width:min(1180px,100% - 40px);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding:30px 0;border-bottom:1px solid var(--on-smaragd-line)}
+@media (max-width:640px){.foot-cta{width:min(1180px,100% - 28px)}}.foot-cta p{margin:0}.foot-cta-k{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}.foot-cta-tel{color:#fff;font-size:25px;font-weight:800;text-decoration:none}.foot-cta-tel:hover{color:var(--koral-svetly)}.foot-in{width:min(1180px,100% - 40px);margin:26px auto 0;display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;align-items:flex-start}
+@media (max-width:640px){.foot-in{width:min(1180px,100% - 28px)}}.foot-in p{margin:0}.foot-in strong{color:#fff}.foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}.foot-links a{color:var(--on-smaragd-muted);text-decoration:none;font-size:14px}.foot-links a:hover{color:var(--koral-svetly)}.foot-note{width:min(1180px,100% - 40px);margin:26px auto 0;padding-top:20px;border-top:1px solid var(--on-smaragd-line);font-size:13px;color:#7fa39c;line-height:1.6}
+@media (max-width:640px){.foot-note{width:min(1180px,100% - 28px)}}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* zástupný text namiesto vymysleného kontaktu */.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<script>
+(function () {
+  try{
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      document.documentElement.className += " js-reveal";
+    }
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Preskočiť na obsah</a>
+
+<!-- ===================== pásik ukážky ===================== -->
+<div class="demo-bar" role="note">
+  <span class="bar-tag">Ukážkový web</span>
+  <span class="bar-long">Takýto web pre vás spravím.</span>
+  <span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+</div>
+
+<!-- ===================== hlavička ===================== -->
+<header class="top">
+  <div class="wrap top-in">
+    <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Zobraziť menu">
+    <a class="brand" href="#hero">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 4v-4H4z"/><path d="M9 10.5h6"/></svg>
+      </span>
+      <span>
+        <b>Slovosled</b>
+        <small>Jazyková škola</small>
+      </span>
+    </a>
+
+    <nav class="hlavna-nav" id="hlavnaNav" aria-label="Hlavná navigácia">
+      <a href="#jazyky">Jazyky</a>
+      <a href="#test">Rozraďovací test</a>
+      <a href="#rozvrh">Rozvrh</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#lektori">Lektori</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="top-act">
+      <a class="btn btn-primary" href="#test">Zistiť úroveň</a>
+      <label class="nav-btn" for="navToggle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </label>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===================== hero ===================== -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Jazyková škola od roku 2013</p>
+        <h1>Naučíme vás jazyk, ktorý <em>naozaj použijete</em>.</h1>
+        <p class="hero-lead">Skupiny najviac po šesť ľudí, lektori, ktorí jazykom aj žijú, a hodiny postavené na hovorení, nie na vypĺňaní testov. Prvá hodina je u nás nezáväzná.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="#test">Rozraďovací test za 3 minúty</a>
+          <a class="btn btn-line btn-lg" href="#rozvrh">Pozrieť rozvrh</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>12</b><span>rokov na trhu</span></div>
+          <div><b>6</b><span>ľudí v skupine</span></div>
+          <div><b>3</b><span>jazyky</span></div>
+          <div><b>1 840</b><span>absolventov</span></div>
+        </div>
+      </div>
+
+      <div class="urovne-karta">
+        <h3>Úrovne podľa Spoločného európskeho rámca</h3>
+        <p>Nezáleží na tom, koľko rokov ste sa jazyk učili — záleží, čo v ňom viete spraviť.</p>
+        <ul class="rebrik">
+          <li><span class="kod">A1</span><span class="co"><b>Začiatočník</b>Predstavíte sa, objednáte si a poviete, odkiaľ ste.</span></li>
+          <li><span class="kod">A2</span><span class="co"><b>Mierne pokročilý</b>Vybavíte hotel, nákup aj bežný rozhovor o rodine a práci.</span></li>
+          <li><span class="kod">B1</span><span class="co"><b>Stredne pokročilý</b>Poradíte si na dovolenke aj v jednoduchej pracovnej debate.</span></li>
+          <li><span class="kod">B2</span><span class="co"><b>Pokročilý</b>Zvládnete poradu, e-maily aj film bez titulkov.</span></li>
+          <li><span class="kod">C1</span><span class="co"><b>Veľmi pokročilý</b>Rozprávate plynulo, aj o odborných veciach a s nadhľadom.</span></li>
+          <li><span class="kod">C2</span><span class="co"><b>Na úrovni rodeného</b>Rozumiete vtipom, irónii aj nárečovým odtieňom.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== jazyky ===================== -->
+<section id="jazyky">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Čo učíme</p>
+      <h2>Tri jazyky, ktoré tu naozaj vieme</h2>
+      <p>Radšej učíme tri jazyky poriadne, než desať povrchne. Na každý máme lektora, ktorý ním niekoľko rokov žil.</p>
+    </div>
+
+    <div class="karty">
+      <article class="karta reveal">
+        <div class="karta-vlajka" aria-hidden="true">EN</div>
+        <h3>Angličtina</h3>
+        <p>Od úplných začiatkov po prípravu na Cambridge skúšky. Osobitné kurzy pre tých, čo angličtinu potrebujú v práci a nemajú čas na gramatiku od nuly.</p>
+        <div class="karta-meta">
+          <span class="stitok">A1 – C1</span>
+          <span class="stitok">14 skupín</span>
+          <span class="stitok zvyraznene">aj konverzačné</span>
+        </div>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-vlajka" aria-hidden="true">DE</div>
+        <h3>Nemčina</h3>
+        <p>Najžiadanejšia u ľudí, čo chodia za prácou do Rakúska a Nemecka. Učíme aj odbornú nemčinu pre opatrovateľky a zdravotníkov.</p>
+        <div class="karta-meta">
+          <span class="stitok">A1 – B2</span>
+          <span class="stitok">8 skupín</span>
+          <span class="stitok zvyraznene">odborná slovná zásoba</span>
+        </div>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-vlajka" aria-hidden="true">ES</div>
+        <h3>Španielčina</h3>
+        <p>Väčšinou z radosti, nie z povinnosti — a tak ju aj učíme. Veľa hovorenia, hudby a filmov, minimum tabuliek.</p>
+        <div class="karta-meta">
+          <span class="stitok">A1 – B1</span>
+          <span class="stitok">5 skupín</span>
+          <span class="stitok zvyraznene">rodený lektor</span>
+        </div>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-vlajka" aria-hidden="true">MA</div>
+        <h3>Príprava na maturitu</h3>
+        <p>Intenzívny polrok zameraný presne na to, čo na maturite naozaj príde. Cvičné ústne skúšky s lektorom aj s časomierou.</p>
+        <div class="karta-meta">
+          <span class="stitok">B1 – B2</span>
+          <span class="stitok">od januára</span>
+          <span class="stitok zvyraznene">cvičné skúšky</span>
+        </div>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-vlajka" aria-hidden="true">FI</div>
+        <h3>Firemné kurzy</h3>
+        <p>Chodíme k vám do firmy, v čase, ktorý si určíte. Na začiatku otestujeme celý tím a rozdelíme ho podľa úrovne, nie podľa oddelenia.</p>
+        <div class="karta-meta">
+          <span class="stitok">na mieru</span>
+          <span class="stitok">faktúra</span>
+          <span class="stitok zvyraznene">u vás v sídle</span>
+        </div>
+      </article>
+
+      <article class="karta reveal">
+        <div class="karta-vlajka" aria-hidden="true">DE</div>
+        <h3>Doučovanie detí</h3>
+        <p>Individuálne alebo v dvojici, pre základnú aj strednú školu. Cieľom nie je len lepšia známka, ale aby dieťa prestalo mať z jazyka strach.</p>
+        <div class="karta-meta">
+          <span class="stitok">6 – 18 rokov</span>
+          <span class="stitok">individuálne</span>
+          <span class="stitok zvyraznene">aj online</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== rozraďovací test ===================== -->
+<section id="test" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-inline:auto;text-align:center;max-width:640px">
+      <p class="eyebrow" style="justify-content:center">Rozraďovací test</p>
+      <h2>Zistite, na akej ste úrovni</h2>
+      <p>Osem otázok z angličtiny, tri minúty času. Na konci vám povieme úroveň aj to, do ktorej skupiny by ste u nás sadli. Nič sa nikam neposiela.</p>
+    </div>
+
+    <div class="test-obal reveal">
+      <div class="test-karta">
+        <!-- priebeh testu -->
+        <div id="testBeh">
+          <div class="test-lista">
+            <div class="test-pruh"><i id="testPruh" style="width:0%"></i></div>
+            <span class="test-pocet" id="testPocet">1 / 8</span>
+          </div>
+
+          <p class="otazka-cislo" id="otazkaCislo">Otázka 1</p>
+          <p class="otazka-text" id="otazkaText">—</p>
+          <p class="otazka-podnadpis" id="otazkaPodnadpis">Vyberte správne doplnenie.</p>
+
+          <div class="odpovede" id="odpovede" role="group" aria-labelledby="otazkaText"></div>
+
+          <div class="test-spodok">
+            <p id="testSpatna">Odpoveď sa vyhodnotí hneď po kliknutí.</p>
+            <button type="button" class="btn btn-primary" id="testDalej" hidden>Ďalšia otázka</button>
+          </div>
+        </div>
+
+        <!-- výsledok -->
+        <div class="vysledok" id="testVysledok" aria-live="polite">
+          <div class="vysledok-uroven">
+            <span class="vysledok-kod" id="vysledokKod">B1</span>
+            <div>
+              <h3 id="vysledokNazov">Stredne pokročilý</h3>
+              <p id="vysledokPopis">—</p>
+            </div>
+          </div>
+          <p class="vysledok-skore" id="vysledokSkore">—</p>
+
+          <div class="odporucanie">
+            <h4>Odporúčaný kurz</h4>
+            <p class="kurz" id="odpKurz">—</p>
+            <p style="color:var(--muted);font-size:14.5px;margin:0" id="odpPopis">—</p>
+            <dl>
+              <dt>Začiatok</dt><dd id="odpZaciatok">—</dd>
+              <dt>Rozvrh</dt><dd id="odpRozvrh">—</dd>
+              <dt>Cena za semester</dt><dd id="odpCena">—</dd>
+            </dl>
+          </div>
+
+          <div class="hero-cta" style="margin-top:0">
+            <a class="btn btn-primary btn-lg" href="#kontakt">Prihlásiť sa do kurzu</a>
+            <button type="button" class="btn btn-line btn-lg" id="testZnova">Skúsiť test znova</button>
+          </div>
+          <p style="font-size:13px;color:var(--muted);margin-top:16px">Test je orientačný a slúži na predvedenie funkcie. Pri zápise vás ešte krátko vyskúša lektor — trvá to päť minút a je to zadarmo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== rozvrh ===================== -->
+<section id="rozvrh" class="tmava">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Rozvrh</p>
+      <h2>Skupiny na letný semester</h2>
+      <p>Semester má osemnásť stretnutí a začína 9. februára. Do skupiny sa dá pridať aj neskôr, dopočítame vám len zvyšné hodiny.</p>
+    </div>
+
+    <div class="rozvrh-obal reveal">
+      <table>
+        <caption>Letný semester 2026 — stav miest k 4. septembru.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kurz</th>
+            <th scope="col">Úroveň</th>
+            <th scope="col">Kedy</th>
+            <th scope="col">Lektor</th>
+            <th scope="col">Miesta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Angličtina pre začiatočníkov</td><td><span class="kod-uroven">A1</span></td><td>Po a St 17:00 – 18:30</td><td>Marta H.</td><td>2 voľné</td></tr>
+          <tr><td>Angličtina mierne pokročilí</td><td><span class="kod-uroven">A2</span></td><td>Ut a Št 18:00 – 19:30</td><td>Marta H.</td><td>1 voľné</td></tr>
+          <tr><td>Angličtina stredne pokročilí</td><td><span class="kod-uroven">B1</span></td><td>Po a St 18:45 – 20:15</td><td>Daniel K.</td><td>3 voľné</td></tr>
+          <tr><td>Angličtina konverzácia</td><td><span class="kod-uroven">B2</span></td><td>Št 18:00 – 19:30</td><td>Daniel K.</td><td class="plno">obsadené</td></tr>
+          <tr><td>Angličtina v práci</td><td><span class="kod-uroven">B1+</span></td><td>Ut 7:00 – 8:30 <span class="volno">ranný kurz pred prácou</span></td><td>Daniel K.</td><td>4 voľné</td></tr>
+          <tr><td>Nemčina pre začiatočníkov</td><td><span class="kod-uroven">A1</span></td><td>Ut a Št 17:00 – 18:30</td><td>Zuzana P.</td><td>2 voľné</td></tr>
+          <tr><td>Nemčina pre opatrovateľky</td><td><span class="kod-uroven">A2</span></td><td>So 9:00 – 12:00 <span class="volno">raz za dva týždne</span></td><td>Zuzana P.</td><td>5 voľné</td></tr>
+          <tr><td>Nemčina pokročilí</td><td><span class="kod-uroven">B2</span></td><td>St 18:45 – 20:15</td><td>Zuzana P.</td><td class="plno">obsadené</td></tr>
+          <tr><td>Španielčina od nuly</td><td><span class="kod-uroven">A1</span></td><td>Pi 17:30 – 19:00</td><td>Rodrigo M.</td><td>3 voľné</td></tr>
+          <tr><td>Španielska konverzácia</td><td><span class="kod-uroven">A2+</span></td><td>Pi 19:15 – 20:45</td><td>Rodrigo M.</td><td>2 voľné</td></tr>
+          <tr><td>Príprava na maturitu — angličtina</td><td><span class="kod-uroven">B1</span></td><td>So 9:00 – 11:00</td><td>Daniel K.</td><td>4 voľné</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== cenník ===================== -->
+<section id="cennik">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Cenník</p>
+      <h2>Koľko to stojí</h2>
+      <p>Ceny sú za celý semester, teda osemnásť stretnutí. Učebnicu si kupujete zvlášť, stojí okolo 24 eur a zostáva vám.</p>
+    </div>
+
+    <div class="cena-grid">
+      <article class="cena-karta reveal">
+        <h3>Skupinový kurz</h3>
+        <p>Najviac šesť ľudí v skupine, dvakrát týždenne po deväťdesiat minút.</p>
+        <p class="cena-suma">289 € <small>/ semester</small></p>
+        <ul class="cena-zoznam">
+          <li>18 stretnutí po 90 minút</li>
+          <li>Skupina najviac 6 ľudí</li>
+          <li>Materiály a kópie v cene</li>
+          <li>Náhrada zameškanej hodiny v inej skupine</li>
+          <li>Osvedčenie o absolvovaní</li>
+        </ul>
+        <a class="btn btn-line" href="#kontakt">Prihlásiť sa</a>
+      </article>
+
+      <article class="cena-karta hlavna reveal">
+        <span class="cena-znacka">najčastejšie</span>
+        <h3>Kurz vo dvojici</h3>
+        <p>Vy a kolega alebo partner. Tempo je vaše, cena sa delí.</p>
+        <p class="cena-suma">419 € <small>/ semester, na osobu</small></p>
+        <ul class="cena-zoznam">
+          <li>18 stretnutí po 60 minút</li>
+          <li>Obsah zostavený podľa vašich cieľov</li>
+          <li>Termín si volíte sami</li>
+          <li>Presun hodiny do 24 hodín zadarmo</li>
+          <li>Materiály a kópie v cene</li>
+        </ul>
+        <a class="btn btn-primary" href="#kontakt">Prihlásiť sa</a>
+      </article>
+
+      <article class="cena-karta reveal">
+        <h3>Individuálne hodiny</h3>
+        <p>Keď potrebujete rýchlo, konkrétne a presne na svoju tému.</p>
+        <p class="cena-suma">24 € <small>/ hodina</small></p>
+        <ul class="cena-zoznam">
+          <li>60 minút, termín podľa vás</li>
+          <li>Aj online, ak nestíhate prísť</li>
+          <li>Balík 10 hodín za 219 €</li>
+          <li>Príprava na pohovor alebo prezentáciu</li>
+          <li>Zrušenie do 24 hodín bez poplatku</li>
+        </ul>
+        <a class="btn btn-line" href="#kontakt">Prihlásiť sa</a>
+      </article>
+
+      <article class="cena-karta reveal">
+        <h3>Firemný kurz</h3>
+        <p>Chodíme k vám. Cenu robíme podľa počtu skupín a hodín.</p>
+        <p class="cena-suma">od 38 € <small>/ hodina za skupinu</small></p>
+        <ul class="cena-zoznam">
+          <li>Vstupné otestovanie celého tímu</li>
+          <li>Rozdelenie podľa úrovne, nie podľa oddelenia</li>
+          <li>Dochádzka a správa o pokroku pre HR</li>
+          <li>Faktúra so splatnosťou 30 dní</li>
+          <li>Odborná slovná zásoba z vášho odboru</li>
+        </ul>
+        <a class="btn btn-line" href="#kontakt">Nezáväzná ponuka</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== lektori ===================== -->
+<section id="lektori" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Kto učí</p>
+      <h2>Štyria lektori, žiadni brigádnici</h2>
+      <p>Všetci u nás učia dlhodobo. Keď sa prihlásite do kurzu, viete dopredu, kto pred vami bude stáť celý semester.</p>
+    </div>
+
+    <div class="lektori">
+      <article class="lektor reveal">
+        <div class="lektor-mono" aria-hidden="true">MH</div>
+        <h3>Marta H.</h3>
+        <span class="co">Angličtina · A1 – A2</span>
+        <p>Deväť rokov učila na základnej škole, potom si povedala, že chce menšie skupiny. Trpezlivá k úplným začiatočníkom a k ľuďom, čo o sebe tvrdia, že na jazyky nemajú talent.</p>
+      </article>
+
+      <article class="lektor reveal">
+        <div class="lektor-mono" aria-hidden="true">DK</div>
+        <h3>Daniel K.</h3>
+        <span class="co">Angličtina · B1 – C1</span>
+        <p>Sedem rokov pracoval v Írsku v zákazníckej podpore, takže vie, ako znie angličtina v telefóne o pol siedmej ráno. Vedie konverzačné aj firemné kurzy.</p>
+      </article>
+
+      <article class="lektor reveal">
+        <div class="lektor-mono" aria-hidden="true">ZP</div>
+        <h3>Zuzana P.</h3>
+        <span class="co">Nemčina · A1 – B2</span>
+        <p>Päť rokov opatrovala v Rakúsku a popri tom si dorobila lektorské vzdelanie. Nemčinu pre opatrovateľky učí presne to, čo v službe naozaj treba.</p>
+      </article>
+
+      <article class="lektor reveal">
+        <div class="lektor-mono" aria-hidden="true">RM</div>
+        <h3>Rodrigo M.</h3>
+        <span class="co">Španielčina · A1 – B1</span>
+        <p>Rodený hovoriaci zo Španielska, na Slovensku od roku 2019. Po slovensky rozumie dobre, ale na hodine ju zásadne nepoužíva — a funguje to.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== postup ===================== -->
+<section id="postup">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ako sa prihlásiť</p>
+      <h2>Štyri kroky a sedíte v kurze</h2>
+    </div>
+
+    <div class="kroky">
+      <div class="krok reveal">
+        <h3>Spravíte test</h3>
+        <p>Osem otázok priamo tu na stránke. Trvá tri minúty a nemusíte nikde nič vypĺňať.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Ozveme sa</h3>
+        <p>Do jedného pracovného dňa. Krátko si zavoláme, aby sme počuli, ako hovoríte — z testu sa to nedozvieme.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Prídete na prvú hodinu</h3>
+        <p>Nezáväzne a zadarmo. Ak vám skupina alebo lektor nesadne, nič neplatíte a skúsime inú.</p>
+      </div>
+      <div class="krok reveal">
+        <h3>Zapíšete sa</h3>
+        <p>Platíte až po prvej hodine, prevodom alebo kartou. Semester sa dá zaplatiť aj na dvakrát.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Časté otázky</p>
+      <h2>Na čo sa nás pýtate najčastejšie</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq-item reveal">
+        <summary>Učila som sa angličtinu osem rokov a neviem nič. Kam ma zaradíte?</summary>
+        <div class="faq-telo"><p>Toto počúvame skoro každý týždeň. Roky v škole nehovoria nič — dôležité je, čo v jazyku viete spraviť dnes. Väčšina takýchto ľudí končí v A2, kde si rýchlo doplní, čo im chýbalo, a potom postupuje veľmi rýchlo, lebo v hlave toho majú viac, než si myslia.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Čo keď vymeškám hodinu?</summary>
+        <div class="faq-telo"><p>Môžete si ju nahradiť v inej skupine na rovnakej úrovni — stačí napísať deň dopredu. Za semester takto ide nahradiť najviac päť hodín. Pri individuálnych hodinách presuniete termín zadarmo, ak to stihnete 24 hodín vopred.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Je v cene učebnica?</summary>
+        <div class="faq-telo"><p>Nie, učebnicu si kupujete zvlášť — stojí okolo 24 eur a zostáva vám. Kópie, pracovné listy a všetky doplnkové materiály v cene sú a neúčtujeme ich osobitne.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Robíte aj online hodiny?</summary>
+        <div class="faq-telo"><p>Individuálne áno, skupinové radšej nie. Vyskúšali sme to a v šesťčlennej skupine online prestane hovoriť polovica ľudí. Ak nestíhate dochádzať, ponúkame individuálne alebo kurz vo dvojici online.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Dostanem certifikát?</summary>
+        <div class="faq-telo"><p>Po absolvovaní semestra dostanete osvedčenie s dosiahnutou úrovňou. Nie je to medzinárodne uznávaný certifikát ako Cambridge alebo Goethe — na tie vás vieme pripraviť, ale skúšku skladáte v akreditovanom centre.</p></div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Môžem prísť do kurzu aj v priebehu semestra?</summary>
+        <div class="faq-telo"><p>Áno, ak je v skupine miesto a úroveň sedí. Platíte len za zvyšné hodiny. Prvé dve hodiny býva ťažšie chytiť tempo, tak vám lektor pošle, čo skupina zatiaľ prebrala.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== kontakt ===================== -->
+<section id="kontakt" class="tmava">
+  <div class="wrap">
+    <div class="kont-grid">
+      <div class="reveal">
+        <p class="eyebrow">Kontakt</p>
+        <h2>Ozvite sa, poradíme s výberom</h2>
+        <p style="margin-top:14px">Kanceláriu nájdete na prvom poschodí, výťah je vpravo od vchodu. Zavolať sa dá aj mimo otváracích hodín — ozveme sa naspäť.</p>
+
+        <ul class="kont-list">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h3.6l1.8 4.5-2.2 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-2.2 4.5 1.8V18a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 5.7 2 2 0 0 1 5 3.5z"/></svg>
+            <div><span class="k">Telefón</span><span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <div><span class="k">E-mail</span><span class="ukazka-kontakt" title="Ukážkový web — adresa je zámerne vynechaná.">tu bude váš e-mail</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <div><span class="k">Učebne</span><span class="v">Školská 6, Vzorové Mesto</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <div><span class="k">Kancelária</span><span class="v">Po – Št 14:00 – 19:00 &nbsp;·&nbsp; Pi 14:00 – 17:00</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="form-obal reveal">
+        <form id="prihlaska" novalidate>
+          <div class="form-grid">
+            <div>
+              <label for="f-meno">Meno a priezvisko</label>
+              <input type="text" id="f-meno" name="meno" placeholder="Jana Vzorová" autocomplete="name" required>
+            </div>
+            <div>
+              <label for="f-tel">Telefón</label>
+              <input type="tel" id="f-tel" name="tel" placeholder="vaše telefónne číslo" autocomplete="tel" required>
+            </div>
+            <div class="full">
+              <label for="f-mail">E-mail</label>
+              <input type="email" id="f-mail" name="mail" placeholder="jana@example.sk" autocomplete="email">
+            </div>
+            <div>
+              <label for="f-jazyk">Jazyk</label>
+              <select id="f-jazyk" name="jazyk">
+                <option>Angličtina</option>
+                <option>Nemčina</option>
+                <option>Španielčina</option>
+                <option>Príprava na maturitu</option>
+                <option>Firemný kurz</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-uroven">Úroveň</label>
+              <select id="f-uroven" name="uroven">
+                <option value="">Neviem, poraďte mi</option>
+                <option>A1 — začiatočník</option>
+                <option>A2 — mierne pokročilý</option>
+                <option>B1 — stredne pokročilý</option>
+                <option>B2 — pokročilý</option>
+                <option>C1 — veľmi pokročilý</option>
+              </select>
+            </div>
+            <div class="full">
+              <label for="f-sprava">Čo od kurzu čakáte</label>
+              <textarea id="f-sprava" name="sprava" placeholder="Potrebujem angličtinu na porady s kolegami z Nemecka. Rozumiem dobre, ale bojím sa hovoriť."></textarea>
+            </div>
+          </div>
+          <div class="hero-cta" style="margin-top:20px">
+            <button type="submit" class="btn btn-svetly btn-lg">Odoslať prihlášku</button>
+            <span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span>
+          </div>
+          <p class="form-note">Prvá hodina je nezáväzná a zadarmo. Platíte až vtedy, keď sa rozhodnete zostať.</p>
+          <p class="hlaska" id="hlaska" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== autor ukážky, skutočné údaje ===================== -->
+<aside class="author" id="autor" aria-labelledby="h-autor">
+  <div class="author-in">
+    <div>
+      <span class="tag">Autor ukážky, nie je súčasť školy Slovosled</span>
+      <h2 id="h-autor">Páči sa vám tento web?</h2>
+      <p class="author-lead">Túto ukážku navrhol a naprogramoval Alex Poliak. Rovnaký web pripravím aj pre vašu školu — s vaším rozvrhom, vaším cenníkom a testom, ktorý sa pýta na to, čo naozaj učíte.</p>
+      <p class="author-claim">Weby na mieru od 250 €. Prvý návrh do 3 dní.</p>
+      <p class="author-lead" style="margin-top:14px">Konzultácia je zadarmo a nezáväzne. Poviete mi, čo má web robiť, a ja vám na to poviem cenu aj termín. Až potom sa rozhodujete.</p>
+      <div class="hero-cta" style="margin:22px 0 0">
+        <span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span>
+        <a class="btn btn-obrys" href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>
+      </div>
+    </div>
+
+    <div class="author-card">
+      <h3>Alex Poliak</h3>
+      <span class="role">Návrh a programovanie webu</span>
+      <ul class="author-list">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg>
+          <div><span class="k">E-mail</span><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg>
+          <div><span class="k">Podpora</span><a href="mailto:support@apoliak.online">support@apoliak.online</a></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h3.6l1.8 4.5-2.2 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-2.2 4.5 1.8V18a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 5.7 2 2 0 0 1 5 3.5z"/></svg>
+          <div><span class="k">Telefón a SMS</span><span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span><span class="sep" aria-hidden="true">·</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17"/></svg>
+          <div><span class="k">Web</span><a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<footer>
+  <div class="foot-cta">
+    <p><span class="foot-cta-k">Zápis a informácie</span><span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span></p>
+    <a class="btn btn-svetly" href="#test">Spraviť rozraďovací test</a>
+  </div>
+  <div class="foot-in">
+    <p><strong>Slovosled</strong> — jazyková škola, ukážkový web</p>
+    <nav class="foot-links" aria-label="Pätičková navigácia">
+      <a href="#jazyky">Jazyky</a>
+      <a href="#test">Test</a>
+      <a href="#rozvrh">Rozvrh</a>
+      <a href="#cennik">Cenník</a>
+      <a href="#lektori">Lektori</a>
+      <a href="#postup">Ako sa prihlásiť</a>
+      <a href="#faq">Otázky</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#hero">Hore</a>
+    </nav>
+  </div>
+  <div class="foot-in" style="margin-top:22px">
+    <p>Školská 6, Vzorové Mesto &nbsp;·&nbsp; <span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span> &nbsp;·&nbsp; <span class="ukazka-kontakt" title="Ukážkový web — adresa je zámerne vynechaná.">tu bude váš e-mail</span></p>
+    <p>Kancelária Po – Št 14:00 – 19:00 &nbsp;·&nbsp; Pi 14:00 – 17:00</p>
+  </div>
+  <p class="vyzva-napiste" style="margin:0 0 18px;padding:16px 18px;border-radius:12px;background:rgba(127,127,127,.12);border:1px solid rgba(127,127,127,.28);font-size:15px;line-height:1.6"><strong>Chcete takýto web pre svoj podnik?</strong> Napíšte na <a href="mailto:apoliak@apoliak.online" style="font-weight:700">apoliak@apoliak.online</a> — ozvem sa do jedného pracovného dňa a prvý návrh máte do troch dní. Kontakty vymysleného podniku sú na tejto stránke zámerne vynechané.</p>
+
+  <p class="foot-note">Slovosled je vymyslená jazyková škola. Táto stránka je ukážka práce, nie web existujúcej školy. Ceny, rozvrh, mená lektorov, adresa aj kontakty sú ilustratívne. Rozraďovací test je predvádzacia funkcia s ôsmimi otázkami a nenahrádza skutočné jazykové testovanie. Ukážku navrhol a naprogramoval Alex Poliak, <span class="ukazka-kontakt" title="Ukážkový web — číslo je zámerne vynechané, aby nikto nevolal na cudzie číslo.">tu bude vaše číslo</span>, <a href="https://apoliak.online" target="_blank" rel="noopener">apoliak.online</a>.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---------- lepkavá hlavička sadá presne pod pásik ukážky ---------- */
+  (function vyskaPasika() {
+    var bar = $(".demo-bar");
+    var head = $(".top");
+    function nastav() {
+      var korene = document.documentElement.style;
+      korene.removeProperty("--bar-h");
+      korene.removeProperty("--head-h");
+      if (bar) {
+        var hb = Math.round(bar.getBoundingClientRect().height);
+        if (hb > 0) { korene.setProperty("--bar-h", hb + "px"); }
+      }
+      if (head) {
+        var hh = Math.round(head.getBoundingClientRect().height);
+        if (hh > 0) { korene.setProperty("--head-h", hh + "px"); }
+      }
+    }
+    nastav();
+    window.addEventListener("resize", nastav);
+    window.addEventListener("orientationchange", nastav);
+    window.addEventListener("load", nastav);
+  })();
+
+  /* ---------- jemné prechody pri scrollovaní ---------- */
+  (function reveal() {
+    var bloky = $$(".reveal");
+    if (!bloky.length) { return; }
+    function ukazVsetko() { bloky.forEach(function (b) { b.classList.add("in"); }); }
+    var redukovane = false;
+    try { redukovane = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (redukovane || !("IntersectionObserver" in window)) { ukazVsetko(); return; }
+    var io = new IntersectionObserver(function (zaznamy) {
+      zaznamy.forEach(function (z) {
+        if (z.isIntersecting) { z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    bloky.forEach(function (b) { io.observe(b); });
+    window.setTimeout(ukazVsetko, 2500);
+  })();
+
+  /* ---------- menu ---------- */
+  (function menu() {
+    var prepinac = $("#navToggle");
+    if (!prepinac) { return; }
+    $$("#hlavnaNav a").forEach(function (a) {
+      a.addEventListener("click", function () { prepinac.checked = false; });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { prepinac.checked = false; }
+    });
+  })();
+
+  /* ---------- rozraďovací test ----------
+     Osem otázok zoradených od najľahšej po najťažšiu. Úroveň sa
+     neurčuje len podľa počtu bodov, ale aj podľa toho, po ktorú
+     otázku človek odpovedal správne — to je bližšie k tomu, ako
+     rozraďovanie funguje naozaj. */
+  (function rozradovaciTest() {
+    var beh       = $("#testBeh");
+    var vysledok  = $("#testVysledok");
+    var odpovede  = $("#odpovede");
+    var pruh      = $("#testPruh");
+    var pocet     = $("#testPocet");
+    var cislo     = $("#otazkaCislo");
+    var text      = $("#otazkaText");
+    var podnadpis = $("#otazkaPodnadpis");
+    var dalej     = $("#testDalej");
+    var spatna    = $("#testSpatna");
+    var znova     = $("#testZnova");
+    if (!beh || !odpovede || !dalej) { return; }
+
+    var OTAZKY = [
+      {
+        text: "She ___ a teacher.",
+        popis: "Vyberte správny tvar slovesa.",
+        moznosti: ["is", "are", "am", "be"],
+        spravna: 0,
+        uroven: "A1"
+      },
+      {
+        text: "I ___ to the cinema yesterday.",
+        popis: "Doplňte správny minulý čas.",
+        moznosti: ["go", "went", "gone", "going"],
+        spravna: 1,
+        uroven: "A1"
+      },
+      {
+        text: "There isn't ___ milk in the fridge.",
+        popis: "Doplňte správne zámeno.",
+        moznosti: ["some", "many", "any", "a"],
+        spravna: 2,
+        uroven: "A2"
+      },
+      {
+        text: "If it ___ tomorrow, we will stay at home.",
+        popis: "Prvý podmienkový vzťah.",
+        moznosti: ["will rain", "rains", "rained", "would rain"],
+        spravna: 1,
+        uroven: "A2"
+      },
+      {
+        text: "I've been living here ___ 2019.",
+        popis: "Doplňte správnu predložku.",
+        moznosti: ["for", "from", "since", "during"],
+        spravna: 2,
+        uroven: "B1"
+      },
+      {
+        text: "He asked me where ___.",
+        popis: "Nepriama reč.",
+        moznosti: ["do I live", "I live", "did I live", "I lived"],
+        spravna: 3,
+        uroven: "B1"
+      },
+      {
+        text: "By the time we arrived, the film ___.",
+        popis: "Predminulý čas.",
+        moznosti: ["already started", "has already started", "had already started", "was already starting"],
+        spravna: 2,
+        uroven: "B2"
+      },
+      {
+        text: "Not only ___ late, but he also forgot the tickets.",
+        popis: "Inverzia po zápornom výraze na začiatku vety.",
+        moznosti: ["he was", "was he", "he has been", "he is"],
+        spravna: 1,
+        uroven: "B2"
+      }
+    ];
+
+    var UROVNE = {
+      A1: {
+        nazov: "Začiatočník",
+        popis: "Základy máte, ale ešte potrebujete pevnú pôdu pod nohami.",
+        kurz: "Angličtina pre začiatočníkov",
+        kurzPopis: "Začneme od základov a postavíme ich poriadne. V skupine sú ľudia presne na vašej úrovni, takže sa nemáte pred kým hanbiť.",
+        zaciatok: "9. februára",
+        rozvrh: "Po a St 17:00 – 18:30",
+        cena: "289 € za semester"
+      },
+      A2: {
+        nazov: "Mierne pokročilý",
+        popis: "Bežné situácie zvládate, chýba vám istota v čase a v slovnej zásobe.",
+        kurz: "Angličtina mierne pokročilí",
+        kurzPopis: "Doplníme diery v gramatike a hlavne rozhovoríme. Väčšina ľudí v tejto skupine rozumie viac, než si trúfa povedať.",
+        zaciatok: "9. februára",
+        rozvrh: "Ut a Št 18:00 – 19:30",
+        cena: "289 € za semester"
+      },
+      B1: {
+        nazov: "Stredne pokročilý",
+        popis: "Dohovoríte sa všade, kde treba. Teraz ide o presnosť a plynulosť.",
+        kurz: "Angličtina stredne pokročilí",
+        kurzPopis: "Pracujeme s článkami, podcastmi a diskusiou. Gramatiku doťahujeme tam, kde v reči prekáža, nie podľa poradia v učebnici.",
+        zaciatok: "9. februára",
+        rozvrh: "Po a St 18:45 – 20:15",
+        cena: "289 € za semester"
+      },
+      B2: {
+        nazov: "Pokročilý",
+        popis: "Angličtinu používate bez rozmýšľania. Zostáva vybrúsiť odtiene.",
+        kurz: "Angličtina konverzácia",
+        kurzPopis: "Skoro celá hodina je hovorenie — debata, argumentácia, prezentácie. Gramatika sa rieši len vtedy, keď v reči zaškrípe.",
+        zaciatok: "12. februára",
+        rozvrh: "Št 18:00 – 19:30 (aktuálne obsadené, píšeme do poradovníka)",
+        cena: "289 € za semester"
+      },
+      C1: {
+        nazov: "Veľmi pokročilý",
+        popis: "Toto je nad rámec nášho krátkeho testu — poďme si zavolať.",
+        kurz: "Individuálne hodiny alebo príprava na certifikát",
+        kurzPopis: "Na vašej úrovni už nemá zmysel sadať do skupiny. Zostavíme obsah presne na to, čo potrebujete — prezentácie, rokovania alebo skúšku.",
+        zaciatok: "podľa dohody",
+        rozvrh: "termín si volíte sami",
+        cena: "24 € za hodinu, balík 10 hodín 219 €"
+      }
+    };
+
+    var index = 0;
+    var spravnych = 0;
+    var poslednaSpravna = -1;   /* index poslednej správne zodpovedanej otázky */
+
+    function vykresliOtazku() {
+      var o = OTAZKY[index];
+      cislo.textContent = "Otázka " + (index + 1);
+      text.textContent = o.text;
+      podnadpis.textContent = o.popis;
+      pocet.textContent = (index + 1) + " / " + OTAZKY.length;
+      pruh.style.width = Math.round(index / OTAZKY.length * 100) + "%";
+      dalej.hidden = true;
+      spatna.textContent = "Odpoveď sa vyhodnotí hneď po kliknutí.";
+
+      odpovede.innerHTML = "";
+      o.moznosti.forEach(function (m, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "odpoved";
+
+        var p = document.createElement("span");
+        p.className = "pismeno";
+        p.textContent = "ABCD".charAt(i);
+
+        var t = document.createElement("span");
+        t.textContent = m;
+
+        b.appendChild(p);
+        b.appendChild(t);
+        b.addEventListener("click", function () { vyhodnot(i, b); });
+        odpovede.appendChild(b);
+      });
+    }
+
+    function vyhodnot(zvolena, tlacidlo) {
+      var o = OTAZKY[index];
+      var tlacidla = $$(".odpoved", odpovede);
+
+      tlacidla.forEach(function (b, i) {
+        b.disabled = true;
+        if (i === o.spravna) {
+          b.classList.add("spravna");
+          var zn = document.createElement("span");
+          zn.className = "znacka";
+          zn.textContent = "správne";
+          b.appendChild(zn);
+        }
+      });
+
+      if (zvolena === o.spravna) {
+        spravnych += 1;
+        poslednaSpravna = index;
+        spatna.textContent = "Správne. " + (index + 1 < OTAZKY.length ? "Ideme ďalej." : "To bola posledná.");
+      } else {
+        tlacidlo.classList.add("zla");
+        var zn2 = document.createElement("span");
+        zn2.className = "znacka";
+        zn2.textContent = "vaša odpoveď";
+        tlacidlo.appendChild(zn2);
+        spatna.textContent = "Tentoraz nie. Správne je „" + o.moznosti[o.spravna] + "“.";
+      }
+
+      dalej.hidden = false;
+      dalej.textContent = (index + 1 < OTAZKY.length) ? "Ďalšia otázka" : "Zobraziť výsledok";
+      dalej.focus();
+    }
+
+    function urcUroven() {
+      /* rozhoduje kombinácia: koľko správne a ako ďaleko sa človek dostal */
+      if (spravnych <= 1) { return "A1"; }
+      if (spravnych <= 3) { return "A2"; }
+      if (spravnych <= 5) { return "B1"; }
+      if (spravnych === 8 && poslednaSpravna === 7) { return "C1"; }
+      return "B2";
+    }
+
+    function ukazVysledok() {
+      var kod = urcUroven();
+      var u = UROVNE[kod];
+
+      $("#vysledokKod").textContent = kod;
+      $("#vysledokNazov").textContent = u.nazov;
+      $("#vysledokPopis").textContent = u.popis;
+      $("#vysledokSkore").textContent =
+        "Správne odpovede: " + spravnych + " z " + OTAZKY.length + ".";
+      $("#odpKurz").textContent = u.kurz;
+      $("#odpPopis").textContent = u.kurzPopis;
+      $("#odpZaciatok").textContent = u.zaciatok;
+      $("#odpRozvrh").textContent = u.rozvrh;
+      $("#odpCena").textContent = u.cena;
+
+      beh.hidden = true;
+      vysledok.classList.add("vidno");
+    }
+
+    dalej.addEventListener("click", function () {
+      index += 1;
+      if (index >= OTAZKY.length) { ukazVysledok(); return; }
+      vykresliOtazku();
+    });
+
+    if (znova) {
+      znova.addEventListener("click", function () {
+        index = 0;
+        spravnych = 0;
+        poslednaSpravna = -1;
+        vysledok.classList.remove("vidno");
+        beh.hidden = false;
+        vykresliOtazku();
+      });
+    }
+
+    vykresliOtazku();
+  })();
+
+  /* ---------- prihláška: ukážka, nikam nič neodosiela ---------- */
+  (function formular() {
+    var form = $("#prihlaska");
+    var hlaska = $("#hlaska");
+    if (!form || !hlaska) { return; }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var meno = $("#f-meno").value.trim();
+      var tel  = $("#f-tel").value.trim();
+
+      if (!meno || !tel) {
+        hlaska.className = "hlaska vidno";
+        hlaska.style.background = "rgba(226,105,79,.2)";
+        hlaska.style.borderColor = "rgba(242,160,139,.5)";
+        hlaska.innerHTML = "<b>Chýba meno alebo telefón.</b>Bez nich by sme sa vám nevedeli ozvať.";
+        return;
+      }
+
+      hlaska.className = "hlaska vidno";
+      hlaska.style.background = "";
+      hlaska.style.borderColor = "";
+      hlaska.innerHTML = "<b>Ďakujeme, " + meno.split(" ")[0] + ".</b>" +
+        "Toto je ukážkový web, takže prihláška nikam neodišla. Na skutočnom webe by v tejto chvíli pristála v schránke školy.";
+      form.reset();
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
