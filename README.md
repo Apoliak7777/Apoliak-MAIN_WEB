@@ -56,6 +56,7 @@ Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfon
 - 🏪 **44 ukážkových webov** - kompletné weby vymyslených podnikov, každý ako jeden sebestačný HTML súbor s vlastnou paletou, typografiou a funkčnou interakciou (pozri [Ukážkové weby](#-ukážkové-weby)).
 - 🔎 **Galéria s filtrovaním** - `ukazky/index.html` triedi ukážky podľa kategórie; filtre prepínajú `hidden` na kartách, držia `aria-pressed` v synchrone a hlásia počet zobrazených ukážok do živého textu.
 - 🖼️ **Živé náhľady namiesto obrázkov** - v ráme každej karty beží samotná ukážka v `<iframe>` zmenšenom cez `transform: scale()`; mierku dopočíta `script.js` z reálnej šírky rámu. Náhľad tak nemôže zostarnúť voči ukážke a nepribúda ani jeden obrázkový súbor. Rámy sú `loading="lazy"`, `pointer-events: none` a mimo poradia tabulátora.
+- 🔁 **Živá ukážka priamo v hero** - vpravo od nadpisu beží v ráme skutočná ukážka a šesť chipov (kaderníctvo, reštaurácia, autoservis, zubná ambulancia, stolárstvo, obec) ju vymení bez načítania stránky; bez JavaScriptu sú chipy obyčajné odkazy na ukážky.
 - 🎛️ **Interaktívne prvky bez knižníc** - prepínanie jedálneho lístka, konfigurátor pizze, filtrovanie rozvrhu, objednávanie termínov, cenové kalkulačky a nákupný košík sú napísané v čistom JavaScripte.
 - 🎨 **Vlastný tmavý dizajn** - hnedo-uhlíkové pozadie s mosadzným akcentom, jemné SVG zrno cez celú plochu a pätkové nadpisy s kurzívou. Žiadna grafika sa nesťahuje, všetko je CSS a inline SVG.
 - ✉️ **Priamy kontakt namiesto formulára** - stránka nemá formulár. Ten by cez `mailto:` slúboval odoslanie, ktoré vie splniť len u návštevníka s nastaveným e-mailovým programom; kto má poštu vo webovom prehliadači, tomu by kliknutie neurobilo nič. Namiesto neho stojí adresa veľkým písmom, tlačidlá na e-mail, telefón a SMS a zoznam toho, čo do správy napísať.
@@ -102,12 +103,12 @@ php -S localhost:8000
 
 ```text
 Apoliak-MAIN_WEB/
-├── index.html                    # hlavná stránka (41 KB)
+├── index.html                    # hlavná stránka (42 KB)
 ├── styles.css                    # spoločné štýly pre hlavnú stránku,
-│                                 # galériu, 404 aj GDPR stránku (30 KB)
-├── script.js                     # spoločný skript (5 KB)
+│                                 # galériu, 404 aj GDPR stránku (46 KB)
+├── script.js                     # spoločný skript (8 KB)
 ├── ukazky/
-│   ├── index.html                # galéria ukážok s filtrovaním (27 KB)
+│   ├── index.html                # galéria ukážok s filtrovaním (53 KB)
 │   ├── advokat/index.html
 │   ├── ambulancia/index.html
 │   ├── autodiely/index.html
@@ -215,18 +216,18 @@ Obsahové veci sa menia priamo v HTML:
 
 | Kotva       | Sekcia          | Obsah                                                              |
 | ----------- | --------------- | ------------------------------------------------------------------ |
-| -           | Hero            | Nadpis, hlavné CTA, mikrotext o nezáväznosti a štyri fakty          |
+| -           | Hero            | Nadpis a CTA vľavo, vpravo živá ukážka s prepínaním šiestich odvetví, pod tým štyri fakty |
 | -           | Bežiaci pás     | Segmenty podnikov, pre ktoré weby robím                             |
-| `#ukazky`   | Ukážky          | Teaser s tromi živými náhľadmi a odkazom do galérie                 |
+| `#ukazky`   | Ukážky          | Teaser s tromi živými náhľadmi, odkaz do galérie a odvetvia, ktoré v galérii predvolia filter |
 | `#vyhody`   | Výhody          | Šesť dôvodov pracovať so mnou, jeden odsek na dôvod                 |
 | `#sluzby`   | Služby          | Rozsah práce - návrh, dizajn, kód, texty, nasadenie                 |
 | `#cennik`   | Cenník          | Balíky Starter, Standard, Pro; zoznamy v cene sú v `<details>`      |
 | `#postup`   | Postup          | Kroky spolupráce od prvého kontaktu po spustenie                    |
 | -           | O mne           | Kto weby robí a čo stojí namiesto referencií                        |
 | `#otazky`   | Časté otázky    | Natívne `<details>` otázky, fungujú aj bez JavaScriptu              |
-| `#kontakt`  | Kontakt         | Konzultácia zadarmo, adresa, telefón, SMS a čo do správy napísať   |
+| `#kontakt`  | Kontakt         | Jedna karta: adresa, telefón, SMS, čo do správy napísať, čo prinesie konzultácia zadarmo, podpora a GitHub |
 | -           | Pätička         | Odkazy, obe adresy, ochrana osobných údajov, automatický rok        |
-| -           | Lišta na mobile | Fixné Zavolať a Konzultácia zadarmo pod 720 px šírky                |
+| -           | Lišta na mobile | Fixné Zavolať a Napísať pod 720 px šírky                            |
 
 Navigácia po hlavnej stránke je same-page cez hash odkazy; galéria, ukážky, 404 a GDPR stránka sú samostatné adresy.
 

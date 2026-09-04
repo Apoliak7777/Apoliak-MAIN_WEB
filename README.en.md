@@ -56,6 +56,7 @@ The site makes not a single external network request: no CDN, no web fonts, no a
 - 🏪 **Twenty demo websites** - complete sites for fictional businesses, each a single self-contained HTML file with its own palette, typography and working interaction (see [Demo websites](#-demo-websites)).
 - 🔎 **Filterable gallery** - `ukazky/index.html` sorts the demos by category; the filters toggle `hidden` on the cards, keep `aria-pressed` in sync and announce how many demos are showing in a live text.
 - 🖼️ **Live previews instead of images** - the frame on every card runs the demo itself in an `<iframe>` scaled down with `transform: scale()`; `script.js` derives the factor from the frame's real width. A preview can therefore never go stale against its demo, and not a single image file is added. The frames are `loading="lazy"`, `pointer-events: none` and out of the tab order.
+- 🔁 **Live demo right in the hero** - a real demo runs in a frame next to the headline and six chips (hair salon, restaurant, car service, dental clinic, joinery, municipality) swap it without a page load; without JavaScript the chips are plain links to the demos.
 - 🎛️ **Interactions without libraries** - menu switching, a pizza builder, schedule filtering, appointment booking, price calculators and a shopping cart are all written in plain JavaScript.
 - 🎨 **Custom dark design** - a warm charcoal background with a brass accent, a subtle SVG grain across the whole surface, and serif headings with italics. Nothing is downloaded; it is all CSS and inline SVG.
 - ✉️ **Direct contact instead of a form** - there is no form. Through `mailto:` a form would promise a send it can only deliver for a visitor with a configured mail client; anyone reading mail in a browser tab would click and get nothing. In its place stand the address in large type, buttons for e-mail, phone and SMS, and a short list of what to put in the message.
@@ -102,12 +103,12 @@ php -S localhost:8000
 
 ```text
 Apoliak-MAIN_WEB/
-├── index.html                    # home page (41 KB)
+├── index.html                    # home page (42 KB)
 ├── styles.css                    # shared styles for the home page,
-│                                 # gallery, 404 and privacy page (30 KB)
-├── script.js                     # shared script (5 KB)
+│                                 # gallery, 404 and privacy page (46 KB)
+├── script.js                     # shared script (8 KB)
 ├── ukazky/                       # "ukazky" = demos
-│   ├── index.html                # demo gallery with filtering (27 KB)
+│   ├── index.html                # demo gallery with filtering (53 KB)
 │   ├── restauracia/index.html    # 44 standalone demo sites,
 │   ├── kaviaren/index.html       # each one a self-contained file
 │   ├── cukraren/index.html
@@ -191,18 +192,18 @@ Content lives directly in the HTML:
 
 | Anchor      | Section        | Content                                                        |
 | ----------- | -------------- | -------------------------------------------------------------- |
-| -           | Hero           | Headline, primary CTA, a no-strings microline and four facts    |
+| -           | Hero           | Headline and CTAs on the left, a live demo with six industry switches on the right, four facts below |
 | -           | Marquee        | Business segments the sites are built for                       |
-| `#ukazky`   | Demos          | Teaser with three live previews and a link into the gallery     |
+| `#ukazky`   | Demos          | Teaser with three live previews, a link into the gallery and industry chips that preselect its filter |
 | `#vyhody`   | Benefits       | Six reasons to work with me, one paragraph each                 |
 | `#sluzby`   | Services       | Scope of work - concept, design, code, copy, launch             |
 | `#cennik`   | Pricing        | Starter, Standard and Pro; the in-price lists sit in `<details>` |
 | `#postup`   | Process        | Steps from first contact to going live                          |
 | -           | About          | Who builds the sites and what stands in for testimonials        |
 | `#otazky`   | FAQ            | Native `<details>` questions, working without JavaScript        |
-| `#kontakt`  | Contact        | Free consultation, address, phone, SMS and what to write in     |
+| `#kontakt`  | Contact        | One card: address, phone, SMS, what to write, what the free consultation covers, support and GitHub |
 | -           | Footer         | Links, both addresses, privacy policy, automatic year           |
-| -           | Mobile bar     | Fixed Call and Free consultation below 720 px wide              |
+| -           | Mobile bar     | Fixed Call and Write below 720 px wide                          |
 
 Navigation across the home page is same-page via hash links; the gallery, the demos, the 404 and the privacy page are separate addresses.
 

@@ -62,7 +62,14 @@
     Array.prototype.forEach.call(tlacidla, function (t) {
       t.addEventListener("click", function () { filtruj(t.getAttribute("data-f")); });
     });
-    filtruj("vsetky");
+    /* Odkaz z hlavnej stránky (ukazky/#remeslo) predvolí filter. Hash nezodpovedá
+       žiadnemu id, takže stránka nikam neposkočí. */
+    var zHash = (window.location.hash || "").replace("#", "");
+    var znamy = false;
+    Array.prototype.forEach.call(tlacidla, function (t) {
+      if (t.getAttribute("data-f") === zHash) { znamy = true; }
+    });
+    filtruj(znamy ? zHash : "vsetky");
   }
 
   /* ---------- 04 · lišta s výzvou na mobile ----------
@@ -99,15 +106,62 @@
     }
   }
 
+  /* ---------- 05 · živá ukážka v hero: prepnutie odvetvia ----------
+     Chipy sú obyčajné odkazy — bez JS ukážku otvoria, s JS ju vymenia
+     v jedinom ráme. V hero beží vždy len jeden iframe, nikdy nepribudne druhý. */
+  var show = document.getElementById("hero-show");
+  if (show) {
+    var hsIfr = document.getElementById("hs-iframe");
+    var hsOpen = document.getElementById("hs-open");
+    var hsUrl = document.getElementById("hs-url");
+    var hsNazov = document.getElementById("hs-nazov");
+    var hsInt = document.getElementById("hs-int");
+    var cipy = show.querySelectorAll(".hs-chip");
+    var hsCasovac = null;
+    var hotovo = function () { show.classList.remove("nacitava"); };
+    if (hsIfr) { hsIfr.addEventListener("load", hotovo); }
+    Array.prototype.forEach.call(cipy, function (cip) {
+      cip.addEventListener("click", function (e) {
+        if (!hsIfr) { return; }                       /* bez rámu ostáva chip odkazom */
+        e.preventDefault();
+        var cesta = cip.getAttribute("href");
+        var nazov = cip.getAttribute("data-nazov") || "";
+        if (hsIfr.getAttribute("src") !== cesta) {
+          show.classList.add("nacitava");
+          hsIfr.setAttribute("title", "Živý náhľad ukážky " + nazov);
+          hsIfr.setAttribute("src", cesta);
+          clearTimeout(hsCasovac);
+          hsCasovac = setTimeout(hotovo, 2500);       /* poistka, keby load nedobehol */
+        }
+        if (hsOpen) {
+          hsOpen.setAttribute("href", cesta);
+          hsOpen.setAttribute("aria-label", "Otvoriť ukážku " + nazov + " v plnej veľkosti");
+        }
+        if (hsUrl) { hsUrl.textContent = cip.getAttribute("data-url") || ""; }
+        if (hsNazov) { hsNazov.textContent = nazov; }
+        if (hsInt) { hsInt.textContent = cip.getAttribute("data-int") || ""; }
+        for (var c = 0; c < cipy.length; c++) {
+          if (cipy[c] === cip) { cipy[c].setAttribute("aria-current", "true"); }
+          else { cipy[c].removeAttribute("aria-current"); }
+        }
+      });
+    });
+  }
+
   /* Náhľady v galérii: v ráme beží zmenšená skutočná stránka.
      Mierku počítame z reálnej šírky rámu, aby sedela pri každej šírke okna. */
   var nahlady = document.querySelectorAll(".shot--live");
   if (nahlady.length) {
     var ZAKLAD = 1400;
+    /* Základ mierky sa číta z nezmenšenej šírky iframu (offsetWidth ignoruje
+       transform) — hero rám má pod 960 px iframe široký 1000 px, galéria 1400. */
     var prepocitaj = function () {
       for (var i = 0; i < nahlady.length; i++) {
         var sirka = nahlady[i].clientWidth;
-        if (sirka) nahlady[i].style.setProperty("--shot-s", String(sirka / ZAKLAD));
+        if (!sirka) { continue; }
+        var ifr = nahlady[i].querySelector("iframe");
+        var zaklad = (ifr && ifr.offsetWidth) || ZAKLAD;
+        nahlady[i].style.setProperty("--shot-s", String(sirka / zaklad));
       }
     };
     prepocitaj();
