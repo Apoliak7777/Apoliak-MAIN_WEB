@@ -195,7 +195,7 @@ Content lives directly in the HTML:
 | -           | Hero           | Headline and CTAs on the left, a live demo with six industry switches on the right, four facts below |
 | -           | Marquee        | Business segments the sites are built for                       |
 | `#vyhody`   | Benefits and services | Six reasons on the left, three kinds of jobs on the right (`#sluzby`), divided by a rule |
-| `#cennik`   | Pricing        | Starter, Standard and Pro as three cards side by side, add-ons below |
+| `#cennik`   | Pricing        | Starter, Standard and Pro as three cards with the usual market price for comparison, the e-shop priced separately, add-ons below |
 | `#postup`   | Process        | Steps from first contact to going live                          |
 | `#otazky`   | FAQ            | Native `<details>` questions, working without JavaScript        |
 | `#kontakt`  | Contact        | A short "about me" in the heading and one card: address, phone, SMS, what to write, what the free consultation covers, support and GitHub |

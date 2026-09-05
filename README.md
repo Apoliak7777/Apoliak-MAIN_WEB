@@ -219,7 +219,7 @@ Obsahové veci sa menia priamo v HTML:
 | -           | Hero            | Nadpis a CTA vľavo, vpravo živá ukážka s prepínaním šiestich odvetví, pod tým štyri fakty |
 | -           | Bežiaci pás     | Segmenty podnikov, pre ktoré weby robím                             |
 | `#vyhody`   | Výhody a služby | Vľavo šesť dôvodov, vpravo tri druhy zákaziek (`#sluzby`), predelené čiarou |
-| `#cennik`   | Cenník          | Tri karty Starter, Standard, Pro vedľa seba, pod nimi doplnky        |
+| `#cennik`   | Cenník          | Tri karty Starter, Standard, Pro s bežnou cenou na trhu pre porovnanie, e-shop zvlášť, pod nimi doplnky |
 | `#postup`   | Postup          | Kroky spolupráce od prvého kontaktu po spustenie                    |
 | `#otazky`   | Časté otázky    | Natívne `<details>` otázky, fungujú aj bez JavaScriptu              |
 | `#kontakt`  | Kontakt         | Krátke „O mne" v hlavičke a jedna karta: adresa, telefón, SMS, čo napísať, čo prinesie konzultácia, podpora a GitHub |
