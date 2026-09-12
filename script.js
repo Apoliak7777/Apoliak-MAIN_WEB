@@ -53,9 +53,11 @@
         t.setAttribute("aria-pressed", t.getAttribute("data-f") === kluc ? "true" : "false");
       });
       if (info) {
-        info.textContent = viditelnych === celkom
-          ? "Zobrazených všetkých " + celkom + " ukážok"
-          : "Zobrazené ukážky: " + viditelnych + " z " + celkom;
+        /* galéria hovorí o ukážkach, stránka zákaziek o projektoch — text si nesie .filtre v data-* */
+        var text = viditelnych === celkom
+          ? (filtre.getAttribute("data-info-vsetky") || "Zobrazených všetkých {n} ukážok")
+          : (filtre.getAttribute("data-info-cast") || "Zobrazené ukážky: {v} z {n}");
+        info.textContent = text.replace("{n}", celkom).replace("{v}", viditelnych);
       }
     };
 
