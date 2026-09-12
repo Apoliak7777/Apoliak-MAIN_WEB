@@ -161,7 +161,7 @@ section{position:relative;padding-block:clamp(52px,8vw,104px)}
 @media (prefers-reduced-motion:reduce){.top-cta{transition:none}}
 
 /* ---------- 05 · hero ----------
-   Základ (.hero, .hero::before, .eyebrow, .cta-row, .fakty) zdieľa galéria ukazky/,
+   Základ (.hero, .hero::before, .eyebrow, .cta-row) zdieľa galéria ukazky/,
    preto ostáva bez zmeny. Všetko nové je viazané na modifikátor .hero--show,
    ktorý má len hlavná stránka. Pôvodné .hero-in{max-width:20ch} a
    .hero-wide{max-width:none} sa rušia — práve max-width:none rozťahovalo hero
@@ -184,7 +184,7 @@ section{position:relative;padding-block:clamp(52px,8vw,104px)}
 .cta-micro a:hover{color:var(--brass);border-bottom-color:var(--brass)}
 
 /* hlavná stránka: text vľavo, živá ukážka vpravo */
-.hero--show{padding-top:clamp(36px,5.5vw,72px)}
+.hero--show{padding-top:clamp(36px,5.5vw,72px);padding-bottom:clamp(34px,5vw,64px)}
 .hero-grid{display:grid;gap:clamp(34px,5vw,56px);align-items:center}
 .hero-txt{min-width:0}
 .hero--show h1{max-width:16ch}
@@ -310,28 +310,6 @@ html:not(.js) #hs-iframe{display:none}
 .hs-cta:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
 .hs-note{margin-top:12px;font-size:.84rem;color:var(--mut);max-width:56ch}
 
-/* fakty: základ ostáva, v hero ide riadok s deličmi namiesto boxu */
-.fakty{margin-top:clamp(30px,4vw,44px);display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
-@media (min-width:640px){.fakty{grid-template-columns:repeat(3,1fr)}}
-.fakty div{background:var(--bg);padding:16px clamp(16px,2vw,22px)}
-.fakty .v{display:block;font-family:var(--serif);font-weight:700;font-size:1.44rem;color:var(--brass)}
-.fakty .d{display:block;font-size:.85rem;color:var(--mut);margin-top:2px}
-
-/* ---------- 33 · štyri fakty v hero: riadok s hornou linkou a deličmi, cez ktorý presvitá žiara ---------- */
-.fakty--4{grid-template-columns:1fr 1fr}
-@media (min-width:960px){.fakty--4{grid-template-columns:repeat(4,1fr)}}
-.fakty--hero{
-  margin-top:clamp(34px,4.5vw,60px);background:transparent;border:0;gap:0;
-  border-top:1px solid var(--line-soft);padding-top:6px;
-}
-.fakty--hero div{background:transparent;padding:14px clamp(12px,2vw,24px) 6px 0}
-.fakty--hero div:nth-child(even){border-left:1px solid var(--line-soft);padding-left:clamp(12px,2vw,24px)}
-@media (min-width:960px){
-  .fakty--hero div + div{border-left:1px solid var(--line-soft);padding-left:clamp(14px,2vw,26px)}
-}
-.fakty--hero .v{font-size:clamp(1.22rem,2vw,1.62rem);white-space:nowrap}
-.fakty--hero .d{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;margin-top:6px}
-
 @media (prefers-reduced-motion:reduce){
   .hs-tag i{animation:none}
   .hs-frame,.hs-open-pill,.hs-chip,.hs-cta,.hs-frame .shot--live iframe{transition:none}
@@ -339,22 +317,43 @@ html:not(.js) #hs-iframe{display:none}
   .hs-open:hover .hs-open-pill{transform:none}
 }
 
-/* ---------- 06 · bežiaci pás segmentov ---------- */
+/* ---------- 06 · pás pod hero: tri fakty a podniky, pre ktoré robím weby ----------
+   Alex 12.09.2026: fakt „0 € / mesiac" z hero vyhodiť a zvyšné tri fakty spojiť
+   so zoznamom podnikov do jedného pásu. Zoznam stojí — pôvodný bežiaci pás pri
+   obmedzenom pohybe aj tak stál zalomený, takto ho všetci vidia rovnako.
+   Pod 640 px je každý fakt jeden riadok (číslo a popis vedľa seba), od 640 px
+   tri fakty v riadku s deličmi nad zoznamom, od 960 px fakty vľavo pod sebou
+   a zoznam vpravo, medzi nimi zvislá čiara ako v sekcii výhod. */
 .pas{
-  overflow:hidden;border-block:1px solid var(--line-soft);background:var(--bg-2);
-  padding-block:14px;position:relative;z-index:1;
+  border-block:1px solid var(--line-soft);background:var(--bg-2);
+  position:relative;z-index:1;padding-block:clamp(22px,3vw,36px);
 }
-.pas-track{display:flex;width:max-content;animation:pas-run 84s linear infinite}
-.pas{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.pas:hover .pas-track{animation-play-state:paused}
-.pas-list{display:flex;align-items:center}
+.pas-in{display:grid;gap:clamp(18px,3vw,28px)}
+.fakty{display:grid;gap:8px 0}
+.fakty div{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.fakty .v{font-family:var(--serif);font-weight:700;font-size:clamp(1.22rem,2vw,1.62rem);color:var(--brass);white-space:nowrap}
+.fakty .d{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.pas-k{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:8px}
+.pas-list{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0}
 .pas-list li{
-  display:flex;align-items:center;gap:clamp(20px,3vw,38px);
-  padding-inline:clamp(10px,1.6vw,19px);
-  font-family:var(--serif);font-size:clamp(1rem,1.7vw,1.32rem);color:var(--ink-2);white-space:nowrap;
+  display:flex;align-items:center;gap:clamp(12px,1.5vw,20px);padding-right:clamp(12px,1.5vw,20px);
+  font-family:var(--serif);font-size:clamp(1rem,1.4vw,1.18rem);color:var(--ink-2);white-space:nowrap;
 }
 .pas-list li::after{content:"";width:5px;height:5px;flex:none;background:var(--brass);transform:rotate(45deg)}
-@keyframes pas-run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.pas-list li:last-child{padding-right:0}
+.pas-list li:last-child::after{display:none}
+@media (min-width:640px){
+  .fakty{grid-template-columns:repeat(3,auto);justify-content:start;gap:0 clamp(24px,4vw,56px)}
+  .fakty div{display:block}
+  .fakty div + div{border-left:1px solid var(--line-soft);padding-left:clamp(24px,4vw,56px)}
+  .fakty .d{display:block;margin-top:4px}
+}
+@media (min-width:960px){
+  .pas-in{grid-template-columns:auto minmax(0,1fr);gap:clamp(32px,4vw,60px);align-items:center}
+  .fakty{grid-template-columns:1fr;gap:12px 0}
+  .fakty div + div{border-left:0;padding-left:0;border-top:1px solid var(--line-soft);padding-top:12px}
+  .pas-seg{border-left:1px solid var(--line-soft);padding-left:clamp(32px,4vw,60px)}
+}
 
 /* ---------- 07 · rám prehliadača + náhľad ---------- */
 .frame{
@@ -581,11 +580,6 @@ html:not(.js) #hs-iframe{display:none}
   .js .rv{opacity:1 !important;transform:none !important;transition:none}
   .btn,.uk,.balik,.c-line,.qa summary::after{transition:none !important}
   .btn-1:hover,.uk:hover,.balik:hover{transform:none !important}
-  .pas-track{animation:none;width:100%;flex-wrap:wrap;justify-content:center}
-  .pas-list{flex-wrap:wrap;justify-content:center}
-  .pas-list[aria-hidden="true"]{display:none}
-  /* zoznam stojí zalomený na mieste, takže okrajové stmavenie by len zošedilo krajné položky */
-  .pas{-webkit-mask-image:none;mask-image:none}
 }
 
 /* ---------- 32 · mikrotext pod hlavným tlačidlom ---------- */

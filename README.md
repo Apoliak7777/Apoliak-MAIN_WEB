@@ -216,8 +216,8 @@ Obsahové veci sa menia priamo v HTML:
 
 | Kotva       | Sekcia          | Obsah                                                              |
 | ----------- | --------------- | ------------------------------------------------------------------ |
-| -           | Hero            | Nadpis a CTA vľavo, vpravo živá ukážka s prepínaním šiestich odvetví, pod tým štyri fakty |
-| -           | Bežiaci pás     | Segmenty podnikov, pre ktoré weby robím                             |
+| -           | Hero            | Nadpis a CTA vľavo, vpravo živá ukážka s prepínaním šiestich odvetví |
+| -           | Pás pod hero    | Tri fakty (od 250 €, návrh do 3 dní, odpoveď do 24 hodín) a zoznam podnikov, pre ktoré weby robím |
 | `#vyhody`   | Výhody a služby | Vľavo šesť dôvodov, vpravo tri druhy zákaziek (`#sluzby`), predelené čiarou |
 | `#cennik`   | Cenník          | Tri karty Starter, Standard, Pro s bežnou cenou na trhu pre porovnanie, e-shop zvlášť, pod nimi doplnky |
 | `#postup`   | Postup          | Kroky spolupráce od prvého kontaktu po spustenie                    |

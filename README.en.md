@@ -192,8 +192,8 @@ Content lives directly in the HTML:
 
 | Anchor      | Section        | Content                                                        |
 | ----------- | -------------- | -------------------------------------------------------------- |
-| -           | Hero           | Headline and CTAs on the left, a live demo with six industry switches on the right, four facts below |
-| -           | Marquee        | Business segments the sites are built for                       |
+| -           | Hero           | Headline and CTAs on the left, a live demo with six industry switches on the right |
+| -           | Band below hero | Three facts (from €250, draft in 3 days, reply within 24 hours) and the business segments the sites are built for |
 | `#vyhody`   | Benefits and services | Six reasons on the left, three kinds of jobs on the right (`#sluzby`), divided by a rule |
 | `#cennik`   | Pricing        | Starter, Standard and Pro as three cards with the usual market price for comparison, the e-shop priced separately, add-ons below |
 | `#postup`   | Process        | Steps from first contact to going live                          |
