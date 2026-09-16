@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/kaviaren/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/kaviaren/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/kaviaren/">
+<!-- /jazyky:hreflang -->
+<title>Lipová — kavárna a pizzerie</title>
+<meta name="description" content="Lipová — kavárna a pizzerie. Nabídka a ceny, denní menu, otevírací doba, složení vlastní pizzy, dárkové poukazy a rezervace stolu. Ukázkový web, navrhl a naprogramoval Alex Poliak.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lipová — kavárna a pizzerie">
+<meta property="og:description" content="Nabídka a ceny, denní menu, otevírací doba a rezervace. Ukázkový web od Alexe Poliaka, apoliak.online.">
+<meta property="og:locale" content="cs_CZ">
+<meta name="theme-color" content="#1F1C18">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='4'%20fill='%231F1C18'/%3E%3Crect%20x='14'%20y='14'%20width='36'%20height='4'%20fill='%238C3A22'/%3E%3Crect%20x='14'%20y='26'%20width='36'%20height='2'%20fill='%23E7E1D6'/%3E%3Crect%20x='14'%20y='34'%20width='24'%20height='2'%20fill='%23E7E1D6'/%3E%3Crect%20x='14'%20y='42'%20width='30'%20height='2'%20fill='%23E7E1D6'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   LIPOVÁ — kaviareň a pizzeria. Ukážkový web (apoliak.online).
+   Jeden súbor, nula externých požiadaviek.
+   Paleta: piesková a krémová neutrálna základňa + jeden tehlový akcent.
+   ========================================================================== */
+
+:root{
+  --bg:#F4F0E8;
+  --bg-alt:#EAE4D8;
+  --surface:#FCFAF6;
+  --ink:#1F1C18;
+  --muted:#5F5850;
+  --line:#D5CCBC;
+  --line-soft:#E2DACB;
+  --accent:#8C3A22;
+  --accent-dark:#6F2C18;
+  --accent-tint:#D18E72;     /* akcent na tmavom podklade */
+  --on-dark:#E7E1D6;
+  --on-dark-muted:#B5AC9E;
+  --dark-line:#3A342C;
+  --dark-card:#26221D;
+
+  --radius:3px;
+  --wrap:1160px;
+  --bar-h:76px;              /* výšku spodného pásika dopočíta JS */
+
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,"Liberation Sans",sans-serif;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",Times,serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:104px;
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+}
+@media (max-width:620px){ html{scroll-padding-top:132px} }
+
+body{
+  margin:0;
+  padding-bottom:var(--bar-h);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16.5px;
+  line-height:1.68;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* clip nevytvára rolovací kontext, takže nerozbíja sticky hlavičku */
+@supports (overflow-x:clip){ html,body{overflow-x:clip} }
+
+@media (min-width:700px){ :root{--bar-h:52px} }
+
+h1,h2,h3,h4{margin:0;font-family:var(--serif);font-weight:600;line-height:1.15;letter-spacing:-.012em;text-wrap:balance}
+h1{font-size:clamp(2.3rem,5.8vw,4.3rem);line-height:1.04;letter-spacing:-.024em}
+h2{font-size:clamp(1.6rem,3.1vw,2.45rem);line-height:1.08;letter-spacing:-.018em}
+h3{font-size:clamp(1.08rem,1.6vw,1.24rem)}
+p{margin:0 0 1em}
+a{color:inherit}
+ul,ol{margin:0;padding:0}
+figure{margin:0}
+
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+@media (max-width:520px){ .wrap{width:min(100% - 28px,var(--wrap))} }
+
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.section--dark :where(a,button):focus-visible{outline-color:var(--accent-tint)}
+
+/* ---------- HLAVIČKA ---------- */
+.site-head{
+  position:sticky;top:0;z-index:40;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.site-head__wrap{position:relative}
+.site-head__in{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;min-height:64px}
+
+.brand{display:inline-flex;flex-direction:column;text-decoration:none;flex:0 0 auto}
+.brand__name{font-family:var(--serif);font-size:1.3rem;letter-spacing:.12em;text-transform:uppercase;line-height:1}
+.brand__sub{margin-top:.3rem;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+.site-nav{margin-left:auto;display:flex;align-items:center;gap:1.4rem}
+.nav-list{list-style:none;display:flex;align-items:center;gap:1.35rem;flex-wrap:wrap}
+.nav-list a{
+  text-decoration:none;font-size:.93rem;color:var(--ink);
+  padding:.25rem 0;border-bottom:1px solid transparent;
+}
+.nav-list a:hover{border-bottom-color:var(--ink)}
+.nav-list a[aria-current="true"]{border-bottom-color:var(--accent);color:var(--accent)}
+
+/* Hlavná akcia a telefón: v hlavičke na každej šírke, nikdy nie v hamburgeri. */
+.head-act{display:flex;align-items:center;gap:.7rem;flex:0 0 auto;margin-left:1.1rem}
+.head-tel{
+  font-weight:600;font-size:.95rem;font-variant-numeric:tabular-nums;white-space:nowrap;
+  color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--accent);padding-bottom:2px;
+}
+.head-tel:hover{color:var(--accent)}
+
+.nav-toggle{
+  display:none;align-items:center;gap:.5rem;flex:0 0 auto;
+  background:transparent;color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:.5rem .8rem;font:inherit;font-size:.9rem;cursor:pointer;
+}
+.nav-toggle svg{width:18px;height:18px}
+.nav-toggle .ico-close{display:none}
+.js .nav-toggle[aria-expanded="true"] .ico-open{display:none}
+.js .nav-toggle[aria-expanded="true"] .ico-close{display:block}
+
+@media (max-width:1120px){
+  .site-nav{gap:1.05rem}
+  .nav-list{gap:1.05rem}
+  .nav-list a{font-size:.88rem}
+}
+@media (max-width:1000px){
+  .js .nav-toggle{display:inline-flex}
+  .js .site-nav{
+    position:absolute;left:0;right:0;top:100%;
+    display:none;
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+    padding:.4rem 20px 1.1rem;
+    margin:0;
+  }
+  .js .site-nav[data-open="true"]{display:block}
+  .nav-list{flex-direction:column;align-items:stretch;gap:0}
+  .nav-list li{border-bottom:1px solid var(--line-soft)}
+  .nav-list a{display:block;padding:.75rem 0;font-size:1rem}
+  .js .head-act{margin-left:auto}
+}
+
+/* Na mobile ide hlavička do dvoch riadkov, aby tlačidlo aj telefón ostali viditeľné. */
+@media (max-width:620px){
+  .site-head__in{min-height:0;padding:.6rem 0;row-gap:.55rem}
+  .brand{flex:1 1 auto;min-width:0}
+  .head-act{order:3;flex:1 0 100%;margin-left:0;gap:.5rem}
+  .head-act .btn{flex:1 1 auto}
+  .head-tel{
+    flex:1 1 auto;text-align:center;padding:.5rem .5rem;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  }
+}
+
+/* ---------- TLAČIDLÁ ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent);color:#fff;
+  border:1px solid var(--accent);border-radius:var(--radius);
+  padding:.72rem 1.35rem;
+  font:inherit;font-size:.94rem;font-weight:600;letter-spacing:.01em;
+  text-decoration:none;cursor:pointer;
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+}
+.btn:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+.btn--outline{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn--outline:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn--light{background:transparent;color:var(--on-dark);border-color:var(--on-dark-muted)}
+.btn--light:hover{background:var(--on-dark);color:var(--ink);border-color:var(--on-dark)}
+/* Hlavná akcia na tmavom podklade: svetlý akcent + tmavý text (kontrast 6,3:1). */
+.btn--accent-light{background:var(--accent-tint);color:var(--ink);border-color:var(--accent-tint)}
+.btn--accent-light:hover{background:var(--on-dark);color:var(--ink);border-color:var(--on-dark)}
+.btn--sm{padding:.5rem 1rem;font-size:.88rem}
+.btn--wide{width:100%}
+
+/* ---------- SEKCIE ---------- */
+.section{padding:clamp(3.2rem,6.5vw,5.6rem) 0}
+.section + .section{border-top:1px solid var(--line)}
+.section--alt{background:var(--bg-alt);border-top:1px solid var(--line)}
+.section--dark{background:var(--ink);color:var(--on-dark);border-top:1px solid var(--ink)}
+.section--dark h2,.section--dark h3,.section--dark h4{color:var(--on-dark)}
+
+.eyebrow{
+  margin:0 0 1rem;
+  font-size:.71rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);
+}
+.section--dark .eyebrow{color:var(--accent-tint)}
+.eyebrow__n{
+  color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.eyebrow__n::after{
+  content:"";display:inline-block;vertical-align:middle;
+  width:22px;height:1px;background:var(--line);
+  margin:0 .8rem 0 .8rem;
+}
+.section--dark .eyebrow__n{color:var(--on-dark-muted)}
+.section--dark .eyebrow__n::after{background:var(--dark-line)}
+
+.lead{max-width:62ch;color:var(--muted);font-size:1.04rem}
+.section--dark .lead{color:var(--on-dark-muted)}
+
+.sec-head{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:1.6rem 3rem;align-items:end;
+  padding-bottom:1.8rem;margin-bottom:clamp(2.4rem,4vw,3.4rem);
+  border-bottom:1px solid var(--line);
+}
+.sec-head .lead{margin:0}
+.section--dark .sec-head{border-bottom-color:var(--dark-line)}
+@media (max-width:820px){ .sec-head{grid-template-columns:1fr;align-items:start} }
+
+.sub-head{margin:clamp(2.6rem,5vw,3.8rem) 0 1.5rem;padding-bottom:.8rem;border-bottom:1px solid var(--line)}
+.sub-head h3{font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.section--dark .sub-head{border-bottom-color:var(--dark-line)}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(1.2rem,2.4vw,1.7rem);
+}
+.card h3{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.7rem}
+.card p{margin:0 0 .7rem;color:var(--muted);font-size:.95rem}
+.card p:last-child{margin-bottom:0}
+.section--dark .card{background:var(--dark-card);border-color:var(--dark-line)}
+.section--dark .card p{color:var(--on-dark-muted)}
+
+/* ==========================================================================
+   DIZAJNOVÉ KOMPOZÍCIE / OBRAZOVÉ MIESTA
+   Vrstvené gradienty, geometria, vlásočnicové vzory a typografické panely.
+   Každá kompozícia je <figure class="obraz art …"> a je pripravená na to,
+   aby sa neskôr nahradila fotografiou (viď komentáre FOTO v HTML).
+   ========================================================================== */
+.art{
+  position:relative;display:flex;overflow:hidden;isolation:isolate;
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:linear-gradient(158deg,#F2ECE0 0%,#E9E1D1 52%,#E1D8C5 100%);
+  color:var(--ink);
+}
+.art--dark{
+  background:linear-gradient(163deg,#2C2721 0%,#211D19 54%,#181512 100%);
+  border-color:var(--dark-line);color:var(--on-dark);
+}
+.art__in{
+  position:relative;z-index:3;flex:1 1 auto;min-width:0;
+  display:flex;flex-direction:column;gap:1.1rem;
+  padding:clamp(1.3rem,2.6vw,2.1rem);
+}
+
+/* vrstvy vzorov */
+.art__l{position:absolute;inset:0;z-index:1;pointer-events:none}
+/* Sýtosť vzorov je zámerne nízka: aj v mieste čiary musí text
+   nad plochou splniť kontrast WCAG AA. */
+.art__l--grid{
+  background-image:
+    repeating-linear-gradient(0deg, rgba(31,28,24,.06) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(31,28,24,.06) 0 1px, transparent 1px 34px);
+}
+.art--dark .art__l--grid{
+  background-image:
+    repeating-linear-gradient(0deg, rgba(231,225,214,.06) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(231,225,214,.06) 0 1px, transparent 1px 34px);
+}
+.art__l--hatch{background-image:repeating-linear-gradient(45deg, rgba(31,28,24,.06) 0 1px, transparent 1px 10px)}
+.art--dark .art__l--hatch{background-image:repeating-linear-gradient(45deg, rgba(231,225,214,.06) 0 1px, transparent 1px 10px)}
+.art__l--dots{background-image:radial-gradient(rgba(31,28,24,.07) 1px, transparent 1.2px);background-size:15px 15px}
+.art--dark .art__l--dots{background-image:radial-gradient(rgba(231,225,214,.08) 1px, transparent 1.2px);background-size:15px 15px}
+.art__l--slash{background:linear-gradient(112deg, rgba(31,28,24,.055) 0 44%, rgba(31,28,24,0) 44.3%)}
+.art--dark .art__l--slash{background:linear-gradient(112deg, rgba(231,225,214,.06) 0 44%, rgba(231,225,214,0) 44.3%)}
+.art__l--warm{background:linear-gradient(196deg, rgba(140,58,34,.09) 0%, rgba(140,58,34,0) 58%)}
+.art--dark .art__l--warm{background:linear-gradient(196deg, rgba(209,142,114,.10) 0%, rgba(209,142,114,0) 58%)}
+.art__l--rule{
+  background-image:
+    linear-gradient(to bottom, rgba(31,28,24,.16) 0 1px, transparent 1px),
+    linear-gradient(to top, rgba(31,28,24,.16) 0 1px, transparent 1px);
+  margin:clamp(1.3rem,2.6vw,2.1rem) 0;
+}
+.art--dark .art__l--rule{
+  background-image:
+    linear-gradient(to bottom, rgba(231,225,214,.18) 0 1px, transparent 1px),
+    linear-gradient(to top, rgba(231,225,214,.18) 0 1px, transparent 1px);
+}
+
+/* zrno cez SVG feTurbulence, vložené ako data URI */
+.art__l--grain{
+  opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+.art--dark .art__l--grain{opacity:.085}
+
+/* geometria */
+.art__ring{position:absolute;z-index:2;border-radius:50%;pointer-events:none}
+.art__ring{border:1px solid rgba(140,58,34,.30);width:min(80%,380px);aspect-ratio:1;right:-16%;bottom:-30%}
+.art__ring--sm{width:min(54%,250px);right:8%;bottom:-12%;border-color:rgba(31,28,24,.16)}
+.art--dark .art__ring{border-color:rgba(209,142,114,.32)}
+.art--dark .art__ring--sm{border-color:rgba(231,225,214,.18)}
+.art__bar{position:absolute;z-index:2;background:var(--accent);width:44px;height:2px;left:clamp(1.3rem,2.6vw,2.1rem);bottom:clamp(1.3rem,2.6vw,2.1rem)}
+.art--dark .art__bar{background:var(--accent-tint)}
+
+/* typografia v ploche */
+.art__eyebrow{margin:0;font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.art--dark .art__eyebrow{color:var(--accent-tint)}
+.art__num{
+  margin:0;font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.9rem,8vw,4.7rem);line-height:.98;letter-spacing:-.025em;
+  font-variant-numeric:tabular-nums;
+}
+.art__num small{display:block;font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-top:.75rem;color:var(--accent)}
+.art--dark .art__num small{color:var(--accent-tint)}
+.art__word{margin:0;font-family:var(--serif);font-size:clamp(1.9rem,4.4vw,2.9rem);line-height:1.06;letter-spacing:-.02em}
+.art__cap{margin:0;font-size:.95rem;color:var(--muted);max-width:34ch}
+.art--dark .art__cap{color:var(--on-dark-muted)}
+.art__foot{margin:auto 0 0;padding-top:1rem;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.art--dark .art__foot{color:var(--on-dark-muted)}
+
+.art__rows{list-style:none;display:grid;gap:0;margin:auto 0 0}
+.art__rows li{
+  display:grid;grid-template-columns:minmax(3.9rem,auto) minmax(0,1fr);
+  gap:.2rem .9rem;align-items:baseline;
+  padding:.72rem 0;border-top:1px solid rgba(31,28,24,.16);
+}
+.art--dark .art__rows li{border-top-color:rgba(231,225,214,.18)}
+.art__rows b{font-family:var(--serif);font-size:1.28rem;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.art__rows span{font-size:.93rem;color:var(--muted)}
+.art--dark .art__rows span{color:var(--on-dark-muted)}
+@media (max-width:400px){
+  .art__rows li{grid-template-columns:1fr}
+  .art__rows span{margin-top:.1rem}
+}
+
+/* rozmery plôch */
+.art--wide{min-height:clamp(250px,26vw,330px)}
+.art--square{min-height:250px}
+.art--tall{min-height:clamp(290px,30vw,380px)}
+
+/* ---------- ÚVOD ---------- */
+.hero{padding:clamp(3rem,7.5vw,6.6rem) 0 clamp(2.6rem,5vw,4.2rem)}
+.hero__head{text-align:center}
+.hero__meta{font-size:.71rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 1.5rem}
+.hero__rule{display:block;width:52px;height:1px;background:var(--accent);margin:0 auto 1.7rem}
+.hero h1{max-width:22ch;margin:0 auto 1.4rem}
+.hero__text{max-width:56ch;margin:0 auto 2.3rem;color:var(--muted);font-size:clamp(1.02rem,1.35vw,1.14rem)}
+.hero__cta{display:flex;gap:.7rem;flex-wrap:wrap}
+.hero .hero__cta{justify-content:center}
+.hero__map{margin:1.5rem 0 0;font-size:.94rem}
+
+/* ---------- PÁS S ÚDAJMI ---------- */
+.facts{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  text-align:left;
+  margin-top:clamp(2.8rem,6vw,4.6rem);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.facts a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);white-space:nowrap}
+.facts a:hover{color:var(--accent)}
+.facts > div{padding:1.5rem 1.6rem 1.5rem 0;border-right:1px solid var(--line)}
+.facts > div:last-child{border-right:0}
+.facts > div + div{padding-left:1.6rem}
+.facts dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.facts dd{margin:0;font-size:1rem;font-weight:600}
+.facts dd small{display:block;font-weight:400;font-size:.86rem;color:var(--muted);margin-top:.2rem}
+@media (max-width:900px){
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts > div{border-bottom:1px solid var(--line)}
+  .facts > div:nth-child(2n){border-right:0}
+  .facts > div:nth-child(2n+1){padding-left:0}
+  .facts > div:nth-child(2n){padding-left:1.6rem}
+  .facts > div:nth-last-child(-n+2){border-bottom:0}
+}
+@media (max-width:520px){
+  .facts{grid-template-columns:1fr}
+  .facts > div{border-right:0;padding-left:0!important;padding-right:0;border-bottom:1px solid var(--line)}
+  .facts > div:last-child{border-bottom:0}
+}
+
+/* ---------- CENNÍK ---------- */
+.price-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(2.4rem,4vw,3.4rem) clamp(1.6rem,3vw,3rem)}
+@media (max-width:1000px){ .price-cols{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:680px){ .price-cols{grid-template-columns:1fr} }
+
+.price-col h3{
+  padding-bottom:.7rem;margin-bottom:.4rem;
+  border-bottom:1px solid var(--ink);
+  font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+}
+.price-list{list-style:none}
+.price-list li{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:.4rem 1rem;align-items:baseline;
+  padding:.75rem 0;border-bottom:1px solid var(--line-soft);
+}
+.price-list .name{font-weight:600}
+.price-list .desc{display:block;font-weight:400;font-size:.88rem;color:var(--muted);margin-top:.15rem}
+.price-list .meta{
+  display:block;font-weight:400;font-size:.8rem;color:var(--muted);
+  margin-top:.25rem;letter-spacing:.02em;font-variant-numeric:tabular-nums;
+}
+.price-list .price{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.price-note{margin:1.1rem 0 0;font-size:.88rem;color:var(--muted)}
+.price-note a{color:var(--accent);font-weight:600}
+
+/* ---------- ALERGÉNY ---------- */
+.aleg{
+  margin-top:clamp(2.2rem,4vw,3.2rem);
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface);padding:clamp(1.2rem,2.4vw,1.7rem);
+}
+.aleg h3{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1rem}
+.aleg ol{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem 1.6rem}
+@media (max-width:900px){ .aleg ol{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:520px){ .aleg ol{grid-template-columns:1fr} }
+.aleg li{font-size:.92rem;color:var(--muted);display:flex;gap:.6rem;align-items:baseline}
+.aleg li b{
+  flex:0 0 auto;min-width:1.5rem;color:var(--ink);font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.aleg p{margin:1.1rem 0 0;font-size:.88rem;color:var(--muted)}
+
+/* ---------- OBRAZOVÉ MIESTA S CENOU ---------- */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.5rem)}
+@media (max-width:900px){ .gal{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .gal{grid-template-columns:1fr} }
+.gal__item{display:flex;flex-direction:column;min-width:0}
+.gal__item .obraz{flex:1 1 auto}
+.gal__buy{
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem 1rem;flex-wrap:wrap;
+  margin:.9rem 0 0;
+}
+.gal__price{font-family:var(--serif);font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.gal__cap{margin:.8rem 0 0;font-size:.92rem;color:var(--muted)}
+.section--dark .gal__cap{color:var(--on-dark-muted)}
+
+/* ---------- ODKAZ NA MAPU ---------- */
+.maplink{
+  display:inline-flex;align-items:center;gap:.45rem;
+  color:var(--accent);font-weight:600;text-decoration:none;
+  border-bottom:1px solid var(--accent);
+}
+.maplink:hover{color:var(--accent-dark);border-bottom-color:var(--accent-dark)}
+.maplink--dark{color:var(--accent-tint);border-bottom-color:var(--accent-tint)}
+.maplink--dark:hover{color:var(--on-dark);border-bottom-color:var(--on-dark)}
+
+/* ---------- DENNÉ MENU ---------- */
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.day{background:var(--bg);padding:1.3rem 1.2rem;display:flex;flex-direction:column;gap:.8rem}
+.day__name{margin:0;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.day[data-today="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
+.day__today{background:var(--accent);color:#fff;border-radius:2px;padding:.1rem .4rem;font-size:.62rem;letter-spacing:.1em}
+.day dl{margin:0;display:grid;gap:.6rem}
+.day dt{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.day dd{margin:.1rem 0 0;font-size:.95rem}
+.day__price{margin:auto 0 0;padding-top:.8rem;border-top:1px solid var(--line);font-weight:700;font-variant-numeric:tabular-nums}
+@media (max-width:1000px){ .days{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:560px){ .days{grid-template-columns:1fr} }
+
+/* ---------- KONFIGURÁTOR AKO OBJEDNÁVKOVÝ FORMULÁR ---------- */
+.config{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(1.4rem,3vw,2.6rem);align-items:start}
+@media (max-width:900px){ .config{grid-template-columns:1fr} }
+
+.config__sheet{
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(1.2rem,3vw,2.3rem);
+  min-width:0;
+}
+.config__sheet-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:.4rem 1.4rem;flex-wrap:wrap;
+  padding-bottom:1rem;margin-bottom:clamp(1.6rem,3vw,2.2rem);
+  border-bottom:1px solid var(--ink);
+}
+.config__sheet-head b{font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.config__sheet-head span{font-size:.85rem;color:var(--muted)}
+
+.config fieldset{border:0;margin:0 0 clamp(1.8rem,3vw,2.6rem);padding:0;min-width:0}
+.config fieldset:last-of-type{margin-bottom:0}
+.config legend{
+  padding:0 0 .6rem;margin-bottom:.7rem;width:100%;
+  font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);
+  border-bottom:1px solid var(--line);
+}
+.config legend .num{color:var(--accent);margin-right:.6rem;font-variant-numeric:tabular-nums}
+.config legend .hint{float:right;font-weight:400;letter-spacing:.04em;text-transform:none;color:var(--muted);font-size:.78rem}
+.config__foot{
+  margin:clamp(1.8rem,3vw,2.4rem) 0 0;padding-top:1.1rem;
+  border-top:1px solid var(--line);
+  font-size:.86rem;color:var(--muted);max-width:66ch;
+}
+
+.choices{list-style:none;display:grid;gap:0}
+.choices li{border-bottom:1px solid var(--line-soft)}
+.choice{display:flex;align-items:center;gap:.8rem;padding:.7rem .2rem;cursor:pointer;position:relative}
+.choice input{position:absolute;opacity:0;width:1px;height:1px}
+.choice .box{
+  flex:0 0 auto;width:1.05rem;height:1.05rem;
+  border:1px solid var(--muted);border-radius:2px;background:var(--surface);
+  position:relative;transition:background .14s ease,border-color .14s ease;
+}
+.choice input[type="radio"] + .box{border-radius:50%}
+.choice input:checked + .box{background:var(--accent);border-color:var(--accent)}
+.choice input[type="radio"]:checked + .box::after{
+  content:"";position:absolute;left:50%;top:50%;
+  width:.34rem;height:.34rem;border-radius:50%;background:#fff;transform:translate(-50%,-50%);
+}
+.choice input[type="checkbox"]:checked + .box::after{
+  content:"";position:absolute;left:50%;top:48%;
+  width:.5rem;height:.26rem;
+  border-left:2px solid #fff;border-bottom:2px solid #fff;
+  transform:translate(-50%,-65%) rotate(-45deg);
+}
+.choice input:focus-visible + .box{outline:2px solid var(--accent);outline-offset:2px}
+.choice .txt{flex:1 1 auto}
+.choice .sub{display:block;font-size:.85rem;color:var(--muted)}
+.choice .val{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.92rem;white-space:nowrap}
+.tops-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:2rem}
+@media (max-width:560px){ .tops-grid{grid-template-columns:1fr} }
+
+.summary{
+  position:sticky;top:96px;
+  background:var(--surface);
+  border:1px solid var(--line);border-top:2px solid var(--accent);
+  border-radius:0 0 var(--radius) var(--radius);
+  padding:1.5rem 1.6rem 1.6rem;
+}
+.summary h3{font-family:var(--sans);font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.1rem}
+.summary dl{margin:0;display:grid;gap:0}
+.summary .row{
+  display:flex;justify-content:space-between;gap:1rem;align-items:baseline;
+  font-size:.93rem;padding:.6rem 0;border-bottom:1px solid var(--line-soft);
+}
+.summary .row dt{color:var(--muted)}
+.summary .row dd{margin:0;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.summary__tops{font-size:.88rem;color:var(--muted);margin:.9rem 0 0}
+.summary__total{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  margin:1.2rem 0 0;padding-top:1.2rem;border-top:1px solid var(--ink);
+}
+.summary__total span{font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.summary__total b{font-family:var(--serif);font-size:2rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.summary__hint{margin:1rem 0 1.3rem;font-size:.84rem;color:var(--muted)}
+@media (max-width:900px){ .summary{position:static} }
+
+/* ---------- PREVÁDZKA ---------- */
+.split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.8rem,4vw,3.4rem);align-items:center}
+.split--top{align-items:start}
+@media (max-width:860px){ .split{grid-template-columns:1fr} }
+.split > div > p{max-width:64ch}
+.plain-list{list-style:none;display:grid;gap:1.1rem;margin-top:1.6rem}
+.plain-list li{padding-left:1.1rem;border-left:1px solid var(--line)}
+.plain-list b{display:block;margin-bottom:.15rem}
+.plain-list p{margin:0;color:var(--muted);font-size:.94rem}
+.section--dark .plain-list li{border-left-color:var(--dark-line)}
+.section--dark .plain-list p{color:var(--on-dark-muted)}
+
+.art-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:2.6rem}
+@media (max-width:680px){ .art-row{grid-template-columns:1fr} }
+
+.roles{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem 2.4rem;margin-top:1.4rem}
+@media (max-width:680px){ .roles{grid-template-columns:1fr} }
+.roles li{padding-top:.9rem;border-top:1px solid var(--line)}
+.roles b{display:block;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.25rem}
+.roles p{margin:0;font-size:.94rem;color:var(--muted)}
+
+/* ---------- DENNÝ RYTMUS ---------- */
+.rhythm{list-style:none;display:grid;gap:0;border-top:1px solid var(--line)}
+.rhythm li{
+  display:grid;grid-template-columns:minmax(5rem,7.5rem) minmax(0,1fr);
+  gap:.5rem clamp(1.2rem,3vw,3rem);align-items:baseline;
+  padding:clamp(1.2rem,2.2vw,1.7rem) 0;border-bottom:1px solid var(--line-soft);
+}
+.rhythm b{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(1.5rem,2.6vw,2.05rem);line-height:1.05;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.rhythm h3{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.45rem}
+.rhythm p{margin:0;color:var(--muted);font-size:.95rem;max-width:62ch}
+@media (max-width:520px){ .rhythm li{grid-template-columns:1fr;gap:.2rem} }
+
+/* ---------- HODINY ---------- */
+.hours-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.6rem,3.5vw,3rem);align-items:start}
+@media (max-width:860px){ .hours-wrap{grid-template-columns:1fr} }
+.table-scroll{overflow-x:auto}
+table.hours{width:100%;min-width:300px;border-collapse:collapse;background:var(--surface);border:1px solid var(--line)}
+table.hours caption{caption-side:bottom;text-align:left;padding-top:.8rem;font-size:.85rem;color:var(--muted)}
+table.hours th,table.hours td{padding:.72rem 1rem;text-align:left;border-bottom:1px solid var(--line-soft);font-size:.95rem}
+table.hours thead th{
+  font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;
+  border-bottom:1px solid var(--line);
+}
+table.hours tbody th{font-weight:600;white-space:nowrap}
+table.hours td{font-variant-numeric:tabular-nums;white-space:nowrap}
+table.hours tbody tr:last-child th,table.hours tbody tr:last-child td{border-bottom:0}
+table.hours tr[data-today="true"]{background:var(--bg-alt)}
+table.hours tr[data-today="true"] th{box-shadow:inset 3px 0 0 var(--accent)}
+
+.status{
+  display:inline-flex;align-items:center;gap:.6rem;
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
+  padding:.5rem .9rem;margin:0 0 1.2rem;font-size:.92rem;font-weight:600;
+}
+.status__dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.info-box{border:1px solid var(--line);border-radius:var(--radius);padding:1.4rem 1.5rem;background:var(--surface)}
+.info-box h3{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.9rem}
+.info-box ul{list-style:none;display:grid;gap:.6rem}
+.info-box li{padding-left:.9rem;position:relative;font-size:.94rem;color:var(--muted)}
+.info-box li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:1px;background:var(--accent)}
+
+/* ---------- MRIEŽKY OBSAHU ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem)}
+@media (max-width:900px){ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .grid-3{grid-template-columns:1fr} }
+
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(2rem,4vw,3.6rem)}
+@media (max-width:780px){ .faq{grid-template-columns:1fr} }
+.faq > div{padding:1.5rem 0;border-top:1px solid var(--line)}
+.faq h3{font-size:1.06rem;margin-bottom:.5rem}
+.faq p{margin:0;color:var(--muted);font-size:.95rem}
+
+.jobs{list-style:none;display:grid;gap:0}
+.jobs li{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:.4rem 2rem;align-items:baseline;
+  padding:1.25rem 0;border-top:1px solid var(--line);
+}
+@media (max-width:560px){ .jobs li{grid-template-columns:1fr} }
+.jobs h3{font-family:var(--sans);font-size:1.02rem;font-weight:700;letter-spacing:.01em;margin-bottom:.3rem}
+.jobs p{margin:0;color:var(--muted);font-size:.94rem;max-width:62ch}
+.jobs .tag{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.section--dark .jobs li{border-top-color:var(--dark-line)}
+.section--dark .jobs p{color:var(--on-dark-muted)}
+.section--dark .jobs .tag{color:var(--accent-tint)}
+
+.social{list-style:none;display:grid;gap:.75rem;margin-top:1rem}
+.social li{padding-top:.75rem;border-top:1px solid var(--dark-line);font-size:.95rem;color:var(--on-dark-muted)}
+.social b{display:inline-block;min-width:9.5rem;color:var(--on-dark);font-weight:600}
+
+/* ---------- FORMULÁR ---------- */
+.order{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(1.8rem,4vw,3.2rem);align-items:start}
+@media (max-width:860px){ .order{grid-template-columns:1fr} }
+.form-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.3rem,3vw,2rem)}
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem}
+@media (max-width:620px){ .field-grid{grid-template-columns:1fr} }
+.field{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.field--full{grid-column:1 / -1}
+.field label{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.field .req{color:var(--accent)}
+.field input,.field select,.field textarea{
+  font:inherit;font-size:.98rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:.66rem .8rem;width:100%;max-width:100%;
+  transition:border-color .14s ease,background .14s ease;
+}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--muted)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:var(--surface);outline:none}
+.field textarea{resize:vertical;min-height:104px}
+.field__hint{font-size:.82rem;color:var(--muted)}
+.form-foot{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-top:1.6rem}
+.form-foot p{margin:0;font-size:.85rem;color:var(--muted);max-width:36ch}
+.form-note{margin-top:1.3rem;border:1px solid var(--accent);border-left-width:3px;border-radius:var(--radius);padding:.95rem 1.1rem;display:none}
+.form-note[data-shown="true"]{display:block}
+.form-note h3{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.4rem;color:var(--accent)}
+.form-note p{margin:0;font-size:.94rem}
+
+.aside-list{display:grid;gap:1.4rem}
+.aside-box{border-top:1px solid var(--line);padding-top:1.2rem}
+.aside-box h3{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.5rem}
+.aside-box p{margin:0;color:var(--muted);font-size:.94rem}
+.aside-box .big{display:block;font-family:var(--serif);font-size:1.55rem;color:var(--ink);margin-bottom:.4rem;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.aside-box .big a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent)}
+.aside-box .big a:hover{color:var(--accent)}
+
+/* ---------- KONTAKT ---------- */
+.contact{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(1.8rem,4vw,3.4rem);align-items:start}
+@media (max-width:860px){ .contact{grid-template-columns:1fr} }
+.contact-list{margin:2rem 0 0;display:grid;gap:1.3rem}
+.contact-list dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);margin-bottom:.25rem}
+.contact-list dd{margin:0;font-size:1.05rem}
+.contact-list a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.contact-list a:hover{color:var(--accent-tint)}
+.contact-list small{display:block;font-size:.82rem;color:var(--on-dark-muted);margin-top:.2rem}
+
+/* ---------- AUTOR UKÁŽKY ---------- */
+.author{background:var(--surface);border-top:1px solid var(--line);padding:clamp(3rem,6vw,5rem) 0}
+.author__in{border-left:3px solid var(--accent);padding-left:clamp(1.2rem,3vw,2.4rem)}
+.author__tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 .8rem}
+.author h2{margin-bottom:.9rem}
+.author__lead{max-width:62ch;color:var(--muted)}
+.author__points{
+  list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1.4rem 2.4rem;margin:2.2rem 0 0;
+}
+@media (max-width:680px){ .author__points{grid-template-columns:1fr;gap:1.1rem} }
+.author__points li{padding-top:1rem;border-top:1px solid var(--line)}
+.author__points b{display:block;font-family:var(--serif);font-size:1.5rem;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-bottom:.3rem}
+.author__points span{font-size:.92rem;color:var(--muted)}
+.author__contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.2rem;margin:2.2rem 0 0;border-top:1px solid var(--line);padding-top:1.6rem}
+.author__contacts dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.author__contacts dd{margin:0;font-size:1.02rem;font-weight:600;overflow-wrap:anywhere}
+.author__contacts a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+.author__contacts a:hover{color:var(--accent-dark)}
+.author__contacts .sms{display:inline-block;margin-top:.35rem;font-size:.85rem;font-weight:400;color:var(--muted);border-bottom-color:var(--line)}
+.author__price{margin:1.8rem 0 0;font-size:1.02rem;font-weight:600}
+
+/* ---------- PÄTA ---------- */
+.site-foot{background:var(--ink);color:var(--on-dark-muted);padding:2.6rem 0 3rem;font-size:.92rem}
+.foot-grid{display:flex;justify-content:space-between;gap:1.6rem 2.4rem;flex-wrap:wrap}
+.foot-grid .brand__name{color:var(--on-dark)}
+.foot-grid .brand__sub{color:var(--on-dark-muted)}
+.foot-links{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem 2rem}
+@media (max-width:520px){ .foot-links{grid-template-columns:1fr} }
+.foot-links a{color:var(--on-dark);text-decoration:none}
+.foot-links a:hover{text-decoration:underline}
+.foot-grid p a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px;font-variant-numeric:tabular-nums}
+.foot-act{margin-top:1.3rem;display:flex;gap:.6rem;flex-wrap:wrap}
+.foot-pay{margin:1.3rem 0 0;padding-top:1.1rem;border-top:1px solid var(--dark-line);max-width:34ch}
+.foot-pay b{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark);margin-bottom:.35rem}
+.foot-note{margin:2.2rem 0 0;padding-top:1.4rem;border-top:1px solid var(--dark-line);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.85rem}
+.foot-note a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- SPODNÝ PÁSIK UKÁŽKY ---------- */
+.demobar{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  background:var(--ink);color:var(--on-dark);
+  border-top:1px solid var(--dark-line);
+}
+.demobar__in{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:.35rem 1.1rem;padding:.62rem 0;
+  font-size:.84rem;text-align:center;
+}
+.demobar__tag{
+  font-size:.66rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent-tint);white-space:nowrap;
+  border:1px solid rgba(209,142,114,.45);border-radius:2px;padding:.16rem .5rem;
+}
+.demobar__claim{color:var(--on-dark-muted)}
+.demobar a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.demobar a:hover{color:var(--accent-tint)}
+.demobar__tel{font-variant-numeric:tabular-nums}
+
+/* ---------- JEMNÝ NÁBEH PRI SCROLLOVANÍ ---------- */
+.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.js .reveal.is-in{opacity:1;transform:none}
+
+/* ---------- BEZ JAVASCRIPTU ---------- */
+html:not(.js) .nav-toggle{display:none}
+html:not(.js) .site-head{position:static}
+html:not(.js) .summary{position:static}
+html:not(.js) #toOrder{display:none}
+html:not(.js) .status{display:none}
+
+/* ---------- REDUKOVANÝ POHYB ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none}
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+  }
+}
+
+/* ---------- TLAČ ---------- */
+@media print{
+  .demobar,.site-head,.nav-toggle,.btn{display:none}
+  body{padding-bottom:0;background:#fff}
+  .art{display:none}
+  .js .reveal{opacity:1;transform:none}
+}
+
+/* ---------- POISTKA NA FARBU TLAČIDIEL ----------
+   Kontextové pravidlá typu ".contact-list a" alebo ".author__contacts a"
+   majú rovnakú špecificitu ako ".btn". Tento blok je posledný, takže
+   tlačidlo si vždy udrží svoju farbu textu.                              */
+a.btn,button.btn{color:#fff}
+a.btn:hover,button.btn:hover{color:#fff}
+a.btn--outline,button.btn--outline{color:var(--ink)}
+a.btn--outline:hover,button.btn--outline:hover{color:var(--bg)}
+a.btn--light,button.btn--light{color:var(--on-dark)}
+a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
+a.btn--accent-light,button.btn--accent-light{color:var(--ink)}
+a.btn--accent-light:hover,button.btn--accent-light:hover{color:var(--ink)}
+
+/* preskočenie na obsah pre klávesnicu a čítačky */
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:#1F1C18;color:#FCFAF6;padding:12px 18px;border-radius:0 0 8px 0;font-weight:600;text-decoration:none}
+.skip:focus{left:8px;top:8px}
+
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*25);return v.toLocaleString('cs-CZ');}function __f(x){return Math.round(x).toLocaleString('cs-CZ');}function __p(x){return Math.round(x*25/5)*5;}function __c(x){return x*25;}var __m="Kč";</script>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<a class="skip" href="#top">Přeskočit na obsah</a>
+
+<!-- ============ HLAVIČKA ============ -->
+<header class="site-head">
+  <div class="wrap site-head__wrap">
+    <div class="site-head__in">
+      <a class="brand" href="#top">
+        <span class="brand__name">Lipová</span> <span class="brand__sub">Kavárna a pizzerie</span>
+      </a>
+
+      <nav class="site-nav" id="mainnav" aria-label="Hlavní navigace">
+        <ul class="nav-list">
+          <li><a href="#ponuka">Nabídka</a></li>
+          <li><a href="#denne">Denní menu</a></li>
+          <li><a href="#konfigurator">Vlastní pizza</a></li>
+          <li><a href="#prevadzka">Provozovna</a></li>
+          <li><a href="#hodiny">Otevírací doba</a></li>
+          <li><a href="#otazky">Otázky</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+
+      <div class="head-act">
+        <a class="btn btn--sm" href="#objednavka">Objednat</a>
+        <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mainnav">
+        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Menu
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ ÚVOD ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero__head">
+      <p class="hero__meta">Lipová 8, 130 00 Praha</p>
+      <span class="hero__rule" aria-hidden="true"></span>
+      <h1>Kavárna a pizzerie v Lipové</h1>
+      <p class="hero__text">Snídaně do 11:00, denní menu 11:00 &ndash; 14:30 za 225 Kč, pizza z kamenné pece do 21:15, v pátek a v sobotu do 22:15.</p>
+      <div class="hero__cta">
+        <a class="btn" href="#objednavka">Objednat</a>
+        <a class="btn btn--outline" href="#ponuka">Nabídka a ceny</a>
+        <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+      </div>
+      <p class="hero__map"><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Lipov%C3%A1+8,+821+01+Bratislava" target="_blank" rel="noopener">Zobrazit Lipovou 8 na mapě</a></p>
+    </div>
+
+    <dl class="facts">
+      <div>
+        <dt>Otevřeno</dt>
+        <dd>Po &ndash; Čt 7:30 &ndash; 22:00<small>Pá do 23:00, So 9:00 &ndash; 23:00, Ne 9:00 &ndash; 21:00</small></dd>
+      </div>
+      <div>
+        <dt>Denní menu</dt>
+        <dd>11:00 &ndash; 14:30<small>Polévka, hlavní jídlo a nápoj za 225 Kč</small></dd>
+      </div>
+      <div>
+        <dt>Rezervace a odběr</dt>
+        <dd><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span><small>Objednávku na odběr připravíme zpravidla do 15 minut</small></dd>
+      </div>
+      <div>
+        <dt>Platba</dt>
+        <dd>Karta i hotovost<small>Přijímáme i stravenkové karty</small></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ PONUKA A CENY ============ -->
+<section class="section section--alt" id="ponuka">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">01</span>Ceník</p>
+        <h2>Nabídka a ceny</h2>
+      </div>
+      <p class="lead">Ceny jsou konečné včetně obsluhy. Pizza má průměr 33 cm, větší velikost 45 cm je za příplatek 80 Kč. U každé položky je gramáž a čísla alergenů, jejich seznam najdete pod ceníkem.</p>
+    </div>
+
+    <div class="price-cols reveal">
+      <div class="price-col">
+        <h3>Káva a nápoje</h3>
+        <ul class="price-list">
+          <li><span class="name">Espresso<span class="desc">Směs Brazílie a Etiopie</span><span class="meta">30 ml &middot; bez alergenů</span></span><span class="price">40 Kč</span></li>
+          <li><span class="name">Doppio<span class="desc">Dvojité espresso</span><span class="meta">60 ml &middot; bez alergenů</span></span><span class="price">55 Kč</span></li>
+          <li><span class="name">Cappuccino<span class="desc">Espresso a mléčná pěna</span><span class="meta">180 ml &middot; alergeny 7</span></span><span class="price">70 Kč</span></li>
+          <li><span class="name">Flat white<span class="desc">Dvojité ristretto a mléko</span><span class="meta">200 ml &middot; alergeny 7</span></span><span class="price">75 Kč</span></li>
+          <li><span class="name">Latte<span class="desc">Vysoká sklenice</span><span class="meta">300 ml &middot; alergeny 7</span></span><span class="price">75 Kč</span></li>
+          <li><span class="name">Filtrovaná káva<span class="desc">Překapávaná, várka dne</span><span class="meta">250 ml &middot; bez alergenů</span></span><span class="price">80 Kč</span></li>
+          <li><span class="name">Cold brew<span class="desc">Louhovaná 16 hodin</span><span class="meta">250 ml &middot; bez alergenů</span></span><span class="price">85 Kč</span></li>
+          <li><span class="name">Domácí limonáda<span class="desc">Bezová nebo okurková</span><span class="meta">0,4 l &middot; bez alergenů</span></span><span class="price">80 Kč</span></li>
+          <li><span class="name">Sypaný čaj<span class="desc">Šest druhů, konvice</span><span class="meta">0,5 l &middot; bez alergenů</span></span><span class="price">65 Kč</span></li>
+          <li><span class="name">Horká čokoláda<span class="desc">Hořká</span><span class="meta">0,25 l &middot; alergeny 7</span></span><span class="price">78 Kč</span></li>
+        </ul>
+        <p class="price-note">Rostlinné mléko +10 Kč, sirup +8 Kč.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Pizza</h3>
+        <ul class="price-list">
+          <li><span class="name">Margherita<span class="desc">Rajčatový základ, mozzarella, bazalka</span><span class="meta">380 g &middot; alergeny 1, 7</span></span><span class="price">180 Kč</span></li>
+          <li><span class="name">Bianca<span class="desc">Ricotta, česnek, rozmarýn, olivový olej</span><span class="meta">390 g &middot; alergeny 1, 7</span></span><span class="price">210 Kč</span></li>
+          <li><span class="name">Funghi<span class="desc">Žampiony, tymián, smetanový základ</span><span class="meta">420 g &middot; alergeny 1, 7</span></span><span class="price">225 Kč</span></li>
+          <li><span class="name">Ortolana<span class="desc">Grilovaná zelenina, olivy, rukola</span><span class="meta">450 g &middot; alergeny 1, 7</span></span><span class="price">230 Kč</span></li>
+          <li><span class="name">Salame piccante<span class="desc">Pikantní salám, chilli, oregano</span><span class="meta">440 g &middot; alergeny 1, 7</span></span><span class="price">235 Kč</span></li>
+          <li><span class="name">Napoletana<span class="desc">Ančovičky, kapary, oregano</span><span class="meta">430 g &middot; alergeny 1, 4, 7</span></span><span class="price">240 Kč</span></li>
+          <li><span class="name">Quattro formaggi<span class="desc">Mozzarella, gorgonzola, parmezán, ovčí sýr</span><span class="meta">470 g &middot; alergeny 1, 7</span></span><span class="price">270 Kč</span></li>
+          <li><span class="name">Prosciutto e rucola<span class="desc">Sušená šunka, rukola, parmezán</span><span class="meta">430 g &middot; alergeny 1, 7</span></span><span class="price">275 Kč</span></li>
+          <li><span class="name">Pistacchio<span class="desc">Pistáciové pesto, mozzarella, ricotta</span><span class="meta">460 g &middot; alergeny 1, 7, 8</span></span><span class="price">290 Kč</span></li>
+          <li><span class="name">Zeleninová bez sýra<span class="desc">Veganská, pečená paprika a cuketa</span><span class="meta">410 g &middot; alergeny 1</span></span><span class="price">220 Kč</span></li>
+        </ul>
+        <p class="price-note">Gramáž platí pro průměr 33 cm. Velikost 45 cm +80 Kč. Bezlepkové těsto +40 Kč. Vlastní složení najdete v <a href="#konfigurator">konfigurátoru</a>.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>K tomu</h3>
+        <ul class="price-list">
+          <li><span class="name">Croissant<span class="desc">Pečený každé ráno na místě</span><span class="meta">70 g &middot; alergeny 1, 3, 7</span></span><span class="price">55 Kč</span></li>
+          <li><span class="name">Focaccia s rozmarýnem<span class="desc">Z pizzového těsta, mořská sůl</span><span class="meta">220 g &middot; alergeny 1</span></span><span class="price">105 Kč</span></li>
+          <li><span class="name">Olivy a chleba<span class="desc">Kváskový chleba, olivy, olivový olej</span><span class="meta">180 g &middot; alergeny 1</span></span><span class="price">95 Kč</span></li>
+          <li><span class="name">Tiramisu<span class="desc">Bez alkoholu</span><span class="meta">140 g &middot; alergeny 1, 3, 7</span></span><span class="price">115 Kč</span></li>
+          <li><span class="name">Ricottový cheesecake<span class="desc">Se sezónním ovocem</span><span class="meta">130 g &middot; alergeny 1, 3, 7</span></span><span class="price">115 Kč</span></li>
+          <li><span class="name">Zrnková káva<span class="desc">Balení domů, celé zrno</span><span class="meta">250 g &middot; bez alergenů</span></span><span class="price">245 Kč</span></li>
+        </ul>
+        <p class="price-note">Obal na odběr +10 Kč.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Snídaně do 11:00</h3>
+        <ul class="price-list">
+          <li><span class="name">Míchaná vejce ze tří vajec<span class="desc">S kváskovým chlebem</span><span class="meta">260 g &middot; alergeny 1, 3, 7</span></span><span class="price">160 Kč</span></li>
+          <li><span class="name">Chleba s avokádem<span class="desc">Kváskový, cherry rajčata, sezamová semínka</span><span class="meta">280 g &middot; alergeny 1, 11</span></span><span class="price">175 Kč</span></li>
+          <li><span class="name">Topinky s ricottou a medem<span class="desc">Dva kusy</span><span class="meta">180 g &middot; alergeny 1, 7</span></span><span class="price">135 Kč</span></li>
+          <li><span class="name">Jogurt s granolou<span class="desc">Pečená granola, sezónní ovoce</span><span class="meta">300 g &middot; alergeny 1, 7, 8</span></span><span class="price">120 Kč</span></li>
+          <li><span class="name">Ovesná kaše<span class="desc">Na vodě nebo na mléce</span><span class="meta">300 g &middot; alergeny 1, na mléce i 7</span></span><span class="price">105 Kč</span></li>
+          <li><span class="name">Snídaňový talíř<span class="desc">Vejce, sýr, zelenina, pečivo</span><span class="meta">380 g &middot; alergeny 1, 3, 7</span></span><span class="price">215 Kč</span></li>
+        </ul>
+        <p class="price-note">Snídaně podáváme od 7:30 do 11:00, o víkendu do 12:00.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Saláty a polévky</h3>
+        <ul class="price-list">
+          <li><span class="name">Polévka dne<span class="desc">I mimo denní menu</span><span class="meta">0,33 l &middot; alergeny u každého dne v rozpisu denního menu</span></span><span class="price">90 Kč</span></li>
+          <li><span class="name">Caprese<span class="desc">Mozzarella, rajčata, bazalka</span><span class="meta">280 g &middot; alergeny 7</span></span><span class="price">185 Kč</span></li>
+          <li><span class="name">Salát s rukolou a hruškou<span class="desc">Ořechy, parmezán, med</span><span class="meta">260 g &middot; alergeny 7, 8</span></span><span class="price">195 Kč</span></li>
+          <li><span class="name">Salát s pečenou cuketou<span class="desc">Cizrna, ricotta, citronový dresink</span><span class="meta">300 g &middot; alergeny 7</span></span><span class="price">205 Kč</span></li>
+          <li><span class="name">Bruschetta<span class="desc">Tři kusy, rajčata a česnek</span><span class="meta">210 g &middot; alergeny 1</span></span><span class="price">130 Kč</span></li>
+          <li><span class="name">Pečivo navíc<span class="desc">Kváskový chleba, dva krajíce</span><span class="meta">90 g &middot; alergeny 1</span></span><span class="price">35 Kč</span></li>
+        </ul>
+        <p class="price-note">Saláty připravíme i ve velké porci jako hlavní jídlo, +50 Kč.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Víno, pivo a nealko</h3>
+        <ul class="price-list">
+          <li><span class="name">Víno bílé nebo červené<span class="desc">Sklenice</span><span class="meta">0,15 l &middot; alergeny 12</span></span><span class="price">85 Kč</span></li>
+          <li><span class="name">Víno, láhev<span class="desc">Tři druhy</span><span class="meta">0,75 l &middot; alergeny 12</span></span><span class="price">415 Kč</span></li>
+          <li><span class="name">Prosecco<span class="desc">Sklenice</span><span class="meta">0,15 l &middot; alergeny 12</span></span><span class="price">105 Kč</span></li>
+          <li><span class="name">Čepované pivo<span class="desc">Světlý ležák</span><span class="meta">0,5 l &middot; alergeny 1</span></span><span class="price">65 Kč</span></li>
+          <li><span class="name">Nealkoholické pivo<span class="desc">Láhev</span><span class="meta">0,33 l &middot; alergeny 1</span></span><span class="price">60 Kč</span></li>
+          <li><span class="name">Minerálka<span class="desc">Jemně perlivá</span><span class="meta">0,33 l &middot; bez alergenů</span></span><span class="price">45 Kč</span></li>
+          <li><span class="name">Džus<span class="desc">Pomeranč nebo jablko</span><span class="meta">0,25 l &middot; bez alergenů</span></span><span class="price">55 Kč</span></li>
+        </ul>
+        <p class="price-note">Vodu z kohoutku podáváme k jídlu zdarma.</p>
+      </div>
+    </div>
+
+    <div class="aleg reveal">
+      <h3>Alergeny podle čísel v ceníku</h3>
+      <ol>
+        <li><b>1</b>Obiloviny obsahující lepek</li>
+        <li><b>3</b>Vejce</li>
+        <li><b>4</b>Ryby</li>
+        <li><b>7</b>Mléko</li>
+        <li><b>8</b>Ořechy</li>
+        <li><b>9</b>Celer</li>
+        <li><b>11</b>Sezamová semena</li>
+        <li><b>12</b>Oxid siřičitý a siřičitany</li>
+      </ol>
+      <p>Čísla jsou uvedená u každé položky ceníku i u každého dne denního menu. Pokud potřebujete jídlo bez konkrétní suroviny, řekněte to při objednávce, složení s vámi obsluha projde.</p>
+    </div>
+
+    <div class="sub-head reveal"><h3>Pizza z pece &ndash; gramáž, alergeny a cena</h3></div>
+    <div class="gal reveal">
+      <div class="gal__item">
+        <!-- FOTO: celá Margherita zhora na drevenej doske, viditeľné tmavé škvrny na okraji cesta -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Pizza 33 cm</p>
+            <p class="art__word">Margherita</p>
+            <p class="art__cap">Rajčatový základ, mozzarella, bazalka.</p>
+            <p class="art__foot">380 g &middot; alergeny 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">180 Kč</span><a class="btn btn--sm" href="#objednavka">Objednat</a></p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: Salame piccante v peci tesne pred vybratím, plameň vzadu -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Pizza 33 cm</p>
+            <p class="art__word">Salame piccante</p>
+            <p class="art__cap">Pikantní salám, chilli, oregano.</p>
+            <p class="art__foot">440 g &middot; alergeny 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">235 Kč</span><a class="btn btn--sm" href="#objednavka">Objednat</a></p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: Quattro formaggi rozkrojená na štyri diely, ťahajúci sa syr -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Pizza 33 cm</p>
+            <p class="art__word">Quattro formaggi</p>
+            <p class="art__cap">Mozzarella, gorgonzola, parmezán, ovčí sýr.</p>
+            <p class="art__foot">470 g &middot; alergeny 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">270 Kč</span><a class="btn btn--sm" href="#objednavka">Objednat</a></p>
+      </div>
+    </div>
+
+    <div class="split split--top reveal" style="margin-top:clamp(2.6rem,5vw,4rem)">
+      <div class="card">
+        <h3>Sezónní změny v nabídce</h3>
+        <p>Od dubna do října máme v nabídce limonády z čerstvých bylinek a ledovou kávu, přes zimu svařené víno a hustou horkou čokoládu. Salát a cheesecake doplňujeme ovocem podle sezóny, proto se suroviny během roku mění.</p>
+        <p>Zrnkovou kávu měníme jednou za dva měsíce. Aktuální směs máme napsanou na tabuli u baru a prodáváme ji i v balení domů.</p>
+      </div>
+      <div class="card">
+        <h3>Diety a alergeny</h3>
+        <p>Bezlepkové těsto připravujeme na oddělené desce za příplatek 40 Kč, provozovna však není bezlepková a úplné vyloučení stop mouky neumíme zaručit.</p>
+        <p>Veganská jídla jsou v ceníku pojmenovaná: zeleninová pizza bez sýra, ovesná kaše na vodě a salát s pečenou cuketou bez ricotty. Rostlinné mléko máme ovesné i mandlové za 10 Kč.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ DENNÉ MENU ============ -->
+<section class="section" id="denne">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">02</span>Pondělí až pátek, 11:00 &ndash; 14:30</p>
+        <h2>Denní menu</h2>
+      </div>
+      <p class="lead">Cena 225 Kč zahrnuje polévku, hlavní jídlo a malou kávu nebo limonádu. Menu podáváme do 14:30 nebo do vyprodání.</p>
+    </div>
+
+    <div class="days reveal">
+      <div class="day" data-dow="1">
+        <p class="day__name">Pondělí</p>
+        <dl>
+          <div><dt>Polévka</dt><dd>Pečená rajčatová s krutony</dd></div>
+          <div><dt>Hlavní jídlo</dt><dd>Margherita s cherry rajčaty</dd></div>
+          <div><dt>Alergeny</dt><dd>1, 7</dd></div>
+        </dl>
+        <p class="day__price">225 Kč</p>
+      </div>
+      <div class="day" data-dow="2">
+        <p class="day__name">Úterý</p>
+        <dl>
+          <div><dt>Polévka</dt><dd>Česneková se sýrem a tymiánem</dd></div>
+          <div><dt>Hlavní jídlo</dt><dd>Funghi se smetanovým základem</dd></div>
+          <div><dt>Alergeny</dt><dd>1, 7</dd></div>
+        </dl>
+        <p class="day__price">225 Kč</p>
+      </div>
+      <div class="day" data-dow="3">
+        <p class="day__name">Středa</p>
+        <dl>
+          <div><dt>Polévka</dt><dd>Čočková s kořenovou zeleninou</dd></div>
+          <div><dt>Hlavní jídlo</dt><dd>Salame piccante s oreganem</dd></div>
+          <div><dt>Alergeny</dt><dd>1, 7, 9</dd></div>
+        </dl>
+        <p class="day__price">225 Kč</p>
+      </div>
+      <div class="day" data-dow="4">
+        <p class="day__name">Čtvrtek</p>
+        <dl>
+          <div><dt>Polévka</dt><dd>Hrášková s mátou</dd></div>
+          <div><dt>Hlavní jídlo</dt><dd>Ortolana s grilovanou cuketou</dd></div>
+          <div><dt>Alergeny</dt><dd>1, 7</dd></div>
+        </dl>
+        <p class="day__price">225 Kč</p>
+      </div>
+      <div class="day" data-dow="5">
+        <p class="day__name">Pátek</p>
+        <dl>
+          <div><dt>Polévka</dt><dd>Dýňová s praženými semínky</dd></div>
+          <div><dt>Hlavní jídlo</dt><dd>Pistacchio s ricottou</dd></div>
+          <div><dt>Alergeny</dt><dd>1, 7, 8</dd></div>
+        </dl>
+        <p class="day__price">225 Kč</p>
+      </div>
+    </div>
+
+    <div class="grid-3 reveal" style="margin-top:clamp(2.2rem,4vw,3.2rem)">
+      <div class="card">
+        <h3>Bezmasá volba každý den</h3>
+        <p>Hlavní jídlo denního menu je vždy bezmasé nebo k němu nabízíme bezmasou náhradu za stejnou cenu. Stačí to říct při objednávce.</p>
+      </div>
+      <div class="card">
+        <h3>Menu na odběr</h3>
+        <p>Denní menu zabalíme i s sebou. Obal stojí 10 Kč, polévku dáváme do samostatné nádoby. Objednávku na oběd doporučujeme nahlásit do 10:30.</p>
+      </div>
+      <div class="card">
+        <h3>Složení na týden</h3>
+        <p>Menu na následující týden věšíme ve čtvrtek na dveře a na tabuli u baru. Polévku podáváme i samostatně za 90 Kč.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ KONFIGURÁTOR PIZZE ============ -->
+<section class="section section--alt" id="konfigurator">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">03</span>Objednávkový formulář</p>
+        <h2>Vlastní složení pizzy</h2>
+      </div>
+      <p class="lead">Vyberte velikost, základ, přísady a počet kusů. Cena se přepočítává průběžně. Hotové složení přenesete jedním tlačítkem do rezervačního formuláře níže.</p>
+    </div>
+
+    <form class="config" id="pizzaConfig" novalidate>
+      <div class="config__sheet">
+        <p class="config__sheet-head">
+          <b>Objednávkový list &middot; vlastní pizza</b>
+          <span>Ceny jsou konečné, včetně obsluhy</span>
+        </p>
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">1</span>Velikost</legend>
+          <ul class="choices">
+            <li>
+              <label class="choice">
+                <input type="radio" name="size" value="26" data-price="16500" data-mult="1" data-label="26 cm">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">26 cm<span class="sub">Jedna porce</span></span>
+                <span class="val">165 Kč</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="size" value="33" data-price="20500" data-mult="1" data-label="33 cm" checked>
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">33 cm<span class="sub">Běžná velikost</span></span>
+                <span class="val">205 Kč</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="size" value="45" data-price="28500" data-mult="1.5" data-label="45 cm">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">45 cm<span class="sub">Na sdílení pro dva</span></span>
+                <span class="val">285 Kč</span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">2</span>Základ</legend>
+          <ul class="choices">
+            <li>
+              <label class="choice">
+                <input type="radio" name="base" value="rajčatový" data-price="0" checked>
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">Rajčatový</span>
+                <span class="val">v ceně</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="base" value="smetanový" data-price="1000">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">Smetanový</span>
+                <span class="val">+10 Kč</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="base" value="bazalkové pesto" data-price="3000">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">Bazalkové pesto</span>
+                <span class="val">+30 Kč</span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">3</span>Přísady <span class="hint">Libovolný počet</span></legend>
+          <ul class="choices tops-grid">
+            <li><label class="choice"><input type="checkbox" name="top" value="mozzarella" data-price="2500"><span class="box" aria-hidden="true"></span><span class="txt">Mozzarella</span><span class="val">25 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="cherry rajčata" data-price="2000"><span class="box" aria-hidden="true"></span><span class="txt">Cherry rajčata</span><span class="val">20 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="žampiony" data-price="2000"><span class="box" aria-hidden="true"></span><span class="txt">Žampiony</span><span class="val">20 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="salám piccante" data-price="3500"><span class="box" aria-hidden="true"></span><span class="txt">Salám piccante</span><span class="val">35 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="sušená šunka" data-price="4000"><span class="box" aria-hidden="true"></span><span class="txt">Sušená šunka</span><span class="val">40 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="rukola" data-price="2000"><span class="box" aria-hidden="true"></span><span class="txt">Rukola</span><span class="val">20 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="ricotta" data-price="3000"><span class="box" aria-hidden="true"></span><span class="txt">Ricotta</span><span class="val">30 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="olivy" data-price="2000"><span class="box" aria-hidden="true"></span><span class="txt">Olivy</span><span class="val">20 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="pistácie" data-price="3500"><span class="box" aria-hidden="true"></span><span class="txt">Pistácie</span><span class="val">35 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="chilli" data-price="1000"><span class="box" aria-hidden="true"></span><span class="txt">Chilli</span><span class="val">10 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="kukurica" data-price="1500"><span class="box" aria-hidden="true"></span><span class="txt">Kukuřice</span><span class="val">15 Kč</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="červená cibule" data-price="1500"><span class="box" aria-hidden="true"></span><span class="txt">Červená cibule</span><span class="val">15 Kč</span></label></li>
+          </ul>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">4</span>Počet kusů <span class="hint">Stejné složení</span></legend>
+          <ul class="choices">
+            <li>
+              <label class="choice">
+                <input type="radio" name="qty" value="1" checked>
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">1 kus</span>
+                <span class="val">pro jednu osobu</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="qty" value="2">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">2 kusy</span>
+                <span class="val">pro dvě osoby</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="qty" value="4">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">4 kusy<span class="sub">Nahlaste hodinu předem</span></span>
+                <span class="val">pro skupinu</span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <p class="config__foot">Bezlepkové těsto připravíme za příplatek 40 Kč ke každému kusu, stačí to napsat do zprávy ve formuláři. Vlastní pizzu pečeme během otevírací doby kuchyně, přes oběd může být čekání delší.</p>
+      </div>
+
+      <aside class="summary" aria-label="Rekapitulace objednávky">
+        <h3>Rekapitulace objednávky</h3>
+        <dl>
+          <div class="row"><dt>Velikost</dt><dd id="sumSize">33 cm</dd></div>
+          <div class="row"><dt>Základ</dt><dd id="sumBaseName">Rajčatový</dd></div>
+          <div class="row"><dt>Cena pizzy</dt><dd id="sumBase">205 Kč</dd></div>
+          <div class="row"><dt id="sumTopsLabel">Přísady (0)</dt><dd id="sumTops">0 Kč</dd></div>
+          <div class="row"><dt>Cena za kus</dt><dd id="sumUnit">205 Kč</dd></div>
+          <div class="row"><dt>Počet kusů</dt><dd id="sumQty">1</dd></div>
+        </dl>
+        <p class="summary__tops" id="sumTopsList">Zatím bez přísad.</p>
+        <p class="summary__total"><span>Celkem</span><b id="sumTotal">205 Kč</b></p>
+        <p class="summary__hint" id="sumHint">Při velikosti 45 cm se přísady účtují 1,5násobně.</p>
+        <p class="vh" role="status" aria-live="polite" id="liveTotal">Celkem 205 Kč</p>
+        <button class="btn btn--wide" type="button" id="toOrder">Přenést do objednávky</button>
+      </aside>
+    </form>
+  </div>
+</section>
+<!-- ============ PREVÁDZKA ============ -->
+<section class="section" id="prevadzka">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">04</span>O provozovně</p>
+        <h2>Provozovna, prostor a kuchyně</h2>
+      </div>
+      <p class="lead">Kavárna se 42 místy k sezení a terasou pro 24 lidí ve dvoře. Těsto kyne 48 hodin v chladu, pizzu pečeme v kamenné peci při 430 stupních.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <p>Dopoledne funguje provozovna jako kavárna, od jedenácti podáváme denní menu, odpoledne a večer pizzu z pece. Kuchyně přijímá poslední objednávky 45 minut před zavírací dobou kavárny.</p>
+        <ul class="plain-list">
+          <li>
+            <b>Kapacita a terasa</b>
+            <p>42 míst uvnitř, 24 na terase ve dvoře. Terasa je v provozu od dubna do října.</p>
+          </li>
+          <li>
+            <b>Objednávka na odběr</b>
+            <p>Telefonicky nebo přes formulář. Běžně do 15 minut, přes oběd a v pátek večer do 25 minut.</p>
+          </li>
+          <li>
+            <b>Větší skupiny</b>
+            <p>Společnost nad 8 osob rezervujte aspoň den předem. Pro firemní obědy domluvíme pevný čas i menu.</p>
+          </li>
+          <li>
+            <b>Bezbariérový přístup</b>
+            <p>Vstup z Lipové ulice je bez schodu, na terasu vede rampa ze dvora.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <!-- FOTO: ruky pizzára naťahujúce vykysnuté cesto na pomúčenej doske, detail -->
+        <figure class="obraz art art--wide">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Těsto</p>
+            <p class="art__num">48<small>hodin v chladu</small></p>
+            <p class="art__cap">Těsto mísíme dva dny před pečením a necháme ho kynout při 4 stupních. Natahujeme ho ručně, nepoužíváme válec.</p>
+          </div>
+        </figure>
+      </div>
+    </div>
+
+    <div class="art-row reveal">
+      <!-- FOTO: ústie kamennej pece s ohňom, pizza na lopate tesne pred vložením -->
+      <figure class="obraz art art--dark art--square">
+        <span class="art__l art__l--hatch" aria-hidden="true"></span>
+        <span class="art__l art__l--warm" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Kamenná pec</p>
+          <p class="art__num">430<small>stupňů Celsia</small></p>
+          <p class="art__cap">Při této teplotě je pizza hotová za 90 sekund a okraj má tmavé skvrny.</p>
+        </div>
+      </figure>
+
+      <!-- FOTO: šálka cappuccina zhora na bare, vedľa pákový stroj -->
+      <figure class="obraz art art--square">
+        <span class="art__l art__l--dots" aria-hidden="true"></span>
+        <span class="art__l art__l--slash" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Bar</p>
+          <p class="art__num">6<small>druhů kávy denně</small></p>
+          <p class="art__cap">Espresso směs, filtrovaná várka dne, cold brew a tři druhy mléčných káv.</p>
+        </div>
+      </figure>
+
+      <!-- FOTO: terasa vo dvore s obsadenými stolmi a plachtou proti slnku -->
+      <figure class="obraz art art--square">
+        <span class="art__l art__l--grid" aria-hidden="true"></span>
+        <span class="art__l art__l--warm" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Terasa ve dvoře</p>
+          <p class="art__num">24<small>míst, duben až říjen</small></p>
+          <p class="art__cap">Do dvora nevjíždějí auta, přístup je rampou, v létě je nad stoly plachta.</p>
+        </div>
+      </figure>
+    </div>
+
+    <div class="sub-head reveal"><h3>Prostor a kdo v něm pracuje</h3></div>
+    <div class="split split--top reveal">
+      <div>
+        <p>Hlavní sál má vysoká okna do ulice a dlouhý dubový stůl pro deset lidí, který se dá spojit i rozdělit. U okna jsou čtyři dvoumístné stoly se zásuvkami, vzadu tišší část s měkkými lavicemi. Bar je hned u vchodu, takže objednávku na odběr vyřídíte, aniž byste procházeli celým sálem.</p>
+        <p>Terasa ve dvoře je od ulice oddělená průchodem a auta do dvora nevjíždějí. Mezi stoly je 90 centimetrů, projede tudy vozík i kočárek.</p>
+
+        <!-- FOTO: barista a pizzár za barom počas zmeny, pohľad zo sály -->
+        <figure class="obraz art art--wide" style="margin-top:1.8rem">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Polední směna</p>
+            <p class="art__num">5<small>lidí v provozu</small></p>
+            <p class="art__cap">Barista, pizzař, příprava v kuchyni, obsluha a člověk na výdeji objednávek na odběr. Mimo oběd jsou na směně čtyři.</p>
+          </div>
+        </figure>
+      </div>
+      <div>
+        <ul class="roles">
+          <li>
+            <b>Barista</b>
+            <p>Ráno stojí za pákovým strojem, připravuje filtrovanou várku dne a stará se o mletí a nastavení kávy.</p>
+          </li>
+          <li>
+            <b>Pizzař</b>
+            <p>Natahuje těsto, obsluhuje kamennou pec a drží tempo během večerní špičky.</p>
+          </li>
+          <li>
+            <b>Kuchyně &ndash; příprava</b>
+            <p>Chystá základy, zeleninu a polévky na denní menu, dopoledne i snídaně.</p>
+          </li>
+          <li>
+            <b>Obsluha</b>
+            <p>Dělí se na dva úseky, uvnitř a na terase. Přes oběd přibývá člověk na výdej objednávek na odběr.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ GALÉRIA PRIESTORU ============ -->
+<section class="section section--dark" id="galeria">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">05</span>Prostor a terasa</p>
+        <h2>Jak to u nás vypadá</h2>
+      </div>
+      <p class="lead">Sál má 42 míst, terasa ve dvoře 24. Pod každým záběrem je údaj, který se vám při plánování návštěvy bude hodit.</p>
+    </div>
+
+    <div class="gal reveal">
+      <div class="gal__item">
+        <!-- FOTO: hlavná sála s vysokými oknami do ulice, dlhý dubový stôl v strede -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Hlavní sál</p>
+            <p class="art__word">Dlouhý stůl</p>
+            <p class="art__foot">42 míst uvnitř</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Dubový stůl pro deset lidí se dá spojit i rozdělit. U okna jsou čtyři dvoumístné stoly se zásuvkou.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: ranné pečivo na pulte pri bare, croissanty v koši -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Ráno</p>
+            <p class="art__word">Pečivo na pultu</p>
+            <p class="art__foot">od 7:30 do vyprodání</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Croissant pečeme každé ráno na místě, stojí 55 Kč. Snídaně podáváme do 11:00, o víkendu do 12:00.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: terasa vo dvore z výšky, stoly pod plachtou -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Terasa ve dvoře</p>
+            <p class="art__word">Bez aut</p>
+            <p class="art__foot">24 míst, duben až říjen</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Na terasu vede ze dvora rampa. Psi jsou na terase bez omezení, vodu jim dáme na požádání.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: bar pri vchode, obsluha odovzdáva zabalenú objednávku na odber -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Výdej</p>
+            <p class="art__word">Bar u vchodu</p>
+            <p class="art__foot">zpravidla do 15 minut</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Objednávku na odběr převezmete hned u dveří. Přes oběd a v pátek večer to trvá do 25 minut, obal stojí 10 Kč.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: tichšia časť vzadu s mäkkými lavicami, človek s notebookom -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Zadní část</p>
+            <p class="art__word">Lavice a zásuvky</p>
+            <p class="art__foot">Wi-Fi zdarma</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Zásuvka je u dlouhého stolu i u okna. Mezi 11:00 a 14:30 prosíme nechat velké stoly obědům.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: pizza 45 cm na stole pre dvoch, rozkrojená na osem dielov -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Na sdílení</p>
+            <p class="art__word">Pizza 45 cm</p>
+            <p class="art__foot">Margherita 260 Kč</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Velikost 45 cm je za příplatek 80 Kč ke každé pizze z ceníku. Vlastní složení si poskládáte v konfigurátoru.</p>
+      </div>
+    </div>
+
+    <div class="hero__cta" style="margin-top:clamp(2.2rem,4vw,3rem)">
+      <a class="btn btn--accent-light" href="#objednavka">Objednat</a>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </div>
+  </div>
+</section>
+<!-- ============ DENNÝ RYTMUS ============ -->
+<section class="section section--alt" id="rytmus">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">06</span>Průběh dne</p>
+        <h2>Denní rytmus provozovny</h2>
+      </div>
+      <p class="lead">Kavárna, obědy a večerní pec se střídají v pevných časech. Podle nich si můžete naplánovat návštěvu i převzetí objednávky.</p>
+    </div>
+
+    <ol class="rhythm reveal">
+      <li>
+        <b>7:30</b>
+        <div>
+          <h3>Otevíráme</h3>
+          <p>První várka filtrované kávy, pákový stroj nastavený na denní směs. Ranní pečivo je na pultu do vyprodání.</p>
+        </div>
+      </li>
+      <li>
+        <b>8:00</b>
+        <div>
+          <h3>Snídaně v plném rozsahu</h3>
+          <p>Míchaná vejce, kváskový chleba, jogurt s granolou i ovesná kaše. Snídaňové menu podáváme do 11:00, o víkendu do 12:00.</p>
+        </div>
+      </li>
+      <li>
+        <b>11:00</b>
+        <div>
+          <h3>Rozbíhá se denní menu</h3>
+          <p>Polévka, hlavní jídlo a nápoj za 225 Kč. Objednávku na odběr doporučujeme nahlásit do 10:30, ať nečekáte.</p>
+        </div>
+      </li>
+      <li>
+        <b>14:30</b>
+        <div>
+          <h3>Konec obědů</h3>
+          <p>Velké stoly se uvolňují, provozovna se vrací do režimu kavárny. Polévku a saláty podáváme dál podle zásoby.</p>
+        </div>
+      </li>
+      <li>
+        <b>17:00</b>
+        <div>
+          <h3>Pec jede naplno</h3>
+          <p>Kamenná pec drží 430 stupňů, pizza je hotová za 90 sekund. V pátek a v sobotu doporučujeme rezervaci.</p>
+        </div>
+      </li>
+      <li>
+        <b>21:15</b>
+        <div>
+          <h3>Poslední objednávka do kuchyně</h3>
+          <p>V pátek a v sobotu do 22:15. Kavárna potom obsluhuje už jen nápoje a dezerty do zavírací doby.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ============ AKO SA K NÁM DOSTANETE ============ -->
+<section class="section" id="doprava">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">07</span>Cesta k nám</p>
+        <h2>Jak se k nám dostanete</h2>
+      </div>
+      <p class="lead">Jsme na rohu Lipové a Sadové, vstup je přímo z Lipové ulice. Terasa je ve dvoře za budovou, projdete k ní průchodem vedle vchodu.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <!-- FOTO: vchod z Lipovej ulice s tabuľou podniku a stojanom na bicykle -->
+        <figure class="obraz art art--tall">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Orientace</p>
+            <p class="art__word">Lipová 8<br>roh Sadové</p>
+            <ul class="art__rows">
+              <li><b>30 m</b><span>Zastávka MHD, stejná strana ulice</span></li>
+              <li><b>0 cm</b><span>Vstup bez schodu, dveře se otevírají ven</span></li>
+              <li><b>dvůr</b><span>Terasa za budovou, přístup rampou</span></li>
+            </ul>
+          </div>
+        </figure>
+        <p style="margin:1.2rem 0 0"><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Lipov%C3%A1+8,+821+01+Bratislava" target="_blank" rel="noopener">Otevřít Lipovou 8 v mapě</a></p>
+      </div>
+
+      <div>
+        <ul class="plain-list" style="margin-top:0">
+          <li>
+            <b>Městskou dopravou</b>
+            <p>Nejbližší zastávka je 30 metrů od vchodu v Lipové ulici, na stejné straně, takže nepřecházíte přes silnici. Od zastávky jdete směrem k rohu se Sadovou.</p>
+          </li>
+          <li>
+            <b>Autem a parkování</b>
+            <p>Před provozovnou se nedá zastavit, nejbližší volná místa jsou v Sadové ulici. V pracovní dny od 8:00 do 18:00 jsou zpoplatněná, o víkendu a večer je parkování volné. Krátké zastavení kvůli převzetí objednávky je možné v průchodu ve dvoře.</p>
+          </li>
+          <li>
+            <b>Na kole</b>
+            <p>U vchodu je stojan na šest kol. Koloběžku nebo složené kolo můžeme nechat stát v průchodu, jen prosíme nenechávat je v uličce mezi stoly.</p>
+          </li>
+          <li>
+            <b>Bezbariérový přístup</b>
+            <p>Vstup z ulice je bez schodu, dveře mají světlou šířku 90 cm. Na terasu vede ze dvora rampa. Bezbariérová toaleta je v přízemí hned za barem.</p>
+          </li>
+          <li>
+            <b>S dětmi</b>
+            <p>Dvě dětské židličky, přebalovací pult na toaletě. U okna je místo, kde se dá zaparkovat kočárek tak, aby nepřekážel v uličce.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ OTVÁRACIE HODINY ============ -->
+<section class="section section--alt" id="hodiny">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">08</span>Provozní časy</p>
+        <h2>Otevírací doba</h2>
+      </div>
+      <p class="lead">Kuchyně přijímá poslední objednávky 45 minut před zavírací dobou kavárny. Změny během svátků oznamujeme předem na dveřích provozovny.</p>
+    </div>
+
+    <div class="hours-wrap reveal">
+      <div>
+        <p class="status" id="statusBadge">
+          <span class="status__dot" aria-hidden="true"></span>
+          <span id="statusText">Otevírací dobu najdete v tabulce</span>
+        </p>
+        <div class="table-scroll">
+          <table class="hours">
+            <caption>Denní menu podáváme od pondělí do pátku od 11:00 do 14:30.</caption>
+            <thead>
+              <tr><th scope="col">Den</th><th scope="col">Kavárna</th><th scope="col">Kuchyně</th></tr>
+            </thead>
+            <tbody>
+              <tr data-dow="1"><th scope="row">Pondělí</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="2"><th scope="row">Úterý</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="3"><th scope="row">Středa</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="4"><th scope="row">Čtvrtek</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="5"><th scope="row">Pátek</th><td>7:30 &ndash; 23:00</td><td>11:00 &ndash; 22:15</td></tr>
+              <tr data-dow="6"><th scope="row">Sobota</th><td>9:00 &ndash; 23:00</td><td>12:00 &ndash; 22:15</td></tr>
+              <tr data-dow="0"><th scope="row">Neděle</th><td>9:00 &ndash; 21:00</td><td>12:00 &ndash; 20:15</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h3>Praktické informace</h3>
+        <ul>
+          <li>Denní menu podáváme od 11:00 do 14:30 nebo do vyprodání.</li>
+          <li>Snídaně podáváme do 11:00, o víkendu do 12:00.</li>
+          <li>Objednávku na odběr připravíme zpravidla do 15 minut.</li>
+          <li>Terasa je otevřená od dubna do října podle počasí.</li>
+          <li>Rezervace pro skupinu nad 8 osob aspoň den předem.</li>
+          <li>Platba kartou, v hotovosti i stravenkovými kartami.</li>
+          <li>Wi-Fi je k dispozici, heslo najdete na stole.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-3 reveal" style="margin-top:clamp(2.2rem,4vw,3.2rem)">
+      <div class="card">
+        <h3>Svátky a letní měsíce</h3>
+        <p>O státních svátcích máme víkendovou dobu, tedy od 9:00. V červenci a srpnu otevíráme terasu už v 10:00 a denní menu podáváme o půl hodiny déle.</p>
+      </div>
+      <div class="card">
+        <h3>Špička a čekání</h3>
+        <p>Nejvíc lidí bývá mezi 12:00 a 13:00 a potom v pátek po 18:30. V těchto časech doporučujeme rezervaci nebo objednávku předem.</p>
+      </div>
+      <div class="card">
+        <h3>Práce s notebookem</h3>
+        <p>Dopoledne a odpoledne je u dlouhého stolu a u okna zásuvka u každého místa. Mezi 11:00 a 14:30 prosíme nechat velké stoly obědům.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ POUKAZY, FIRMY A SKUPINY ============ -->
+<section class="section section--dark" id="akcie">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">09</span>Poukazy a větší akce</p>
+        <h2>Poukazy, firemní obědy a uzavřené akce</h2>
+      </div>
+      <p class="lead">Poukaz koupíte u baru během otevírací doby. Firemní obědy a uzavřené akce domlouváme přes formulář, abyste měli podmínky písemně.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <ul class="plain-list" style="margin-top:0">
+          <li>
+            <b>Dárkový poukaz</b>
+            <p>V hodnotě 500, 750 nebo 1 250 Kč. Platí 12 měsíců od vystavení na celou nabídku včetně zrnkové kávy domů. Vystavíme ho na jméno nebo bez jména, na počkání. Poukaz se nedá vyměnit za hotovost, zbytek hodnoty zůstává na něm do vyčerpání.</p>
+          </li>
+          <li>
+            <b>Firemní obědy</b>
+            <p>Domluvíme pevný čas 11:30 nebo 12:30, menu na celý týden předem a jednu měsíční fakturu místo placení po jednom. Vhodné od čtyř lidí denně.</p>
+          </li>
+          <li>
+            <b>Skupinová rezervace od 9 osob</b>
+            <p>Vybíráte ze tří připravených menu, aby kuchyně stihla výdej najednou. Rezervaci potvrzujeme den předem telefonicky, účet umíme rozdělit podle osob, pokud to domluvíme dopředu.</p>
+          </li>
+          <li>
+            <b>Uzavřená akce v celém prostoru</b>
+            <p>Celý podnik pronajímáme v neděli od 18:00 a v pondělí. Kapacita je 42 míst uvnitř a 24 na terase. Domluvíme menu, čas a obsluhu, záloha je 30 % z domluvené částky.</p>
+          </li>
+        </ul>
+        <div class="hero__cta" style="margin-top:2rem">
+          <a class="btn btn--accent-light" href="#objednavka">Objednat</a>
+          <a class="btn btn--light" href="#podmienky">Podmínky a storno</a>
+        </div>
+      </div>
+
+      <div>
+        <!-- FOTO: darčekový poukaz položený na stole vedľa šálky espressa -->
+        <figure class="obraz art art--tall">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Dárkový poukaz</p>
+            <p class="art__num">750 Kč<small>platnost 12 měsíců</small></p>
+            <p class="art__cap">Na kávu, oběd i na pizzu pro dva. Vystavíme ho u baru na počkání a doplníme jméno, pokud si to přejete.</p>
+            <p class="art__foot">Lipová &middot; kavárna a pizzerie</p>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ REZERVÁCIA A OBJEDNÁVKA ============ -->
+<section class="section" id="objednavka">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">10</span>Rezervace a objednávka</p>
+        <h2>Rezervace stolu a objednávka na odběr</h2>
+      </div>
+      <p class="lead">Vyplňte formulář a ozveme se do 24 hodin. U objednávky na odběr uveďte čas, na který ji máme připravit. Pokud potřebujete odpověď hned, zavolejte nám.</p>
+    </div>
+
+    <div class="order">
+      <form class="form-card" id="orderForm" novalidate>
+        <div class="field-grid">
+          <div class="field field--full">
+            <label for="typ">Typ požadavku <span class="req" aria-hidden="true">*</span></label>
+            <select id="typ" name="typ" required>
+              <option value="Rezervace stolu">Rezervace stolu</option>
+              <option value="Objednávka na odběr">Objednávka na odběr</option>
+              <option value="Denní menu">Denní menu</option>
+              <option value="Skupina nad 8 osob">Skupina nad 8 osob</option>
+              <option value="Firemní oběd">Firemní oběd</option>
+              <option value="Dárkový poukaz">Dárkový poukaz</option>
+              <option value="Uzavřená akce">Uzavřená akce</option>
+              <option value="Práce u nás">Práce u nás</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="meno">Jméno a příjmení <span class="req" aria-hidden="true">*</span></label>
+            <input id="meno" name="meno" type="text" autocomplete="name" required>
+          </div>
+
+          <div class="field">
+            <label for="tel">Telefon <span class="req" aria-hidden="true">*</span></label>
+            <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+          </div>
+
+          <div class="field">
+            <label for="datum">Datum</label>
+            <input id="datum" name="datum" type="date">
+          </div>
+
+          <div class="field">
+            <label for="cas">Čas</label>
+            <input id="cas" name="cas" type="time" value="18:30">
+          </div>
+
+          <div class="field">
+            <label for="osoby">Počet osob</label>
+            <select id="osoby" name="osoby">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9 a více</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="miesto">Preferované místo</label>
+            <select id="miesto" name="miesto">
+              <option>Bez preference</option>
+              <option>Uvnitř</option>
+              <option>Na terase</option>
+            </select>
+          </div>
+
+          <div class="field field--full">
+            <label for="poznamka">Zpráva <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="poznamka" name="poznamka" rows="4" required></textarea>
+            <span class="field__hint">Složení z objednávkového listu se sem doplní po kliknutí na tlačítko Přenést do objednávky.</span>
+          </div>
+        </div>
+
+        <div class="form-foot">
+          <button class="btn" type="submit">Odeslat požadavek</button>
+          <p>Zpráva přijde do schránky podniku. Odpovídáme do 24 hodin, během otevírací doby zpravidla dřív.</p>
+        </div>
+
+        <div class="form-note" id="formNote" role="status" aria-live="polite">
+          <h3>Stav odeslání</h3>
+          <p id="formNoteText">Doplňte prosím chybějící údaje.</p>
+        </div>
+      </form>
+
+      <div class="aside-list">
+        <div class="aside-box">
+          <h3>Telefon</h3>
+          <p><span class="big"><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></span>Voláme i zpět, pokud jsme zrovna u pece. Rezervace a objednávky na odběr přijímáme během otevírací doby.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Odpověď na zprávu</h3>
+          <p>Zpráva z formuláře chodí do schránky podniku a odpovídáme na ni do 24 hodin. Rezervace platí až po našem potvrzení.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Firemní obědy</h3>
+          <p>Pro pravidelný oběd pro kancelář domluvíme pevný čas, menu i měsíční fakturu. Počet osob uveďte do zprávy.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Storno rezervace</h3>
+          <p>Rezervaci držíme 20 minut od domluveného času. Změnu stačí oznámit telefonicky.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Co napsat do zprávy</h3>
+          <p>Dětskou židličku, alergii podle čísla z ceníku, bezlepkové těsto za 40 Kč, oslavu nebo čas převzetí objednávky na odběr.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Platba</h3>
+          <p>Karta, hotovost i stravenkové karty. U stravenkové karty nevracíme rozdíl v hotovosti, firmám vystavíme měsíční fakturu se splatností 14 dní.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ ČASTÉ OTÁZKY ============ -->
+<section class="section section--alt" id="otazky">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">11</span>Časté dotazy</p>
+        <h2>Časté dotazy a odpovědi</h2>
+      </div>
+      <p class="lead">Pokud tu odpověď nenajdete, napište nám přes formulář nebo nám zavolejte.</p>
+    </div>
+
+    <div class="faq reveal">
+      <div>
+        <h3>Musím si rezervovat stůl?</h3>
+        <p>Přes týden dopoledne zpravidla ne. V pátek a v sobotu po 18:00 a během oběda mezi 12:00 a 13:00 rezervaci doporučujeme, jinak může být čekání 15 až 20 minut.</p>
+      </div>
+      <div>
+        <h3>Máte bezlepkovou pizzu?</h3>
+        <p>Ano, bezlepkové těsto je za příplatek 40 Kč a natahujeme ho na oddělené desce. Provozovna však není bezlepková, stopy mouky ve vzduchu neumíme vyloučit, proto to při těžké alergii vždy řekněte obsluze.</p>
+      </div>
+      <div>
+        <h3>Máte něco pro vegany?</h3>
+        <p>Zeleninová pizza bez sýra je veganská, stejně tak salát s pečenou cuketou bez ricotty a ovesná kaše na vodě. Rostlinné mléko do kávy máme ovesné i mandlové za příplatek 10 Kč.</p>
+      </div>
+      <div>
+        <h3>Dá se u vás platit kartou a stravenkovými kartami?</h3>
+        <p>Ano, platíte kartou, hotovostí i stravenkovými kartami. Účet umíme rozdělit; u skupiny nad 8 osob to prosíme domluvit před objednáním.</p>
+      </div>
+      <div>
+        <h3>Můžu přijít se psem?</h3>
+        <p>Na terase ano bez omezení. Uvnitř mimo polední čas po domluvě s obsluhou, pokud je pes u stolu. Vodu pro psa dáme na požádání.</p>
+      </div>
+      <div>
+        <h3>Rozvážíte jídlo domů?</h3>
+        <p>Ne, rozvoz nemáme. Fungujeme na osobní odběr, objednávku připravíme zpravidla do 15 minut a přes špičku do 25 minut. Zabalenou pizzu doporučujeme sníst do půl hodiny.</p>
+      </div>
+      <div>
+        <h3>Dá se u vás pracovat s notebookem?</h3>
+        <p>Ano, Wi-Fi je zdarma a u dlouhého stolu i u okna jsou zásuvky. Mezi 11:00 a 14:30 prosíme uvolnit velké stoly pro obědy, v tu dobu je tišší část vzadu.</p>
+      </div>
+      <div>
+        <h3>Dá se pronajmout celý prostor?</h3>
+        <p>Ano, v neděli od 18:00 a celé pondělí. Domluvíme menu, čas a obsluhu, záloha je 30 % z domluvené částky. Napište nám přes formulář, vyberte typ požadavku Uzavřená akce.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PODMIENKY ============ -->
+<section class="section" id="podmienky">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">12</span>Podmínky</p>
+        <h2>Rezervace, storno a platba</h2>
+      </div>
+      <p class="lead">Pravidla platí stejně pro jednotlivce i pro skupiny, liší se jen lhůty na zrušení rezervace.</p>
+    </div>
+
+    <div class="grid-3 reveal">
+      <div class="card">
+        <h3>Rezervace</h3>
+        <p>Stůl držíme 20 minut od domluveného času. Pokud se opozdíte, zavolejte nám a místo podržíme déle, pokud to obsazenost dovolí.</p>
+        <p>Rezervaci potvrzujeme telefonicky, na zprávu z formuláře odpovídáme do 24 hodin. Bez našeho potvrzení rezervace neplatí.</p>
+      </div>
+      <div class="card">
+        <h3>Storno</h3>
+        <p>Běžnou rezervaci zrušíte kdykoli bez poplatku. Skupinu nad 8 osob prosíme zrušit nejpozději 24 hodin předem.</p>
+        <p>U uzavřené akce je záloha vratná v plné výši do 7 dní před termínem, později ji použijeme na už nakoupené suroviny.</p>
+      </div>
+      <div class="card">
+        <h3>Platba</h3>
+        <p>Karta, hotovost i stravenkové karty. U stravenkové karty nevracíme rozdíl v hotovosti.</p>
+        <p>Obsluha je zahrnutá v ceně, spropitné je dobrovolné. Firemním zákazníkům vystavíme měsíční fakturu se splatností 14 dní.</p>
+      </div>
+      <div class="card">
+        <h3>Objednávka na odběr</h3>
+        <p>Objednávku připravíme na domluvený čas. Pokud si ji nevyzvednete do 30 minut, jídlo už negarantujeme teplé.</p>
+        <p>Obal stojí 10 Kč. Vlastní nádobu rádi naplníme, pokud je čistá a dostatečně velká.</p>
+      </div>
+      <div class="card">
+        <h3>Alergeny a suroviny</h3>
+        <p>Čísla alergenů jsou u každé položky ceníku a u každého dne denního menu, jejich seznam najdete <a href="#ponuka">pod ceníkem</a>. Složení jídla s vámi obsluha projde i slovně.</p>
+        <p>Suroviny se během roku mění podle sezóny, proto se může lišit ovoce v dezertu nebo zelenina na salátu.</p>
+      </div>
+      <div class="card">
+        <h3>V prostoru</h3>
+        <p>Uvnitř se nekouří, na terase je kouření povolené v zadní části u zdi.</p>
+        <p>Vlastní jídlo a nápoje do provozovny nenosíme, výjimkou je dětská strava a dort na oslavu po domluvě předem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ KARIÉRA ============ -->
+<section class="section section--alt" id="kariera">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">13</span>Hledáme kolegu</p>
+        <h2>Práce u nás</h2>
+      </div>
+      <p class="lead">Praxi vítáme, ale není podmínkou, zaškolíme vás na místě. Napište pár řádků o sobě přes formulář a vyberte typ požadavku Práce u nás.</p>
+    </div>
+
+    <div class="split split--top reveal">
+      <div>
+        <ul class="jobs">
+          <li>
+            <div>
+              <h3>Barista</h3>
+              <p>Ranní a odpolední směny. Příprava kávy, nastavení mlýnku, péče o stroj a bar. Hledáme člověka, který má rád tempo a nebojí se mluvit s lidmi.</p>
+            </div>
+            <span class="tag">Plný úvazek</span>
+          </li>
+          <li>
+            <div>
+              <h3>Pomocník do kuchyně</h3>
+              <p>Příprava zeleniny a základů, výdej denního menu, pořádek v kuchyni. Vhodné i při škole, směny se dají domluvit.</p>
+            </div>
+            <span class="tag">Víkendy</span>
+          </li>
+          <li>
+            <div>
+              <h3>Obsluha</h3>
+              <p>Sál a terasa, objednávky, účtování a předávání objednávek na odběr. Potřebná je čeština a ochota naučit se nabídku.</p>
+            </div>
+            <span class="tag">Zkrácený úvazek</span>
+          </li>
+          <li>
+            <div>
+              <h3>Pizzař &ndash; zaučení u pece</h3>
+              <p>Natahování těsta a pečení v kamenné peci. Pokud jste už u pece stáli, ukážete nám to na zkušební směně. Pokud ne, naučíme vás to od základů.</p>
+            </div>
+            <span class="tag">Plný úvazek</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3>Co nabízíme</h3>
+          <p>Rozpis směn dva týdny předem, aby se dal plánovat život mimo práci.</p>
+          <p>Jídlo a nápoje během směny, balení zrnkové kávy domů každý měsíc.</p>
+          <p>Zaškolení na kávu i na pec, chodíme spolu na ochutnávky do pražírny.</p>
+          <p>Provozovna je zavřená o svátcích, na které máme avizované zavření na dveřích.</p>
+        </div>
+        <div class="card" style="margin-top:1.2rem">
+          <h3>Jak se přihlásit</h3>
+          <p>Ve formuláři vyberte typ požadavku Práce u nás a napište, o jakou pozici máte zájem a kdy můžete nastoupit. Životopis není povinný, stačí pár vět a telefon.</p>
+          <p>Ozveme se do 24 hodin, pozvání na zkušební směnu posíláme do tří dnů. Zkušební směna je placená.</p>
+        </div>
+        <div class="hero__cta" style="margin-top:1.4rem">
+          <a class="btn" href="#objednavka">Napsat přes formulář</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ KONTAKT ============ -->
+<section class="section section--dark" id="kontakt">
+  <div class="wrap contact">
+    <div>
+      <p class="eyebrow"><span class="eyebrow__n">14</span>Kontakt</p>
+      <h2>Lipová 8, Praha</h2>
+      <p class="lead">Vstup je z Lipové ulice, terasa se nachází ve dvoře. Zastávka MHD je 30 metrů od vchodu, parkovat se dá v Sadové ulici.</p>
+      <dl class="contact-list">
+        <div>
+          <dt>Adresa</dt>
+          <dd>Lipová 8, 130 00 Praha</dd>
+        </div>
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span><small>Rezervace a objednávky na odběr během otevírací doby.</small></dd>
+        </div>
+        <div>
+          <dt>Písemně</dt>
+          <dd><a href="#objednavka">Kontaktní formulář</a><small>Zpráva přijde do schránky podniku, odpovídáme do 24 hodin.</small></dd>
+        </div>
+        <div>
+          <dt>Otevřeno</dt>
+          <dd>Po &ndash; Čt 7:30 &ndash; 22:00<small>Pá 7:30 &ndash; 23:00, So 9:00 &ndash; 23:00, Ne 9:00 &ndash; 21:00</small></dd>
+        </div>
+        <div>
+          <dt>Dnes</dt>
+          <dd id="contactToday">Podívejte se na otevírací dobu výše</dd>
+        </div>
+      </dl>
+
+      <div class="sub-head"><h3>Sledujte nás</h3></div>
+      <ul class="social">
+        <li><b>Instagram</b>@kavarnalipova &ndash; denní menu každé ráno</li>
+        <li><b>Facebook</b>Kavárna Lipová &ndash; změny doby a uzavřené akce</li>
+        <li><b>Newsletter</b>jednou měsíčně, přihlásit se dá u baru</li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="art art--tall">
+        <span class="art__l art__l--grid" aria-hidden="true"></span>
+        <span class="art__l art__l--warm" aria-hidden="true"></span>
+        <span class="art__l art__l--rule" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring" aria-hidden="true"></span>
+        <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Najdete nás</p>
+          <p class="art__word">Lipová 8<br>130 00 Praha</p>
+          <ul class="art__rows">
+            <li><b>Po &ndash; Čt</b><span>7:30 &ndash; 22:00</span></li>
+            <li><b>Pátek</b><span>7:30 &ndash; 23:00</span></li>
+            <li><b>Sobota</b><span>9:00 &ndash; 23:00</span></li>
+            <li><b>Neděle</b><span>9:00 &ndash; 21:00</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<!-- ============ AUTOR UKÁŽKY — JEDINÉ SKUTOČNÉ ÚDAJE NA STRÁNKE ============ -->
+<aside class="author" id="autor" aria-labelledby="autorTitle">
+  <div class="wrap">
+    <div class="author__in">
+      <p class="author__tag">Autor ukázky</p>
+      <h2 id="autorTitle">Líbí se vám tento web?</h2>
+      <p class="author__lead">Lipová je vymyšlená provozovna, celou stránku navrhl a naprogramoval Alex Poliak. Úplně stejný web postavím i vaší firmě, podle toho, co nabízíte a komu to prodáváte. Údaje v tomto bloku jsou na rozdíl od zbytku stránky skutečné.</p>
+      <ul class="author__points">
+        <li><b>Od 250 &euro;</b><span>Jednostránkový web na míru, cena podle rozsahu</span></li>
+        <li><b>Do 3 dnů</b><span>První návrh, který si prohlédnete na vlastním odkazu</span></li>
+        <li><b>Zdarma</b><span>Konzultace je zdarma a nezávazně</span></li>
+      </ul>
+      <dl class="author__contacts">
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span><br></dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Podpora</dt>
+          <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Web</dt>
+          <dd><a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+      </dl>
+      <p class="author__price">Weby na míru od 250 &euro;, první návrh do 3 dnů. Konzultace je zdarma a nezávazně &mdash; napište nebo zavolejte.</p>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ PÄTA ============ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="brand__name">Lipová</span> <span class="brand__sub">Kavárna a pizzerie</span>
+        </a>
+        <p style="margin-top:1rem;max-width:32ch">Lipová 8, 130 00 Praha<br>Otevřeno denně od 7:30, o víkendu od 9:00.<br><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></p>
+      </div>
+      <nav aria-label="Odkazy v patičce">
+        <ul class="foot-links">
+          <li><a href="#ponuka">Nabídka a ceny</a></li>
+          <li><a href="#denne">Denní menu</a></li>
+          <li><a href="#konfigurator">Vlastní pizza</a></li>
+          <li><a href="#prevadzka">Provozovna</a></li>
+          <li><a href="#rytmus">Denní rytmus</a></li>
+          <li><a href="#doprava">Jak se k nám dostanete</a></li>
+          <li><a href="#hodiny">Otevírací doba</a></li>
+          <li><a href="#akcie">Poukazy a akce</a></li>
+          <li><a href="#objednavka">Rezervace</a></li>
+          <li><a href="#otazky">Časté dotazy</a></li>
+          <li><a href="#podmienky">Podmínky a storno</a></li>
+          <li><a href="#kariera">Práce u nás</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <p class="foot-note">
+      <span>Lipová je vymyšlená provozovna. Všechny údaje na této stránce jsou ukázkové.</span>
+      <span>Ukázkový web navrhl a naprogramoval Alex Poliak &middot; <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a> &middot; <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></span>
+    </p>
+  </div>
+</footer>
+
+<!-- ============ SPODNÝ PÁSIK UKÁŽKY ============ -->
+<div class="demobar" id="demobar">
+  <div class="wrap demobar__in">
+    <span class="demobar__tag">Ukázkový web</span>
+    <span class="demobar__claim">Takový web udělám i vám.</span>
+    <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Výška spodného pásika ---------- */
+  var demobar = document.getElementById('demobar');
+  function syncBar(){
+    document.documentElement.style.setProperty('--bar-h', Math.ceil(demobar.getBoundingClientRect().height) + 'px');
+  }
+  syncBar();
+  window.addEventListener('resize', syncBar);
+  window.addEventListener('load', syncBar);
+
+  /* ---------- Mobilná navigácia ---------- */
+  var navToggle = document.getElementById('navToggle');
+  var mainnav = document.getElementById('mainnav');
+  function closeNav(){
+    navToggle.setAttribute('aria-expanded','false');
+    mainnav.removeAttribute('data-open');
+  }
+  navToggle.addEventListener('click', function(){
+    var open = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!open));
+    if(open){ mainnav.removeAttribute('data-open'); } else { mainnav.setAttribute('data-open','true'); }
+  });
+  mainnav.addEventListener('click', function(e){
+    if(e.target.closest('a')) closeNav();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeNav();
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 1000) closeNav();
+  });
+
+  /* ---------- Jemný nábeh sekcií ---------- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if(!reduce && 'IntersectionObserver' in window){
+    var revObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.classList.add('is-in');
+          revObs.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
+    reveals.forEach(function(el){ revObs.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  /* ---------- Dnešný deň a stav prevádzky ---------- */
+  var today = new Date().getDay();   /* 0 = nedeľa */
+  var OPEN = {
+    0:[540,1260], 1:[450,1320], 2:[450,1320], 3:[450,1320],
+    4:[450,1320], 5:[450,1380], 6:[540,1380]
+  };
+  var DAY_ACC = ['neděli','pondělí','úterý','středu','čtvrtek','pátek','sobotu'];
+
+  function hhmm(m){
+    var h = Math.floor(m/60), mm = m % 60;
+    return h + ':' + (mm < 10 ? '0' + mm : mm);
+  }
+
+  (function(){
+    var now = new Date();
+    var mins = now.getHours()*60 + now.getMinutes();
+    var span = OPEN[today];
+    var isOpen = mins >= span[0] && mins < span[1];
+    var text = document.getElementById('statusText');
+
+    if(isOpen){
+      text.textContent = 'Otevřeno, dnes do ' + hhmm(span[1]);
+    } else if(mins < span[0]){
+      text.textContent = 'Zavřeno, otevíráme dnes v ' + hhmm(span[0]);
+    } else {
+      var nx = (today + 1) % 7;
+      text.textContent = 'Zavřeno, otevíráme v ' + DAY_ACC[nx] + ' o ' + hhmm(OPEN[nx][0]);
+    }
+
+    var row = document.querySelector('table.hours tr[data-dow="' + today + '"]');
+    if(row) row.setAttribute('data-today','true');
+
+    var dayBlock = document.querySelector('.day[data-dow="' + today + '"]');
+    if(dayBlock){
+      dayBlock.setAttribute('data-today','true');
+      var mark = document.createElement('span');
+      mark.className = 'day__today';
+      mark.textContent = 'dnes';
+      dayBlock.querySelector('.day__name').appendChild(mark);
+    }
+
+    var ct = document.getElementById('contactToday');
+    if(ct) ct.textContent = hhmm(span[0]) + ' – ' + hhmm(span[1]) + (isOpen ? ', právě otevřeno' : ', právě zavřeno');
+  })();
+
+  /* ---------- Konfigurátor pizze ---------- */
+  var cfg = document.getElementById('pizzaConfig');
+  var sumSize = document.getElementById('sumSize');
+  var sumBaseName = document.getElementById('sumBaseName');
+  var sumBase = document.getElementById('sumBase');
+  var sumTops = document.getElementById('sumTops');
+  var sumTopsLabel = document.getElementById('sumTopsLabel');
+  var sumTopsList = document.getElementById('sumTopsList');
+  var sumUnit = document.getElementById('sumUnit');
+  var sumQty = document.getElementById('sumQty');
+  var sumTotal = document.getElementById('sumTotal');
+  var sumHint = document.getElementById('sumHint');
+  var liveTotal = document.getElementById('liveTotal');
+
+  function eur(cents){
+    return __f(cents/100) + ' ' + __m;
+  }
+  function capitalize(s){
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+  function state(){
+    var q = cfg.querySelector('input[name="qty"]:checked');
+    return {
+      size: cfg.querySelector('input[name="size"]:checked'),
+      base: cfg.querySelector('input[name="base"]:checked'),
+      tops: Array.prototype.slice.call(cfg.querySelectorAll('input[name="top"]:checked')),
+      qty: q ? Number(q.value) : 1
+    };
+  }
+  function totals(s){
+    var mult = parseFloat(s.size.dataset.mult);
+    var baseCents = Number(s.size.dataset.price) + Number(s.base.dataset.price);
+    var topsCents = 0;
+    s.tops.forEach(function(t){ topsCents += Math.round(Number(t.dataset.price) * mult); });
+    var unit = baseCents + topsCents;
+    return { mult: mult, base: baseCents, tops: topsCents, unit: unit, qty: s.qty, total: unit * s.qty };
+  }
+
+  function render(){
+    var s = state();
+    var t = totals(s);
+    var names = s.tops.map(function(x){ return x.value; });
+
+    sumSize.textContent = s.size.dataset.label;
+    sumBaseName.textContent = capitalize(s.base.value);
+    sumBase.textContent = eur(t.base);
+    sumTopsLabel.textContent = 'Přísady (' + s.tops.length + ')';
+    sumTops.textContent = eur(t.tops);
+    sumUnit.textContent = eur(t.unit);
+    sumQty.textContent = String(t.qty);
+    sumTopsList.textContent = names.length ? capitalize(names.join(', ')) + '.' : 'Zatím bez přísad.';
+    sumTotal.textContent = eur(t.total);
+    sumHint.textContent = t.mult > 1
+      ? 'Zvolili jste 45 cm, přísady se účtují 1,5násobně.'
+      : 'Při velikosti 45 cm se přísady účtují 1,5násobně.';
+    liveTotal.textContent = 'Celkem ' + __f(t.total/100) + ' ' + __m;
+  }
+
+  cfg.addEventListener('change', render);
+  cfg.addEventListener('submit', function(e){ e.preventDefault(); });
+  render();
+
+  /* ---------- Prenos zloženia do formulára ---------- */
+  document.getElementById('toOrder').addEventListener('click', function(){
+    var s = state();
+    var t = totals(s);
+    var names = s.tops.map(function(x){ return x.value; });
+
+    var txt = 'Vlastní pizza ' + s.size.value + ' cm, základ ' + s.base.value + '. ';
+    txt += names.length ? 'Přísady: ' + names.join(', ') + '. ' : 'Bez přísad. ';
+    txt += 'Počet kusů: ' + t.qty + '. ';
+    txt += 'Cena za kus ' + eur(t.unit) + ', celkem ' + eur(t.total) + '.';
+
+    var pozn = document.getElementById('poznamka');
+    pozn.value = txt;
+    document.getElementById('typ').value = 'Objednávka na odběr';
+
+    document.getElementById('objednavka').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    window.setTimeout(function(){ pozn.focus({ preventScroll: true }); }, reduce ? 0 : 600);
+  });
+
+  /* ---------- Formulár ---------- */
+  var form = document.getElementById('orderForm');
+  var note = document.getElementById('formNote');
+  var noteText = document.getElementById('formNoteText');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var meno = document.getElementById('meno');
+    var tel = document.getElementById('tel');
+    var sprava = document.getElementById('poznamka');
+    var chyba = null;
+
+    if(!meno.value.trim()){ chyba = meno; }
+    else if(!tel.value.trim()){ chyba = tel; }
+    else if(!sprava.value.trim()){ chyba = sprava; }
+
+    if(chyba){
+      note.setAttribute('data-shown','true');
+      noteText.textContent = 'Doplňte prosím jméno, telefon a text zprávy. Ostatní pole jsou nepovinná.';
+      chyba.focus();
+      return;
+    }
+
+    note.setAttribute('data-shown','true');
+    noteText.textContent = 'Děkujeme, zpráva je připravená k odeslání do schránky podniku. Odpovídáme do 24 hodin. Rezervace platí až po našem potvrzení.';
+    note.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+  });
+
+  /* ---------- Zvýraznenie aktívnej položky v navigácii ---------- */
+  if('IntersectionObserver' in window){
+    var links = {};
+    document.querySelectorAll('.nav-list a[href^="#"]').forEach(function(a){
+      links[a.getAttribute('href').slice(1)] = a;
+    });
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        var a = links[en.target.id];
+        if(!a) return;
+        if(en.isIntersecting){
+          Object.keys(links).forEach(function(k){ links[k].removeAttribute('aria-current'); });
+          a.setAttribute('aria-current','true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(links).forEach(function(id){
+      var sec = document.getElementById(id);
+      if(sec) obs.observe(sec);
+    });
+  }
+
+  /* ---------- Predvyplnený dátum ---------- */
+  (function(){
+    var d = new Date();
+    var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    var inp = document.getElementById('datum');
+    inp.value = iso;
+    inp.min = iso;
+  })();
+
+})();
+</script>
+</body>
+</html>
+
+
+
+

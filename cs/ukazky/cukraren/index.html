@@ -1,0 +1,2382 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/cukraren/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/cukraren/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/cukraren/">
+<!-- /jazyky:hreflang -->
+<title>Pekárna a cukrárna Kůrka — pečivo, zákusky a dorty na objednávku</title>
+<meta name="description" content="Ukázkový web pekárny a cukrárny: kváskový chleba od 65 Kč, zákusky od 45 Kč, dorty na objednávku od 1 050 Kč, konfigurátor dortu s přepočtem ceny a termínu, alergeny a otevírací doba. Návrh a kód Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#2E211A">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="Pekárna a cukrárna Kůrka (ukázkový web)">
+<meta property="og:title" content="Pekárna a cukrárna Kůrka — pečivo, zákusky a dorty na objednávku">
+<meta property="og:description" content="Kváskový chleba, denní pečivo a dorty na objednávku od 1 050 Kč. Konfigurátor dortu s přepočtem ceny a nejbližšího termínu. Ukázkový web od Alexe Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='3'%20fill='%232E211A'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='19'%20fill='none'%20stroke='%23A3452C'%20stroke-width='3'/%3E%3Ctext%20x='32'%20y='42'%20font-family='Georgia,serif'%20font-size='26'%20fill='%23F0E7DA'%20text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   TOKENY — teplé neutrály (smotanová, kakaová) + tlmená tehlová
+   ============================================================ */
+:root{
+  --cocoa:#2E211A;
+  --cocoa-2:#3D2C22;
+  --cocoa-3:#6B3A26;
+  --accent:#A3452C;
+  --accent-d:#8A3823;
+  --accent-l:#E8A98C;
+  --sand:#D9C3A8;
+  --sand-2:#E8D9C4;
+
+  --bg:#FBF7F0;
+  --bg-2:#F4EDE1;
+  --paper:#FFFFFF;
+  --ink:#241B15;
+  --muted:#6A5A4E;
+  --line:#E2D7C6;
+  --line-2:#EFE7DA;
+  --line-dark:#4A3729;
+  --rule:#C9B49C;
+  --on-dark:#F0E7DA;
+  --on-dark-2:#D8CABA;
+
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --wrap:1200px;
+  --bar:44px;
+  --r:2px;
+  --measure:66ch;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   ZÁKLAD
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+body{
+  margin:0;
+  padding-top:var(--bar);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.14;letter-spacing:-.014em;margin:0 0 .5em}
+h1{font-size:clamp(2.3rem,5.2vw,4.05rem);line-height:1.06;letter-spacing:-.022em}
+h2{font-size:clamp(1.62rem,3.1vw,2.45rem);line-height:1.1}
+h3{font-size:clamp(1.1rem,1.45vw,1.28rem);line-height:1.3}
+h4{font-size:1.02rem;line-height:1.3}
+p{margin:0 0 1em;max-width:var(--measure)}
+ul,ol{margin:0 0 1em;padding:0 0 0 1.15em}
+li{margin:0 0 .35em}
+a{color:var(--accent)}
+a:hover{color:var(--accent-d)}
+table{border-collapse:collapse;width:100%}
+img,svg{max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.on-dark :focus-visible,.demobar :focus-visible,.plate :focus-visible{outline-color:var(--accent-l)}
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:0;background:var(--cocoa);color:var(--on-dark);padding:12px 18px;z-index:300}
+.skip:focus{left:8px;top:calc(var(--bar) + 8px)}
+section{scroll-margin-top:calc(var(--bar) + 78px)}
+.sec{padding:clamp(62px,7.8vw,118px) 0}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--dark{background:var(--cocoa);color:var(--on-dark)}
+.sec--tight{padding-block:clamp(52px,6vw,86px)}
+
+/* hlavička sekcie: vlasová linka + eyebrow nad nadpisom, text vľavo */
+.head{max-width:56ch;margin:0 0 clamp(30px,3.8vw,52px)}
+.head__rule{width:46px;height:1px;background:var(--accent);margin:0 0 20px}
+.sec--dark .head__rule{background:var(--accent-l)}
+.eyebrow{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 12px}
+.sec--dark .eyebrow{color:var(--on-dark-2)}
+.lede{font-size:1.06rem;color:var(--muted);margin-bottom:0;max-width:60ch}
+.sec--dark .lede{color:var(--on-dark-2)}
+.note{font-size:.9rem;color:var(--muted);margin:0;max-width:70ch}
+.sec--dark .note{color:var(--on-dark-2)}
+.sec--dark a{color:var(--accent-l)}
+.sec--dark a:hover{color:var(--sand)}
+
+/* ============================================================
+   TLAČIDLÁ (dvojtriedne selektory, aby ich neprebil odkazový color)
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font:inherit;font-size:.96rem;font-weight:600;
+  padding:13px 24px;border:1px solid transparent;border-radius:var(--r);
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--accent);color:#FFFFFF;border-color:var(--accent)}
+.btn.btn--primary:hover{background:var(--accent-d);border-color:var(--accent-d);color:#FFFFFF}
+.btn.btn--line{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--line:hover{border-color:var(--accent);color:var(--accent)}
+.btn.btn--onlight-dark{background:var(--cocoa);color:var(--on-dark);border-color:var(--cocoa)}
+.btn.btn--onlight-dark:hover{background:var(--cocoa-2);border-color:var(--cocoa-2);color:var(--on-dark)}
+.btn.btn--sand{background:var(--sand);color:var(--cocoa);border-color:var(--sand)}
+.btn.btn--sand:hover{background:var(--sand-2);border-color:var(--sand-2);color:var(--cocoa)}
+.btn.btn--ghost-dark{background:rgba(46,33,26,.5);color:var(--on-dark);border-color:rgba(240,231,218,.45)}
+.btn.btn--ghost-dark:hover{background:rgba(46,33,26,.75);border-color:var(--sand);color:var(--sand)}
+.btn--sm{padding:9px 16px;font-size:.88rem}
+.btn--full{width:100%}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+
+/* poistka proti prebitiu farby textu tlačidla pravidlom pre odkazy
+   (napr. .foot a, .author__box a, .nav-list a majú nižšiu, ale zradnú váhu) */
+a.btn.btn--primary,a.btn.btn--primary:hover{color:#FFFFFF}
+a.btn.btn--line{color:var(--ink)}
+a.btn.btn--line:hover{color:var(--accent)}
+a.btn.btn--onlight-dark,a.btn.btn--onlight-dark:hover{color:var(--on-dark)}
+a.btn.btn--sand,a.btn.btn--sand:hover{color:var(--cocoa)}
+a.btn.btn--ghost-dark{color:var(--on-dark)}
+a.btn.btn--ghost-dark:hover{color:var(--sand)}
+
+/* ============================================================
+   PÁSIK UKÁŽKY (hore, fixný)
+   ============================================================ */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:200;height:var(--bar);
+  background:var(--cocoa);color:var(--on-dark);
+  border-bottom:1px solid var(--line-dark);
+  font-size:.85rem;
+}
+.demobar__in{
+  width:min(100% - 28px,var(--wrap));margin-inline:auto;height:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+}
+.demobar p{margin:0}
+.demobar__tag{
+  display:inline-block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--cocoa);background:var(--sand);padding:4px 9px;border-radius:var(--r);
+  margin-right:12px;
+}
+.demobar__links{display:flex;gap:16px;align-items:center;white-space:nowrap}
+.demobar a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px}
+.demobar a:hover{color:var(--accent-l)}
+
+/* ============================================================
+   HLAVIČKA + NAVIGÁCIA
+   ============================================================ */
+.site-head{
+  position:sticky;top:var(--bar);z-index:150;
+  background:rgba(251,247,240,.97);
+  border-bottom:1px solid var(--line);
+}
+.site-head__in{
+  width:min(100% - 40px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  min-height:72px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand__mark{
+  width:38px;height:38px;flex:0 0 38px;border-radius:var(--r);
+  background:var(--cocoa);color:var(--sand);
+  display:grid;place-items:center;font-family:var(--serif);font-size:1.22rem;
+}
+.brand__name{font-family:var(--serif);font-size:1.16rem;line-height:1.1;display:block}
+.brand__sub{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.nav-toggle{
+  display:none;align-items:center;gap:9px;background:transparent;border:1px solid var(--line);
+  border-radius:var(--r);padding:9px 14px;font:inherit;font-size:.9rem;font-weight:600;color:var(--ink);cursor:pointer;
+}
+.nav-toggle__bars{display:inline-block;width:16px;height:10px;position:relative}
+.nav-toggle__bars::before,.nav-toggle__bars::after,.nav-toggle__bars span{
+  content:"";position:absolute;left:0;right:0;height:1.5px;background:var(--ink);
+}
+.nav-toggle__bars::before{top:0}
+.nav-toggle__bars span{top:4.25px}
+.nav-toggle__bars::after{bottom:0}
+.nav-list{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0}
+.nav-list a{
+  color:var(--ink);text-decoration:none;font-size:.94rem;font-weight:600;
+  padding:6px 0;border-bottom:2px solid transparent;display:inline-block;
+}
+.nav-list a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* trvalá dvojica v hlavičke: objednávka + telefón, na mobile ostáva viditeľná */
+.head-actions{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.head-actions .btn{white-space:nowrap}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{padding:clamp(50px,6.5vw,96px) 0 clamp(56px,7vw,104px)}
+.hero__loc{
+  font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+  font-weight:700;margin:0 0 22px;max-width:none;
+  padding-bottom:18px;border-bottom:1px solid var(--line);
+}
+.hero h1{margin:0 0 .3em;max-width:16ch}
+.hero__lede{
+  font-size:clamp(1.1rem,1.75vw,1.5rem);line-height:1.5;color:var(--cocoa-2);
+  max-width:60ch;margin:0;font-family:var(--serif);
+}
+.hero .actions{margin-top:clamp(26px,3vw,38px)}
+
+/* vodorovný rad úzkych kariet pod nadpisom */
+.hstrip{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;
+  margin-top:clamp(40px,5.2vw,72px);
+}
+.hcard{
+  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--r);
+  padding:22px 20px 24px;display:flex;flex-direction:column;gap:6px;min-width:0;
+}
+.hcard::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.1;mix-blend-mode:soft-light;
+}
+.hcard--1{background:linear-gradient(160deg,#F6EFE4,#F1E7D8)}
+.hcard--2{background:linear-gradient(160deg,#F2E9DB,#ECE0CE)}
+.hcard--3{background:linear-gradient(160deg,#EFE4D3,#E7D9C4)}
+.hcard--4{background:linear-gradient(160deg,#EBDECB,#E2D2BA)}
+.hcard--5{background:linear-gradient(160deg,#E7D8C2,#DCCAB0)}
+.hcard__k{
+  position:relative;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cocoa-3);font-weight:700;margin:0;
+}
+.hcard__n{
+  position:relative;font-family:var(--serif);font-size:clamp(1.75rem,2.7vw,2.5rem);
+  line-height:1.06;letter-spacing:-.02em;color:var(--ink);margin:2px 0 0;
+}
+.hcard__t{position:relative;font-size:.88rem;line-height:1.5;color:var(--muted);margin:6px 0 0}
+.hcard__rule{position:relative;width:26px;height:1px;background:var(--accent);margin:0 0 14px}
+
+/* tabuľa "čo je kedy v pulte" — typografický panel */
+.board{
+  position:relative;overflow:hidden;border-radius:var(--r);
+  background:
+    linear-gradient(155deg,#3D2C22 0%,#2E211A 46%,#55402F 100%);
+  color:var(--on-dark);padding:clamp(26px,3.2vw,40px);
+  display:flex;flex-direction:column;gap:24px;margin-top:clamp(30px,4vw,48px);
+}
+.board::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    repeating-radial-gradient(circle at 88% 8%,rgba(240,231,218,.11) 0 1px,transparent 1px 26px),
+    repeating-linear-gradient(0deg,rgba(240,231,218,.055) 0 1px,transparent 1px 32px);
+}
+.board::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.14;mix-blend-mode:soft-light;
+}
+.board__in{position:relative}
+.board__label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-2);margin:0 0 6px;max-width:none}
+.board h3{font-size:clamp(1.25rem,1.9vw,1.55rem);color:var(--on-dark);margin:0}
+.board__list{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.board__list li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:14px 0;border-top:1px solid rgba(240,231,218,.16);
+}
+.board__list li:first-child{border-top:0}
+.board__item{display:block;font-size:1.02rem}
+.board__desc{display:block;font-size:.84rem;color:var(--on-dark-2)}
+.board__time{font-family:var(--serif);font-size:1.22rem;color:var(--accent-l);white-space:nowrap}
+.board__foot{position:relative;font-size:.85rem;color:var(--on-dark-2);margin:0;border-top:1px solid rgba(240,231,218,.16);padding-top:18px;max-width:70ch}
+
+/* ============================================================
+   OBSAHOVÉ MRIEŽKY
+   ============================================================ */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,4.2vw,66px);align-items:start}
+.two--wide{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,40px)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:clamp(24px,3vw,38px)}
+
+/* karta = vlasová linka a typografia, nie rámček */
+.card{background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;padding:20px 0 0}
+.card h3{margin-bottom:.45em}
+.card p:last-child{margin-bottom:0}
+.card--flat{border-top-color:var(--line)}
+.card ul{margin-bottom:0}
+.stack > .card{margin-bottom:30px}
+.stack > .card:last-child{margin-bottom:0}
+
+/* ============================================================
+   OBRAZOVÉ PLOCHY — pripravené miesta pre fotografie
+   ============================================================ */
+.obraz{position:relative;overflow:hidden;margin:0;border-radius:var(--r);display:flex;flex-direction:column;justify-content:flex-end}
+.obraz > *{position:relative}
+.obraz--tile{min-height:170px;padding:16px 18px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--wide{min-height:250px;padding:22px 24px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--tile::after,.obraz--wide::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light;
+}
+.obraz__cap{position:relative;display:block}
+.obraz__k{display:block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-2);font-weight:700}
+.obraz__n{display:block;font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.72rem);line-height:1.1;color:#FFFFFF;margin-top:4px}
+.obraz--a{background:linear-gradient(150deg,#3D2C22,#2E211A 58%,#55402F)}
+.obraz--a::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(72deg,rgba(240,231,218,.08) 0 1px,transparent 1px 14px)}
+.obraz--b{background:linear-gradient(150deg,#55402F,#6B3A26 62%,#8A3823)}
+.obraz--b::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 78% 20%,rgba(255,255,255,.12) 0 1px,transparent 1px 18px)}
+.obraz--c{background:linear-gradient(150deg,#2E211A,#55402F 70%,#6B3A26)}
+.obraz--c::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.07) 0 1px,transparent 1px 20px)}
+.obraz--d{background:linear-gradient(150deg,#6B3A26,#8A3823 52%,#3D2C22)}
+.obraz--d::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-40deg,rgba(240,231,218,.09) 0 1px,transparent 1px 16px)}
+.obraz--e{background:linear-gradient(150deg,#3D2C22,#55402F 45%,#2E211A)}
+.obraz--e::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 22% 78%,rgba(240,231,218,.1) 0 1px,transparent 1px 22px)}
+
+/* dlaždice sortimentu */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:clamp(14px,1.8vw,22px)}
+.tile{
+  display:flex;flex-direction:column;text-decoration:none;color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden;
+  transition:border-color .16s ease;
+}
+.tile:hover{border-color:var(--accent)}
+.tile .obraz{border:0;border-radius:0}
+.tile__body{padding:15px 17px 18px;display:flex;flex-direction:column;gap:5px}
+.tile__body h3{margin:0;font-size:1.08rem;color:var(--ink)}
+.tile__body p{margin:0;font-size:.88rem;line-height:1.5;color:var(--muted);max-width:none}
+.tile:hover .tile__body h3{color:var(--accent)}
+
+/* cenový riadok s bodkovaným vodičom */
+.pl{list-style:none;margin:0;padding:0}
+.pl li{display:flex;align-items:baseline;gap:10px;padding:12px 0;border-bottom:1px dotted var(--line)}
+.pl li:last-child{border-bottom:0}
+.pl__name{flex:1 1 auto;min-width:0}
+.pl__name b{font-weight:600}
+.pl__desc{display:block;font-size:.85rem;color:var(--muted)}
+.pl__price{flex:0 0 auto;font-family:var(--serif);font-size:1.12rem;white-space:nowrap}
+.pl__tag{display:inline-block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:var(--r);padding:1px 6px;margin-left:6px;vertical-align:2px}
+
+.group{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,32px)}
+.group__head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:6px}
+.group__head h3{margin:0}
+.group__when{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* zákusky — typografický cenový panel */
+.sweet{background:transparent;border:0;display:flex;flex-direction:column}
+.sweet__plate{
+  position:relative;overflow:hidden;border-radius:var(--r);padding:24px;min-height:150px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  color:var(--on-dark);
+}
+.sweet__plate::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light;pointer-events:none}
+.sweet__plate--1{background:linear-gradient(140deg,#3D2C22,#2E211A 55%,#55402F)}
+.sweet__plate--1::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(240,231,218,.09) 0 1px,transparent 1px 10px)}
+.sweet__plate--2{background:linear-gradient(140deg,#55402F,#6B3A26 60%,#8A3823)}
+.sweet__plate--2::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 82% 18%,rgba(255,255,255,.13) 0 1px,transparent 1px 20px)}
+.sweet__plate--3{background:linear-gradient(140deg,#2E211A,#55402F 70%,#6B3A26)}
+.sweet__plate--3::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.08) 0 1px,transparent 1px 22px)}
+.sweet__cap{position:relative;display:block}
+.sweet__price{position:relative;display:block;font-family:var(--serif);font-size:2rem;line-height:1;color:#FFFFFF}
+.sweet__unit{position:relative;display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:8px}
+.sweet__body{padding:18px 0 0;display:flex;flex-direction:column;gap:8px;flex:1 1 auto}
+.sweet__body h3{margin:0}
+.sweet__body p{margin:0;font-size:.93rem;color:var(--muted)}
+.sweet__al{margin-top:auto;font-size:.78rem;letter-spacing:.04em;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+
+/* torty — technická schéma priemeru */
+.size{background:transparent;border:0;border-top:1px solid var(--rule);padding:20px 0 0;display:flex;flex-direction:column;gap:16px}
+.size__viz{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;place-items:center}
+.size__viz svg{display:block;width:100%;height:auto;max-width:210px}
+.size__rows{list-style:none;margin:0;padding:0;font-size:.92rem}
+.size__rows li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line-2)}
+.size__rows li:last-child{border-bottom:0}
+.size__rows span:first-child{color:var(--muted)}
+.size__price{font-family:var(--serif);font-size:1.9rem;line-height:1;letter-spacing:-.02em}
+
+/* ============================================================
+   KONFIGURÁTOR
+   ============================================================ */
+.cfg{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,3vw,44px);align-items:start}
+.cfg__steps{display:grid;gap:22px}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--paper);margin:0;padding:20px 22px 22px}
+legend{
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--muted);
+  padding:0 8px;margin-left:-8px;
+}
+legend b{color:var(--accent);font-weight:700}
+.opts{display:grid;gap:10px;margin-top:6px}
+.opts--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{display:block;cursor:pointer}
+.opt input{position:absolute;width:1px;height:1px;opacity:0;margin:0}
+.opt__in{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;
+  background:var(--bg);transition:border-color .15s ease,background-color .15s ease;
+}
+.opt:hover .opt__in{border-color:var(--accent)}
+.opt input:checked + .opt__in{border-color:var(--accent);background:var(--sand-2);box-shadow:inset 3px 0 0 var(--accent)}
+.opt input:focus-visible + .opt__in{outline:2px solid var(--accent);outline-offset:2px}
+.opt__t{display:block;font-weight:600;font-size:.96rem}
+.opt__s{display:block;font-size:.82rem;color:var(--muted)}
+.opt__p{flex:0 0 auto;font-size:.88rem;color:var(--muted);white-space:nowrap}
+.check{display:flex;gap:11px;align-items:flex-start;font-size:.95rem;margin-top:4px}
+.check input{margin-top:5px;accent-color:var(--accent);width:17px;height:17px}
+
+.sum{
+  position:sticky;top:calc(var(--bar) + 90px);
+  border:1px solid var(--line-dark);border-radius:var(--r);overflow:hidden;
+  background:linear-gradient(160deg,#3D2C22,#2E211A 60%,#55402F);
+  color:var(--on-dark);
+}
+.sum::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.12;mix-blend-mode:soft-light;pointer-events:none}
+.sum__in{position:relative;padding:24px}
+.sum h3{color:var(--on-dark);margin-bottom:.6em}
+.sum__list{list-style:none;margin:0 0 18px;padding:0;font-size:.92rem}
+.sum__list li{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid var(--line-dark)}
+.sum__list li span:first-child{color:var(--on-dark-2);flex:0 0 auto}
+.sum__list li span:last-child{text-align:right}
+.sum__total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:1px solid var(--accent-l);padding-top:16px;margin-top:4px}
+.sum__total b{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);font-weight:700}
+.sum__val{font-family:var(--serif);font-size:2.2rem;line-height:1;color:#FFFFFF}
+.sum__meta{font-size:.86rem;color:var(--on-dark-2);margin:14px 0 0}
+.sum__date{
+  margin:18px 0 0;padding:14px;border:1px solid var(--line-dark);border-radius:var(--r);
+  background:rgba(46,33,26,.55);
+}
+.sum__date b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);margin-bottom:5px;font-weight:700}
+.sum__date span{font-family:var(--serif);font-size:1.16rem;color:var(--accent-l)}
+
+/* ============================================================
+   ALERGÉNY
+   ============================================================ */
+.legendlist{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0 0 24px;padding:0}
+.legendlist li{font-size:.82rem;border:1px solid var(--line);background:var(--paper);border-radius:var(--r);padding:5px 10px}
+.legendlist b{color:var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 18px}
+.filter{
+  font:inherit;font-size:.88rem;font-weight:600;background:var(--paper);color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);padding:9px 15px;cursor:pointer;
+}
+.filter:hover{border-color:var(--accent);color:var(--accent)}
+.filter[aria-pressed="true"]{background:var(--cocoa);color:var(--on-dark);border-color:var(--cocoa)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--paper)}
+table.data{min-width:520px;font-size:.94rem}
+table.data th,table.data td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.data thead th{background:var(--bg-2);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+table.data tbody tr:last-child td{border-bottom:0}
+table.data td.num{font-family:var(--serif);white-space:nowrap}
+.count{font-size:.88rem;color:var(--muted);margin:12px 0 0}
+
+/* ============================================================
+   POSTUP
+   ============================================================ */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(24px,3vw,44px);background:transparent}
+.steps li{padding:20px 0 0;border-top:1px solid var(--rule);margin:0}
+.steps__n{font-family:var(--serif);font-size:2.2rem;line-height:1;color:var(--accent);display:block;margin-bottom:12px}
+.steps h3{font-size:1.05rem;margin-bottom:.4em}
+.steps p{font-size:.92rem;color:var(--muted);margin:0}
+
+/* ============================================================
+   FORMULÁR
+   ============================================================ */
+.form{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,32px)}
+.frow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.86rem;font-weight:600}
+.field .hint{font-size:.8rem;color:var(--muted)}
+input[type=text],input[type=tel],input[type=email],input[type=date],select,textarea{
+  font:inherit;font-size:.98rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;width:100%;
+}
+textarea{min-height:112px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.done{
+  border:1px solid var(--accent);border-left:4px solid var(--accent);
+  background:var(--sand-2);color:var(--ink);border-radius:var(--r);
+  padding:18px 20px;margin:0 0 20px;
+}
+.done h3{margin-bottom:.3em;font-size:1.1rem}
+.done p{margin:0;font-size:.94rem}
+
+/* ============================================================
+   HODINY / DOPRAVA / KONTAKT
+   ============================================================ */
+.hours{list-style:none;margin:0;padding:0;font-size:1rem}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line)}
+.hours li:last-child{border-bottom:0}
+.hours li[data-closed="1"] span:last-child{color:var(--muted)}
+.hours__d{font-weight:600}
+.plan{
+  border:1px solid var(--line);border-radius:var(--r);background:var(--paper);padding:16px;
+}
+.plan svg{display:block;width:100%;height:auto}
+.kv{list-style:none;margin:0;padding:0}
+.kv li{padding:12px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;font-size:.96rem}
+.kv li:last-child{border-bottom:0}
+.kv b{font-weight:600;color:var(--muted);font-size:.86rem;letter-spacing:.04em;text-transform:uppercase}
+
+/* FAQ */
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:19px 44px 19px 0;position:relative;
+  font-family:var(--serif);font-size:1.1rem;line-height:1.35;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:var(--sans);font-size:1.35rem;color:var(--accent);line-height:1;
+}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:hover{color:var(--accent)}
+.faq__a{padding:0 44px 20px 0;color:var(--muted);font-size:.98rem}
+.faq__a p:last-child{margin-bottom:0}
+
+/* kariéra */
+.job{border-top:1px solid var(--line-dark);padding:24px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:20px}
+.job:last-of-type{border-bottom:1px solid var(--line-dark)}
+.job h3{margin-bottom:.25em;color:var(--on-dark)}
+.job__meta{font-size:.86rem;color:var(--on-dark-2);margin:0}
+.job p{margin:0 0 .6em;color:var(--on-dark-2);font-size:.96rem}
+.job ul{color:var(--on-dark-2);font-size:.96rem;margin-bottom:0}
+
+/* poukážky */
+.vouchers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:24px}
+.voucher{
+  position:relative;overflow:hidden;border:1px solid var(--line-dark);border-radius:var(--r);
+  padding:26px 22px;color:var(--on-dark);
+  background:linear-gradient(135deg,#2E211A,#55402F 65%,#6B3A26);
+}
+.voucher::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(240,231,218,.07) 0 1px,transparent 1px 12px)}
+.voucher::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.12;mix-blend-mode:soft-light}
+.voucher span,.voucher b{position:relative}
+.voucher b{display:block;font-family:var(--serif);font-size:2.4rem;line-height:1;font-weight:400;color:#FFFFFF}
+.voucher span{display:block;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:10px}
+
+/* ============================================================
+   SEKCIA AUTORA
+   ============================================================ */
+.author{
+  position:relative;overflow:hidden;
+  background:linear-gradient(118deg,#2E211A 0%,#4A2B1E 52%,#8A3823 100%);
+  color:var(--on-dark);
+  padding:clamp(58px,6.6vw,98px) 0;
+  border-top:1px solid var(--sand);
+}
+.author::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.06) 0 1px,transparent 1px 34px)}
+.author::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light}
+.author .wrap{position:relative}
+.author__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(26px,4vw,58px);align-items:center}
+.author h2{color:#FFFFFF}
+.author p{color:var(--on-dark)}
+.author p.author__tag{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sand);font-weight:700;margin:0 0 14px}
+.author p.author__price{font-family:var(--serif);font-size:clamp(1.22rem,1.9vw,1.55rem);color:#FFFFFF;margin:0 0 18px}
+.author p.author__free{
+  display:inline-block;margin:0;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--cocoa);background:var(--sand);padding:9px 15px;border-radius:var(--r);
+  max-width:none;
+}
+.author__box{border:1px solid rgba(240,231,218,.35);border-radius:var(--r);padding:24px;background:rgba(46,33,26,.42)}
+.author__box ul{list-style:none;margin:0 0 20px;padding:0;font-size:1rem}
+.author__box li{padding:9px 0;border-bottom:1px solid rgba(240,231,218,.2)}
+.author__box li:last-of-type{border-bottom:0}
+.author__box a{color:#FFFFFF;text-decoration:underline;text-underline-offset:3px}
+.author__box a:hover{color:var(--sand)}
+
+/* ============================================================
+   PÄTIČKA
+   ============================================================ */
+.foot{background:var(--cocoa);color:var(--on-dark-2);padding:clamp(44px,5vw,66px) 0 30px;font-size:.94rem}
+.foot__cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;
+  padding-bottom:28px;margin-bottom:30px;border-bottom:1px solid var(--line-dark);
+}
+.foot__cta p{margin:0;max-width:44ch;color:var(--on-dark);font-size:1rem}
+.foot__cta .btn{flex:0 0 auto}
+.foot a.btn:hover{text-decoration:none}
+.foot__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;padding-bottom:30px;border-bottom:1px solid var(--line-dark)}
+.foot h3{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark);font-family:var(--sans);font-weight:700;margin-bottom:1em}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li{margin:0 0 8px}
+.foot a{color:var(--on-dark-2);text-decoration:none}
+.foot a:hover{color:var(--accent-l);text-decoration:underline;text-underline-offset:3px}
+.foot__bottom{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;padding-top:24px;font-size:.86rem}
+.foot__bottom p{margin:0}
+
+/* ============================================================
+   ANIMÁCIE
+   ============================================================ */
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.is-in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none}
+  *{transition-duration:.001ms !important;animation-duration:.001ms !important}
+}
+
+/* ============================================================
+   RESPONZÍVNE
+   ============================================================ */
+/* navigácia sa skladá skôr ako zvyšok, aby sa tlačidlo a telefón v hlavičke
+   nemuseli nikdy schovávať */
+@media (max-width:1120px){
+  .nav-toggle{display:inline-flex}
+  .site-head__in{position:relative;min-height:66px}
+  .nav-list{
+    display:none;position:absolute;left:0;right:0;top:100%;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:8px 20px 16px;box-shadow:0 14px 26px rgba(46,33,26,.09);
+  }
+  .nav-list[data-open="true"]{display:flex}
+  .nav-list li{border-bottom:1px solid var(--line-2)}
+  .nav-list li:last-child{border-bottom:0}
+  .nav-list a{display:block;padding:14px 0;border-bottom:0;font-size:1rem}
+  .nav-list a:hover{border-bottom-color:transparent}
+}
+@media (max-width:1040px){
+  .hstrip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cfg{grid-template-columns:1fr}
+  .sum{position:static}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero h1{max-width:none}
+  .two,.two--wide{grid-template-columns:1fr}
+  .three{grid-template-columns:1fr}
+  .hstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .job{grid-template-columns:1fr;gap:10px}
+  .author__grid{grid-template-columns:1fr}
+  .vouchers{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .hstrip{grid-template-columns:1fr;gap:0}
+  .hcard{border-radius:0;border-bottom:0}
+  .hcard:last-child{border-bottom:1px solid var(--line)}
+  .hcard__n{font-size:1.85rem}
+  /* hlavička na dva riadky: značka a menu hore, objednávka a telefón pod tým */
+  .site-head__in{flex-wrap:wrap;gap:10px 12px;padding-block:10px;min-height:0}
+  .brand{order:0}
+  .site-head__in nav{order:1}
+  .nav-toggle{order:2}
+  .head-actions{order:3;width:100%;gap:8px}
+  .head-actions .btn{flex:1 1 0;min-width:0;padding-inline:10px}
+}
+@media (max-width:640px){
+  :root{--bar:64px}
+  body{font-size:16px}
+  .demobar{font-size:.8rem}
+  .demobar__in{flex-direction:column;justify-content:center;align-items:flex-start;gap:2px;padding:6px 0}
+  .demobar__links{gap:14px}
+  .opts--2{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .foot__grid{grid-template-columns:1fr}
+  .kv li{grid-template-columns:1fr;gap:2px}
+  .sweet__price{font-size:1.75rem}
+  .board__list li{flex-direction:column;align-items:flex-start;gap:4px}
+}
+@media (max-width:420px){
+  .actions .btn{width:100%}
+  .group__head{flex-direction:column;align-items:flex-start;gap:4px}
+  .group__when{white-space:normal}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*25);return v.toLocaleString('cs-CZ');}function __f(x){return Math.round(x).toLocaleString('cs-CZ');}function __p(x){return Math.round(x*25/5)*5;}function __c(x){return x*25;}var __m="Kč";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Přeskočit na obsah</a>
+
+<div class="demobar">
+  <div class="demobar__in">
+    <p><span class="demobar__tag">Ukázkový web</span>Takový web pro vás udělám.</p>
+    <p class="demobar__links">
+      <a href="https://apoliak.online/cs/">apoliak.online</a>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </p>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="site-head__in">
+    <a class="brand" href="#uvod">
+      <span class="brand__mark" aria-hidden="true">K</span> <span> <strong class="brand__name">Kůrka</strong> <span class="brand__sub">Pekárna a cukrárna</span> </span>
+    </a>
+
+    <nav aria-label="Hlavní navigace">
+      <ul class="nav-list" id="hlavne-menu" data-open="false">
+        <li><a href="#sortiment">Sortiment</a></li>
+        <li><a href="#zakusky">Zákusky</a></li>
+        <li><a href="#torty">Dorty</a></li>
+        <li><a href="#konfigurator">Konfigurátor</a></li>
+        <li><a href="#alergeny">Alergeny</a></li>
+        <li><a href="#doprava">Kde nás najdete</a></li>
+      </ul>
+    </nav>
+
+    <div class="head-actions">
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+      <a class="btn btn--primary btn--sm head-cta" href="#objednavka">Objednat dort</a>
+    </div>
+
+    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="hlavne-menu">
+      <span class="nav-toggle__bars" aria-hidden="true"><span></span></span>
+      Menu
+    </button>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="uvod">
+  <div class="wrap">
+    <p class="hero__loc">Kovářská 21, Olomouc &middot; Úterý až sobota</p>
+    <h1>Pekárna a cukrárna s vlastním kváskem</h1>
+    <p class="hero__lede">Chleba, pečivo a zákusky pečeme každý den přímo v provozovně a dorty na objednávku si naceníte v konfigurátoru níže.</p>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="#objednavka">Objednat dort</a>
+      <a class="btn btn--line" href="#konfigurator">Sestavit dort a zjistit cenu</a>
+      <a class="btn btn--line" href="#doprava">Kde nás najdete</a>
+    </div>
+
+    <div class="hstrip">
+      <article class="hcard hcard--1">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Otevření</p>
+        <p class="hcard__n">6:30</p>
+        <p class="hcard__t">První várka rohlíků a pletýnek je v pultu při otevření.</p>
+      </article>
+      <article class="hcard hcard--2">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Kvašení</p>
+        <p class="hcard__n">24 h</p>
+        <p class="hcard__t">Tak dlouho zraje kváskové těsto při 6 °C, než jde do pece.</p>
+      </article>
+      <article class="hcard hcard--3">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Vitrína</p>
+        <p class="hcard__n">8 druhů</p>
+        <p class="hcard__t">Zákusky a řezy doplňujeme do vitríny každý den od 9:00.</p>
+      </article>
+      <article class="hcard hcard--4">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Dorty</p>
+        <p class="hcard__n">od 1 050 Kč</p>
+        <p class="hcard__t">Základní cena dortu s průměrem 18 cm na osm až deset porcí.</p>
+      </article>
+      <article class="hcard hcard--5">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Termín</p>
+        <p class="hcard__n">3 dny</p>
+        <p class="hcard__t">Nejkratší čas na dort na objednávku, dekor si vyžádá víc.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SORTIMENT ================= -->
+<section class="sec sec--band sec--tight" id="sortiment">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Sortiment</p>
+      <h2>Pět skupin výrobků</h2>
+      <p class="lede">U každé skupiny je nejnižší cena a čas, odkdy je zboží v pultu. Kliknutím se dostanete na celý ceník s hmotnostmi a alergeny.</p>
+    </div>
+
+    <div class="tiles reveal">
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: rozkrojený bochník kváskového chleba na drevenej doske, detail na striedku a tmavú kôrku -->
+        <figure class="obraz obraz--tile obraz--a">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Chleba</span>
+            <span class="obraz__n">od 65 Kč</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Kváskový chleba</h3>
+          <p>Čtyři druhy, těsto kyne 24 hodin. V pultu od 8:00, chleba z předchozího dne za 55 Kč.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: plech s čerstvo upečenými rožkami a pletenkami vyťahovaný z pece -->
+        <figure class="obraz obraz--tile obraz--c">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Pečivo</span>
+            <span class="obraz__n">od 12 Kč</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Běžné a slané pečivo</h3>
+          <p>Rohlíky, pletýnky, croissanty, pagáčky. První várka v 6:30, druhá v 10:00.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#zakusky">
+        <!-- FOTO: cukrárska vitrína zhora, rad zákuskov a rezov na papierových podložkách -->
+        <figure class="obraz obraz--tile obraz--b">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Vitrína</span>
+            <span class="obraz__n">od 45 Kč</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Zákusky a řezy</h3>
+          <p>Osm druhů denně od 9:00. Kus odložíme, když zavoláte do 15:00 předchozího dne.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#torty">
+        <!-- FOTO: hotová torta s krémovým povrchom zboku, vidno rovné hrany a vrstvy -->
+        <figure class="obraz obraz--tile obraz--d">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Na objednávku</span>
+            <span class="obraz__n">od 1 050 Kč</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Dorty na objednávku</h3>
+          <p>Pět velikostí od 8 do 36 porcí. Nejkratší termín tři pracovní dny.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#sezona">
+        <!-- FOTO: sezónne pečivo podľa obdobia, napríklad mazanec alebo tácka vianočných medovníkov -->
+        <figure class="obraz obraz--tile obraz--e">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Během roku</span>
+            <span class="obraz__n">od 40 Kč</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Sezónní pečení</h3>
+          <p>Velikonoce, ovocná sezóna, ořechy a Vánoce. Každé období má vlastní uzávěrku objednávek.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= O PEKÁRNI ================= -->
+<section class="sec" id="pekaren">
+  <div class="wrap">
+    <div class="two two--wide reveal">
+      <div>
+        <div class="head">
+          <div class="head__rule"></div>
+          <p class="eyebrow">O pekárně</p>
+          <h2>Malá provozovna, kde se všechno peče na místě</h2>
+        </div>
+        <p>Kůrka je pekárna s cukrářskou dílnou v jedné místnosti za prodejnou. Nemáme centrální výrobnu ani rozvoz zmrazených polotovarů &mdash; těsto mísíme večer, chleba sázíme do pece nad ránem a zákusky dokončujeme během dopoledne.</p>
+        <p>Mouku bereme z mlýna vzdáleného 40 kilometrů, máslo používáme 82&nbsp;%, vejce od chovu z okresu. Do chleba jde mouka, voda, sůl a kvásek. Nic jiného tam nepatří, proto ve složení nenajdete zlepšující přípravky ani konzervanty.</p>
+        <p>Pečivo, které zbude, prodáváme poslední hodinu před zavírací dobou za polovinu ceny. Chleba z předchozího dne stojí ráno 55 Kč bez ohledu na velikost bochníku.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#objednavka">Objednat dort</a>
+          <a class="btn btn--line" href="#hodiny">Otevírací doba</a>
+        </div>
+      </div>
+      <div>
+        <!-- FOTO: pekár pri stole s rozrobeným kváskovým cestom, v pozadí otvorená pec -->
+        <figure class="obraz obraz--wide obraz--e" style="margin-bottom:30px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Dílna za prodejnou</span>
+            <span class="obraz__n">Kvásek krmíme dvakrát denně</span>
+          </figcaption>
+        </figure>
+        <div class="three" style="grid-template-columns:1fr;gap:30px">
+          <div class="card">
+            <h3>Kdo peče</h3>
+            <p class="note">Dva pekaři na ranní směně, cukrářka na dorty a zákusky, vedoucí prodejny. Dorty zdobí vždy jeden člověk, aby vypadaly stejně.</p>
+          </div>
+          <div class="card">
+            <h3>Suroviny</h3>
+            <p class="note">Pšeničná a žitná mouka z regionálního mlýna, máslo 82&nbsp;%, čokoláda s obsahem kakaa 55 a 70&nbsp;%, sezónní ovoce od pěstitelů.</p>
+          </div>
+          <div class="card">
+            <h3>Balení</h3>
+            <p class="note">Papírové sáčky zdarma. Vlastní nádobu nebo sáček rádi naplníme. Dorty balíme do pevné papírové krabice, ta je v ceně.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DENNÉ PEČIVO ================= -->
+<section class="sec sec--band" id="pecivo">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Denní nabídka</p>
+      <h2>Chleba a pečivo</h2>
+      <p class="lede">Ceny platí pro prodej v provozovně. Větší množství (nad 20 kusů pečiva nebo 5 bochníků) si objednejte den předem, ať upečeme navíc.</p>
+    </div>
+
+    <div class="two reveal">
+      <div class="group" style="margin-bottom:22px">
+        <div class="group__head">
+          <h3>Chleba</h3>
+          <span class="group__when">V pultu od 8:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Kváskový pšenično-žitný 1 kg</b><span class="pl__desc">Tmavší kůrka, kyne 24 hodin</span></span>
+            <span class="pl__price">115 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Kváskový pšenično-žitný 0,5 kg</b><span class="pl__desc">Menší bochník pro jednoho až dva</span></span>
+            <span class="pl__price">65 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Žitný celozrnný 1 kg</b><span class="pl__desc">Úterý, čtvrtek a sobota</span></span>
+            <span class="pl__price">130 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Bramborový chleba 0,8 kg</b><span class="pl__desc">Pátek, vláčná střídka</span></span>
+            <span class="pl__price">125 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Chleba z předchozího dne</b><span class="pl__desc">Prodáváme ve čtvrtek až sobotu ráno</span></span>
+            <span class="pl__price">55 Kč</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group" style="margin-bottom:22px">
+        <div class="group__head">
+          <h3>Běžné pečivo</h3>
+          <span class="group__when">V pultu od 6:30</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Rohlík máslový, 60 g</b><span class="pl__desc">Druhá várka v 10:00</span></span>
+            <span class="pl__price">12 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Pletýnka s mákem, 90 g</b></span>
+            <span class="pl__price">25 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Croissant máslový</b><span class="pl__desc">Listové těsto skládáme ručně</span></span>
+            <span class="pl__price">40 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Croissant s čokoládou</b></span>
+            <span class="pl__price">50 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Vícezrnná bageta, 250 g</b></span>
+            <span class="pl__price">45 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Buchta s tvarohem</b><span class="pl__desc">Středa a pátek</span></span>
+            <span class="pl__price">35 Kč</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <div class="group__head">
+          <h3>Slané</h3>
+          <span class="group__when">Pečeme do 15:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Škvarkové pagáčky, 100 g</b></span>
+            <span class="pl__price">40 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Preclík se semínky</b></span>
+            <span class="pl__price">30 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Slaný štrúdl se sýrem, 150 g</b></span>
+            <span class="pl__price">60 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Focaccia s rozmarýnem, 200 g</b><span class="pl__desc">Sobota</span></span>
+            <span class="pl__price">70 Kč</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <div class="group__head">
+          <h3>Objednané dopředu</h3>
+          <span class="group__when">Den předem do 15:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Pečivo na akci, 20 a více kusů</b><span class="pl__desc">Mix rohlíků, pletýnky, preclíky</span></span>
+            <span class="pl__price">&minus;10 %</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Chlebové mísy na pomazánky, 5 ks</b></span>
+            <span class="pl__price">350 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Slané pohoštění, 40 kusů</b><span class="pl__desc">Mini pagáčky, preclíky, sýrové tyčinky</span></span>
+            <span class="pl__price">650 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Sladké pohoštění, 40 kusů</b><span class="pl__desc">Mini zákusky, řezy, laskonky</span></span>
+            <span class="pl__price">950 Kč</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:20px">Alergeny ke každému výrobku najdete v <a href="#alergeny">tabulce alergenů</a>. Složení vám na požádání ukážeme i v prodejně.</p>
+  </div>
+</section>
+
+<!-- ================= ZÁKUSKY ================= -->
+<section class="sec" id="zakusky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Cukrářská vitrína</p>
+      <h2>Zákusky a řezy</h2>
+      <p class="lede">Osm druhů denně, po 9:00. Zákusky nemrazíme, takže co se vyprodá, bývá až následující den. Pokud potřebujete konkrétní druh na jistotu, rezervujte si ho telefonicky do 15:00 předchozího dne.</p>
+    </div>
+
+    <div class="cards reveal">
+      <article class="sweet">
+        <!-- FOTO: čokoládový rez zboku na tanieriku, vidno tri vrstvy korpusu a pásik višňového želé -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">65 Kč</span>
+            <span class="sweet__unit">za kus &middot; 90 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Čokoládový řez</h3>
+          <p>Tři vrstvy kakaového korpusu, ganache ze 70&nbsp;% čokolády, tenká vrstva višňového želé.</p>
+          <p class="sweet__al">Alergeny: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: veterník s karamelovou polevou, detail na vrstvu vanilkového krému -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">55 Kč</span>
+            <span class="sweet__unit">za kus &middot; 80 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Větrník</h3>
+          <p>Odpalované těsto, vanilkový krém z pravého mléka, karamelová poleva. Pečeme každý den.</p>
+          <p class="sweet__al">Alergeny: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: punčový rez s ružovou polevou, rez cez piškótový stred -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">55 Kč</span>
+            <span class="sweet__unit">za kus &middot; 85 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Punčový řez</h3>
+          <p>Klasika z piškotových odřezků s rumovým aroma a růžovou polevou.</p>
+          <p class="sweet__al">Alergeny: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: medovník nakrojený tak, aby bolo vidno šesť tenkých plátov a krém medzi nimi -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">60 Kč</span>
+            <span class="sweet__unit">za kus &middot; 70 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Medovník</h3>
+          <p>Šest tenkých plátů, karamelový krém, vyzrálý dva dny před prodejem.</p>
+          <p class="sweet__al">Alergeny: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: tvarohový koláč s ovocím zhora, vidno hrubú vrstvu tvarohu a kúsky sezónneho ovocia -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">60 Kč</span>
+            <span class="sweet__unit">za kus &middot; 110 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Tvarohový koláč s ovocem</h3>
+          <p>Křehký korpus, silná vrstva tvarohu, sezónní ovoce. Od září s hruškou, v létě s meruňkami.</p>
+          <p class="sweet__al">Alergeny: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: bezlepkový mandľový rez na oddelenej podložke, detail na hrubšiu mandľovú štruktúru -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">75 Kč</span>
+            <span class="sweet__unit">za kus &middot; 90 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Bezlepkový mandlový řez</h3>
+          <p>Mandlová mouka, čokoládový krém, bez přidané pšeničné mouky. Pečeme v oddělené formě, dílna však není bezlepková.</p>
+          <p class="sweet__al">Alergeny: 3, 7, 8</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="two reveal" style="margin-top:clamp(34px,4vw,52px)">
+      <div class="group">
+        <div class="group__head">
+          <h3>Dál ve vitríně</h3>
+          <span class="group__when">Podle dne</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Laskonka</b><span class="pl__desc">Sněhové pláty s máslovým krémem, úterý a pátek</span></span>
+            <span class="pl__price">45 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Makový závin, 100 g</b><span class="pl__desc">Krájíme na místě podle toho, kolik potřebujete</span></span>
+            <span class="pl__price">50 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Taštička s marmeládou</b><span class="pl__desc">Švestková nebo meruňková, středa a sobota</span></span>
+            <span class="pl__price">35 Kč</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Mini zákusky</b><span class="pl__desc">Od 20 kusů, objednávka dva dny předem</span><span class="pl__tag">na objednávku</span></span>
+            <span class="pl__price">25 Kč</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Rezervace druhu</h3>
+          <p class="note">Konkrétní zákusek odložíme, když zavoláte do 15:00 předchozího dne. Odkládáme nejvýše šest kusů na jednoho zákazníka.</p>
+        </div>
+        <div class="card">
+          <h3>Jak je skladovat</h3>
+          <p class="note">Zákusky patří do lednice při 4 až 6 °C a spotřebujte je do dvou dnů. Krémové a šlehačkové raději týž den.</p>
+        </div>
+        <div class="card">
+          <h3>Kávový pult</h3>
+          <p class="note">K zákusku podáváme espresso za 40 Kč a cappuccino za 55 Kč. U okna je stojací pult a dva stolky pro čtyři. Kávu podáváme v úterý až pátek do 16:30, v sobotu do 12:00.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TORTY ================= -->
+<section class="sec sec--band" id="torty">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Na objednávku</p>
+      <h2>Dorty a jejich velikosti</h2>
+      <p class="lede">Uvedená cena je základ za korpus, náplň a jednoduchý krémový povrch. Příchutě a dekor se připlácejí, přesnou částku vám spočítá konfigurátor níže. V ceně je pevná papírová krabice i svíčky.</p>
+    </div>
+
+    <!-- FOTO: hotová torta s priemerom 22 cm na cukrárskom podnose, pohľad zboku na rovný krémový povrch -->
+    <figure class="obraz obraz--wide obraz--d reveal" style="margin-bottom:clamp(26px,3.4vw,44px)">
+      <figcaption class="obraz__cap">
+        <span class="obraz__k">Ø 22 cm, tři vrstvy, 12 až 16 porcí</span>
+        <span class="obraz__n">1 450 Kč v základní výbavě</span>
+      </figcaption>
+    </figure>
+
+    <div class="cards reveal">
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schéma dortu s průměrem 18 centimetrů">
+            <circle cx="105" cy="58" r="38" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="58" r="24" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M67 58V114M143 58V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M67 114H143M67 109V119M143 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">18 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porce</span><span>8 &ndash; 10</span></li>
+          <li><span>Výška</span><span>10 cm, tři vrstvy</span></li>
+          <li><span>Termín</span><span>3 pracovní dny</span></li>
+        </ul>
+        <div class="size__price">1 050 Kč</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schéma dortu s průměrem 22 centimetrů">
+            <circle cx="105" cy="56" r="46" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="29" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M59 56V114M151 56V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M59 114H151M59 109V119M151 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">22 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porce</span><span>12 &ndash; 16</span></li>
+          <li><span>Výška</span><span>10 cm, tři vrstvy</span></li>
+          <li><span>Termín</span><span>3 pracovní dny</span></li>
+        </ul>
+        <div class="size__price">1 450 Kč</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schéma dortu s průměrem 26 centimetrů">
+            <circle cx="105" cy="55" r="53" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="55" r="34" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M52 55V114M158 55V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M52 114H158M52 109V119M158 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">26 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porce</span><span>18 &ndash; 24</span></li>
+          <li><span>Výška</span><span>11 cm, čtyři vrstvy</span></li>
+          <li><span>Termín</span><span>4 pracovní dny</span></li>
+        </ul>
+        <div class="size__price">1 900 Kč</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schéma dvoupatrového dortu s průměry 22 a 16 centimetrů">
+            <circle cx="105" cy="56" r="46" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="33" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="18" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M59 56V114M151 56V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M59 114H151M59 109V119M151 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">22 + 16 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porce</span><span>30 &ndash; 36</span></li>
+          <li><span>Výška</span><span>18 cm, dvě patra</span></li>
+          <li><span>Termín</span><span>6 pracovních dnů</span></li>
+        </ul>
+        <div class="size__price">3 450 Kč</div>
+      </article>
+    </div>
+
+    <div class="two reveal" style="margin-top:34px">
+      <div class="card">
+        <h3>Co je v základní ceně</h3>
+        <ul style="margin-bottom:0">
+          <li>Korpus podle výběru, tři až čtyři vrstvy</li>
+          <li>Jedna náplň a jednoduchý krémový povrch</li>
+          <li>Pevná papírová krabice a chladicí vložka</li>
+          <li>Svíčky a jednorázový nůž na krájení</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Za co se připlácí</h3>
+        <ul style="margin-bottom:0">
+          <li>Ořechový, mrkvový nebo bezlepkový korpus</li>
+          <li>Ganache, karamel s oříšky, tvarohová náplň s malinami</li>
+          <li>Marcipánový potah nebo ručně malovaný povrch</li>
+          <li>Nápis na dortu a doprava po městě (125 Kč, nad 2 500 Kč zdarma)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONFIGURÁTOR ================= -->
+<section class="sec" id="konfigurator">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Interaktivní přepočet</p>
+      <h2>Sestavte si dort</h2>
+      <p class="lede">Vyberte velikost, korpus, náplň a povrch. Cena i nejbližší možný termín vyzvednutí se přepočítají okamžitě. Sestavu potom přenesete do objednávkového formuláře jedním kliknutím.</p>
+    </div>
+
+    <div class="cfg">
+      <div class="cfg__steps">
+        <fieldset>
+          <legend><b>1.</b> &nbsp;Velikost</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="18" data-cena="1050" data-dni="3" data-porcie="10" data-popis="Ø 18 cm, 8 – 10 porcí">
+              <span class="opt__in"><span><span class="opt__t">Ø 18 cm</span><span class="opt__s">8 &ndash; 10 porcí</span></span><span class="opt__p">1 050 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="22" data-cena="1450" data-dni="3" data-porcie="16" data-popis="Ø 22 cm, 12 – 16 porcí" checked>
+              <span class="opt__in"><span><span class="opt__t">Ø 22 cm</span><span class="opt__s">12 &ndash; 16 porcí</span></span><span class="opt__p">1 450 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="26" data-cena="1900" data-dni="4" data-porcie="24" data-popis="Ø 26 cm, 18 – 24 porcí">
+              <span class="opt__in"><span><span class="opt__t">Ø 26 cm</span><span class="opt__s">18 &ndash; 24 porcí</span></span><span class="opt__p">1 900 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="30" data-cena="2450" data-dni="4" data-porcie="32" data-popis="Ø 30 cm, 26 – 32 porcí">
+              <span class="opt__in"><span><span class="opt__t">Ø 30 cm</span><span class="opt__s">26 &ndash; 32 porcí</span></span><span class="opt__p">2 450 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="2216" data-cena="3450" data-dni="6" data-porcie="36" data-popis="Dvoupatrový 22 + 16 cm, 30 – 36 porcí">
+              <span class="opt__in"><span><span class="opt__t">Dvoupatrový 22 + 16 cm</span><span class="opt__s">30 &ndash; 36 porcí</span></span><span class="opt__p">3 450 Kč</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>2.</b> &nbsp;Korpus</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="kakaovy" data-cena="0" data-dni="0" data-popis="kakaový korpus" checked>
+              <span class="opt__in"><span><span class="opt__t">Kakaový</span><span class="opt__s">Holandské kakao, vláčný</span></span><span class="opt__p">v ceně</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="vanilkovy" data-cena="0" data-dni="0" data-popis="vanilkový korpus">
+              <span class="opt__in"><span><span class="opt__t">Vanilkový</span><span class="opt__s">Piškotový, jemný</span></span><span class="opt__p">v ceně</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="orechovy" data-cena="150" data-dni="0" data-popis="ořechový korpus">
+              <span class="opt__in"><span><span class="opt__t">Ořechový</span><span class="opt__s">Vlašské ořechy, bez mouky navíc</span></span><span class="opt__p">+ 150 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="mrkvovy" data-cena="200" data-dni="0" data-popis="mrkvový korpus">
+              <span class="opt__in"><span><span class="opt__t">Mrkvový</span><span class="opt__s">Se skořicí a rozinkami</span></span><span class="opt__p">+ 200 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="bezlepkovy" data-cena="300" data-dni="1" data-popis="bezlepkový kakaový korpus">
+              <span class="opt__in"><span><span class="opt__t">Bezlepkový kakaový</span><span class="opt__s">Mandlová mouka, den navíc</span></span><span class="opt__p">+ 300 Kč</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>3.</b> &nbsp;Náplň</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="maslovy" data-cena="0" data-dni="0" data-popis="máslový krém s vanilkou" checked>
+              <span class="opt__in"><span><span class="opt__t">Máslový krém s vanilkou</span></span><span class="opt__p">v ceně</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="citron" data-cena="150" data-dni="0" data-popis="citronová náplň">
+              <span class="opt__in"><span><span class="opt__t">Citronová</span></span><span class="opt__p">+ 150 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="ganache" data-cena="175" data-dni="0" data-popis="čokoládová ganache">
+              <span class="opt__in"><span><span class="opt__t">Čokoládová ganache</span></span><span class="opt__p">+ 175 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="tvaroh" data-cena="225" data-dni="0" data-popis="tvarohovo-smetanová náplň s malinami">
+              <span class="opt__in"><span><span class="opt__t">Tvarohovo-smetanová s malinami</span></span><span class="opt__p">+ 225 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="karamel" data-cena="275" data-dni="0" data-popis="slaný karamel s praženými oříšky">
+              <span class="opt__in"><span><span class="opt__t">Slaný karamel s oříšky</span></span><span class="opt__p">+ 275 Kč</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>4.</b> &nbsp;Povrch a dekor</legend>
+          <div class="opts">
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="krem" data-cena="0" data-dni="0" data-popis="krémový potah" checked>
+              <span class="opt__in"><span><span class="opt__t">Krémový potah</span><span class="opt__s">Hladký nebo tažený špachtlí</span></span><span class="opt__p">v ceně</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="poleva" data-cena="225" data-dni="0" data-popis="čokoládová poleva s čerstvým ovocem">
+              <span class="opt__in"><span><span class="opt__t">Čokoládová poleva a čerstvé ovoce</span><span class="opt__s">Podle sezóny</span></span><span class="opt__p">+ 225 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="marcipan" data-cena="450" data-dni="1" data-popis="hladký marcipánový potah">
+              <span class="opt__in"><span><span class="opt__t">Marcipánový potah</span><span class="opt__s">Jednobarevný, den navíc</span></span><span class="opt__p">+ 450 Kč</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="malovany" data-cena="725" data-dni="2" data-popis="ručně malovaný povrch">
+              <span class="opt__in"><span><span class="opt__t">Ručně malovaný povrch</span><span class="opt__s">Motiv podle domluvy, dva dny navíc</span></span><span class="opt__p">+ 725 Kč</span></span>
+            </label>
+          </div>
+          <label class="check" style="margin-top:14px">
+            <input type="checkbox" id="cfg-napis" data-cena="100">
+            <span>Nápis na dortu (jméno, datum nebo krátký text) &mdash; <b>+ 100 Kč</b></span>
+          </label>
+        </fieldset>
+      </div>
+
+      <aside class="sum" aria-label="Přepočet ceny dortu">
+        <div class="sum__in">
+          <h3>Vaše sestava</h3>
+          <ul class="sum__list">
+            <li><span>Velikost</span><span id="s-velkost">Ø 22 cm, 12 &ndash; 16 porcí</span></li>
+            <li><span>Korpus</span><span id="s-korpus">kakaový korpus</span></li>
+            <li><span>Náplň</span><span id="s-plnka">máslový krém s vanilkou</span></li>
+            <li><span>Povrch</span><span id="s-povrch">krémový potah</span></li>
+            <li><span>Nápis</span><span id="s-napis">bez nápisu</span></li>
+          </ul>
+
+          <div class="sum__total">
+            <b>Cena celkem</b>
+            <span class="sum__val" id="s-cena">1 450 Kč</span>
+          </div>
+          <p class="sum__meta" id="s-porcia">Přibližně 91 Kč za porci při 16 porcích. Záloha při objednávce 435 Kč.</p>
+
+          <div class="sum__date">
+            <b>Nejbližší termín vyzvednutí</b>
+            <span id="s-termin">&mdash;</span>
+          </div>
+
+          <div class="actions" style="margin-top:20px">
+            <button class="btn btn--sand btn--full" type="button" id="cfg-prenies">Přenést do objednávky</button>
+          </div>
+          <p class="sum__meta">Termín počítáme od dnešního dne, mimo neděle a pondělí, kdy máme zavřeno. Konečné potvrzení dostanete telefonicky.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEZÓNA ================= -->
+<section class="sec sec--band" id="sezona">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Během roku</p>
+      <h2>Sezónní pečení</h2>
+      <p class="lede">Část nabídky se mění podle ovoce a svátků. Na sezónní výrobky se objednávky uzavírají dřív, protože pečeme v omezeném množství.</p>
+    </div>
+
+    <div class="cards reveal">
+      <article class="card">
+        <p class="eyebrow">Březen &ndash; duben</p>
+        <h3>Velikonoce</h3>
+        <ul style="margin-bottom:12px">
+          <li>Mazanec s rozinkami, 500 g &mdash; 150 Kč</li>
+          <li>Sladký beránek z litého těsta &mdash; 215 Kč</li>
+          <li>Uzený sýr v pletýnce &mdash; 80 Kč</li>
+        </ul>
+        <p class="note">Objednávky přijímáme do středy před Velkým pátkem.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Květen &ndash; srpen</p>
+        <h3>Ovocná sezóna</h3>
+        <ul style="margin-bottom:12px">
+          <li>Jahodový dort Ø 22 cm &mdash; 1 675 Kč</li>
+          <li>Meruňková bublanina, 100 g &mdash; 40 Kč</li>
+          <li>Malinový řez &mdash; 70 Kč</li>
+        </ul>
+        <p class="note">Jahodový dort je základ 1 450 Kč plus 225 Kč za čerstvé ovoce na povrchu. Ovoce kupujeme od pěstitelů, nabídka se mění každý týden.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Září &ndash; listopad</p>
+        <h3>Ořechy a dýně</h3>
+        <ul style="margin-bottom:12px">
+          <li>Ořechový závin, 100 g &mdash; 55 Kč</li>
+          <li>Makový závin, 100 g &mdash; 50 Kč</li>
+          <li>Dýňový koláč se skořicí &mdash; 60 Kč</li>
+        </ul>
+        <p class="note">Záviny pečeme v celku, krájíme je podle vaší hmotnosti.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Prosinec</p>
+        <h3>Vánoční pečivo</h3>
+        <ul style="margin-bottom:12px">
+          <li>Zdobené perníčky &mdash; 850 Kč za kg</li>
+          <li>Vanilkové rohlíčky &mdash; 725 Kč za kg</li>
+          <li>Vánočka, 600 g &mdash; 185 Kč</li>
+        </ul>
+        <p class="note">Objednávky na vánoční pečivo přijímáme do 10. prosince.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ALERGÉNY ================= -->
+<section class="sec" id="alergeny">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Složení</p>
+      <h2>Alergeny ve výrobcích</h2>
+      <p class="lede">Čísla odpovídají seznamu alergenů podle platné potravinové legislativy. Vyberte, čemu se chcete vyhnout, a tabulka zobrazí jen vhodné výrobky.</p>
+    </div>
+
+    <ul class="legendlist reveal">
+      <li><b>1</b> &ndash; obiloviny obsahující lepek</li>
+      <li><b>3</b> &ndash; vejce</li>
+      <li><b>6</b> &ndash; sója</li>
+      <li><b>7</b> &ndash; mléko</li>
+      <li><b>8</b> &ndash; ořechy</li>
+      <li><b>12</b> &ndash; oxid siřičitý</li>
+    </ul>
+
+    <div class="filters reveal" role="group" aria-label="Filtrování výrobků podle alergenů">
+      <button class="filter" type="button" data-free="0" aria-pressed="true">Zobrazit vše</button>
+      <button class="filter" type="button" data-free="1" aria-pressed="false">Bez lepku</button>
+      <button class="filter" type="button" data-free="7" aria-pressed="false">Bez mléka</button>
+      <button class="filter" type="button" data-free="3" aria-pressed="false">Bez vajec</button>
+      <button class="filter" type="button" data-free="8" aria-pressed="false">Bez ořechů</button>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table class="data">
+        <caption class="sr">Seznam výrobků a alergenů, které obsahují</caption>
+        <thead>
+          <tr><th scope="col">Výrobek</th><th scope="col">Alergeny</th><th scope="col">Poznámka</th></tr>
+        </thead>
+        <tbody id="al-body">
+          <tr data-al="1"><td>Kváskový pšenično-žitný chleba</td><td class="num">1</td><td>Mouka, voda, sůl, kvásek</td></tr>
+          <tr data-al="1"><td>Žitný celozrnný chleba</td><td class="num">1</td><td>Úterý, čtvrtek, sobota</td></tr>
+          <tr data-al="1,7"><td>Rohlík máslový</td><td class="num">1, 7</td><td>Máslo 82 %</td></tr>
+          <tr data-al="1,3,7"><td>Croissant máslový</td><td class="num">1, 3, 7</td><td>Vaječný nátěr</td></tr>
+          <tr data-al="1,7"><td>Preclík se semínky</td><td class="num">1, 7</td><td>Sezam, len, slunečnice</td></tr>
+          <tr data-al="1,3,7"><td>Škvarkové pagáčky</td><td class="num">1, 3, 7</td><td>Vepřové škvarky</td></tr>
+          <tr data-al="1,3,7"><td>Větrník</td><td class="num">1, 3, 7</td><td>Vanilkový krém z mléka</td></tr>
+          <tr data-al="1,3,7,12"><td>Punčový řez</td><td class="num">1, 3, 7, 12</td><td>Obsahuje rumové aroma</td></tr>
+          <tr data-al="1,3,7"><td>Medovník</td><td class="num">1, 3, 7</td><td>Med, karamelový krém</td></tr>
+          <tr data-al="1,3,7,6"><td>Čokoládový řez</td><td class="num">1, 3, 6, 7</td><td>Čokoláda 70 % obsahuje sójový lecitin</td></tr>
+          <tr data-al="3,7,8"><td>Bezlepkový mandlový řez</td><td class="num">3, 7, 8</td><td>Bez pšeničné mouky, dílna není bezlepková</td></tr>
+          <tr data-al="1,3,7,8"><td>Ořechový závin</td><td class="num">1, 3, 7, 8</td><td>Vlašské ořechy</td></tr>
+          <tr data-al="3,7"><td>Laskonka</td><td class="num">3, 7</td><td>Sněhové pláty bez mouky</td></tr>
+          <tr data-al="1,7"><td>Focaccia s rozmarýnem</td><td class="num">1, 7</td><td>Olivový olej, mořská sůl</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="count" id="al-count" role="status">Zobrazujeme všech 14 výrobků.</p>
+    <p class="note" style="margin-top:16px">Všechno pečeme v jedné dílně, kde se pracuje s moukou a ořechy. Při těžké alergii neumíme vyloučit stopová množství.</p>
+  </div>
+</section>
+
+<!-- ================= POSTUP ================= -->
+<section class="sec sec--band sec--tight" id="postup">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Objednávka krok za krokem</p>
+      <h2>Jak to probíhá</h2>
+      <p class="lede">Od odeslání zprávy po vyzvednutí jsou čtyři kroky. Termín potvrdíme do 24 hodin, záloha je splatná do dvou dnů od potvrzení.</p>
+    </div>
+    <ol class="steps reveal">
+      <li>
+        <span class="steps__n">1</span>
+        <h3>Sestava a termín</h3>
+        <p>Vyberete velikost a příchutě v konfigurátoru nebo nám je napíšete vlastními slovy. Termín potvrdíme do 24 hodin.</p>
+      </li>
+      <li>
+        <span class="steps__n">2</span>
+        <h3>Záloha 30 %</h3>
+        <p>Po potvrzení pošleme částku zálohy. Uhradíte ji převodem nebo v prodejně, tím je termín rezervovaný.</p>
+      </li>
+      <li>
+        <span class="steps__n">3</span>
+        <h3>Pečeme</h3>
+        <p>Korpus pečeme den před vyzvednutím, plníme a zdobíme v den odběru ráno, aby byl dort čerstvý.</p>
+      </li>
+      <li>
+        <span class="steps__n">4</span>
+        <h3>Vyzvednutí</h3>
+        <p>Dort převezmete v domluvený čas v prodejně. Doplatek uhradíte při odběru hotově nebo kartou.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= OBJEDNÁVKA ================= -->
+<section class="sec" id="objednavka">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Formulář</p>
+      <h2>Objednávka dortu a většího pečiva</h2>
+      <p class="lede">Vyplňte, co potřebujete. Odpověď s potvrzením termínu i ceny dostanete do 24 hodin. Pokud spěcháte, zavolejte nám v úterý až pátek 8:00 &ndash; 16:00 nebo v sobotu 8:00 &ndash; 12:00.</p>
+    </div>
+
+    <div class="two two--wide">
+      <form class="form reveal" id="objednavka-form" novalidate>
+        <div class="done" id="objednavka-hotovo" hidden tabindex="-1">
+          <h3>Zpráva je odeslaná</h3>
+          <p>Přišla do schránky pekárny. Ozveme se vám telefonicky do 24 hodin a potvrdíme termín i cenu. Na této ukázkové stránce se údaje nikam neukládají.</p>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-meno">Jméno a příjmení</label>
+            <input type="text" id="f-meno" name="meno" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-tel">Telefon</label>
+            <input type="tel" id="f-tel" name="telefon" autocomplete="tel" placeholder="vaše telefonní číslo">
+            <span class="hint">Na toto číslo vám zavoláme s potvrzením.</span>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-typ">Co objednáváte</label>
+            <select id="f-typ" name="typ">
+              <option value="torta">Dort na objednávku</option>
+              <option value="zakusky">Zákusky a mini zákusky</option>
+              <option value="pecivo">Větší množství pečiva</option>
+              <option value="sezona">Sezónní pečení</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-cas">Čas vyzvednutí</label>
+            <select id="f-cas" name="cas">
+              <option>7:00 &ndash; 9:00</option>
+              <option selected>9:00 &ndash; 12:00</option>
+              <option>12:00 &ndash; 15:00</option>
+              <option>15:00 &ndash; 17:30</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-datum">Datum vyzvednutí</label>
+            <input type="date" id="f-datum" name="datum">
+            <span class="hint" id="f-datum-hint">Nejdřív za tři pracovní dny, mimo neděle a pondělí.</span>
+          </div>
+          <div class="field">
+            <label for="f-pocet">Počet porcí nebo kusů</label>
+            <input type="text" id="f-pocet" name="pocet" placeholder="například 16 porcí">
+            <span class="hint">Podle toho doporučíme velikost.</span>
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom:18px">
+          <label for="f-zostava">Zpráva, sestava a poznámky</label>
+          <textarea id="f-zostava" name="zostava" placeholder="Například: Ø 22 cm, kakaový korpus, ganache, čokoládová poleva, nápis „Všechno nejlepší“."></textarea>
+          <span class="hint">Tlačítko v konfigurátoru sem doplní vaši sestavu automaticky.</span>
+        </div>
+
+        <label class="check" style="margin-bottom:22px">
+          <input type="checkbox" id="f-suhlas" name="suhlas">
+          <span>Souhlasím se zpracováním údajů pro vyřízení objednávky a beru na vědomí storno podmínky.</span>
+        </label>
+
+        <button class="btn btn--primary btn--full" type="submit">Odeslat zprávu</button>
+        <p class="note" style="margin-top:16px">Odesláním se objednávka ještě nepotvrzuje. Závaznou se stává po telefonickém potvrzení termínu a uhrazení zálohy 30 % z ceny.</p>
+      </form>
+
+      <div class="reveal stack">
+        <div class="card">
+          <h3>Rychleji telefonicky</h3>
+          <p class="note">Pokud si nejste jistí velikostí, řekněte nám počet hostů. V hovoru vám řekneme průměr, cenu i to, jestli je termín ještě volný.</p>
+          <ul class="kv" style="margin-top:16px">
+            <li><b>Telefon</b><span><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></span></li>
+            <li><b>Kdy zvedáme</b><span>Úterý &ndash; pátek 8:00 &ndash; 16:00, sobota 8:00 &ndash; 12:00</span></li>
+            <li><b>Adresa</b><span>Kovářská 21, 779 00 Olomouc</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Co od vás potřebujeme vědět</h3>
+          <ul>
+            <li>Počet lidí, pro které má dort vystačit</li>
+            <li>Jestli někdo ve společnosti nesmí lepek, mléko nebo ořechy</li>
+            <li>Barvu nebo motiv, pokud má dort ladit s výzdobou</li>
+            <li>Přesný text nápisu včetně diakritiky</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Kdy odpovídáme</h3>
+          <p class="note">Zprávy z formuláře čteme ráno po vyskladnění pultu a znovu odpoledne. V neděli a pondělí máme zavřeno, zprávy z těchto dnů vyřizujeme v úterý ráno.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OTVÁRACIE HODINY ================= -->
+<section class="sec sec--band" id="hodiny">
+  <div class="wrap">
+    <div class="two reveal">
+      <div>
+        <div class="head">
+          <div class="head__rule"></div>
+          <p class="eyebrow">Kdy máme otevřeno</p>
+          <h2>Otevírací doba</h2>
+        </div>
+        <ul class="hours">
+          <li><span class="hours__d">Pondělí</span><span>Zavřeno</span></li>
+          <li><span class="hours__d">Úterý</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Středa</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Čtvrtek</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Pátek</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Sobota</span><span>6:30 &ndash; 12:30</span></li>
+          <li><span class="hours__d">Neděle</span><span>Zavřeno</span></li>
+        </ul>
+        <p class="note" style="margin-top:18px">O státních svátcích pečeme ve zkráceném režimu, dobu vyvěsíme na dveře týden dopředu. Zákusky bývají vyprodané přibližně hodinu před zavírací dobou.</p>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Výdej po zavírací době</h3>
+          <p class="note">Pokud vám nevycházejí otevírací hodiny, domluvíme výdej objednaného dortu v úterý až pátek mezi 17:30 a 18:30. Napište to do poznámky v objednávce.</p>
+        </div>
+        <div class="card">
+          <h3>Večerní výprodej</h3>
+          <p class="note">Poslední hodinu před zavírací dobou prodáváme zbylé pečivo za polovinu ceny. Zákusky ve výprodeji nejsou, ty skladujeme v chladu do druhého dne. Chleba z předchozího dne stojí ráno 55 Kč.</p>
+        </div>
+        <div class="card">
+          <h3>Dovolená</h3>
+          <p class="note">Jednou ročně zavíráme na dva týdny, termín oznamujeme měsíc dopředu na dveřích prodejny. Objednávky na toto období nepřijímáme.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="board reveal">
+      <div class="board__in">
+        <p class="board__label">Denní harmonogram</p>
+        <h3>Co je kdy v pultu</h3>
+      </div>
+      <ul class="board__list board__in">
+        <li>
+          <span>
+            <span class="board__item">Rohlíky, pletýnky, croissanty</span> <span class="board__desc">První várka při otevření, druhá v 10:00</span>
+          </span>
+          <span class="board__time">6:30</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Kváskový chleba</span> <span class="board__desc">Vychladlý, krájíme na požádání</span>
+          </span>
+          <span class="board__time">8:00</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Zákusky a řezy</span> <span class="board__desc">Osm druhů, doplňujeme podle prodeje</span>
+          </span>
+          <span class="board__time">9:00</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Slané pečivo a pagáčky</span> <span class="board__desc">Pečeme průběžně do 15:00</span>
+          </span>
+          <span class="board__time">11:00</span>
+        </li>
+      </ul>
+      <p class="board__foot">Objednané dorty a větší objednávky pečiva vydáváme kdykoli během otevírací doby, stačí přijít k pultu a říct jméno.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOPRAVA ================= -->
+<section class="sec" id="doprava">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Cesta k nám</p>
+      <h2>Jak se k nám dostanete</h2>
+      <p class="lede">Jsme na rohu Kovářské a Městské ulice, ve vnitrobloku se vstupem přímo z chodníku. Práh je zapuštěný, do prodejny se dostanete i s kočárkem.</p>
+    </div>
+
+    <div class="two two--wide reveal">
+      <div class="plan">
+        <svg viewBox="0 0 620 320" role="img" aria-labelledby="plan-nadpis plan-popis">
+          <title id="plan-nadpis">Orientační schéma okolí prodejny</title>
+          <desc id="plan-popis">Prodejna stojí na rohu Kovářské a Městské ulice, parkování je před budovou, zastávka městské dopravy je 120 metrů na jih.</desc>
+          <rect x="0" y="0" width="620" height="320" fill="#F4EDE1"/>
+          <g stroke="#E2D7C6" stroke-width="1">
+            <path d="M0 40H620M0 80H620M0 120H620M0 160H620M0 200H620M0 240H620M0 280H620"/>
+            <path d="M40 0V320M80 0V320M120 0V320M160 0V320M200 0V320M240 0V320M280 0V320M320 0V320M360 0V320M400 0V320M440 0V320M480 0V320M520 0V320M560 0V320M600 0V320"/>
+          </g>
+          <rect x="0" y="128" width="620" height="46" fill="#E8D9C4"/>
+          <rect x="352" y="0" width="42" height="320" fill="#E8D9C4"/>
+          <rect x="96" y="60" width="176" height="60" fill="#2E211A"/>
+          <text x="184" y="97" text-anchor="middle" font-family="Georgia,serif" font-size="19" fill="#F0E7DA">Kůrka</text>
+          <rect x="96" y="24" width="176" height="26" fill="none" stroke="#A3452C" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="184" y="42" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#241B15">Parkování, 8 míst</text>
+          <text x="20" y="157" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Kovářská ulice</text>
+          <text x="373" y="300" text-anchor="middle" transform="rotate(-90 373 300)" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Městská ulice</text>
+          <circle cx="373" cy="236" r="9" fill="#A3452C"/>
+          <text x="392" y="241" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Zastávka MHD, 120 m</text>
+          <rect x="440" y="52" width="140" height="60" fill="none" stroke="#6A5A4E" stroke-width="1"/>
+          <text x="510" y="88" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Městský park</text>
+          <circle cx="184" cy="140" r="7" fill="#241B15"/>
+          <text x="198" y="145" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Vstup do prodejny</text>
+        </svg>
+      </div>
+
+      <div>
+        <ul class="kv">
+          <li><b>Adresa</b><span>Kovářská 21, 779 00 Olomouc</span></li>
+          <li><b>Autem</b><span>Osm parkovacích míst přímo před prodejnou, první hodina bez poplatku. Další místa v Městské ulici, 3 minuty pěšky.</span></li>
+          <li><b>MHD</b><span>Zastávka 120 metrů jižně, linky směřující do centra zastavují každých 10 minut.</span></li>
+          <li><b>Kolo</b><span>Stojan na čtyři kola u vchodu, pod přístřeškem.</span></li>
+          <li><b>Bezbariérovost</b><span>Zapuštěný práh, dveře se šířkou 100 cm, v prodejně místo na otočení vozíku.</span></li>
+          <li><b>Zásobování</b><span>Dvůr ze strany Městské ulice, prosíme nechat průjezd volný do 9:00.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODMIENKY ================= -->
+<section class="sec sec--band" id="podmienky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Pravidla objednávek</p>
+      <h2>Platba, zálohy a storno</h2>
+    </div>
+
+    <div class="three reveal">
+      <div class="card">
+        <h3>Jak platíte</h3>
+        <ul style="margin-bottom:0">
+          <li>Hotovost</li>
+          <li>Platební karta od 25 Kč, bez poplatku</li>
+          <li>Papírové i elektronické stravenky</li>
+          <li>Převod na účet u objednávek nad 2 500 Kč</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Záloha</h3>
+        <p class="note">U dortu a objednávek nad 1 500 Kč žádáme zálohu 30 % z ceny, splatnou do dvou dnů od potvrzení. Bez zálohy termín nerezervujeme, protože na jeden den bereme omezený počet dortů.</p>
+      </div>
+      <div class="card">
+        <h3>Storno</h3>
+        <ul style="margin-bottom:0">
+          <li>Víc než 72 hodin před termínem: záloha se vrací v plné výši</li>
+          <li>48 až 72 hodin: vracíme polovinu zálohy</li>
+          <li>Méně než 48 hodin: záloha propadá, suroviny jsou už nakoupené</li>
+          <li>Změna termínu jednou zdarma, pokud nám dáte vědět aspoň 72 hodin předem</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two reveal" style="margin-top:26px">
+      <div class="card">
+        <h3>Vyzvednutí a přeprava</h3>
+        <p class="note">Dort odkládáme v chladu do konce otevírací doby domluveného dne. Při přepravě ho položte na rovnou plochu v autě, ne na sedadlo. Za poškození po odběru neručíme.</p>
+      </div>
+      <div class="card">
+        <h3>Reklamace</h3>
+        <p class="note">Pokud něco nesedí, ozvěte se v den odběru. Vadný výrobek vyměníme nebo vrátíme peníze. Reklamaci vyřídíme nejpozději do 30 dnů od uplatnění.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VEĽKOOBCHOD ================= -->
+<section class="sec" id="velkoobchod">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Pro kavárny a firmy</p>
+      <h2>Velkoobchod a pohoštění</h2>
+      <p class="lede">Dvě možnosti pro větší objednávky: pravidelný denní odběr na pevný rozpis a jednorázové pohoštění na akci. Denně umíme upéct navíc 200 kusů pečiva, proto bereme nejvýše pět pravidelných odběratelů.</p>
+    </div>
+
+    <div class="two two--wide reveal">
+      <div>
+        <!-- FOTO: prepravky s pečivom pripravené pri zadnom vchode na ranný rozvoz -->
+        <figure class="obraz obraz--wide obraz--c" style="margin-bottom:26px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Pravidelný odběr</span>
+            <span class="obraz__n">V kavárně do 8:00</span>
+          </figcaption>
+        </figure>
+        <ul class="kv">
+          <li><b>Minimální odběr</b><span>30 kusů pečiva nebo 10 bochníků chleba denně</span></li>
+          <li><b>Cena</b><span>O 20 % nižší než v prodejně, při odběru nad 60 kusů denně o 25 %</span></li>
+          <li><b>Rozvoz</b><span>Po Olomouci v úterý až sobotu do 8:00. Zdarma při odběru nad 40 kusů denně, jinak 125 Kč za jízdu.</span></li>
+          <li><b>Rozpis</b><span>Objednávku na další týden potvrzujeme do čtvrtka 12:00</span></li>
+          <li><b>Fakturace</b><span>Jednou měsíčně, splatnost 14 dní</span></li>
+          <li><b>Změna a ukončení</b><span>Rozpis měníme nebo rušíme 14 dní předem, bez poplatku</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="group">
+          <div class="group__head">
+            <h3>Pohoštění na akci</h3>
+            <span class="group__when">Tři pracovní dny předem</span>
+          </div>
+          <ul class="pl">
+            <li>
+              <span class="pl__name"><b>Slané pohoštění, 40 kusů</b><span class="pl__desc">Mini pagáčky, preclíky, sýrové tyčinky</span></span>
+              <span class="pl__price">650 Kč</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Sladké pohoštění, 40 kusů</b><span class="pl__desc">Mini zákusky, řezy, laskonky</span></span>
+              <span class="pl__price">950 Kč</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Mini zákusky, od 20 kusů</b><span class="pl__desc">Cena za kus, druhy podle domluvy</span></span>
+              <span class="pl__price">25 Kč</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Chlebové mísy na pomazánky, 5 ks</b></span>
+              <span class="pl__price">350 Kč</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Dort nad 30 porcí</b><span class="pl__desc">Dvoupatrový 22 + 16 cm, šest pracovních dnů</span></span>
+              <span class="pl__price">od 3 450 Kč</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:26px">
+          <h3>Co u pohoštění platí</h3>
+          <ul style="margin-bottom:0">
+            <li>Konečný počet kusů potvrdíte nejpozději 48 hodin před akcí</li>
+            <li>Dovoz po Olomouci 125 Kč, při objednávce nad 2 500 Kč zdarma</li>
+            <li>Podnosy jsou vratné, vracíte je do tří dnů od akce</li>
+            <li>Seznam alergenů ke každé položce dostanete vytištěný</li>
+            <li>Záloha 30 % u objednávek nad 1 500 Kč, storno podle stejných pravidel jako u dortů</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="#objednavka">Domluvit odběr</a>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= POUKÁŽKY ================= -->
+<section class="sec sec--band" id="poukazky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Dárek</p>
+      <h2>Dárkové poukazy</h2>
+      <p class="lede">Papírový poukaz v obálce, vydáme ho na počkání během otevírací doby. Platí 12 měsíců od data vydání na všechno z nabídky včetně dortů na objednávku.</p>
+    </div>
+
+    <div class="vouchers reveal">
+      <div class="voucher"><b>500 Kč</b><span>Na zákusky a pečivo</span></div>
+      <div class="voucher"><b>750 Kč</b><span>Na menší dort</span></div>
+      <div class="voucher"><b>1 250 Kč</b><span>Na dort s dekorem</span></div>
+    </div>
+
+    <div class="two reveal">
+      <div class="card">
+        <h3>Jak se uplatňuje</h3>
+        <p class="note">Poukaz odevzdáte při platbě. Pokud je objednávka dražší, doplatíte rozdíl. Pokud levnější, zbytek zůstává na poukazu a použijete ho příště.</p>
+      </div>
+      <div class="card">
+        <h3>Na co neplatí</h3>
+        <p class="note">Poukaz neměníme za hotovost a nevztahuje se na večerní výprodej pečiva. Po uplynutí platnosti ho už neumíme uznat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Časté dotazy</p>
+      <h2>Na co se ptáte nejčastěji</h2>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Jak dopředu si mám objednat dort?</summary>
+        <div class="faq__a"><p>Jednoduchý dort do průměru 22 cm potřebuje tři pracovní dny. Větší průměry čtyři, dvoupatrový šest. Marcipánový potah přidává den, ručně malovaný povrch dva dny. Přesný nejbližší termín ukazuje konfigurátor.</p></div>
+      </details>
+      <details>
+        <summary>Děláte bezlepkové nebo bezlaktózové výrobky?</summary>
+        <div class="faq__a"><p>Ano, bezlepkový mandlový řez máme denně a bezlepkový korpus na dort za příplatek 300 Kč. Bezlaktózový dort umíme udělat s rostlinnou smetanou po domluvě. Dílna však není oddělená, takže při celiakii neumíme vyloučit stopy lepku.</p></div>
+      </details>
+      <details>
+        <summary>Umíme si dort přizpůsobit podle vlastní předlohy?</summary>
+        <div class="faq__a"><p>Pošlete nám obrázek nebo popis. Barvu a motiv přizpůsobíme, kopírovat cizí práci do detailu však neslibujeme. Složitější zdobení oceníme individuálně, vždy předem a s vaším souhlasem.</p></div>
+      </details>
+      <details>
+        <summary>Jak dlouho vydrží kváskový chleba?</summary>
+        <div class="faq__a"><p>Tři až čtyři dny. Skladujte ho řezem dolů v plátěném sáčku nebo v chlebníku, ne v igelitu. Do lednice ho nedávejte, tam tvrdne nejrychleji.</p></div>
+      </details>
+      <details>
+        <summary>Jak dlouho vydrží hotový dort?</summary>
+        <div class="faq__a"><p>V lednici při 4 až 6 °C dva dny. Dorty s čerstvým ovocem a šlehačkou doporučujeme sníst v den odběru. Před podáváním nechte dort 30 minut v pokojové teplotě, chuť se tím výrazně zlepší.</p></div>
+      </details>
+      <details>
+        <summary>Rozvážíte objednávky?</summary>
+        <div class="faq__a"><p>Po městě rozvážíme v úterý až pátek mezi 9:00 a 11:00 za 125 Kč. Při objednávce nad 2 500 Kč je doprava zdarma. Mimo město nerozvážíme, dorty jsou na přepravu citlivé.</p></div>
+      </details>
+      <details>
+        <summary>Dá se u vás posedět a dát si kávu?</summary>
+        <div class="faq__a"><p>V prodejně máme dva stolky se čtyřmi místy a stojací pult u okna. Espresso stojí 40 Kč, cappuccino 55 Kč. Kávu podáváme v úterý až pátek do 16:30, v sobotu do 12:00. Místa nerezervujeme.</p></div>
+      </details>
+      <details>
+        <summary>Prodáváte i velkoobchodně do kaváren?</summary>
+        <div class="faq__a"><p>Ano, při odběru aspoň 30 kusů pečiva denně a pevném rozpisu dnů jsou ceny o 20 % nižší než v prodejně. Celé podmínky včetně kapacity najdete v sekci <a href="#velkoobchod">Velkoobchod a pohoštění</a>.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KARIÉRA ================= -->
+<section class="sec sec--dark" id="kariera">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Práce u nás</p>
+      <h2>Koho hledáme</h2>
+      <p class="lede">Dvě volná místa na denní směně. Neděle a pondělí jsou volné pro celý tým, o svátcích pečeme ve zkráceném režimu.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="job">
+        <div>
+          <h3>Cukrář nebo cukrářka</h3>
+          <p class="job__meta">Plný úvazek &middot; nástup dohodou &middot; od 31 250 Kč hrubého podle praxe</p>
+        </div>
+        <div>
+          <p>Práce na zákuscích a dortech, samostatné zdobení, začátek směny v 5:00.</p>
+          <ul>
+            <li>Praxe v cukrářské výrobě aspoň dva roky</li>
+            <li>Zvládnutí krémů, ganache a práce s marcipánem</li>
+            <li>Zdravotní průkaz</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job">
+        <div>
+          <h3>Prodavač nebo prodavačka</h3>
+          <p class="job__meta">Plný i zkrácený úvazek &middot; od 23 750 Kč hrubého</p>
+        </div>
+        <div>
+          <p>Obsluha pultu, příjem objednávek, doplňování výrobků a večerní uzávěrka.</p>
+          <ul>
+            <li>Práce s registrační pokladnou a hotovostí</li>
+            <li>Začátek ranní směny v 6:00</li>
+            <li>Zdravotní průkaz</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:26px">Ozvěte se nám přes <a href="#objednavka">formulář</a> nebo nám zavolejte, případně přineste životopis přímo do prodejny. Odpovídáme do týdne a na pohovor zveme ráno, kdy uvidíte dílnu v plném chodu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT ================= -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Kontakt</p>
+      <h2>Telefon, adresa a velké objednávky</h2>
+    </div>
+
+    <div class="two reveal">
+      <div>
+        <ul class="kv">
+          <li><b>Provozovna</b><span>Pekárna a cukrárna Kůrka<br>Kovářská 21, 779 00 Olomouc</span></li>
+          <li><b>Telefon</b><span><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></span></li>
+          <li><b>Objednávky</b><span>Telefonicky nebo přes <a href="#objednavka">formulář</a>, odpověď do 24 hodin</span></li>
+          <li><b>Otevřeno</b><span>Úterý &ndash; pátek 6:30 &ndash; 17:30, sobota 6:30 &ndash; 12:30</span></li>
+          <li><b>Zavřeno</b><span>Neděle a pondělí</span></li>
+          <li><b>Parkování</b><span>Osm míst před prodejnou, první hodina bez poplatku</span></li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn--primary" href="#objednavka">Napsat přes formulář</a>
+          <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Velká objednávka</h3>
+          <p class="note">Svatby, firemní akce a pohoštění řešíme osobně. Přijďte se domluvit do prodejny v úterý až čtvrtek odpoledne, kdy je v dílně nejmíň práce.</p>
+        </div>
+        <div class="card">
+          <h3>Ochutnávka před objednávkou</h3>
+          <p class="note">U dortu nad 2 500 Kč připravíme ochutnávku tří náplní. Domluvte si ji aspoň týden předem, stojí 200 Kč a při objednání dort o tuto částku zlevníme.</p>
+        </div>
+        <div class="card">
+          <h3>Jak se domluvíme</h3>
+          <p class="note">Přes formulář napište termín, počet porcí a představu o chuti. Zavoláme vám, doladíme detaily a pošleme částku zálohy. Termín držíme až po jejím uhrazení.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= AUTOR UKÁŽKY ================= -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap">
+    <div class="author__grid">
+      <div>
+        <p class="author__tag">Ukázková stránka</p>
+        <h2 id="autor-nadpis">Líbí se vám tento web?</h2>
+        <p>Takový web pro vás postaví <strong>Alex Poliak</strong>. Tuto ukázku navrhl a naprogramoval sám, od první čáry až po konfigurátor dortu, který počítá cenu i termín.</p>
+        <p>Pekárna Kůrka je vymyšlený podnik, ceny i texty slouží jen k předvedení. Vy dostanete ten samý web s vaším ceníkem, vaší otevírací dobou a formulářem, který opravdu odesílá.</p>
+        <p class="author__price">Weby na míru od 250 EUR. První návrh do 3 dnů.</p>
+        <p class="author__free">Konzultace zdarma a nezávazně</p>
+      </div>
+
+      <div class="author__box">
+        <ul>
+          <li><strong>E-mail</strong><br><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></li>
+          <li><strong>Podpora</strong><br><a href="mailto:support@apoliak.online">support@apoliak.online</a></li>
+          <li><strong>Telefon</strong><br><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></li>
+          <li><strong>Web</strong><br><a href="https://apoliak.online/cs/">https://apoliak.online</a></li>
+        </ul>
+        <div class="actions" style="margin-top:0">
+          <a class="btn btn--sand" href="https://apoliak.online/cs/">Podívat se na apoliak.online</a>
+          <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ================= PÄTIČKA ================= -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__cta">
+      <p>Dort na objednávku od 1 050 Kč, nejkratší termín tři pracovní dny. Termín i cenu potvrdíme do 24 hodin.</p>
+      <a class="btn btn--primary" href="#objednavka">Objednat dort</a>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </div>
+    <div class="foot__grid">
+      <div>
+        <h3>Pekárna a cukrárna Kůrka</h3>
+        <p>Kovářská 21<br>779 00 Olomouc</p>
+        <p><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></p>
+        <p>Úterý &ndash; pátek 6:30 &ndash; 17:30<br>Sobota 6:30 &ndash; 12:30<br>Neděle a pondělí zavřeno</p>
+      </div>
+      <div>
+        <h3>Nabídka</h3>
+        <ul>
+          <li><a href="#pecivo">Chleba a pečivo</a></li>
+          <li><a href="#zakusky">Zákusky a řezy</a></li>
+          <li><a href="#torty">Dorty na objednávku</a></li>
+          <li><a href="#sezona">Sezónní pečení</a></li>
+          <li><a href="#poukazky">Dárkové poukazy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Objednávka</h3>
+        <ul>
+          <li><a href="#konfigurator">Konfigurátor dortu</a></li>
+          <li><a href="#postup">Jak to probíhá</a></li>
+          <li><a href="#objednavka">Formulář</a></li>
+          <li><a href="#podmienky">Platba a storno</a></li>
+          <li><a href="#velkoobchod">Velkoobchod a pohoštění</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Informace</h3>
+        <ul>
+          <li><a href="#hodiny">Otevírací doba</a></li>
+          <li><a href="#doprava">Jak se k nám dostanete</a></li>
+          <li><a href="#alergeny">Alergeny</a></li>
+          <li><a href="#faq">Časté dotazy</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#kariera">Kariéra</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <p>Ukázkový web. Podnik, ceny a adresa jsou vymyšlené.</p>
+      <p>Návrh a kód: <a href="https://apoliak.online/cs/">Alex Poliak &mdash; apoliak.online</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add("js");
+
+  /* ---------- mobilné menu ---------- */
+  var toggle = document.getElementById("nav-toggle");
+  var menu = document.getElementById("hlavne-menu");
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var open = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", open ? "false" : "true");
+      toggle.setAttribute("aria-expanded", open ? "false" : "true");
+    });
+    menu.addEventListener("click", function(e){
+      if(e.target.tagName === "A"){
+        menu.setAttribute("data-open","false");
+        toggle.setAttribute("aria-expanded","false");
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && menu.getAttribute("data-open") === "true"){
+        menu.setAttribute("data-open","false");
+        toggle.setAttribute("aria-expanded","false");
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---------- odhalenie obsahu pri scrollovaní ---------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.06});
+    reveals.forEach(function(el){ io.observe(el); });
+  }else{
+    reveals.forEach(function(el){ el.classList.add("is-in"); });
+  }
+
+  /* ---------- pomocné funkcie ---------- */
+  var DNI = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sobota"];
+  var MESIACE = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+
+  function eur(n){
+    return __f(n) + " " + __m;
+  }
+  function pridajDni(dni){
+    var d = new Date();
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate() + dni);
+    /* nedeľa (0) a pondelok (1) máme zatvorené */
+    while(d.getDay() === 0 || d.getDay() === 1){ d.setDate(d.getDate() + 1); }
+    return d;
+  }
+  function datumText(d){
+    return DNI[d.getDay()] + " " + d.getDate() + ". " + MESIACE[d.getMonth()] + " " + d.getFullYear();
+  }
+  function datumISO(d){
+    var m = String(d.getMonth()+1);
+    var den = String(d.getDate());
+    if(m.length < 2){ m = "0" + m; }
+    if(den.length < 2){ den = "0" + den; }
+    return d.getFullYear() + "-" + m + "-" + den;
+  }
+
+  /* ---------- konfigurátor torty ---------- */
+  var napis = document.getElementById("cfg-napis");
+  var elCena = document.getElementById("s-cena");
+  var elPorcia = document.getElementById("s-porcia");
+  var elTermin = document.getElementById("s-termin");
+  var poleDatum = document.getElementById("f-datum");
+  var poleZostava = document.getElementById("f-zostava");
+  var poleTyp = document.getElementById("f-typ");
+  var stav = {};
+
+  function zvolene(skupina){
+    return document.querySelector('input[name="cfg-' + skupina + '"]:checked');
+  }
+
+  function prepocitaj(){
+    var v = zvolene("velkost");
+    var k = zvolene("korpus");
+    var p = zvolene("plnka");
+    var s = zvolene("povrch");
+    if(!v || !k || !p || !s){ return; }
+
+    var cena = 0, dni = 0;
+    [v,k,p,s].forEach(function(el){
+      cena += parseFloat(el.getAttribute("data-cena"));
+      dni += parseInt(el.getAttribute("data-dni"), 10);
+    });
+    var maNapis = napis && napis.checked;
+    if(maNapis){ cena += parseFloat(napis.getAttribute("data-cena")); }
+
+    var porcie = parseInt(v.getAttribute("data-porcie"), 10);
+    var termin = pridajDni(dni);
+
+    document.getElementById("s-velkost").textContent = v.getAttribute("data-popis");
+    document.getElementById("s-korpus").textContent = k.getAttribute("data-popis");
+    document.getElementById("s-plnka").textContent = p.getAttribute("data-popis");
+    document.getElementById("s-povrch").textContent = s.getAttribute("data-popis");
+    document.getElementById("s-napis").textContent = maNapis ? "ano, text doplníte v objednávce" : "bez nápisu";
+
+    elCena.textContent = eur(cena);
+    elPorcia.textContent = "Přibližně " + eur(cena / porcie) + " za porci při " + porcie + " porcích. Záloha při objednávce " + eur(cena * 0.3) + ".";
+    elTermin.textContent = datumText(termin);
+
+    stav = {
+      cena: cena,
+      dni: dni,
+      termin: termin,
+      popis: v.getAttribute("data-popis") + ", " + k.getAttribute("data-popis") + ", " +
+             p.getAttribute("data-popis") + ", " + s.getAttribute("data-popis") +
+             (maNapis ? ", s nápisem na dortu" : "") + ". Orientační cena " + eur(cena) + "."
+    };
+
+    if(poleDatum){
+      poleDatum.min = datumISO(termin);
+      if(!poleDatum.value || poleDatum.value < poleDatum.min){ poleDatum.value = datumISO(termin); }
+    }
+  }
+
+  var vstupy = document.querySelectorAll('input[name^="cfg-"], #cfg-napis');
+  vstupy.forEach(function(el){ el.addEventListener("change", prepocitaj); });
+  if(vstupy.length){ prepocitaj(); }
+
+  var prenies = document.getElementById("cfg-prenies");
+  if(prenies){
+    prenies.addEventListener("click", function(){
+      if(poleZostava){ poleZostava.value = stav.popis || ""; }
+      if(poleTyp){ poleTyp.value = "torta"; }
+      var cielova = document.getElementById("objednavka");
+      if(cielova){ cielova.scrollIntoView({behavior:"smooth", block:"start"}); }
+      window.setTimeout(function(){
+        var meno = document.getElementById("f-meno");
+        if(meno){ meno.focus({preventScroll:true}); }
+      }, 500);
+    });
+  }
+
+  /* ---------- filter alergénov ---------- */
+  var filtre = document.querySelectorAll(".filter");
+  var riadky = document.querySelectorAll("#al-body tr");
+  var pocet = document.getElementById("al-count");
+  if(filtre.length && riadky.length){
+    filtre.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var kod = btn.getAttribute("data-free");
+        filtre.forEach(function(b){ b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+        var viditelne = 0;
+        riadky.forEach(function(tr){
+          var zoznam = tr.getAttribute("data-al").split(",");
+          var ok = (kod === "0") || zoznam.indexOf(kod) === -1;
+          tr.hidden = !ok;
+          if(ok){ viditelne++; }
+        });
+        if(pocet){
+          pocet.textContent = (kod === "0")
+            ? "Zobrazujeme všech " + riadky.length + " výrobků."
+            : "Zobrazujeme " + viditelne + " z " + riadky.length + " výrobků podle zvoleného filtru.";
+        }
+      });
+    });
+  }
+
+  /* ---------- objednávkový formulár ---------- */
+  var form = document.getElementById("objednavka-form");
+  var hotovo = document.getElementById("objednavka-hotovo");
+  if(form && hotovo){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      hotovo.hidden = false;
+      hotovo.focus();
+      hotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  }
+})();
+</script>
+</body>
+</html>

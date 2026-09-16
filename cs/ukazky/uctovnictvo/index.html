@@ -1,0 +1,3209 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/uctovnictvo/">
+<!-- /jazyky:hreflang -->
+<title>SALDIA — účetnictví, mzdy a daně, Praha</title>
+<meta name="description" content="Účetní kancelář SALDIA, Mýtná 21, Praha: daňová evidence a účetnictví, mzdy a daňová přiznání za měsíční paušál od 975 korun. Ceník, kalkulačka paušálu, otevírací doba a nezávazná nabídka do dvou pracovních dnů. Ukázkový web od apoliak.online.">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="SALDIA — účetnictví, mzdy a daně, Praha (ukázkový web)">
+<meta property="og:description" content="Měsíční paušál od 975 korun, zpracování do 20. dne, výpovědní lhůta jeden měsíc. Ceník, kalkulačka paušálu a postup spolupráce. Ukázkový web, který navrhl a naprogramoval Alex Poliak.">
+<meta property="og:locale" content="cs_CZ">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='2'%20fill='%2314181c'/%3E%3Cpath%20d='M7%2011h18M7%2016h18M7%2021h11'%20stroke='%23eceef0'%20stroke-width='1.8'/%3E%3Cpath%20d='M21%2021h4'%20stroke='%23c9a465'%20stroke-width='1.8'/%3E%3C/svg%3E">
+
+<style>
+/* ------------------------------------------------------------------
+   SALDIA — ukážkový web fiktívnej účtovnej kancelárie
+   Paleta: bridlicová neutrálna škála + jeden tlmený mosadzný akcent.
+   Bez sýtych a svietivých farieb, zaoblenie najviac 4 px.
+   Obrazové plochy sú riešené vlastnou kompozíciou: vrstvený
+   gradient, vlásočnicová mriežka, kruhové výseče a veľká typografia.
+   ------------------------------------------------------------------ */
+
+:root{
+  /* bridlica — svetlá časť */
+  --paper:       #f5f6f8;
+  --paper-2:     #ebedf0;
+  --paper-3:     #dfe2e6;
+  --surface:     #ffffff;
+  --line:        #d6dade;
+  --line-2:      #c0c5cb;
+  --line-input:  #868d95;
+
+  /* text na svetlom */
+  --ink:         #14181c;   /* 16,2:1 na --paper */
+  --ink-mut:     #535a62;   /* 6,4:1 na --paper, 5,9:1 na --paper-2 */
+  --ink-mut-2:   #474e56;   /* 6,5:1 aj na najtmavšom mieste svetlých plôch */
+
+  /* bridlica — tmavá časť */
+  --dark:        #14181c;
+  --dark-2:      #1a1f24;
+  --dark-3:      #222830;
+  --line-dark:   #2d343c;
+  --line-dark-2: #6e7780;   /* 3,4:1 aj na najsvetlejšom tmavom podklade */
+
+  /* text na tmavom */
+  --on-dark:     #c6ccd2;   /* 11,3:1 */
+  --on-dark-str: #f0f2f4;   /* 16,0:1 */
+  --on-dark-mut: #939aa2;   /* 6,4:1  */
+
+  /* mosadzný akcent */
+  --acc:         #7a5c22;   /* 5,8:1 na --paper, biely text na ňom 6,2:1 */
+  --acc-2:       #c9a465;   /* 7,9:1 na --dark */
+  --acc-soft:    rgba(122,92,34,.07);
+
+  /* jemné zrno pre kompozičné plochy (inline SVG, žiadny externý súbor) */
+  --grain: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='150'%20height='150'%3E%3Cfilter%20id='g'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='150'%20height='150'%20filter='url(%23g)'/%3E%3C/svg%3E");
+
+  --maxw: 1180px;
+  --gut: clamp(18px, 4vw, 44px);
+  --r: 3px;
+
+  --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+  overflow-x:clip;      /* clip nevytvára scrollovací kontajner, sticky hlavička ostáva funkčná */
+}
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth; }
+}
+
+body{
+  margin:0;
+  overflow-x:hidden;
+  overflow-x:clip;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{ max-width:100%; }
+
+h1,h2,h3,h4{
+  font-family:var(--serif);
+  font-weight:400;
+  line-height:1.16;
+  letter-spacing:-0.01em;
+  margin:0;
+  color:inherit;
+}
+
+p{ margin:0 0 1em; }
+p:last-child{ margin-bottom:0; }
+a{ color:inherit; }
+
+:focus-visible{
+  outline:2px solid var(--acc);
+  outline-offset:3px;
+}
+.band-dark :focus-visible,
+.plate-dark :focus-visible{ outline-color:var(--acc-2); }
+
+.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+.wrap{
+  width:100%;
+  max-width:var(--maxw);
+  margin-inline:auto;
+  padding-inline:var(--gut);
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:400;
+  background:var(--dark); color:var(--on-dark-str); padding:12px 18px; font-weight:600;
+}
+.skip:focus{ left:12px; top:12px; }
+
+/* ================= HORNÝ PÁSIK UKÁŽKY + NAVIGÁCIA ================= */
+
+.topstack{ position:sticky; top:0; z-index:120; }
+
+.demobar{
+  background:var(--dark);
+  color:var(--on-dark);
+  font-size:13px;
+  letter-spacing:.02em;
+  border-bottom:1px solid var(--line-dark);
+}
+.demobar .wrap{
+  display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+  gap:6px 18px; padding-block:9px; text-align:center;
+}
+.demobar .tag{
+  font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; font-weight:600;
+  color:var(--acc-2); border:1px solid rgba(201,164,101,.42);
+  padding:4px 9px 3px; border-radius:2px; white-space:nowrap;
+}
+.demobar .long{ color:var(--on-dark); }
+.demobar a{ text-decoration:none; }
+.demobar .tel{ color:var(--on-dark-str); border-bottom:1px solid rgba(201,164,101,.55); white-space:nowrap; }
+.demobar .tel:hover{ color:var(--acc-2); border-bottom-color:var(--acc-2); }
+.demobar .site{
+  color:var(--dark); background:var(--acc-2);
+  padding:3px 11px; border-radius:2px; font-weight:600; white-space:nowrap;
+  letter-spacing:.03em;
+}
+.demobar .site:hover{ background:#d8b87e; color:var(--dark); }
+
+@media (max-width: 700px){
+  .demobar{ font-size:12px; line-height:1.45; }
+  .demobar .wrap{ gap:5px 12px; padding-block:8px; }
+}
+@media (max-width: 430px){
+  .demobar{ font-size:11.5px; }
+  .demobar .wrap{ gap:5px 10px; }
+  .demobar .site{ padding:2px 8px; }
+  .demobar .tag{ font-size:9.5px; letter-spacing:.18em; padding:3px 7px 2px; }
+}
+
+.nav{
+  background:rgba(247,246,243,.97);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{ display:flex; align-items:center; gap:18px; min-height:64px; }
+
+.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; margin-right:auto; }
+.brand-mark{ flex:none; }
+.brand-txt{ display:flex; flex-direction:column; line-height:1.05; }
+.brand-name{ font-family:var(--serif); font-size:21px; letter-spacing:.16em; color:var(--ink); }
+.brand-sub{
+  font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-mut); margin-top:5px;
+}
+
+.menu{ display:flex; align-items:center; gap:2px; }
+.menu a{
+  text-decoration:none; color:var(--ink); font-size:14.5px;
+  padding:10px 11px; position:relative; white-space:nowrap;
+}
+.menu a::after{
+  content:""; position:absolute; left:11px; right:11px; bottom:5px; height:1px;
+  background:var(--acc); transform:scaleX(0); transform-origin:left;
+}
+.menu a:hover::after,
+.menu a[aria-current="true"]::after{ transform:scaleX(1); }
+.menu a[aria-current="true"]{ color:var(--acc); }
+
+/* telefón a hlavné tlačidlo sú mimo rozbaľovacieho menu, takže ostávajú
+   viditeľné na každej šírke obrazovky vrátane mobilu */
+.nav-act{ display:flex; align-items:center; gap:10px; margin-left:14px; }
+
+.nav .nav-act .nav-tel{
+  display:inline-flex; flex-direction:column; gap:2px; text-decoration:none;
+  white-space:nowrap; padding:6px 4px;
+}
+.nav .nav-act .nav-tel .l{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut-2);
+}
+.nav .nav-act .nav-tel .v{ font-family:var(--serif); font-size:17px; color:var(--ink); }
+.nav .nav-act .nav-tel:hover .v{ color:var(--acc); }
+
+/* Hlavné tlačidlo. Dvojtriedny selektor s prefixom .nav má vyššiu
+   špecificitu než akékoľvek pravidlo pre odkazy, takže biely text
+   na mosadznom podklade sa nedá prebiť (kontrast 6,2:1). */
+.nav .nav-act .nav-cta{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--acc); border:1px solid var(--acc); color:#ffffff;
+  padding:11px 18px; font-size:14.5px; font-weight:600; letter-spacing:.01em;
+  text-decoration:none; border-radius:2px; white-space:nowrap;
+}
+.nav .nav-act .nav-cta:hover{ background:#63491a; border-color:#63491a; color:#ffffff; }
+
+.burger{
+  display:none; background:transparent; border:1px solid var(--line-2);
+  color:var(--ink); width:46px; height:42px; border-radius:2px; cursor:pointer;
+  align-items:center; justify-content:center;
+}
+.burger:hover{ border-color:var(--ink); }
+
+@media (prefers-reduced-motion: no-preference){
+  .menu a::after{ transition:transform .22s ease; }
+  .btn, .nav-cta, .demobar .site{ transition:background-color .18s ease, color .18s ease, border-color .18s ease; }
+}
+
+@media (max-width: 1180px){
+  .nav{ position:relative; }
+  .nav-in{ min-height:58px; }
+  .burger{ display:inline-flex; order:4; }
+  .nav-act{ order:3; }
+  .menu{
+    display:none; position:absolute; left:0; right:0; top:100%;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:4px var(--gut) 16px;
+    box-shadow:0 22px 34px -26px rgba(0,0,0,.5);
+  }
+  .menu.is-open{ display:flex; }
+  .menu a{ padding:14px 2px; border-bottom:1px solid var(--line); font-size:16px; }
+  .menu a::after{ display:none; }
+}
+/* pod 700 px sa telefón a tlačidlo presunú do druhého riadku hlavičky,
+   aby sa na úzkom displeji zmestili celé a nikam sa neschovali */
+@media (max-width: 700px){
+  .nav-in{ flex-wrap:wrap; padding-bottom:10px; column-gap:10px; }
+  .burger{ order:2; }
+  .nav-act{ order:3; width:100%; margin-left:0; gap:8px; }
+  .nav .nav-act .nav-tel{
+    flex:none; flex-direction:row; align-items:center;
+    border:1px solid var(--line-2); border-radius:2px; padding:9px 13px;
+  }
+  .nav .nav-act .nav-tel .l{ display:none; }
+  .nav .nav-act .nav-tel .v{ line-height:1.2; }
+  .nav .nav-act .nav-cta{ flex:1 1 auto; padding:12px 10px; }
+}
+@media (max-width: 380px){
+  .nav .nav-act .nav-tel .v{ font-size:15.5px; }
+  .nav .nav-act .nav-tel{ padding:9px 10px; }
+  .nav .nav-act .nav-cta{ font-size:14px; padding:12px 6px; }
+}
+/* ================= SPOLOČNÉ SEKCIE ================= */
+
+section{ scroll-margin-top:calc(var(--stack, 112px) + 12px); }
+
+.sec{ padding:clamp(56px, 7vw, 96px) 0; border-top:1px solid var(--line); }
+.band-alt{ background:var(--paper-2); }
+.band-dark{ background:var(--dark); color:var(--on-dark); border-top:0; }
+.band-dark h2,.band-dark h3{ color:var(--on-dark-str); }
+
+.sec-head{
+  display:grid; grid-template-columns:190px 1fr; gap:clamp(18px,3vw,44px);
+  padding-bottom:clamp(28px,4vw,44px);
+  margin-bottom:clamp(28px,4vw,44px);
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.band-dark .sec-head{ border-bottom-color:var(--line-dark); }
+@media (max-width: 860px){
+  .sec-head{ grid-template-columns:1fr; gap:14px; }
+}
+
+.sec-idx{
+  display:flex; align-items:baseline; gap:12px; margin:0;
+  font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut);
+  padding-top:9px;
+}
+.band-dark .sec-idx{ color:var(--on-dark-mut); }
+.sec-idx b{ color:var(--acc); font-weight:600; letter-spacing:.12em; }
+.band-dark .sec-idx b{ color:var(--acc-2); }
+
+.sec-h{ font-size:clamp(28px, 4vw, 46px); letter-spacing:-0.022em; }
+.lead{ font-size:clamp(16.5px,1.5vw,18.5px); color:var(--ink-mut); max-width:62ch; margin-top:16px; }
+.band-dark .lead{ color:var(--on-dark); }
+
+.sub-h{
+  font-size:clamp(20px,2.2vw,24px);
+  margin:clamp(38px,4.4vw,54px) 0 18px;
+  padding-top:clamp(26px,3vw,34px);
+  border-top:1px solid var(--line);
+}
+.band-dark .sub-h{ border-top-color:var(--line-dark); }
+
+/* ---------------- tlačidlá ----------------
+   Zámerne dvojtriedne selektory (.btn.btn-primary …). Majú vyššiu
+   špecificitu než ktorékoľvek pravidlo pre odkazy v sekciách
+   (.foot-grid a, .author-data a, .menu a …), takže farba textu
+   tlačidla sa nikdy neprebije farbou odkazu a text ostane čitateľný. */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 24px; font-size:15px; font-weight:600; font-family:var(--sans);
+  letter-spacing:.02em;
+  text-decoration:none; border-radius:2px; cursor:pointer; border:1px solid transparent;
+}
+.btn.btn-primary{ background:var(--ink); color:#ffffff; border-color:var(--ink); }
+.btn.btn-primary:hover{ background:#000000; border-color:#000000; color:#ffffff; }
+.btn.btn-acc{ background:var(--acc); color:#ffffff; border-color:var(--acc); }
+.btn.btn-acc:hover{ background:#63491a; border-color:#63491a; color:#ffffff; }
+.btn.btn-line{ background:transparent; color:var(--ink); border-color:var(--line-input); }
+.btn.btn-line:hover{ border-color:var(--ink); background:transparent; color:var(--ink); }
+.btn.btn-light{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+.btn.btn-light:hover{ background:#ffffff; border-color:#ffffff; color:var(--ink); }
+.btn.btn-ghost{ background:transparent; color:var(--on-dark-str); border-color:var(--line-dark-2); }
+.btn.btn-ghost:hover{ border-color:var(--acc-2); color:var(--acc-2); background:transparent; }
+/* akcentové tlačidlo na tmavom páse: tmavý text na mosadzi, 7,9:1 */
+.btn.btn-acc2{ background:var(--acc-2); color:#14181c; border-color:var(--acc-2); }
+.btn.btn-acc2:hover{ background:#d8b87e; border-color:#d8b87e; color:#14181c; }
+
+/* ================= HERO — obálka časopisu =================
+   Obrovská sadzba nadpisu prekrýva veľkú farebnú plochu vpravo hore,
+   v pravom dolnom rohu je malý blok s najdôležitejším údajom. */
+
+.hero{
+  position:relative;
+  padding:clamp(28px,4vw,58px) 0 clamp(40px,5vw,74px);
+}
+.hero-plane{
+  position:absolute; z-index:0; top:0; right:0;
+  width:min(62%, 740px);
+  height:clamp(232px, 30vw, 400px);
+  pointer-events:none;
+}
+.hero-plane svg{ display:block; width:100%; height:100%; }
+@media (max-width: 720px){
+  .hero-plane{ width:min(74%, 330px); height:clamp(168px, 40vw, 258px); }
+}
+.hero-in{ position:relative; z-index:1; }
+
+.hero-kicker{
+  margin:0 0 clamp(18px,2.6vw,32px);
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; color:var(--ink-mut-2);
+}
+.hero-kicker::before{
+  content:""; width:clamp(26px,5vw,64px); height:1px; background:var(--acc); flex:none;
+}
+
+h1{
+  font-size:clamp(2.6rem, 11.4vw, 8rem);
+  line-height:0.98;
+  letter-spacing:-0.035em;
+  margin:0;
+  color:var(--ink);
+}
+h1 .l{ display:block; }
+h1 .l2{ margin-left:clamp(0px, 4.5vw, 96px); }
+h1 .l3{
+  font-family:var(--sans); font-weight:600;
+  font-size:clamp(14px, 2.2vw, 25px); letter-spacing:.2em; text-transform:uppercase;
+  line-height:1.3; color:var(--acc);
+  margin:clamp(14px,1.8vw,22px) 0 0 clamp(0px, 9vw, 192px);
+}
+
+.hero-rule{
+  height:1px; background:var(--line-2); border:0; margin:clamp(26px,3.4vw,46px) 0 0;
+}
+.hero-sub{
+  font-family:var(--serif);
+  font-size:clamp(19px,2.4vw,28px);
+  line-height:1.3;
+  color:var(--ink-mut-2);
+  margin:clamp(16px,2vw,24px) 0 0;
+  max-width:36ch;
+}
+
+.hero-body{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,296px);
+  gap:clamp(26px,4vw,56px); align-items:end;
+  margin-top:clamp(28px,3.8vw,48px);
+}
+@media (max-width: 900px){
+  .hero-body{ grid-template-columns:1fr; align-items:stretch; }
+}
+.hero-lead{
+  font-size:clamp(16.5px,1.6vw,19px);
+  color:var(--ink-mut);
+  max-width:58ch;
+  margin:0 0 26px;
+}
+.hero-cta{ display:flex; flex-wrap:wrap; gap:12px; }
+.hero-meta{
+  margin:22px 0 0; font-size:14px; color:var(--ink-mut-2); max-width:60ch;
+}
+
+.hero-badge{
+  border:1px solid var(--ink); border-top:3px solid var(--acc);
+  border-radius:var(--r); background:var(--surface);
+  padding:clamp(18px,2.2vw,24px);
+}
+.hero-badge .lbl{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ink-mut-2);
+}
+.hero-badge .v{
+  display:flex; align-items:baseline; gap:8px; margin:12px 0 0; font-family:var(--serif);
+}
+.hero-badge .v b{
+  font-weight:400; font-size:clamp(46px,6vw,62px); line-height:1; color:var(--ink);
+  letter-spacing:-0.03em;
+}
+.hero-badge .v i{ font-style:normal; font-size:21px; color:var(--acc); }
+.hero-badge .n{
+  margin:14px 0 0; padding-top:13px; border-top:1px solid var(--line);
+  font-size:13.5px; line-height:1.5; color:var(--ink-mut-2);
+}
+
+/* pás s kľúčovými číslami */
+.figures{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--paper-2); }
+.figures-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+.figures-grid > div{
+  padding:clamp(22px,2.6vw,30px) clamp(16px,2vw,28px);
+  border-right:1px solid var(--line);
+}
+.figures-grid > div:last-child{ border-right:0; }
+.fig-v{
+  font-family:var(--serif); font-size:clamp(26px,3.2vw,36px); color:var(--ink);
+  display:block; line-height:1.1;
+}
+.fig-l{ display:block; margin-top:8px; font-size:14px; color:var(--ink-mut); }
+@media (max-width: 820px){
+  .figures-grid{ grid-template-columns:repeat(2,1fr); }
+  .figures-grid > div{ border-bottom:1px solid var(--line); }
+  .figures-grid > div:nth-child(2n){ border-right:0; }
+  .figures-grid > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width: 460px){
+  .figures-grid{ grid-template-columns:1fr; }
+  .figures-grid > div{ border-right:0; }
+  .figures-grid > div:last-child{ border-bottom:0; }
+}
+
+/* ================= KOMPOZIČNÉ PLOCHY ================= */
+
+.plate{
+  position:relative; overflow:hidden;
+  border:1px solid var(--line); border-radius:var(--r);
+  background:
+    repeating-linear-gradient(90deg, rgba(20,24,28,.030) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(20,24,28,.022) 0 1px, transparent 1px 34px),
+    linear-gradient(152deg, var(--paper) 0%, var(--paper-2) 48%, var(--paper-3) 100%);
+}
+.plate::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
+  background-image:var(--grain); background-size:150px 150px; opacity:.05;
+}
+.plate-dark{
+  border-color:#333029;
+  color:var(--on-dark);
+  background:
+    repeating-linear-gradient(90deg, rgba(201,164,101,.055) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(201,164,101,.040) 0 1px, transparent 1px 34px),
+    linear-gradient(152deg, #161a1e 0%, #1e2228 52%, #2b2a23 100%);
+}
+.plate-dark::after{ opacity:.07; }
+
+.plate-geo{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.plate-in{ position:relative; z-index:1; padding:clamp(26px,4vw,54px); }
+
+.plate-kicker{
+  margin:0 0 14px; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-mut-2);
+}
+.plate-dark .plate-kicker{ color:var(--acc-2); }
+.plate-h{ font-size:clamp(24px,3.2vw,34px); max-width:22ch; }
+.plate-dark .plate-h{ color:var(--on-dark-str); }
+.plate-note{ margin-top:16px; font-size:14.5px; color:var(--ink-mut-2); max-width:62ch; }
+.plate-dark .plate-note{ color:var(--on-dark); }
+
+/* plocha „mesačný rytmus“ */
+.plate-band{ padding-top:clamp(40px,5vw,64px); }
+.cyklus-grid{
+  list-style:none; margin:clamp(26px,3.4vw,40px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(201,164,101,.3);
+}
+.cyklus-grid li{
+  padding:clamp(18px,2.2vw,24px) clamp(14px,1.8vw,22px) 0;
+  border-left:1px solid rgba(201,164,101,.3);
+}
+.cyklus-grid li:first-child{ border-left:0; padding-left:0; }
+.cyklus-day{
+  display:block; font-family:var(--serif); font-size:clamp(38px,5vw,54px);
+  line-height:1; color:var(--acc-2);
+}
+.cyklus-t{ display:block; margin-top:14px; font-size:16px; color:var(--on-dark-str); }
+.cyklus-d{ display:block; margin-top:6px; font-size:14px; color:var(--on-dark); }
+@media (max-width: 780px){
+  .cyklus-grid{ grid-template-columns:repeat(2,1fr); }
+  .cyklus-grid li:nth-child(2n+1){ border-left:0; padding-left:0; }
+  .cyklus-grid li:nth-child(n+3){ margin-top:22px; padding-top:22px; border-top:1px solid rgba(201,164,101,.3); }
+}
+@media (max-width: 440px){
+  .cyklus-grid{ grid-template-columns:1fr; }
+  .cyklus-grid li{ border-left:0; padding-left:0; }
+  .cyklus-grid li + li{ margin-top:20px; padding-top:20px; border-top:1px solid rgba(201,164,101,.3); }
+}
+
+/* plocha „rok“ — dvanásť mesiacov ako vlásočnicová mriežka */
+.rok-grid{
+  display:grid; grid-template-columns:repeat(12,1fr);
+  margin-top:clamp(26px,3.4vw,40px);
+  border-left:1px solid var(--line-2); border-bottom:1px solid var(--line-2);
+}
+.rok-grid > div{
+  border-right:1px solid var(--line-2);
+  height:clamp(118px,15vw,168px);
+  display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
+  padding-bottom:9px; gap:9px;
+}
+.rok-bar{ width:52%; background:rgba(122,92,34,.13); border-top:2px solid var(--acc); }
+.rok-grid .hi .rok-bar{ background:rgba(122,92,34,.24); }
+.rok-m{ font-size:11.5px; letter-spacing:.1em; color:var(--ink-mut-2); }
+.rok-grid .hi .rok-m{ color:var(--acc); font-weight:600; }
+.rok-key{
+  list-style:none; margin:20px 0 0; padding:0;
+  display:flex; flex-wrap:wrap; gap:8px 26px; font-size:14.5px; color:var(--ink-mut-2);
+}
+.rok-key b{ color:var(--acc); font-weight:600; letter-spacing:.08em; }
+@media (max-width: 640px){
+  .rok-grid{ grid-template-columns:repeat(6,1fr); }
+  .rok-grid > div{ height:clamp(96px,24vw,130px); border-top:1px solid var(--line-2); }
+}
+
+/* plocha v kontakte */
+.plate-quote{
+  font-family:var(--serif); font-size:clamp(21px,2.6vw,27px); line-height:1.28;
+  margin:0; max-width:20ch; color:var(--ink);
+}
+.plate-facts{
+  list-style:none; margin:clamp(24px,3vw,32px) 0 0; padding:0;
+  border-top:1px solid var(--line-2);
+}
+.plate-facts li{
+  display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+  padding:11px 0; border-bottom:1px solid var(--line-2); font-size:15px; color:var(--ink-mut-2);
+}
+.plate-facts b{ font-family:var(--serif); font-weight:400; font-size:17px; color:var(--ink); text-align:right; }
+
+/* pás s adresou a otváracími hodinami */
+.addr{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line); background:var(--surface);
+  border-radius:var(--r);
+  margin-bottom:clamp(28px,3.6vw,46px);
+}
+.addr > div{ padding:clamp(18px,2.2vw,26px); border-right:1px solid var(--line); }
+.addr > div:last-child{ border-right:0; }
+.addr .lbl{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ink-mut-2); margin-bottom:11px;
+}
+.addr .v{
+  display:block; font-family:var(--serif); font-size:19px; line-height:1.34; color:var(--ink);
+}
+.addr a.v{ text-decoration:none; border-bottom:1px solid var(--line-2); width:max-content; }
+.addr a.v:hover{ color:var(--acc); border-bottom-color:var(--acc); }
+.addr .s{ display:block; margin-top:9px; font-size:13.5px; line-height:1.5; color:var(--ink-mut); }
+@media (max-width: 900px){
+  .addr{ grid-template-columns:1fr 1fr; }
+  .addr > div{ border-bottom:1px solid var(--line); }
+  .addr > div:nth-child(2n){ border-right:0; }
+  .addr > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width: 520px){
+  .addr{ grid-template-columns:1fr; }
+  .addr > div{ border-right:0; border-bottom:1px solid var(--line); }
+  .addr > div:last-child{ border-bottom:0; }
+}
+
+/* úzky odstavec a vnorený odkaz */
+.p-narrow{ font-size:15.5px; color:var(--ink-mut); max-width:64ch; }
+.band-dark .p-narrow{ color:var(--on-dark); }
+a.inl{ color:var(--acc); text-decoration:none; border-bottom:1px solid rgba(122,92,34,.42); white-space:nowrap; }
+a.inl:hover{ border-bottom-color:var(--acc); }
+.band-dark a.inl{ color:var(--acc-2); border-bottom-color:rgba(201,164,101,.5); }
+
+/* ================= KARTY ================= */
+
+.cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(16px,2vw,24px); }
+@media (max-width: 940px){ .cards{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 620px){ .cards{ grid-template-columns:1fr; } }
+
+.card{
+  position:relative; overflow:hidden;
+  border:1px solid var(--line); border-radius:var(--r);
+  background:linear-gradient(158deg, var(--surface) 0%, #f1f3f5 56%, #e4e8ec 100%);
+  padding:clamp(20px,2.4vw,28px);
+}
+.card::before,
+.card::after{
+  content:""; position:absolute; right:0; top:0; z-index:0; pointer-events:none;
+}
+.card::before{
+  width:clamp(84px,9vw,124px); height:clamp(84px,9vw,124px);
+  border-left:1px solid rgba(122,92,34,.20);
+  border-bottom:1px solid rgba(122,92,34,.20);
+}
+.card::after{
+  width:clamp(32px,4vw,50px); height:clamp(32px,4vw,50px);
+  background:rgba(122,92,34,.08);
+}
+.card > *{ position:relative; z-index:1; }
+.card-no{ font-family:var(--serif); font-size:13px; letter-spacing:.18em; color:var(--acc); }
+.card h3{ font-size:21px; margin:10px 0 10px; max-width:17ch; }
+.card p{ font-size:15px; color:var(--ink-mut-2); }
+.card ul{ list-style:none; margin:16px 0 0; padding:14px 0 0; border-top:1px solid var(--line); }
+.card li{ font-size:14.5px; color:var(--ink-mut-2); padding-left:16px; position:relative; }
+.card li + li{ margin-top:7px; }
+.card li::before{
+  content:""; position:absolute; left:0; top:.68em; width:7px; height:1px; background:var(--acc);
+}
+
+/* karta služby: geometrická značka, odrážky a cena v pätke karty */
+.card-ico{
+  display:flex; align-items:center; justify-content:center;
+  width:46px; height:46px; border:1px solid var(--line-2); border-radius:2px;
+  background:var(--surface);
+}
+.card-ico svg{ display:block; }
+.card-price{
+  margin-top:18px; padding-top:14px; border-top:1px solid var(--line);
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+}
+.card-price .k{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mut-2); }
+.card-price .v{ font-family:var(--serif); font-size:19px; color:var(--acc); text-align:right; }
+
+/* miesto pre fotografiu: vlastná kompozícia, nie ilustrácia predmetu */
+.obraz{ margin:0; }
+.obraz .ram{
+  position:relative; overflow:hidden; border:1px solid var(--line); border-radius:var(--r);
+  background:linear-gradient(154deg, var(--paper) 0%, var(--paper-2) 52%, var(--paper-3) 100%);
+}
+.obraz .ram::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--grain); background-size:150px 150px; opacity:.05;
+}
+.obraz .ram svg{ display:block; width:100%; height:auto; }
+.obraz figcaption{
+  margin-top:10px; font-size:13.5px; line-height:1.5; color:var(--ink-mut);
+}
+.band-dark .obraz figcaption{ color:var(--on-dark-mut); }
+
+/* orientačný plán príchodu */
+.plan{ border:1px solid var(--line); border-radius:var(--r); background:var(--surface); overflow:hidden; }
+.plan svg{ display:block; width:100%; height:auto; }
+.plan-key{
+  list-style:none; margin:0; padding:14px clamp(14px,2vw,20px);
+  border-top:1px solid var(--line); background:var(--paper);
+  display:flex; flex-wrap:wrap; gap:8px 22px; font-size:13.5px; color:var(--ink-mut-2);
+}
+.plan-key b{ color:var(--acc); font-weight:600; letter-spacing:.06em; }
+
+/* záverečný pás s hlavnou akciou */
+.cta-band{ background:var(--dark); color:var(--on-dark); }
+.cta-in{
+  display:grid; grid-template-columns:1.25fr auto; gap:clamp(20px,3vw,44px);
+  align-items:center; padding-block:clamp(38px,5vw,62px);
+}
+@media (max-width: 860px){ .cta-in{ grid-template-columns:1fr; } }
+.cta-in h2{ font-size:clamp(24px,3.2vw,36px); color:var(--on-dark-str); }
+.cta-in p{ margin:14px 0 0; font-size:16px; color:var(--on-dark); max-width:56ch; }
+.cta-btns{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* ================= TABUĽKY ================= */
+
+.tblwrap{
+  border:1px solid var(--line);
+  background:var(--surface);
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+table{ width:100%; border-collapse:collapse; font-size:15.5px; }
+caption{
+  text-align:left; padding:15px 20px; font-size:13.5px; color:var(--ink-mut);
+  border-bottom:1px solid var(--line); background:var(--paper);
+}
+thead th{
+  background:var(--paper-2); color:var(--ink);
+  font-family:var(--serif); font-weight:400; font-size:17px; text-align:left;
+  padding:14px 20px; border-bottom:1px solid var(--line-2); vertical-align:bottom;
+}
+thead th small{
+  display:block; font-family:var(--sans); font-size:12px; color:var(--ink-mut);
+  letter-spacing:.06em; margin-top:5px;
+}
+tbody th, tbody td{
+  padding:15px 20px; text-align:left; vertical-align:top;
+  border-bottom:1px solid var(--line);
+}
+tbody th{ font-weight:600; font-size:15px; color:var(--ink); }
+tbody td{ color:var(--ink-mut); }
+tbody tr:last-child th, tbody tr:last-child td{ border-bottom:0; }
+td.val, th.val{ color:var(--ink); white-space:nowrap; }
+td.acc{ color:var(--acc); font-weight:600; }
+col.hi{ background:var(--acc-soft); }
+.t-no{ color:var(--acc); font-size:13px; letter-spacing:.12em; width:56px; }
+
+.tbl-min{ min-width:720px; }
+.tbl-note{ margin-top:16px; font-size:13.5px; color:var(--ink-mut); max-width:70ch; }
+
+/* na úzkych displejoch sa riadkové tabuľky rozložia pod seba */
+@media (max-width: 780px){
+  .tbl-stack thead{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap;
+  }
+  .tbl-stack tr{ display:block; border-bottom:1px solid var(--line); padding:18px 18px 20px; }
+  .tbl-stack tr:last-child{ border-bottom:0; }
+  .tbl-stack th, .tbl-stack td{ display:block; border:0; padding:0; }
+  .tbl-stack tbody th{ font-size:17px; font-family:var(--serif); font-weight:400; margin-bottom:10px; }
+  .tbl-stack td{ margin-top:10px; }
+  .tbl-stack td::before{
+    content:attr(data-l); display:block;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mut);
+    margin-bottom:3px;
+  }
+  .tbl-stack .t-no{ width:auto; margin-bottom:4px; }
+  .tbl-stack td.val, .tbl-stack th.val{ white-space:normal; }
+}
+
+/* ================= KALKULAČKA (tmavý široký blok) ================= */
+
+.calc-grid{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line-dark);
+  border:1px solid var(--line-dark);
+  border-radius:var(--r);
+}
+.calc-cell{ background:var(--dark-2); padding:clamp(18px,2.2vw,26px); }
+@media (max-width: 1000px){ .calc-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 600px){ .calc-grid{ grid-template-columns:1fr; } }
+
+.calc-grid fieldset{ border:0; margin:0; padding:0; }
+.calc-grid legend{
+  padding:0; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:14px;
+}
+
+.opt{ display:grid; gap:8px; }
+.opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+.opt label{
+  display:block; cursor:pointer; padding:12px 14px;
+  border:1px solid var(--line-dark-2); border-radius:2px;
+  font-size:15px; color:var(--on-dark); background:var(--dark-3);
+}
+.opt label small{ display:block; font-size:12.5px; color:var(--on-dark-mut); margin-top:2px; }
+.opt input:checked + label{ border-color:var(--acc-2); color:var(--on-dark-str); background:#2a2721; }
+.opt input:checked + label small{ color:var(--acc-2); }
+.opt input:focus-visible + label{ outline:2px solid var(--acc-2); outline-offset:3px; }
+.opt label:hover{ border-color:var(--acc-2); }
+
+.ctl-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:10px; }
+.ctl-lab{ font-size:14px; color:var(--on-dark); }
+.ctl-val{ font-family:var(--serif); font-size:24px; color:var(--acc-2); }
+
+input[type="range"]{
+  -webkit-appearance:none; appearance:none; width:100%; height:26px;
+  background:transparent; cursor:pointer; margin:0;
+}
+input[type="range"]::-webkit-slider-runnable-track{ height:3px; background:var(--line-dark-2); }
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:14px; height:24px; margin-top:-11px; border-radius:2px;
+  background:var(--acc-2); border:1px solid var(--dark-2);
+}
+input[type="range"]::-moz-range-track{ height:3px; background:var(--line-dark-2); }
+input[type="range"]::-moz-range-thumb{
+  width:14px; height:24px; border-radius:2px; background:var(--acc-2);
+  border:1px solid var(--dark-2);
+}
+.scale{ display:flex; justify-content:space-between; font-size:12.5px; color:var(--on-dark-mut); }
+
+.stepper{ display:flex; align-items:center; gap:8px; }
+.stepper button{
+  width:44px; height:44px; border:1px solid var(--line-dark-2); background:var(--dark-3);
+  color:var(--on-dark-str); font-size:20px; line-height:1; cursor:pointer; border-radius:2px;
+  font-family:var(--sans);
+}
+.stepper button:hover{ border-color:var(--acc-2); color:var(--acc-2); }
+.stepper input{
+  width:84px; height:44px; text-align:center; font-size:18px; font-family:var(--serif);
+  background:var(--dark); color:var(--on-dark-str);
+  border:1px solid var(--line-dark-2); border-radius:2px;
+}
+.ctl-hint{ margin-top:10px; font-size:13px; color:var(--on-dark-mut); }
+
+.chk{
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer;
+  padding:12px 14px; border:1px solid var(--line-dark-2); border-radius:2px; background:var(--dark-3);
+}
+.chk:hover{ border-color:var(--acc-2); }
+.chk input{ width:19px; height:19px; margin:2px 0 0; accent-color:var(--acc-2); flex:none; }
+.chk span{ font-size:15px; color:var(--on-dark); }
+.chk small{ display:block; font-size:12.5px; color:var(--on-dark-mut); margin-top:2px; }
+
+/* výsledok */
+.calc-out{
+  margin-top:22px; border:1px solid var(--line-dark-2); border-radius:var(--r);
+  background:var(--dark-2);
+  display:grid; grid-template-columns:minmax(230px,.8fr) 1.2fr;
+}
+@media (max-width: 860px){ .calc-out{ grid-template-columns:1fr; } }
+.out-sum{
+  padding:clamp(20px,2.6vw,30px);
+  border-right:1px solid var(--line-dark);
+}
+@media (max-width: 860px){
+  .out-sum{ border-right:0; border-bottom:1px solid var(--line-dark); }
+}
+.out-lab{ font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--on-dark-mut); }
+.out-price{ display:flex; align-items:baseline; gap:10px; margin-top:12px; }
+.out-price b{
+  font-family:var(--serif); font-weight:400; font-size:clamp(42px,6vw,58px);
+  color:var(--acc-2); line-height:1;
+}
+.out-price span{ font-size:15px; color:var(--on-dark-mut); }
+.out-tier{
+  display:inline-block; margin-top:14px; font-size:12.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--on-dark-str);
+  border:1px solid var(--line-dark-2); padding:5px 11px; border-radius:2px;
+}
+.out-rows{ padding:clamp(20px,2.6vw,30px); }
+.out-rows ul{ list-style:none; margin:0; padding:0; }
+.out-rows li{
+  display:flex; justify-content:space-between; gap:16px;
+  padding:10px 0; border-bottom:1px solid var(--line-dark); font-size:15px; color:var(--on-dark);
+}
+.out-rows li:last-child{ border-bottom:0; }
+.out-rows li span:first-child{ color:var(--on-dark-mut); }
+.out-note{ margin-top:16px; font-size:13.5px; color:var(--on-dark-mut); }
+.calc-foot{
+  margin-top:22px; display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px;
+  justify-content:space-between;
+}
+.calc-foot p{ margin:0; font-size:13.5px; color:var(--on-dark-mut); max-width:64ch; }
+.nojs-note{
+  margin-top:20px; padding:16px 18px; border:1px solid var(--line-dark);
+  font-size:14.5px; color:var(--on-dark);
+}
+
+/* ================= PODKLADY, ZOZNAMY, ROLE ================= */
+
+.two{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,4vw,56px); }
+@media (max-width: 860px){ .two{ grid-template-columns:1fr; } }
+.two h3{ font-size:22px; letter-spacing:-0.012em; margin-bottom:16px; }
+.three{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px,3.4vw,44px); }
+@media (max-width: 940px){ .three{ grid-template-columns:1fr 1fr; } }
+@media (max-width: 620px){ .three{ grid-template-columns:1fr; } }
+.three h3{ font-size:20px; letter-spacing:-0.012em; margin-bottom:14px; }
+
+.dl{ margin:0; }
+.dl dt{ font-weight:600; font-size:15.5px; padding-top:14px; }
+.dl dd{
+  margin:0; padding-bottom:14px; border-bottom:1px solid var(--line);
+  font-size:15px; color:var(--ink-mut); max-width:64ch;
+}
+.dl dd:last-of-type{ border-bottom:0; }
+.dl dd b{ color:var(--ink); font-weight:600; }
+
+.band-dark .dl dt{ color:var(--on-dark-str); }
+.band-dark .dl dd{ color:var(--on-dark); border-bottom-color:var(--line-dark); }
+.band-dark .dl dd b{ color:var(--on-dark-str); }
+
+.roles{ list-style:none; margin:0; padding:0; }
+.roles li{ padding:16px 0; border-bottom:1px solid var(--line); }
+.roles li:first-child{ border-top:1px solid var(--line); }
+.roles .role-t{ display:block; font-family:var(--serif); font-size:19px; color:var(--ink); }
+.roles .role-d{ display:block; margin-top:5px; font-size:14.5px; color:var(--ink-mut); max-width:62ch; }
+
+.ticks{ list-style:none; margin:0; padding:0; }
+.ticks li{ position:relative; padding:0 0 0 20px; font-size:15.5px; color:var(--ink-mut); max-width:68ch; }
+.ticks li + li{ margin-top:10px; }
+.ticks li::before{
+  content:""; position:absolute; left:0; top:.72em; width:9px; height:1px; background:var(--acc);
+}
+.band-dark .ticks li{ color:var(--on-dark); }
+.band-dark .ticks li::before{ background:var(--acc-2); }
+.ticks b{ color:var(--ink); font-weight:600; }
+.band-dark .ticks b{ color:var(--on-dark-str); }
+
+/* ================= OTÁZKY ================= */
+
+details{ border-bottom:1px solid var(--line); }
+details:first-of-type{ border-top:1px solid var(--line); }
+summary{
+  cursor:pointer; list-style:none; padding:20px 44px 20px 0; position:relative;
+  font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--ink);
+}
+summary::-webkit-details-marker{ display:none; }
+summary::after{
+  content:""; position:absolute; right:10px; top:50%; width:11px; height:11px;
+  margin-top:-8px;
+  border-right:1.5px solid var(--acc); border-bottom:1.5px solid var(--acc);
+  transform:rotate(45deg);
+}
+details[open] summary::after{ transform:rotate(225deg) translate(-3px,-3px); }
+@media (prefers-reduced-motion: no-preference){
+  summary::after{ transition:transform .2s ease; }
+}
+summary:hover{ color:var(--acc); }
+.faq-body{ padding:0 10% 24px 0; color:var(--ink-mut); font-size:15.5px; max-width:72ch; }
+.faq-body strong{ color:var(--ink); }
+@media (max-width: 700px){ .faq-body{ padding-right:0; } }
+
+/* ================= KONTAKT ================= */
+
+.contact{ display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(26px,4vw,56px); align-items:start; }
+@media (max-width: 940px){ .contact{ grid-template-columns:1fr; } }
+
+.cdata{ list-style:none; margin:0 0 28px; padding:0; }
+.cdata li{ padding:15px 0; border-bottom:1px solid var(--line); }
+.cdata li:first-child{ border-top:1px solid var(--line); }
+.cdata .lbl{
+  display:block; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ink-mut); margin-bottom:5px;
+}
+.cdata .val{ font-family:var(--serif); font-size:20px; color:var(--ink); }
+.cdata .cnote{ display:block; margin-top:6px; font-size:13px; line-height:1.5; color:var(--ink-mut); max-width:52ch; }
+.cdata a.val{ text-decoration:none; border-bottom:1px solid var(--line-2); }
+.cdata a.val:hover{ color:var(--acc); border-bottom-color:var(--acc); }
+
+form{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:clamp(20px,3vw,32px);
+}
+.frow{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width: 620px){ .frow{ grid-template-columns:1fr; } }
+.f{ margin-bottom:16px; }
+label.lab{ display:block; font-size:13.5px; color:var(--ink); margin-bottom:7px; }
+label.lab .opt-l{ color:var(--ink-mut); }
+label.lab .req{ color:var(--acc); }
+
+input[type="text"], input[type="email"], input[type="tel"], select, textarea{
+  width:100%; padding:12px 14px; font-size:15.5px; font-family:var(--sans);
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--line-input); border-radius:2px;
+}
+select{
+  appearance:none; -webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%, var(--ink) 50%),
+                   linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:calc(100% - 20px) 21px, calc(100% - 14px) 21px;
+  background-size:6px 6px, 6px 6px; background-repeat:no-repeat; padding-right:44px;
+}
+textarea{ min-height:130px; resize:vertical; }
+input::placeholder, textarea::placeholder{ color:#6b7075; }
+input:hover, select:hover, textarea:hover{ border-color:var(--ink); }
+
+.consent{
+  display:flex; gap:12px; align-items:flex-start; margin:4px 0 20px;
+  font-size:14px; color:var(--ink-mut);
+}
+.consent input{ width:19px; height:19px; accent-color:var(--acc); margin-top:2px; flex:none; }
+.form-intro{
+  margin:0 0 20px; padding-bottom:18px; border-bottom:1px solid var(--line);
+  font-size:14.5px; color:var(--ink-mut); max-width:58ch;
+}
+.form-intro b{ color:var(--ink); font-weight:600; }
+.form-note{ font-size:13px; color:var(--ink-mut); margin-top:14px; max-width:58ch; }
+
+.sent{
+  border:1px solid var(--acc); border-left:3px solid var(--acc); border-radius:var(--r);
+  background:var(--surface); padding:clamp(22px,3.4vw,34px);
+}
+.sent h3{ font-size:23px; margin-bottom:10px; }
+.sent p{ color:var(--ink-mut); font-size:15.5px; }
+.sent a{ color:var(--acc); }
+.again{
+  margin-top:18px; background:transparent; border:1px solid var(--line-input);
+  color:var(--ink); padding:12px 20px; cursor:pointer; border-radius:2px;
+  font-family:var(--sans); font-size:15px;
+}
+.again:hover{ border-color:var(--ink); }
+
+/* ================= AUTOR UKÁŽKY ================= */
+
+.author{ background:var(--dark-2); color:var(--on-dark); padding:clamp(52px,6vw,84px) 0; }
+.author h2{ color:var(--on-dark-str); font-size:clamp(26px,3.4vw,38px); }
+.authorbox{
+  border:1px solid var(--line-dark); border-left:3px solid var(--acc-2);
+  border-radius:var(--r); background:var(--dark);
+  padding:clamp(24px,3.4vw,44px);
+}
+.author .eyebrow{
+  margin:0 0 16px; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--acc-2);
+}
+.author .lead{ color:var(--on-dark); margin-top:14px; }
+.author-num{
+  list-style:none; margin:clamp(26px,3vw,34px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--line-dark); border:1px solid var(--line-dark); border-radius:var(--r);
+}
+.author-num li{ background:var(--dark); padding:20px clamp(18px,2vw,24px); }
+.author-num .k{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--on-dark-mut);
+}
+.author-num .n{
+  display:block; margin-top:10px; font-family:var(--serif); line-height:1;
+  font-size:clamp(28px,3.4vw,38px); color:var(--acc-2); letter-spacing:-0.02em;
+}
+.author-num .d{ display:block; margin-top:12px; font-size:14px; line-height:1.5; color:var(--on-dark); }
+@media (max-width: 760px){ .author-num{ grid-template-columns:1fr; } }
+
+.author-data{
+  list-style:none; margin:28px 0 0; padding:22px 0 0;
+  border-top:1px solid var(--line-dark);
+  display:grid; grid-template-columns:1fr 1fr; gap:0 clamp(20px,4vw,52px);
+}
+@media (max-width: 700px){ .author-data{ grid-template-columns:1fr; } }
+.author-data li{ padding:13px 0; border-bottom:1px solid var(--line-dark); }
+.author-data .lbl{
+  display:block; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:5px;
+}
+.author-data .val{
+  font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--on-dark-str);
+  overflow-wrap:anywhere; text-decoration:none;
+}
+.author-data a.val{ border-bottom:1px solid rgba(201,164,101,.5); }
+.author-data a.val:hover{ color:var(--acc-2); }
+.author-data .sub{ display:block; margin-top:5px; font-size:13.5px; color:var(--on-dark-mut); }
+.author-data .sub a{ color:var(--acc-2); }
+.author-foot{
+  margin-top:26px; display:flex; flex-wrap:wrap; align-items:center; gap:14px clamp(18px,3vw,30px);
+}
+.author-foot p{ margin:0; font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--on-dark-str); }
+
+/* ================= PÄTIČKA ================= */
+
+footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64px) 0 28px; }
+.foot-grid{
+  display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:clamp(24px,3.4vw,44px);
+  padding-bottom:32px; border-bottom:1px solid var(--line-dark);
+}
+@media (max-width: 900px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width: 520px){ .foot-grid{ grid-template-columns:1fr; } }
+.foot-grid h3{
+  font-family:var(--sans); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:14px; font-weight:600;
+}
+.foot-brand{ font-family:var(--serif); font-size:21px; letter-spacing:.16em; color:var(--on-dark-str); }
+.foot-desc{ margin-top:12px; font-size:14.5px; color:var(--on-dark-mut); max-width:40ch; }
+.foot-grid ul{ list-style:none; margin:0; padding:0; }
+.foot-grid li{ padding:5px 0; }
+.foot-grid a{ color:var(--on-dark); text-decoration:none; font-size:15px; }
+.foot-grid a:hover{ color:var(--acc-2); }
+.foot-addr{ list-style:none; margin:0; padding:0; }
+.foot-addr li{ padding:6px 0; font-size:15px; line-height:1.5; color:var(--on-dark); }
+.foot-addr li span{ display:block; margin-top:3px; font-size:13.5px; color:var(--on-dark-mut); }
+.foot-addr a{ color:var(--on-dark-str); text-decoration:none; border-bottom:1px solid rgba(201,164,101,.5); }
+.foot-addr a:hover{ color:var(--acc-2); border-bottom-color:var(--acc-2); }
+.foot-note{
+  display:flex; flex-wrap:wrap; gap:12px 26px; justify-content:space-between;
+  padding-top:20px; font-size:13.5px; color:var(--on-dark-mut);
+}
+.foot-note a{ color:var(--acc-2); }
+.disclaimer{
+  margin-top:22px; padding:16px 18px; border:1px solid var(--line-dark);
+  font-size:13.5px; color:var(--on-dark-mut); border-radius:2px;
+}
+.disclaimer b{ color:var(--on-dark-str); }
+.disclaimer a{ color:var(--acc-2); }
+
+/* jemné nábehy pri scrollovaní */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{ opacity:0; transform:translateY(14px); }
+  .reveal.is-in{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease; }
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*25);return v.toLocaleString('cs-CZ');}function __f(x){return Math.round(x).toLocaleString('cs-CZ');}function __p(x){return Math.round(x*25/5)*5;}function __c(x){return x*25;}var __m="Kč";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Přeskočit na obsah</a>
+
+<div class="topstack">
+  <div class="demobar">
+    <div class="wrap">
+      <span class="tag">Ukázkový web</span>
+      <span class="long">Takový web udělám i vám.</span>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+      <a class="site" href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Hlavní navigace">
+    <div class="wrap nav-in">
+      <a class="brand" href="#uvod" aria-label="SALDIA, účetnictví a mzdy — úvod stránky">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+            <rect x="0.6" y="0.6" width="32.8" height="32.8" rx="2" stroke="#14181c" stroke-width="1"/>
+            <path d="M8 12h18M8 17h18M8 22h11" stroke="#14181c" stroke-width="1.4"/>
+            <path d="M21 22h5" stroke="#7a5c22" stroke-width="1.4"/>
+          </svg>
+        </span>
+        <span class="brand-txt">
+          <span class="brand-name">SALDIA</span> <span class="brand-sub">Účetnictví · Praha</span>
+        </span>
+      </a>
+
+      <div class="menu" id="menu">
+        <a href="#sluzby">Služby</a>
+        <a href="#cennik">Ceník</a>
+        <a href="#kalkulacka">Kalkulačka</a>
+        <a href="#referencie">Reference</a>
+        <a href="#otazky">Otázky</a>
+      </div>
+
+      <div class="nav-act">
+        <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+        <a class="nav-cta" href="#kontakt">Nezávazná nabídka</a>
+      </div>
+
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Otevřít menu">
+        <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
+          <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<noscript>
+  <style>
+    #burger{ display:none !important; }
+    #menu{ display:flex !important; position:static; flex-direction:row; flex-wrap:wrap;
+           background:transparent; border:0; box-shadow:none; padding:0 0 8px; }
+    #menu a{ border-bottom:0; }
+    @media (max-width:1180px){ .nav-in{ flex-wrap:wrap; padding-bottom:6px; } }
+    .reveal{ opacity:1 !important; transform:none !important; }
+  </style>
+</noscript>
+
+<main id="obsah">
+
+<!-- ================= ÚVOD ================= -->
+<section class="hero" id="uvod">
+  <div class="hero-plane" aria-hidden="true">
+    <svg viewBox="0 0 660 400" preserveAspectRatio="xMaxYMin slice" focusable="false">
+      <defs>
+        <linearGradient id="heroPole" x1="0" y1="0" x2="0.55" y2="1">
+          <stop offset="0" stop-color="#eae4d6"/>
+          <stop offset="0.52" stop-color="#e3ded4"/>
+          <stop offset="1" stop-color="#dcdfe3"/>
+        </linearGradient>
+      </defs>
+      <rect width="660" height="400" fill="url(#heroPole)"/>
+      <g fill="none" stroke="#7a5c22" stroke-opacity="0.18">
+        <circle cx="556" cy="44" r="118"/>
+        <circle cx="556" cy="44" r="194"/>
+        <circle cx="556" cy="44" r="270"/>
+        <circle cx="556" cy="44" r="346"/>
+      </g>
+      <g stroke="#14181c" stroke-opacity="0.07">
+        <path d="M0 56H660M0 112H660M0 168H660M0 224H660M0 280H660M0 336H660"/>
+      </g>
+      <path d="M660 0 L660 400 L452 400 Z" fill="#7a5c22" fill-opacity="0.09"/>
+      <rect x="0" y="0" width="1.5" height="400" fill="#14181c" fill-opacity="0.14"/>
+    </svg>
+  </div>
+
+  <div class="wrap hero-in">
+    <p class="hero-kicker">Účetní kancelář · Mýtná 21, Praha</p>
+    <h1><span class="l l1">Účetnictví,</span><span class="l l2">mzdy a daně</span><span class="l l3">Praha a online</span></h1>
+    <hr class="hero-rule">
+    <p class="hero-sub">Pro OSVČ a společnosti s ručením omezeným do deseti zaměstnanců.</p>
+
+    <div class="hero-body">
+      <div>
+        <p class="hero-lead">Vedu daňovou evidenci i účetnictví, zpracovávám mzdy a podávám daňová přiznání. Doklady mi posíláte jednou měsíčně, cenu domluvíme předem jako pevný měsíční paušál.</p>
+        <div class="hero-cta">
+          <a class="btn btn-acc" href="#kontakt">Nezávazná nabídka</a>
+          <a class="btn btn-line" href="#kalkulacka">Spočítat paušál</a>
+        </div>
+        <p class="hero-meta">Nabídku pošlu do dvou pracovních dnů. Agendu převezmu i v průběhu roku, kontrola převzatých dat je bez poplatku, výpovědní lhůta je jeden měsíc.</p>
+      </div>
+
+      <aside class="hero-badge">
+        <span class="lbl">Měsíční paušál od</span>
+        <p class="v"><b class="num">39</b> <i>Kč bez DPH</i></p>
+        <p class="n">OSVČ, do 20 dokladů měsíčně. Společnost s ručením omezeným od 1 725 Kč měsíčně.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="figures">
+  <div class="wrap">
+    <div class="figures-grid">
+      <div>
+        <span class="fig-v num">od 975 Kč</span>
+        <span class="fig-l">Měsíční paušál pro OSVČ, bez DPH</span>
+      </div>
+      <div>
+        <span class="fig-v num">do 20. dne</span>
+        <span class="fig-l">Zpracované účetnictví za předchozí měsíc</span>
+      </div>
+      <div>
+        <span class="fig-v num">do 24 hodin</span>
+        <span class="fig-l">Odpověď na poptávku v pracovní dny</span>
+      </div>
+      <div>
+        <span class="fig-v num">1 měsíc</span>
+        <span class="fig-l">Výpovědní lhůta, bez vázanosti na rok</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MESAČNÝ RYTMUS ================= -->
+<section class="plate-band" id="rytmus" aria-labelledby="rytmus-nadpis">
+  <div class="wrap">
+    <div class="plate plate-dark reveal">
+      <svg class="plate-geo" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="svetlo" cx="0.88" cy="0.06" r="0.62">
+            <stop offset="0" stop-color="#c9a465" stop-opacity="0.16"/>
+            <stop offset="1" stop-color="#c9a465" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="460" fill="url(#svetlo)"/>
+        <g fill="none" stroke="#c9a465" stroke-opacity="0.16">
+          <circle cx="1052" cy="52" r="128"/>
+          <circle cx="1052" cy="52" r="212"/>
+          <circle cx="1052" cy="52" r="296"/>
+          <circle cx="1052" cy="52" r="380"/>
+        </g>
+        <path d="M0 460 L470 0 L556 0 L86 460 Z" fill="#ffffff" fill-opacity="0.022"/>
+        <path d="M150 460 L620 0 L648 0 L178 460 Z" fill="#ffffff" fill-opacity="0.016"/>
+      </svg>
+      <div class="plate-in">
+        <p class="plate-kicker">Měsíční rytmus</p>
+        <h2 class="plate-h" id="rytmus-nadpis">Každý měsíc ta samá čtyři data</h2>
+        <p class="plate-note">Vy hlídáte dvě data: 3. a 10. den v měsíci. Obojí vám připomenu tři dny předem, zbylé dva termíny jsou na mně.</p>
+        <ol class="cyklus-grid">
+          <li>
+            <span class="cyklus-day num">3.</span>
+            <span class="cyklus-t">Podklady ke mzdám</span>
+            <span class="cyklus-d">Docházka, dovolené, nemocenská a změny ve smlouvách.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">10.</span>
+            <span class="cyklus-t">Doklady za minulý měsíc</span>
+            <span class="cyklus-d">Faktury, bankovní výpisy a pokladní doklady v jedné zprávě.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">20.</span>
+            <span class="cyklus-t">Zpracované a odsouhlasené</span>
+            <span class="cyklus-d">Dostanete přehled hospodaření a seznam plateb s termíny.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">25.</span>
+            <span class="cyklus-t">Podání za vás</span>
+            <span class="cyklus-d">Přiznání k DPH, kontrolní hlášení a při obchodu v EU i souhrnné hlášení.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLUŽBY ================= -->
+<section class="sec" id="sluzby" style="border-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">01</b> Služby</p>
+      <div>
+        <h2 class="sec-h">Rozsah služeb</h2>
+        <p class="lead">Pracuji pro OSVČ a společnosti s ručením omezeným do deseti zaměstnanců. Účetnictví, mzdy i daně vede jedna osoba, takže máte jeden kontakt na všechno.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M7 8h12M7 12h12M7 16h7" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 16h3" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Daňová evidence</h3>
+        <p>Pro OSVČ a subjekty bez povinnosti vést účetnictví.</p>
+        <ul>
+          <li>Peněžní deník, kniha pohledávek a závazků</li>
+          <li>Evidence majetku, odpisy a kniha jízd</li>
+          <li>Podklady k ročnímu daňovému přiznání</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">v paušálu od 975 Kč / měsíc</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M6 8h4M6 12h4M16 8h4" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 12h4" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Vedení účetnictví</h3>
+        <p>Pro společnosti s ručením omezeným a neziskové organizace.</p>
+        <ul>
+          <li>Hlavní kniha, deník a saldokonto</li>
+          <li>Přiznání k DPH a kontrolní hlášení</li>
+          <li>Účetní závěrka včetně přílohy</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">v paušálu od 1 725 Kč / měsíc</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M4 22V11M9.667 22V7M15.333 22v-9" stroke="#14181c" stroke-width="1.4"/>
+            <path d="M21 22V4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M2.5 23.5h21" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Mzdy a personalistika</h3>
+        <p>Pro firmy se zaměstnanci i s dohodáři.</p>
+        <ul>
+          <li>Výpočet mezd, výplatní pásky a měsíční výkazy</li>
+          <li>Přihlášky a odhlášky u pojišťoven</li>
+          <li>Dohody o pracích konaných mimo pracovní poměr</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">300 Kč / osoba / měsíc</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M6 20L20 6" stroke="#7a5c22" stroke-width="1.6"/>
+            <circle cx="8" cy="8" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="18" cy="18" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Daně, DPH a výkazy</h3>
+        <p>Pro klienty s paušálem i pro jednorázové podání.</p>
+        <ul>
+          <li>Přiznání k dani z příjmů fyzické i právnické osoby</li>
+          <li>Přiznání k DPH, kontrolní a souhrnné hlášení</li>
+          <li>Silniční daň za 625 Kč</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">DPH v paušálu, roční přiznání od 2 250 Kč</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="2.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <rect x="15.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M11 13h4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M13 11l2 2-2 2" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Převzetí agendy a rekonstrukce</h3>
+        <p>Pro firmy, které mění účetní i v průběhu roku.</p>
+        <ul>
+          <li>Kontrola otevřených položek, majetku a mzdových listů</li>
+          <li>Písemný seznam toho, co je třeba dorovnat</li>
+          <li>Doplnění nepodaných období a opravné výkazy</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">převzetí bez poplatku</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <circle cx="13" cy="13" r="10.5" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="13" cy="13" r="5.5" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v5M13 18.5v5" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Zastupování při kontrole</h3>
+        <p>Pro klienty s měsíčním paušálem, když přijde výzva nebo kontrola.</p>
+        <ul>
+          <li>Příprava podkladů a odpověď na výzvu</li>
+          <li>Komunikace s úřadem na základě plné moci</li>
+          <li>Vysvětlení rozdílů ve výkazech</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">v paušálu, jinak 875 Kč / hodina</span></p>
+      </article>
+    </div>
+
+    <p class="tbl-note">Ceny jsou bez DPH. Nedělám audit, účetnictví akciových společností ani znalecké posudky. Pokud takovou agendu potřebujete, řeknu to na úvodním hovoru a doporučím kolegu.</p>
+  </div>
+</section>
+
+<!-- ================= PRE KOHO ================= -->
+<section class="sec band-alt" id="odvetvia">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">02</b> Pro koho</p>
+      <div>
+        <h2 class="sec-h">Pro koho účtuji</h2>
+        <p class="lead">U každého typu podnikání se opakují jiné otázky. Níže je to, co u daného oboru řeším navíc oproti běžnému zaúčtování dokladů.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <p class="card-no num">01</p>
+        <h3>Služby a řemesla</h3>
+        <p>OSVČ, kteří fakturují práci a materiál a jezdí autem za zakázkami.</p>
+        <ul>
+          <li>Porovnání paušálních a skutečných výdajů</li>
+          <li>Kniha jízd a spotřeba pohonných hmot</li>
+          <li>Odpisy nářadí a strojů nad 80 000 Kč</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">02</p>
+        <h3>E-shopy a prodej online</h3>
+        <p>Objednávky z platebních bran, dobírky a vratky, často stovky pohybů měsíčně.</p>
+        <ul>
+          <li>Párování výplat z brány s objednávkami</li>
+          <li>Dobropisy, vratky a reklamace</li>
+          <li>Režim OSS při prodeji do jiných států EU</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">03</p>
+        <h3>IT, marketing a kreativci</h3>
+        <p>Fakturace klientům v zahraničí, subdodávky a nákup licencí ze zahraničí.</p>
+        <ul>
+          <li>Souhrnné hlášení a přenesení daňové povinnosti</li>
+          <li>Kurzové rozdíly a platby přes zahraniční brány</li>
+          <li>Software a licence jako výdaj nebo majetek</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">04</p>
+        <h3>Pronájem nemovitostí</h3>
+        <p>Byty, garáže a komerční prostory pronajímané jako fyzická osoba i přes s. r. o.</p>
+        <ul>
+          <li>Osvobozená část příjmu a s ní spojené výdaje</li>
+          <li>Oprava versus technické zhodnocení</li>
+          <li>Zálohy na energie a roční vyúčtování</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">05</p>
+        <h3>Malá s. r. o. se zaměstnanci</h3>
+        <p>Firmy do deseti lidí, kde mzdy, odvody a firemní majetek běží každý měsíc.</p>
+        <ul>
+          <li>Mzdy, dohody a roční zúčtování daně</li>
+          <li>Stravování zaměstnanců a cestovní náhrady</li>
+          <li>Firemní auto, odpisy a krácení výdajů</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">06</p>
+        <h3>Spolky a neziskovky</h3>
+        <p>Spolky, které přijímají příspěvky, dotace a dary.</p>
+        <ul>
+          <li>Oddělená evidence hlavní a hospodářské činnosti</li>
+          <li>Vyúčtování dotací podle smlouvy s poskytovatelem</li>
+          <li>Použití darů a jejich vykázání v účetní závěrce</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="tbl-note">Nevešli jste se do žádné kategorie? Napište, co děláte. Pokud vaší agendě nerozumím, řeknu to na úvodním hovoru a doporučím kolegu se správnou specializací.</p>
+  </div>
+</section>
+
+<!-- ================= PAUŠÁLY ================= -->
+<section class="sec" id="cennik">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">03</b> Ceník</p>
+      <div>
+        <h2 class="sec-h">Měsíční paušály a jednorázové úkony</h2>
+        <p class="lead">Paušál pokrývá běžný měsíční chod včetně komunikace během roku. Pokud vaše agenda naroste nad zahrnutý rozsah, ozvu se předem a domluvíme přechod na vyšší paušál.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-min">
+        <caption>Porovnání měsíčních paušálů. Ceny jsou uvedené bez DPH.</caption>
+        <colgroup><col><col><col class="hi"><col></colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Položka</th>
+            <th scope="col">Start <small>OSVČ</small></th>
+            <th scope="col">Standard <small>Malá s. r. o.</small></th>
+            <th scope="col">Rozšířený <small>S. r. o. se zaměstnanci</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Měsíční paušál</th>
+            <td class="val acc num">975 Kč</td>
+            <td class="val acc num">1 725 Kč</td>
+            <td class="val acc num">3 225 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Typ evidence</th>
+            <td class="val">Daňová evidence</td>
+            <td class="val">Účetnictví</td>
+            <td class="val">Účetnictví</td>
+          </tr>
+          <tr>
+            <th scope="row">Zahrnuté doklady měsíčně</th>
+            <td class="val num">do 20</td>
+            <td class="val num">do 40</td>
+            <td class="val num">do 80</td>
+          </tr>
+          <tr>
+            <th scope="row">Doklad nad zahrnutý rozsah</th>
+            <td class="val num">27,50 Kč</td>
+            <td class="val num">27,50 Kč</td>
+            <td class="val num">25 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Agenda DPH a kontrolní hlášení</th>
+            <td class="val num">příplatek 625 Kč</td>
+            <td class="val num">příplatek 625 Kč</td>
+            <td class="val">v ceně</td>
+          </tr>
+          <tr>
+            <th scope="row">Mzdy</th>
+            <td class="val num">300 Kč za osobu</td>
+            <td class="val num">300 Kč za osobu</td>
+            <td class="val">2 osoby v ceně, další 300 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Přehled hospodaření</th>
+            <td class="val">Čtvrtletně</td>
+            <td class="val">Měsíčně</td>
+            <td class="val">Měsíčně</td>
+          </tr>
+          <tr>
+            <th scope="row">Konzultace během roku</th>
+            <td class="val">Písemně</td>
+            <td class="val">Písemně a telefonicky</td>
+            <td class="val">Bez omezení včetně schůzek</td>
+          </tr>
+          <tr>
+            <th scope="row">Zastupování při kontrole</th>
+            <td class="val">Mimo paušál</td>
+            <td class="val">V ceně do 3 hodin</td>
+            <td class="val">V ceně</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tblwrap reveal" style="margin-top:26px">
+      <table class="tbl-stack">
+        <caption>Jednorázové úkony mimo měsíční paušál. Ceny jsou uvedené bez DPH.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Úkon</th>
+            <th scope="col">Co je v ceně</th>
+            <th scope="col">Cena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Daňové přiznání fyzické osoby</th>
+            <td data-l="Co je v ceně">Přiznání, přehledy a elektronické podání</td>
+            <td class="val acc num" data-l="Cena">od 2 250 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Účetní závěrka a přiznání s. r. o.</th>
+            <td data-l="Co je v ceně">Rozvaha, výkaz zisku a ztráty, příloha, uložení do sbírky listin</td>
+            <td class="val acc num" data-l="Cena">od 4 750 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Roční zúčtování daně zaměstnance</th>
+            <td data-l="Co je v ceně">Výpočet, tiskopis a podání vyúčtování</td>
+            <td class="val acc num" data-l="Cena">375 Kč za osobu</td>
+          </tr>
+          <tr>
+            <th scope="row">Registrace k DPH</th>
+            <td data-l="Co je v ceně">Příprava a podání přihlášky, komunikace s finančním úřadem</td>
+            <td class="val acc num" data-l="Cena">1 500 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Přiznání k silniční dani</th>
+            <td data-l="Co je v ceně">Výpočet za všechna vozidla firmy a podání přiznání</td>
+            <td class="val acc num" data-l="Cena">625 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Potvrzení pro banku nebo úřad</th>
+            <td data-l="Co je v ceně">Přehled příjmů a výdajů nebo výkaz na požadovaném tiskopisu</td>
+            <td class="val acc num" data-l="Cena">375 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Převzetí účetnictví od jiné účetní</th>
+            <td data-l="Co je v ceně">Kontrola převzatých dat a otevřených položek</td>
+            <td class="val acc" data-l="Cena">bez poplatku</td>
+          </tr>
+          <tr>
+            <th scope="row">Rekonstrukce účetnictví za uzavřená období</th>
+            <td data-l="Co je v ceně">Doplnění dokladů, dodatečná přiznání a opravné výkazy</td>
+            <td class="val" data-l="Cena">podle rozsahu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">Kdy platíte míň</h3>
+    <div class="three">
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Víc firem jednoho majitele</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Druhá a každá další firma téhož majitele má měsíční paušál nižší o 15 %. Podklady posíláte v jedné zprávě a fakturuji jednou fakturou.</p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Platba na rok dopředu</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Při úhradě dvanácti měsíců najednou je paušál nižší o 5 %. Pokud spolupráci ukončíte dřív, nevyčerpanou část vracím.</p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Firma bez pohybu</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Společnost bez tržeb a bez zaměstnanců vedu za 625 Kč měsíčně. Zahrnuje nulové výkazy, závěrku a uložení do sbírky listin.</p>
+      </div>
+    </div>
+
+    <p class="tbl-note">Fakturuji jednou měsíčně, se splatností 14 dní. Ceny v této ukázce jsou ilustrační. Konkrétní nabídku dostanete po prohlídce vzorku dokladů.</p>
+
+    <p style="margin-top:22px"><a class="btn btn-acc" href="#kontakt">Nezávazná nabídka</a></p>
+  </div>
+</section>
+
+<!-- ================= REFERENCIE ================= -->
+<section class="sec band-alt" id="referencie">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">04</b> Reference</p>
+      <div>
+        <h2 class="sec-h">Tři klienti a ceny, které platí</h2>
+        <p class="lead">Místo pochvalných vět uvádím rozsah agendy a měsíční částku na faktuře. Každou z nich si můžete přepočítat v kalkulačce níže.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <p class="card-no num">01</p>
+        <h3>Stavební firma, s. r. o.</h3>
+        <p>Šest zaměstnanců, fakturace práce i materiálu, dvě firemní vozidla.</p>
+        <ul>
+          <li>120 dokladů měsíčně</li>
+          <li>Mzdy pro 6 osob</li>
+          <li>Plátce DPH, měsíční přiznání</li>
+          <li>Agendu jsem převzala v srpnu, první měsíc zpracovaný do 20. dne</li>
+        </ul>
+        <p class="card-price"><span class="k">Platí měsíčně</span><span class="v num">5 325 Kč · paušál Rozšířený</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">02</p>
+        <h3>E-shop, s. r. o.</h3>
+        <p>Prodej přes platební bránu a dobírky, vratky a prodej koncovým zákazníkům ve dvou státech EU.</p>
+        <ul>
+          <li>180 dokladů měsíčně po nastavení automatického importu</li>
+          <li>Jeden zaměstnanec</li>
+          <li>Plátce DPH a režim OSS</li>
+          <li>Párování výplat z brány s objednávkami jednou týdně</li>
+        </ul>
+        <p class="card-price"><span class="k">Platí měsíčně</span><span class="v num">5 475 Kč · paušál Rozšířený</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">03</p>
+        <h3>Konzultant v IT, OSVČ</h3>
+        <p>Fakturuje dvěma klientům, z toho jednomu podnikateli v Rakousku.</p>
+        <ul>
+          <li>14 dokladů měsíčně</li>
+          <li>Bez zaměstnanců</li>
+          <li>Neplátce DPH, identifikovaná osoba a souhrnné hlášení</li>
+          <li>Roční přiznání fakturuji samostatně, od 2 250 Kč</li>
+        </ul>
+        <p class="card-price"><span class="k">Platí měsíčně</span><span class="v num">975 Kč · paušál Start</span></p>
+      </article>
+    </div>
+
+    <p class="tbl-note">Jména klientů neuvádím, mlčenlivost se vztahuje i na to, kdo je klientem kanceláře. Pokud chcete referenci od člověka, před podpisem smlouvy vám dám telefonní čísla na dva klienty, kteří s tím souhlasili.</p>
+  </div>
+</section>
+
+<!-- ================= KALKULAČKA ================= -->
+<section class="sec band-dark" id="kalkulacka">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">05</b> Kalkulačka</p>
+      <div>
+        <h2 class="sec-h">Kalkulačka měsíčního paušálu</h2>
+        <p class="lead">Nastavte čtyři hodnoty a uvidíte cenu podle ceníku výše. U společnosti s ručením omezeným kalkulačka porovná paušál Standard a Rozšířený a ukáže levnější z nich.</p>
+      </div>
+    </header>
+
+    <div class="calc-grid">
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Typ subjektu</legend>
+          <div class="opt">
+            <input type="radio" name="typ" id="t-szco" value="szco" checked>
+            <label for="t-szco">OSVČ <small>daňová evidence</small></label>
+
+            <input type="radio" name="typ" id="t-sro" value="sro">
+            <label for="t-sro">S. r. o. <small>účetnictví</small></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Doklady měsíčně</legend>
+          <div class="ctl-head">
+            <label class="ctl-lab" for="doklady">Faktury, pokladní doklady a řádky výpisu</label>
+            <span class="ctl-val num" id="dokladyOut">40</span>
+          </div>
+          <input type="range" id="doklady" min="0" max="250" step="5" value="40" aria-describedby="dokladyHint">
+          <div class="scale num"><span>0</span><span>125</span><span>250</span></div>
+          <p id="dokladyHint" class="ctl-hint">Šipkami vlevo a vpravo posunete hodnotu po pěti dokladech.</p>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Zaměstnanci a dohodáři</legend>
+          <div class="stepper">
+            <button type="button" id="zamMinus" aria-label="Snížit počet osob">−</button>
+            <input type="number" id="zam" class="num" value="1" min="0" max="20" step="1"
+                   inputmode="numeric" aria-label="Počet zaměstnanců a dohodářů">
+            <button type="button" id="zamPlus" aria-label="Zvýšit počet osob">+</button>
+          </div>
+          <p class="ctl-hint">Počet osob, kterým počítám mzdu. Jednatel bez smlouvy se nezapočítává.</p>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Plátce DPH</legend>
+          <label class="chk">
+            <input type="checkbox" id="dph">
+            <span>Jsem plátce DPH <small>přiznání k DPH, kontrolní hlášení, při obchodu v EU i souhrnné hlášení</small></span>
+          </label>
+          <p class="ctl-hint">V paušálu Rozšířený je agenda DPH zahrnutá v ceně.</p>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="calc-out" id="vysledok" aria-live="polite">
+      <div class="out-sum">
+        <span class="out-lab">Měsíční paušál, bez DPH</span>
+        <p class="out-price"><b class="num" id="sumaOut">73</b> <span>Kč / měsíc</span></p>
+        <span class="out-tier" id="tierOut">Paušál Start</span>
+      </div>
+      <div class="out-rows">
+        <span class="out-lab">Z čeho se cena skládá</span>
+        <ul id="rozpisOut">
+          <li><span>Paušál Start — daňová evidence</span><span class="num">975 Kč</span></li>
+          <li><span>Doklady nad rozsah: 20 × 27,50 Kč</span><span class="num">550 Kč</span></li>
+          <li><span>Mzdy: 1 osoba × 300 Kč</span><span class="num">300 Kč</span></li>
+        </ul>
+        <p class="out-note" id="poznamkaOut">Roční účetní závěrka a daňové přiznání se účtují samostatně podle ceníku jednorázových úkonů.</p>
+      </div>
+    </div>
+
+    <div class="calc-foot">
+      <p>Výsledek je orientační. Konečnou cenu potvrdím poté, co se podívám na vzorek vašich dokladů, zpravidla do dvou pracovních dnů.</p>
+      <a class="btn btn-light" href="#kontakt">Nezávazná nabídka</a>
+    </div>
+
+    <noscript>
+      <p class="nojs-note">Kalkulačka potřebuje zapnutý JavaScript. Všechny ceny najdete v tabulce paušálů v sekci Ceník.</p>
+    </noscript>
+  </div>
+</section>
+
+<!-- ================= POSTUP ================= -->
+<section class="sec" id="postup">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">06</b> Postup</p>
+      <div>
+        <h2 class="sec-h">Postup spolupráce</h2>
+        <p class="lead">Stejný postup platí pro nového klienta i pro přechod od jiné účetní. V tabulce je i to, co potřebuji od vás a dokdy.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Průběh spolupráce od prvního kontaktu po roční uzávěrku.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Krok</th>
+            <th scope="col">Co se děje</th>
+            <th scope="col">Co potřebuji od vás</th>
+            <th scope="col">Termín</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="t-no num">01</span> Úvodní hovor</th>
+            <td data-l="Co se děje">Projdeme rozsah agendy, počet dokladů, zaměstnanců a stav dosavadní evidence</td>
+            <td data-l="Co potřebuji od vás">Dvacet minut hovoru</td>
+            <td class="val" data-l="Termín">Do 2 pracovních dnů od poptávky</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">02</span> Nabídka a smlouva</th>
+            <td data-l="Co se děje">Dostanete písemný rozsah služeb, pevný měsíční paušál a výpovědní lhůtu jeden měsíc</td>
+            <td data-l="Co potřebuji od vás">Podpis smlouvy</td>
+            <td class="val" data-l="Termín">Do 2 pracovních dnů po hovoru</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">03</span> Převzetí agendy</th>
+            <td data-l="Co se děje">Převezmu data, zkontroluji otevřené položky, evidenci majetku a mzdové listy</td>
+            <td data-l="Co potřebuji od vás">Plná moc a kontakt na předchozí účetní</td>
+            <td class="val" data-l="Termín">První týden spolupráce</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">04</span> Měsíční zpracování</th>
+            <td data-l="Co se děje">Zaúčtování dokladů, mzdy, výkazy, podání a přehled hospodaření se seznamem plateb</td>
+            <td data-l="Co potřebuji od vás">Doklady do 10. dne, podklady ke mzdám do 3. dne</td>
+            <td class="val" data-l="Termín">Hotové do 20. dne v měsíci</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">05</span> Roční uzávěrka</th>
+            <td data-l="Co se děje">Účetní závěrka, daňové přiznání a uložení výkazů do sbírky listin</td>
+            <td data-l="Co potřebuji od vás">Doplnění chybějících dokladů po mé výzvě</td>
+            <td class="val" data-l="Termín">Podání před zákonnou lhůtou</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODKLADY ================= -->
+<section class="sec band-alt" id="podklady">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">07</b> Podklady</p>
+      <div>
+        <h2 class="sec-h">Podklady, které od vás potřebuji</h2>
+        <p class="lead">Každý měsíc tentýž seznam šesti položek. Účetní program si kupovat nemusíte, výstupy dostáváte v PDF.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Co posíláte každý měsíc</h3>
+        <dl class="dl">
+          <dt>Přijaté a vydané faktury</dt>
+          <dd>Sken nebo PDF, pojmenované číslem dokladu.</dd>
+          <dt>Bankovní výpisy</dt>
+          <dd>Za celý měsíc, v PDF nebo v exportu z internetového bankovnictví.</dd>
+          <dt>Pokladní doklady</dt>
+          <dd>Včetně dokladů z pokladny, pokud prodáváte na prodejně.</dd>
+          <dt>Podklady ke mzdám</dt>
+          <dd>Docházka, dovolené a nemocenská do 3. dne v měsíci.</dd>
+          <dt>Smlouvy s dlouhodobým plněním</dt>
+          <dd>Nájmy, leasingy, úvěry a splátkové kalendáře. Stačí jednou na začátku.</dd>
+          <dt>Plná moc</dt>
+          <dd>Jednorázově, abych mohla podávat výkazy za vás.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Jak mi je posíláte</h3>
+        <dl class="dl">
+          <dt>Sdílená složka</dt>
+          <dd>Nahráváte průběžně, jak doklady přicházejí. Přístup dostanete první den spolupráce.</dd>
+          <dt>Jednou měsíčně v jedné zprávě</dt>
+          <dd>Naskenované doklady pošlete najednou, nejpozději do 10. dne následujícího měsíce.</dd>
+          <dt>Osobně nebo do schránky</dt>
+          <dd>Šanon jednou měsíčně na Mýtné 21, nebo do uzamykatelné schránky u vchodu. Převzetí vám potvrdím.</dd>
+        </dl>
+
+        <h3 style="margin-top:34px">Co dostanete zpátky</h3>
+        <dl class="dl">
+          <dt>Přehled hospodaření</dt>
+          <dd>Příjmy, výdaje, průběžný základ daně a stav pohledávek.</dd>
+          <dt>Seznam plateb</dt>
+          <dd>Co, komu a do kdy zaplatit, včetně pojistného a záloh.</dd>
+          <dt>Potvrzení o podání</dt>
+          <dd>Ke každému výkazu, v PDF.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TERMÍNY ================= -->
+<section class="sec" id="terminy">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">08</b> Termíny</p>
+      <div>
+        <h2 class="sec-h">Rok v účetnictví, měsíc po měsíci</h2>
+        <p class="lead">Abyste věděli, co se kdy děje a kdy se ozvu. Zákonné lhůty hlídám já, vy dostanete připomínku tři dny před tím, než od vás něco potřebuji.</p>
+      </div>
+    </header>
+
+    <div class="plate reveal">
+      <svg class="plate-geo" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="svetlo2" cx="0.06" cy="0.08" r="0.55">
+            <stop offset="0" stop-color="#7a5c22" stop-opacity="0.10"/>
+            <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="320" fill="url(#svetlo2)"/>
+        <g fill="none" stroke="#7a5c22" stroke-opacity="0.14">
+          <circle cx="118" cy="286" r="104"/>
+          <circle cx="118" cy="286" r="168"/>
+          <circle cx="118" cy="286" r="232"/>
+        </g>
+        <path d="M900 0 L1200 0 L1200 320 L1060 320 Z" fill="#7a5c22" fill-opacity="0.045"/>
+      </svg>
+      <div class="plate-in">
+        <p class="plate-kicker">Vytíženost během roku</p>
+        <h2 class="plate-h">Tři měsíce, kdy se ozvu častěji</h2>
+        <div class="rok-grid" role="img"
+             aria-label="Přehled dvanácti měsíců. Nejvíc práce je v březnu, v červnu a v prosinci.">
+          <div><span class="rok-bar" style="height:44%"></span><span class="rok-m">I</span></div>
+          <div><span class="rok-bar" style="height:54%"></span><span class="rok-m">II</span></div>
+          <div class="hi"><span class="rok-bar" style="height:84%"></span><span class="rok-m">III</span></div>
+          <div><span class="rok-bar" style="height:42%"></span><span class="rok-m">IV</span></div>
+          <div><span class="rok-bar" style="height:38%"></span><span class="rok-m">V</span></div>
+          <div class="hi"><span class="rok-bar" style="height:72%"></span><span class="rok-m">VI</span></div>
+          <div><span class="rok-bar" style="height:38%"></span><span class="rok-m">VII</span></div>
+          <div><span class="rok-bar" style="height:32%"></span><span class="rok-m">VIII</span></div>
+          <div><span class="rok-bar" style="height:42%"></span><span class="rok-m">IX</span></div>
+          <div><span class="rok-bar" style="height:46%"></span><span class="rok-m">X</span></div>
+          <div><span class="rok-bar" style="height:52%"></span><span class="rok-m">XI</span></div>
+          <div class="hi"><span class="rok-bar" style="height:88%"></span><span class="rok-m">XII</span></div>
+        </div>
+        <ul class="rok-key">
+          <li><b class="num">III</b> — závěrka a daňové přiznání za minulý rok</li>
+          <li><b class="num">VI</b> — prodloužená lhůta na podání přiznání</li>
+          <li><b class="num">XII</b> — inventura a příprava uzávěrky</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Co se děje kdy</h3>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Opakované měsíční termíny a milníky během roku.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kdy</th>
+            <th scope="col">Co se děje</th>
+            <th scope="col">Co potřebuji od vás</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Každý měsíc do 3. dne</th>
+            <td data-l="Co se děje">Uzavírám mzdovou agendu za předchozí měsíc</td>
+            <td class="val" data-l="Co potřebuji od vás">Docházka, dovolené, nemocenská</td>
+          </tr>
+          <tr>
+            <th scope="row">Každý měsíc do 10. dne</th>
+            <td data-l="Co se děje">Přebírám a třídím doklady za předchozí měsíc</td>
+            <td class="val" data-l="Co potřebuji od vás">Faktury, výpisy, pokladní doklady</td>
+          </tr>
+          <tr>
+            <th scope="row">Každý měsíc do 20. dne</th>
+            <td data-l="Co se děje">Posílám přehled hospodaření a seznam plateb s termíny</td>
+            <td class="val" data-l="Co potřebuji od vás">Nic, jen si to přečíst</td>
+          </tr>
+          <tr>
+            <th scope="row">Každý měsíc do 25. dne</th>
+            <td data-l="Co se děje">Podávám přiznání k DPH, kontrolní hlášení a v případě obchodu v EU i souhrnné hlášení</td>
+            <td class="val" data-l="Co potřebuji od vás">Nic, podklady mám z 10. dne</td>
+          </tr>
+          <tr>
+            <th scope="row">Leden</th>
+            <td data-l="Co se děje">Uzavírám mzdový rok, kontroluji změny v odvodech a nastavuji nové sazby</td>
+            <td class="val" data-l="Co potřebuji od vás">Potvrzení změn ve smlouvách</td>
+          </tr>
+          <tr>
+            <th scope="row">Únor</th>
+            <td data-l="Co se děje">Sbírám žádosti zaměstnanců o roční zúčtování daně a vystavuji potvrzení o příjmu</td>
+            <td class="val" data-l="Co potřebuji od vás">Podepsané žádosti zaměstnanců</td>
+          </tr>
+          <tr>
+            <th scope="row">Březen</th>
+            <td data-l="Co se děje">Připravuji účetní závěrku a daňové přiznání za předchozí rok</td>
+            <td class="val" data-l="Co potřebuji od vás">Doplnění chybějících dokladů do 10. března</td>
+          </tr>
+          <tr>
+            <th scope="row">Červen</th>
+            <td data-l="Co se děje">Podávám přiznání klientů, kteří mají prodlouženou lhůtu</td>
+            <td class="val" data-l="Co potřebuji od vás">Nic, podklady mám z března</td>
+          </tr>
+          <tr>
+            <th scope="row">Červenec</th>
+            <td data-l="Co se děje">Přepočítávám zálohy OSVČ podle podaného přehledu a píšu novou výši</td>
+            <td class="val" data-l="Co potřebuji od vás">Nic</td>
+          </tr>
+          <tr>
+            <th scope="row">Září</th>
+            <td data-l="Co se děje">Pololetní kontrola: jestli paušál sedí na skutečný objem dokladů a jestli není třeba změna</td>
+            <td class="val" data-l="Co potřebuji od vás">Krátký hovor, pokud se něco mění</td>
+          </tr>
+          <tr>
+            <th scope="row">Říjen až listopad</th>
+            <td data-l="Co se děje">Procházíme neuhrazené pohledávky, plánované nákupy a dopad na základ daně</td>
+            <td class="val" data-l="Co potřebuji od vás">Seznam plánovaných investic</td>
+          </tr>
+          <tr>
+            <th scope="row">Prosinec</th>
+            <td data-l="Co se děje">Inventura pokladny, skladu a majetku, příprava podkladů k uzávěrce</td>
+            <td class="val" data-l="Co potřebuji od vás">Stav pokladny a skladu k 31. prosinci</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-note">Zákonné lhůty se mohou měnit. Sleduji je za vás a v případě změny vám napíšu, co to pro vaši firmu znamená.</p>
+  </div>
+</section>
+
+<!-- ================= KANCELÁRIA, PRÍCHOD A PARKOVANIE ================= -->
+<section class="sec band-alt" id="kancelaria">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">09</b> Kancelář</p>
+      <div>
+        <h2 class="sec-h">Adresa, příchod a parkování</h2>
+        <p class="lead">Většina agendy běží na dálku, klienty mám po celé republice. Pokud se chcete setkat osobně, tady je všechno o cestě, parkování a vstupu do budovy.</p>
+      </div>
+    </header>
+
+    <div class="addr">
+      <div>
+        <span class="lbl">Adresa kanceláře</span>
+        <span class="v">Mýtná 21<br>110 00 Praha 1</span>
+        <span class="s">Přízemí, vchod přímo z ulice, zvonek SALDIA.</span>
+      </div>
+      <div>
+        <span class="lbl">Telefon</span>
+        <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+        <span class="s">Pondělí až pátek od 9.00 do 16.00.</span>
+      </div>
+      <div>
+        <span class="lbl">Osobní schůzky</span>
+        <span class="v">Pondělí až čtvrtek<br>9.00 – 15.00</span>
+        <span class="s">Vždy po domluvě termínu předem.</span>
+      </div>
+      <div>
+        <span class="lbl">Předání dokladů</span>
+        <span class="v">Každý pracovní den<br>do 16.00</span>
+        <span class="s">Uzamykatelná schránka u vchodu, převzetí potvrdím.</span>
+      </div>
+    </div>
+
+    <h3 class="sub-h" id="hodiny">Otevírací doba po dnech</h3>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Otevírací doba kanceláře na Mýtné 21. O svátcích je zavřeno, oznamuji to týden předem.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Den</th>
+            <th scope="col">Telefon</th>
+            <th scope="col">Osobní schůzky</th>
+            <th scope="col">Schránka na doklady</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Pondělí</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobní schůzky">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Úterý</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobní schůzky">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Středa</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobní schůzky">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Čtvrtek</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Osobní schůzky">9.00 – 15.00</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Pátek</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td data-l="Osobní schůzky">den vyhrazený na zpracování a podání</td>
+            <td class="val num" data-l="Schránka na doklady">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Sobota</th>
+            <td data-l="Telefon">zavřeno</td>
+            <td data-l="Osobní schůzky">zavřeno</td>
+            <td data-l="Schránka na doklady">zavřeno</td>
+          </tr>
+          <tr>
+            <th scope="row">Neděle</th>
+            <td data-l="Telefon">zavřeno</td>
+            <td data-l="Osobní schůzky">zavřeno</td>
+            <td data-l="Schránka na doklady">zavřeno</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-note">Osobní schůzka je vždy po domluvě termínu, ne na počkání. Schránku u vchodu vybírám každý pracovní den v 16.00 a převzetí potvrdím zprávou. Online schůzka trvá třicet minut, odkaz na videohovor pošlu v potvrzení termínu.</p>
+
+    <div class="two" style="margin-top:clamp(30px,4vw,46px)">
+      <div>
+        <!-- FOTO: budova na Mýtnej 21 zvonku, vchod z ulice so zvončekom SALDIA -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 420" role="img" focusable="false"
+                 aria-label="Kompozice s adresou kanceláře: Mýtná 21, přízemí.">
+              <defs>
+                <linearGradient id="obr1a" x1="0" y1="0" x2="0.7" y2="1">
+                  <stop offset="0" stop-color="#eeeae1"/>
+                  <stop offset="0.55" stop-color="#e6e6e4"/>
+                  <stop offset="1" stop-color="#dcdfe3"/>
+                </linearGradient>
+                <radialGradient id="obr1b" cx="0.82" cy="0.16" r="0.7">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.16"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="420" fill="url(#obr1a)"/>
+              <rect width="640" height="420" fill="url(#obr1b)"/>
+              <g stroke="#14181c" stroke-opacity="0.08">
+                <path d="M0 70H640M0 140H640M0 210H640M0 280H640M0 350H640"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.20">
+                <circle cx="524" cy="66" r="96"/>
+                <circle cx="524" cy="66" r="158"/>
+                <circle cx="524" cy="66" r="220"/>
+              </g>
+              <path d="M640 130 L640 420 L360 420 Z" fill="#7a5c22" fill-opacity="0.07"/>
+              <rect x="52" y="96" width="2" height="232" fill="#14181c" fill-opacity="0.16"/>
+              <text x="84" y="214" font-family="Georgia, serif" font-size="104" fill="#14181c"
+                    fill-opacity="0.9" letter-spacing="-3">21</text>
+              <text x="86" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="23"
+                    letter-spacing="9" fill="#7a5c22">MÝTNÁ</text>
+              <text x="86" y="300" font-family="Segoe UI, Arial, sans-serif" font-size="18"
+                    letter-spacing="2" fill="#474e56">110 00 Praha 1</text>
+            </svg>
+          </div>
+          <figcaption>Kancelář je v přízemí, vchod přímo z ulice, zvonek SALDIA.</figcaption>
+        </figure>
+
+        <h3 style="margin-top:34px">Cesta a parkování</h3>
+        <ul class="ticks">
+          <li><b>Autem:</b> dvě vyhrazená parkovací místa ve dvoře budovy, pro klienty první dvě hodiny bez poplatku. Vjezd je z Mýtné, závoru otevřu po zazvonění.</li>
+          <li><b>Parkování na ulici:</b> na Mýtné platí zóna placeného stání, hodina stojí 50 Kč a platí se přes parkovací automat u vchodu do budovy.</li>
+          <li><b>Městskou dopravou:</b> zastávka je tři minuty pěšky, staví u ní autobusy i tramvaje z centra i ze sídlišť.</li>
+          <li><b>Vlakem nebo autobusem:</b> z hlavního nádraží deset minut pěšky po rovině, bez schodů a bez přecházení rušné silnice.</li>
+          <li><b>Bezbariérový přístup:</b> kancelář je v přízemí, do budovy se vchází bez schodů, dveře mají šířku 90 cm a v budově je bezbariérové WC.</li>
+          <li><b>S kočárkem:</b> vchodové dveře se dají zajistit otevřené, v kanceláři je místo na odložení kočárku.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="plan reveal">
+          <svg viewBox="0 0 520 330" role="img" focusable="false"
+               aria-label="Orientační plán: budova Mýtná 21 s vchodem z ulice, vjezd do dvora se dvěma parkovacími místy a zastávka městské dopravy tři minuty pěšky.">
+            <rect width="520" height="330" fill="#f5f6f8"/>
+
+            <rect x="0" y="172" width="520" height="60" fill="#e6e9ec"/>
+            <path d="M0 172H520M0 232H520" stroke="#c0c5cb" stroke-width="1.2"/>
+            <path d="M0 202H520" stroke="#c0c5cb" stroke-width="1.4" stroke-dasharray="16 12"/>
+            <text x="16" y="223" font-family="Segoe UI, Arial, sans-serif" font-size="17"
+                  letter-spacing="4" fill="#535a62">MÝTNÁ</text>
+
+            <rect x="110" y="14" width="210" height="64" fill="#ffffff" fill-opacity="0.7"
+                  stroke="#7a5c22" stroke-width="1.2" stroke-dasharray="7 5"/>
+            <rect x="126" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <rect x="190" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <text x="256" y="56" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Dvůr</text>
+
+            <rect x="110" y="78" width="210" height="94" fill="#7a5c22" fill-opacity="0.10"
+                  stroke="#7a5c22" stroke-width="1.4"/>
+            <text x="128" y="118" font-family="Georgia, serif" font-size="26" fill="#14181c">Mýtná 21</text>
+            <text x="128" y="144" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">SALDIA · přízemí</text>
+
+            <rect x="206" y="166" width="18" height="10" fill="#7a5c22"/>
+            <text x="234" y="194" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Vchod</text>
+
+            <path d="M92 256V44" stroke="#7a5c22" stroke-width="2"/>
+            <path d="M92 36l6 12H86z" fill="#7a5c22"/>
+            <text x="16" y="282" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Vjezd do dvora</text>
+
+            <rect x="300" y="240" width="98" height="10" fill="#7a5c22" fill-opacity="0.42"/>
+            <text x="300" y="274" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Zastávka MHD</text>
+            <text x="300" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#535a62">3 minuty pěšky</text>
+          </svg>
+          <ul class="plan-key">
+            <li><b>Dvůr</b> 2 místa, první 2 hodiny bez poplatku</li>
+            <li><b>Ulice</b> automat u vchodu, 50 Kč za hodinu</li>
+            <li><b>Vchod</b> z Mýtné, bez schodů</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:34px">První schůzka</h3>
+        <p class="p-narrow">Přineste výpis z účtu za poslední měsíc a pět typických faktur. Z toho umím říct objem dokladů i konečnou cenu paušálu. Schůzka trvá dvacet až třicet minut a neúčtuji ji.</p>
+        <p class="p-narrow">To samé projdeme i videohovorem nebo telefonicky. Podklady mi tehdy pošlete přes sdílenou složku.</p>
+        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Domluvit termín schůzky</a></p>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Kdo pracuje na vaší agendě</h3>
+    <div class="two">
+      <div>
+        <ul class="roles">
+          <li>
+            <span class="role-t">Účetní vaší firmy</span>
+            <span class="role-d">Jedna osoba vede vaši agendu celý rok a odpovídá vám přímo, do 24 hodin v pracovní dny.</span>
+          </li>
+          <li>
+            <span class="role-t">Mzdová účetní</span>
+            <span class="role-d">Zpracovává mzdy, dohody a komunikaci s pojišťovnami. Zapojuje se, jen pokud máte zaměstnance nebo dohodáře.</span>
+          </li>
+          <li>
+            <span class="role-t">Daňový poradce</span>
+            <span class="role-d">Externí spolupráce pro složitější otázky, například prodej firmy, mezinárodní plnění nebo transakce mezi spojenými osobami.</span>
+          </li>
+          <li>
+            <span class="role-t">Zástup během dovolené</span>
+            <span class="role-d">Během nepřítomnosti přebírá agendu kolegyně s přístupem ke stejným podkladům. Její jméno a číslo dostanete nejpozději týden předem.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <!-- FOTO: účtovníčka a mzdová účtovníčka v kancelárii, skutočný tím, nie stock -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 400" role="img" focusable="false"
+                 aria-label="Kompozice se značkou kanceláře SALDIA.">
+              <defs>
+                <linearGradient id="obr2a" x1="0.1" y1="0" x2="0.9" y2="1">
+                  <stop offset="0" stop-color="#e9eaec"/>
+                  <stop offset="0.5" stop-color="#e4e3df"/>
+                  <stop offset="1" stop-color="#d9dce0"/>
+                </linearGradient>
+                <radialGradient id="obr2b" cx="0.18" cy="0.86" r="0.72">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.15"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="400" fill="url(#obr2a)"/>
+              <rect width="640" height="400" fill="url(#obr2b)"/>
+              <g stroke="#14181c" stroke-opacity="0.07">
+                <path d="M80 0V400M180 0V400M280 0V400M380 0V400M480 0V400M580 0V400"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.22">
+                <circle cx="118" cy="336" r="74"/>
+                <circle cx="118" cy="336" r="126"/>
+                <circle cx="118" cy="336" r="178"/>
+              </g>
+              <path d="M0 0 L246 0 L0 246 Z" fill="#14181c" fill-opacity="0.05"/>
+              <g stroke="#14181c" stroke-opacity="0.55">
+                <path d="M330 150h226" stroke-width="2"/>
+                <path d="M330 186h226" stroke-width="2"/>
+                <path d="M330 222h132" stroke-width="2"/>
+              </g>
+              <path d="M478 222h78" stroke="#7a5c22" stroke-width="3"/>
+              <text x="330" y="122" font-family="Georgia, serif" font-size="30"
+                    letter-spacing="12" fill="#14181c">SALDIA</text>
+            </svg>
+          </div>
+          <figcaption>Účetní a mzdová účetní, které vedou agendu klientů kanceláře.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAKTURÁCIA A PLATBA ================= -->
+<section class="sec" id="platby">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">10</b> Platba</p>
+      <div>
+        <h2 class="sec-h">Fakturace a způsob platby</h2>
+        <p class="lead">Platí se jednou měsíčně, převodem na účet. Níže je přesně to, kdy faktura přijde, co je v ní rozepsané a co se děje při prodlení.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Kdy a za co fakturuji</h3>
+        <dl class="dl">
+          <dt>Fakturační den</dt>
+          <dd>Fakturu vystavuji k prvnímu pracovnímu dni za předchozí měsíc. Splatnost je <b>14 dní</b>.</dd>
+          <dt>Co je ve faktuře</dt>
+          <dd>Samostatný řádek za paušál a samostatné řádky za doklady nad zahrnutý rozsah, mzdy a jednorázové úkony. Rozpis dostanete jako přílohu, nic není schované v jedné částce.</dd>
+          <dt>Jednorázové úkony</dt>
+          <dd>Fakturuji až po dokončení. Cenu řeknu předem písemně a bez vašeho odsouhlasení nezačínám.</dd>
+          <dt>Platba na rok dopředu</dt>
+          <dd>Dvanáct měsíců najednou je o <b>5 %</b> levnějších. Pokud spolupráci ukončíte dřív, nevyčerpanou část vracím do 14 dní.</dd>
+          <dt>Zvýšení paušálu</dt>
+          <dd>Pokud agenda dlouhodobě přeroste zahrnutý rozsah, napíšu to <b>měsíc předem</b>. Nová cena platí až od následujícího měsíce a musíte ji odsouhlasit.</dd>
+          <dt>Sleva při více firmách</dt>
+          <dd>Druhá a každá další firma téhož majitele má paušál nižší o <b>15 %</b> a všechno jde na jedné faktuře.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Čím se dá zaplatit</h3>
+        <div class="tblwrap reveal">
+          <table class="tbl-stack">
+            <caption>Přijímané způsoby platby a poplatky za ně.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Způsob platby</th>
+                <th scope="col">Jak to funguje</th>
+                <th scope="col">Poplatek</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Převodem na účet</th>
+                <td data-l="Jak to funguje">Údaje i variabilní symbol jsou na faktuře, splatnost 14 dní</td>
+                <td class="val acc" data-l="Poplatek">bez poplatku</td>
+              </tr>
+              <tr>
+                <th scope="row">Trvalým příkazem</th>
+                <td data-l="Jak to funguje">Doporučuji u paušálu, částka je každý měsíc stejná, rozdíly doúčtuji jednou ročně</td>
+                <td class="val acc" data-l="Poplatek">bez poplatku</td>
+              </tr>
+              <tr>
+                <th scope="row">Platební kartou</th>
+                <td data-l="Jak to funguje">Přes platební odkaz přiložený k faktuře, platba je připsaná do dvou pracovních dnů</td>
+                <td class="val acc" data-l="Poplatek">bez poplatku</td>
+              </tr>
+              <tr>
+                <th scope="row">V hotovosti</th>
+                <td data-l="Jak to funguje">Nepřijímám, aby byla každá platba doložená bankovním dokladem</td>
+                <td class="val" data-l="Poplatek">nepřijímám</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top:34px">Pokud faktura není uhrazená</h3>
+        <ul class="ticks">
+          <li><b>Tři dny po splatnosti</b> pošlu připomínku a zavolám. Předpokládám, že jde o přehlédnutí.</li>
+          <li><b>Čtrnáct dní po splatnosti</b> pozastavuji další zpracování a napíšu to předem, aby vás to nepřekvapilo.</li>
+          <li><b>Podání se zákonnou lhůtou dokončím vždy</b>, i když faktura není uhrazená. Nechci, aby vám z toho vznikla sankce.</li>
+          <li><b>Úrok z prodlení</b> neúčtuji, pokud prodlení nepřesáhne 30 dní.</li>
+          <li><b>Předání agendy nepodmiňuji</b> úhradou. Nezaplacené faktury řeším samostatně.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="tbl-note">Ceny v této ukázce jsou ilustrační. Konkrétní cenovou nabídku dostanete po prohlídce vzorku vašich dokladů, zpravidla do dvou pracovních dnů.</p>
+  </div>
+</section>
+
+<!-- ================= STORNO A UKONČENIE ================= -->
+<section class="sec band-alt" id="storno">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">11</b> Storno</p>
+      <div>
+        <h2 class="sec-h">Změna termínu, storno a ukončení spolupráce</h2>
+        <p class="lead">Termín se dá přesunout i zrušit. Spolupráci ukončíte k poslednímu dni měsíce a agendu dostanete zpátky do deseti pracovních dnů.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Storno podmínky u domluvených termínů a objednaných úkonů.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Situace</th>
+            <th scope="col">Co pro vás platí</th>
+            <th scope="col">Poplatek</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Zrušení schůzky víc než 24 hodin předem</th>
+            <td data-l="Co pro vás platí">Stačí zpráva nebo telefonát, termín uvolním pro někoho jiného</td>
+            <td class="val acc" data-l="Poplatek">bez poplatku</td>
+          </tr>
+          <tr>
+            <th scope="row">Zrušení schůzky méně než 24 hodin předem</th>
+            <td data-l="Co pro vás platí">Nic neúčtuji, prosím jen o krátkou zprávu, ať nečekám</td>
+            <td class="val acc" data-l="Poplatek">bez poplatku</td>
+          </tr>
+          <tr>
+            <th scope="row">Přesun termínu na jiný den</th>
+            <td data-l="Co pro vás platí">Nabídnu nejbližší volný termín, zpravidla do tří pracovních dnů</td>
+            <td class="val acc" data-l="Poplatek">bez poplatku</td>
+          </tr>
+          <tr>
+            <th scope="row">Nedostavení se bez oznámení</th>
+            <td data-l="Co pro vás platí">Poprvé bez následku, další termín potvrzujeme telefonicky v den schůzky</td>
+            <td class="val acc" data-l="Poplatek">bez poplatku</td>
+          </tr>
+          <tr>
+            <th scope="row">Zrušení objednaného jednorázového úkonu</th>
+            <td data-l="Co pro vás platí">Pokud jsem ještě nezačala, neúčtuji nic. Pokud už práce běží, fakturuji odpracovaný čas</td>
+            <td class="val" data-l="Poplatek">0 Kč nebo 875 Kč / hodina</td>
+          </tr>
+          <tr>
+            <th scope="row">Zrušení z mé strany</th>
+            <td data-l="Co pro vás platí">Ozvu se nejpozději 24 hodin předem a nabídnu náhradní termín do tří dnů</td>
+            <td class="val acc" data-l="Poplatek">bez poplatku</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">Ukončení spolupráce</h3>
+    <div class="two">
+      <div>
+        <dl class="dl">
+          <dt>Výpovědní lhůta</dt>
+          <dd>Jeden měsíc, končí posledním dnem kalendářního měsíce. Bez vázanosti na rok a bez podmínky odebrat minimální počet měsíců.</dd>
+          <dt>Poplatek za předčasné ukončení</dt>
+          <dd>Žádný. Pokud vám spolupráce nesedne, nemá smysl držet vás smlouvou.</dd>
+          <dt>Předání agendy</dt>
+          <dd>Do <b>10 pracovních dnů</b> od skončení dostanete kompletní agendu v elektronické i listinné podobě, včetně účetního deníku, saldokonta a mzdových listů.</dd>
+          <dt>Spolupráce s novou účetní</dt>
+          <dd>Odpovídám na její otázky ještě 30 dní po skončení, také bez poplatku.</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Odpovědnost za chyby</h3>
+        <ul class="ticks">
+          <li><b>Za chyby na mé straně odpovídám</b> a mám uzavřené pojištění profesní odpovědnosti. Sankci, která vznikne mým pochybením, uhradím.</li>
+          <li><b>Za podklady doručené po termínu</b> odpovídá klient. Termíny proto říkám předem a tři dny předtím je připomínám.</li>
+          <li><b>Chybu přiznám sama</b> a napíšu, jak ji opravím a dokdy. Nečekám, až na ni přijdete vy.</li>
+          <li><b>Opravná a dodatečná podání</b> po mé chybě dělám bez poplatku.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OCHRANA ÚDAJOV ================= -->
+<section class="sec band-dark" id="ochrana">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">12</b> Údaje</p>
+      <div>
+        <h2 class="sec-h">Doklady, mlčenlivost a ochrana údajů</h2>
+        <p class="lead">Kde jsou vaše doklady uložené, kdo se k nim dostane a jak dlouho je uchovávám.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Kde jsou vaše data</h3>
+        <ul class="ticks">
+          <li><b>Šifrované úložiště v Evropské unii</b> s přihlášením ve dvou krocích a s denní zálohou na druhé místo.</li>
+          <li><b>Listinné doklady</b> jsou v uzamčené místnosti kanceláře. Přístup k nim má jen osoba, která vede vaši agendu, a její zástup během dovolené.</li>
+          <li><b>Přenos dokladů</b> přes sdílenou složku chráněnou heslem nebo osobně. Citlivé přílohy neposílám nezabezpečeně.</li>
+          <li><b>Mlčenlivost</b> platí bez časového omezení, i po skončení spolupráce.</li>
+          <li><b>Zpracovatelská smlouva</b> podle nařízení GDPR je součástí smlouvy o vedení účetnictví. Nemusíte o ni zvlášť žádat.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Kdo se k údajům dostane</h3>
+        <dl class="dl">
+          <dt>Účetní vaší firmy</dt>
+          <dd>Plný přístup k vaší agendě. Je to jediná osoba, která s vámi běžně komunikuje.</dd>
+          <dt>Mzdová účetní</dt>
+          <dd>Jen mzdová část a jen tehdy, pokud máte zaměstnance nebo dohodáře.</dd>
+          <dt>Daňový poradce</dt>
+          <dd>Jen ke konkrétní otázce, kterou spolu řešíme, a jen s vaším vědomím.</dd>
+          <dt>Úřady</dt>
+          <dd>Finanční úřad, Česká správa sociálního zabezpečení a zdravotní pojišťovny, v rozsahu podání, která za vás dělám na základě plné moci.</dd>
+          <dt>Archivace</dt>
+          <dd>Doklady uchovávám po dobu stanovenou zákonem. Potom je předám vám nebo je po domluvě odborně zlikviduji a dám vám o tom potvrzení.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KARIÉRA ================= -->
+<section class="sec" id="kariera">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">13</b> Kariéra</p>
+      <div>
+        <h2 class="sec-h">Volné místo a odborná praxe</h2>
+        <p class="lead">Hledám jednoho člověka, který umí vést účetnictví samostatně. Portfolio je 15 až 20 klientů, mzda od 35 000 Kč v hrubém při plném úvazku.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Samostatná účetní nebo účetní</h3>
+        <dl class="dl">
+          <dt>Úvazek</dt>
+          <dd>Plný nebo zkrácený od 0,6. Pružný začátek dne, dva dny v týdnu z domu.</dd>
+          <dt>Místo výkonu práce</dt>
+          <dd>Mýtná 21, Praha. Kancelář je v přízemí, parkování ve dvoře budovy.</dd>
+          <dt>Co budete dělat</dt>
+          <dd>Vést vlastní portfolio 15 až 20 klientů od dokladů po závěrku, včetně agendy DPH a komunikace s klientem.</dd>
+          <dt>Co očekávám</dt>
+          <dd>Aspoň dva roky praxe v účetnictví, zkušenost s agendou DPH a spolehlivost u termínů. Mzdy nejsou podmínkou, doučíme.</dd>
+          <dt>Mzda</dt>
+          <dd>Od <b>35 000 Kč v hrubém</b> při plném úvazku, konkrétní částka podle praxe. Po roce se rozsah portfolia i mzda přehodnocují.</dd>
+          <dt>Co nabízím</dt>
+          <dd>Pevný počet klientů na osobu, placená školení a licence, zástup během dovolené a žádné přesčasy kromě března a června.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Praxe pro studenty a absolventy</h3>
+        <p class="p-narrow">Dvakrát ročně beru jednoho člověka na tříměsíční placenou praxi. Projdete si třídění dokladů, zaúčtování běžných případů a přípravu podkladů k závěrce pod dohledem. Odměna je 150 Kč za hodinu.</p>
+        <p class="p-narrow">Po praxi dostanete písemné hodnocení a doporučení, i když u nás nezůstanete. Nástupní termíny jsou vždy v únoru a v září.</p>
+
+        <h3 style="margin-top:34px">Jak se přihlásit</h3>
+        <ul class="ticks">
+          <li><b>Vyplňte formulář</b> v sekci Kontakt a do zprávy napište, že reagujete na volné místo. Ozvu se telefonicky a řeknu, kam poslat životopis.</li>
+          <li><b>Do zprávy uveďte</b>, jakou agendu jste dosud vedli, v jakém softwaru a kolik klientů jste měli na starosti.</li>
+          <li><b>Odpovím do pěti pracovních dnů</b>, i když to nevyjde.</li>
+          <li><b>Výběr má dvě kola:</b> hovor na třicet minut a krátkou praktickou úlohu, která vám nezabere víc než hodinu. Úlohu proplácím částkou 1 000 Kč.</li>
+        </ul>
+        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Přejít na formulář</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OTÁZKY ================= -->
+<section class="sec band-alt" id="otazky">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">14</b> Otázky</p>
+      <div>
+        <h2 class="sec-h">Časté dotazy</h2>
+        <p class="lead">Odpovědi na to, na co se klienti ptají před podpisem smlouvy.</p>
+      </div>
+    </header>
+
+    <details open>
+      <summary>Dá se přejít k vám i v průběhu roku?</summary>
+      <div class="faq-body">
+        <p>Ano. Od předchozí účetní potřebuji účetní deník nebo hlavní knihu, saldokonto, evidenci majetku a mzdové listy. Převzatá data zkontroluji a napíšu vám, co je otevřené a co je třeba dorovnat. <strong>Tuto kontrolu neúčtuji.</strong></p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Dokdy vám musím poslat doklady?</summary>
+      <div class="faq-body">
+        <p>Běžné doklady do 10. dne následujícího měsíce, podklady ke mzdám do 3. dne. U měsíční DPH je termín přísnější, domluvíme ho na úvodním hovoru.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Co když mi nějaký doklad chybí?</summary>
+      <div class="faq-body">
+        <p>Chybějící doklad obvykle poznám podle pohybu na bankovním účtu a napíšu vám, který to je. Pokud se nedá dohledat, řeknu vám dopad na daň a DPH ještě před podáním výkazu.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Kdo odpovídá za pokutu, pokud vznikne?</summary>
+      <div class="faq-body">
+        <p>Za chyby na mé straně odpovídám já a mám uzavřené pojištění profesní odpovědnosti. Pokud sankce vznikne z podkladů doručených po domluveném termínu, je na straně klienta. Termíny proto říkám předem a připomínám je.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Co děláte, když přijde výzva nebo kontrola z finančního úřadu?</summary>
+      <div class="faq-body">
+        <p>Výzvu mi přepošlete a já připravím odpověď i podklady. Pokud jde o kontrolu, komunikuji s úřadem přímo na základě plné moci a vy jste u toho, jen když je potřeba. V paušálu Standard jsou v ceně tři hodiny, v paušálu Rozšířený je zastupování bez omezení; mimo paušál je sazba <strong>875 Kč za hodinu</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Potřebuji si koupit účetní program?</summary>
+      <div class="faq-body">
+        <p>Ne. Účtuji ve svém softwaru, vy dostáváte výstupy v PDF. Pokud už máte fakturační systém, umím z něj data přebírat exportem.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Účtujete i e-shopy a prodej do zahraničí?</summary>
+      <div class="faq-body">
+        <p>Ano. Řeším párování plateb z platebních bran a dobírek, vratky i režim OSS při prodeji koncovým zákazníkům v jiných státech Evropské unie. Při větším objemu transakcí nastavíme automatický import, aby počet dokladů zbytečně nezvedl paušál.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Mám s. r. o., která nepodniká. Musím platit plný paušál?</summary>
+      <div class="faq-body">
+        <p>Ne. Společnost bez tržeb a bez zaměstnanců vedu za <strong>625 Kč měsíčně</strong>. V ceně jsou nulové výkazy, účetní závěrka a její uložení do sbírky listin. Když firma začne fungovat, přejdeme na běžný paušál od následujícího měsíce.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Vyplatí se mi paušální výdaje, nebo skutečné?</summary>
+      <div class="faq-body">
+        <p>Přepočítám vám obě možnosti z vašich reálných čísel ještě před podáním přiznání a řeknu rozdíl v korunách. U skutečných výdajů je třeba vést víc evidence, takže do porovnání počítám i čas a cenu zpracování.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Jak spolu komunikujeme?</summary>
+      <div class="faq-body">
+        <p>Píšete přímo účetní, která vede vaši agendu, ne na obecnou linku. Formulář na této stránce má odpověď do 24 hodin v pracovní dny, telefon je dostupný od 9.00 do 16.00. Konzultace během roku jsou součástí paušálu.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ================= ZÁVEREČNÁ VÝZVA ================= -->
+<section class="cta-band" aria-labelledby="ponuka-nadpis">
+  <div class="wrap cta-in">
+    <div>
+      <h2 id="ponuka-nadpis">Nezávazná nabídka do dvou pracovních dnů</h2>
+      <p>Napište typ subjektu, přibližný počet dokladů a jestli máte zaměstnance. Pošlu pevnou měsíční cenu a rozsah služeb v jednom dokumentu. Nabídka platí 30 dní.</p>
+    </div>
+    <div class="cta-btns">
+      <a class="btn btn-acc2" href="#kontakt">Nezávazná nabídka</a>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT ================= -->
+<section class="sec" id="kontakt" style="border-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">15</b> Kontakt</p>
+      <div>
+        <h2 class="sec-h">Kontakt a nezávazná nabídka</h2>
+        <p class="lead">Napište, co podnikáte a v jakém stavu je účetnictví. Ozvu se a řeknu, co budu potřebovat a kolik bude měsíční paušál stát.</p>
+      </div>
+    </header>
+
+    <div class="contact">
+      <div>
+        <ul class="cdata">
+          <li>
+            <span class="lbl">Adresa kanceláře</span>
+            <span class="val">Mýtná 21, 110 00 Praha 1</span>
+            <span class="cnote">Přízemí, vchod přímo z ulice. Parkování ve dvoře, pro klienty první dvě hodiny bez poplatku.</span>
+          </li>
+          <li>
+            <span class="lbl">Telefon</span>
+            <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+            <span class="cnote">Pondělí až pátek od 9.00 do 16.00.</span>
+          </li>
+          <li>
+            <span class="lbl">Osobní schůzky</span>
+            <span class="val num">Pondělí až čtvrtek, 9.00 – 15.00</span>
+            <span class="cnote">Vždy po domluvě termínu. Pátek je vyhrazený na zpracování a podání.</span>
+          </li>
+          <li>
+            <span class="lbl">Předání dokladů</span>
+            <span class="val num">Každý pracovní den do 16.00</span>
+            <span class="cnote">Uzamykatelná schránka u vchodu na Mýtné 21, převzetí potvrdím.</span>
+          </li>
+          <li>
+            <span class="lbl">Kde pracuji</span>
+            <span class="val">Praha a celá republika</span>
+            <span class="cnote">Většina klientů řeší agendu na dálku, osobní schůzka je na vás.</span>
+          </li>
+        </ul>
+
+        <div class="plate reveal">
+          <svg class="plate-geo" viewBox="0 0 640 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <defs>
+              <radialGradient id="svetlo3" cx="0.92" cy="0.94" r="0.6">
+                <stop offset="0" stop-color="#7a5c22" stop-opacity="0.11"/>
+                <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="640" height="520" fill="url(#svetlo3)"/>
+            <path d="M640 92 L640 520 L214 520 Z" fill="#7a5c22" fill-opacity="0.05"/>
+            <g fill="none" stroke="#7a5c22" stroke-opacity="0.16">
+              <circle cx="566" cy="470" r="92"/>
+              <circle cx="566" cy="470" r="150"/>
+              <circle cx="566" cy="470" r="208"/>
+            </g>
+            <g stroke="#14181c" stroke-opacity="0.07">
+              <path d="M0 128 H640 M0 176 H640 M0 224 H640"/>
+            </g>
+          </svg>
+          <div class="plate-in">
+            <p class="plate-kicker">Jak to probíhá</p>
+            <p class="plate-quote">Píšete přímo účetní, která vede vaši agendu.</p>
+            <ul class="plate-facts">
+              <li>Odpověď na poptávku <b class="num">do 24 hodin</b></li>
+              <li>Úvodní hovor <b class="num">20 minut</b></li>
+              <li>Cenová nabídka <b class="num">do 2 dnů</b></li>
+              <li>První měsíc zpracování <b class="num">bez vázanosti</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <form id="dopyt" novalidate>
+          <p class="form-intro">Vyplňte tři pole a odešlete. Zpráva přijde do schránky účetní kanceláře SALDIA na Mýtné 21 a odpověď dostanete <b>do 24 hodin</b> v pracovní dny.</p>
+
+          <div class="frow">
+            <div class="f">
+              <label class="lab" for="meno">Jméno a příjmení <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="meno" name="meno" autocomplete="name" required placeholder="Jak vás mám oslovit">
+            </div>
+            <div class="f">
+              <label class="lab" for="tel">Telefon <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="tel" name="tel" autocomplete="tel" required placeholder="Číslo, na kterém vás zastihnu">
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="f">
+              <label class="lab" for="firma">Obchodní firma <span class="opt-l">(nepovinné)</span></label>
+              <input type="text" id="firma" name="firma" autocomplete="organization" placeholder="Název firmy nebo živnosti">
+            </div>
+            <div class="f">
+              <label class="lab" for="subjekt">Typ subjektu</label>
+              <select id="subjekt" name="subjekt">
+                <option>OSVČ</option>
+                <option>Společnost s ručením omezeným</option>
+                <option>Nezisková organizace nebo spolek</option>
+                <option>Zatím nevím, právě začínám</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="f">
+            <label class="lab" for="odkedy">Odkdy potřebujete účetní</label>
+            <select id="odkedy" name="odkedy">
+              <option>Co nejdřív</option>
+              <option>Od následujícího měsíce</option>
+              <option>Od nového roku</option>
+              <option>Zatím se informuji</option>
+            </select>
+          </div>
+
+          <div class="f">
+            <label class="lab" for="sprava">Co potřebujete <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="sprava" name="sprava" required
+              placeholder="Například: s. r. o., plátce DPH, dva zaměstnanci, přibližně 60 dokladů měsíčně, hledám účetní od září."></textarea>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" id="suhlas" required>
+            <span>Souhlasím, aby mě kancelář kontaktovala k této poptávce. V ukázce se nic neodesílá ani neukládá.</span>
+          </label>
+
+          <button class="btn btn-acc" type="submit" style="width:100%">Chci nezávaznou nabídku</button>
+          <p class="form-note">Ukázkový formulář. Na ostrém webu by zpráva přišla do schránky účetní kanceláře a odpověď byste dostali do 24 hodin. Pokud to spěchá, zavolejte nám.</p>
+        </form>
+
+        <div class="sent" id="sent" hidden>
+          <h3>Formulář funguje, tohle je ale ukázka</h3>
+          <p>Vaše údaje nikam neodešly a nikdo je nedostal. Na ostrém webu by poptávka v tuto chvíli přistála ve schránce účetní kanceláře a vy byste do 24 hodin dostali odpověď.</p>
+          <p style="margin-top:12px">Chcete takový web pro svůj podnik? <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a></p>
+          <button class="again" type="button" id="again">Vyzkoušet formulář znovu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= AUTOR UKÁŽKY — reálne kontakty ================= -->
+<section class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap">
+    <div class="authorbox">
+      <p class="eyebrow">Autor ukázky — skutečné kontakty</p>
+      <h2 id="autor-nadpis">Líbí se vám tento web?</h2>
+      <p class="lead">Všechno nad tímto rámečkem je ukázka, účetní kancelář SALDIA neexistuje. Tento web navrhl a naprogramoval <b>Alex Poliak</b>. Stejně takový web postaví i pro vaši firmu, včetně textů, ceníku, kalkulačky a funkčního formuláře.</p>
+
+      <ul class="author-num">
+        <li>
+          <span class="k">Cena od</span>
+          <span class="n num">6 250 Kč</span>
+          <span class="d">Jednostránkový web na míru, včetně textů a nasazení.</span>
+        </li>
+        <li>
+          <span class="k">První návrh</span>
+          <span class="n num">do 3 dnů</span>
+          <span class="d">Uvidíte skutečnou stránku, ne obrázek v prezentaci.</span>
+        </li>
+        <li>
+          <span class="k">Konzultace</span>
+          <span class="n">zdarma</span>
+          <span class="d">Nezávazně. Řeknu, co má web obsahovat a co vám reálně přinese.</span>
+        </li>
+      </ul>
+
+      <ul class="author-data">
+        <li>
+          <span class="lbl">Autor webu</span>
+          <span class="val">Alex Poliak</span>
+        </li>
+        <li>
+          <span class="lbl">E-mail</span>
+          <a class="val" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>
+        </li>
+        <li>
+          <span class="lbl">Podpora</span>
+          <a class="val" href="mailto:support@apoliak.online">support@apoliak.online</a>
+        </li>
+        <li>
+          <span class="lbl">Telefon</span>
+          <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+          <span class="sub">Raději píšete? Napište přes formulář níže.</span>
+        </li>
+        <li>
+          <span class="lbl">Web</span>
+          <a class="val" href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a>
+        </li>
+      </ul>
+
+      <div class="author-foot">
+        <p>Konzultace je zdarma a nezávazně.</p>
+        <a class="btn btn-light" href="https://apoliak.online/cs/" target="_blank" rel="noopener">Otevřít apoliak.online</a>
+        <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="foot-brand">SALDIA</span>
+        <p class="foot-desc">Daňová evidence a účetnictví, mzdy a daňová přiznání pro OSVČ a malé společnosti. Kancelář v Praze, klienti z celé republiky.</p>
+        <p style="margin-top:18px"><a class="btn btn-acc2" href="#kontakt">Nezávazná nabídka</a></p>
+      </div>
+      <div>
+        <h3>Kancelář</h3>
+        <ul class="foot-addr">
+          <li>SALDIA, s. r. o.<br>Mýtná 21<br>110 00 Praha 1</li>
+          <li><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+            <span>Pondělí až pátek, 9.00 – 16.00</span></li>
+          <li>Osobní schůzky<span>Pondělí až čtvrtek, 9.00 – 15.00, po domluvě</span></li>
+          <li class="num">IČO <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané.">tady bude vaše číslo</span><span>DIČ <span class="ukazka-kontakt" title="Ukázkový web — údaj je záměrně vynechaný.">doplní se podle vaší firmy</span></span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Web</h3>
+        <ul>
+          <li><a href="#sluzby">Rozsah služeb</a></li>
+          <li><a href="#odvetvia">Pro koho účtuji</a></li>
+          <li><a href="#cennik">Měsíční paušály</a></li>
+          <li><a href="#referencie">Reference a ceny</a></li>
+          <li><a href="#kalkulacka">Kalkulačka paušálu</a></li>
+          <li><a href="#postup">Postup spolupráce</a></li>
+          <li><a href="#podklady">Podklady od klienta</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Dál</h3>
+        <ul>
+          <li><a href="#terminy">Termíny během roku</a></li>
+          <li><a href="#kancelaria">Adresa a parkování</a></li>
+          <li><a href="#hodiny">Otevírací doba</a></li>
+          <li><a href="#platby">Fakturace a platba</a></li>
+          <li><a href="#storno">Storno a ukončení</a></li>
+          <li><a href="#ochrana">Ochrana údajů</a></li>
+          <li><a href="#otazky">Časté dotazy</a></li>
+          <li><a href="#kariera">Kariéra a praxe</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-note">
+      <span>© <span class="num">2026</span> SALDIA, s. r. o. · Mýtná 21, 110 00 Praha 1 · <span class="num">IČO <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané.">tady bude vaše číslo</span></span> · ukázkový web</span>
+      <span>Web navrhl a naprogramoval <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a></span>
+    </div>
+
+
+    <p class="disclaimer"><b>Upozornění:</b> SALDIA je vymyšlená účetní kancelář vytvořená jako ukázka webu. Název, adresa, IČO, DIČ, ceny, termíny i kontaktní údaje jsou ilustrační a nepatří žádné existující firmě. Chcete podobný web pro svůj podnik? Podívejte se na <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a>.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- výška lepiacej hlavičky pre scroll-margin ---- */
+  var stack = document.querySelector('.topstack');
+  function setStack(){
+    if(!stack) return;
+    document.documentElement.style.setProperty('--stack', stack.offsetHeight + 'px');
+  }
+  setStack();
+  window.addEventListener('resize', setStack);
+  window.addEventListener('load', setStack);
+  if('ResizeObserver' in window && stack){ new ResizeObserver(setStack).observe(stack); }
+
+  /* ---- mobilné menu ---- */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('menu');
+
+  function closeMenu(){
+    menu.classList.remove('is-open');
+    burger.setAttribute('aria-expanded','false');
+    burger.setAttribute('aria-label','Otevřít menu');
+  }
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Zavřít menu' : 'Otevřít menu');
+    setStack();
+  });
+  menu.addEventListener('click', function(e){
+    if(e.target.closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && menu.classList.contains('is-open')){
+      closeMenu(); burger.focus();
+    }
+  });
+
+  /* ---- zvýraznenie aktívnej sekcie v navigácii ---- */
+  var links = Array.prototype.slice.call(menu.querySelectorAll('a[href^="#"]'));
+  var map = {};
+  links.forEach(function(a){
+    var id = a.getAttribute('href').slice(1);
+    var sec = document.getElementById(id);
+    if(sec) map[id] = a;
+  });
+  if('IntersectionObserver' in window){
+    var navObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){ a.removeAttribute('aria-current'); });
+          var a = map[en.target.id];
+          if(a) a.setAttribute('aria-current','true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(map).forEach(function(id){ navObs.observe(document.getElementById(id)); });
+  }
+
+  /* ---- jemné nábehy pri scrollovaní (vypnuté pri prefers-reduced-motion) ---- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  var chce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(chce || !('IntersectionObserver' in window)){
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  } else {
+    var revObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.classList.add('is-in');
+          revObs.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+    reveals.forEach(function(el){ revObs.observe(el); });
+  }
+
+  /* ================= KALKULAČKA MESAČNÉHO PAUŠÁLU =================
+     Ceny sú totožné s tabuľkou paušálov v sekcii Cenník:
+       Štart      39 €, do 20 dokladov, ďalší 1,10 €, DPH +25 €, mzda 12 €/osoba
+       Štandard   69 €, do 40 dokladov, ďalší 1,10 €, DPH +25 €, mzda 12 €/osoba
+       Rozšírený 129 €, do 80 dokladov, ďalší 0,90 €, DPH v cene, 2 mzdy v cene
+     Pre s. r. o. sa počítajú paušály Štandard aj Rozšírený a vyberie sa lacnejší.
+     ================================================================ */
+
+  var TARIFY = {
+    start:     { nazov:'Start',     popis:'daňová evidence', zaklad:__p(39),  doklady:20, zaDoklad:__c(1.10), dph:__p(25), mzdyVCene:0, zaMzdu:__p(12) },
+    standard:  { nazov:'Standard',  popis:'účetnictví',   zaklad:__p(69),  doklady:40, zaDoklad:__c(1.10), dph:__p(25), mzdyVCene:0, zaMzdu:__p(12) },
+    rozsireny: { nazov:'Rozšířený', popis:'účetnictví',   zaklad:__p(129), doklady:80, zaDoklad:__c(0.90), dph:0,  mzdyVCene:2, zaMzdu:__p(12) }
+  };
+
+  var fmt0 = new Intl.NumberFormat('cs-CZ', { maximumFractionDigits:0 });
+  var fmt2 = new Intl.NumberFormat('cs-CZ', { minimumFractionDigits:2, maximumFractionDigits:2 });
+
+  function cent(x){ return Math.round(x * 100) / 100; }
+  function eur(x){
+    var v = cent(x);
+    return (v === Math.round(v) ? fmt0.format(v) : fmt2.format(v)) + ' Kč';
+  }
+  function osob(n){
+    if(n === 1) return '1 osoba';
+    if(n >= 2 && n <= 4) return n + ' osoby';
+    return n + ' osob';
+  }
+
+  var elDoklady   = document.getElementById('doklady');
+  var elDokladyOut= document.getElementById('dokladyOut');
+  var elZam       = document.getElementById('zam');
+  var elDph       = document.getElementById('dph');
+  var elSuma      = document.getElementById('sumaOut');
+  var elTier      = document.getElementById('tierOut');
+  var elRozpis    = document.getElementById('rozpisOut');
+  var elPozn      = document.getElementById('poznamkaOut');
+  var typRadia    = document.querySelectorAll('input[name="typ"]');
+
+  function typSubjektu(){
+    var v = 'szco';
+    Array.prototype.forEach.call(typRadia, function(r){ if(r.checked) v = r.value; });
+    return v;
+  }
+
+  /* vypočíta cenu jedného paušálu a vráti aj rozpis položiek */
+  function vypocet(kluc, doklady, zam, jeDph){
+    var t = TARIFY[kluc];
+    var polozky = [];
+    var spolu = t.zaklad;
+
+    polozky.push(['Paušál ' + t.nazov + ' — ' + t.popis, t.zaklad]);
+
+    var navyse = Math.max(0, doklady - t.doklady);
+    if(navyse > 0){
+      var cenaDokladov = cent(navyse * t.zaDoklad);
+      spolu += cenaDokladov;
+      polozky.push(['Doklady nad rozsah: ' + navyse + ' × ' + fmt2.format(t.zaDoklad) + ' Kč', cenaDokladov]);
+    } else {
+      polozky.push(['Doklady v rozsahu paušálu (do ' + t.doklady + ')', 0]);
+    }
+
+    var mzdyNavyse = Math.max(0, zam - t.mzdyVCene);
+    if(zam > 0){
+      if(mzdyNavyse > 0){
+        var cenaMzdy = cent(mzdyNavyse * t.zaMzdu);
+        spolu += cenaMzdy;
+        polozky.push([
+          (t.mzdyVCene > 0 ? 'Mzdy nad rozsah: ' : 'Mzdy: ') +
+          osob(mzdyNavyse) + ' × ' + fmt0.format(t.zaMzdu) + ' Kč', cenaMzdy]);
+      } else {
+        polozky.push(['Mzdy: ' + osob(zam) + ' v ceně paušálu', 0]);
+      }
+    }
+
+    if(jeDph){
+      if(t.dph > 0){
+        spolu += t.dph;
+        polozky.push(['Agenda DPH a kontrolní hlášení', t.dph]);
+      } else {
+        polozky.push(['Agenda DPH a kontrolní hlášení v ceně paušálu', 0]);
+      }
+    }
+
+    return { kluc:kluc, nazov:t.nazov, spolu:cent(spolu), polozky:polozky };
+  }
+
+  function riadok(popis, hodnota){
+    var li = document.createElement('li');
+    var a = document.createElement('span'); a.textContent = popis;
+    var b = document.createElement('span'); b.className = 'num'; b.textContent = eur(hodnota);
+    li.appendChild(a); li.appendChild(b);
+    return li;
+  }
+
+  function prepocitaj(){
+    var doklady = parseInt(elDoklady.value, 10) || 0;
+    var zam = Math.max(0, Math.min(20, parseInt(elZam.value, 10) || 0));
+    var jeDph = elDph.checked;
+
+    elDokladyOut.textContent = doklady;
+
+    var vysledok;
+    if(typSubjektu() === 'sro'){
+      var a = vypocet('standard', doklady, zam, jeDph);
+      var b = vypocet('rozsireny', doklady, zam, jeDph);
+      vysledok = (b.spolu < a.spolu) ? b : a;
+    } else {
+      vysledok = vypocet('start', doklady, zam, jeDph);
+    }
+
+    elSuma.textContent = eur(vysledok.spolu).replace(' Kč','');
+    elTier.textContent = 'Paušál ' + vysledok.nazov;
+
+    elRozpis.textContent = '';
+    vysledok.polozky.forEach(function(p){ elRozpis.appendChild(riadok(p[0], p[1])); });
+
+    var pozn = 'Roční účetní závěrka a daňové přiznání se účtují samostatně podle ceníku jednorázových úkonů.';
+    if(doklady >= 200){
+      pozn = 'Při více než 200 dokladech měsíčně nastavíme automatický import dat a domluvíme individuální paušál. Cena bývá nižší, než ukazuje kalkulačka.';
+    } else if(zam >= 8){
+      pozn = 'Při osmi a více zaměstnancích domluvíme mzdový paušál za celý tým místo ceny za osobu.';
+    } else if(vysledok.kluc === 'rozsireny'){
+      pozn = 'Při tomto rozsahu vychází levněji paušál Rozšířený, který má agendu DPH i dvě mzdy v ceně.';
+    }
+    elPozn.textContent = pozn;
+  }
+
+  Array.prototype.forEach.call(typRadia, function(r){ r.addEventListener('change', prepocitaj); });
+  elDoklady.addEventListener('input', prepocitaj);
+  elDph.addEventListener('change', prepocitaj);
+  elZam.addEventListener('input', prepocitaj);
+  elZam.addEventListener('change', function(){
+    elZam.value = Math.max(0, Math.min(20, parseInt(elZam.value, 10) || 0));
+    prepocitaj();
+  });
+  document.getElementById('zamPlus').addEventListener('click', function(){
+    elZam.value = Math.min(20, (parseInt(elZam.value,10) || 0) + 1); prepocitaj();
+  });
+  document.getElementById('zamMinus').addEventListener('click', function(){
+    elZam.value = Math.max(0, (parseInt(elZam.value,10) || 0) - 1); prepocitaj();
+  });
+  prepocitaj();
+
+  /* ================= FORMULÁR (ukážka, nič sa neodosiela) ================= */
+
+  var form = document.getElementById('dopyt');
+  var sent = document.getElementById('sent');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var chyba = null;
+    ['meno','tel','sprava'].forEach(function(id){
+      var f = document.getElementById(id);
+      if(!f.value.trim() && !chyba) chyba = f;
+    });
+    var tel = document.getElementById('tel');
+    if(!chyba && tel.value.replace(/[^0-9]/g,'').length < 9) chyba = tel;
+    var suhlas = document.getElementById('suhlas');
+    if(!chyba && !suhlas.checked) chyba = suhlas;
+
+    if(chyba){
+      chyba.style.borderColor = '#8a2b2b';
+      chyba.focus();
+      return;
+    }
+
+    form.hidden = true;
+    sent.hidden = false;
+    sent.setAttribute('role','status');
+    sent.setAttribute('tabindex','-1');
+    sent.focus();
+  });
+
+  document.getElementById('again').addEventListener('click', function(){
+    sent.hidden = true;
+    form.hidden = false;
+    form.reset();
+    Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function(f){ f.style.borderColor = ''; });
+    document.getElementById('meno').focus();
+  });
+
+  Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function(f){
+    f.addEventListener('input', function(){ f.style.borderColor = ''; });
+  });
+})();
+</script>
+
+</body>
+</html>
+

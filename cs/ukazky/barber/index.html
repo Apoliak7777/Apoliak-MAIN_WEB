@@ -1,0 +1,2616 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/barber/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/barber/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/barber/">
+<!-- /jazyky:hreflang -->
+<title>Holičství Ostří — pánské holičství, ceník a objednání</title>
+<meta name="description" content="Ukázkový web pánského holičství: střih od 550 Kč, holení břitvou, úprava vousů, objednání termínu s výběrem služby, délky a času. Návrh a kód Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#15181B">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="Holičství Ostří (ukázkový web)">
+<meta property="og:title" content="Holičství Ostří — pánské holičství, ceník a objednání">
+<meta property="og:description" content="Střih od 550 Kč, holení břitvou, úprava vousů. Objednání termínu s výběrem služby, délky a času. Ukázkový web od Alexe Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%2315181B'/%3E%3Crect%20x='6'%20y='6'%20width='52'%20height='52'%20fill='none'%20stroke='%23C99A5B'%20stroke-width='2'/%3E%3Ctext%20x='32'%20y='43'%20font-family='Consolas,monospace'%20font-size='30'%20font-weight='700'%20fill='%23C99A5B'%20text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   HOLIČSTVO OSTRIE — ukážkový web
+   ============================================================ */
+
+/* ---------- 1. TOKENY ---------- */
+:root{
+  /* uhlíková paleta + jediný tlmený akcent: mosadz */
+  --deep:#101215;
+  --base:#15181B;
+  --surf:#1C2024;
+  --raise:#262B31;
+
+  --brass:#C99A5B;
+  --brass-hi:#D9AE72;
+  --brass-deep:#7A5320;
+  --on-brass:#14171A;
+
+  --ink-strong:#F4F6F7;
+  --ink-body:#E4E7EA;
+  --ink-mute:#A0A7AD;
+  --hair:#303740;
+  --hair-soft:#23282E;
+
+  --plate-ink:#F4F6F7;
+  --plate-mute:#C6CCD1;
+
+  /* premenné, ktoré prepisuje svetlá sekcia .paper */
+  --bg:var(--base);
+  --card:var(--surf);
+  --ink:var(--ink-body);
+  --title:var(--ink-strong);
+  --muted:var(--ink-mute);
+  --line:var(--hair);
+  --line-soft:var(--hair-soft);
+  --acc:var(--brass);
+  --btn-bg:var(--brass);
+  --btn-fg:var(--on-brass);
+  --btn-bg-h:var(--brass-hi);
+
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:Consolas,"SF Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+  --wrap:1220px;
+
+  /* jemné zrno cez feTurbulence, generované priamo v CSS */
+  --noise:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%3E%3Cfilter%20id='z'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.82'%20numOctaves='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='180'%20height='180'%20filter='url(%23z)'/%3E%3C/svg%3E");
+}
+
+/* ---------- 2. ZÁKLAD ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  background:var(--base);
+  color:var(--ink-body);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{color:var(--title);font-weight:700;line-height:1.12;letter-spacing:-.022em;margin:0 0 .5em}
+h1{font-size:clamp(2.05rem,4.6vw,3.5rem)}
+h2{font-size:clamp(1.62rem,3.1vw,2.5rem)}
+h3{font-size:clamp(1.06rem,1.5vw,1.26rem);line-height:1.3;letter-spacing:-.012em}
+h4{font-size:1rem;letter-spacing:.005em}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--acc);text-underline-offset:3px}
+ul,ol{margin:0;padding:0;list-style:none}
+strong{color:var(--title)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+[hidden]{display:none !important}
+
+.wrap{width:min(100% - 36px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--brass);color:var(--on-brass);font-weight:700;padding:12px 18px;z-index:400}
+.skip:focus{left:8px;top:8px}
+section{scroll-margin-top:var(--stick,148px)}
+.sec{padding:clamp(52px,6.4vw,102px) 0;background:var(--bg);color:var(--ink)}
+.sec--deep{--bg:var(--deep)}
+.paper{
+  --bg:#E9E5DE;
+  --card:#F4F1EB;
+  --ink:#16191C;
+  --title:#0F1215;
+  --muted:#4C525A;
+  --line:#CFC9C0;
+  --line-soft:#DED9D1;
+  --acc:var(--brass-deep);
+  --btn-bg:#1C2024;
+  --btn-fg:#F2EFEA;
+  --btn-bg-h:#333A42;
+}
+.paper h1,.paper h2,.paper h3,.paper h4{color:var(--title)}
+
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lede{font-size:1.04rem;color:var(--muted);max-width:58ch}
+.note{color:var(--muted);font-size:.92rem}
+.prose p{max-width:66ch}
+
+/* tabuľky sa na úzkych displejoch posúvajú vo vlastnom ráme */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line)}
+.dtab{width:100%;border-collapse:collapse;min-width:520px;font-size:.94rem}
+.dtab caption{text-align:left;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:14px 0 0}
+.dtab th,.dtab td{text-align:left;padding:14px 22px 14px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.dtab thead th{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+.dtab th[scope="row"]{font-weight:600;color:var(--title)}
+.dtab td{color:var(--muted)}
+.dtab td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--title);font-weight:700;text-align:right;padding-right:0}
+.dtab tr:last-child th,.dtab tr:last-child td{border-bottom:0}
+
+/* ---------- 3. HLAVIČKA SEKCIE (číslovaná lišta) ---------- */
+.shead{
+  display:grid;grid-template-columns:clamp(58px,7vw,112px) minmax(0,1fr);gap:10px clamp(20px,3vw,44px);
+  border-top:1px solid var(--line);padding-top:clamp(18px,2.2vw,26px);
+  margin-bottom:clamp(30px,3.8vw,52px);
+}
+.shead__idx{
+  font-family:var(--mono);font-size:clamp(1.42rem,2.6vw,2.05rem);font-weight:700;letter-spacing:-.03em;
+  color:var(--acc);margin:0;line-height:1;padding-top:3px;font-variant-numeric:tabular-nums;
+}
+.shead__main h2{margin-bottom:.34em;max-width:22ch}
+.shead__main .lede{margin-bottom:0}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px;
+}
+
+/* ---------- 4. TLAČIDLÁ ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font:inherit;font-size:.96rem;font-weight:700;letter-spacing:.01em;
+  padding:13px 24px;border:1px solid transparent;border-radius:2px;
+  cursor:pointer;text-decoration:none;white-space:nowrap;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--btn-bg);color:var(--btn-fg);border-color:var(--btn-bg)}
+.btn.btn--primary:hover{background:var(--btn-bg-h);border-color:var(--btn-bg-h);color:var(--btn-fg)}
+.btn.btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn.btn--brass{background:var(--brass);color:var(--on-brass);border-color:var(--brass)}
+.btn.btn--brass:hover{background:var(--brass-hi);border-color:var(--brass-hi);color:var(--on-brass)}
+.btn.btn--onplate{background:transparent;color:var(--plate-ink);border-color:rgba(228,231,234,.36)}
+.btn.btn--onplate:hover{border-color:var(--brass);color:var(--brass)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- 5. LEPIACI VRCH: PÁSIK UKÁŽKY + NAVIGÁCIA ---------- */
+.topstack{position:sticky;top:0;z-index:120}
+.demobar{
+  background:#08090B;color:var(--ink-body);font-size:.86rem;font-weight:500;
+  border-bottom:1px solid var(--brass-deep);box-shadow:inset 0 2px 0 var(--brass);
+}
+.demobar__in{
+  width:min(100% - 24px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 20px;
+  padding:11px 0 10px;text-align:center;
+}
+.demobar__tag{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;
+  font-weight:700;white-space:nowrap;color:var(--brass);
+  border:1px solid var(--brass-deep);padding:3px 9px;
+}
+.demobar a{color:var(--brass);font-weight:700;white-space:nowrap;text-decoration:none;border-bottom:1px solid rgba(201,154,91,.4)}
+.demobar a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
+
+.site-head{background:var(--deep);border-bottom:1px solid var(--hair);position:relative}
+.head__in{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink-strong);margin-right:auto}
+.brand__mark{
+  width:34px;height:34px;flex:none;border:1px solid var(--brass);
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;color:var(--brass);font-size:1rem;
+}
+.brand__txt strong{display:block;font-size:1.06rem;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;color:var(--ink-strong)}
+.brand__txt span{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute);margin-top:2px}
+.nav-list{display:flex;align-items:center;gap:1px;flex-wrap:wrap}
+.nav-list a{
+  display:block;text-decoration:none;color:var(--ink-body);
+  font-size:.92rem;padding:9px 11px;border-radius:2px;
+}
+.nav-list a:hover{color:var(--brass)}
+.nav-toggle{display:none}
+
+/* dominantná akcia + telefón: v hlavičke na každej obrazovke, aj na mobile mimo menu */
+.head__act{display:flex;align-items:center;gap:9px;flex:none}
+.head__tel{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;
+  font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.01em;
+  color:var(--brass);text-decoration:none;
+  border:1px solid var(--brass-deep);border-radius:2px;padding:12px 14px;
+  transition:border-color .16s ease,color .16s ease;
+}
+.head__tel svg{width:15px;height:15px;flex:none}
+.head__tel:hover{border-color:var(--brass);color:var(--brass-hi)}
+.btn.head__cta{padding:13px 22px}
+
+/* ---------- 6. PLOCHY: GRAFICKÉ KOMPOZÍCIE ---------- */
+.plate{
+  position:relative;overflow:hidden;isolation:isolate;display:flex;
+  background-color:#171B20;color:var(--plate-ink);
+  box-shadow:inset 0 0 0 1px rgba(228,231,234,.09);
+}
+.plate::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:var(--noise);background-size:180px 180px;opacity:.15;
+}
+.plate>*{position:relative;z-index:3}
+
+/* kruhové oblúky */
+.plate--arc{
+  background-image:
+    linear-gradient(118deg,rgba(201,154,91,.16) 0%,rgba(201,154,91,0) 48%),
+    linear-gradient(162deg,#252B33 0%,#171B20 54%,#0F1216 100%);
+}
+.plate--arc::after{
+  content:"";position:absolute;z-index:2;right:-24%;bottom:-52%;
+  width:min(130%,560px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(201,154,91,.30);
+  box-shadow:0 0 0 26px rgba(228,231,234,.035),0 0 0 27px rgba(201,154,91,.10),0 0 0 64px rgba(228,231,234,.025);
+}
+/* vlasové zvislice */
+.plate--rule{
+  background-image:
+    linear-gradient(212deg,rgba(201,154,91,.20) 0%,rgba(201,154,91,0) 44%),
+    repeating-linear-gradient(90deg,rgba(228,231,234,.085) 0 1px,rgba(0,0,0,0) 1px 18px),
+    linear-gradient(198deg,#1F242A 0%,#101317 100%);
+}
+/* bodkový raster */
+.plate--dot{
+  background-image:
+    radial-gradient(rgba(228,231,234,.16) 1px,rgba(0,0,0,0) 1.7px),
+    radial-gradient(circle at 18% 84%,rgba(201,154,91,.20),rgba(0,0,0,0) 58%),
+    linear-gradient(150deg,#232830 0%,#12161A 100%);
+  background-size:15px 15px,cover,cover;
+}
+/* šrafovanie */
+.plate--hatch{
+  background-image:
+    repeating-linear-gradient(45deg,rgba(228,231,234,.075) 0 1px,rgba(0,0,0,0) 1px 11px),
+    linear-gradient(148deg,#262B33 0%,#0F1216 100%);
+}
+/* mriežka */
+.plate--grid{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(228,231,234,.07) 0 1px,rgba(0,0,0,0) 1px 26px),
+    repeating-linear-gradient(90deg,rgba(228,231,234,.07) 0 1px,rgba(0,0,0,0) 1px 26px),
+    linear-gradient(206deg,#20252B 0%,#101317 100%);
+}
+/* sústredné kruhy */
+.plate--ring{
+  background-image:
+    repeating-radial-gradient(circle at 76% 26%,rgba(228,231,234,.11) 0 1px,rgba(0,0,0,0) 1px 20px),
+    linear-gradient(158deg,#242A31 0%,#111418 100%);
+}
+/* diagonálny klin */
+.plate--wedge{
+  background-image:
+    linear-gradient(64deg,rgba(0,0,0,0) 0 52%,rgba(201,154,91,.22) 52% 54%,rgba(0,0,0,0) 54%),
+    repeating-linear-gradient(0deg,rgba(228,231,234,.06) 0 1px,rgba(0,0,0,0) 1px 22px),
+    linear-gradient(200deg,#232830 0%,#0F1216 100%);
+}
+
+/* typografický obsah plochy */
+.plate__type{padding:clamp(18px,2.4vw,26px);flex:1 1 auto;width:100%;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+.plate__num{font-family:var(--mono);font-size:clamp(2.4rem,6vw,3.6rem);font-weight:700;line-height:.92;letter-spacing:-.03em;color:var(--brass);margin:0}
+.plate__word{
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--plate-mute);margin:0;
+}
+.plate__big{font-size:clamp(1.2rem,2.3vw,1.6rem);font-weight:700;letter-spacing:-.01em;color:var(--plate-ink);margin:0;line-height:1.16}
+
+/* ---------- 7. ÚVOD: OBÁLKA ---------- */
+.hero{background:var(--deep);border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.hero__in{padding:clamp(30px,4.2vw,62px) 0 clamp(30px,3.8vw,54px)}
+.hero__kicker{color:var(--brass);margin:0 0 clamp(14px,1.8vw,24px)}
+
+/* veľká farebná plocha, ktorú obrí nadpis čiastočne prekrýva */
+.mast{position:relative;padding-bottom:2px}
+.mast__block{
+  position:absolute;z-index:0;pointer-events:none;
+  inset:clamp(12px,2.2vw,28px) 0 clamp(2px,.6vw,8px) 26%;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(14,16,19,.16) 0 1px,rgba(0,0,0,0) 1px 26px),
+    linear-gradient(152deg,#8A5F24 0%,#5F401A 54%,#3A2611 100%);
+  border:1px solid rgba(201,154,91,.45);
+}
+.mast__block::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brass)}
+.mast__h1{position:relative;z-index:2;margin:0;letter-spacing:normal;line-height:1}
+.mast__lead{
+  display:block;font-family:var(--mono);font-weight:700;
+  font-size:clamp(.66rem,1.4vw,.84rem);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--plate-ink);line-height:1.5;margin-bottom:clamp(6px,1vw,12px);
+}
+.mast__name{
+  display:block;font-size:clamp(3.4rem,15vw,8rem);line-height:.99;
+  letter-spacing:-.045em;text-transform:uppercase;color:var(--ink-strong);
+  text-shadow:0 2px 26px rgba(8,9,11,.55);
+}
+
+.hero__corner{
+  position:relative;z-index:3;margin-top:clamp(20px,2.6vw,28px);max-width:340px;
+  background:var(--deep);border:1px solid var(--hair);border-top:2px solid var(--brass);
+  padding:15px 18px 17px;
+}
+.hero__corner .k{margin:0;font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-mute)}
+.hero__corner .v{margin:9px 0 7px;font-family:var(--mono);font-size:clamp(1.3rem,2.6vw,1.66rem);font-weight:700;letter-spacing:.005em;line-height:1.1}
+.hero__corner .v a{color:var(--brass);text-decoration:none}
+.hero__corner .v a:hover{color:var(--brass-hi)}
+.hero__corner .s{margin:0;font-size:.85rem;line-height:1.5;color:var(--ink-mute)}
+
+.hero__body{
+  margin-top:clamp(26px,3.2vw,44px);padding-top:clamp(22px,2.6vw,32px);border-top:1px solid var(--hair);
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(22px,3vw,56px);align-items:start;
+}
+.hero__lede{font-size:clamp(1.02rem,1.4vw,1.16rem);color:#C6CCD1;max-width:56ch;margin:0}
+.hero .btns{margin-top:clamp(20px,2.4vw,28px)}
+.hero__meta{margin:0;border-top:1px solid var(--hair)}
+.hero__meta li{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding:11px 0;border-bottom:1px solid var(--hair-soft);
+  font-family:var(--mono);font-size:.86rem;color:var(--ink-mute);
+}
+.hero__meta li b{font-weight:700;color:var(--ink-body);letter-spacing:.1em;text-transform:uppercase;font-size:.72rem}
+.hero__meta li span{color:var(--ink-body);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.facts{background:var(--base);border-bottom:1px solid var(--hair)}
+.facts dl{margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--hair)}
+.facts dl>div{background:var(--base);padding:clamp(18px,2.2vw,26px) clamp(16px,1.8vw,24px)}
+.facts dt{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:9px}
+.facts dd{margin:0;font-size:clamp(1rem,1.25vw,1.1rem);font-weight:600;color:var(--ink-strong);letter-spacing:-.01em}
+
+/* ---------- 8. O HOLIČSTVE ---------- */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,4vw,64px);align-items:start}
+.about>div>p{max-width:60ch}
+.about__plate{min-height:330px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chips li{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;
+  border:1px solid var(--line);color:var(--muted);padding:7px 12px;
+}
+/* ---------- 8b. OBRAZOVÉ MIESTA ---------- */
+.obraz{margin:0;display:block}
+.obraz figcaption{margin-top:11px;color:var(--muted);font-size:.9rem;max-width:44ch}
+
+/* ---------- 8c. BARBERI ---------- */
+.crew{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.bar .plate{aspect-ratio:3/4}
+.bar h3{margin:16px 0 3px}
+.bar__role{margin:0 0 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.bar__list{border-top:1px solid var(--line-soft)}
+.bar__list li{padding:9px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.91rem}
+.bar__list li b{color:var(--title);font-weight:600}
+.bar__ig{margin:12px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+
+/* ---------- 8d. GALÉRIA PRÁC ---------- */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.gal .plate{aspect-ratio:4/3}
+
+/* ---------- 9. CENNÍK ---------- */
+.pl{border-top:1px solid var(--line)}
+.pl__grp{
+  margin:clamp(26px,3.2vw,40px) 0 0;padding:12px 0 0;border-top:2px solid var(--acc);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--title);font-weight:700;
+}
+.pl>.pl__grp:first-child{margin-top:0;border-top:0;padding-top:0}
+.pl__row{
+  display:grid;grid-template-columns:minmax(0,1fr) 108px 96px 132px;
+  gap:6px 24px;align-items:baseline;padding:19px 0;border-bottom:1px solid var(--line);
+}
+.pl__row h3{margin:0 0 4px}
+.pl__row p{margin:0;color:var(--muted);font-size:.93rem;max-width:56ch}
+.pl__min,.pl__eur{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pl__min{color:var(--muted);font-size:.92rem}
+.pl__eur{font-size:1.28rem;font-weight:700;color:var(--title)}
+.pl__go{justify-self:end}
+.pl__go a{font-size:.9rem;font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.pl__go a:hover{color:var(--title);border-color:var(--title)}
+.pl__foot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.6vw,34px);margin-top:30px}
+.pl__foot div{border-top:2px solid var(--acc);padding-top:14px}
+.pl__foot h4{margin:0 0 6px}
+.pl__foot p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ---------- 10. PRIEBEH NÁVŠTEVY ---------- */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.steps li{background:var(--bg);padding:24px 22px 26px}
+.steps .n{font-family:var(--mono);font-size:.86rem;font-weight:700;color:var(--acc);display:block;margin-bottom:14px;letter-spacing:.08em}
+.steps h3{font-size:1.04rem;margin:0 0 8px}
+.steps p{margin:0;color:var(--muted);font-size:.92rem}
+.steps .t{display:block;margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--acc);letter-spacing:.06em}
+
+/* ---------- 11. PRIESTOR ---------- */
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.rooms .plate{aspect-ratio:4/3}
+.rooms h3{margin:18px 0 6px}
+.rooms p{margin:0;color:var(--muted);font-size:.94rem}
+.kit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(26px,5vw,68px);margin-top:clamp(30px,4vw,48px)}
+.kit div{padding:17px 0;border-top:1px solid var(--line-soft)}
+.kit dt{font-weight:600;color:var(--title);margin-bottom:4px}
+.kit dd{margin:0;color:var(--muted);font-size:.93rem;max-width:60ch}
+
+/* ---------- 12. PRODUKTY ---------- */
+.prods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.prod{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.prod .plate{aspect-ratio:5/3}
+.prod__body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
+.prod__body h3{margin:0 0 7px;font-size:1.06rem}
+.prod__body p{margin:0 0 18px;color:var(--muted);font-size:.93rem}
+.prod__body .prod__foot{margin:auto 0 0;display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:1px solid var(--line-soft);padding-top:14px}
+.prod__foot .eur{font-family:var(--mono);font-size:1.24rem;font-weight:700;color:var(--title)}
+.prod__foot .ml{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+
+/* ---------- 13. POUKAZY ---------- */
+.vouch{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(26px,4vw,58px);align-items:center}
+.vouch__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,18px)}
+.vouch__grid .plate{aspect-ratio:3/4;display:flex}
+.vouch__grid .plate__type{justify-content:space-between}
+.rules{margin-top:22px;border-top:1px solid var(--line)}
+.rules li{padding:13px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:22px minmax(0,1fr);gap:14px;font-size:.95rem}
+.rules li b{font-family:var(--mono);color:var(--acc);font-weight:700;font-size:.86rem}
+
+/* ---------- 14. HODINY ---------- */
+.hours{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(26px,4vw,58px);align-items:start}
+.htab{border-top:1px solid var(--line);width:100%}
+.htab div{
+  display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:6px 18px;align-items:baseline;
+  padding:13px 4px;border-bottom:1px solid var(--line-soft);
+}
+.htab dt{font-weight:600;color:var(--title)}
+.htab dd{margin:0;font-family:var(--mono);color:var(--ink);font-size:.96rem}
+.htab .tagcol{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:right}
+.htab div.is-today{background:rgba(201,154,91,.10);box-shadow:inset 3px 0 0 var(--acc)}
+.htab div.is-today .tagcol{color:var(--acc)}
+.htab div.is-closed dd{color:var(--muted)}
+.status{
+  border:1px solid var(--line);border-left:3px solid var(--acc);
+  background:var(--card);padding:18px 20px;margin-bottom:22px;
+}
+.status strong{display:block;font-size:1.08rem;margin-bottom:4px}
+.status p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ---------- 15. OBJEDNANIE ---------- */
+.book{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(20px,2.6vw,30px);align-items:start}
+.panel{background:var(--surf);border:1px solid var(--hair);padding:clamp(20px,2.8vw,30px)}
+.fset{border:0;padding:0;margin:0 0 26px}
+.fset:last-of-type{margin-bottom:0}
+.fset>legend,.flabel{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-mute);padding:0;margin-bottom:12px;display:block;
+}
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+.field input,.field select,.field textarea{
+  width:100%;font:inherit;font-size:1rem;color:var(--ink-body);
+  background:var(--deep);border:1px solid var(--hair);border-radius:2px;padding:12px 13px;
+}
+.field textarea{min-height:92px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#8A9198}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brass);outline:2px solid var(--brass);outline-offset:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+
+.opts{display:grid;gap:10px}
+.opt{
+  display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:4px 14px;align-items:start;
+  border:1px solid var(--hair);padding:13px 15px;cursor:pointer;
+  transition:border-color .15s ease,background-color .15s ease;
+}
+.opt:hover{border-color:var(--brass)}
+.opt input{margin:3px 0 0;accent-color:var(--brass);width:16px;height:16px}
+.opt b{font-weight:600;color:var(--ink-strong)}
+.opt span{grid-column:2;color:var(--ink-mute);font-size:.9rem}
+.opt em{font-family:var(--mono);font-style:normal;font-size:.92rem;color:var(--brass);white-space:nowrap}
+.opt:has(input:checked){border-color:var(--brass);background:rgba(201,154,91,.09)}
+
+.chipsrow{display:flex;flex-wrap:wrap;gap:8px}
+.daychip{
+  font:inherit;font-size:.88rem;cursor:pointer;line-height:1.25;text-align:center;
+  background:var(--deep);color:var(--ink-body);border:1px solid var(--hair);border-radius:2px;
+  padding:9px 13px;min-width:74px;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.daychip b{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.daychip:hover{border-color:var(--brass)}
+.daychip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
+.daychip[aria-pressed="true"] b{color:var(--on-brass)}
+.daychip:disabled{color:#8A9198;border-color:var(--hair-soft);background:transparent;cursor:not-allowed}
+.daychip:disabled b{color:#8A9198}
+.daychip:disabled:hover{border-color:var(--hair-soft)}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.slot{
+  font:inherit;font-family:var(--mono);font-size:.95rem;cursor:pointer;
+  background:var(--deep);color:var(--ink-body);border:1px solid var(--hair);border-radius:2px;
+  padding:10px 6px;text-align:center;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.slot:hover{border-color:var(--brass);color:var(--brass)}
+.slot[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass);font-weight:700}
+.slot:disabled{color:#8A9198;border-color:var(--hair-soft);background:transparent;cursor:not-allowed;text-decoration:line-through}
+.slot:disabled:hover{color:#8A9198;border-color:var(--hair-soft)}
+.freecount{font-family:var(--mono);font-size:.82rem;color:var(--ink-mute);margin:12px 0 0}
+.warn{margin:12px 0 0;font-size:.93rem;color:#F0C08A;border-left:2px solid #F0C08A;padding-left:12px}
+
+.sum{
+  background:var(--raise);border:1px solid var(--hair);border-top:3px solid var(--brass);
+  padding:clamp(20px,2.6vw,28px);position:sticky;top:var(--stick,148px);
+}
+.sum h3{margin:0 0 18px;font-size:1.16rem}
+.sum__rows{border-top:1px solid var(--hair)}
+.sum__rows div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 16px;padding:11px 0;border-bottom:1px solid var(--hair)}
+.sum__rows dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);padding-top:3px;min-width:88px}
+.sum__rows dd{margin:0;color:var(--ink-strong);font-size:.97rem;text-align:right;justify-self:end}
+.sum__total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:20px}
+.sum__total .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute)}
+.sum__total .v{font-family:var(--mono);font-size:2.05rem;font-weight:700;line-height:1;color:var(--brass);font-variant-numeric:tabular-nums}
+.sum__note{margin:16px 0 0;font-size:.86rem;color:var(--ink-mute)}
+.consent{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;align-items:start;font-size:.92rem;color:var(--ink-mute);margin:4px 0 18px}
+.consent input{margin:3px 0 0;accent-color:var(--brass);width:16px;height:16px}
+.done{margin-top:20px;border:1px solid var(--hair);border-left:3px solid var(--brass);background:var(--deep);padding:18px 20px}
+.done strong{display:block;font-size:1.1rem;margin-bottom:6px;color:var(--ink-strong)}
+.done p{margin:0;font-size:.93rem;color:var(--ink-mute)}
+.done p+p{margin-top:8px}
+
+/* ---------- 16. PODMIENKY ---------- */
+.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.terms>div{border-top:2px solid var(--acc);padding-top:16px}
+.terms h3{margin:0 0 12px}
+.terms li{padding:10px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.94rem}
+.terms li b{color:var(--title);font-weight:600}
+.pay{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pay li{border:1px solid var(--line);padding:8px 12px;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;color:var(--muted)}
+
+/* ---------- 17. OTÁZKY ---------- */
+.faq{border-top:1px solid var(--line);max-width:900px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:18px 44px 18px 0;position:relative;
+  font-weight:600;color:var(--title);font-size:1.02rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:1.3rem;color:var(--acc);line-height:1;
+}
+.faq details[open] summary::after{content:"–"}
+.faq summary:hover{color:var(--acc)}
+.faq p{margin:0 0 18px;color:var(--muted);max-width:68ch;font-size:.96rem}
+
+/* ---------- 18. KONTAKT ---------- */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:start}
+.cdl{border-top:1px solid var(--line);margin:0}
+.cdl>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:5px 20px;padding:15px 0;border-bottom:1px solid var(--line-soft)}
+.cdl dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.cdl dd{margin:0;overflow-wrap:anywhere;color:var(--ink)}
+.route{border-top:1px solid var(--line);margin-top:8px}
+.route li{padding:16px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:26px minmax(0,1fr);gap:14px}
+.route .n{font-family:var(--mono);color:var(--acc);font-size:.86rem;font-weight:700;padding-top:2px}
+.route b{display:block;color:var(--title);margin-bottom:3px}
+.route p{margin:0;color:var(--muted);font-size:.94rem;max-width:62ch}
+.mapplate{aspect-ratio:16/10;margin-bottom:26px;display:flex}
+
+/* ---------- 18b. STAROSTLIVOSŤ DOMA ---------- */
+.care{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,72px)}
+.care>div{padding:clamp(18px,2.2vw,26px) 0;border-top:1px solid var(--line-soft)}
+.care>div:first-child,.care>div:nth-child(2){border-top:1px solid var(--line)}
+.care .n{display:block;font-family:var(--mono);font-size:.76rem;letter-spacing:.22em;color:var(--acc);margin-bottom:11px;font-weight:700}
+.care h3{margin:0 0 8px}
+.care p{margin:0;color:var(--muted);font-size:.95rem;max-width:60ch}
+
+/* ---------- 18c. KARIÉRA ---------- */
+.jobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.job{border-top:2px solid var(--acc);padding-top:18px}
+.job h3{margin:0 0 6px}
+.job .role{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.job ul{border-top:1px solid var(--line-soft)}
+.job li{padding:11px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.94rem}
+.job li b{color:var(--title);font-weight:600}
+
+/* ---------- 18d. KONTAKTNÝ FORMULÁR ---------- */
+.cform{
+  margin-top:clamp(34px,4.4vw,60px);display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(20px,2.8vw,34px);align-items:start;
+}
+.cform__side{border-top:2px solid var(--brass);padding-top:18px}
+.cform__side h3{margin:0 0 12px}
+.cform__side p{color:var(--muted);font-size:.95rem;max-width:52ch}
+.cform__side dl{margin:18px 0 0;border-top:1px solid var(--line)}
+.cform__side dl>div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:4px 18px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.cform__side dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.cform__side dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.cform__side dd a:not(.btn){color:var(--acc);font-weight:600}
+
+/* ---------- 19. AUTOR UKÁŽKY ---------- */
+.author{background:var(--raise);border-top:2px solid var(--brass);padding:clamp(46px,6vw,82px) 0;scroll-margin-top:var(--stick,148px)}
+.author__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.86fr);gap:clamp(28px,4vw,64px);align-items:start}
+.author .eyebrow{color:var(--brass)}
+.author h2{color:var(--ink-strong)}
+.author p{color:var(--ink-body);max-width:56ch}
+.author__price{border-left:2px solid var(--brass);padding-left:14px;font-weight:600;color:var(--ink-strong)}
+.author__card{background:var(--deep);border:1px solid var(--hair);padding:clamp(20px,2.6vw,30px)}
+.author__name{font-size:1.34rem;font-weight:700;color:var(--ink-strong);margin:0}
+.author__role{margin:4px 0 0;color:var(--ink-mute);font-size:.9rem}
+.author__list{margin:22px 0 0;border-top:1px solid var(--hair)}
+.author__list>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:4px 16px;padding:13px 0;border-bottom:1px solid var(--hair)}
+.author__list dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);padding-top:4px}
+.author__list dd{margin:0;overflow-wrap:anywhere;color:var(--ink-body)}
+.author__list a{color:var(--brass);font-weight:600}
+.author .btns{margin-top:24px}
+
+/* ---------- 20. PÄTA ---------- */
+.foot{background:var(--deep);border-top:1px solid var(--hair);padding:clamp(38px,4.6vw,62px) 0 clamp(28px,3vw,40px);font-size:.92rem;color:var(--ink-mute)}
+.foot__in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.95fr) minmax(0,.95fr);gap:clamp(24px,3.4vw,54px);align-items:start}
+.foot strong{display:block;color:var(--ink-strong);font-size:1.04rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px}
+.foot h3{font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin:0 0 12px;color:var(--brass)}
+.foot a:not(.btn){color:var(--ink-body);text-decoration:none;border-bottom:1px solid var(--hair)}
+.foot a:not(.btn):hover{color:var(--brass);border-bottom-color:var(--brass)}
+.foot__links{display:grid;gap:9px}
+.foot p{margin:0 0 10px;max-width:40ch;line-height:1.6}
+.foot p:last-child{margin-bottom:0}
+.foot__hours{margin:0;font-family:var(--mono);font-size:.84rem;font-variant-numeric:tabular-nums}
+.foot__hours li{padding:6px 0;border-bottom:1px solid var(--hair-soft);display:flex;justify-content:space-between;gap:14px}
+.foot__hours li:last-child{border-bottom:0}
+.foot__base{
+  margin-top:clamp(26px,3vw,40px);padding-top:18px;border-top:1px solid var(--hair);
+  display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:space-between;font-size:.86rem;
+}
+.foot__base p{margin:0;max-width:66ch}
+
+/* ---------- 21. ODHAĽOVANIE ---------- */
+html.js .rv{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+html.js .rv.in{opacity:1;transform:none}
+
+/* ---------- 22. RESPONZÍVNE ---------- */
+@media (min-width:901px){
+  .mast{min-height:clamp(226px,21vw,300px);display:flex;flex-direction:column;justify-content:center}
+  .hero__corner{
+    position:absolute;right:clamp(14px,1.8vw,26px);bottom:clamp(14px,1.8vw,26px);
+    margin:0;width:clamp(248px,22vw,304px);max-width:none;
+  }
+}
+@media (max-width:1080px){
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .book{grid-template-columns:1fr}
+  .sum{position:static}
+  .prods{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .crew{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vouch{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}
+  .hours{grid-template-columns:1fr}
+  .contact{grid-template-columns:1fr}
+  .cform{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero__body{grid-template-columns:1fr}
+  .mast__block{inset:clamp(10px,2vw,20px) 0 0 22%}
+  .care{grid-template-columns:1fr}
+  .care>div:nth-child(2){border-top:1px solid var(--line-soft)}
+  .jobs{grid-template-columns:1fr}
+  .foot__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__in>div:first-child{grid-column:1/-1}
+  html.js .nav-list{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--deep);border-bottom:1px solid var(--hair);
+    flex-direction:column;align-items:stretch;gap:0;padding:6px 18px 14px;
+  }
+  html.js .nav-list[data-open="false"]{display:none}
+  html.js .nav-list a{padding:13px 4px;border-bottom:1px solid var(--hair-soft);border-radius:0}
+  html.js .nav-list li:last-child a{border-bottom:0}
+  /* tlačidlo aj telefón ostávajú viditeľné, do menu sa neskrývajú */
+  .head__act{order:5;flex:1 0 100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .head__tel{padding:12px 6px}
+  .btn.head__cta{width:100%;padding:13px 10px}
+  html.js .nav-toggle{
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:700;
+    background:transparent;border:1px solid var(--hair);color:var(--ink-body);
+    border-radius:2px;padding:9px 14px;cursor:pointer;
+  }
+  html.js .nav-toggle svg{width:16px;height:16px}
+  .shead{grid-template-columns:1fr;gap:2px}
+  .shead__idx{padding-top:0}
+  .rooms{grid-template-columns:1fr}
+  .rooms .plate{aspect-ratio:16/9}
+  .terms{grid-template-columns:1fr}
+  .pl__foot{grid-template-columns:1fr}
+  .pl__row{grid-template-columns:minmax(0,1fr) auto;gap:4px 20px}
+  .pl__row .pl__min{grid-column:1;color:var(--muted)}
+  .pl__row .pl__eur{grid-column:2;grid-row:1;text-align:right}
+  .pl__go{grid-column:2;grid-row:2;justify-self:end}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .steps{grid-template-columns:1fr}
+  .prods{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr}
+  .gal .plate{aspect-ratio:16/9}
+  .kit{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:1fr}
+  .vouch__grid{grid-template-columns:1fr}
+  .vouch__grid .plate{aspect-ratio:16/7}
+  .cdl>div{grid-template-columns:1fr}
+  .cform__side dl>div{grid-template-columns:1fr}
+  .author__in{grid-template-columns:1fr}
+  .author__list>div{grid-template-columns:1fr}
+  .htab div{grid-template-columns:96px minmax(0,1fr);gap:4px 14px}
+  .htab .tagcol{grid-column:2;text-align:left;margin-top:2px}
+  .foot__in{grid-template-columns:1fr}
+  .foot__in>div:first-child{grid-column:auto}
+  .brand__txt span{display:none}
+  .demobar__in{padding:8px 0;font-size:.82rem;line-height:1.45;gap:2px 12px}
+  .opt{grid-template-columns:20px minmax(0,1fr)}
+  .opt em{grid-column:2;margin-top:4px}
+  .btns .btn{flex:1 1 auto}
+}
+@media (max-width:420px){
+  .demobar__tag{display:none}
+  .slots{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html.js .rv{opacity:1;transform:none}
+}
+@media print{
+  .topstack,.chipsrow,.slots{display:none}
+  body{background:#fff;color:#000}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*25);return v.toLocaleString('cs-CZ');}function __f(x){return Math.round(x).toLocaleString('cs-CZ');}function __p(x){return Math.round(x*25/5)*5;}function __c(x){return x*25;}var __m="Kč";</script>
+</head>
+<body>
+<a class="skip" href="#obsah">Přeskočit na obsah</a>
+
+<div class="topstack">
+  <!-- ===== PÁSIK UKÁŽKY ===== -->
+  <div class="demobar" role="complementary" aria-label="Informace o ukázkovém webu">
+    <div class="demobar__in">
+      <span class="demobar__tag">Ukázkový web</span>
+      <span>Takový web pro vás udělám. <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a></span>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </div>
+  </div>
+
+  <!-- ===== HLAVIČKA ===== -->
+  <header class="site-head">
+    <div class="wrap head__in">
+      <a class="brand" href="#uvod" aria-label="Holičství Ostří, začátek stránky">
+        <span class="brand__mark" aria-hidden="true">O</span> <span class="brand__txt"> <strong>Holičství Ostří</strong> <span>Pánské holičství</span> </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        Menu
+      </button>
+
+      <nav aria-label="Hlavní navigace">
+        <ul class="nav-list" id="hlavne-menu" data-open="false">
+          <li><a href="#cennik">Ceník</a></li>
+          <li><a href="#barberi">Barbeři</a></li>
+          <li><a href="#hodiny">Otevírací doba</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+
+      <div class="head__act">
+        <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+        <a class="btn btn--brass head__cta" href="#objednanie">Objednat se</a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<main id="obsah">
+
+<!-- ===== 01 ÚVOD ===== -->
+<section class="hero" id="uvod">
+  <div class="wrap hero__in">
+    <p class="eyebrow hero__kicker">Krátká 6, historické centrum &middot; čtyři křesla &middot; střih na objednaný čas</p>
+
+    <div class="mast">
+      <span class="mast__block" aria-hidden="true"></span>
+      <h1 class="mast__h1">
+        <span class="mast__lead">Pánské holičství</span>
+        <span class="mast__name">Ostří</span>
+      </h1>
+
+      <aside class="hero__corner" aria-label="Objednání telefonicky">
+        <p class="k">Objednání</p>
+        <p class="v"><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></p>
+        <p class="s">Dovoláte se během otevírací doby, mimo ni napište SMS. Termín si můžete vybrat i přímo na této stránce.</p>
+      </aside>
+    </div>
+
+    <div class="hero__body">
+      <div>
+        <p class="hero__lede">Střih nůžkami i strojkem, tvarování vousů a klasické mokré holení břitvou s horkým ručníkem. Pracujeme výhradně na objednané termíny, blok je podle služby 15 až 90 minut.</p>
+        <div class="btns">
+          <a class="btn btn--brass" href="#objednanie">Objednat se</a>
+          <a class="btn btn--ghost" href="#cennik">Podívat se na ceník</a>
+        </div>
+      </div>
+      <ul class="hero__meta" aria-label="Otevírací doba">
+        <li><b>Pondělí &ndash; středa</b><span>9:00 &ndash; 19:00</span></li>
+        <li><b>Čtvrtek &ndash; pátek</b><span>9:00 &ndash; 20:00</span></li>
+        <li><b>Sobota</b><span>8:00 &ndash; 14:00</span></li>
+        <li><b>Neděle</b><span>zavřeno</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="wrap">
+      <dl>
+        <div><dt>Pracoviště</dt><dd>4 křesla a kout na holení</dd></div>
+        <div><dt>Klasický střih</dt><dd>550 Kč za 30 minut</dd></div>
+        <div><dt>Objednání</dt><dd>na stránce nebo telefonicky</dd></div>
+        <div><dt>Platba</dt><dd>karta, telefon, hotovost</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 O HOLIČSTVE ===== -->
+<section class="sec" id="onas">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">01</p>
+      <div class="shead__main">
+        <h2>O holičství</h2>
+        <p class="lede">Pracujeme jen na objednané termíny. Bez objednání obsloužíme jen tehdy, když je zrovna volné křeslo, což bývá hlavně dopoledne v pondělí a úterý.</p>
+      </div>
+    </header>
+
+    <div class="about">
+      <div class="rv">
+        <p>Čtyři křesla, dvě mycí mísy a samostatný kout na holení břitvou. Blok je vyhrazený podle služby na 15 až 90 minut a začíná v domluvený čas.</p>
+        <p>Stříhá se nůžkami i strojkem, přechody doděláváme břitvou. Při první návštěvě projdeme tvar hlavy, hustotu vlasů a čas, který úpravě věnujete doma, a podle toho určíme délku a interval dalších termínů.</p>
+        <ul class="chips">
+          <li>střih nůžkami</li>
+          <li>přechody strojkem</li>
+          <li>rovná břitva</li>
+          <li>horký ručník</li>
+          <li>úprava vousů</li>
+          <li>dětské střihy</li>
+        </ul>
+      </div>
+
+      <div class="rv">
+        <!-- FOTO: interiér holičstva — štyri kreslá pri stene so zrkadlami, tmavé drevo, mosadzné lampy -->
+        <figure class="obraz">
+          <div class="plate plate--rule about__plate">
+            <div class="plate__type">
+              <p class="plate__word">Krátká 6, přízemí</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">křesla u jedné stěny, kout na holení oddělený</p>
+              </div>
+            </div>
+          </div>
+          <figcaption>Hlavní místnost. Vstup z ulice je bez schodu, dveře mají 90 cm.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 CENNÍK ===== -->
+<section class="sec paper" id="cennik">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">02</p>
+      <div class="shead__main">
+        <h2>Služby a ceník</h2>
+        <p class="lede">Uvedený čas je celý vyhrazený blok včetně konzultace a dočištění pracoviště. Ceny jsou konečné a platí se po službě.</p>
+      </div>
+    </header>
+
+    <div class="pl rv">
+      <p class="pl__grp">Jednotlivé služby</p>
+
+      <div class="pl__row">
+        <div>
+          <h3>Klasický pánský střih</h3>
+          <p>Střih nůžkami, dočištění kontur břitvou, umytí a vysušení.</p>
+        </div>
+        <p class="pl__min">30 minut</p>
+        <p class="pl__eur">550 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Klasický pánský střih">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Střih strojkem s přechodem</h3>
+          <p>Krátké boky s plynulým přechodem, vršek dostříhaný nůžkami.</p>
+        </div>
+        <p class="pl__min">45 minut</p>
+        <p class="pl__eur">675 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Střih strojkem s přechodem">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Holení břitvou s horkým ručníkem</h3>
+          <p>Dva horké ručníky, tvrdé mýdlo, holení ve dvou směrech, chladivý zábal.</p>
+        </div>
+        <p class="pl__min">40 minut</p>
+        <p class="pl__eur">625 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Holení břitvou s horkým ručníkem">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Úprava vousů a kníru</h3>
+          <p>Zkrácení, tvarování linek břitvou, ošetření olejem.</p>
+        </div>
+        <p class="pl__min">25 minut</p>
+        <p class="pl__eur">400 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Úprava vousů a kníru">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Dětský střih do 12 let</h3>
+          <p>Střih v klidném tempu, doprovázející osoba sedí vedle křesla.</p>
+        </div>
+        <p class="pl__min">25 minut</p>
+        <p class="pl__eur">375 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Dětský střih do 12 let">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Střih pro seniory nad 65 let</h3>
+          <p>Zvýhodněná cena v pondělí až středu od 9:00 do 12:00.</p>
+        </div>
+        <p class="pl__min">30 minut</p>
+        <p class="pl__eur">425 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Střih pro seniory nad 65 let">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Zastřižení kontur mezi střihy</h3>
+          <p>Dočištění krku a okolí uší do 14 dní od předchozího střihu.</p>
+        </div>
+        <p class="pl__min">15 minut</p>
+        <p class="pl__eur">225 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Zastřižení kontur mezi střihy">Objednat</a></p>
+      </div>
+
+      <p class="pl__grp">Balíčky</p>
+
+      <div class="pl__row">
+        <div>
+          <h3>Střih a vousy</h3>
+          <p>Klasický střih, tvarování vousů břitvou, olej a balzám. Samostatně 950 Kč.</p>
+        </div>
+        <p class="pl__min">60 minut</p>
+        <p class="pl__eur">900 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Střih a vousy">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Střih a holení břitvou</h3>
+          <p>Klasický střih a mokré holení se dvěma horkými ručníky. Samostatně 1 175 Kč.</p>
+        </div>
+        <p class="pl__min">70 minut</p>
+        <p class="pl__eur">1 050 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Střih a holení břitvou">Objednat</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Střih, vousy a holení břitvou</h3>
+          <p>Střih, tvarování vousů a doholení krku a tváří břitvou. Samostatně 1 575 Kč.</p>
+        </div>
+        <p class="pl__min">90 minut</p>
+        <p class="pl__eur">1 375 Kč</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Střih, vousy a holení břitvou">Objednat</a></p>
+      </div>
+    </div>
+
+    <div class="pl__foot rv">
+      <div>
+        <h4>Rozsah návštěvy</h4>
+        <p>Úprava účesu fénem a přípravkem +150 Kč a 15 minut. Úprava účesu s horkým ručníkem a zábalem +300 Kč a 30 minut. Rozsah si volíte při objednání.</p>
+      </div>
+      <div>
+        <h4>Střih u učně</h4>
+        <p>Klasický střih a střih s přechodem pod dohledem holiče se slevou 30 % z ceny. Vyhrazený čas je o 15 minut delší, objednává se telefonicky.</p>
+      </div>
+      <div>
+        <h4>Co je v ceně</h4>
+        <p>Konzultace, umytí u služeb od 30 minut, dočištění kontur břitvou a voda nebo káva během čekání.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BARBERI ===== -->
+<section class="sec sec--deep" id="barberi">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">03</p>
+      <div class="shead__main">
+        <h2>Barbeři</h2>
+        <p class="lede">Konkrétního holiče si můžete vybrat při objednání. U konkrétního jména bývá nejbližší volný termín zpravidla o několik dní později než u kteréhokoli volného křesla.</p>
+      </div>
+    </header>
+
+    <div class="crew">
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri svojom kresle, tmavé pozadie, pohľad do objektívu -->
+        <figure class="obraz">
+          <div class="plate plate--arc">
+            <div class="plate__type">
+              <p class="plate__word">Křeslo 01</p>
+              <div>
+                <p class="plate__num">MH</p>
+                <p class="plate__big">střih, vousy, holení břitvou</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Marek Hajduk</h3>
+        <p class="bar__role">Holič</p>
+        <ul class="bar__list">
+          <li><b>Dělá:</b> klasický střih, střih s přechodem, holení břitvou.</li>
+          <li><b>Stříhá:</b> pondělí až pátek.</li>
+          <li><b>Nejvíc volných termínů:</b> pondělí a úterý dopoledne.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostri.marek</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri práci, detail rúk s nožnicami -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">Křeslo 02</p>
+              <div>
+                <p class="plate__num">TB</p>
+                <p class="plate__big">přechody, vousy, tvarování</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Tomáš Bencúr</h3>
+        <p class="bar__role">Holič</p>
+        <ul class="bar__list">
+          <li><b>Dělá:</b> střih s přechodem, úprava vousů a kníru, balíčky.</li>
+          <li><b>Stříhá:</b> úterý až sobota.</li>
+          <li><b>Nejvíc volných termínů:</b> středa dopoledne.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostri.tomas</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča, ktorý strihá dieťa v kresle s podsedákom -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">Křeslo 03</p>
+              <div>
+                <p class="plate__num">PK</p>
+                <p class="plate__big">střih, dětské střihy</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Petr Krajčí</h3>
+        <p class="bar__role">Holič</p>
+        <ul class="bar__list">
+          <li><b>Dělá:</b> klasický střih, dětské střihy od čtyř let.</li>
+          <li><b>Stříhá:</b> pondělí, středa, pátek, sobota.</li>
+          <li><b>Nejvíc volných termínů:</b> sobota po 11:00.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostri.petr</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét učňa pri príprave pracoviska -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">Křeslo 04</p>
+              <div>
+                <p class="plate__num">AŠ</p>
+                <p class="plate__big">střih pod dohledem holiče</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Adam Šimko</h3>
+        <p class="bar__role">Učeň</p>
+        <ul class="bar__list">
+          <li><b>Dělá:</b> klasický střih a střih s přechodem pod dohledem holiče.</li>
+          <li><b>Cena:</b> o 30 % nižší, vyhrazený čas o 15 minut delší.</li>
+          <li><b>Objednání:</b> telefonicky, ne přes formulář.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @ostri.adam</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NAŠA PRÁCA ===== -->
+<section class="sec" id="praca">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">04</p>
+      <div class="shead__main">
+        <h2>Naše práce</h2>
+        <p class="lede">Šest záběrů z provozovny. U každého je uvedená služba, délka bloku a cena z ceníku.</p>
+      </div>
+    </header>
+
+    <div class="gal rv">
+      <!-- FOTO: detail prechodu na bokoch, pohľad zozadu na čerstvo dostrihanú hlavu -->
+      <figure class="obraz">
+        <div class="plate plate--wedge">
+          <div class="plate__type">
+            <p class="plate__word">Přechod</p>
+            <div>
+              <p class="plate__num">0,5</p>
+              <p class="plate__big">mm dole, plynulý náběh do délky vršku</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Střih strojkem s přechodem. 45 minut, 675 Kč.</figcaption>
+      </figure>
+
+      <!-- FOTO: klasický strih nožnicami, pohľad z boku po dokončení -->
+      <figure class="obraz">
+        <div class="plate plate--grid">
+          <div class="plate__type">
+            <p class="plate__word">Nůžky</p>
+            <div>
+              <p class="plate__num">30</p>
+              <p class="plate__big">minutový blok včetně umytí a vysušení</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Klasický pánský střih s dočištěním kontur břitvou. 550 Kč.</figcaption>
+      </figure>
+
+      <!-- FOTO: detail vytvarovanej brady, línia na lícach a krku -->
+      <figure class="obraz">
+        <div class="plate plate--ring">
+          <div class="plate__type">
+            <p class="plate__word">Vousy</p>
+            <div>
+              <p class="plate__num">25</p>
+              <p class="plate__big">minut na zkrácení, linku a olej</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Úprava vousů a kníru břitvou. 400 Kč.</figcaption>
+      </figure>
+
+      <!-- FOTO: mokré holenie britvou, horúci uterák na tvári zákazníka -->
+      <figure class="obraz">
+        <div class="plate plate--arc">
+          <div class="plate__type">
+            <p class="plate__word">Holení</p>
+            <div>
+              <p class="plate__num">02</p>
+              <p class="plate__big">horké ručníky a chladivý zábal na závěr</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Mokré holení břitvou ve dvou směrech. 40 minut, 625 Kč.</figcaption>
+      </figure>
+
+      <!-- FOTO: dieťa v kresle s podsedákom počas strihu -->
+      <figure class="obraz">
+        <div class="plate plate--dot">
+          <div class="plate__type">
+            <p class="plate__word">Děti</p>
+            <div>
+              <p class="plate__num">04</p>
+              <p class="plate__big">roky a víc, podsedák do křesla</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Dětský střih do 12 let. 25 minut, 375 Kč.</figcaption>
+      </figure>
+
+      <!-- FOTO: kút na holenie — kreslo, ohrievač uterákov, britvy na poličke -->
+      <figure class="obraz">
+        <div class="plate plate--hatch">
+          <div class="plate__type">
+            <p class="plate__word">Kout na holení</p>
+            <div>
+              <p class="plate__num">01</p>
+              <p class="plate__big">oddělené křeslo s vlastním větráním</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Ohřívač ručníků a břitvy s jednorázovou čepelí.</figcaption>
+      </figure>
+    </div>
+
+    <div class="btns rv" style="margin-top:clamp(26px,3.2vw,36px)">
+      <a class="btn btn--brass" href="#objednanie">Objednat se</a>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRIEBEH NÁVŠTEVY ===== -->
+<section class="sec sec--deep" id="navsteva">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">03</p>
+      <div class="shead__main">
+        <h2>Jak probíhá návštěva</h2>
+        <p class="lede">Celý termín trvá přesně tolik, kolik je uvedeno v ceníku. Přijďte pět minut předem, na doobjednání dalších úkonů už během termínu nemáme prostor.</p>
+      </div>
+    </header>
+
+    <ol class="steps rv">
+      <li>
+        <span class="n">Krok 01</span>
+        <h3>Příchod a káva</h3>
+        <p>Odložíte si kabát, dostanete kávu nebo vodu. Pokud přijdete dřív, počkáte v čekárně se šesti místy.</p>
+        <span class="t">5 minut před termínem</span>
+      </li>
+      <li>
+        <span class="n">Krok 02</span>
+        <h3>Konzultace</h3>
+        <p>Projdeme, co chcete změnit, jak vám vlasy padají a kolik času jim doma věnujete. Domluvíme délku.</p>
+        <span class="t">3 až 5 minut</span>
+      </li>
+      <li>
+        <span class="n">Krok 03</span>
+        <h3>Střih</h3>
+        <p>Nůžky na vršku, strojek na bocích, přechody dočištěné břitvou. Průběžně kontrolujeme tvar v zrcadle.</p>
+        <span class="t">15 až 40 minut</span>
+      </li>
+      <li>
+        <span class="n">Krok 04</span>
+        <h3>Umytí a sušení</h3>
+        <p>Umytí u mísy a vysušení, u služeb od 30 minut je v ceně. Přípravek naneseme a postup na doma ukážeme u prodlouženého rozsahu.</p>
+        <span class="t">10 minut</span>
+      </li>
+      <li>
+        <span class="n">Krok 05</span>
+        <h3>Platba a další termín</h3>
+        <p>Platíte kartou nebo hotově. Na místě si můžete rovnou zapsat termín za čtyři až šest týdnů.</p>
+        <span class="t">2 minuty</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== 05 PRIESTOR ===== -->
+<section class="sec" id="priestor">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">04</p>
+      <div class="shead__main">
+        <h2>Prostor a vybavení</h2>
+        <p class="lede">Provozovna je v přízemí bez schodu, s jednou místností pro střih a odděleným koutem na holení.</p>
+      </div>
+    </header>
+
+    <div class="rooms">
+      <article class="rv">
+        <!-- FOTO: rad štyroch kresiel so zrkadlami, pohľad pozdĺž steny -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">Pracoviště</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">křesla s vlastním zrcadlem</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Stříhací část</h3>
+        <p>Čtyři křesla podél jedné stěny, každé s vlastním zrcadlem, osvětlením a odsáváním vlasů z podlahy.</p>
+      </article>
+
+      <article class="rv">
+        <!-- FOTO: umývací kút s dvomi sklápacími misami a opierkou krku -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">Mycí mísy</p>
+              <div>
+                <p class="plate__num">02</p>
+                <p class="plate__big">sklápěcí mísy s opěrkou krku</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Mycí kout</h3>
+        <p>Dvě mísy s nastavitelnou opěrkou. Voda se temperuje na 37 °C, šampon vybíráme podle typu vlasů.</p>
+      </article>
+
+      <article class="rv">
+        <!-- FOTO: čakáreň s lavicou, vešiakom a poličkou na produkty -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">Čekárna</p>
+              <div>
+                <p class="plate__num">06</p>
+                <p class="plate__big">míst k sezení a věšák</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Čekárna</h3>
+        <p>Šest míst, věšák, nabíječka na telefon a pitná voda. V létě je otevřený dvůr se dvěma lavičkami.</p>
+      </article>
+    </div>
+
+    <dl class="kit rv">
+      <div>
+        <dt>Hygiena nástrojů</dt>
+        <dd>Čepele břitvy jsou jednorázové. Hřebeny, nůžky a stříhací hlavice se po každém zákazníkovi čistí a dezinfikují, povlak na křesle a ručník se mění.</dd>
+      </div>
+      <div>
+        <dt>Bezbariérový vstup</dt>
+        <dd>Vstup z ulice bez schodu, dveře široké 90 cm, prostor u prvního křesla je bez překážek.</dd>
+      </div>
+      <div>
+        <dt>Děti</dt>
+        <dd>Podsedák do křesla pro děti od čtyř let. Doprovázející osoba sedí vedle během celého střihu.</dd>
+      </div>
+      <div>
+        <dt>Klimatizace a větrání</dt>
+        <dd>Klimatizace v hlavní místnosti, nucené větrání v koutě na holení.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ===== 06 PRODUKTY ===== -->
+<section class="sec paper" id="produkty">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">05</p>
+      <div class="shead__main">
+        <h2>Produkty na prodej</h2>
+        <p class="lede">Prodáváme jen to, co sami používáme při práci. Koupit se dá přímo v provozovně, internetový obchod nemáme. Při každém nákupu ukážeme dávkování.</p>
+      </div>
+    </header>
+
+    <div class="prods">
+      <article class="prod rv">
+        <!-- FOTO: téglik matnej pasty na tmavom podklade, otvorené veko -->
+        <figure class="obraz">
+          <div class="plate plate--wedge">
+            <div class="plate__type">
+              <p class="plate__word">01 &middot; Pasta</p>
+              <p class="plate__big">Matná pasta<br>100 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Matná pasta na vlasy</h3>
+          <p>Střední fixace bez lesku. Vhodná na kratší střihy s texturou, dá se přeformovat během dne.</p>
+          <p class="prod__foot"><span class="eur">400 Kč</span><span class="ml">100 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: plechovka pomády s viditeľnou etiketou, bočný pohľad -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">02 &middot; Pomáda</p>
+              <p class="plate__big">Pomáda na vodní bázi<br>100 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Pomáda na vodní bázi</h3>
+          <p>Silná fixace s leskem, smyje se obyčejnou vodou. Na sčesané a klasické účesy s patkou.</p>
+          <p class="prod__foot"><span class="eur">450 Kč</span><span class="ml">100 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: sklenená fľaštička oleja s kvapkadlom, odlesk svetla -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">03 &middot; Olej</p>
+              <p class="plate__big">Olej na vousy<br>30 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Olej na vousy</h3>
+          <p>Směs jojobového a mandlového oleje. Tři kapky do dlaně ráno, změkčí chloupky a zklidní pokožku.</p>
+          <p class="prod__foot"><span class="eur">350 Kč</span><span class="ml">30 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: téglik balzamu, vedľa neho drevený hrebeň -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">04 &middot; Balzám</p>
+              <p class="plate__big">Balzám na vousy<br>60 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Balzám na vousy</h3>
+          <p>Hustší než olej, drží tvar delších vousů. Doporučujeme na vousy od pěti centimetrů.</p>
+          <p class="prod__foot"><span class="eur">375 Kč</span><span class="ml">60 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: fľaša šampónu pri umývacej mise -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">05 &middot; Šampon</p>
+              <p class="plate__big">Šampon na mastné vlasy<br>250 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Šampon na mastné vlasy</h3>
+          <p>Bez silikonů, s mátovým výtažkem. Ten samý, který používáme při mytí v provozovně.</p>
+          <p class="prod__foot"><span class="eur">325 Kč</span><span class="ml">250 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: kefa z diviačích štetín zhora, viditeľné drevené telo -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">06 &middot; Kartáč</p>
+              <p class="plate__big">Kartáč z kančích štětin<br>dřevěné tělo</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Kartáč z kančích štětin</h3>
+          <p>Na denní česání vousů i kratších vlasů. Rozetře olej rovnoměrně až ke kořínkům.</p>
+          <p class="prod__foot"><span class="eur">550 Kč</span><span class="ml">1 kus</span></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07 STAROSTLIVOSŤ DOMA ===== -->
+<section class="sec sec--deep" id="starostlivost">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">06</p>
+      <div class="shead__main">
+        <h2>Péče o vlasy a vousy doma</h2>
+        <p class="lede">Postup, který při střihu ukazujeme přímo na vašich vlasech. U každého kroku je uvedené dávkování i čas.</p>
+      </div>
+    </header>
+
+    <div class="care rv">
+      <div>
+        <span class="n">01</span>
+        <h3>Mytí</h3>
+        <p>U kratších střihů stačí umýt vlasy každý druhý den, u mastnější pokožky denně. Šampon nanášejte jen na pokožku hlavy, délky se umyjí samy při opláchnutí. Kondicionér patří na konečky, ne ke kořínkům.</p>
+      </div>
+      <div>
+        <span class="n">02</span>
+        <h3>Sušení a tvarování</h3>
+        <p>Vlasy vysušte fénem asi na osmdesát procent a teprve potom naneste přípravek. Do mokrých vlasů se pasta ani pomáda nechytí a účes do hodiny spadne. Vzduch veďte proti směru růstu, tvar tak drží déle.</p>
+      </div>
+      <div>
+        <span class="n">03</span>
+        <h3>Dávkování přípravku</h3>
+        <p>Pasta velikosti hrášku na krátký střih, velikosti fazole na delší vršek. Rozetřete ji mezi dlaněmi, dokud nezmizí lesk, a teprve potom jděte do vlasů od zadní části dopředu. Víc produktu tvar nezlepší, jen zatíží vlasy.</p>
+      </div>
+      <div>
+        <span class="n">04</span>
+        <h3>Vousy a kartáč</h3>
+        <p>Tři kapky oleje ráno na suché vousy, u vousů nad pět centimetrů použijte balzám. Rozetřete od pokožky ke konečkům a pročešte kartáčem, stačí jedna minuta. Hustý hřeben patří na mokré vlasy, kartáč vždy až na suché. Kontury na krku a tvářích neupravujte doma, mezi návštěvami je dočistíme za 225 Kč.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 POUKAZY ===== -->
+<section class="sec" id="poukazy">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">07</p>
+      <div class="shead__main">
+        <h2>Dárkové poukazy</h2>
+        <p class="lede">Poukaz vystavíme na počkání v provozovně, v tištěné podobě s vlastním číslem. Uplatnit se dá na služby i na produkty.</p>
+      </div>
+    </header>
+
+    <div class="vouch rv">
+      <div class="vouch__grid">
+        <div class="plate plate--arc">
+          <div class="plate__type">
+            <p class="plate__word">Poukaz</p>
+            <div>
+              <p class="plate__num">750 Kč</p>
+              <p class="plate__big">střih nebo úprava vousů</p>
+            </div>
+          </div>
+        </div>
+        <div class="plate plate--wedge">
+          <div class="plate__type">
+            <p class="plate__word">Poukaz</p>
+            <div>
+              <p class="plate__num">1 250 Kč</p>
+              <p class="plate__big">střih s vousy a produkt</p>
+            </div>
+          </div>
+        </div>
+        <div class="plate plate--dot">
+          <div class="plate__type">
+            <p class="plate__word">Poukaz</p>
+            <div>
+              <p class="plate__num">2 000 Kč</p>
+              <p class="plate__big">dvě celé návštěvy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p>Hodnotu poukazu si můžete určit i sami od 375 Kč výš. Na poukaz se dá objednat stejně jako na běžný termín, číslo poukazu stačí uvést do poznámky.</p>
+        <ul class="rules">
+          <li><b>01</b><span>Platnost 12 měsíců od data vystavení.</span></li>
+          <li><b>02</b><span>Dá se čerpat i na víckrát, zůstatek zapisujeme na zadní stranu.</span></li>
+          <li><b>03</b><span>Poukaz je přenosný, jméno na něm není povinné.</span></li>
+          <li><b>04</b><span>Nevyčerpaná hodnota se nevyplácí v hotovosti.</span></li>
+          <li><b>05</b><span>Při ztrátě umíme poukaz zablokovat a vystavit nový podle čísla.</span></li>
+        </ul>
+        <div class="btns" style="margin-top:26px">
+          <a class="btn btn--brass" href="#kontakt">Napsat nám zprávu</a>
+          <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09 HODINY ===== -->
+<section class="sec paper" id="hodiny">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">08</p>
+      <div class="shead__main">
+        <h2>Otevírací doba</h2>
+        <p class="lede">Poslední termín začíná tak, aby se stihl dokončit do zavírací doby. Ve čtvrtek a v pátek máme prodlouženou dobu do 20:00.</p>
+      </div>
+    </header>
+
+    <div class="hours">
+      <div class="rv">
+        <div class="status" id="stav-teraz" role="status">
+          <strong id="stav-nadpis">Otevírací doba</strong>
+          <p id="stav-text">Po &ndash; St 9:00 &ndash; 19:00, Čt &ndash; Pá 9:00 &ndash; 20:00, So 8:00 &ndash; 14:00, neděle zavřeno.</p>
+        </div>
+
+        <dl class="htab" id="tab-hodin">
+          <div data-den="1"><dt>Pondělí</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">senioři do 12:00</span></div>
+          <div data-den="2"><dt>Úterý</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">senioři do 12:00</span></div>
+          <div data-den="3"><dt>Středa</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">senioři do 12:00</span></div>
+          <div data-den="4"><dt>Čtvrtek</dt><dd>9:00 &ndash; 20:00</dd><span class="tagcol">prodloužená</span></div>
+          <div data-den="5"><dt>Pátek</dt><dd>9:00 &ndash; 20:00</dd><span class="tagcol">prodloužená</span></div>
+          <div data-den="6"><dt>Sobota</dt><dd>8:00 &ndash; 14:00</dd><span class="tagcol">bez přestávky</span></div>
+          <div data-den="0" class="is-closed"><dt>Neděle</dt><dd>zavřeno</dd><span class="tagcol">&mdash;</span></div>
+        </dl>
+      </div>
+
+      <div class="rv">
+        <div class="plate plate--rule" style="aspect-ratio:4/3;display:flex">
+          <div class="plate__type">
+            <p class="plate__word">Nejvytíženější čas</p>
+            <div>
+              <p class="plate__num">16&ndash;19</p>
+              <p class="plate__big">ve čtvrtek a v pátek. Pokud chcete kratší čekání na volný termín, zkuste dopoledne v pondělí nebo úterý.</p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="rules" style="margin-top:22px">
+          <li><b>01</b><span>Přestávka na oběd není, křesla se střídají.</span></li>
+          <li><b>02</b><span>O svátcích máme zavřeno, náhradní termín nabídneme den předem.</span></li>
+          <li><b>03</b><span>Poslední termín začíná 15 až 90 minut před zavírací dobou podle délky služby.</span></li>
+          <li><b>04</b><span>Na čísle <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané.">tady bude vaše číslo</span> se dovoláte během otevírací doby, mimo ni napište SMS.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 OBJEDNANIE ===== -->
+<section class="sec sec--deep" id="objednanie">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">09</p>
+      <div class="shead__main">
+        <h2>Objednání termínu</h2>
+        <p class="lede">Vyberte službu, rozsah návštěvy a volný čas. Obsazené časy jsou přeškrtnuté a nedají se zvolit. Délku bloku dopočítáme podle rozsahu.</p>
+      </div>
+    </header>
+
+    <div class="book">
+      <form class="panel rv" id="form-objednanie" novalidate>
+        <fieldset class="fset">
+          <legend>1. Služba</legend>
+          <div class="field">
+            <label for="f-sluzba">Vyberte službu</label>
+            <select id="f-sluzba" name="sluzba">
+              <optgroup label="Jednotlivé služby">
+                <option value="Klasický pánský střih" data-min="30" data-cena="550" selected>Klasický pánský střih &mdash; 30 min, 550 Kč</option>
+                <option value="Střih strojkem s přechodem" data-min="45" data-cena="675">Střih strojkem s přechodem &mdash; 45 min, 675 Kč</option>
+                <option value="Holení břitvou s horkým ručníkem" data-min="40" data-cena="625">Holení břitvou &mdash; 40 min, 625 Kč</option>
+                <option value="Úprava vousů a kníru" data-min="25" data-cena="400">Úprava vousů a kníru &mdash; 25 min, 400 Kč</option>
+                <option value="Dětský střih do 12 let" data-min="25" data-cena="375">Dětský střih do 12 let &mdash; 25 min, 375 Kč</option>
+                <option value="Střih pro seniory nad 65 let" data-min="30" data-cena="425">Střih pro seniory nad 65 let &mdash; 30 min, 425 Kč</option>
+                <option value="Zastřižení kontur mezi střihy" data-min="15" data-cena="225">Zastřižení kontur &mdash; 15 min, 225 Kč</option>
+              </optgroup>
+              <optgroup label="Balíčky">
+                <option value="Střih a vousy" data-min="60" data-cena="900">Střih a vousy &mdash; 60 min, 900 Kč</option>
+                <option value="Střih a holení břitvou" data-min="70" data-cena="1050">Střih a holení břitvou &mdash; 70 min, 1 050 Kč</option>
+                <option value="Střih, vousy a holení břitvou" data-min="90" data-cena="1375">Střih, vousy a holení břitvou &mdash; 90 min, 1 375 Kč</option>
+              </optgroup>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>2. Holič</legend>
+          <div class="field">
+            <label for="f-holic">Vyberte holiče</label>
+            <select id="f-holic" name="holic">
+              <option value="Kterýkoli volný" data-dni="1,2,3,4,5,6" selected>Kterýkoli volný &mdash; nejvíc termínů</option>
+              <option value="Marek Hajduk" data-dni="1,2,3,4,5">Marek Hajduk &mdash; pondělí až pátek</option>
+              <option value="Tomáš Bencúr" data-dni="2,3,4,5,6">Tomáš Bencúr &mdash; úterý až sobota</option>
+              <option value="Petr Krajčí" data-dni="1,3,5,6">Petr Krajčí &mdash; pondělí, středa, pátek, sobota</option>
+            </select>
+          </div>
+          <p class="note" style="margin:10px 0 0">Střih u učně se slevou 30 % objednáváme telefonicky.</p>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>3. Rozsah a délka</legend>
+          <div class="opts">
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Základ" data-min="0" data-cena="0" checked>
+              <b>Základ</b>
+              <em>+0 min</em>
+              <span>Samotná služba bez doplňků.</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Prodloužený" data-min="15" data-cena="150">
+              <b>Prodloužený</b>
+              <em>+15 min &middot; +150 Kč</em>
+              <span>Úprava účesu fénem a přípravkem s ukázkou postupu na doma.</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Kompletní" data-min="30" data-cena="300">
+              <b>Kompletní</b>
+              <em>+30 min &middot; +300 Kč</em>
+              <span>Úprava účesu, horký ručník a chladivý zábal na závěr.</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>4. Den</legend>
+          <div class="chipsrow" id="obj-dni" role="group" aria-label="Výběr dne">
+            <p class="note" style="margin:0">Bez zapnutého skriptu termín domluvíme telefonicky během otevírací doby.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>5. Čas začátku</legend>
+          <div class="slots" id="obj-casy" role="group" aria-label="Výběr času">
+            <p class="note" style="grid-column:1/-1;margin:0">Volné časy vám řekneme při telefonátu, případně odepíšeme na SMS do konce otevírací doby.</p>
+          </div>
+          <p class="freecount" id="obj-pocet" role="status"></p>
+          <p class="warn" id="obj-varovanie" role="status" hidden></p>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>6. Kontakt</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-meno">Jméno a příjmení</label>
+              <input type="text" id="f-meno" name="meno" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="f-tel">Telefon</label>
+              <input type="tel" id="f-tel" name="telefon" autocomplete="tel" placeholder="vaše telefonní číslo">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-pozn">Poznámka</label>
+            <textarea id="f-pozn" name="poznamka" placeholder="Číslo dárkového poukazu, první návštěva, střih u učně"></textarea>
+          </div>
+        </fieldset>
+
+        <label class="consent">
+          <input type="checkbox" id="f-suhlas" name="suhlas">
+          <span>Souhlasím se zpracováním uvedených údajů za účelem domluvení termínu.</span>
+        </label>
+
+        <button class="btn btn--brass" type="submit" style="width:100%">Odeslat objednávku termínu</button>
+        <p class="sum__note">Tohle je ukázkový web. Formulář nikam nic neodesílá a žádné údaje se neukládají.</p>
+
+        <div class="done" id="obj-hotovo" hidden tabindex="-1">
+          <strong>Takhle by vypadalo potvrzení</strong>
+          <p id="obj-hotovo-detail">Na ostrém webu by teď odešla potvrzující SMS zákazníkovi a termín by přibyl v rozvrhu holičství.</p>
+          <p>Tady se nikam nic neodeslalo a žádný termín nevznikl. Pokud chcete takový web pro svůj podnik, ozvěte se na <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a>.</p>
+        </div>
+      </form>
+
+      <aside class="sum rv" aria-label="Shrnutí objednávky">
+        <h3>Shrnutí termínu</h3>
+        <dl class="sum__rows">
+          <div><dt>Služba</dt><dd id="s-sluzba">Klasický pánský střih</dd></div>
+          <div><dt>Holič</dt><dd id="s-holic">Kterýkoli volný</dd></div>
+          <div><dt>Rozsah</dt><dd id="s-rozsah">Základ</dd></div>
+          <div><dt>Délka</dt><dd id="s-dlzka">30 minut</dd></div>
+          <div><dt>Den</dt><dd id="s-den">nevybraný</dd></div>
+          <div><dt>Čas</dt><dd id="s-cas">nevybraný</dd></div>
+        </dl>
+        <div class="sum__total">
+          <span class="l">Cena celkem</span>
+          <span class="v" id="s-cena">550 Kč</span>
+        </div>
+        <p class="sum__note">Cena je konečná. Platí se na místě kartou nebo hotově, případně dárkovým poukazem.</p>
+        <p class="sum__note">Zrušení termínu je zdarma do čtyř hodin před jeho začátkem.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 PODMIENKY ===== -->
+<section class="sec" id="podmienky">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">10</p>
+      <div class="shead__main">
+        <h2>Storno podmínky a zpoždění</h2>
+        <p class="lede">Pravidla držíme jednoduchá, aby termíny seděly všem. Platí stejně pro objednání přes stránku i telefonicky.</p>
+      </div>
+    </header>
+
+    <div class="terms rv">
+      <div>
+        <h3>Zrušení termínu</h3>
+        <ul>
+          <li><b>Do 4 hodin</b> před termínem zdarma, telefonicky nebo přes SMS.</li>
+          <li><b>Méně než 4 hodiny</b> předem termín zaniká bez poplatku, ale zapisujeme si ho.</li>
+          <li><b>Dvakrát nedostavení</b> bez omluvy: další termín potvrdíme až po zaplacení zálohy 250 Kč.</li>
+          <li><b>Záloha</b> se odečte z ceny služby při nejbližší návštěvě.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Zpoždění</h3>
+        <ul>
+          <li><b>Do 10 minut</b> službu zkrátíme tak, aby se stihla v původním bloku.</li>
+          <li><b>Nad 10 minut</b> termín propadá, nabídneme nejbližší volný čas.</li>
+          <li><b>Bez objednání</b> obsloužíme jen tehdy, když je zrovna volné křeslo.</li>
+          <li><b>Příchod dřív</b> je v pořádku, počkáte v čekárně se šesti místy.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Přesun a náhrada</h3>
+        <ul>
+          <li><b>Přesun termínu</b> je zdarma, pokud ho oznámíte aspoň 4 hodiny předem.</li>
+          <li><b>Uvolněný termín</b> nabídneme prvnímu čekajícímu na daný den.</li>
+          <li><b>O svátcích</b> máme zavřeno, náhradní čas nabídneme den předem.</li>
+          <li><b>Nespokojenost se střihem</b> dořešíme do 7 dní od návštěvy bez doplatku.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 PLATBA ===== -->
+<section class="sec sec--deep" id="platba">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">11</p>
+      <div class="shead__main">
+        <h2>Platba, doklad a příplatky</h2>
+        <p class="lede">Platí se až po službě, při objednání nevybíráme zálohu. Cena z ceníku je konečná, jediné, co ji mění, je rozsah návštěvy zvolený předem.</p>
+      </div>
+    </header>
+
+    <div class="terms rv">
+      <div>
+        <h3>Jak se platí</h3>
+        <ul>
+          <li><b>Po službě</b> přímo u křesla nebo u pultu, podle toho, kde je volno.</li>
+          <li><b>Bez minimální částky</b> na kartu, kartou se dá zaplatit i zastřižení kontur za 225 Kč.</li>
+          <li><b>Dárkový poukaz</b> pokryje službu i produkty, zbytek doplatíte jinak.</li>
+          <li><b>Spropitné</b> není očekávané ani zahrnuté v ceně.</li>
+        </ul>
+        <ul class="pay">
+          <li>hotovost</li>
+          <li>platební karta</li>
+          <li>bezkontaktně telefonem</li>
+          <li>dárkový poukaz</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Doklad a cena</h3>
+        <ul>
+          <li><b>Doklad</b> dostanete vždy, i při platbě poukazem.</li>
+          <li><b>Ceny v ceníku</b> jsou konečné, nic se k nim nepřipočítává.</li>
+          <li><b>Rozsah návštěvy</b> si volíte předem při objednání a vidíte ho ve shrnutí termínu.</li>
+          <li><b>Změna během termínu</b> není možná, blok je vyhrazený přesně na domluvenou délku.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Slevy</h3>
+        <ul>
+          <li><b>Střih u učně</b> se slevou 30 % z ceny, vyhrazený čas je o 15 minut delší.</li>
+          <li><b>Senioři nad 65 let</b> za 425 Kč v pondělí až středu od 9:00 do 12:00.</li>
+          <li><b>Děti do 12 let</b> za 375 Kč v kterýkoli den.</li>
+          <li><b>Slevy se nesčítají</b>, uplatní se vždy ta výhodnější.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tw rv" style="margin-top:clamp(30px,4vw,46px)">
+      <table class="dtab">
+        <caption>Rozsah návštěvy a příplatky</caption>
+        <thead>
+          <tr>
+            <th scope="col">Rozsah</th>
+            <th scope="col">Co je navíc</th>
+            <th scope="col">Čas navíc</th>
+            <th scope="col">Příplatek</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Základ</th>
+            <td>Samotná služba podle ceníku včetně konzultace a dočištění kontur.</td>
+            <td class="num">+0 min</td>
+            <td class="num">0 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Prodloužený</th>
+            <td>Umytí vlasů u mísy a úprava účesu s ukázkou postupu na doma.</td>
+            <td class="num">+15 min</td>
+            <td class="num">150 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Kompletní</th>
+            <td>Umytí, úprava účesu, horký ručník a chladivý zábal na závěr.</td>
+            <td class="num">+30 min</td>
+            <td class="num">300 Kč</td>
+          </tr>
+          <tr>
+            <th scope="row">Střih u učně</th>
+            <td>Stejný úkon pod přímým dohledem holiče, který práci dokončuje.</td>
+            <td class="num">+15 min</td>
+            <td class="num">&minus;30 %</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 OTÁZKY ===== -->
+<section class="sec paper" id="otazky">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">12</p>
+      <div class="shead__main">
+        <h2>Časté dotazy</h2>
+        <p class="lede">Pokud tu odpověď nenajdete, zavolejte nám během otevírací doby nebo napište přes formulář v kontaktu.</p>
+      </div>
+    </header>
+
+    <div class="faq rv">
+      <details>
+        <summary>Musím se objednat předem?</summary>
+        <p>Doporučujeme to. Pracujeme na přesné termíny a bez objednání obsloužíme jen tehdy, když je zrovna volné křeslo. Největší šance je v pondělí a úterý dopoledne, nejmenší ve čtvrtek a pátek po 16:00.</p>
+      </details>
+      <details>
+        <summary>Jak dlouho trvá střih a co je v ceně?</summary>
+        <p>Klasický střih má vyhrazených 30 minut, střih s přechodem 45 minut a střih s vousy 60 minut. V ceně je konzultace, dočištění kontur břitvou a u služeb nad 30 minut i umytí. Umytí a úprava účesu k jakékoli kratší službě stojí 150 Kč navíc a prodlouží termín o 15 minut.</p>
+      </details>
+      <details>
+        <summary>Stříháte i děti?</summary>
+        <p>Ano, děti do 12 let za 375 Kč s vyhrazeným časem 25 minut. Máme podsedák do křesla pro děti od čtyř let. Doprovázející osoba sedí vedle během celého střihu. Při prvním střihu si vyhraďte trochu času navíc, tempo přizpůsobíme dítěti.</p>
+      </details>
+      <details>
+        <summary>Co znamená střih u učně?</summary>
+        <p>Ten samý úkon provádí učeň pod přímým dohledem holiče, který práci kontroluje a dokončuje. Cena je o 30 % nižší a vyhrazený čas o 15 minut delší. Pokud s výsledkem nebudete spokojení, dokončíme ho hned bez doplatku.</p>
+      </details>
+      <details>
+        <summary>Jak se připravit na holení břitvou?</summary>
+        <p>Přijďte s aspoň dvoudenním strništěm a neholte se v den termínu doma. Pokud máte podrážděnou pokožku, akné nebo čerstvé ranky, řekněte to na začátku, holení tehdy odložíme nebo omezíme na tvarování kontur.</p>
+      </details>
+      <details>
+        <summary>Můžu platit kartou?</summary>
+        <p>Ano, přijímáme platební karty i bezkontaktní platbu telefonem, stejně jako hotovost a dárkový poukaz. Zálohu předem nevybíráme, platí se až po službě. Doklad dostanete vždy.</p>
+      </details>
+      <details>
+        <summary>Jak často mám chodit na střih?</summary>
+        <p>U krátkých střihů s přechodem vypadá účes nejlépe tři až pět týdnů, u delších šest až osm týdnů. Mezi střihy umíme za 225 Kč dočistit krk a okolí uší, pokud od předchozího střihu neuplynulo víc než 14 dní.</p>
+      </details>
+      <details>
+        <summary>Dá se objednat konkrétní holič?</summary>
+        <p>Ano, napište to do poznámky při objednání nebo to řekněte při telefonátu. U konkrétního holiče bývá nejbližší volný termín zpravidla o několik dní později než u kteréhokoli volného křesla.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 KARIÉRA ===== -->
+<section class="sec sec--deep" id="kariera">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">13</p>
+      <div class="shead__main">
+        <h2>Práce v holičství</h2>
+        <p class="lede">Máme čtyři křesla a jedno z nich obsazujeme průběžně. Hledáme holiče na plný úvazek a učně, který chce projít celým řemeslem od mytí po břitvu.</p>
+      </div>
+    </header>
+
+    <div class="jobs rv">
+      <div class="job">
+        <h3>Holič</h3>
+        <p class="role">Plný úvazek &middot; vlastní křeslo</p>
+        <ul>
+          <li><b>Co děláte:</b> střih nůžkami i strojkem, přechody, tvarování vousů a holení břitvou.</li>
+          <li><b>Co očekáváme:</b> samostatnost u klasického střihu a ochotu doučit se mokré holení u nás.</li>
+          <li><b>Co dostanete:</b> vlastní křeslo, nástroje a přípravky od provozovny, pevný rozvrh termínů.</li>
+          <li><b>Rozvrh:</b> pět dní v týdnu, jedna sobota ze dvou volná, neděle vždy volná.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <h3>Učeň</h3>
+        <p class="role">Zaučení přímo v provozovně</p>
+        <ul>
+          <li><b>Co děláte:</b> mytí, příprava pracoviště, postupně střih pod dohledem holiče.</li>
+          <li><b>Co očekáváme:</b> přesnost, pořádek a chuť opakovat jeden úkon tak dlouho, dokud nesedí.</li>
+          <li><b>Co dostanete:</b> zaučení od prvního dne na skutečných zákaznících se zlevněným ceníkem.</li>
+          <li><b>Rozvrh:</b> domluvíme podle školy, minimálně tři dny v týdnu.</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="route rv" style="margin-top:clamp(28px,3.6vw,44px)">
+      <li>
+        <span class="n">01</span>
+        <span><b>Ozvěte se</b><p>Napište přes formulář níže nebo nám zavolejte. Stačí jméno, telefon a jedna věta o tom, kde jste dosud stříhali.</p></span>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <span><b>Krátká schůzka</b><p>Projdeme, co umíte a co chcete dělat. Trvá asi dvacet minut, ideálně dopoledne v pondělí nebo úterý.</p></span>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <span><b>Zkušební den u křesla</b><p>Odpracujete jeden běžný den s naším rozvrhem. Nástroje i přípravky dostanete od nás.</p></span>
+      </li>
+      <li>
+        <span class="n">04</span>
+        <span><b>Dohoda</b><p>Podmínky odměňování a rozvrh probereme osobně po zkušebním dni. Odpověď dáme do tří pracovních dnů tak či tak.</p></span>
+      </li>
+    </ul>
+
+    <div class="btns rv" style="margin-top:clamp(26px,3.2vw,36px)">
+      <a class="btn btn--brass" href="#kontakt">Napsat nám zprávu</a>
+      <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 KONTAKT ===== -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">14</p>
+      <div class="shead__main">
+        <h2>Kde nás najdete, parkování a kontakt</h2>
+        <p class="lede">Provozovna je v pěší zóně v přízemí rohového domu. Vchod je přímo z ulice, bez schodu.</p>
+      </div>
+    </header>
+
+    <div class="contact">
+      <div class="rv">
+        <dl class="cdl">
+          <div>
+            <dt>Adresa</dt>
+            <dd>Holičství Ostří<br>Krátká 6, historické centrum</dd>
+          </div>
+          <div>
+            <dt>Telefon</dt>
+            <dd><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></dd>
+          </div>
+          <div>
+            <dt>Otevřeno</dt>
+            <dd>Po &ndash; St 9:00 &ndash; 19:00<br>Čt &ndash; Pá 9:00 &ndash; 20:00<br>So 8:00 &ndash; 14:00, Ne zavřeno</dd>
+          </div>
+          <div>
+            <dt>Objednání</dt>
+            <dd>přes formulář na této stránce, telefonicky nebo přes SMS</dd>
+          </div>
+          <div>
+            <dt>Parkování</dt>
+            <dd>parkovací dům 120 m, první hodina 25 Kč<br>ulice v centru zpoplatněné 8:00 &ndash; 18:00</dd>
+          </div>
+          <div>
+            <dt>Platba</dt>
+            <dd>hotovost, karta, telefon, dárkový poukaz</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rv">
+        <div class="plate plate--grid mapplate">
+          <div class="plate__type">
+            <p class="plate__word">Pěší zóna</p>
+            <div>
+              <p class="plate__num">3 min</p>
+              <p class="plate__big">chůze od zastávky městské dopravy, 120 m od parkovacího domu</p>
+            </div>
+          </div>
+        </div>
+
+        <h3>Jak se k nám dostanete</h3>
+        <ul class="route">
+          <li>
+            <span class="n">01</span>
+            <span><b>Pěšky</b><p>Z hlavní pěší ulice zahněte u fontány do boční uličky. Provozovna je na rohu, druhý vchod z levé strany.</p></span>
+          </li>
+          <li>
+            <span class="n">02</span>
+            <span><b>Městskou dopravou</b><p>Nejbližší zastávka je tři minuty chůze. Od zastávky projděte podchodem a držte se levé strany náměstí.</p></span>
+          </li>
+          <li>
+            <span class="n">03</span>
+            <span><b>Autem a parkování</b><p>Parkovací dům je 120 m daleko, první hodina stojí 25 Kč. V ulicích v centru je parkování zpoplatněné od 8:00 do 18:00.</p></span>
+          </li>
+          <li>
+            <span class="n">04</span>
+            <span><b>Na kole</b><p>Stojan pro čtyři kola je přímo před vchodem. Koloběžku si můžete odložit v čekárně u věšáku.</p></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cform">
+      <form class="panel rv" id="form-sprava" novalidate>
+        <fieldset class="fset">
+          <legend>Napište nám</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="k-meno">Jméno a příjmení</label>
+              <input type="text" id="k-meno" name="meno" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="k-tel">Telefon</label>
+              <input type="tel" id="k-tel" name="telefon" autocomplete="tel" placeholder="vaše telefonní číslo" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="k-sprava">Zpráva</label>
+            <textarea id="k-sprava" name="sprava" required placeholder="Například: chci střih s vousy v sobotu dopoledne, nebo mám zájem o práci holiče."></textarea>
+          </div>
+        </fieldset>
+
+        <label class="consent">
+          <input type="checkbox" id="k-suhlas" name="suhlas">
+          <span>Souhlasím se zpracováním uvedených údajů za účelem odpovědi na tuto zprávu.</span>
+        </label>
+
+        <button class="btn btn--brass" type="submit" style="width:100%">Odeslat zprávu</button>
+        <p class="warn" id="sprava-chyba" role="status" hidden></p>
+        <p class="sum__note">Tohle je ukázkový web. Formulář nikam nic neodesílá a žádné údaje se neukládají.</p>
+
+        <div class="done" id="sprava-hotovo" hidden tabindex="-1">
+          <strong>Takhle by vypadalo potvrzení</strong>
+          <p>Na ostrém webu by zpráva právě odešla do schránky holičství a vy byste dostali potvrzení o přijetí.</p>
+          <p>Tady se nikam nic neodeslalo. Pokud chcete takový web pro svůj podnik, ozvěte se na <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a>.</p>
+        </div>
+      </form>
+
+      <div class="cform__side rv">
+        <h3>Jak to funguje</h3>
+        <p>Zpráva z formuláře přijde do schránky holičství. Odpovídáme do 24 hodin, zpravidla telefonicky nebo přes SMS na číslo, které uvedete. O víkendu odpovídáme v sobotu do 14:00, jinak v pondělí ráno.</p>
+        <p>Pokud potřebujete termín na dnes nebo zítra, zavolejte raději přímo během otevírací doby.</p>
+        <dl>
+          <div>
+            <dt>Telefon</dt>
+            <dd><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></dd>
+          </div>
+          <div>
+            <dt>Adresa</dt>
+            <dd>Krátká 6, historické centrum</dd>
+          </div>
+          <div>
+            <dt>Odpověď</dt>
+            <dd>do 24 hodin během otevíracích dnů</dd>
+          </div>
+        </dl>
+        <div class="btns" style="margin-top:22px">
+          <a class="btn btn--ghost" href="#objednanie">Vybrat termín na stránce</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY — jediné reálne kontaktné údaje na tejto stránke ===== -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap author__in">
+    <div class="rv">
+      <p class="eyebrow">Autor ukázky</p>
+      <h2 id="autor-nadpis">Líbí se vám tento web?</h2>
+      <p>Holičství Ostří je vymyšlený podnik a všechny jeho údaje, ceny i adresa jsou ukázkové. Tuto stránku navrhl a naprogramoval Alex Poliak. Stejný web postavím i vašemu podniku, s vašimi texty, cenami a fotografiemi.</p>
+      <p>Konzultace je zdarma a nezávazně. Projdeme, co váš podnik potřebuje, a řeknu vám rovnou, jestli to má smysl a kolik to bude stát.</p>
+      <p class="author__price">Weby na míru od 250 €. První návrh do 3 dnů. Konzultace zdarma a nezávazně.</p>
+    </div>
+
+    <div class="author__card rv">
+      <p class="author__name">Alex Poliak</p>
+      <p class="author__role">Návrh a programování webových stránek</p>
+      <dl class="author__list">
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Podpora</dt>
+          <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></dd>
+        </div>
+        <div>
+          <dt>Web</dt>
+          <dd><a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Cena</dt>
+          <dd>od 250 €, první návrh do 3 dnů</dd>
+        </div>
+      </dl>
+      <div class="btns">
+        <a class="btn btn--brass" href="mailto:apoliak@apoliak.online?subject=Z%C3%A1jem%20o%20web">Napsat e-mail</a>
+        <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== PÄTA ===== -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <strong>Holičství Ostří</strong>
+        <p>Pánské holičství, Krátká 6, historické centrum. Čtyři křesla, střih na objednaný čas, klasické mokré holení břitvou.</p>
+        <p>Objednání a dotazy: <span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></p>
+      </div>
+
+      <div>
+        <h3>Otevírací doba</h3>
+        <ul class="foot__hours">
+          <li><span>Po &ndash; St</span><span>9:00 &ndash; 19:00</span></li>
+          <li><span>Čt &ndash; Pá</span><span>9:00 &ndash; 20:00</span></li>
+          <li><span>Sobota</span><span>8:00 &ndash; 14:00</span></li>
+          <li><span>Neděle</span><span>zavřeno</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Obsah stránky</h3>
+        <ul class="foot__links">
+          <li><a href="#cennik">Služby a ceník</a></li>
+          <li><a href="#navsteva">Průběh návštěvy</a></li>
+          <li><a href="#produkty">Produkty na prodej</a></li>
+          <li><a href="#poukazy">Dárkové poukazy</a></li>
+          <li><a href="#objednanie">Objednání termínu</a></li>
+          <li><a href="#podmienky">Storno podmínky</a></li>
+          <li><a href="#platba">Platba a příplatky</a></li>
+          <li><a href="#kariera">Práce v holičství</a></li>
+          <li><a href="#kontakt">Kontakt a parkování</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__base">
+      <p>Ukázkový web bez skutečného provozu. Název podniku, adresa, telefon, otevírací doba i ceny jsou vymyšlené.</p>
+      <p>Návrh a kód: <a href="https://apoliak.online/cs/" target="_blank" rel="noopener">apoliak.online</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var d = document;
+  var root = d.documentElement;
+  root.className += " js";
+  var jemne = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- výška lepiaceho vrchu ---------- */
+  var stack = d.querySelector(".topstack");
+  function meraj(){
+    if(!stack) return;
+    root.style.setProperty("--stick", (stack.offsetHeight + 16) + "px");
+  }
+  meraj();
+  window.addEventListener("resize", meraj);
+  window.addEventListener("load", meraj);
+  /* pásik sa pri úzkych displejoch zalomí do viacerých riadkov, výšku preto sledujeme priebežne */
+  if(stack && "ResizeObserver" in window){
+    new ResizeObserver(meraj).observe(stack);
+  }
+
+  /* ---------- mobilné menu ---------- */
+  var tog = d.querySelector(".nav-toggle");
+  var menu = d.getElementById("hlavne-menu");
+  function zavri(){
+    if(!tog || !menu) return;
+    menu.setAttribute("data-open", "false");
+    tog.setAttribute("aria-expanded", "false");
+  }
+  if(tog && menu){
+    tog.addEventListener("click", function(){
+      var otv = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", otv ? "false" : "true");
+      tog.setAttribute("aria-expanded", otv ? "false" : "true");
+      meraj();
+    });
+  }
+  d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavri(); });
+
+  /* ============================================================
+     OBJEDNÁVANIE TERMÍNU
+     ============================================================ */
+  var sluzba = d.getElementById("f-sluzba");
+  var rozsahy = [].slice.call(d.querySelectorAll('input[name="rozsah"]'));
+  var boxDni = d.getElementById("obj-dni");
+  var boxCasy = d.getElementById("obj-casy");
+  var pocetTxt = d.getElementById("obj-pocet");
+  var varovanie = d.getElementById("obj-varovanie");
+
+  var vyst = {
+    sluzba: d.getElementById("s-sluzba"),
+    rozsah: d.getElementById("s-rozsah"),
+    dlzka: d.getElementById("s-dlzka"),
+    den: d.getElementById("s-den"),
+    cas: d.getElementById("s-cas"),
+    cena: d.getElementById("s-cena")
+  };
+
+  /* otváracie hodiny v minútach od polnoci, index = getDay() */
+  var HODINY = [null, [540,1140], [540,1140], [540,1140], [540,1200], [540,1200], [480,840]];
+  var KROK = 30;                 /* termíny začínajú každú polhodinu */
+  var PREDSTIH = 60;             /* v ten istý deň sa dá objednať najskôr o hodinu */
+  var DNI_KR = ["Ne","Po","Út","St","Čt","Pá","So"];
+  var DNI = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sobota"];
+  var DNI_V = ["v neděli","v pondělí","v úterý","ve středu","ve čtvrtek","v pátek","v sobotu"];
+
+  var vybranyDen = null;   /* Date */
+  var vybranyCas = null;   /* minúty od polnoci */
+
+  function cas(m){
+    var h = Math.floor(m / 60), mi = m % 60;
+    return h + ":" + (mi < 10 ? "0" + mi : mi);
+  }
+  function kluc(dt){
+    return dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+  }
+  function minutySlovom(n){
+    if(n === 1) return "1 minuta";
+    if(n >= 2 && n <= 4) return n + " minuty";
+    return n + " minut";
+  }
+  function terminovSlovom(n){
+    if(n === 1) return "1 volný termín";
+    if(n >= 2 && n <= 4) return n + " volné termíny";
+    return n + " volných termínů";
+  }
+
+  /* stabilný pseudonáhodný rozvrh obsadenosti pre daný deň */
+  function hash(s){
+    var h = 2166136261;
+    for(var i = 0; i < s.length; i++){
+      h ^= s.charCodeAt(i);
+      h = (h * 16777619) >>> 0;
+    }
+    return h;
+  }
+  function obsadeny(dt, m){
+    return hash(kluc(dt) + "|" + m) % 100 < 27;
+  }
+
+  function trvanie(){
+    var zaklad = parseInt(sluzba.options[sluzba.selectedIndex].getAttribute("data-min"), 10);
+    var extra = 0;
+    rozsahy.forEach(function(r){ if(r.checked) extra = parseInt(r.getAttribute("data-min"), 10); });
+    return zaklad + extra;
+  }
+  function cenaSpolu(){
+    var zaklad = parseInt(sluzba.options[sluzba.selectedIndex].getAttribute("data-cena"), 10);
+    var extra = 0;
+    rozsahy.forEach(function(r){ if(r.checked) extra = parseInt(r.getAttribute("data-cena"), 10); });
+    return zaklad + extra;
+  }
+  function nazovRozsahu(){
+    var v = "Základ";
+    rozsahy.forEach(function(r){ if(r.checked) v = r.value; });
+    return v;
+  }
+
+  function volny(dt, start, dlzka){
+    var h = HODINY[dt.getDay()];
+    if(!h) return false;
+    if(start < h[0] || start + dlzka > h[1]) return false;
+    var teraz = new Date();
+    if(kluc(dt) === kluc(teraz)){
+      var m = teraz.getHours() * 60 + teraz.getMinutes();
+      if(start < m + PREDSTIH) return false;
+    }
+    for(var m2 = start; m2 < start + dlzka; m2 += KROK){
+      if(obsadeny(dt, Math.floor(m2 / KROK) * KROK)) return false;
+    }
+    return true;
+  }
+
+  /* zoznam najbližších otvorených dní */
+  function otvoreneDni(pocet){
+    var zoznam = [], dt = new Date();
+    dt.setHours(0, 0, 0, 0);
+    for(var i = 0; i < 21 && zoznam.length < pocet; i++){
+      var kandidat = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + i);
+      if(HODINY[kandidat.getDay()]) zoznam.push(kandidat);
+    }
+    return zoznam;
+  }
+
+  function vykresliDni(){
+    if(!boxDni) return;
+    boxDni.innerHTML = "";
+    var dni = otvoreneDni(7);
+    dni.forEach(function(dt, i){
+      var b = d.createElement("button");
+      b.type = "button";
+      b.className = "daychip";
+      b.setAttribute("aria-pressed", "false");
+      b.innerHTML = "<b>" + DNI_KR[dt.getDay()] + "</b>" + dt.getDate() + ". " + (dt.getMonth() + 1) + ".";
+      b.setAttribute("aria-label", DNI[dt.getDay()] + " " + dt.getDate() + ". " + (dt.getMonth() + 1) + ".");
+      b.addEventListener("click", function(){
+        vybranyDen = dt;
+        vybranyCas = null;
+        vykresliDni();
+        vykresliCasy();
+        prepis();
+      });
+      if(vybranyDen && kluc(vybranyDen) === kluc(dt)) b.setAttribute("aria-pressed", "true");
+      boxDni.appendChild(b);
+      if(i === 0 && !vybranyDen){
+        vybranyDen = dt;
+        b.setAttribute("aria-pressed", "true");
+      }
+    });
+  }
+
+  function vykresliCasy(){
+    if(!boxCasy || !vybranyDen) return;
+    boxCasy.innerHTML = "";
+    var h = HODINY[vybranyDen.getDay()];
+    var dlzka = trvanie();
+    var volnych = 0;
+    /* po zmene služby alebo rozsahu už zvolený čas nemusí vyhovovať dlhšiemu bloku */
+    if(vybranyCas !== null && !volny(vybranyDen, vybranyCas, dlzka)) vybranyCas = null;
+    for(var m = h[0]; m + dlzka <= h[1]; m += KROK){
+      (function(start){
+        var ok = volny(vybranyDen, start, dlzka);
+        var b = d.createElement("button");
+        b.type = "button";
+        b.className = "slot";
+        b.textContent = cas(start);
+        if(ok){
+          volnych++;
+          b.setAttribute("aria-pressed", String(vybranyCas === start));
+          b.addEventListener("click", function(){
+            vybranyCas = start;
+            vykresliCasy();
+            prepis();
+            if(varovanie) varovanie.hidden = true;
+          });
+        } else {
+          b.disabled = true;
+          b.setAttribute("aria-label", cas(start) + " obsazené");
+        }
+        boxCasy.appendChild(b);
+      })(m);
+    }
+    if(pocetTxt){
+      pocetTxt.textContent = volnych > 0
+        ? terminovSlovom(volnych) + " " + DNI_V[vybranyDen.getDay()] + " " + vybranyDen.getDate() + ". " + (vybranyDen.getMonth() + 1) + "., blok " + minutySlovom(dlzka)
+        : "V tento den už není volný blok na " + minutySlovom(dlzka) + ". Zkuste jiný den nebo kratší rozsah.";
+    }
+  }
+
+  function prepis(){
+    if(!vyst.sluzba) return;
+    var dlzka = trvanie();
+    vyst.sluzba.textContent = sluzba.value;
+    vyst.rozsah.textContent = nazovRozsahu();
+    vyst.dlzka.textContent = minutySlovom(dlzka);
+    vyst.cena.textContent = cenaSpolu() + " Kč";
+    vyst.den.textContent = vybranyDen
+      ? DNI[vybranyDen.getDay()] + " " + vybranyDen.getDate() + ". " + (vybranyDen.getMonth() + 1) + "."
+      : "nevybraný";
+    vyst.cas.textContent = vybranyCas !== null
+      ? cas(vybranyCas) + " – " + cas(vybranyCas + dlzka)
+      : "nevybraný";
+  }
+
+  if(sluzba && boxDni && boxCasy){
+    vykresliDni();
+    vykresliCasy();
+    prepis();
+    sluzba.addEventListener("change", function(){ vykresliCasy(); prepis(); });
+    rozsahy.forEach(function(r){
+      r.addEventListener("change", function(){ vykresliCasy(); prepis(); });
+    });
+  }
+
+  /* ---------- odoslanie (iba ukážka) ---------- */
+  var form = d.getElementById("form-objednanie");
+  var hotovo = d.getElementById("obj-hotovo");
+  var hotovoDetail = d.getElementById("obj-hotovo-detail");
+  if(form && hotovo){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      if(vybranyCas === null){
+        if(varovanie){
+          varovanie.textContent = "Vyberte prosím čas začátku. Přeškrtnuté časy jsou už obsazené.";
+          varovanie.hidden = false;
+        }
+        if(boxCasy){
+          var prvy = boxCasy.querySelector(".slot:not([disabled])");
+          if(prvy) prvy.focus();
+        }
+        return;
+      }
+      if(varovanie) varovanie.hidden = true;
+      var dlzka = trvanie();
+      if(hotovoDetail){
+        hotovoDetail.textContent =
+          "Na ostrém webu by teď odešlo potvrzení na termín " +
+          DNI_V[vybranyDen.getDay()] + " " + vybranyDen.getDate() + ". " + (vybranyDen.getMonth() + 1) + ". v " +
+          cas(vybranyCas) + " – " + cas(vybranyCas + dlzka) + ", " + sluzba.value.toLowerCase() +
+          ", rozsah " + nazovRozsahu().toLowerCase() + ", cena " + cenaSpolu() + " Kč.";
+      }
+      hotovo.hidden = false;
+      hotovo.focus();
+      if(!jemne) hotovo.scrollIntoView({behavior: "smooth", block: "center"});
+    });
+  }
+
+  /* ---------- kontaktný formulár (iba ukážka) ---------- */
+  var kform = d.getElementById("form-sprava");
+  var kHotovo = d.getElementById("sprava-hotovo");
+  var kChyba = d.getElementById("sprava-chyba");
+  if(kform && kHotovo){
+    kform.addEventListener("submit", function(e){
+      e.preventDefault();
+      var meno = d.getElementById("k-meno");
+      var tel = d.getElementById("k-tel");
+      var text = d.getElementById("k-sprava");
+      var prazdne = [meno, tel, text].filter(function(pole){ return !pole || !pole.value.trim(); });
+      if(prazdne.length){
+        if(kChyba){
+          kChyba.textContent = "Vyplňte prosím jméno, telefon i text zprávy.";
+          kChyba.hidden = false;
+        }
+        if(prazdne[0]) prazdne[0].focus();
+        return;
+      }
+      if(kChyba) kChyba.hidden = true;
+      kHotovo.hidden = false;
+      kHotovo.focus();
+      if(!jemne) kHotovo.scrollIntoView({behavior: "smooth", block: "center"});
+    });
+  }
+
+  /* ============================================================
+     OTVÁRACIE HODINY: dnešný riadok a aktuálny stav
+     ============================================================ */
+  (function(){
+    var tab = d.getElementById("tab-hodin");
+    var nadpis = d.getElementById("stav-nadpis");
+    var text = d.getElementById("stav-text");
+    if(!tab || !nadpis || !text) return;
+
+    var teraz = new Date();
+    var den = teraz.getDay();
+    var min = teraz.getHours() * 60 + teraz.getMinutes();
+
+    var riadok = tab.querySelector('[data-den="' + den + '"]');
+    if(riadok) riadok.className += " is-today";
+
+    var dnes = HODINY[den];
+    if(dnes && min >= dnes[0] && min < dnes[1]){
+      nadpis.textContent = "Teď otevřeno";
+      text.textContent = "Dnes stříháme do " + cas(dnes[1]) + ". Poslední termín začíná podle délky služby 15 až 90 minut před zavírací dobou.";
+      return;
+    }
+    if(dnes && min < dnes[0]){
+      nadpis.textContent = "Dnes otevíráme v " + cas(dnes[0]);
+      text.textContent = "Dnes stříháme od " + cas(dnes[0]) + " do " + cas(dnes[1]) + ". Termín si můžete vybrat níže v objednávkovém formuláři.";
+      return;
+    }
+    for(var i = 1; i <= 7; i++){
+      var d2 = (den + i) % 7;
+      if(HODINY[d2]){
+        nadpis.textContent = "Teď zavřeno";
+        text.textContent = "Otevíráme " + (i === 1 ? "následující den, " : "") + DNI_V[d2] + " o " + cas(HODINY[d2][0]) + ". Objednat se můžete přes formulář kdykoli.";
+        return;
+      }
+    }
+  })();
+
+  /* ---------- plynulé skrolovanie a predvyplnenie služby ---------- */
+  d.addEventListener("click", function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if(!a) return;
+    var id = a.getAttribute("href");
+    if(id === "#") return;
+    var ciel = d.querySelector(id);
+    if(!ciel) return;
+    e.preventDefault();
+    zavri();
+    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
+    if(history.replaceState) history.replaceState(null, "", id);
+
+    var chce = a.getAttribute("data-sluzba");
+    if(chce && sluzba){
+      for(var i = 0; i < sluzba.options.length; i++){
+        if(sluzba.options[i].value === chce){ sluzba.selectedIndex = i; break; }
+      }
+      vykresliCasy();
+      prepis();
+      setTimeout(function(){
+        try{ sluzba.focus({preventScroll: true}); }catch(err){ sluzba.focus(); }
+      }, jemne ? 0 : 460);
+    }
+  });
+
+  /* ---------- odhaľovanie blokov ---------- */
+  var bloky = [].slice.call(d.querySelectorAll(".rv"));
+  if("IntersectionObserver" in window && !jemne){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, {rootMargin: "0px 0px -6% 0px", threshold: .04});
+    bloky.forEach(function(b){ io.observe(b); });
+  } else {
+    bloky.forEach(function(b){ b.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

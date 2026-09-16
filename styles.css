@@ -145,9 +145,10 @@ section{position:relative;padding-block:clamp(52px,8vw,104px)}
 /* ---------- 45 · výzva v lepiacej hlavičke (len široké obrazovky) ----------
    Vložiť za sekciu 04. Na mobile to rieši lišta .bar-cta. Hranica 1100 px:
    pod ňou sa brand, šesť odkazov, telefón a tlačidlo do jedného riadku nezmestia
-   a hlavička by sa zalomila (scroll-padding-top 96 px počíta s jedným riadkom). */
+   a hlavička by sa zalomila (scroll-padding-top 96 px počíta s jedným riadkom).
+   Od pridania glóbusu (sekcia 55) je hranica 1200 px, pri 1100 px sa už nezmestil. */
 .top-cta{display:none}
-@media (min-width:1100px){
+@media (min-width:1200px){
   .top-in{gap:8px 22px}
   .top nav{gap:20px}
   .top-cta{
@@ -817,3 +818,47 @@ html:not(.js) #hs-iframe{display:none}
   color:var(--mut);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;
 }
 .uk-repo:hover{color:var(--brass);border-bottom-color:var(--brass)}
+
+/* ---------- 55 · prepínač jazykov v hlavičke ----------
+   Glóbus so skratkou jazyka. Je to <details>, takže sa otvorí aj bez JavaScriptu;
+   script.js ho zatvára klikom mimo a Escape. Pod 920 px stojí vpravo za telefónom,
+   od 920 px úplne vpravo za tlačidlom konzultácie. Bloky v HTML dopĺňa
+   _PRACA/preklad/preklad.py (značky <!-- jazyky:prepinac -->), ručne sa nepíšu. */
+.jazyk{position:relative;flex:none}
+.jazyk summary{
+  list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+  border:1px solid var(--line);border-radius:999px;padding:7px 12px 7px 10px;
+  background:var(--panel);color:var(--ink);font-size:.8rem;font-weight:600;letter-spacing:.06em;
+  white-space:nowrap;-webkit-user-select:none;user-select:none;
+}
+.jazyk summary::-webkit-details-marker{display:none}
+.jazyk summary::marker{content:""}
+.jazyk summary svg{width:16px;height:16px;fill:none;stroke:var(--brass);stroke-width:1.5;flex:none}
+.jazyk summary:hover,.jazyk[open] summary{border-color:var(--brass);color:var(--brass)}
+.jazyk-menu{
+  position:absolute;right:0;top:calc(100% + 8px);z-index:80;min-width:184px;
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px;
+  box-shadow:0 18px 40px -18px #000;
+}
+.jazyk-menu a{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:2px;
+  text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap;
+}
+.jazyk-menu a b{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--mut);font-weight:600;min-width:2.1em}
+.jazyk-menu a:hover{background:var(--panel-2);color:var(--brass)}
+.jazyk-menu a[aria-current]{color:var(--ink)}
+.jazyk-menu a[aria-current] b{color:var(--brass)}
+/* Glóbus zaberá miesto, ktoré v hlavičke predtým nebolo: pod 920 px ostáva len ikona
+   (skratka je v menu) a medzi 920 a 1199 px sa zúžia medzery v navigácii. Cudzie jazyky
+   majú číslo s predvoľbou +421, ktoré je o štyri znaky dlhšie — na telefóne sa z neho
+   stane ikona, volať sa dá aj z lišty dole. */
+@media (max-width:919px){
+  .jazyk summary{padding:8px 9px}
+  .jazyk summary span{display:none}
+}
+@media (min-width:920px) and (max-width:1199px){
+  .top nav{gap:18px}
+}
+@media (max-width:479px){
+  html:not([lang="sk"]) .top .tel{font-size:0;gap:0;padding:13px 12px}
+}

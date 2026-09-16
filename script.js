@@ -122,20 +122,23 @@
     var hsCasovac = null;
     var hotovo = function () { show.classList.remove("nacitava"); };
     if (hsIfr) { hsIfr.addEventListener("load", hotovo); }
+    /* texty pre čítačky nesie #hero-show v data-*, aby ich mala každá jazyková verzia po svojom */
+    var tNahlad = show.getAttribute("data-t-nahlad") || "Živý náhľad ukážky {n}";
+    var tOtvorit = show.getAttribute("data-t-otvorit") || "Otvoriť ukážku {n} v plnej veľkosti";
 
     var ukazCip = function (cip) {
       var cesta = cip.getAttribute("href");
       var nazov = cip.getAttribute("data-nazov") || "";
       if (hsIfr && hsIfr.getAttribute("src") !== cesta) {
         show.classList.add("nacitava");
-        hsIfr.setAttribute("title", "Živý náhľad ukážky " + nazov);
+        hsIfr.setAttribute("title", tNahlad.replace("{n}", nazov));
         hsIfr.setAttribute("src", cesta);
         clearTimeout(hsCasovac);
         hsCasovac = setTimeout(hotovo, 2500);         /* poistka, keby load nedobehol */
       }
       if (hsOpen) {
         hsOpen.setAttribute("href", cesta);
-        hsOpen.setAttribute("aria-label", "Otvoriť ukážku " + nazov + " v plnej veľkosti");
+        hsOpen.setAttribute("aria-label", tOtvorit.replace("{n}", nazov));
       }
       if (hsUrl) { hsUrl.textContent = cip.getAttribute("data-url") || ""; }
       if (hsNazov) { hsNazov.textContent = nazov; }
@@ -174,6 +177,35 @@
     } else if (hsIfr && !hsIfr.getAttribute("src")) {
       hsIfr.setAttribute("src", hsIfr.getAttribute("data-src") || "ukazky/salon/");
     }
+  }
+
+  /* ---------- 06 · prepínač jazykov (glóbus v hlavičke) ----------
+     Je to <details>, takže sa otvára aj bez JavaScriptu. Skript ho len zatvorí
+     klikom mimo alebo Escape a pri prepnutí zachová kotvu (#cennik ostane #cennik). */
+  var jazyky = document.querySelectorAll("details.jazyk");
+  if (jazyky.length) {
+    document.addEventListener("click", function (e) {
+      Array.prototype.forEach.call(jazyky, function (d) {
+        if (d.open && !d.contains(e.target)) { d.removeAttribute("open"); }
+      });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") { return; }
+      Array.prototype.forEach.call(jazyky, function (d) {
+        if (d.open) {
+          d.removeAttribute("open");
+          var s = d.querySelector("summary");
+          if (s) { s.focus(); }
+        }
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".jazyk-menu a"), function (a) {
+      a.addEventListener("click", function () {
+        var zaklad = a.getAttribute("data-zaklad") || a.getAttribute("href");
+        a.setAttribute("data-zaklad", zaklad);
+        a.setAttribute("href", zaklad + (window.location.hash || ""));
+      });
+    });
   }
 
   /* Náhľady v galérii: v ráme beží zmenšená skutočná stránka.

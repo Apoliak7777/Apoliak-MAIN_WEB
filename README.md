@@ -63,7 +63,8 @@ Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfon
 - ♿ **Prístupnosť podľa WCAG AA** - kontrastné pomery sú overené a zapísané pri tokenoch, stránka má skip-link, jeden `h1`, viditeľné focus stavy a `scroll-padding-top`, aby kotvy nekončili pod sticky hlavičkou.
 - 👁️ **Odhalenie sekcií pri scrollovaní** - `IntersectionObserver` pridáva triedu `.in` prvkom `.rv`. Efekt sa aktivuje len ak inline skript v hlavičke nastaví triedu `js` na `<html>`, takže bez JavaScriptu je obsah normálne viditeľný.
 - 🐢 **Rešpekt k `prefers-reduced-motion`** - pri zapnutom nastavení sa obsah odhalí naraz a prechody sa vypnú.
-- 🔍 **SEO a zdieľanie** - canonical URL, Open Graph aj Twitter Card, `og-image.png` v rozmere 1200 × 630, štruktúrované dáta schema.org `ProfessionalService`, `sitemap.xml`, `robots.txt` a inline SVG favicon.
+- 🔍 **SEO a zdieľanie** - canonical URL, Open Graph aj Twitter Card, `og-image.png` (a `og-image-cs.png`) v rozmere 1200 × 630, štruktúrované dáta schema.org `ProfessionalService`, `sitemap.xml`, `robots.txt` a inline SVG favicon.
+- 🌍 **Slovenčina a čeština na jednej doméne** - česká verzia je v `/cs/` vrátane všetkých 44 ukážok, s prepočítanými cenami (kurz 25 Kč/€) a českými reáliami. Prepínač jazyka je v hlavičke, vyhľadávače dostávajú `hreflang` v hlavičke aj v `sitemap.xml`. Slovenské súbory ostávajú zdrojom pravdy - české sa z nich generujú, takže sa obe verzie nemôžu rozísť.
 - 🚧 **Vlastná 404 stránka** - `404.html` v rovnakom dizajne s odkazmi späť na hlavnú stránku a do galérie.
 - 🔒 **Zásady ochrany osobných údajov** - samostatná stránka `ochrana-osobnych-udajov.html`.
 - 📅 **Automatický rok v pätičke** - `script.js` zapíše aktuálny rok do `#rok`, netreba ho ručne aktualizovať.
@@ -153,10 +154,16 @@ Apoliak-MAIN_WEB/
 │   ├── wellness/index.html
 │   ├── zabava/index.html
 │   └── zamocnictvo/index.html
+├── cs/                           # česká verzia celého webu vrátane 44 ukážok
+│   ├── index.html                # rovnaká stránka po česky
+│   ├── ukazky/                   # galéria a všetkých 44 ukážok po česky
+│   ├── 404.html
+│   └── ochrana-osobnych-udajov.html
 ├── 404.html                      # vlastná stránka pre neexistujúce adresy
 ├── ochrana-osobnych-udajov.html  # zásady ochrany osobných údajov
 ├── og-image.png                  # náhľad pri zdieľaní, 1200 × 630
-├── sitemap.xml                   # mapa stránok
+├── og-image-cs.png               # to isté pre českú verziu
+├── sitemap.xml                   # mapa stránok (obe jazykové verzie + hreflang)
 ├── robots.txt                    # pravidlá pre roboty
 ├── CNAME                         # vlastná doména pre GitHub Pages
 ├── .nojekyll                     # vypnutie Jekyll spracovania na Pages
