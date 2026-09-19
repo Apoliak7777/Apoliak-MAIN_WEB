@@ -1,0 +1,3210 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/uctovnictvo/">
+<!-- /jazyky:hreflang -->
+<title>SALDIA — könyvelés, bérszámfejtés és adók, Budapest</title>
+<meta name="description" content="SALDIA könyvelőiroda, Vám utca 21., Budapest: egyéni vállalkozók nyilvántartása és kettős könyvvitel, bérszámfejtés és adóbevallások havi átalánydíjért, 15 600 Ft-tól. Árlista, havidíj-kalkulátor, nyitvatartás és kötelezettség nélküli ajánlat két munkanapon belül. Mintaweboldal az apoliak.online oldaltól.">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="SALDIA — könyvelés, bérszámfejtés és adók, Budapest (mintaweboldal)">
+<meta property="og:description" content="Havi átalánydíj 15 600 Ft-tól, feldolgozás a hónap 15-éig, egy hónap felmondási idő. Árlista, havidíj-kalkulátor és az együttműködés menete. Mintaweboldal, amelyet Alex Poliak tervezett és programozott.">
+<meta property="og:locale" content="hu_HU">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='2'%20fill='%2314181c'/%3E%3Cpath%20d='M7%2011h18M7%2016h18M7%2021h11'%20stroke='%23eceef0'%20stroke-width='1.8'/%3E%3Cpath%20d='M21%2021h4'%20stroke='%23c9a465'%20stroke-width='1.8'/%3E%3C/svg%3E">
+
+<style>
+/* ------------------------------------------------------------------
+   SALDIA — ukážkový web fiktívnej účtovnej kancelárie
+   Paleta: bridlicová neutrálna škála + jeden tlmený mosadzný akcent.
+   Bez sýtych a svietivých farieb, zaoblenie najviac 4 px.
+   Obrazové plochy sú riešené vlastnou kompozíciou: vrstvený
+   gradient, vlásočnicová mriežka, kruhové výseče a veľká typografia.
+   ------------------------------------------------------------------ */
+
+:root{
+  /* bridlica — svetlá časť */
+  --paper:       #f5f6f8;
+  --paper-2:     #ebedf0;
+  --paper-3:     #dfe2e6;
+  --surface:     #ffffff;
+  --line:        #d6dade;
+  --line-2:      #c0c5cb;
+  --line-input:  #868d95;
+
+  /* text na svetlom */
+  --ink:         #14181c;   /* 16,2:1 na --paper */
+  --ink-mut:     #535a62;   /* 6,4:1 na --paper, 5,9:1 na --paper-2 */
+  --ink-mut-2:   #474e56;   /* 6,5:1 aj na najtmavšom mieste svetlých plôch */
+
+  /* bridlica — tmavá časť */
+  --dark:        #14181c;
+  --dark-2:      #1a1f24;
+  --dark-3:      #222830;
+  --line-dark:   #2d343c;
+  --line-dark-2: #6e7780;   /* 3,4:1 aj na najsvetlejšom tmavom podklade */
+
+  /* text na tmavom */
+  --on-dark:     #c6ccd2;   /* 11,3:1 */
+  --on-dark-str: #f0f2f4;   /* 16,0:1 */
+  --on-dark-mut: #939aa2;   /* 6,4:1  */
+
+  /* mosadzný akcent */
+  --acc:         #7a5c22;   /* 5,8:1 na --paper, biely text na ňom 6,2:1 */
+  --acc-2:       #c9a465;   /* 7,9:1 na --dark */
+  --acc-soft:    rgba(122,92,34,.07);
+
+  /* jemné zrno pre kompozičné plochy (inline SVG, žiadny externý súbor) */
+  --grain: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='150'%20height='150'%3E%3Cfilter%20id='g'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='150'%20height='150'%20filter='url(%23g)'/%3E%3C/svg%3E");
+
+  --maxw: 1180px;
+  --gut: clamp(18px, 4vw, 44px);
+  --r: 3px;
+
+  --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+  overflow-x:clip;      /* clip nevytvára scrollovací kontajner, sticky hlavička ostáva funkčná */
+}
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth; }
+}
+
+body{
+  margin:0;
+  overflow-x:hidden;
+  overflow-x:clip;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{ max-width:100%; }
+
+h1,h2,h3,h4{
+  font-family:var(--serif);
+  font-weight:400;
+  line-height:1.16;
+  letter-spacing:-0.01em;
+  margin:0;
+  color:inherit;
+}
+
+p{ margin:0 0 1em; }
+p:last-child{ margin-bottom:0; }
+a{ color:inherit; }
+
+:focus-visible{
+  outline:2px solid var(--acc);
+  outline-offset:3px;
+}
+.band-dark :focus-visible,
+.plate-dark :focus-visible{ outline-color:var(--acc-2); }
+
+.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+.wrap{
+  width:100%;
+  max-width:var(--maxw);
+  margin-inline:auto;
+  padding-inline:var(--gut);
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:400;
+  background:var(--dark); color:var(--on-dark-str); padding:12px 18px; font-weight:600;
+}
+.skip:focus{ left:12px; top:12px; }
+
+/* ================= HORNÝ PÁSIK UKÁŽKY + NAVIGÁCIA ================= */
+
+.topstack{ position:sticky; top:0; z-index:120; }
+
+.demobar{
+  background:var(--dark);
+  color:var(--on-dark);
+  font-size:13px;
+  letter-spacing:.02em;
+  border-bottom:1px solid var(--line-dark);
+}
+.demobar .wrap{
+  display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+  gap:6px 18px; padding-block:9px; text-align:center;
+}
+.demobar .tag{
+  font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; font-weight:600;
+  color:var(--acc-2); border:1px solid rgba(201,164,101,.42);
+  padding:4px 9px 3px; border-radius:2px; white-space:nowrap;
+}
+.demobar .long{ color:var(--on-dark); }
+.demobar a{ text-decoration:none; }
+.demobar .tel{ color:var(--on-dark-str); border-bottom:1px solid rgba(201,164,101,.55); white-space:nowrap; }
+.demobar .tel:hover{ color:var(--acc-2); border-bottom-color:var(--acc-2); }
+.demobar .site{
+  color:var(--dark); background:var(--acc-2);
+  padding:3px 11px; border-radius:2px; font-weight:600; white-space:nowrap;
+  letter-spacing:.03em;
+}
+.demobar .site:hover{ background:#d8b87e; color:var(--dark); }
+
+@media (max-width: 700px){
+  .demobar{ font-size:12px; line-height:1.45; }
+  .demobar .wrap{ gap:5px 12px; padding-block:8px; }
+}
+@media (max-width: 430px){
+  .demobar{ font-size:11.5px; }
+  .demobar .wrap{ gap:5px 10px; }
+  .demobar .site{ padding:2px 8px; }
+  .demobar .tag{ font-size:9.5px; letter-spacing:.18em; padding:3px 7px 2px; }
+}
+
+.nav{
+  background:rgba(247,246,243,.97);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{ display:flex; align-items:center; gap:18px; min-height:64px; }
+
+.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; margin-right:auto; }
+.brand-mark{ flex:none; }
+.brand-txt{ display:flex; flex-direction:column; line-height:1.05; }
+.brand-name{ font-family:var(--serif); font-size:21px; letter-spacing:.16em; color:var(--ink); }
+.brand-sub{
+  font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-mut); margin-top:5px;
+}
+
+.menu{ display:flex; align-items:center; gap:2px; }
+.menu a{
+  text-decoration:none; color:var(--ink); font-size:14.5px;
+  padding:10px 11px; position:relative; white-space:nowrap;
+}
+.menu a::after{
+  content:""; position:absolute; left:11px; right:11px; bottom:5px; height:1px;
+  background:var(--acc); transform:scaleX(0); transform-origin:left;
+}
+.menu a:hover::after,
+.menu a[aria-current="true"]::after{ transform:scaleX(1); }
+.menu a[aria-current="true"]{ color:var(--acc); }
+
+/* telefón a hlavné tlačidlo sú mimo rozbaľovacieho menu, takže ostávajú
+   viditeľné na každej šírke obrazovky vrátane mobilu */
+.nav-act{ display:flex; align-items:center; gap:10px; margin-left:14px; }
+
+.nav .nav-act .nav-tel{
+  display:inline-flex; flex-direction:column; gap:2px; text-decoration:none;
+  white-space:nowrap; padding:6px 4px;
+}
+.nav .nav-act .nav-tel .l{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut-2);
+}
+.nav .nav-act .nav-tel .v{ font-family:var(--serif); font-size:17px; color:var(--ink); }
+.nav .nav-act .nav-tel:hover .v{ color:var(--acc); }
+
+/* Hlavné tlačidlo. Dvojtriedny selektor s prefixom .nav má vyššiu
+   špecificitu než akékoľvek pravidlo pre odkazy, takže biely text
+   na mosadznom podklade sa nedá prebiť (kontrast 6,2:1). */
+.nav .nav-act .nav-cta{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--acc); border:1px solid var(--acc); color:#ffffff;
+  padding:11px 18px; font-size:14.5px; font-weight:600; letter-spacing:.01em;
+  text-decoration:none; border-radius:2px; white-space:nowrap;
+}
+.nav .nav-act .nav-cta:hover{ background:#63491a; border-color:#63491a; color:#ffffff; }
+
+.burger{
+  display:none; background:transparent; border:1px solid var(--line-2);
+  color:var(--ink); width:46px; height:42px; border-radius:2px; cursor:pointer;
+  align-items:center; justify-content:center;
+}
+.burger:hover{ border-color:var(--ink); }
+
+@media (prefers-reduced-motion: no-preference){
+  .menu a::after{ transition:transform .22s ease; }
+  .btn, .nav-cta, .demobar .site{ transition:background-color .18s ease, color .18s ease, border-color .18s ease; }
+}
+
+@media (max-width: 1180px){
+  .nav{ position:relative; }
+  .nav-in{ min-height:58px; }
+  .burger{ display:inline-flex; order:4; }
+  .nav-act{ order:3; }
+  .menu{
+    display:none; position:absolute; left:0; right:0; top:100%;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:4px var(--gut) 16px;
+    box-shadow:0 22px 34px -26px rgba(0,0,0,.5);
+  }
+  .menu.is-open{ display:flex; }
+  .menu a{ padding:14px 2px; border-bottom:1px solid var(--line); font-size:16px; }
+  .menu a::after{ display:none; }
+}
+/* pod 700 px sa telefón a tlačidlo presunú do druhého riadku hlavičky,
+   aby sa na úzkom displeji zmestili celé a nikam sa neschovali */
+@media (max-width: 700px){
+  .nav-in{ flex-wrap:wrap; padding-bottom:10px; column-gap:10px; }
+  .burger{ order:2; }
+  .nav-act{ order:3; width:100%; margin-left:0; gap:8px; }
+  .nav .nav-act .nav-tel{
+    flex:none; flex-direction:row; align-items:center;
+    border:1px solid var(--line-2); border-radius:2px; padding:9px 13px;
+  }
+  .nav .nav-act .nav-tel .l{ display:none; }
+  .nav .nav-act .nav-tel .v{ line-height:1.2; }
+  .nav .nav-act .nav-cta{ flex:1 1 auto; padding:12px 10px; }
+}
+@media (max-width: 380px){
+  .nav .nav-act .nav-tel .v{ font-size:15.5px; }
+  .nav .nav-act .nav-tel{ padding:9px 10px; }
+  .nav .nav-act .nav-cta{ font-size:14px; padding:12px 6px; }
+}
+/* ================= SPOLOČNÉ SEKCIE ================= */
+
+section{ scroll-margin-top:calc(var(--stack, 112px) + 12px); }
+
+.sec{ padding:clamp(56px, 7vw, 96px) 0; border-top:1px solid var(--line); }
+.band-alt{ background:var(--paper-2); }
+.band-dark{ background:var(--dark); color:var(--on-dark); border-top:0; }
+.band-dark h2,.band-dark h3{ color:var(--on-dark-str); }
+
+.sec-head{
+  display:grid; grid-template-columns:190px 1fr; gap:clamp(18px,3vw,44px);
+  padding-bottom:clamp(28px,4vw,44px);
+  margin-bottom:clamp(28px,4vw,44px);
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.band-dark .sec-head{ border-bottom-color:var(--line-dark); }
+@media (max-width: 860px){
+  .sec-head{ grid-template-columns:1fr; gap:14px; }
+}
+
+.sec-idx{
+  display:flex; align-items:baseline; gap:12px; margin:0;
+  font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut);
+  padding-top:9px;
+}
+.band-dark .sec-idx{ color:var(--on-dark-mut); }
+.sec-idx b{ color:var(--acc); font-weight:600; letter-spacing:.12em; }
+.band-dark .sec-idx b{ color:var(--acc-2); }
+
+.sec-h{ font-size:clamp(28px, 4vw, 46px); letter-spacing:-0.022em; }
+.lead{ font-size:clamp(16.5px,1.5vw,18.5px); color:var(--ink-mut); max-width:62ch; margin-top:16px; }
+.band-dark .lead{ color:var(--on-dark); }
+
+.sub-h{
+  font-size:clamp(20px,2.2vw,24px);
+  margin:clamp(38px,4.4vw,54px) 0 18px;
+  padding-top:clamp(26px,3vw,34px);
+  border-top:1px solid var(--line);
+}
+.band-dark .sub-h{ border-top-color:var(--line-dark); }
+
+/* ---------------- tlačidlá ----------------
+   Zámerne dvojtriedne selektory (.btn.btn-primary …). Majú vyššiu
+   špecificitu než ktorékoľvek pravidlo pre odkazy v sekciách
+   (.foot-grid a, .author-data a, .menu a …), takže farba textu
+   tlačidla sa nikdy neprebije farbou odkazu a text ostane čitateľný. */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 24px; font-size:15px; font-weight:600; font-family:var(--sans);
+  letter-spacing:.02em;
+  text-decoration:none; border-radius:2px; cursor:pointer; border:1px solid transparent;
+}
+.btn.btn-primary{ background:var(--ink); color:#ffffff; border-color:var(--ink); }
+.btn.btn-primary:hover{ background:#000000; border-color:#000000; color:#ffffff; }
+.btn.btn-acc{ background:var(--acc); color:#ffffff; border-color:var(--acc); }
+.btn.btn-acc:hover{ background:#63491a; border-color:#63491a; color:#ffffff; }
+.btn.btn-line{ background:transparent; color:var(--ink); border-color:var(--line-input); }
+.btn.btn-line:hover{ border-color:var(--ink); background:transparent; color:var(--ink); }
+.btn.btn-light{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+.btn.btn-light:hover{ background:#ffffff; border-color:#ffffff; color:var(--ink); }
+.btn.btn-ghost{ background:transparent; color:var(--on-dark-str); border-color:var(--line-dark-2); }
+.btn.btn-ghost:hover{ border-color:var(--acc-2); color:var(--acc-2); background:transparent; }
+/* akcentové tlačidlo na tmavom páse: tmavý text na mosadzi, 7,9:1 */
+.btn.btn-acc2{ background:var(--acc-2); color:#14181c; border-color:var(--acc-2); }
+.btn.btn-acc2:hover{ background:#d8b87e; border-color:#d8b87e; color:#14181c; }
+
+/* ================= HERO — obálka časopisu =================
+   Obrovská sadzba nadpisu prekrýva veľkú farebnú plochu vpravo hore,
+   v pravom dolnom rohu je malý blok s najdôležitejším údajom. */
+
+.hero{
+  position:relative;
+  padding:clamp(28px,4vw,58px) 0 clamp(40px,5vw,74px);
+}
+.hero-plane{
+  position:absolute; z-index:0; top:0; right:0;
+  width:min(62%, 740px);
+  height:clamp(232px, 30vw, 400px);
+  pointer-events:none;
+}
+.hero-plane svg{ display:block; width:100%; height:100%; }
+@media (max-width: 720px){
+  .hero-plane{ width:min(74%, 330px); height:clamp(168px, 40vw, 258px); }
+}
+.hero-in{ position:relative; z-index:1; }
+
+.hero-kicker{
+  margin:0 0 clamp(18px,2.6vw,32px);
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; color:var(--ink-mut-2);
+}
+.hero-kicker::before{
+  content:""; width:clamp(26px,5vw,64px); height:1px; background:var(--acc); flex:none;
+}
+
+h1{
+  font-size:clamp(2.6rem, 11.4vw, 8rem);
+  line-height:0.98;
+  letter-spacing:-0.035em;
+  margin:0;
+  color:var(--ink);
+}
+h1 .l{ display:block; }
+h1 .l2{ margin-left:clamp(0px, 4.5vw, 96px); }
+h1 .l3{
+  font-family:var(--sans); font-weight:600;
+  font-size:clamp(14px, 2.2vw, 25px); letter-spacing:.2em; text-transform:uppercase;
+  line-height:1.3; color:var(--acc);
+  margin:clamp(14px,1.8vw,22px) 0 0 clamp(0px, 9vw, 192px);
+}
+
+.hero-rule{
+  height:1px; background:var(--line-2); border:0; margin:clamp(26px,3.4vw,46px) 0 0;
+}
+.hero-sub{
+  font-family:var(--serif);
+  font-size:clamp(19px,2.4vw,28px);
+  line-height:1.3;
+  color:var(--ink-mut-2);
+  margin:clamp(16px,2vw,24px) 0 0;
+  max-width:36ch;
+}
+
+.hero-body{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,296px);
+  gap:clamp(26px,4vw,56px); align-items:end;
+  margin-top:clamp(28px,3.8vw,48px);
+}
+@media (max-width: 900px){
+  .hero-body{ grid-template-columns:1fr; align-items:stretch; }
+}
+.hero-lead{
+  font-size:clamp(16.5px,1.6vw,19px);
+  color:var(--ink-mut);
+  max-width:58ch;
+  margin:0 0 26px;
+}
+.hero-cta{ display:flex; flex-wrap:wrap; gap:12px; }
+.hero-meta{
+  margin:22px 0 0; font-size:14px; color:var(--ink-mut-2); max-width:60ch;
+}
+
+.hero-badge{
+  border:1px solid var(--ink); border-top:3px solid var(--acc);
+  border-radius:var(--r); background:var(--surface);
+  padding:clamp(18px,2.2vw,24px);
+}
+.hero-badge .lbl{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ink-mut-2);
+}
+.hero-badge .v{
+  display:flex; align-items:baseline; gap:8px; margin:12px 0 0; font-family:var(--serif);
+}
+.hero-badge .v b{
+  font-weight:400; font-size:clamp(46px,6vw,62px); line-height:1; color:var(--ink);
+  letter-spacing:-0.03em;
+}
+.hero-badge .v i{ font-style:normal; font-size:21px; color:var(--acc); }
+.hero-badge .n{
+  margin:14px 0 0; padding-top:13px; border-top:1px solid var(--line);
+  font-size:13.5px; line-height:1.5; color:var(--ink-mut-2);
+}
+
+/* pás s kľúčovými číslami */
+.figures{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--paper-2); }
+.figures-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+.figures-grid > div{
+  padding:clamp(22px,2.6vw,30px) clamp(16px,2vw,28px);
+  border-right:1px solid var(--line);
+}
+.figures-grid > div:last-child{ border-right:0; }
+.fig-v{
+  font-family:var(--serif); font-size:clamp(26px,3.2vw,36px); color:var(--ink);
+  display:block; line-height:1.1;
+}
+.fig-l{ display:block; margin-top:8px; font-size:14px; color:var(--ink-mut); }
+@media (max-width: 820px){
+  .figures-grid{ grid-template-columns:repeat(2,1fr); }
+  .figures-grid > div{ border-bottom:1px solid var(--line); }
+  .figures-grid > div:nth-child(2n){ border-right:0; }
+  .figures-grid > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width: 460px){
+  .figures-grid{ grid-template-columns:1fr; }
+  .figures-grid > div{ border-right:0; }
+  .figures-grid > div:last-child{ border-bottom:0; }
+}
+
+/* ================= KOMPOZIČNÉ PLOCHY ================= */
+
+.plate{
+  position:relative; overflow:hidden;
+  border:1px solid var(--line); border-radius:var(--r);
+  background:
+    repeating-linear-gradient(90deg, rgba(20,24,28,.030) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(20,24,28,.022) 0 1px, transparent 1px 34px),
+    linear-gradient(152deg, var(--paper) 0%, var(--paper-2) 48%, var(--paper-3) 100%);
+}
+.plate::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
+  background-image:var(--grain); background-size:150px 150px; opacity:.05;
+}
+.plate-dark{
+  border-color:#333029;
+  color:var(--on-dark);
+  background:
+    repeating-linear-gradient(90deg, rgba(201,164,101,.055) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(201,164,101,.040) 0 1px, transparent 1px 34px),
+    linear-gradient(152deg, #161a1e 0%, #1e2228 52%, #2b2a23 100%);
+}
+.plate-dark::after{ opacity:.07; }
+
+.plate-geo{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.plate-in{ position:relative; z-index:1; padding:clamp(26px,4vw,54px); }
+
+.plate-kicker{
+  margin:0 0 14px; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-mut-2);
+}
+.plate-dark .plate-kicker{ color:var(--acc-2); }
+.plate-h{ font-size:clamp(24px,3.2vw,34px); max-width:22ch; }
+.plate-dark .plate-h{ color:var(--on-dark-str); }
+.plate-note{ margin-top:16px; font-size:14.5px; color:var(--ink-mut-2); max-width:62ch; }
+.plate-dark .plate-note{ color:var(--on-dark); }
+
+/* plocha „mesačný rytmus“ */
+.plate-band{ padding-top:clamp(40px,5vw,64px); }
+.cyklus-grid{
+  list-style:none; margin:clamp(26px,3.4vw,40px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(201,164,101,.3);
+}
+.cyklus-grid li{
+  padding:clamp(18px,2.2vw,24px) clamp(14px,1.8vw,22px) 0;
+  border-left:1px solid rgba(201,164,101,.3);
+}
+.cyklus-grid li:first-child{ border-left:0; padding-left:0; }
+.cyklus-day{
+  display:block; font-family:var(--serif); font-size:clamp(38px,5vw,54px);
+  line-height:1; color:var(--acc-2);
+}
+.cyklus-t{ display:block; margin-top:14px; font-size:16px; color:var(--on-dark-str); }
+.cyklus-d{ display:block; margin-top:6px; font-size:14px; color:var(--on-dark); }
+@media (max-width: 780px){
+  .cyklus-grid{ grid-template-columns:repeat(2,1fr); }
+  .cyklus-grid li:nth-child(2n+1){ border-left:0; padding-left:0; }
+  .cyklus-grid li:nth-child(n+3){ margin-top:22px; padding-top:22px; border-top:1px solid rgba(201,164,101,.3); }
+}
+@media (max-width: 440px){
+  .cyklus-grid{ grid-template-columns:1fr; }
+  .cyklus-grid li{ border-left:0; padding-left:0; }
+  .cyklus-grid li + li{ margin-top:20px; padding-top:20px; border-top:1px solid rgba(201,164,101,.3); }
+}
+
+/* plocha „rok“ — dvanásť mesiacov ako vlásočnicová mriežka */
+.rok-grid{
+  display:grid; grid-template-columns:repeat(12,1fr);
+  margin-top:clamp(26px,3.4vw,40px);
+  border-left:1px solid var(--line-2); border-bottom:1px solid var(--line-2);
+}
+.rok-grid > div{
+  border-right:1px solid var(--line-2);
+  height:clamp(118px,15vw,168px);
+  display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
+  padding-bottom:9px; gap:9px;
+}
+.rok-bar{ width:52%; background:rgba(122,92,34,.13); border-top:2px solid var(--acc); }
+.rok-grid .hi .rok-bar{ background:rgba(122,92,34,.24); }
+.rok-m{ font-size:11.5px; letter-spacing:.1em; color:var(--ink-mut-2); }
+.rok-grid .hi .rok-m{ color:var(--acc); font-weight:600; }
+.rok-key{
+  list-style:none; margin:20px 0 0; padding:0;
+  display:flex; flex-wrap:wrap; gap:8px 26px; font-size:14.5px; color:var(--ink-mut-2);
+}
+.rok-key b{ color:var(--acc); font-weight:600; letter-spacing:.08em; }
+@media (max-width: 640px){
+  .rok-grid{ grid-template-columns:repeat(6,1fr); }
+  .rok-grid > div{ height:clamp(96px,24vw,130px); border-top:1px solid var(--line-2); }
+}
+
+/* plocha v kontakte */
+.plate-quote{
+  font-family:var(--serif); font-size:clamp(21px,2.6vw,27px); line-height:1.28;
+  margin:0; max-width:20ch; color:var(--ink);
+}
+.plate-facts{
+  list-style:none; margin:clamp(24px,3vw,32px) 0 0; padding:0;
+  border-top:1px solid var(--line-2);
+}
+.plate-facts li{
+  display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+  padding:11px 0; border-bottom:1px solid var(--line-2); font-size:15px; color:var(--ink-mut-2);
+}
+.plate-facts b{ font-family:var(--serif); font-weight:400; font-size:17px; color:var(--ink); text-align:right; }
+
+/* pás s adresou a otváracími hodinami */
+.addr{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line); background:var(--surface);
+  border-radius:var(--r);
+  margin-bottom:clamp(28px,3.6vw,46px);
+}
+.addr > div{ padding:clamp(18px,2.2vw,26px); border-right:1px solid var(--line); }
+.addr > div:last-child{ border-right:0; }
+.addr .lbl{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ink-mut-2); margin-bottom:11px;
+}
+.addr .v{
+  display:block; font-family:var(--serif); font-size:19px; line-height:1.34; color:var(--ink);
+}
+.addr a.v{ text-decoration:none; border-bottom:1px solid var(--line-2); width:max-content; }
+.addr a.v:hover{ color:var(--acc); border-bottom-color:var(--acc); }
+.addr .s{ display:block; margin-top:9px; font-size:13.5px; line-height:1.5; color:var(--ink-mut); }
+@media (max-width: 900px){
+  .addr{ grid-template-columns:1fr 1fr; }
+  .addr > div{ border-bottom:1px solid var(--line); }
+  .addr > div:nth-child(2n){ border-right:0; }
+  .addr > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width: 520px){
+  .addr{ grid-template-columns:1fr; }
+  .addr > div{ border-right:0; border-bottom:1px solid var(--line); }
+  .addr > div:last-child{ border-bottom:0; }
+}
+
+/* úzky odstavec a vnorený odkaz */
+.p-narrow{ font-size:15.5px; color:var(--ink-mut); max-width:64ch; }
+.band-dark .p-narrow{ color:var(--on-dark); }
+a.inl{ color:var(--acc); text-decoration:none; border-bottom:1px solid rgba(122,92,34,.42); white-space:nowrap; }
+a.inl:hover{ border-bottom-color:var(--acc); }
+.band-dark a.inl{ color:var(--acc-2); border-bottom-color:rgba(201,164,101,.5); }
+
+/* ================= KARTY ================= */
+
+.cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(16px,2vw,24px); }
+@media (max-width: 940px){ .cards{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 620px){ .cards{ grid-template-columns:1fr; } }
+
+.card{
+  position:relative; overflow:hidden;
+  border:1px solid var(--line); border-radius:var(--r);
+  background:linear-gradient(158deg, var(--surface) 0%, #f1f3f5 56%, #e4e8ec 100%);
+  padding:clamp(20px,2.4vw,28px);
+}
+.card::before,
+.card::after{
+  content:""; position:absolute; right:0; top:0; z-index:0; pointer-events:none;
+}
+.card::before{
+  width:clamp(84px,9vw,124px); height:clamp(84px,9vw,124px);
+  border-left:1px solid rgba(122,92,34,.20);
+  border-bottom:1px solid rgba(122,92,34,.20);
+}
+.card::after{
+  width:clamp(32px,4vw,50px); height:clamp(32px,4vw,50px);
+  background:rgba(122,92,34,.08);
+}
+.card > *{ position:relative; z-index:1; }
+.card-no{ font-family:var(--serif); font-size:13px; letter-spacing:.18em; color:var(--acc); }
+.card h3{ font-size:21px; margin:10px 0 10px; max-width:17ch; }
+.card p{ font-size:15px; color:var(--ink-mut-2); }
+.card ul{ list-style:none; margin:16px 0 0; padding:14px 0 0; border-top:1px solid var(--line); }
+.card li{ font-size:14.5px; color:var(--ink-mut-2); padding-left:16px; position:relative; }
+.card li + li{ margin-top:7px; }
+.card li::before{
+  content:""; position:absolute; left:0; top:.68em; width:7px; height:1px; background:var(--acc);
+}
+
+/* karta služby: geometrická značka, odrážky a cena v pätke karty */
+.card-ico{
+  display:flex; align-items:center; justify-content:center;
+  width:46px; height:46px; border:1px solid var(--line-2); border-radius:2px;
+  background:var(--surface);
+}
+.card-ico svg{ display:block; }
+.card-price{
+  margin-top:18px; padding-top:14px; border-top:1px solid var(--line);
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+}
+.card-price .k{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mut-2); }
+.card-price .v{ font-family:var(--serif); font-size:19px; color:var(--acc); text-align:right; }
+
+/* miesto pre fotografiu: vlastná kompozícia, nie ilustrácia predmetu */
+.obraz{ margin:0; }
+.obraz .ram{
+  position:relative; overflow:hidden; border:1px solid var(--line); border-radius:var(--r);
+  background:linear-gradient(154deg, var(--paper) 0%, var(--paper-2) 52%, var(--paper-3) 100%);
+}
+.obraz .ram::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--grain); background-size:150px 150px; opacity:.05;
+}
+.obraz .ram svg{ display:block; width:100%; height:auto; }
+.obraz figcaption{
+  margin-top:10px; font-size:13.5px; line-height:1.5; color:var(--ink-mut);
+}
+.band-dark .obraz figcaption{ color:var(--on-dark-mut); }
+
+/* orientačný plán príchodu */
+.plan{ border:1px solid var(--line); border-radius:var(--r); background:var(--surface); overflow:hidden; }
+.plan svg{ display:block; width:100%; height:auto; }
+.plan-key{
+  list-style:none; margin:0; padding:14px clamp(14px,2vw,20px);
+  border-top:1px solid var(--line); background:var(--paper);
+  display:flex; flex-wrap:wrap; gap:8px 22px; font-size:13.5px; color:var(--ink-mut-2);
+}
+.plan-key b{ color:var(--acc); font-weight:600; letter-spacing:.06em; }
+
+/* záverečný pás s hlavnou akciou */
+.cta-band{ background:var(--dark); color:var(--on-dark); }
+.cta-in{
+  display:grid; grid-template-columns:1.25fr auto; gap:clamp(20px,3vw,44px);
+  align-items:center; padding-block:clamp(38px,5vw,62px);
+}
+@media (max-width: 860px){ .cta-in{ grid-template-columns:1fr; } }
+.cta-in h2{ font-size:clamp(24px,3.2vw,36px); color:var(--on-dark-str); }
+.cta-in p{ margin:14px 0 0; font-size:16px; color:var(--on-dark); max-width:56ch; }
+.cta-btns{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* ================= TABUĽKY ================= */
+
+.tblwrap{
+  border:1px solid var(--line);
+  background:var(--surface);
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+table{ width:100%; border-collapse:collapse; font-size:15.5px; }
+caption{
+  text-align:left; padding:15px 20px; font-size:13.5px; color:var(--ink-mut);
+  border-bottom:1px solid var(--line); background:var(--paper);
+}
+thead th{
+  background:var(--paper-2); color:var(--ink);
+  font-family:var(--serif); font-weight:400; font-size:17px; text-align:left;
+  padding:14px 20px; border-bottom:1px solid var(--line-2); vertical-align:bottom;
+}
+thead th small{
+  display:block; font-family:var(--sans); font-size:12px; color:var(--ink-mut);
+  letter-spacing:.06em; margin-top:5px;
+}
+tbody th, tbody td{
+  padding:15px 20px; text-align:left; vertical-align:top;
+  border-bottom:1px solid var(--line);
+}
+tbody th{ font-weight:600; font-size:15px; color:var(--ink); }
+tbody td{ color:var(--ink-mut); }
+tbody tr:last-child th, tbody tr:last-child td{ border-bottom:0; }
+td.val, th.val{ color:var(--ink); white-space:nowrap; }
+td.acc{ color:var(--acc); font-weight:600; }
+col.hi{ background:var(--acc-soft); }
+.t-no{ color:var(--acc); font-size:13px; letter-spacing:.12em; width:56px; }
+
+.tbl-min{ min-width:720px; }
+.tbl-note{ margin-top:16px; font-size:13.5px; color:var(--ink-mut); max-width:70ch; }
+
+/* na úzkych displejoch sa riadkové tabuľky rozložia pod seba */
+@media (max-width: 780px){
+  .tbl-stack thead{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap;
+  }
+  .tbl-stack tr{ display:block; border-bottom:1px solid var(--line); padding:18px 18px 20px; }
+  .tbl-stack tr:last-child{ border-bottom:0; }
+  .tbl-stack th, .tbl-stack td{ display:block; border:0; padding:0; }
+  .tbl-stack tbody th{ font-size:17px; font-family:var(--serif); font-weight:400; margin-bottom:10px; }
+  .tbl-stack td{ margin-top:10px; }
+  .tbl-stack td::before{
+    content:attr(data-l); display:block;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mut);
+    margin-bottom:3px;
+  }
+  .tbl-stack .t-no{ width:auto; margin-bottom:4px; }
+  .tbl-stack td.val, .tbl-stack th.val{ white-space:normal; }
+}
+
+/* ================= KALKULAČKA (tmavý široký blok) ================= */
+
+.calc-grid{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line-dark);
+  border:1px solid var(--line-dark);
+  border-radius:var(--r);
+}
+.calc-cell{ background:var(--dark-2); padding:clamp(18px,2.2vw,26px); }
+@media (max-width: 1000px){ .calc-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 600px){ .calc-grid{ grid-template-columns:1fr; } }
+
+.calc-grid fieldset{ border:0; margin:0; padding:0; }
+.calc-grid legend{
+  padding:0; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:14px;
+}
+
+.opt{ display:grid; gap:8px; }
+.opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+.opt label{
+  display:block; cursor:pointer; padding:12px 14px;
+  border:1px solid var(--line-dark-2); border-radius:2px;
+  font-size:15px; color:var(--on-dark); background:var(--dark-3);
+}
+.opt label small{ display:block; font-size:12.5px; color:var(--on-dark-mut); margin-top:2px; }
+.opt input:checked + label{ border-color:var(--acc-2); color:var(--on-dark-str); background:#2a2721; }
+.opt input:checked + label small{ color:var(--acc-2); }
+.opt input:focus-visible + label{ outline:2px solid var(--acc-2); outline-offset:3px; }
+.opt label:hover{ border-color:var(--acc-2); }
+
+.ctl-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:10px; }
+.ctl-lab{ font-size:14px; color:var(--on-dark); }
+.ctl-val{ font-family:var(--serif); font-size:24px; color:var(--acc-2); }
+
+input[type="range"]{
+  -webkit-appearance:none; appearance:none; width:100%; height:26px;
+  background:transparent; cursor:pointer; margin:0;
+}
+input[type="range"]::-webkit-slider-runnable-track{ height:3px; background:var(--line-dark-2); }
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:14px; height:24px; margin-top:-11px; border-radius:2px;
+  background:var(--acc-2); border:1px solid var(--dark-2);
+}
+input[type="range"]::-moz-range-track{ height:3px; background:var(--line-dark-2); }
+input[type="range"]::-moz-range-thumb{
+  width:14px; height:24px; border-radius:2px; background:var(--acc-2);
+  border:1px solid var(--dark-2);
+}
+.scale{ display:flex; justify-content:space-between; font-size:12.5px; color:var(--on-dark-mut); }
+
+.stepper{ display:flex; align-items:center; gap:8px; }
+.stepper button{
+  width:44px; height:44px; border:1px solid var(--line-dark-2); background:var(--dark-3);
+  color:var(--on-dark-str); font-size:20px; line-height:1; cursor:pointer; border-radius:2px;
+  font-family:var(--sans);
+}
+.stepper button:hover{ border-color:var(--acc-2); color:var(--acc-2); }
+.stepper input{
+  width:84px; height:44px; text-align:center; font-size:18px; font-family:var(--serif);
+  background:var(--dark); color:var(--on-dark-str);
+  border:1px solid var(--line-dark-2); border-radius:2px;
+}
+.ctl-hint{ margin-top:10px; font-size:13px; color:var(--on-dark-mut); }
+
+.chk{
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer;
+  padding:12px 14px; border:1px solid var(--line-dark-2); border-radius:2px; background:var(--dark-3);
+}
+.chk:hover{ border-color:var(--acc-2); }
+.chk input{ width:19px; height:19px; margin:2px 0 0; accent-color:var(--acc-2); flex:none; }
+.chk span{ font-size:15px; color:var(--on-dark); }
+.chk small{ display:block; font-size:12.5px; color:var(--on-dark-mut); margin-top:2px; }
+
+/* výsledok */
+.calc-out{
+  margin-top:22px; border:1px solid var(--line-dark-2); border-radius:var(--r);
+  background:var(--dark-2);
+  display:grid; grid-template-columns:minmax(230px,.8fr) 1.2fr;
+}
+@media (max-width: 860px){ .calc-out{ grid-template-columns:1fr; } }
+.out-sum{
+  padding:clamp(20px,2.6vw,30px);
+  border-right:1px solid var(--line-dark);
+}
+@media (max-width: 860px){
+  .out-sum{ border-right:0; border-bottom:1px solid var(--line-dark); }
+}
+.out-lab{ font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--on-dark-mut); }
+.out-price{ display:flex; align-items:baseline; gap:10px; margin-top:12px; }
+.out-price b{
+  font-family:var(--serif); font-weight:400; font-size:clamp(42px,6vw,58px);
+  color:var(--acc-2); line-height:1;
+}
+.out-price span{ font-size:15px; color:var(--on-dark-mut); }
+.out-tier{
+  display:inline-block; margin-top:14px; font-size:12.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--on-dark-str);
+  border:1px solid var(--line-dark-2); padding:5px 11px; border-radius:2px;
+}
+.out-rows{ padding:clamp(20px,2.6vw,30px); }
+.out-rows ul{ list-style:none; margin:0; padding:0; }
+.out-rows li{
+  display:flex; justify-content:space-between; gap:16px;
+  padding:10px 0; border-bottom:1px solid var(--line-dark); font-size:15px; color:var(--on-dark);
+}
+.out-rows li:last-child{ border-bottom:0; }
+.out-rows li span:first-child{ color:var(--on-dark-mut); }
+.out-note{ margin-top:16px; font-size:13.5px; color:var(--on-dark-mut); }
+.calc-foot{
+  margin-top:22px; display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px;
+  justify-content:space-between;
+}
+.calc-foot p{ margin:0; font-size:13.5px; color:var(--on-dark-mut); max-width:64ch; }
+.nojs-note{
+  margin-top:20px; padding:16px 18px; border:1px solid var(--line-dark);
+  font-size:14.5px; color:var(--on-dark);
+}
+
+/* ================= PODKLADY, ZOZNAMY, ROLE ================= */
+
+.two{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,4vw,56px); }
+@media (max-width: 860px){ .two{ grid-template-columns:1fr; } }
+.two h3{ font-size:22px; letter-spacing:-0.012em; margin-bottom:16px; }
+.three{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px,3.4vw,44px); }
+@media (max-width: 940px){ .three{ grid-template-columns:1fr 1fr; } }
+@media (max-width: 620px){ .three{ grid-template-columns:1fr; } }
+.three h3{ font-size:20px; letter-spacing:-0.012em; margin-bottom:14px; }
+
+.dl{ margin:0; }
+.dl dt{ font-weight:600; font-size:15.5px; padding-top:14px; }
+.dl dd{
+  margin:0; padding-bottom:14px; border-bottom:1px solid var(--line);
+  font-size:15px; color:var(--ink-mut); max-width:64ch;
+}
+.dl dd:last-of-type{ border-bottom:0; }
+.dl dd b{ color:var(--ink); font-weight:600; }
+
+.band-dark .dl dt{ color:var(--on-dark-str); }
+.band-dark .dl dd{ color:var(--on-dark); border-bottom-color:var(--line-dark); }
+.band-dark .dl dd b{ color:var(--on-dark-str); }
+
+.roles{ list-style:none; margin:0; padding:0; }
+.roles li{ padding:16px 0; border-bottom:1px solid var(--line); }
+.roles li:first-child{ border-top:1px solid var(--line); }
+.roles .role-t{ display:block; font-family:var(--serif); font-size:19px; color:var(--ink); }
+.roles .role-d{ display:block; margin-top:5px; font-size:14.5px; color:var(--ink-mut); max-width:62ch; }
+
+.ticks{ list-style:none; margin:0; padding:0; }
+.ticks li{ position:relative; padding:0 0 0 20px; font-size:15.5px; color:var(--ink-mut); max-width:68ch; }
+.ticks li + li{ margin-top:10px; }
+.ticks li::before{
+  content:""; position:absolute; left:0; top:.72em; width:9px; height:1px; background:var(--acc);
+}
+.band-dark .ticks li{ color:var(--on-dark); }
+.band-dark .ticks li::before{ background:var(--acc-2); }
+.ticks b{ color:var(--ink); font-weight:600; }
+.band-dark .ticks b{ color:var(--on-dark-str); }
+
+/* ================= OTÁZKY ================= */
+
+details{ border-bottom:1px solid var(--line); }
+details:first-of-type{ border-top:1px solid var(--line); }
+summary{
+  cursor:pointer; list-style:none; padding:20px 44px 20px 0; position:relative;
+  font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--ink);
+}
+summary::-webkit-details-marker{ display:none; }
+summary::after{
+  content:""; position:absolute; right:10px; top:50%; width:11px; height:11px;
+  margin-top:-8px;
+  border-right:1.5px solid var(--acc); border-bottom:1.5px solid var(--acc);
+  transform:rotate(45deg);
+}
+details[open] summary::after{ transform:rotate(225deg) translate(-3px,-3px); }
+@media (prefers-reduced-motion: no-preference){
+  summary::after{ transition:transform .2s ease; }
+}
+summary:hover{ color:var(--acc); }
+.faq-body{ padding:0 10% 24px 0; color:var(--ink-mut); font-size:15.5px; max-width:72ch; }
+.faq-body strong{ color:var(--ink); }
+@media (max-width: 700px){ .faq-body{ padding-right:0; } }
+
+/* ================= KONTAKT ================= */
+
+.contact{ display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(26px,4vw,56px); align-items:start; }
+@media (max-width: 940px){ .contact{ grid-template-columns:1fr; } }
+
+.cdata{ list-style:none; margin:0 0 28px; padding:0; }
+.cdata li{ padding:15px 0; border-bottom:1px solid var(--line); }
+.cdata li:first-child{ border-top:1px solid var(--line); }
+.cdata .lbl{
+  display:block; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ink-mut); margin-bottom:5px;
+}
+.cdata .val{ font-family:var(--serif); font-size:20px; color:var(--ink); }
+.cdata .cnote{ display:block; margin-top:6px; font-size:13px; line-height:1.5; color:var(--ink-mut); max-width:52ch; }
+.cdata a.val{ text-decoration:none; border-bottom:1px solid var(--line-2); }
+.cdata a.val:hover{ color:var(--acc); border-bottom-color:var(--acc); }
+
+form{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:clamp(20px,3vw,32px);
+}
+.frow{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width: 620px){ .frow{ grid-template-columns:1fr; } }
+.f{ margin-bottom:16px; }
+label.lab{ display:block; font-size:13.5px; color:var(--ink); margin-bottom:7px; }
+label.lab .opt-l{ color:var(--ink-mut); }
+label.lab .req{ color:var(--acc); }
+
+input[type="text"], input[type="email"], input[type="tel"], select, textarea{
+  width:100%; padding:12px 14px; font-size:15.5px; font-family:var(--sans);
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--line-input); border-radius:2px;
+}
+select{
+  appearance:none; -webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%, var(--ink) 50%),
+                   linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:calc(100% - 20px) 21px, calc(100% - 14px) 21px;
+  background-size:6px 6px, 6px 6px; background-repeat:no-repeat; padding-right:44px;
+}
+textarea{ min-height:130px; resize:vertical; }
+input::placeholder, textarea::placeholder{ color:#6b7075; }
+input:hover, select:hover, textarea:hover{ border-color:var(--ink); }
+
+.consent{
+  display:flex; gap:12px; align-items:flex-start; margin:4px 0 20px;
+  font-size:14px; color:var(--ink-mut);
+}
+.consent input{ width:19px; height:19px; accent-color:var(--acc); margin-top:2px; flex:none; }
+.form-intro{
+  margin:0 0 20px; padding-bottom:18px; border-bottom:1px solid var(--line);
+  font-size:14.5px; color:var(--ink-mut); max-width:58ch;
+}
+.form-intro b{ color:var(--ink); font-weight:600; }
+.form-note{ font-size:13px; color:var(--ink-mut); margin-top:14px; max-width:58ch; }
+
+.sent{
+  border:1px solid var(--acc); border-left:3px solid var(--acc); border-radius:var(--r);
+  background:var(--surface); padding:clamp(22px,3.4vw,34px);
+}
+.sent h3{ font-size:23px; margin-bottom:10px; }
+.sent p{ color:var(--ink-mut); font-size:15.5px; }
+.sent a{ color:var(--acc); }
+.again{
+  margin-top:18px; background:transparent; border:1px solid var(--line-input);
+  color:var(--ink); padding:12px 20px; cursor:pointer; border-radius:2px;
+  font-family:var(--sans); font-size:15px;
+}
+.again:hover{ border-color:var(--ink); }
+
+/* ================= AUTOR UKÁŽKY ================= */
+
+.author{ background:var(--dark-2); color:var(--on-dark); padding:clamp(52px,6vw,84px) 0; }
+.author h2{ color:var(--on-dark-str); font-size:clamp(26px,3.4vw,38px); }
+.authorbox{
+  border:1px solid var(--line-dark); border-left:3px solid var(--acc-2);
+  border-radius:var(--r); background:var(--dark);
+  padding:clamp(24px,3.4vw,44px);
+}
+.author .eyebrow{
+  margin:0 0 16px; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--acc-2);
+}
+.author .lead{ color:var(--on-dark); margin-top:14px; }
+.author-num{
+  list-style:none; margin:clamp(26px,3vw,34px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--line-dark); border:1px solid var(--line-dark); border-radius:var(--r);
+}
+.author-num li{ background:var(--dark); padding:20px clamp(18px,2vw,24px); }
+.author-num .k{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--on-dark-mut);
+}
+.author-num .n{
+  display:block; margin-top:10px; font-family:var(--serif); line-height:1;
+  font-size:clamp(28px,3.4vw,38px); color:var(--acc-2); letter-spacing:-0.02em;
+}
+.author-num .d{ display:block; margin-top:12px; font-size:14px; line-height:1.5; color:var(--on-dark); }
+@media (max-width: 760px){ .author-num{ grid-template-columns:1fr; } }
+
+.author-data{
+  list-style:none; margin:28px 0 0; padding:22px 0 0;
+  border-top:1px solid var(--line-dark);
+  display:grid; grid-template-columns:1fr 1fr; gap:0 clamp(20px,4vw,52px);
+}
+@media (max-width: 700px){ .author-data{ grid-template-columns:1fr; } }
+.author-data li{ padding:13px 0; border-bottom:1px solid var(--line-dark); }
+.author-data .lbl{
+  display:block; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:5px;
+}
+.author-data .val{
+  font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--on-dark-str);
+  overflow-wrap:anywhere; text-decoration:none;
+}
+.author-data a.val{ border-bottom:1px solid rgba(201,164,101,.5); }
+.author-data a.val:hover{ color:var(--acc-2); }
+.author-data .sub{ display:block; margin-top:5px; font-size:13.5px; color:var(--on-dark-mut); }
+.author-data .sub a{ color:var(--acc-2); }
+.author-foot{
+  margin-top:26px; display:flex; flex-wrap:wrap; align-items:center; gap:14px clamp(18px,3vw,30px);
+}
+.author-foot p{ margin:0; font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--on-dark-str); }
+
+/* ================= PÄTIČKA ================= */
+
+footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64px) 0 28px; }
+.foot-grid{
+  display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:clamp(24px,3.4vw,44px);
+  padding-bottom:32px; border-bottom:1px solid var(--line-dark);
+}
+@media (max-width: 900px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width: 520px){ .foot-grid{ grid-template-columns:1fr; } }
+.foot-grid h3{
+  font-family:var(--sans); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:14px; font-weight:600;
+}
+.foot-brand{ font-family:var(--serif); font-size:21px; letter-spacing:.16em; color:var(--on-dark-str); }
+.foot-desc{ margin-top:12px; font-size:14.5px; color:var(--on-dark-mut); max-width:40ch; }
+.foot-grid ul{ list-style:none; margin:0; padding:0; }
+.foot-grid li{ padding:5px 0; }
+.foot-grid a{ color:var(--on-dark); text-decoration:none; font-size:15px; }
+.foot-grid a:hover{ color:var(--acc-2); }
+.foot-addr{ list-style:none; margin:0; padding:0; }
+.foot-addr li{ padding:6px 0; font-size:15px; line-height:1.5; color:var(--on-dark); }
+.foot-addr li span{ display:block; margin-top:3px; font-size:13.5px; color:var(--on-dark-mut); }
+.foot-addr a{ color:var(--on-dark-str); text-decoration:none; border-bottom:1px solid rgba(201,164,101,.5); }
+.foot-addr a:hover{ color:var(--acc-2); border-bottom-color:var(--acc-2); }
+.foot-note{
+  display:flex; flex-wrap:wrap; gap:12px 26px; justify-content:space-between;
+  padding-top:20px; font-size:13.5px; color:var(--on-dark-mut);
+}
+.foot-note a{ color:var(--acc-2); }
+.disclaimer{
+  margin-top:22px; padding:16px 18px; border:1px solid var(--line-dark);
+  font-size:13.5px; color:var(--on-dark-mut); border-radius:2px;
+}
+.disclaimer b{ color:var(--on-dark-str); }
+.disclaimer a{ color:var(--acc-2); }
+
+/* jemné nábehy pri scrollovaní */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{ opacity:0; transform:translateY(14px); }
+  .reveal.is-in{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease; }
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*400);return v.toLocaleString('hu-HU');}function __f(x){return Math.round(x).toLocaleString('hu-HU');}function __p(x){return Math.round(x*400/10)*10;}function __c(x){return x*400;}var __m="Ft";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Ugrás a tartalomra</a>
+
+<div class="topstack">
+  <div class="demobar">
+    <div class="wrap">
+      <span class="tag">Mintaweboldal</span>
+      <span class="long">Ilyen weboldalt készítek Önnek is.</span>
+      <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      <a class="site" href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Fő navigáció">
+    <div class="wrap nav-in">
+      <a class="brand" href="#uvod" aria-label="SALDIA, könyvelés és bérszámfejtés — kezdőlap">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+            <rect x="0.6" y="0.6" width="32.8" height="32.8" rx="2" stroke="#14181c" stroke-width="1"/>
+            <path d="M8 12h18M8 17h18M8 22h11" stroke="#14181c" stroke-width="1.4"/>
+            <path d="M21 22h5" stroke="#7a5c22" stroke-width="1.4"/>
+          </svg>
+        </span>
+        <span class="brand-txt">
+          <span class="brand-name">SALDIA</span> <span class="brand-sub">Könyvelés · Budapest</span>
+        </span>
+      </a>
+
+      <div class="menu" id="menu">
+        <a href="#sluzby">Szolgáltatások</a>
+        <a href="#cennik">Árak</a>
+        <a href="#kalkulacka">Kalkulátor</a>
+        <a href="#referencie">Referenciák</a>
+        <a href="#otazky">Kérdések</a>
+      </div>
+
+      <div class="nav-act">
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+        <a class="nav-cta" href="#kontakt">Kötelezettség nélküli ajánlat</a>
+      </div>
+
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü megnyitása">
+        <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
+          <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<noscript>
+  <style>
+    #burger{ display:none !important; }
+    #menu{ display:flex !important; position:static; flex-direction:row; flex-wrap:wrap;
+           background:transparent; border:0; box-shadow:none; padding:0 0 8px; }
+    #menu a{ border-bottom:0; }
+    @media (max-width:1180px){ .nav-in{ flex-wrap:wrap; padding-bottom:6px; } }
+    .reveal{ opacity:1 !important; transform:none !important; }
+  </style>
+</noscript>
+
+<main id="obsah">
+
+<!-- ================= ÚVOD ================= -->
+<section class="hero" id="uvod">
+  <div class="hero-plane" aria-hidden="true">
+    <svg viewBox="0 0 660 400" preserveAspectRatio="xMaxYMin slice" focusable="false">
+      <defs>
+        <linearGradient id="heroPole" x1="0" y1="0" x2="0.55" y2="1">
+          <stop offset="0" stop-color="#eae4d6"/>
+          <stop offset="0.52" stop-color="#e3ded4"/>
+          <stop offset="1" stop-color="#dcdfe3"/>
+        </linearGradient>
+      </defs>
+      <rect width="660" height="400" fill="url(#heroPole)"/>
+      <g fill="none" stroke="#7a5c22" stroke-opacity="0.18">
+        <circle cx="556" cy="44" r="118"/>
+        <circle cx="556" cy="44" r="194"/>
+        <circle cx="556" cy="44" r="270"/>
+        <circle cx="556" cy="44" r="346"/>
+      </g>
+      <g stroke="#14181c" stroke-opacity="0.07">
+        <path d="M0 56H660M0 112H660M0 168H660M0 224H660M0 280H660M0 336H660"/>
+      </g>
+      <path d="M660 0 L660 400 L452 400 Z" fill="#7a5c22" fill-opacity="0.09"/>
+      <rect x="0" y="0" width="1.5" height="400" fill="#14181c" fill-opacity="0.14"/>
+    </svg>
+  </div>
+
+  <div class="wrap hero-in">
+    <p class="hero-kicker">Könyvelőiroda · Vám utca 21., Budapest</p>
+    <h1><span class="l l1">Könyvelés,</span><span class="l l2">bérszámfejtés és adók</span><span class="l l3">Budapesten és online</span></h1>
+    <hr class="hero-rule">
+    <p class="hero-sub">Egyéni vállalkozóknak és tíz főnél kisebb Kft.-knek.</p>
+
+    <div class="hero-body">
+      <div>
+        <p class="hero-lead">Egyéni vállalkozók nyilvántartását és kettős könyvvitelt is vezetek, bért számfejtek, és beadom az adóbevallásokat. A bizonylatokat havonta egyszer küldi el, az árat előre, fix havi átalánydíjként egyeztetjük.</p>
+        <div class="hero-cta">
+          <a class="btn btn-acc" href="#kontakt">Kötelezettség nélküli ajánlat</a>
+          <a class="btn btn-line" href="#kalkulacka">Havidíj kiszámítása</a>
+        </div>
+        <p class="hero-meta">Az ajánlatot két munkanapon belül elküldöm. A könyvelést év közben is átveszem, az átvett adatok ellenőrzése díjmentes, a felmondási idő egy hónap.</p>
+      </div>
+
+      <aside class="hero-badge">
+        <span class="lbl">Havi átalánydíj</span>
+        <p class="v"><b class="num">15 600</b> <i>Ft + áfától</i></p>
+        <p class="n">Egyéni vállalkozó, havonta legfeljebb 20 bizonylat. Kft. havi 27 600 Ft-tól.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="figures">
+  <div class="wrap">
+    <div class="figures-grid">
+      <div>
+        <span class="fig-v num">15 600 Ft-tól</span>
+        <span class="fig-l">Havi átalánydíj egyéni vállalkozónak, áfa nélkül</span>
+      </div>
+      <div>
+        <span class="fig-v num">15-éig</span>
+        <span class="fig-l">Kész az előző havi könyvelés</span>
+      </div>
+      <div>
+        <span class="fig-v num">24 órán belül</span>
+        <span class="fig-l">Válasz az érdeklődésre munkanapokon</span>
+      </div>
+      <div>
+        <span class="fig-v num">1 hónap</span>
+        <span class="fig-l">Felmondási idő, éves kötöttség nélkül</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MESAČNÝ RYTMUS ================= -->
+<section class="plate-band" id="rytmus" aria-labelledby="rytmus-nadpis">
+  <div class="wrap">
+    <div class="plate plate-dark reveal">
+      <svg class="plate-geo" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="svetlo" cx="0.88" cy="0.06" r="0.62">
+            <stop offset="0" stop-color="#c9a465" stop-opacity="0.16"/>
+            <stop offset="1" stop-color="#c9a465" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="460" fill="url(#svetlo)"/>
+        <g fill="none" stroke="#c9a465" stroke-opacity="0.16">
+          <circle cx="1052" cy="52" r="128"/>
+          <circle cx="1052" cy="52" r="212"/>
+          <circle cx="1052" cy="52" r="296"/>
+          <circle cx="1052" cy="52" r="380"/>
+        </g>
+        <path d="M0 460 L470 0 L556 0 L86 460 Z" fill="#ffffff" fill-opacity="0.022"/>
+        <path d="M150 460 L620 0 L648 0 L178 460 Z" fill="#ffffff" fill-opacity="0.016"/>
+      </svg>
+      <div class="plate-in">
+        <p class="plate-kicker">Havi ritmus</p>
+        <h2 class="plate-h" id="rytmus-nadpis">Minden hónapban ugyanaz a négy dátum</h2>
+        <p class="plate-note">Önnek két dátumra kell figyelnie: a hónap 3. és 10. napjára. Mindkettőre három nappal előtte emlékeztetem, a másik két határidő az enyém.</p>
+        <ol class="cyklus-grid">
+          <li>
+            <span class="cyklus-day num">3.</span>
+            <span class="cyklus-t">Bérszámfejtési adatok</span>
+            <span class="cyklus-d">Jelenléti ív, szabadságok, betegszabadság és a szerződések változásai.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">10.</span>
+            <span class="cyklus-t">Az előző havi bizonylatok</span>
+            <span class="cyklus-d">Számlák, bankszámlakivonatok és pénztárbizonylatok egy üzenetben.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">15.</span>
+            <span class="cyklus-t">Feldolgozva és egyeztetve</span>
+            <span class="cyklus-d">Megkapja a gazdálkodási kimutatást és a fizetendő tételek listáját a határidőkkel.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">20.</span>
+            <span class="cyklus-t">Bevallások Ön helyett</span>
+            <span class="cyklus-d">ÁFA-bevallás, a járulékbevallás a 12-i határidőig, uniós ügyleteknél összesítő nyilatkozat is.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLUŽBY ================= -->
+<section class="sec" id="sluzby" style="border-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">01</b> Szolgáltatások</p>
+      <div>
+        <h2 class="sec-h">A szolgáltatások köre</h2>
+        <p class="lead">Egyéni vállalkozóknak és tíz főnél kisebb Kft.-knek dolgozom. A könyvelést, a bérszámfejtést és az adókat is egy ember viszi, így mindenre egyetlen kapcsolattartója van.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M7 8h12M7 12h12M7 16h7" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 16h3" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Egyszerűsített nyilvántartás</h3>
+        <p>Egyéni vállalkozóknak és kettős könyvvitelre nem kötelezett szervezeteknek.</p>
+        <ul>
+          <li>Pénzforgalmi nyilvántartás, vevő- és szállítónyilvántartás</li>
+          <li>Eszköznyilvántartás, értékcsökkenés és útnyilvántartás</li>
+          <li>Adatok az éves adóbevalláshoz</li>
+        </ul>
+        <p class="card-price"><span class="k">Ár</span><span class="v num">a havidíjban, havi 15 600 Ft-tól</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M6 8h4M6 12h4M16 8h4" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 12h4" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Kettős könyvvitel</h3>
+        <p>Kft.-knek és nonprofit szervezeteknek.</p>
+        <ul>
+          <li>Főkönyv, napló és folyószámlák</li>
+          <li>ÁFA-bevallás és a kapcsolódó adatszolgáltatás</li>
+          <li>Éves beszámoló kiegészítő melléklettel</li>
+        </ul>
+        <p class="card-price"><span class="k">Ár</span><span class="v num">a havidíjban, havi 27 600 Ft-tól</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M4 22V11M9.667 22V7M15.333 22v-9" stroke="#14181c" stroke-width="1.4"/>
+            <path d="M21 22V4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M2.5 23.5h21" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Bérszámfejtés és HR</h3>
+        <p>Munkavállalókat vagy megbízottakat foglalkoztató cégeknek.</p>
+        <ul>
+          <li>Bérszámfejtés, bérjegyzékek és havi bevallások</li>
+          <li>Be- és kijelentés a NAV-nál</li>
+          <li>Megbízási szerződések és egyszerűsített foglalkoztatás</li>
+        </ul>
+        <p class="card-price"><span class="k">Ár</span><span class="v num">4800 Ft / fő / hónap</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M6 20L20 6" stroke="#7a5c22" stroke-width="1.6"/>
+            <circle cx="8" cy="8" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="18" cy="18" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Adók, ÁFA és bevallások</h3>
+        <p>Havidíjas ügyfeleknek és egyszeri bevallásra is.</p>
+        <ul>
+          <li>Magánszemélyek és társaságok jövedelemadó-bevallása</li>
+          <li>ÁFA-bevallás, adatszolgáltatás és összesítő nyilatkozat</li>
+          <li>Cégautóadó-bevallás 10 000 Ft-ért</li>
+        </ul>
+        <p class="card-price"><span class="k">Ár</span><span class="v num">az ÁFA a havidíjban, éves bevallás 36 000 Ft-tól</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="2.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <rect x="15.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M11 13h4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M13 11l2 2-2 2" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Könyvelés átvétele és helyreállítása</h3>
+        <p>Azoknak a cégeknek, amelyek év közben váltanak könyvelőt.</p>
+        <ul>
+          <li>A nyitott tételek, az eszközök és a bérkartonok ellenőrzése</li>
+          <li>Írásos lista arról, mit kell rendezni</li>
+          <li>Az elmaradt időszakok pótlása és önellenőrzés</li>
+        </ul>
+        <p class="card-price"><span class="k">Ár</span><span class="v num">az átvétel díjmentes</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <circle cx="13" cy="13" r="10.5" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="13" cy="13" r="5.5" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v5M13 18.5v5" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Képviselet ellenőrzésnél</h3>
+        <p>Havidíjas ügyfeleknek, ha felszólítás vagy ellenőrzés érkezik.</p>
+        <ul>
+          <li>Az iratok előkészítése és válasz a felszólításra</li>
+          <li>Kapcsolattartás a hivatallal meghatalmazás alapján</li>
+          <li>A bevallások közötti eltérések magyarázata</li>
+        </ul>
+        <p class="card-price"><span class="k">Ár</span><span class="v num">a havidíjban, egyébként 14 000 Ft / óra</span></p>
+      </article>
+    </div>
+
+    <p class="tbl-note">Az árak áfa nélkül értendők. Könyvvizsgálatot, részvénytársaságok könyvelését és igazságügyi szakértői véleményt nem vállalok. Ha ilyen feladatra van szüksége, ezt a bevezető beszélgetésen megmondom, és ajánlok egy kollégát.</p>
+  </div>
+</section>
+
+<!-- ================= PRE KOHO ================= -->
+<section class="sec band-alt" id="odvetvia">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">02</b> Kinek</p>
+      <div>
+        <h2 class="sec-h">Kinek könyvelek</h2>
+        <p class="lead">Minden vállalkozási formánál más kérdések ismétlődnek. Lent az olvasható, amit az adott ágazatban a bizonylatok szokásos lekönyvelésén túl intézek.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <p class="card-no num">01</p>
+        <h3>Szolgáltatás és kézműipar</h3>
+        <p>Egyéni vállalkozók, akik munkát és anyagot számláznak, és autóval járnak a megrendelőkhöz.</p>
+        <ul>
+          <li>Az átalányadózás és a tételes költségelszámolás összevetése</li>
+          <li>Útnyilvántartás és üzemanyag-fogyasztás</li>
+          <li>Szerszámok és gépek értékcsökkenése 200 000 Ft felett</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">02</p>
+        <h3>Webáruházak és online értékesítés</h3>
+        <p>Rendelések fizetési kapun és utánvéttel, visszaküldések, gyakran havi több száz tétel.</p>
+        <ul>
+          <li>A fizetési kapu kifizetéseinek párosítása a rendelésekkel</li>
+          <li>Jóváírások, visszaküldések és reklamációk</li>
+          <li>OSS-rendszer más uniós tagállamokba történő értékesítésnél</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">03</p>
+        <h3>IT, marketing és kreatív szakma</h3>
+        <p>Számlázás külföldi ügyfeleknek, alvállalkozók és külföldről vásárolt licencek.</p>
+        <ul>
+          <li>Összesítő nyilatkozat és fordított adózás</li>
+          <li>Árfolyam-különbözetek és fizetések külföldi kapukon</li>
+          <li>Szoftver és licenc költségként vagy eszközként</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">04</p>
+        <h3>Ingatlan-bérbeadás</h3>
+        <p>Lakások, garázsok és üzlethelyiségek bérbeadása magánszemélyként és Kft.-n keresztül is.</p>
+        <ul>
+          <li>A bevétel és a hozzá tartozó költségek elszámolása</li>
+          <li>Javítás vagy felújítás (értéknövelő beruházás)</li>
+          <li>Rezsielőlegek és éves elszámolás</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">05</p>
+        <h3>Kis Kft. munkavállalókkal</h3>
+        <p>Tíz főnél kisebb cégek, ahol a bérek, a járulékok és a céges eszközök minden hónapban mozognak.</p>
+        <ul>
+          <li>Bérek, megbízások és munkáltatói adómegállapítás</li>
+          <li>Cafeteria és kiküldetési költségtérítés</li>
+          <li>Céges autó, értékcsökkenés és cégautóadó</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">06</p>
+        <h3>Egyesületek és nonprofit szervezetek</h3>
+        <p>Egyesületek és alapítványok, amelyek tagdíjat, támogatást és SZJA 1%-os felajánlást kapnak.</p>
+        <ul>
+          <li>Az alap- és a vállalkozási tevékenység elkülönített nyilvántartása</li>
+          <li>A támogatások elszámolása a támogatói szerződés szerint</li>
+          <li>Az SZJA 1%-os felajánlás felhasználása és közzététele</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="tbl-note">Nem talált a kategóriák között? Írja meg, mivel foglalkozik. Ha nem értek az Ön területéhez, ezt a bevezető beszélgetésen megmondom, és ajánlok egy megfelelő szakterületű kollégát.</p>
+  </div>
+</section>
+
+<!-- ================= PAUŠÁLY ================= -->
+<section class="sec" id="cennik">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">03</b> Árak</p>
+      <div>
+        <h2 class="sec-h">Havi átalánydíjak és egyszeri szolgáltatások</h2>
+        <p class="lead">A havidíj fedezi a szokásos havi működést, az év közbeni kapcsolattartással együtt. Ha a feladat túlnő a benne foglalt kereten, előre jelzem, és megbeszéljük a magasabb csomagra való áttérést.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-min">
+        <caption>A havi átalánydíjak összehasonlítása. Az árak áfa nélkül értendők.</caption>
+        <colgroup><col><col><col class="hi"><col></colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Tétel</th>
+            <th scope="col">Start <small>Egyéni vállalkozó</small></th>
+            <th scope="col">Standard <small>Kis Kft.</small></th>
+            <th scope="col">Bővített <small>Kft. munkavállalókkal</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Havi átalánydíj</th>
+            <td class="val acc num">15 600 Ft</td>
+            <td class="val acc num">27 600 Ft</td>
+            <td class="val acc num">51 600 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">A nyilvántartás típusa</th>
+            <td class="val">Egyszerűsített</td>
+            <td class="val">Kettős</td>
+            <td class="val">Kettős</td>
+          </tr>
+          <tr>
+            <th scope="row">Havonta benne foglalt bizonylatok</th>
+            <td class="val num">20-ig</td>
+            <td class="val num">40-ig</td>
+            <td class="val num">80-ig</td>
+          </tr>
+          <tr>
+            <th scope="row">Bizonylat a benne foglalt kereten felül</th>
+            <td class="val num">440 Ft</td>
+            <td class="val num">440 Ft</td>
+            <td class="val num">360 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">ÁFA-ügyintézés és adatszolgáltatás</th>
+            <td class="val num">felár 10 000 Ft</td>
+            <td class="val num">felár 10 000 Ft</td>
+            <td class="val">az árban benne van</td>
+          </tr>
+          <tr>
+            <th scope="row">Bérszámfejtés</th>
+            <td class="val num">4800 Ft / fő</td>
+            <td class="val num">4800 Ft / fő</td>
+            <td class="val">2 fő benne van, további 4800 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">Gazdálkodási kimutatás</th>
+            <td class="val">Negyedévente</td>
+            <td class="val">Havonta</td>
+            <td class="val">Havonta</td>
+          </tr>
+          <tr>
+            <th scope="row">Konzultáció év közben</th>
+            <td class="val">Írásban</td>
+            <td class="val">Írásban és telefonon</td>
+            <td class="val">Korlátlanul, személyes találkozókkal együtt</td>
+          </tr>
+          <tr>
+            <th scope="row">Képviselet ellenőrzésnél</th>
+            <td class="val">A havidíjon felül</td>
+            <td class="val">3 óráig benne van</td>
+            <td class="val">Benne van</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tblwrap reveal" style="margin-top:26px">
+      <table class="tbl-stack">
+        <caption>Egyszeri szolgáltatások a havi átalánydíjon felül. Az árak áfa nélkül értendők.</caption>
+        <thead>
+          <tr>
+            <th scope="col">A kezelés</th>
+            <th scope="col">Mit tartalmaz az ár</th>
+            <th scope="col">Ár</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Magánszemély adóbevallása</th>
+            <td data-l="Mit tartalmaz az ár">Bevallás, nyilvántartások és elektronikus beküldés</td>
+            <td class="val acc num" data-l="Ár">36 000 Ft-tól</td>
+          </tr>
+          <tr>
+            <th scope="row">A Kft. éves beszámolója és adóbevallása</th>
+            <td data-l="Mit tartalmaz az ár">Mérleg, eredménykimutatás, kiegészítő melléklet, közzététel e-beszámolóként</td>
+            <td class="val acc num" data-l="Ár">76 000 Ft-tól</td>
+          </tr>
+          <tr>
+            <th scope="row">Munkáltatói adómegállapítás</th>
+            <td data-l="Mit tartalmaz az ár">Számítás, nyomtatvány és beküldés</td>
+            <td class="val acc num" data-l="Ár">6000 Ft / fő</td>
+          </tr>
+          <tr>
+            <th scope="row">ÁFA-regisztráció</th>
+            <td data-l="Mit tartalmaz az ár">A kérelem előkészítése és beadása, kapcsolattartás a NAV-val</td>
+            <td class="val acc num" data-l="Ár">24 000 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">Cégautóadó-bevallás</th>
+            <td data-l="Mit tartalmaz az ár">Számítás a cég összes járművére és a bevallás beküldése</td>
+            <td class="val acc num" data-l="Ár">10 000 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">Igazolás bank vagy hivatal részére</th>
+            <td data-l="Mit tartalmaz az ár">Bevételi és kiadási kimutatás vagy nyilatkozat a kért nyomtatványon</td>
+            <td class="val acc num" data-l="Ár">6000 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">A könyvelés átvétele másik könyvelőtől</th>
+            <td data-l="Mit tartalmaz az ár">Az átvett adatok és a nyitott tételek ellenőrzése</td>
+            <td class="val acc" data-l="Ár">díjmentes</td>
+          </tr>
+          <tr>
+            <th scope="row">Lezárt időszakok könyvelésének helyreállítása</th>
+            <td data-l="Mit tartalmaz az ár">A bizonylatok pótlása, önellenőrzés és javító bevallások</td>
+            <td class="val" data-l="Ár">terjedelem szerint</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">Mikor fizet kevesebbet</h3>
+    <div class="three">
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Egy tulajdonos több cége</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Ugyanannak a tulajdonosnak a második és minden további cégénél a havidíj 15 %-kal alacsonyabb. Az iratokat egy üzenetben küldi, és egy számlát állítok ki.</p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Éves előrefizetés</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Tizenkét hónap egyszerre történő kifizetésénél a havidíj 5 %-kal alacsonyabb. Ha az együttműködést korábban befejezi, a fel nem használt részt visszafizetem.</p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Működés nélküli cég</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Árbevétel és munkavállaló nélküli társaságot havi 10 000 Ft-ért vezetek. Ez tartalmazza az adatot nem tartalmazó bevallásokat, a beszámolót és annak közzétételét.</p>
+      </div>
+    </div>
+
+    <p class="tbl-note">Havonta egyszer számlázok, 14 napos fizetési határidővel. Az árak ebben a mintában illusztrációk. A konkrét ajánlatot a bizonylatminta átnézése után kapja meg.</p>
+
+    <p style="margin-top:22px"><a class="btn btn-acc" href="#kontakt">Kötelezettség nélküli ajánlat</a></p>
+  </div>
+</section>
+
+<!-- ================= REFERENCIE ================= -->
+<section class="sec band-alt" id="referencie">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">04</b> Referenciák</p>
+      <div>
+        <h2 class="sec-h">Három ügyfél és az ár, amit fizetnek</h2>
+        <p class="lead">Dicsérő mondatok helyett a feladat terjedelmét és a számlán szereplő havi összeget mutatom meg. Mindegyiket ki tudja számolni a lenti kalkulátorral.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <p class="card-no num">01</p>
+        <h3>Építőipari Kft.</h3>
+        <p>Hat munkavállaló, munka és anyag számlázása, két céges autó.</p>
+        <ul>
+          <li>Havi 120 bizonylat</li>
+          <li>Bérszámfejtés 6 főre</li>
+          <li>ÁFA-alany, havi bevallás</li>
+          <li>A könyvelést augusztusban vettem át, az első hónapot 15-éig feldolgoztam</li>
+        </ul>
+        <p class="card-price"><span class="k">Havonta fizet</span><span class="v num">85 200 Ft · Bővített csomag</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">02</p>
+        <h3>Webáruház Kft.</h3>
+        <p>Értékesítés fizetési kapun és utánvéttel, visszaküldésekkel, és végfogyasztóknak két uniós tagállamban.</p>
+        <ul>
+          <li>Havi 180 bizonylat az automatikus import beállítása után</li>
+          <li>Egy munkavállaló</li>
+          <li>ÁFA-alany és OSS-rendszer</li>
+          <li>A fizetési kapu kifizetéseinek párosítása a rendelésekkel hetente egyszer</li>
+        </ul>
+        <p class="card-price"><span class="k">Havonta fizet</span><span class="v num">87 600 Ft · Bővített csomag</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">03</p>
+        <h3>IT-tanácsadó, egyéni vállalkozó</h3>
+        <p>Két ügyfélnek számláz, ebből az egyik ausztriai vállalkozó.</p>
+        <ul>
+          <li>Havi 14 bizonylat</li>
+          <li>Munkavállaló nélkül</li>
+          <li>Alanyi adómentes, közösségi adószámmal és összesítő nyilatkozattal</li>
+          <li>Az éves bevallást külön számlázom, 36 000 Ft-tól</li>
+        </ul>
+        <p class="card-price"><span class="k">Havonta fizet</span><span class="v num">15 600 Ft · Start csomag</span></p>
+      </article>
+    </div>
+
+    <p class="tbl-note">Az ügyfelek nevét nem közlöm, a titoktartás arra is kiterjed, hogy ki az iroda ügyfele. Ha referenciát szeretne egy élő embertől, a szerződés aláírása előtt megadom két olyan ügyfél telefonszámát, akik ehhez hozzájárultak.</p>
+  </div>
+</section>
+
+<!-- ================= KALKULAČKA ================= -->
+<section class="sec band-dark" id="kalkulacka">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">05</b> Kalkulátor</p>
+      <div>
+        <h2 class="sec-h">A havi átalánydíj kalkulátora</h2>
+        <p class="lead">Állítson be négy értéket, és a fenti árlista szerinti árat kapja. Kft.-nél a kalkulátor összeveti a Standard és a Bővített csomagot, és az olcsóbbat mutatja.</p>
+      </div>
+    </header>
+
+    <div class="calc-grid">
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Vállalkozási forma</legend>
+          <div class="opt">
+            <input type="radio" name="typ" id="t-szco" value="szco" checked>
+            <label for="t-szco">Egyéni vállalkozó <small>egyszerűsített nyilvántartás</small></label>
+
+            <input type="radio" name="typ" id="t-sro" value="sro">
+            <label for="t-sro">Kft. <small>kettős könyvvitel</small></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Bizonylatok havonta</legend>
+          <div class="ctl-head">
+            <label class="ctl-lab" for="doklady">Számlák, pénztárbizonylatok és a kivonat sorai</label>
+            <span class="ctl-val num" id="dokladyOut">40</span>
+          </div>
+          <input type="range" id="doklady" min="0" max="250" step="5" value="40" aria-describedby="dokladyHint">
+          <div class="scale num"><span>0</span><span>125</span><span>250</span></div>
+          <p id="dokladyHint" class="ctl-hint">A bal és jobb nyíllal öt bizonylatonként léptetheti az értéket.</p>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Munkavállalók és megbízottak</legend>
+          <div class="stepper">
+            <button type="button" id="zamMinus" aria-label="A létszám csökkentése">−</button>
+            <input type="number" id="zam" class="num" value="1" min="0" max="20" step="1"
+                   inputmode="numeric" aria-label="Munkavállalók és megbízottak száma">
+            <button type="button" id="zamPlus" aria-label="A létszám növelése">+</button>
+          </div>
+          <p class="ctl-hint">Azoknak a száma, akiknek bért számfejtek. A szerződés nélküli ügyvezetőt nem számolom bele.</p>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>ÁFA-alany</legend>
+          <label class="chk">
+            <input type="checkbox" id="dph">
+            <span>ÁFA-alany vagyok <small>ÁFA-bevallás, adatszolgáltatás, uniós ügyleteknél összesítő nyilatkozat is</small></span>
+          </label>
+          <p class="ctl-hint">A Bővített csomagban az ÁFA-ügyintézés az árban van.</p>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="calc-out" id="vysledok" aria-live="polite">
+      <div class="out-sum">
+        <span class="out-lab">Havi átalánydíj, áfa nélkül</span>
+        <p class="out-price"><b class="num" id="sumaOut">29 200</b> <span>Ft / hónap</span></p>
+        <span class="out-tier" id="tierOut">Start csomag</span>
+      </div>
+      <div class="out-rows">
+        <span class="out-lab">Miből áll az ár</span>
+        <ul id="rozpisOut">
+          <li><span>Havidíj: Start — egyszerűsített nyilvántartás</span><span class="num">15 600 Ft</span></li>
+          <li><span>Bizonylatok a kereten felül: 20 × 440 Ft</span><span class="num">8800 Ft</span></li>
+          <li><span>Bérszámfejtés: 1 fő × 4800 Ft</span><span class="num">4800 Ft</span></li>
+        </ul>
+        <p class="out-note" id="poznamkaOut">Az éves beszámolót és az adóbevallást az egyszeri szolgáltatások árlistája szerint külön számlázom.</p>
+      </div>
+    </div>
+
+    <div class="calc-foot">
+      <p>Az eredmény tájékoztató jellegű. A végleges árat azután igazolom vissza, hogy átnéztem a bizonylatai mintáját, általában két munkanapon belül.</p>
+      <a class="btn btn-light" href="#kontakt">Kötelezettség nélküli ajánlat</a>
+    </div>
+
+    <noscript>
+      <p class="nojs-note">A kalkulátorhoz bekapcsolt JavaScript kell. Minden árat megtalál az Árlista rész csomagtáblázatában.</p>
+    </noscript>
+  </div>
+</section>
+
+<!-- ================= POSTUP ================= -->
+<section class="sec" id="postup">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">06</b> Menete</p>
+      <div>
+        <h2 class="sec-h">Az együttműködés menete</h2>
+        <p class="lead">Ugyanez a menet vonatkozik az új ügyfélre és a másik könyvelőtől érkezőre is. A táblázatban az is szerepel, mire van szükségem Öntől, és meddig.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Az együttműködés menete az első kapcsolatfelvételtől az évzárásig.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Lépés</th>
+            <th scope="col">Mi történik</th>
+            <th scope="col">Mire van szükségem Öntől</th>
+            <th scope="col">Időpont</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="t-no num">01</span> Bevezető beszélgetés</th>
+            <td data-l="Mi történik">Átbeszéljük a feladat terjedelmét, a bizonylatok és a munkavállalók számát, valamint az eddigi nyilvántartás állapotát</td>
+            <td data-l="Mire van szükségem Öntől">Húszperces beszélgetés</td>
+            <td class="val" data-l="Időpont">Az érdeklődéstől számított 2 munkanapon belül</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">02</span> Ajánlat és szerződés</th>
+            <td data-l="Mi történik">Írásban megkapja a szolgáltatások körét, a fix havi átalánydíjat és az egyhónapos felmondási időt</td>
+            <td data-l="Mire van szükségem Öntől">A szerződés aláírása</td>
+            <td class="val" data-l="Időpont">A beszélgetés után 2 munkanapon belül</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">03</span> A könyvelés átvétele</th>
+            <td data-l="Mi történik">Átveszem az adatokat, ellenőrzöm a nyitott tételeket, az eszköznyilvántartást és a bérkartonokat</td>
+            <td data-l="Mire van szükségem Öntől">Meghatalmazás és az előző könyvelő elérhetősége</td>
+            <td class="val" data-l="Időpont">Az együttműködés első hete</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">04</span> Havi feldolgozás</th>
+            <td data-l="Mi történik">A bizonylatok lekönyvelése, bérszámfejtés, bevallások, beküldés és gazdálkodási kimutatás a fizetendő tételek listájával</td>
+            <td data-l="Mire van szükségem Öntől">Bizonylatok a hónap 10-éig, bérszámfejtési adatok 3-áig</td>
+            <td class="val" data-l="Időpont">A hónap 15-éig elkészül</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">05</span> Évzárás</th>
+            <td data-l="Mi történik">Éves beszámoló, adóbevallás és a beszámoló közzététele</td>
+            <td data-l="Mire van szükségem Öntől">A hiányzó bizonylatok pótlása a felszólításom után</td>
+            <td class="val" data-l="Időpont">Beküldés a törvényi határidő előtt</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODKLADY ================= -->
+<section class="sec band-alt" id="podklady">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">07</b> Iratok</p>
+      <div>
+        <h2 class="sec-h">Az iratok, amelyekre szükségem van Öntől</h2>
+        <p class="lead">Minden hónapban ugyanaz a hat tétel. Könyvelőprogramot nem kell vásárolnia, a kimutatásokat PDF-ben kapja.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Mit küld minden hónapban</h3>
+        <dl class="dl">
+          <dt>Bejövő és kimenő számlák</dt>
+          <dd>Szkennelve vagy PDF-ben, a bizonylat számával elnevezve.</dd>
+          <dt>Bankszámlakivonatok</dt>
+          <dd>Az egész hónapra, PDF-ben vagy az internetbank exportjaként.</dd>
+          <dt>Pénztárbizonylatok</dt>
+          <dd>Az online pénztárgép bizonylataival együtt, ha üzletben árul.</dd>
+          <dt>Bérszámfejtési adatok</dt>
+          <dd>Jelenléti ív, szabadságok és betegszabadság a hónap 3-áig.</dd>
+          <dt>Tartós teljesítésű szerződések</dt>
+          <dd>Bérleti, lízing- és hitelszerződések, törlesztési ütemtervek. Elég egyszer, az elején.</dd>
+          <dt>Meghatalmazás</dt>
+          <dd>Egyszer, hogy a bevallásokat Ön helyett beadhassam.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Hogyan küldi el őket</h3>
+        <dl class="dl">
+          <dt>Megosztott mappa</dt>
+          <dd>Folyamatosan tölti fel, ahogy a bizonylatok érkeznek. A hozzáférést az együttműködés első napján megkapja.</dd>
+          <dt>Havonta egyszer, egy üzenetben</dt>
+          <dd>A beszkennelt bizonylatokat egyszerre küldi el, legkésőbb a következő hónap 10-éig.</dd>
+          <dt>Személyesen vagy a postaládába</dt>
+          <dd>Havonta egyszer egy dossziét a Vám utca 21.-be, vagy a bejáratnál lévő zárható postaládába. Az átvételt visszaigazolom.</dd>
+        </dl>
+
+        <h3 style="margin-top:34px">Mit kap vissza</h3>
+        <dl class="dl">
+          <dt>Gazdálkodási kimutatás</dt>
+          <dd>Bevételek, kiadások, a folyamatos adóalap és a követelések állása.</dd>
+          <dt>A fizetendő tételek listája</dt>
+          <dd>Mit, kinek és meddig kell fizetni, a járulékokkal és az adóelőlegekkel együtt.</dd>
+          <dt>Beküldési igazolások</dt>
+          <dd>Minden bevallásról, PDF-ben.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TERMÍNY ================= -->
+<section class="sec" id="terminy">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">08</b> Időpontok</p>
+      <div>
+        <h2 class="sec-h">Az év a könyvelésben, hónapról hónapra</h2>
+        <p class="lead">Hogy tudja, mi mikor történik, és mikor jelentkezem. A törvényi határidőkre én figyelek, Ön három nappal azelőtt kap emlékeztetőt, hogy valamire szükségem van Öntől.</p>
+      </div>
+    </header>
+
+    <div class="plate reveal">
+      <svg class="plate-geo" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="svetlo2" cx="0.06" cy="0.08" r="0.55">
+            <stop offset="0" stop-color="#7a5c22" stop-opacity="0.10"/>
+            <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="320" fill="url(#svetlo2)"/>
+        <g fill="none" stroke="#7a5c22" stroke-opacity="0.14">
+          <circle cx="118" cy="286" r="104"/>
+          <circle cx="118" cy="286" r="168"/>
+          <circle cx="118" cy="286" r="232"/>
+        </g>
+        <path d="M900 0 L1200 0 L1200 320 L1060 320 Z" fill="#7a5c22" fill-opacity="0.045"/>
+      </svg>
+      <div class="plate-in">
+        <p class="plate-kicker">Leterheltség az év során</p>
+        <h2 class="plate-h">Három hónap, amikor gyakrabban jelentkezem</h2>
+        <div class="rok-grid" role="img"
+             aria-label="A tizenkét hónap áttekintése. A legtöbb munka márciusban, júniusban és decemberben van.">
+          <div><span class="rok-bar" style="height:44%"></span><span class="rok-m">I</span></div>
+          <div><span class="rok-bar" style="height:54%"></span><span class="rok-m">II</span></div>
+          <div class="hi"><span class="rok-bar" style="height:84%"></span><span class="rok-m">III</span></div>
+          <div><span class="rok-bar" style="height:42%"></span><span class="rok-m">IV</span></div>
+          <div><span class="rok-bar" style="height:38%"></span><span class="rok-m">V</span></div>
+          <div class="hi"><span class="rok-bar" style="height:72%"></span><span class="rok-m">VI</span></div>
+          <div><span class="rok-bar" style="height:38%"></span><span class="rok-m">VII</span></div>
+          <div><span class="rok-bar" style="height:32%"></span><span class="rok-m">VIII</span></div>
+          <div><span class="rok-bar" style="height:42%"></span><span class="rok-m">IX</span></div>
+          <div><span class="rok-bar" style="height:46%"></span><span class="rok-m">X</span></div>
+          <div><span class="rok-bar" style="height:52%"></span><span class="rok-m">XI</span></div>
+          <div class="hi"><span class="rok-bar" style="height:88%"></span><span class="rok-m">XII</span></div>
+        </div>
+        <ul class="rok-key">
+          <li><b class="num">III</b> — az előző év zárása, a beszámoló és a bevallások előkészítése</li>
+          <li><b class="num">VI</b> — a május végi határidők utáni ellenőrzés és önellenőrzés</li>
+          <li><b class="num">XII</b> — leltár és az évzárás előkészítése</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Mi mikor történik</h3>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Ismétlődő havi határidők és mérföldkövek az év során.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Mikor</th>
+            <th scope="col">Mi történik</th>
+            <th scope="col">Mire van szükségem Öntől</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Minden hónap 3-áig</th>
+            <td data-l="Mi történik">Lezárom az előző havi bérszámfejtést</td>
+            <td class="val" data-l="Mire van szükségem Öntől">Jelenléti ív, szabadságok, betegszabadság</td>
+          </tr>
+          <tr>
+            <th scope="row">Minden hónap 10-éig</th>
+            <td data-l="Mi történik">Átveszem és rendezem az előző havi bizonylatokat</td>
+            <td class="val" data-l="Mire van szükségem Öntől">Számlák, kivonatok, pénztárbizonylatok</td>
+          </tr>
+          <tr>
+            <th scope="row">Minden hónap 15-éig</th>
+            <td data-l="Mi történik">Elküldöm a gazdálkodási kimutatást és a fizetendő tételek listáját a határidőkkel</td>
+            <td class="val" data-l="Mire van szükségem Öntől">Semmi, csak elolvasni</td>
+          </tr>
+          <tr>
+            <th scope="row">Minden hónap 20-áig</th>
+            <td data-l="Mi történik">Beadom az ÁFA-bevallást, és uniós ügyleteknél az összesítő nyilatkozatot is</td>
+            <td class="val" data-l="Mire van szükségem Öntől">Semmi, az iratok a 10-i határidőből megvannak</td>
+          </tr>
+          <tr>
+            <th scope="row">Január</th>
+            <td data-l="Mi történik">Lezárom a bérszámfejtési évet, ellenőrzöm a járulékváltozásokat, és beállítom az új mértékeket</td>
+            <td class="val" data-l="Mire van szükségem Öntől">A szerződésmódosítások visszaigazolása</td>
+          </tr>
+          <tr>
+            <th scope="row">Február</th>
+            <td data-l="Mi történik">Kiadom a munkavállalóknak az éves jövedelemigazolást, és begyűjtöm a kedvezményekhez szükséges nyilatkozatokat</td>
+            <td class="val" data-l="Mire van szükségem Öntől">A munkavállalók aláírt nyilatkozatai</td>
+          </tr>
+          <tr>
+            <th scope="row">Március</th>
+            <td data-l="Mi történik">Előkészítem az előző évi beszámolót és az adóbevallásokat</td>
+            <td class="val" data-l="Mire van szükségem Öntől">A hiányzó bizonylatok pótlása március 10-éig</td>
+          </tr>
+          <tr>
+            <th scope="row">Június</th>
+            <td data-l="Mi történik">Beadom az önellenőrzéseket, és lezárom a május végén benyújtott bevallások ügyeit</td>
+            <td class="val" data-l="Mire van szükségem Öntől">Semmi, az iratok márciusból megvannak</td>
+          </tr>
+          <tr>
+            <th scope="row">Július</th>
+            <td data-l="Mi történik">A beadott bevallás alapján újraszámolom az egyéni vállalkozók járulékait és adóelőlegeit, és megírom az új összeget</td>
+            <td class="val" data-l="Mire van szükségem Öntől">Semmi</td>
+          </tr>
+          <tr>
+            <th scope="row">Szeptember</th>
+            <td data-l="Mi történik">Félévi ellenőrzés: megfelel-e a havidíj a bizonylatok tényleges mennyiségének, kell-e változtatni</td>
+            <td class="val" data-l="Mire van szükségem Öntől">Rövid beszélgetés, ha valami változik</td>
+          </tr>
+          <tr>
+            <th scope="row">Október – november</th>
+            <td data-l="Mi történik">Átnézzük a ki nem fizetett követeléseket, a tervezett beszerzéseket és az adóalapra gyakorolt hatásukat</td>
+            <td class="val" data-l="Mire van szükségem Öntől">A tervezett beruházások listája</td>
+          </tr>
+          <tr>
+            <th scope="row">December</th>
+            <td data-l="Mi történik">A pénztár, a készlet és az eszközök leltára, az évzárás iratainak előkészítése</td>
+            <td class="val" data-l="Mire van szükségem Öntől">A pénztár és a készlet állása december 31-én</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-note">A törvényi határidők változhatnak. Ön helyett figyelem őket, és változás esetén megírom, mit jelent ez a cégének.</p>
+  </div>
+</section>
+
+<!-- ================= KANCELÁRIA, PRÍCHOD A PARKOVANIE ================= -->
+<section class="sec band-alt" id="kancelaria">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">09</b> Iroda</p>
+      <div>
+        <h2 class="sec-h">Cím, megközelítés és parkolás</h2>
+        <p class="lead">A munka nagy része távolról zajlik, ügyfeleim az egész országból vannak. Ha személyesen szeretne találkozni, itt minden megtalálható az útról, a parkolásról és a bejutásról.</p>
+      </div>
+    </header>
+
+    <div class="addr">
+      <div>
+        <span class="lbl">Az iroda címe</span>
+        <span class="v">Vám utca 21.<br>1011 Budapest</span>
+        <span class="s">Földszint, bejárat közvetlenül az utcáról, SALDIA csengő.</span>
+      </div>
+      <div>
+        <span class="lbl">Telefon</span>
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+        <span class="s">Hétfőtől péntekig 9.00 és 16.00 között.</span>
+      </div>
+      <div>
+        <span class="lbl">Személyes találkozók</span>
+        <span class="v">Hétfőtől csütörtökig<br>9.00 – 15.00</span>
+        <span class="s">Mindig előre egyeztetett időpontban.</span>
+      </div>
+      <div>
+        <span class="lbl">Bizonylatok leadása</span>
+        <span class="v">Minden munkanapon<br>16.00-ig</span>
+        <span class="s">Zárható postaláda a bejáratnál, az átvételt visszaigazolom.</span>
+      </div>
+    </div>
+
+    <h3 class="sub-h" id="hodiny">Nyitvatartás napok szerint</h3>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>A Vám utca 21. alatti iroda nyitvatartása. Ünnepnapokon zárva tartunk, ezt egy héttel előre jelzem.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Nap</th>
+            <th scope="col">Telefon</th>
+            <th scope="col">Személyes találkozók</th>
+            <th scope="col">Bizonylatgyűjtő postaláda</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Hétfő</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Személyes találkozók">9.00 – 15.00</td>
+            <td class="val num" data-l="Bizonylatgyűjtő postaláda">16.00-ig</td>
+          </tr>
+          <tr>
+            <th scope="row">Kedd</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Személyes találkozók">9.00 – 15.00</td>
+            <td class="val num" data-l="Bizonylatgyűjtő postaláda">16.00-ig</td>
+          </tr>
+          <tr>
+            <th scope="row">Szerda</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Személyes találkozók">9.00 – 15.00</td>
+            <td class="val num" data-l="Bizonylatgyűjtő postaláda">16.00-ig</td>
+          </tr>
+          <tr>
+            <th scope="row">Csütörtök</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Személyes találkozók">9.00 – 15.00</td>
+            <td class="val num" data-l="Bizonylatgyűjtő postaláda">16.00-ig</td>
+          </tr>
+          <tr>
+            <th scope="row">Péntek</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td data-l="Személyes találkozók">a feldolgozásra és a bevallásokra fenntartott nap</td>
+            <td class="val num" data-l="Bizonylatgyűjtő postaláda">16.00-ig</td>
+          </tr>
+          <tr>
+            <th scope="row">Szombat</th>
+            <td data-l="Telefon">zárva</td>
+            <td data-l="Személyes találkozók">zárva</td>
+            <td data-l="Bizonylatgyűjtő postaláda">zárva</td>
+          </tr>
+          <tr>
+            <th scope="row">Vasárnap</th>
+            <td data-l="Telefon">zárva</td>
+            <td data-l="Személyes találkozók">zárva</td>
+            <td data-l="Bizonylatgyűjtő postaláda">zárva</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-note">Személyes találkozó mindig előre egyeztetett időpontban van, nem várakozás mellett. A bejárati postaládát minden munkanapon 16.00-kor ürítem, és az átvételt üzenetben visszaigazolom. Az online találkozó harminc perc, a videóhívás linkjét az időpont visszaigazolásával küldöm.</p>
+
+    <div class="two" style="margin-top:clamp(30px,4vw,46px)">
+      <div>
+        <!-- FOTO: budova na Mýtnej 21 zvonku, vchod z ulice so zvončekom SALDIA -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 420" role="img" focusable="false"
+                 aria-label="Kompozíció az iroda címével: Vám utca 21., földszint.">
+              <defs>
+                <linearGradient id="obr1a" x1="0" y1="0" x2="0.7" y2="1">
+                  <stop offset="0" stop-color="#eeeae1"/>
+                  <stop offset="0.55" stop-color="#e6e6e4"/>
+                  <stop offset="1" stop-color="#dcdfe3"/>
+                </linearGradient>
+                <radialGradient id="obr1b" cx="0.82" cy="0.16" r="0.7">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.16"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="420" fill="url(#obr1a)"/>
+              <rect width="640" height="420" fill="url(#obr1b)"/>
+              <g stroke="#14181c" stroke-opacity="0.08">
+                <path d="M0 70H640M0 140H640M0 210H640M0 280H640M0 350H640"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.20">
+                <circle cx="524" cy="66" r="96"/>
+                <circle cx="524" cy="66" r="158"/>
+                <circle cx="524" cy="66" r="220"/>
+              </g>
+              <path d="M640 130 L640 420 L360 420 Z" fill="#7a5c22" fill-opacity="0.07"/>
+              <rect x="52" y="96" width="2" height="232" fill="#14181c" fill-opacity="0.16"/>
+              <text x="84" y="214" font-family="Georgia, serif" font-size="104" fill="#14181c"
+                    fill-opacity="0.9" letter-spacing="-3">21</text>
+              <text x="86" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="23"
+                    letter-spacing="9" fill="#7a5c22">VÁM UTCA</text>
+              <text x="86" y="300" font-family="Segoe UI, Arial, sans-serif" font-size="18"
+                    letter-spacing="2" fill="#474e56">1011 Budapest</text>
+            </svg>
+          </div>
+          <figcaption>Az iroda a földszinten van, bejárat közvetlenül az utcáról, SALDIA csengő.</figcaption>
+        </figure>
+
+        <h3 style="margin-top:34px">Útvonal és parkolás</h3>
+        <ul class="ticks">
+          <li><b>Autóval:</b> két fenntartott parkolóhely az épület udvarán, ügyfeleknek az első két óra díjtalan. A behajtás a Vám utcából történik, a sorompót csengetés után felnyitom.</li>
+          <li><b>Utcai parkolás:</b> a Vám utcában fizetős övezet van, óránként 800 Ft, fizetni az épület bejáratánál lévő parkolóautomatánál lehet.</li>
+          <li><b>Tömegközlekedéssel:</b> a megálló három perc gyalog, buszok és villamosok is megállnak mellette a belváros és a lakótelepek felől.</li>
+          <li><b>Metróval vagy vonattal:</b> a legközelebbi metróállomástól tíz perc gyalog, sík úton, lépcső és forgalmas átkelő nélkül.</li>
+          <li><b>Akadálymentes bejutás:</b> az iroda a földszinten van, az épületbe lépcső nélkül lehet bejutni, az ajtó 90 cm széles, és az épületben akadálymentes mosdó van.</li>
+          <li><b>Babakocsival:</b> a bejárati ajtó nyitva rögzíthető, az irodában van hely a babakocsinak.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="plan reveal">
+          <svg viewBox="0 0 520 330" role="img" focusable="false"
+               aria-label="Tájékoztató térkép: a Vám utca 21. épülete utcai bejárattal, behajtás az udvarra két parkolóhellyel és a három perc gyalogra lévő tömegközlekedési megálló.">
+            <rect width="520" height="330" fill="#f5f6f8"/>
+
+            <rect x="0" y="172" width="520" height="60" fill="#e6e9ec"/>
+            <path d="M0 172H520M0 232H520" stroke="#c0c5cb" stroke-width="1.2"/>
+            <path d="M0 202H520" stroke="#c0c5cb" stroke-width="1.4" stroke-dasharray="16 12"/>
+            <text x="16" y="223" font-family="Segoe UI, Arial, sans-serif" font-size="17"
+                  letter-spacing="4" fill="#535a62">VÁM UTCA</text>
+
+            <rect x="110" y="14" width="210" height="64" fill="#ffffff" fill-opacity="0.7"
+                  stroke="#7a5c22" stroke-width="1.2" stroke-dasharray="7 5"/>
+            <rect x="126" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <rect x="190" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <text x="256" y="56" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Udvar</text>
+
+            <rect x="110" y="78" width="210" height="94" fill="#7a5c22" fill-opacity="0.10"
+                  stroke="#7a5c22" stroke-width="1.4"/>
+            <text x="128" y="118" font-family="Georgia, serif" font-size="26" fill="#14181c">Vám utca 21.</text>
+            <text x="128" y="144" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">SALDIA · földszint</text>
+
+            <rect x="206" y="166" width="18" height="10" fill="#7a5c22"/>
+            <text x="234" y="194" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Bejárat</text>
+
+            <path d="M92 256V44" stroke="#7a5c22" stroke-width="2"/>
+            <path d="M92 36l6 12H86z" fill="#7a5c22"/>
+            <text x="16" y="282" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Behajtás az udvarra</text>
+
+            <rect x="300" y="240" width="98" height="10" fill="#7a5c22" fill-opacity="0.42"/>
+            <text x="300" y="274" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Megálló</text>
+            <text x="300" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#535a62">3 perc gyalog</text>
+          </svg>
+          <ul class="plan-key">
+            <li><b>Udvar</b> 2 hely, az első 2 óra díjtalan</li>
+            <li><b>Utca</b> automata a bejáratnál, óránként 800 Ft</li>
+            <li><b>Bejárat</b> a Vám utcából, lépcső nélkül</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:34px">Az első találkozó</h3>
+        <p class="p-narrow">Hozza el az utolsó havi bankszámlakivonatot és öt jellemző számlát. Ebből meg tudom mondani a bizonylatok mennyiségét és a havidíj végleges árát. A találkozó húsz-harminc percig tart, és nem számlázom ki.</p>
+        <p class="p-narrow">Ugyanezt videóhívásban vagy telefonon is átvehetjük. Az iratokat ilyenkor a megosztott mappába küldi el.</p>
+        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Időpont egyeztetése</a></p>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Ki dolgozik az Ön ügyein</h3>
+    <div class="two">
+      <div>
+        <ul class="roles">
+          <li>
+            <span class="role-t">A cége könyvelője</span>
+            <span class="role-d">Egy ember viszi a könyvelését egész évben, és közvetlenül válaszol Önnek, munkanapokon 24 órán belül.</span>
+          </li>
+          <li>
+            <span class="role-t">Bérszámfejtő</span>
+            <span class="role-d">Számfejti a béreket, a megbízásokat, és kapcsolatot tart a hatóságokkal. Csak akkor kapcsolódik be, ha munkavállalói vagy megbízottai vannak.</span>
+          </li>
+          <li>
+            <span class="role-t">Adótanácsadó</span>
+            <span class="role-d">Külső együttműködés bonyolultabb kérdésekre, például cégeladásra, nemzetközi ügyletekre vagy kapcsolt vállalkozások közötti ügyletekre.</span>
+          </li>
+          <li>
+            <span class="role-t">Helyettesítés szabadság idején</span>
+            <span class="role-d">Távolléte alatt egy kolléganő veszi át a feladatot, aki ugyanazokhoz az iratokhoz fér hozzá. A nevét és a számát legkésőbb egy héttel előre megkapja.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <!-- FOTO: účtovníčka a mzdová účtovníčka v kancelárii, skutočný tím, nie stock -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 400" role="img" focusable="false"
+                 aria-label="Kompozíció a SALDIA könyvelőiroda logójával.">
+              <defs>
+                <linearGradient id="obr2a" x1="0.1" y1="0" x2="0.9" y2="1">
+                  <stop offset="0" stop-color="#e9eaec"/>
+                  <stop offset="0.5" stop-color="#e4e3df"/>
+                  <stop offset="1" stop-color="#d9dce0"/>
+                </linearGradient>
+                <radialGradient id="obr2b" cx="0.18" cy="0.86" r="0.72">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.15"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="400" fill="url(#obr2a)"/>
+              <rect width="640" height="400" fill="url(#obr2b)"/>
+              <g stroke="#14181c" stroke-opacity="0.07">
+                <path d="M80 0V400M180 0V400M280 0V400M380 0V400M480 0V400M580 0V400"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.22">
+                <circle cx="118" cy="336" r="74"/>
+                <circle cx="118" cy="336" r="126"/>
+                <circle cx="118" cy="336" r="178"/>
+              </g>
+              <path d="M0 0 L246 0 L0 246 Z" fill="#14181c" fill-opacity="0.05"/>
+              <g stroke="#14181c" stroke-opacity="0.55">
+                <path d="M330 150h226" stroke-width="2"/>
+                <path d="M330 186h226" stroke-width="2"/>
+                <path d="M330 222h132" stroke-width="2"/>
+              </g>
+              <path d="M478 222h78" stroke="#7a5c22" stroke-width="3"/>
+              <text x="330" y="122" font-family="Georgia, serif" font-size="30"
+                    letter-spacing="12" fill="#14181c">SALDIA</text>
+            </svg>
+          </div>
+          <figcaption>A könyvelő és a bérszámfejtő, akik az iroda ügyfeleinek ügyeit viszik.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAKTURÁCIA A PLATBA ================= -->
+<section class="sec" id="platby">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">10</b> Fizetés</p>
+      <div>
+        <h2 class="sec-h">Számlázás és fizetési mód</h2>
+        <p class="lead">Havonta egyszer kell fizetni, banki átutalással. Lent pontosan olvasható, mikor érkezik a számla, mi van benne tételesen, és mi történik késedelem esetén.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Mikor és miért számlázok</h3>
+        <dl class="dl">
+          <dt>A számlázás napja</dt>
+          <dd>A számlát az előző hónapra a hónap első munkanapjával állítom ki. A fizetési határidő <b>14 nap</b>.</dd>
+          <dt>Mi van a számlán</dt>
+          <dd>Külön sor a havidíjnak, és külön sorok a kereten felüli bizonylatoknak, a bérszámfejtésnek és az egyszeri szolgáltatásoknak. A részletezést mellékletként kapja, semmi nincs egy összegbe rejtve.</dd>
+          <dt>Egyszeri szolgáltatások</dt>
+          <dd>Csak a befejezés után számlázom. Az árat előre írásban megmondom, és az Ön jóváhagyása nélkül nem kezdek bele.</dd>
+          <dt>Éves előrefizetés</dt>
+          <dd>Tizenkét hónap egyszerre <b>5 %</b>-kal olcsóbb. Ha az együttműködést korábban befejezi, a fel nem használt részt 14 napon belül visszafizetem.</dd>
+          <dt>A havidíj emelése</dt>
+          <dd>Ha a feladat tartósan túlnő a benne foglalt kereten, ezt <b>egy hónappal előre</b> megírom. Az új ár csak a következő hónaptól érvényes, és Önnek jóvá kell hagynia.</dd>
+          <dt>Kedvezmény több cégnél</dt>
+          <dd>Ugyanannak a tulajdonosnak a második és minden további cégénél a havidíj <b>15 %</b>-kal alacsonyabb, és minden egy számlán szerepel.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Mivel lehet fizetni</h3>
+        <div class="tblwrap reveal">
+          <table class="tbl-stack">
+            <caption>Elfogadott fizetési módok és díjaik.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Fizetési mód</th>
+                <th scope="col">Hogyan működik</th>
+                <th scope="col">Díj</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Banki átutalás</th>
+                <td data-l="Hogyan működik">Az adatok és a közlemény a számlán szerepelnek, a fizetési határidő 14 nap</td>
+                <td class="val acc" data-l="Díj">díjmentes</td>
+              </tr>
+              <tr>
+                <th scope="row">Rendszeres átutalás</th>
+                <td data-l="Hogyan működik">Havidíjnál ajánlom, az összeg minden hónapban ugyanaz, a különbözetet évente egyszer számolom el</td>
+                <td class="val acc" data-l="Díj">díjmentes</td>
+              </tr>
+              <tr>
+                <th scope="row">Bankkártyás fizetés</th>
+                <td data-l="Hogyan működik">A számlához csatolt fizetési linken, az összeg két munkanapon belül jóváíródik</td>
+                <td class="val acc" data-l="Díj">díjmentes</td>
+              </tr>
+              <tr>
+                <th scope="row">Készpénz</th>
+                <td data-l="Hogyan működik">Nem fogadom el, hogy minden fizetést banki bizonylat igazoljon</td>
+                <td class="val" data-l="Díj">nem fogadom el</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top:34px">Ha a számla nincs kifizetve</h3>
+        <ul class="ticks">
+          <li><b>A lejárat után három nappal</b> emlékeztetőt küldök és telefonálok. Feltételezem, hogy csak elkerülte a figyelmét.</li>
+          <li><b>A lejárat után tizennégy nappal</b> felfüggesztem a további feldolgozást, és ezt előre megírom, hogy ne érje meglepetésként.</li>
+          <li><b>A törvényi határidős bevallásokat mindig beadom</b>, akkor is, ha a számla nincs kifizetve. Nem szeretném, hogy ebből bírsága legyen.</li>
+          <li><b>Késedelmi kamatot</b> nem számítok fel, amíg a késés nem haladja meg a 30 napot.</li>
+          <li><b>A könyvelés átadását nem kötöm</b> a kifizetéshez. A ki nem fizetett számlákat külön rendezem.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="tbl-note">Az árak ebben a mintában illusztrációk. A konkrét árajánlatot a bizonylatai mintájának átnézése után kapja meg, általában két munkanapon belül.</p>
+  </div>
+</section>
+
+<!-- ================= STORNO A UKONČENIE ================= -->
+<section class="sec band-alt" id="storno">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">11</b> Lemondás</p>
+      <div>
+        <h2 class="sec-h">Időpontváltozás, lemondás és az együttműködés befejezése</h2>
+        <p class="lead">Az időpont áthelyezhető és lemondható is. Az együttműködést a hónap utolsó napjára mondhatja fel, a könyvelést tíz munkanapon belül visszakapja.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Lemondási feltételek az egyeztetett időpontokra és a megrendelt szolgáltatásokra.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Helyzet</th>
+            <th scope="col">Mi vonatkozik Önre</th>
+            <th scope="col">Díj</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">A találkozó lemondása több mint 24 órával előtte</th>
+            <td data-l="Mi vonatkozik Önre">Elég egy üzenet vagy telefon, az időpontot felszabadítom más számára</td>
+            <td class="val acc" data-l="Díj">díjmentes</td>
+          </tr>
+          <tr>
+            <th scope="row">A találkozó lemondása 24 órán belül</th>
+            <td data-l="Mi vonatkozik Önre">Semmit nem számlázok, csak egy rövid üzenetet kérek, hogy ne várjak</td>
+            <td class="val acc" data-l="Díj">díjmentes</td>
+          </tr>
+          <tr>
+            <th scope="row">Időpont áthelyezése másik napra</th>
+            <td data-l="Mi vonatkozik Önre">Felajánlom a legközelebbi szabad időpontot, általában három munkanapon belül</td>
+            <td class="val acc" data-l="Díj">díjmentes</td>
+          </tr>
+          <tr>
+            <th scope="row">Meg nem jelenés előzetes jelzés nélkül</th>
+            <td data-l="Mi vonatkozik Önre">Először következmény nélkül, a következő időpontot a találkozó napján telefonon erősítjük meg</td>
+            <td class="val acc" data-l="Díj">díjmentes</td>
+          </tr>
+          <tr>
+            <th scope="row">Megrendelt egyszeri szolgáltatás lemondása</th>
+            <td data-l="Mi vonatkozik Önre">Ha még nem kezdtem el, semmit nem számlázok. Ha a munka már folyik, a ledolgozott időt számlázom</td>
+            <td class="val" data-l="Díj">0 Ft vagy 14 000 Ft / óra</td>
+          </tr>
+          <tr>
+            <th scope="row">Lemondás az én részemről</th>
+            <td data-l="Mi vonatkozik Önre">Legkésőbb 24 órával előtte jelentkezem, és három napon belüli pótidőpontot ajánlok</td>
+            <td class="val acc" data-l="Díj">díjmentes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">Az együttműködés befejezése</h3>
+    <div class="two">
+      <div>
+        <dl class="dl">
+          <dt>Felmondási idő</dt>
+          <dd>Egy hónap, a naptári hónap utolsó napján jár le. Éves kötöttség és minimális hónapszám nélkül.</dd>
+          <dt>Díj a korábbi befejezésért</dt>
+          <dd>Nincs. Ha az együttműködés nem felel meg Önnek, nincs értelme szerződéssel tartani.</dd>
+          <dt>A könyvelés átadása</dt>
+          <dd>A befejezéstől számított <b>10 munkanapon belül</b> elektronikus és papíralapú formában is megkapja a teljes könyvelést, a naplóval, a folyószámlákkal és a bérkartonokkal együtt.</dd>
+          <dt>Együttműködés az új könyvelővel</dt>
+          <dd>A befejezés után még 30 napig válaszolok a kérdéseire, szintén díjmentesen.</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Felelősség a hibákért</h3>
+        <ul class="ticks">
+          <li><b>Az én oldalamon keletkezett hibákért felelek</b>, és szakmai felelősségbiztosításom van. Az általam okozott bírságot megtérítem.</li>
+          <li><b>A határidő után átadott iratokért</b> az ügyfél felel. Ezért a határidőket előre közlöm, és három nappal előtte emlékeztetek rájuk.</li>
+          <li><b>A hibát magam jelzem</b>, és megírom, hogyan és mikorra javítom. Nem várom meg, hogy Ön vegye észre.</li>
+          <li><b>Az önellenőrzést és a javító bevallást</b> a hibám után díjmentesen elkészítem.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OCHRANA ÚDAJOV ================= -->
+<section class="sec band-dark" id="ochrana">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">12</b> Adatok</p>
+      <div>
+        <h2 class="sec-h">Bizonylatok, titoktartás és adatvédelem</h2>
+        <p class="lead">Hol tárolom a bizonylatait, ki fér hozzájuk, és meddig őrzöm őket.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Hol vannak az adatai</h3>
+        <ul class="ticks">
+          <li><b>Titkosított tárhely az Európai Unióban</b> kétlépcsős bejelentkezéssel és napi mentéssel egy második helyre.</li>
+          <li><b>A papíralapú bizonylatok</b> az iroda zárt helyiségében vannak. Csak az fér hozzájuk, aki az ügyeit viszi, és a helyettese szabadság idején.</li>
+          <li><b>A bizonylatok átadása</b> jelszóval védett megosztott mappán keresztül vagy személyesen. Érzékeny mellékletet nem küldök védelem nélkül.</li>
+          <li><b>A titoktartás</b> időkorlát nélkül érvényes, az együttműködés befejezése után is.</li>
+          <li><b>Az adatfeldolgozói szerződés</b> a GDPR szerint a könyvelési szerződés része. Külön nem kell kérnie.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Ki fér hozzá az adatokhoz</h3>
+        <dl class="dl">
+          <dt>A cége könyvelője</dt>
+          <dd>Teljes hozzáférés a könyveléséhez. Ő az egyetlen, aki rendszeresen kapcsolatban áll Önnel.</dd>
+          <dt>Bérszámfejtő</dt>
+          <dd>Csak a bérszámfejtési részhez, és csak ha munkavállalói vagy megbízottai vannak.</dd>
+          <dt>Adótanácsadó</dt>
+          <dd>Csak a konkrét kérdéshez, amelyen együtt dolgozunk, és csak az Ön tudtával.</dd>
+          <dt>Hatóságok</dt>
+          <dd>A NAV és a kormányhivatalok, azoknak a bevallásoknak a körében, amelyeket meghatalmazás alapján Ön helyett adok be.</dd>
+          <dt>Archiválás</dt>
+          <dd>A bizonylatokat a törvényben előírt ideig őrzöm. Utána átadom Önnek, vagy megállapodás szerint szakszerűen megsemmisítem, és erről igazolást adok.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KARIÉRA ================= -->
+<section class="sec" id="kariera">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">13</b> Karrier</p>
+      <div>
+        <h2 class="sec-h">Nyitott pozíció és szakmai gyakorlat</h2>
+        <p class="lead">Egy olyan munkatársat keresek, aki önállóan tud kettős könyvvitelt vezetni. Az ügyfélkör 15–20 ügyfél, a bér teljes munkaidőben bruttó 560 000 Ft-tól.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Önálló könyvelő</h3>
+        <dl class="dl">
+          <dt>Munkaidő</dt>
+          <dd>Teljes vagy legalább 0,6-os részmunkaidő. Rugalmas munkakezdés, heti két nap otthonról.</dd>
+          <dt>A munkavégzés helye</dt>
+          <dd>Vám utca 21., Budapest. Az iroda a földszinten van, parkolás az épület udvarán.</dd>
+          <dt>Mi lesz a feladata</dt>
+          <dd>Saját, 15–20 ügyfélből álló ügyfélkör vitele a bizonylatoktól a beszámolóig, az ÁFA-ügyintézéssel és az ügyfelekkel való kapcsolattartással együtt.</dd>
+          <dt>Mit várok el</dt>
+          <dd>Legalább két év gyakorlatot kettős könyvvitelben, jártasságot az ÁFA-ügyintézésben és megbízhatóságot a határidőknél. A bérszámfejtés nem feltétel, betanítjuk.</dd>
+          <dt>Bér</dt>
+          <dd>Teljes munkaidőben <b>bruttó 560 000 Ft-tól</b>, a pontos összeg a gyakorlattól függ. Egy év után az ügyfélkör és a bér is felülvizsgálatra kerül.</dd>
+          <dt>Mit kínálok</dt>
+          <dd>Rögzített ügyfélszámot fejenként, fizetett továbbképzéseket és licenceket, helyettesítést szabadság idejére, és márciuson meg júniuson kívül túlóra nélküli munkát.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Szakmai gyakorlat hallgatóknak és pályakezdőknek</h3>
+        <p class="p-narrow">Évente kétszer egy főt fogadok háromhónapos, fizetett szakmai gyakorlatra. Felügyelet mellett végigjárja a bizonylatok rendezését, a szokásos esetek lekönyvelését és a beszámoló előkészítését. A díjazás óránként 2400 Ft.</p>
+        <p class="p-narrow">A gyakorlat végén írásos értékelést és ajánlást kap, akkor is, ha nem marad nálunk. A kezdési időpontok mindig februárban és szeptemberben vannak.</p>
+
+        <h3 style="margin-top:34px">Hogyan jelentkezhet</h3>
+        <ul class="ticks">
+          <li><b>Töltse ki az űrlapot</b> a Kapcsolat részben, és az üzenetbe írja bele, hogy a nyitott pozícióra jelentkezik. Telefonon jelentkezem, és megmondom, hová küldje az önéletrajzát.</li>
+          <li><b>Az üzenetben írja meg</b>, milyen könyvelést vitt eddig, milyen programban, és hány ügyfele volt.</li>
+          <li><b>Öt munkanapon belül válaszolok</b>, akkor is, ha nem sikerül.</li>
+          <li><b>A kiválasztás két fordulóból áll:</b> egy harmincperces beszélgetésből és egy rövid gyakorlati feladatból, amely legfeljebb egy órát vesz igénybe. A feladatot 16 000 Ft-tal díjazom.</li>
+        </ul>
+        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Tovább az űrlapra</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OTÁZKY ================= -->
+<section class="sec band-alt" id="otazky">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">14</b> Kérdések</p>
+      <div>
+        <h2 class="sec-h">Gyakori kérdések</h2>
+        <p class="lead">Válaszok arra, amit az ügyfelek a szerződés aláírása előtt kérdezni szoktak.</p>
+      </div>
+    </header>
+
+    <details open>
+      <summary>Át lehet jönni Önhöz év közben is?</summary>
+      <div class="faq-body">
+        <p>Igen. Az előző könyvelőtől a naplóra vagy a főkönyvre, a folyószámlákra, az eszköznyilvántartásra és a bérkartonokra van szükségem. Az átvett adatokat ellenőrzöm, és megírom, mi nyitott és mit kell rendezni. <strong>Ezt az ellenőrzést nem számlázom ki.</strong></p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Meddig kell elküldenem a bizonylatokat?</summary>
+      <div class="faq-body">
+        <p>A szokásos bizonylatokat a következő hónap 10-éig, a bérszámfejtési adatokat 3-áig. Havi ÁFA-bevallásnál szigorúbb a határidő, ezt a bevezető beszélgetésen egyeztetjük.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Mi van, ha hiányzik egy bizonylat?</summary>
+      <div class="faq-body">
+        <p>A hiányzó bizonylatot általában a bankszámla mozgása alapján azonosítom, és megírom, melyikről van szó. Ha nem kerül elő, a bevallás beadása előtt megmondom, milyen hatása van az adóra és az ÁFA-ra.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Ki felel a bírságért, ha kiszabják?</summary>
+      <div class="faq-body">
+        <p>Az én oldalamon keletkezett hibákért én felelek, és szakmai felelősségbiztosításom van. Ha a bírság a megbeszélt határidő után átadott iratok miatt keletkezik, az az ügyfélre tartozik. Ezért a határidőket előre közlöm, és emlékeztetek rájuk.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Mit tesz, ha felszólítás vagy ellenőrzés érkezik a NAV-tól?</summary>
+      <div class="faq-body">
+        <p>A felszólítást továbbítja nekem, én pedig elkészítem a választ és az iratokat. Ellenőrzésnél meghatalmazás alapján közvetlenül tartom a kapcsolatot a hatósággal, Önnek csak szükség esetén kell jelen lennie. A Standard csomagban három óra benne van az árban, a Bővített csomagban a képviselet korlátlan; a havidíjon kívül a díj <strong>óránként 14 000 Ft</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Kell könyvelőprogramot vennem?</summary>
+      <div class="faq-body">
+        <p>Nem. A saját programomban könyvelek, Ön a kimutatásokat PDF-ben kapja. Ha már van számlázóprogramja, az adatokat exporttal át tudom venni belőle.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Webáruházat és külföldi értékesítést is könyvel?</summary>
+      <div class="faq-body">
+        <p>Igen. Intézem a fizetési kapuk és az utánvétek kifizetéseinek párosítását, a visszaküldéseket és az OSS-rendszert is, ha más uniós tagállamok végfogyasztóinak értékesít. Nagyobb forgalomnál automatikus importot állítunk be, hogy a bizonylatok száma ne emelje feleslegesen a havidíjat.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Van egy Kft.-m, amely nem működik. Teljes havidíjat kell fizetnem?</summary>
+      <div class="faq-body">
+        <p>Nem. Árbevétel és munkavállaló nélküli társaságot <strong>havi 10 000 Ft-ért</strong> vezetek. Az árban benne vannak az adatot nem tartalmazó bevallások, a beszámoló és annak közzététele. Amikor a cég elkezd működni, a következő hónaptól áttérünk a szokásos havidíjra.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Átalányadózás vagy tételes költségelszámolás éri meg jobban?</summary>
+      <div class="faq-body">
+        <p>A bevallás beadása előtt mindkét lehetőséget kiszámolom a valós számai alapján, és megmondom a különbséget forintban. A tételes költségelszámolás több nyilvántartással jár, ezért az összevetésbe a feldolgozás idejét és árát is beleszámolom.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Hogyan tartjuk a kapcsolatot?</summary>
+      <div class="faq-body">
+        <p>Közvetlenül annak a könyvelőnek ír, aki az ügyeit viszi, nem egy általános vonalra. Az oldalon lévő űrlapra munkanapokon 24 órán belül válaszolok, telefonon 9.00 és 16.00 között érhető el az iroda. Az év közbeni konzultáció a havidíj része.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ================= ZÁVEREČNÁ VÝZVA ================= -->
+<section class="cta-band" aria-labelledby="ponuka-nadpis">
+  <div class="wrap cta-in">
+    <div>
+      <h2 id="ponuka-nadpis">Kötelezettség nélküli ajánlat két munkanapon belül</h2>
+      <p>Írja meg a vállalkozási formát, a bizonylatok hozzávetőleges számát, és azt, hogy vannak-e munkavállalói. Fix havi árat és a szolgáltatások körét egy dokumentumban küldöm el. Az ajánlat 30 napig érvényes.</p>
+    </div>
+    <div class="cta-btns">
+      <a class="btn btn-acc2" href="#kontakt">Kötelezettség nélküli ajánlat</a>
+      <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT ================= -->
+<section class="sec" id="kontakt" style="border-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">15</b> Kapcsolat</p>
+      <div>
+        <h2 class="sec-h">Kapcsolat és kötelezettség nélküli ajánlat</h2>
+        <p class="lead">Írja meg, mivel foglalkozik, és milyen állapotban van a könyvelése. Jelentkezem, és megmondom, mire lesz szükségem, és mennyibe kerül a havidíj.</p>
+      </div>
+    </header>
+
+    <div class="contact">
+      <div>
+        <ul class="cdata">
+          <li>
+            <span class="lbl">Az iroda címe</span>
+            <span class="val">Vám utca 21., 1011 Budapest</span>
+            <span class="cnote">Földszint, bejárat közvetlenül az utcáról. Parkolás az udvaron, ügyfeleknek az első két óra díjtalan.</span>
+          </li>
+          <li>
+            <span class="lbl">Telefon</span>
+            <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+            <span class="cnote">Hétfőtől péntekig 9.00 és 16.00 között.</span>
+          </li>
+          <li>
+            <span class="lbl">Személyes találkozók</span>
+            <span class="val num">Hétfőtől csütörtökig, 9.00 – 15.00</span>
+            <span class="cnote">Mindig előre egyeztetett időpontban. A péntek a feldolgozásé és a bevallásoké.</span>
+          </li>
+          <li>
+            <span class="lbl">Bizonylatok leadása</span>
+            <span class="val num">Minden munkanapon 16.00-ig</span>
+            <span class="cnote">Zárható postaláda a Vám utca 21. bejáratánál, az átvételt visszaigazolom.</span>
+          </li>
+          <li>
+            <span class="lbl">Hol dolgozom</span>
+            <span class="val">Budapest és egész Magyarország</span>
+            <span class="cnote">Az ügyfelek többsége távolról intézi a könyvelést, a személyes találkozó az Ön döntése.</span>
+          </li>
+        </ul>
+
+        <div class="plate reveal">
+          <svg class="plate-geo" viewBox="0 0 640 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <defs>
+              <radialGradient id="svetlo3" cx="0.92" cy="0.94" r="0.6">
+                <stop offset="0" stop-color="#7a5c22" stop-opacity="0.11"/>
+                <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="640" height="520" fill="url(#svetlo3)"/>
+            <path d="M640 92 L640 520 L214 520 Z" fill="#7a5c22" fill-opacity="0.05"/>
+            <g fill="none" stroke="#7a5c22" stroke-opacity="0.16">
+              <circle cx="566" cy="470" r="92"/>
+              <circle cx="566" cy="470" r="150"/>
+              <circle cx="566" cy="470" r="208"/>
+            </g>
+            <g stroke="#14181c" stroke-opacity="0.07">
+              <path d="M0 128 H640 M0 176 H640 M0 224 H640"/>
+            </g>
+          </svg>
+          <div class="plate-in">
+            <p class="plate-kicker">Hogyan zajlik</p>
+            <p class="plate-quote">Közvetlenül annak a könyvelőnek ír, aki az ügyeit viszi.</p>
+            <ul class="plate-facts">
+              <li>Válasz az érdeklődésre <b class="num">24 órán belül</b></li>
+              <li>Bevezető beszélgetés <b class="num">20 perc</b></li>
+              <li>Árajánlat <b class="num">2 napon belül</b></li>
+              <li>Az első feldolgozott hónap <b class="num">kötöttség nélkül</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <form id="dopyt" novalidate>
+          <p class="form-intro">Töltse ki a három mezőt, és küldje el. Az üzenet a SALDIA könyvelőiroda postafiókjába érkezik a Vám utca 21.-be, a választ pedig munkanapokon <b>24 órán belül</b> megkapja.</p>
+
+          <div class="frow">
+            <div class="f">
+              <label class="lab" for="meno">Név <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="meno" name="meno" autocomplete="name" required placeholder="Hogyan szólíthatom">
+            </div>
+            <div class="f">
+              <label class="lab" for="tel">Telefon <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="tel" name="tel" autocomplete="tel" required placeholder="A szám, amelyen elérhetem">
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="f">
+              <label class="lab" for="firma">Cégnév <span class="opt-l">(nem kötelező)</span></label>
+              <input type="text" id="firma" name="firma" autocomplete="organization" placeholder="A cég vagy a vállalkozás neve">
+            </div>
+            <div class="f">
+              <label class="lab" for="subjekt">Vállalkozási forma</label>
+              <select id="subjekt" name="subjekt">
+                <option>Egyéni vállalkozó</option>
+                <option>Korlátolt felelősségű társaság</option>
+                <option>Nonprofit szervezet vagy egyesület</option>
+                <option>Egyelőre nem tudom, most kezdem</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="f">
+            <label class="lab" for="odkedy">Mikortól van szüksége könyvelőre</label>
+            <select id="odkedy" name="odkedy">
+              <option>Minél hamarabb</option>
+              <option>A következő hónaptól</option>
+              <option>Az új évtől</option>
+              <option>Egyelőre csak érdeklődöm</option>
+            </select>
+          </div>
+
+          <div class="f">
+            <label class="lab" for="sprava">Mire van szüksége <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="sprava" name="sprava" required
+              placeholder="Például: Kft., ÁFA-alany, két munkavállaló, havonta kb. 60 bizonylat, szeptembertől keresek könyvelőt."></textarea>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" id="suhlas" required>
+            <span>Hozzájárulok, hogy az iroda ezzel az érdeklődéssel kapcsolatban megkeressen. A mintában semmi nem kerül elküldésre vagy tárolásra.</span>
+          </label>
+
+          <button class="btn btn-acc" type="submit" style="width:100%">Kötelezettség nélküli ajánlatot kérek</button>
+          <p class="form-note">Mintaűrlap. Az éles weboldalon az üzenet a könyvelőiroda postafiókjába érkezne, és 24 órán belül választ kapna. Ha sürgős, hívjon minket.</p>
+        </form>
+
+        <div class="sent" id="sent" hidden>
+          <h3>Az űrlap működik, de ez csak minta</h3>
+          <p>Az adatai nem mentek el sehová, és senki nem kapta meg őket. Az éles weboldalon az érdeklődés ebben a pillanatban megérkezne a könyvelőiroda postafiókjába, és 24 órán belül választ kapna.</p>
+          <p style="margin-top:12px">Szeretne ilyen weboldalt a vállalkozásának? <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a></p>
+          <button class="again" type="button" id="again">Az űrlap újbóli kipróbálása</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= AUTOR UKÁŽKY — reálne kontakty ================= -->
+<section class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap">
+    <div class="authorbox">
+      <p class="eyebrow">A minta szerzője — valódi elérhetőségek</p>
+      <h2 id="autor-nadpis">Tetszik ez a weboldal?</h2>
+      <p class="lead">Minden, ami e keret fölött van, minta, a SALDIA könyvelőiroda nem létezik. Ezt a weboldalt <b>Alex Poliak</b> tervezte és programozta. Ugyanilyen weboldalt készít az Ön cégének is, a szövegekkel, az árlistával, a kalkulátorral és működő űrlappal együtt.</p>
+
+      <ul class="author-num">
+        <li>
+          <span class="k">Kezdő ár</span>
+          <span class="n num">250 €</span>
+          <span class="d">Egyoldalas egyedi weboldal, a szövegekkel és az élesítéssel együtt.</span>
+        </li>
+        <li>
+          <span class="k">Első terv</span>
+          <span class="n num">3 napon belül</span>
+          <span class="d">Valódi oldalt lát, nem egy képet egy prezentációban.</span>
+        </li>
+        <li>
+          <span class="k">Konzultáció</span>
+          <span class="n">ingyenes</span>
+          <span class="d">Kötelezettség nélkül. Megmondom, mit kell tartalmaznia a weboldalnak, és mit hoz Önnek valójában.</span>
+        </li>
+      </ul>
+
+      <ul class="author-data">
+        <li>
+          <span class="lbl">A weboldal szerzője</span>
+          <span class="val">Alex Poliak</span>
+        </li>
+        <li>
+          <span class="lbl">E-mail</span>
+          <a class="val" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>
+        </li>
+        <li>
+          <span class="lbl">Támogatás</span>
+          <a class="val" href="mailto:support@apoliak.online">support@apoliak.online</a>
+        </li>
+        <li>
+          <span class="lbl">Telefon</span>
+          <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+          <span class="sub">Inkább írna? Írjon a lenti űrlapon.</span>
+        </li>
+        <li>
+          <span class="lbl">Weboldal</span>
+          <a class="val" href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a>
+        </li>
+      </ul>
+
+      <div class="author-foot">
+        <p>A konzultáció ingyenes és kötelezettség nélküli.</p>
+        <a class="btn btn-light" href="https://apoliak.online/hu/" target="_blank" rel="noopener">Az apoliak.online megnyitása</a>
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="foot-brand">SALDIA</span>
+        <p class="foot-desc">Egyéni vállalkozói nyilvántartás és kettős könyvvitel, bérszámfejtés és adóbevallások egyéni vállalkozóknak és kis cégeknek. Iroda Budapesten, ügyfelek az egész országból.</p>
+        <p style="margin-top:18px"><a class="btn btn-acc2" href="#kontakt">Kötelezettség nélküli ajánlat</a></p>
+      </div>
+      <div>
+        <h3>Iroda</h3>
+        <ul class="foot-addr">
+          <li>SALDIA Kft.<br>Vám utca 21.<br>1011 Budapest</li>
+          <li><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+            <span>Hétfőtől péntekig, 9.00 – 16.00</span></li>
+          <li>Személyes találkozók<span>Hétfőtől csütörtökig, 9.00 – 15.00, előzetes egyeztetéssel</span></li>
+          <li class="num">Cégjegyzékszám <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik.">ide kerül az Ön cégjegyzékszáma</span><span>Adószám <span class="ukazka-kontakt" title="Mintaweboldal — az adat szándékosan hiányzik.">az Ön cége szerint kerül ide</span></span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Weboldal</h3>
+        <ul>
+          <li><a href="#sluzby">A szolgáltatások köre</a></li>
+          <li><a href="#odvetvia">Kinek könyvelek</a></li>
+          <li><a href="#cennik">Havi átalánydíjak</a></li>
+          <li><a href="#referencie">Referenciák és árak</a></li>
+          <li><a href="#kalkulacka">Havidíj-kalkulátor</a></li>
+          <li><a href="#postup">Az együttműködés menete</a></li>
+          <li><a href="#podklady">Iratok az ügyféltől</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>További</h3>
+        <ul>
+          <li><a href="#terminy">Határidők az év során</a></li>
+          <li><a href="#kancelaria">Cím és parkolás</a></li>
+          <li><a href="#hodiny">Nyitvatartás</a></li>
+          <li><a href="#platby">Számlázás és fizetés</a></li>
+          <li><a href="#storno">Lemondás és befejezés</a></li>
+          <li><a href="#ochrana">Adatvédelem</a></li>
+          <li><a href="#otazky">Gyakori kérdések</a></li>
+          <li><a href="#kariera">Karrier és gyakorlat</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-note">
+      <span>© <span class="num">2026</span> SALDIA Kft. · Vám utca 21., 1011 Budapest · <span class="num">Cégjegyzékszám: <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik.">ide kerül az Ön száma</span></span> · mintaweboldal</span>
+      <span>A weboldalt tervezte és programozta: <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a></span>
+    </div>
+
+
+    <p class="disclaimer"><b>Figyelem:</b> a SALDIA egy mintaként létrehozott, kitalált könyvelőiroda. A név, a cím, a cégjegyzékszám, az adószám, az árak, a határidők és az elérhetőségek illusztrációk, és nem tartoznak létező céghez. Szeretne hasonló weboldalt a vállalkozásának? Nézze meg az <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a> oldalt.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- výška lepiacej hlavičky pre scroll-margin ---- */
+  var stack = document.querySelector('.topstack');
+  function setStack(){
+    if(!stack) return;
+    document.documentElement.style.setProperty('--stack', stack.offsetHeight + 'px');
+  }
+  setStack();
+  window.addEventListener('resize', setStack);
+  window.addEventListener('load', setStack);
+  if('ResizeObserver' in window && stack){ new ResizeObserver(setStack).observe(stack); }
+
+  /* ---- mobilné menu ---- */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('menu');
+
+  function closeMenu(){
+    menu.classList.remove('is-open');
+    burger.setAttribute('aria-expanded','false');
+    burger.setAttribute('aria-label','Menü megnyitása');
+  }
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Menü bezárása' : 'Menü megnyitása');
+    setStack();
+  });
+  menu.addEventListener('click', function(e){
+    if(e.target.closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && menu.classList.contains('is-open')){
+      closeMenu(); burger.focus();
+    }
+  });
+
+  /* ---- zvýraznenie aktívnej sekcie v navigácii ---- */
+  var links = Array.prototype.slice.call(menu.querySelectorAll('a[href^="#"]'));
+  var map = {};
+  links.forEach(function(a){
+    var id = a.getAttribute('href').slice(1);
+    var sec = document.getElementById(id);
+    if(sec) map[id] = a;
+  });
+  if('IntersectionObserver' in window){
+    var navObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){ a.removeAttribute('aria-current'); });
+          var a = map[en.target.id];
+          if(a) a.setAttribute('aria-current','true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(map).forEach(function(id){ navObs.observe(document.getElementById(id)); });
+  }
+
+  /* ---- jemné nábehy pri scrollovaní (vypnuté pri prefers-reduced-motion) ---- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  var chce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(chce || !('IntersectionObserver' in window)){
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  } else {
+    var revObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.classList.add('is-in');
+          revObs.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+    reveals.forEach(function(el){ revObs.observe(el); });
+  }
+
+  /* ================= KALKULAČKA MESAČNÉHO PAUŠÁLU =================
+     Ceny sú totožné s tabuľkou paušálov v sekcii Cenník:
+       Štart      39 €, do 20 dokladov, ďalší 1,10 €, DPH +25 €, mzda 12 €/osoba
+       Štandard   69 €, do 40 dokladov, ďalší 1,10 €, DPH +25 €, mzda 12 €/osoba
+       Rozšírený 129 €, do 80 dokladov, ďalší 0,90 €, DPH v cene, 2 mzdy v cene
+     Pre s. r. o. sa počítajú paušály Štandard aj Rozšírený a vyberie sa lacnejší.
+     ================================================================ */
+
+  var TARIFY = {
+    start:     { nazov:'Start',     popis:'egyszerűsített nyilvántartás', zaklad:__p(39),  doklady:20, zaDoklad:__c(1.10), dph:__p(25), mzdyVCene:0, zaMzdu:__p(12) },
+    standard:  { nazov:'Standard',  popis:'kettős könyvvitel',   zaklad:__p(69),  doklady:40, zaDoklad:__c(1.10), dph:__p(25), mzdyVCene:0, zaMzdu:__p(12) },
+    rozsireny: { nazov:'Bővített', popis:'kettős könyvvitel',   zaklad:__p(129), doklady:80, zaDoklad:__c(0.90), dph:0,  mzdyVCene:2, zaMzdu:__p(12) }
+  };
+
+  var fmt0 = new Intl.NumberFormat('hu-HU', { maximumFractionDigits:0 });
+  var fmt2 = new Intl.NumberFormat('hu-HU', { minimumFractionDigits:2, maximumFractionDigits:2 });
+
+  function cent(x){ return Math.round(x * 100) / 100; }
+  function eur(x){
+    var v = cent(x);
+    return (v === Math.round(v) ? fmt0.format(v) : fmt2.format(v)) + ' Ft';
+  }
+  function osob(n){
+    if(n === 1) return '1 fő';
+    if(n >= 2 && n <= 4) return n + ' főre';
+    return n + ' főre';
+  }
+
+  var elDoklady   = document.getElementById('doklady');
+  var elDokladyOut= document.getElementById('dokladyOut');
+  var elZam       = document.getElementById('zam');
+  var elDph       = document.getElementById('dph');
+  var elSuma      = document.getElementById('sumaOut');
+  var elTier      = document.getElementById('tierOut');
+  var elRozpis    = document.getElementById('rozpisOut');
+  var elPozn      = document.getElementById('poznamkaOut');
+  var typRadia    = document.querySelectorAll('input[name="typ"]');
+
+  function typSubjektu(){
+    var v = 'szco';
+    Array.prototype.forEach.call(typRadia, function(r){ if(r.checked) v = r.value; });
+    return v;
+  }
+
+  /* vypočíta cenu jedného paušálu a vráti aj rozpis položiek */
+  function vypocet(kluc, doklady, zam, jeDph){
+    var t = TARIFY[kluc];
+    var polozky = [];
+    var spolu = t.zaklad;
+
+    polozky.push(['Havidíj: ' + t.nazov + ' — ' + t.popis, t.zaklad]);
+
+    var navyse = Math.max(0, doklady - t.doklady);
+    if(navyse > 0){
+      var cenaDokladov = cent(navyse * t.zaDoklad);
+      spolu += cenaDokladov;
+      polozky.push(['Doklady nad rozsah: ' + navyse + ' × ' + fmt2.format(t.zaDoklad) + ' Ft', cenaDokladov]);
+    } else {
+      polozky.push(['Bizonylatok a havidíj keretében (legfeljebb ' + t.doklady + ')', 0]);
+    }
+
+    var mzdyNavyse = Math.max(0, zam - t.mzdyVCene);
+    if(zam > 0){
+      if(mzdyNavyse > 0){
+        var cenaMzdy = cent(mzdyNavyse * t.zaMzdu);
+        spolu += cenaMzdy;
+        polozky.push([
+          (t.mzdyVCene > 0 ? 'Mzdy nad rozsah: ' : 'Bérszámfejtés: ') +
+          osob(mzdyNavyse) + ' × ' + fmt0.format(t.zaMzdu) + ' Ft', cenaMzdy]);
+      } else {
+        polozky.push(['Bérszámfejtés: ' + osob(zam) + ' a havidíjban', 0]);
+      }
+    }
+
+    if(jeDph){
+      if(t.dph > 0){
+        spolu += t.dph;
+        polozky.push(['ÁFA-ügyintézés és adatszolgáltatás', t.dph]);
+      } else {
+        polozky.push(['ÁFA-ügyintézés és adatszolgáltatás a havidíjban', 0]);
+      }
+    }
+
+    return { kluc:kluc, nazov:t.nazov, spolu:cent(spolu), polozky:polozky };
+  }
+
+  function riadok(popis, hodnota){
+    var li = document.createElement('li');
+    var a = document.createElement('span'); a.textContent = popis;
+    var b = document.createElement('span'); b.className = 'num'; b.textContent = eur(hodnota);
+    li.appendChild(a); li.appendChild(b);
+    return li;
+  }
+
+  function prepocitaj(){
+    var doklady = parseInt(elDoklady.value, 10) || 0;
+    var zam = Math.max(0, Math.min(20, parseInt(elZam.value, 10) || 0));
+    var jeDph = elDph.checked;
+
+    elDokladyOut.textContent = doklady;
+
+    var vysledok;
+    if(typSubjektu() === 'sro'){
+      var a = vypocet('standard', doklady, zam, jeDph);
+      var b = vypocet('rozsireny', doklady, zam, jeDph);
+      vysledok = (b.spolu < a.spolu) ? b : a;
+    } else {
+      vysledok = vypocet('start', doklady, zam, jeDph);
+    }
+
+    elSuma.textContent = eur(vysledok.spolu).replace(' Ft','');
+    elTier.textContent = 'Havidíj: ' + vysledok.nazov;
+
+    elRozpis.textContent = '';
+    vysledok.polozky.forEach(function(p){ elRozpis.appendChild(riadok(p[0], p[1])); });
+
+    var pozn = 'Az éves beszámolót és az adóbevallást az egyszeri szolgáltatások árlistája szerint külön számlázom.';
+    if(doklady >= 200){
+      pozn = 'Havi 200 bizonylat felett automatikus adatimportot állítunk be, és egyedi havidíjat egyeztetünk. Az ár általában alacsonyabb annál, amit a kalkulátor mutat.';
+    } else if(zam >= 8){
+      pozn = 'Nyolc vagy több munkavállalónál tételes díj helyett az egész csapatra szóló bérszámfejtési átalánydíjat egyeztetünk.';
+    } else if(vysledok.kluc === 'rozsireny'){
+      pozn = 'Ebben a terjedelemben a Bővített csomag jön ki olcsóbban, amelyben az ÁFA-ügyintézés és két fő bérszámfejtése is benne van.';
+    }
+    elPozn.textContent = pozn;
+  }
+
+  Array.prototype.forEach.call(typRadia, function(r){ r.addEventListener('change', prepocitaj); });
+  elDoklady.addEventListener('input', prepocitaj);
+  elDph.addEventListener('change', prepocitaj);
+  elZam.addEventListener('input', prepocitaj);
+  elZam.addEventListener('change', function(){
+    elZam.value = Math.max(0, Math.min(20, parseInt(elZam.value, 10) || 0));
+    prepocitaj();
+  });
+  document.getElementById('zamPlus').addEventListener('click', function(){
+    elZam.value = Math.min(20, (parseInt(elZam.value,10) || 0) + 1); prepocitaj();
+  });
+  document.getElementById('zamMinus').addEventListener('click', function(){
+    elZam.value = Math.max(0, (parseInt(elZam.value,10) || 0) - 1); prepocitaj();
+  });
+  prepocitaj();
+
+  /* ================= FORMULÁR (ukážka, nič sa neodosiela) ================= */
+
+  var form = document.getElementById('dopyt');
+  var sent = document.getElementById('sent');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var chyba = null;
+    ['meno','tel','sprava'].forEach(function(id){
+      var f = document.getElementById(id);
+      if(!f.value.trim() && !chyba) chyba = f;
+    });
+    var tel = document.getElementById('tel');
+    if(!chyba && tel.value.replace(/[^0-9]/g,'').length < 9) chyba = tel;
+    var suhlas = document.getElementById('suhlas');
+    if(!chyba && !suhlas.checked) chyba = suhlas;
+
+    if(chyba){
+      chyba.style.borderColor = '#8a2b2b';
+      chyba.focus();
+      return;
+    }
+
+    form.hidden = true;
+    sent.hidden = false;
+    sent.setAttribute('role','status');
+    sent.setAttribute('tabindex','-1');
+    sent.focus();
+  });
+
+  document.getElementById('again').addEventListener('click', function(){
+    sent.hidden = true;
+    form.hidden = false;
+    form.reset();
+    Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function(f){ f.style.borderColor = ''; });
+    document.getElementById('meno').focus();
+  });
+
+  Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function(f){
+    f.addEventListener('input', function(){ f.style.borderColor = ''; });
+  });
+})();
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,2448 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/kaviaren/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/kaviaren/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/kaviaren/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/kaviaren/">
+<!-- /jazyky:hreflang -->
+<title>Hársfa — kávézó és pizzéria</title>
+<meta name="description" content="Hársfa — kávézó és pizzéria. Kínálat és árak, napi menü, nyitvatartás, egyedi pizza összeállítása, ajándékutalványok és asztalfoglalás. Mintaweboldal, tervezte és programozta Alex Poliak.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hársfa — kávézó és pizzéria">
+<meta property="og:description" content="Kínálat és árak, napi menü, nyitvatartás és foglalás. Mintaweboldal Alex Poliaktól, apoliak.online.">
+<meta property="og:locale" content="hu_HU">
+<meta name="theme-color" content="#1F1C18">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='4'%20fill='%231F1C18'/%3E%3Crect%20x='14'%20y='14'%20width='36'%20height='4'%20fill='%238C3A22'/%3E%3Crect%20x='14'%20y='26'%20width='36'%20height='2'%20fill='%23E7E1D6'/%3E%3Crect%20x='14'%20y='34'%20width='24'%20height='2'%20fill='%23E7E1D6'/%3E%3Crect%20x='14'%20y='42'%20width='30'%20height='2'%20fill='%23E7E1D6'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   LIPOVÁ — kaviareň a pizzeria. Ukážkový web (apoliak.online).
+   Jeden súbor, nula externých požiadaviek.
+   Paleta: piesková a krémová neutrálna základňa + jeden tehlový akcent.
+   ========================================================================== */
+
+:root{
+  --bg:#F4F0E8;
+  --bg-alt:#EAE4D8;
+  --surface:#FCFAF6;
+  --ink:#1F1C18;
+  --muted:#5F5850;
+  --line:#D5CCBC;
+  --line-soft:#E2DACB;
+  --accent:#8C3A22;
+  --accent-dark:#6F2C18;
+  --accent-tint:#D18E72;     /* akcent na tmavom podklade */
+  --on-dark:#E7E1D6;
+  --on-dark-muted:#B5AC9E;
+  --dark-line:#3A342C;
+  --dark-card:#26221D;
+
+  --radius:3px;
+  --wrap:1160px;
+  --bar-h:76px;              /* výšku spodného pásika dopočíta JS */
+
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,"Liberation Sans",sans-serif;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",Times,serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:104px;
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+}
+@media (max-width:620px){ html{scroll-padding-top:132px} }
+
+body{
+  margin:0;
+  padding-bottom:var(--bar-h);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16.5px;
+  line-height:1.68;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* clip nevytvára rolovací kontext, takže nerozbíja sticky hlavičku */
+@supports (overflow-x:clip){ html,body{overflow-x:clip} }
+
+@media (min-width:700px){ :root{--bar-h:52px} }
+
+h1,h2,h3,h4{margin:0;font-family:var(--serif);font-weight:600;line-height:1.15;letter-spacing:-.012em;text-wrap:balance}
+h1{font-size:clamp(2.3rem,5.8vw,4.3rem);line-height:1.04;letter-spacing:-.024em}
+h2{font-size:clamp(1.6rem,3.1vw,2.45rem);line-height:1.08;letter-spacing:-.018em}
+h3{font-size:clamp(1.08rem,1.6vw,1.24rem)}
+p{margin:0 0 1em}
+a{color:inherit}
+ul,ol{margin:0;padding:0}
+figure{margin:0}
+
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+@media (max-width:520px){ .wrap{width:min(100% - 28px,var(--wrap))} }
+
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.section--dark :where(a,button):focus-visible{outline-color:var(--accent-tint)}
+
+/* ---------- HLAVIČKA ---------- */
+.site-head{
+  position:sticky;top:0;z-index:40;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.site-head__wrap{position:relative}
+.site-head__in{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;min-height:64px}
+
+.brand{display:inline-flex;flex-direction:column;text-decoration:none;flex:0 0 auto}
+.brand__name{font-family:var(--serif);font-size:1.3rem;letter-spacing:.12em;text-transform:uppercase;line-height:1}
+.brand__sub{margin-top:.3rem;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+.site-nav{margin-left:auto;display:flex;align-items:center;gap:1.4rem}
+.nav-list{list-style:none;display:flex;align-items:center;gap:1.35rem;flex-wrap:wrap}
+.nav-list a{
+  text-decoration:none;font-size:.93rem;color:var(--ink);
+  padding:.25rem 0;border-bottom:1px solid transparent;
+}
+.nav-list a:hover{border-bottom-color:var(--ink)}
+.nav-list a[aria-current="true"]{border-bottom-color:var(--accent);color:var(--accent)}
+
+/* Hlavná akcia a telefón: v hlavičke na každej šírke, nikdy nie v hamburgeri. */
+.head-act{display:flex;align-items:center;gap:.7rem;flex:0 0 auto;margin-left:1.1rem}
+.head-tel{
+  font-weight:600;font-size:.95rem;font-variant-numeric:tabular-nums;white-space:nowrap;
+  color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--accent);padding-bottom:2px;
+}
+.head-tel:hover{color:var(--accent)}
+
+.nav-toggle{
+  display:none;align-items:center;gap:.5rem;flex:0 0 auto;
+  background:transparent;color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:.5rem .8rem;font:inherit;font-size:.9rem;cursor:pointer;
+}
+.nav-toggle svg{width:18px;height:18px}
+.nav-toggle .ico-close{display:none}
+.js .nav-toggle[aria-expanded="true"] .ico-open{display:none}
+.js .nav-toggle[aria-expanded="true"] .ico-close{display:block}
+
+@media (max-width:1120px){
+  .site-nav{gap:1.05rem}
+  .nav-list{gap:1.05rem}
+  .nav-list a{font-size:.88rem}
+}
+@media (max-width:1000px){
+  .js .nav-toggle{display:inline-flex}
+  .js .site-nav{
+    position:absolute;left:0;right:0;top:100%;
+    display:none;
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+    padding:.4rem 20px 1.1rem;
+    margin:0;
+  }
+  .js .site-nav[data-open="true"]{display:block}
+  .nav-list{flex-direction:column;align-items:stretch;gap:0}
+  .nav-list li{border-bottom:1px solid var(--line-soft)}
+  .nav-list a{display:block;padding:.75rem 0;font-size:1rem}
+  .js .head-act{margin-left:auto}
+}
+
+/* Na mobile ide hlavička do dvoch riadkov, aby tlačidlo aj telefón ostali viditeľné. */
+@media (max-width:620px){
+  .site-head__in{min-height:0;padding:.6rem 0;row-gap:.55rem}
+  .brand{flex:1 1 auto;min-width:0}
+  .head-act{order:3;flex:1 0 100%;margin-left:0;gap:.5rem}
+  .head-act .btn{flex:1 1 auto}
+  .head-tel{
+    flex:1 1 auto;text-align:center;padding:.5rem .5rem;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  }
+}
+
+/* ---------- TLAČIDLÁ ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent);color:#fff;
+  border:1px solid var(--accent);border-radius:var(--radius);
+  padding:.72rem 1.35rem;
+  font:inherit;font-size:.94rem;font-weight:600;letter-spacing:.01em;
+  text-decoration:none;cursor:pointer;
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+}
+.btn:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+.btn--outline{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn--outline:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn--light{background:transparent;color:var(--on-dark);border-color:var(--on-dark-muted)}
+.btn--light:hover{background:var(--on-dark);color:var(--ink);border-color:var(--on-dark)}
+/* Hlavná akcia na tmavom podklade: svetlý akcent + tmavý text (kontrast 6,3:1). */
+.btn--accent-light{background:var(--accent-tint);color:var(--ink);border-color:var(--accent-tint)}
+.btn--accent-light:hover{background:var(--on-dark);color:var(--ink);border-color:var(--on-dark)}
+.btn--sm{padding:.5rem 1rem;font-size:.88rem}
+.btn--wide{width:100%}
+
+/* ---------- SEKCIE ---------- */
+.section{padding:clamp(3.2rem,6.5vw,5.6rem) 0}
+.section + .section{border-top:1px solid var(--line)}
+.section--alt{background:var(--bg-alt);border-top:1px solid var(--line)}
+.section--dark{background:var(--ink);color:var(--on-dark);border-top:1px solid var(--ink)}
+.section--dark h2,.section--dark h3,.section--dark h4{color:var(--on-dark)}
+
+.eyebrow{
+  margin:0 0 1rem;
+  font-size:.71rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);
+}
+.section--dark .eyebrow{color:var(--accent-tint)}
+.eyebrow__n{
+  color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.eyebrow__n::after{
+  content:"";display:inline-block;vertical-align:middle;
+  width:22px;height:1px;background:var(--line);
+  margin:0 .8rem 0 .8rem;
+}
+.section--dark .eyebrow__n{color:var(--on-dark-muted)}
+.section--dark .eyebrow__n::after{background:var(--dark-line)}
+
+.lead{max-width:62ch;color:var(--muted);font-size:1.04rem}
+.section--dark .lead{color:var(--on-dark-muted)}
+
+.sec-head{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:1.6rem 3rem;align-items:end;
+  padding-bottom:1.8rem;margin-bottom:clamp(2.4rem,4vw,3.4rem);
+  border-bottom:1px solid var(--line);
+}
+.sec-head .lead{margin:0}
+.section--dark .sec-head{border-bottom-color:var(--dark-line)}
+@media (max-width:820px){ .sec-head{grid-template-columns:1fr;align-items:start} }
+
+.sub-head{margin:clamp(2.6rem,5vw,3.8rem) 0 1.5rem;padding-bottom:.8rem;border-bottom:1px solid var(--line)}
+.sub-head h3{font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.section--dark .sub-head{border-bottom-color:var(--dark-line)}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(1.2rem,2.4vw,1.7rem);
+}
+.card h3{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.7rem}
+.card p{margin:0 0 .7rem;color:var(--muted);font-size:.95rem}
+.card p:last-child{margin-bottom:0}
+.section--dark .card{background:var(--dark-card);border-color:var(--dark-line)}
+.section--dark .card p{color:var(--on-dark-muted)}
+
+/* ==========================================================================
+   DIZAJNOVÉ KOMPOZÍCIE / OBRAZOVÉ MIESTA
+   Vrstvené gradienty, geometria, vlásočnicové vzory a typografické panely.
+   Každá kompozícia je <figure class="obraz art …"> a je pripravená na to,
+   aby sa neskôr nahradila fotografiou (viď komentáre FOTO v HTML).
+   ========================================================================== */
+.art{
+  position:relative;display:flex;overflow:hidden;isolation:isolate;
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:linear-gradient(158deg,#F2ECE0 0%,#E9E1D1 52%,#E1D8C5 100%);
+  color:var(--ink);
+}
+.art--dark{
+  background:linear-gradient(163deg,#2C2721 0%,#211D19 54%,#181512 100%);
+  border-color:var(--dark-line);color:var(--on-dark);
+}
+.art__in{
+  position:relative;z-index:3;flex:1 1 auto;min-width:0;
+  display:flex;flex-direction:column;gap:1.1rem;
+  padding:clamp(1.3rem,2.6vw,2.1rem);
+}
+
+/* vrstvy vzorov */
+.art__l{position:absolute;inset:0;z-index:1;pointer-events:none}
+/* Sýtosť vzorov je zámerne nízka: aj v mieste čiary musí text
+   nad plochou splniť kontrast WCAG AA. */
+.art__l--grid{
+  background-image:
+    repeating-linear-gradient(0deg, rgba(31,28,24,.06) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(31,28,24,.06) 0 1px, transparent 1px 34px);
+}
+.art--dark .art__l--grid{
+  background-image:
+    repeating-linear-gradient(0deg, rgba(231,225,214,.06) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(231,225,214,.06) 0 1px, transparent 1px 34px);
+}
+.art__l--hatch{background-image:repeating-linear-gradient(45deg, rgba(31,28,24,.06) 0 1px, transparent 1px 10px)}
+.art--dark .art__l--hatch{background-image:repeating-linear-gradient(45deg, rgba(231,225,214,.06) 0 1px, transparent 1px 10px)}
+.art__l--dots{background-image:radial-gradient(rgba(31,28,24,.07) 1px, transparent 1.2px);background-size:15px 15px}
+.art--dark .art__l--dots{background-image:radial-gradient(rgba(231,225,214,.08) 1px, transparent 1.2px);background-size:15px 15px}
+.art__l--slash{background:linear-gradient(112deg, rgba(31,28,24,.055) 0 44%, rgba(31,28,24,0) 44.3%)}
+.art--dark .art__l--slash{background:linear-gradient(112deg, rgba(231,225,214,.06) 0 44%, rgba(231,225,214,0) 44.3%)}
+.art__l--warm{background:linear-gradient(196deg, rgba(140,58,34,.09) 0%, rgba(140,58,34,0) 58%)}
+.art--dark .art__l--warm{background:linear-gradient(196deg, rgba(209,142,114,.10) 0%, rgba(209,142,114,0) 58%)}
+.art__l--rule{
+  background-image:
+    linear-gradient(to bottom, rgba(31,28,24,.16) 0 1px, transparent 1px),
+    linear-gradient(to top, rgba(31,28,24,.16) 0 1px, transparent 1px);
+  margin:clamp(1.3rem,2.6vw,2.1rem) 0;
+}
+.art--dark .art__l--rule{
+  background-image:
+    linear-gradient(to bottom, rgba(231,225,214,.18) 0 1px, transparent 1px),
+    linear-gradient(to top, rgba(231,225,214,.18) 0 1px, transparent 1px);
+}
+
+/* zrno cez SVG feTurbulence, vložené ako data URI */
+.art__l--grain{
+  opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+.art--dark .art__l--grain{opacity:.085}
+
+/* geometria */
+.art__ring{position:absolute;z-index:2;border-radius:50%;pointer-events:none}
+.art__ring{border:1px solid rgba(140,58,34,.30);width:min(80%,380px);aspect-ratio:1;right:-16%;bottom:-30%}
+.art__ring--sm{width:min(54%,250px);right:8%;bottom:-12%;border-color:rgba(31,28,24,.16)}
+.art--dark .art__ring{border-color:rgba(209,142,114,.32)}
+.art--dark .art__ring--sm{border-color:rgba(231,225,214,.18)}
+.art__bar{position:absolute;z-index:2;background:var(--accent);width:44px;height:2px;left:clamp(1.3rem,2.6vw,2.1rem);bottom:clamp(1.3rem,2.6vw,2.1rem)}
+.art--dark .art__bar{background:var(--accent-tint)}
+
+/* typografia v ploche */
+.art__eyebrow{margin:0;font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.art--dark .art__eyebrow{color:var(--accent-tint)}
+.art__num{
+  margin:0;font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.9rem,8vw,4.7rem);line-height:.98;letter-spacing:-.025em;
+  font-variant-numeric:tabular-nums;
+}
+.art__num small{display:block;font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-top:.75rem;color:var(--accent)}
+.art--dark .art__num small{color:var(--accent-tint)}
+.art__word{margin:0;font-family:var(--serif);font-size:clamp(1.9rem,4.4vw,2.9rem);line-height:1.06;letter-spacing:-.02em}
+.art__cap{margin:0;font-size:.95rem;color:var(--muted);max-width:34ch}
+.art--dark .art__cap{color:var(--on-dark-muted)}
+.art__foot{margin:auto 0 0;padding-top:1rem;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.art--dark .art__foot{color:var(--on-dark-muted)}
+
+.art__rows{list-style:none;display:grid;gap:0;margin:auto 0 0}
+.art__rows li{
+  display:grid;grid-template-columns:minmax(3.9rem,auto) minmax(0,1fr);
+  gap:.2rem .9rem;align-items:baseline;
+  padding:.72rem 0;border-top:1px solid rgba(31,28,24,.16);
+}
+.art--dark .art__rows li{border-top-color:rgba(231,225,214,.18)}
+.art__rows b{font-family:var(--serif);font-size:1.28rem;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.art__rows span{font-size:.93rem;color:var(--muted)}
+.art--dark .art__rows span{color:var(--on-dark-muted)}
+@media (max-width:400px){
+  .art__rows li{grid-template-columns:1fr}
+  .art__rows span{margin-top:.1rem}
+}
+
+/* rozmery plôch */
+.art--wide{min-height:clamp(250px,26vw,330px)}
+.art--square{min-height:250px}
+.art--tall{min-height:clamp(290px,30vw,380px)}
+
+/* ---------- ÚVOD ---------- */
+.hero{padding:clamp(3rem,7.5vw,6.6rem) 0 clamp(2.6rem,5vw,4.2rem)}
+.hero__head{text-align:center}
+.hero__meta{font-size:.71rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 1.5rem}
+.hero__rule{display:block;width:52px;height:1px;background:var(--accent);margin:0 auto 1.7rem}
+.hero h1{max-width:22ch;margin:0 auto 1.4rem}
+.hero__text{max-width:56ch;margin:0 auto 2.3rem;color:var(--muted);font-size:clamp(1.02rem,1.35vw,1.14rem)}
+.hero__cta{display:flex;gap:.7rem;flex-wrap:wrap}
+.hero .hero__cta{justify-content:center}
+.hero__map{margin:1.5rem 0 0;font-size:.94rem}
+
+/* ---------- PÁS S ÚDAJMI ---------- */
+.facts{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  text-align:left;
+  margin-top:clamp(2.8rem,6vw,4.6rem);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.facts a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);white-space:nowrap}
+.facts a:hover{color:var(--accent)}
+.facts > div{padding:1.5rem 1.6rem 1.5rem 0;border-right:1px solid var(--line)}
+.facts > div:last-child{border-right:0}
+.facts > div + div{padding-left:1.6rem}
+.facts dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.facts dd{margin:0;font-size:1rem;font-weight:600}
+.facts dd small{display:block;font-weight:400;font-size:.86rem;color:var(--muted);margin-top:.2rem}
+@media (max-width:900px){
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts > div{border-bottom:1px solid var(--line)}
+  .facts > div:nth-child(2n){border-right:0}
+  .facts > div:nth-child(2n+1){padding-left:0}
+  .facts > div:nth-child(2n){padding-left:1.6rem}
+  .facts > div:nth-last-child(-n+2){border-bottom:0}
+}
+@media (max-width:520px){
+  .facts{grid-template-columns:1fr}
+  .facts > div{border-right:0;padding-left:0!important;padding-right:0;border-bottom:1px solid var(--line)}
+  .facts > div:last-child{border-bottom:0}
+}
+
+/* ---------- CENNÍK ---------- */
+.price-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(2.4rem,4vw,3.4rem) clamp(1.6rem,3vw,3rem)}
+@media (max-width:1000px){ .price-cols{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:680px){ .price-cols{grid-template-columns:1fr} }
+
+.price-col h3{
+  padding-bottom:.7rem;margin-bottom:.4rem;
+  border-bottom:1px solid var(--ink);
+  font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+}
+.price-list{list-style:none}
+.price-list li{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:.4rem 1rem;align-items:baseline;
+  padding:.75rem 0;border-bottom:1px solid var(--line-soft);
+}
+.price-list .name{font-weight:600}
+.price-list .desc{display:block;font-weight:400;font-size:.88rem;color:var(--muted);margin-top:.15rem}
+.price-list .meta{
+  display:block;font-weight:400;font-size:.8rem;color:var(--muted);
+  margin-top:.25rem;letter-spacing:.02em;font-variant-numeric:tabular-nums;
+}
+.price-list .price{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.price-note{margin:1.1rem 0 0;font-size:.88rem;color:var(--muted)}
+.price-note a{color:var(--accent);font-weight:600}
+
+/* ---------- ALERGÉNY ---------- */
+.aleg{
+  margin-top:clamp(2.2rem,4vw,3.2rem);
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface);padding:clamp(1.2rem,2.4vw,1.7rem);
+}
+.aleg h3{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1rem}
+.aleg ol{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem 1.6rem}
+@media (max-width:900px){ .aleg ol{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:520px){ .aleg ol{grid-template-columns:1fr} }
+.aleg li{font-size:.92rem;color:var(--muted);display:flex;gap:.6rem;align-items:baseline}
+.aleg li b{
+  flex:0 0 auto;min-width:1.5rem;color:var(--ink);font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.aleg p{margin:1.1rem 0 0;font-size:.88rem;color:var(--muted)}
+
+/* ---------- OBRAZOVÉ MIESTA S CENOU ---------- */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.5rem)}
+@media (max-width:900px){ .gal{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .gal{grid-template-columns:1fr} }
+.gal__item{display:flex;flex-direction:column;min-width:0}
+.gal__item .obraz{flex:1 1 auto}
+.gal__buy{
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem 1rem;flex-wrap:wrap;
+  margin:.9rem 0 0;
+}
+.gal__price{font-family:var(--serif);font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.gal__cap{margin:.8rem 0 0;font-size:.92rem;color:var(--muted)}
+.section--dark .gal__cap{color:var(--on-dark-muted)}
+
+/* ---------- ODKAZ NA MAPU ---------- */
+.maplink{
+  display:inline-flex;align-items:center;gap:.45rem;
+  color:var(--accent);font-weight:600;text-decoration:none;
+  border-bottom:1px solid var(--accent);
+}
+.maplink:hover{color:var(--accent-dark);border-bottom-color:var(--accent-dark)}
+.maplink--dark{color:var(--accent-tint);border-bottom-color:var(--accent-tint)}
+.maplink--dark:hover{color:var(--on-dark);border-bottom-color:var(--on-dark)}
+
+/* ---------- DENNÉ MENU ---------- */
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.day{background:var(--bg);padding:1.3rem 1.2rem;display:flex;flex-direction:column;gap:.8rem}
+.day__name{margin:0;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.day[data-today="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
+.day__today{background:var(--accent);color:#fff;border-radius:2px;padding:.1rem .4rem;font-size:.62rem;letter-spacing:.1em}
+.day dl{margin:0;display:grid;gap:.6rem}
+.day dt{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.day dd{margin:.1rem 0 0;font-size:.95rem}
+.day__price{margin:auto 0 0;padding-top:.8rem;border-top:1px solid var(--line);font-weight:700;font-variant-numeric:tabular-nums}
+@media (max-width:1000px){ .days{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:560px){ .days{grid-template-columns:1fr} }
+
+/* ---------- KONFIGURÁTOR AKO OBJEDNÁVKOVÝ FORMULÁR ---------- */
+.config{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(1.4rem,3vw,2.6rem);align-items:start}
+@media (max-width:900px){ .config{grid-template-columns:1fr} }
+
+.config__sheet{
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(1.2rem,3vw,2.3rem);
+  min-width:0;
+}
+.config__sheet-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:.4rem 1.4rem;flex-wrap:wrap;
+  padding-bottom:1rem;margin-bottom:clamp(1.6rem,3vw,2.2rem);
+  border-bottom:1px solid var(--ink);
+}
+.config__sheet-head b{font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.config__sheet-head span{font-size:.85rem;color:var(--muted)}
+
+.config fieldset{border:0;margin:0 0 clamp(1.8rem,3vw,2.6rem);padding:0;min-width:0}
+.config fieldset:last-of-type{margin-bottom:0}
+.config legend{
+  padding:0 0 .6rem;margin-bottom:.7rem;width:100%;
+  font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);
+  border-bottom:1px solid var(--line);
+}
+.config legend .num{color:var(--accent);margin-right:.6rem;font-variant-numeric:tabular-nums}
+.config legend .hint{float:right;font-weight:400;letter-spacing:.04em;text-transform:none;color:var(--muted);font-size:.78rem}
+.config__foot{
+  margin:clamp(1.8rem,3vw,2.4rem) 0 0;padding-top:1.1rem;
+  border-top:1px solid var(--line);
+  font-size:.86rem;color:var(--muted);max-width:66ch;
+}
+
+.choices{list-style:none;display:grid;gap:0}
+.choices li{border-bottom:1px solid var(--line-soft)}
+.choice{display:flex;align-items:center;gap:.8rem;padding:.7rem .2rem;cursor:pointer;position:relative}
+.choice input{position:absolute;opacity:0;width:1px;height:1px}
+.choice .box{
+  flex:0 0 auto;width:1.05rem;height:1.05rem;
+  border:1px solid var(--muted);border-radius:2px;background:var(--surface);
+  position:relative;transition:background .14s ease,border-color .14s ease;
+}
+.choice input[type="radio"] + .box{border-radius:50%}
+.choice input:checked + .box{background:var(--accent);border-color:var(--accent)}
+.choice input[type="radio"]:checked + .box::after{
+  content:"";position:absolute;left:50%;top:50%;
+  width:.34rem;height:.34rem;border-radius:50%;background:#fff;transform:translate(-50%,-50%);
+}
+.choice input[type="checkbox"]:checked + .box::after{
+  content:"";position:absolute;left:50%;top:48%;
+  width:.5rem;height:.26rem;
+  border-left:2px solid #fff;border-bottom:2px solid #fff;
+  transform:translate(-50%,-65%) rotate(-45deg);
+}
+.choice input:focus-visible + .box{outline:2px solid var(--accent);outline-offset:2px}
+.choice .txt{flex:1 1 auto}
+.choice .sub{display:block;font-size:.85rem;color:var(--muted)}
+.choice .val{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.92rem;white-space:nowrap}
+.tops-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:2rem}
+@media (max-width:560px){ .tops-grid{grid-template-columns:1fr} }
+
+.summary{
+  position:sticky;top:96px;
+  background:var(--surface);
+  border:1px solid var(--line);border-top:2px solid var(--accent);
+  border-radius:0 0 var(--radius) var(--radius);
+  padding:1.5rem 1.6rem 1.6rem;
+}
+.summary h3{font-family:var(--sans);font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.1rem}
+.summary dl{margin:0;display:grid;gap:0}
+.summary .row{
+  display:flex;justify-content:space-between;gap:1rem;align-items:baseline;
+  font-size:.93rem;padding:.6rem 0;border-bottom:1px solid var(--line-soft);
+}
+.summary .row dt{color:var(--muted)}
+.summary .row dd{margin:0;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.summary__tops{font-size:.88rem;color:var(--muted);margin:.9rem 0 0}
+.summary__total{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  margin:1.2rem 0 0;padding-top:1.2rem;border-top:1px solid var(--ink);
+}
+.summary__total span{font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.summary__total b{font-family:var(--serif);font-size:2rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.summary__hint{margin:1rem 0 1.3rem;font-size:.84rem;color:var(--muted)}
+@media (max-width:900px){ .summary{position:static} }
+
+/* ---------- PREVÁDZKA ---------- */
+.split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.8rem,4vw,3.4rem);align-items:center}
+.split--top{align-items:start}
+@media (max-width:860px){ .split{grid-template-columns:1fr} }
+.split > div > p{max-width:64ch}
+.plain-list{list-style:none;display:grid;gap:1.1rem;margin-top:1.6rem}
+.plain-list li{padding-left:1.1rem;border-left:1px solid var(--line)}
+.plain-list b{display:block;margin-bottom:.15rem}
+.plain-list p{margin:0;color:var(--muted);font-size:.94rem}
+.section--dark .plain-list li{border-left-color:var(--dark-line)}
+.section--dark .plain-list p{color:var(--on-dark-muted)}
+
+.art-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:2.6rem}
+@media (max-width:680px){ .art-row{grid-template-columns:1fr} }
+
+.roles{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem 2.4rem;margin-top:1.4rem}
+@media (max-width:680px){ .roles{grid-template-columns:1fr} }
+.roles li{padding-top:.9rem;border-top:1px solid var(--line)}
+.roles b{display:block;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.25rem}
+.roles p{margin:0;font-size:.94rem;color:var(--muted)}
+
+/* ---------- DENNÝ RYTMUS ---------- */
+.rhythm{list-style:none;display:grid;gap:0;border-top:1px solid var(--line)}
+.rhythm li{
+  display:grid;grid-template-columns:minmax(5rem,7.5rem) minmax(0,1fr);
+  gap:.5rem clamp(1.2rem,3vw,3rem);align-items:baseline;
+  padding:clamp(1.2rem,2.2vw,1.7rem) 0;border-bottom:1px solid var(--line-soft);
+}
+.rhythm b{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(1.5rem,2.6vw,2.05rem);line-height:1.05;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.rhythm h3{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.45rem}
+.rhythm p{margin:0;color:var(--muted);font-size:.95rem;max-width:62ch}
+@media (max-width:520px){ .rhythm li{grid-template-columns:1fr;gap:.2rem} }
+
+/* ---------- HODINY ---------- */
+.hours-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.6rem,3.5vw,3rem);align-items:start}
+@media (max-width:860px){ .hours-wrap{grid-template-columns:1fr} }
+.table-scroll{overflow-x:auto}
+table.hours{width:100%;min-width:300px;border-collapse:collapse;background:var(--surface);border:1px solid var(--line)}
+table.hours caption{caption-side:bottom;text-align:left;padding-top:.8rem;font-size:.85rem;color:var(--muted)}
+table.hours th,table.hours td{padding:.72rem 1rem;text-align:left;border-bottom:1px solid var(--line-soft);font-size:.95rem}
+table.hours thead th{
+  font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;
+  border-bottom:1px solid var(--line);
+}
+table.hours tbody th{font-weight:600;white-space:nowrap}
+table.hours td{font-variant-numeric:tabular-nums;white-space:nowrap}
+table.hours tbody tr:last-child th,table.hours tbody tr:last-child td{border-bottom:0}
+table.hours tr[data-today="true"]{background:var(--bg-alt)}
+table.hours tr[data-today="true"] th{box-shadow:inset 3px 0 0 var(--accent)}
+
+.status{
+  display:inline-flex;align-items:center;gap:.6rem;
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
+  padding:.5rem .9rem;margin:0 0 1.2rem;font-size:.92rem;font-weight:600;
+}
+.status__dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.info-box{border:1px solid var(--line);border-radius:var(--radius);padding:1.4rem 1.5rem;background:var(--surface)}
+.info-box h3{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.9rem}
+.info-box ul{list-style:none;display:grid;gap:.6rem}
+.info-box li{padding-left:.9rem;position:relative;font-size:.94rem;color:var(--muted)}
+.info-box li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:1px;background:var(--accent)}
+
+/* ---------- MRIEŽKY OBSAHU ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem)}
+@media (max-width:900px){ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .grid-3{grid-template-columns:1fr} }
+
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(2rem,4vw,3.6rem)}
+@media (max-width:780px){ .faq{grid-template-columns:1fr} }
+.faq > div{padding:1.5rem 0;border-top:1px solid var(--line)}
+.faq h3{font-size:1.06rem;margin-bottom:.5rem}
+.faq p{margin:0;color:var(--muted);font-size:.95rem}
+
+.jobs{list-style:none;display:grid;gap:0}
+.jobs li{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:.4rem 2rem;align-items:baseline;
+  padding:1.25rem 0;border-top:1px solid var(--line);
+}
+@media (max-width:560px){ .jobs li{grid-template-columns:1fr} }
+.jobs h3{font-family:var(--sans);font-size:1.02rem;font-weight:700;letter-spacing:.01em;margin-bottom:.3rem}
+.jobs p{margin:0;color:var(--muted);font-size:.94rem;max-width:62ch}
+.jobs .tag{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.section--dark .jobs li{border-top-color:var(--dark-line)}
+.section--dark .jobs p{color:var(--on-dark-muted)}
+.section--dark .jobs .tag{color:var(--accent-tint)}
+
+.social{list-style:none;display:grid;gap:.75rem;margin-top:1rem}
+.social li{padding-top:.75rem;border-top:1px solid var(--dark-line);font-size:.95rem;color:var(--on-dark-muted)}
+.social b{display:inline-block;min-width:9.5rem;color:var(--on-dark);font-weight:600}
+
+/* ---------- FORMULÁR ---------- */
+.order{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(1.8rem,4vw,3.2rem);align-items:start}
+@media (max-width:860px){ .order{grid-template-columns:1fr} }
+.form-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.3rem,3vw,2rem)}
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem}
+@media (max-width:620px){ .field-grid{grid-template-columns:1fr} }
+.field{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.field--full{grid-column:1 / -1}
+.field label{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.field .req{color:var(--accent)}
+.field input,.field select,.field textarea{
+  font:inherit;font-size:.98rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:.66rem .8rem;width:100%;max-width:100%;
+  transition:border-color .14s ease,background .14s ease;
+}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--muted)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:var(--surface);outline:none}
+.field textarea{resize:vertical;min-height:104px}
+.field__hint{font-size:.82rem;color:var(--muted)}
+.form-foot{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-top:1.6rem}
+.form-foot p{margin:0;font-size:.85rem;color:var(--muted);max-width:36ch}
+.form-note{margin-top:1.3rem;border:1px solid var(--accent);border-left-width:3px;border-radius:var(--radius);padding:.95rem 1.1rem;display:none}
+.form-note[data-shown="true"]{display:block}
+.form-note h3{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.4rem;color:var(--accent)}
+.form-note p{margin:0;font-size:.94rem}
+
+.aside-list{display:grid;gap:1.4rem}
+.aside-box{border-top:1px solid var(--line);padding-top:1.2rem}
+.aside-box h3{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.5rem}
+.aside-box p{margin:0;color:var(--muted);font-size:.94rem}
+.aside-box .big{display:block;font-family:var(--serif);font-size:1.55rem;color:var(--ink);margin-bottom:.4rem;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.aside-box .big a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent)}
+.aside-box .big a:hover{color:var(--accent)}
+
+/* ---------- KONTAKT ---------- */
+.contact{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(1.8rem,4vw,3.4rem);align-items:start}
+@media (max-width:860px){ .contact{grid-template-columns:1fr} }
+.contact-list{margin:2rem 0 0;display:grid;gap:1.3rem}
+.contact-list dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);margin-bottom:.25rem}
+.contact-list dd{margin:0;font-size:1.05rem}
+.contact-list a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.contact-list a:hover{color:var(--accent-tint)}
+.contact-list small{display:block;font-size:.82rem;color:var(--on-dark-muted);margin-top:.2rem}
+
+/* ---------- AUTOR UKÁŽKY ---------- */
+.author{background:var(--surface);border-top:1px solid var(--line);padding:clamp(3rem,6vw,5rem) 0}
+.author__in{border-left:3px solid var(--accent);padding-left:clamp(1.2rem,3vw,2.4rem)}
+.author__tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 .8rem}
+.author h2{margin-bottom:.9rem}
+.author__lead{max-width:62ch;color:var(--muted)}
+.author__points{
+  list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1.4rem 2.4rem;margin:2.2rem 0 0;
+}
+@media (max-width:680px){ .author__points{grid-template-columns:1fr;gap:1.1rem} }
+.author__points li{padding-top:1rem;border-top:1px solid var(--line)}
+.author__points b{display:block;font-family:var(--serif);font-size:1.5rem;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-bottom:.3rem}
+.author__points span{font-size:.92rem;color:var(--muted)}
+.author__contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.2rem;margin:2.2rem 0 0;border-top:1px solid var(--line);padding-top:1.6rem}
+.author__contacts dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.author__contacts dd{margin:0;font-size:1.02rem;font-weight:600;overflow-wrap:anywhere}
+.author__contacts a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+.author__contacts a:hover{color:var(--accent-dark)}
+.author__contacts .sms{display:inline-block;margin-top:.35rem;font-size:.85rem;font-weight:400;color:var(--muted);border-bottom-color:var(--line)}
+.author__price{margin:1.8rem 0 0;font-size:1.02rem;font-weight:600}
+
+/* ---------- PÄTA ---------- */
+.site-foot{background:var(--ink);color:var(--on-dark-muted);padding:2.6rem 0 3rem;font-size:.92rem}
+.foot-grid{display:flex;justify-content:space-between;gap:1.6rem 2.4rem;flex-wrap:wrap}
+.foot-grid .brand__name{color:var(--on-dark)}
+.foot-grid .brand__sub{color:var(--on-dark-muted)}
+.foot-links{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem 2rem}
+@media (max-width:520px){ .foot-links{grid-template-columns:1fr} }
+.foot-links a{color:var(--on-dark);text-decoration:none}
+.foot-links a:hover{text-decoration:underline}
+.foot-grid p a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px;font-variant-numeric:tabular-nums}
+.foot-act{margin-top:1.3rem;display:flex;gap:.6rem;flex-wrap:wrap}
+.foot-pay{margin:1.3rem 0 0;padding-top:1.1rem;border-top:1px solid var(--dark-line);max-width:34ch}
+.foot-pay b{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark);margin-bottom:.35rem}
+.foot-note{margin:2.2rem 0 0;padding-top:1.4rem;border-top:1px solid var(--dark-line);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.85rem}
+.foot-note a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- SPODNÝ PÁSIK UKÁŽKY ---------- */
+.demobar{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  background:var(--ink);color:var(--on-dark);
+  border-top:1px solid var(--dark-line);
+}
+.demobar__in{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:.35rem 1.1rem;padding:.62rem 0;
+  font-size:.84rem;text-align:center;
+}
+.demobar__tag{
+  font-size:.66rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent-tint);white-space:nowrap;
+  border:1px solid rgba(209,142,114,.45);border-radius:2px;padding:.16rem .5rem;
+}
+.demobar__claim{color:var(--on-dark-muted)}
+.demobar a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.demobar a:hover{color:var(--accent-tint)}
+.demobar__tel{font-variant-numeric:tabular-nums}
+
+/* ---------- JEMNÝ NÁBEH PRI SCROLLOVANÍ ---------- */
+.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.js .reveal.is-in{opacity:1;transform:none}
+
+/* ---------- BEZ JAVASCRIPTU ---------- */
+html:not(.js) .nav-toggle{display:none}
+html:not(.js) .site-head{position:static}
+html:not(.js) .summary{position:static}
+html:not(.js) #toOrder{display:none}
+html:not(.js) .status{display:none}
+
+/* ---------- REDUKOVANÝ POHYB ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none}
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+  }
+}
+
+/* ---------- TLAČ ---------- */
+@media print{
+  .demobar,.site-head,.nav-toggle,.btn{display:none}
+  body{padding-bottom:0;background:#fff}
+  .art{display:none}
+  .js .reveal{opacity:1;transform:none}
+}
+
+/* ---------- POISTKA NA FARBU TLAČIDIEL ----------
+   Kontextové pravidlá typu ".contact-list a" alebo ".author__contacts a"
+   majú rovnakú špecificitu ako ".btn". Tento blok je posledný, takže
+   tlačidlo si vždy udrží svoju farbu textu.                              */
+a.btn,button.btn{color:#fff}
+a.btn:hover,button.btn:hover{color:#fff}
+a.btn--outline,button.btn--outline{color:var(--ink)}
+a.btn--outline:hover,button.btn--outline:hover{color:var(--bg)}
+a.btn--light,button.btn--light{color:var(--on-dark)}
+a.btn--light:hover,button.btn--light:hover{color:var(--ink)}
+a.btn--accent-light,button.btn--accent-light{color:var(--ink)}
+a.btn--accent-light:hover,button.btn--accent-light:hover{color:var(--ink)}
+
+/* preskočenie na obsah pre klávesnicu a čítačky */
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:#1F1C18;color:#FCFAF6;padding:12px 18px;border-radius:0 0 8px 0;font-weight:600;text-decoration:none}
+.skip:focus{left:8px;top:8px}
+
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*400);return v.toLocaleString('hu-HU');}function __f(x){return Math.round(x).toLocaleString('hu-HU');}function __p(x){return Math.round(x*400/10)*10;}function __c(x){return x*400;}var __m="Ft";</script>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<a class="skip" href="#top">Ugrás a tartalomra</a>
+
+<!-- ============ HLAVIČKA ============ -->
+<header class="site-head">
+  <div class="wrap site-head__wrap">
+    <div class="site-head__in">
+      <a class="brand" href="#top">
+        <span class="brand__name">Hársfa</span> <span class="brand__sub">Kávézó és pizzéria</span>
+      </a>
+
+      <nav class="site-nav" id="mainnav" aria-label="Fő navigáció">
+        <ul class="nav-list">
+          <li><a href="#ponuka">Kínálat</a></li>
+          <li><a href="#denne">Napi menü</a></li>
+          <li><a href="#konfigurator">Egyedi pizza</a></li>
+          <li><a href="#prevadzka">Működés</a></li>
+          <li><a href="#hodiny">Nyitvatartás</a></li>
+          <li><a href="#otazky">Kérdések</a></li>
+          <li><a href="#kontakt">Kapcsolat</a></li>
+        </ul>
+      </nav>
+
+      <div class="head-act">
+        <a class="btn btn--sm" href="#objednavka">Foglalás</a>
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mainnav">
+        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Menü
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ ÚVOD ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero__head">
+      <p class="hero__meta">Hársfa utca 8., 1074 Budapest</p>
+      <span class="hero__rule" aria-hidden="true"></span>
+      <h1>Kávézó és pizzéria a Hársfa utcában</h1>
+      <p class="hero__text">Reggeli 11:00-ig, napi menü 11:00 &ndash; 14:30 között 3560 Ft-ért, kőkemencés pizza 21:15-ig, pénteken és szombaton 22:15-ig.</p>
+      <div class="hero__cta">
+        <a class="btn" href="#objednavka">Foglalás</a>
+        <a class="btn btn--outline" href="#ponuka">Kínálat és árak</a>
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      </div>
+      <p class="hero__map"><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=H%C3%A1rsfa+utca+8%2C+1074+Budapest" target="_blank" rel="noopener">A Hársfa utca 8. megtekintése a térképen</a></p>
+    </div>
+
+    <dl class="facts">
+      <div>
+        <dt>Nyitva</dt>
+        <dd>H &ndash; Cs 7:30 &ndash; 22:00<small>P 23:00-ig, Szo 9:00 &ndash; 23:00, V 9:00 &ndash; 21:00</small></dd>
+      </div>
+      <div>
+        <dt>Napi menü</dt>
+        <dd>11:00 &ndash; 14:30<small>Leves, főétel és ital 3560 Ft-ért</small></dd>
+      </div>
+      <div>
+        <dt>Foglalás és elvitel</dt>
+        <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span><small>Az elviteles rendelést általában 15 perc alatt elkészítjük</small></dd>
+      </div>
+      <div>
+        <dt>Fizetés</dt>
+        <dd>Kártya és készpénz<small>SZÉP-kártyát is elfogadunk</small></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ PONUKA A CENY ============ -->
+<section class="section section--alt" id="ponuka">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">01</span>Árak</p>
+        <h2>Kínálat és árak</h2>
+      </div>
+      <p class="lead">Az árak véglegesek, a felszolgálással együtt. A pizza átmérője 33 cm, a nagyobb, 45 cm-es méret 1280 Ft felár. Minden tételnél szerepel a tömeg és az allergének száma, a listájukat az árlista alatt találja.</p>
+    </div>
+
+    <div class="price-cols reveal">
+      <div class="price-col">
+        <h3>Kávé és italok</h3>
+        <ul class="price-list">
+          <li><span class="name">Eszpresszó<span class="desc">Brazil és etióp keverék</span><span class="meta">30 ml &middot; allergénmentes</span></span><span class="price">640 Ft</span></li>
+          <li><span class="name">Doppio<span class="desc">Dupla eszpresszó</span><span class="meta">60 ml &middot; allergénmentes</span></span><span class="price">840 Ft</span></li>
+          <li><span class="name">Cappuccino<span class="desc">Eszpresszó és tejhab</span><span class="meta">180 ml &middot; allergének 7</span></span><span class="price">1080 Ft</span></li>
+          <li><span class="name">Flat white<span class="desc">Dupla ristretto és tej</span><span class="meta">200 ml &middot; allergének 7</span></span><span class="price">1160 Ft</span></li>
+          <li><span class="name">Latte<span class="desc">Magas pohárban</span><span class="meta">300 ml &middot; allergének 7</span></span><span class="price">1160 Ft</span></li>
+          <li><span class="name">Filteres kávé<span class="desc">Átfolyatott, a nap főzete</span><span class="meta">250 ml &middot; allergénmentes</span></span><span class="price">1280 Ft</span></li>
+          <li><span class="name">Cold brew<span class="desc">16 órán át áztatva</span><span class="meta">250 ml &middot; allergénmentes</span></span><span class="price">1360 Ft</span></li>
+          <li><span class="name">Házi limonádé<span class="desc">Bodzás vagy uborkás</span><span class="meta">0,4 l &middot; allergénmentes</span></span><span class="price">1280 Ft</span></li>
+          <li><span class="name">Szálas tea<span class="desc">Hatféle, kannában</span><span class="meta">0,5 l &middot; allergénmentes</span></span><span class="price">1040 Ft</span></li>
+          <li><span class="name">Forró csokoládé<span class="desc">Étcsokoládéból</span><span class="meta">0,25 l &middot; allergének 7</span></span><span class="price">1240 Ft</span></li>
+        </ul>
+        <p class="price-note">Növényi tej +160 Ft, szirup +120 Ft.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Pizza</h3>
+        <ul class="price-list">
+          <li><span class="name">Margherita<span class="desc">Paradicsomalap, mozzarella, bazsalikom</span><span class="meta">380 g &middot; allergének 1, 7</span></span><span class="price">2880 Ft</span></li>
+          <li><span class="name">Bianca<span class="desc">Ricotta, fokhagyma, rozmaring, olívaolaj</span><span class="meta">390 g &middot; allergének 1, 7</span></span><span class="price">3360 Ft</span></li>
+          <li><span class="name">Funghi<span class="desc">Csiperkegomba, kakukkfű, tejszínes alap</span><span class="meta">420 g &middot; allergének 1, 7</span></span><span class="price">3560 Ft</span></li>
+          <li><span class="name">Ortolana<span class="desc">Grillezett zöldség, olajbogyó, rukkola</span><span class="meta">450 g &middot; allergének 1, 7</span></span><span class="price">3680 Ft</span></li>
+          <li><span class="name">Salame piccante<span class="desc">Csípős szalámi, chili, oregánó</span><span class="meta">440 g &middot; allergének 1, 7</span></span><span class="price">3760 Ft</span></li>
+          <li><span class="name">Napoletana<span class="desc">Szardella, kapribogyó, oregánó</span><span class="meta">430 g &middot; allergének 1, 4, 7</span></span><span class="price">3840 Ft</span></li>
+          <li><span class="name">Quattro formaggi<span class="desc">Mozzarella, gorgonzola, parmezán, juhsajt</span><span class="meta">470 g &middot; allergének 1, 7</span></span><span class="price">4320 Ft</span></li>
+          <li><span class="name">Prosciutto e rucola<span class="desc">Szárított sonka, rukkola, parmezán</span><span class="meta">430 g &middot; allergének 1, 7</span></span><span class="price">4360 Ft</span></li>
+          <li><span class="name">Pistacchio<span class="desc">Pisztáciapeszto, mozzarella, ricotta</span><span class="meta">460 g &middot; allergének 1, 7, 8</span></span><span class="price">4600 Ft</span></li>
+          <li><span class="name">Zöldséges, sajt nélkül<span class="desc">Vegán, sült paprika és cukkini</span><span class="meta">410 g &middot; allergének 1</span></span><span class="price">3520 Ft</span></li>
+        </ul>
+        <p class="price-note">A tömeg a 33 cm-es átmérőre vonatkozik. A 45 cm-es méret +1280 Ft. Gluténmentes tészta +600 Ft. Az egyedi összeállítást a <a href="#konfigurator">konfigurátorban</a> találja.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Mellé</h3>
+        <ul class="price-list">
+          <li><span class="name">Croissant<span class="desc">Minden reggel helyben sütjük</span><span class="meta">70 g &middot; allergének 1, 3, 7</span></span><span class="price">840 Ft</span></li>
+          <li><span class="name">Rozmaringos focaccia<span class="desc">Pizzatésztából, tengeri sóval</span><span class="meta">220 g &middot; allergének 1</span></span><span class="price">1680 Ft</span></li>
+          <li><span class="name">Olajbogyó és kenyér<span class="desc">Kovászos kenyér, olajbogyó, olívaolaj</span><span class="meta">180 g &middot; allergének 1</span></span><span class="price">1520 Ft</span></li>
+          <li><span class="name">Tiramisu<span class="desc">Alkohol nélkül</span><span class="meta">140 g &middot; allergének 1, 3, 7</span></span><span class="price">1800 Ft</span></li>
+          <li><span class="name">Ricottás sajttorta<span class="desc">Szezonális gyümölccsel</span><span class="meta">130 g &middot; allergének 1, 3, 7</span></span><span class="price">1840 Ft</span></li>
+          <li><span class="name">Szemes kávé<span class="desc">Otthonra, egész szemű</span><span class="meta">250 g &middot; allergénmentes</span></span><span class="price">3960 Ft</span></li>
+        </ul>
+        <p class="price-note">Elviteles csomagolás +120 Ft.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Reggeli 11:00-ig</h3>
+        <ul class="price-list">
+          <li><span class="name">Rántotta három tojásból<span class="desc">Kovászos kenyérrel</span><span class="meta">260 g &middot; allergének 1, 3, 7</span></span><span class="price">2560 Ft</span></li>
+          <li><span class="name">Avokádós kenyér<span class="desc">Kovászos, koktélparadicsom, szezámmag</span><span class="meta">280 g &middot; allergének 1, 11</span></span><span class="price">2760 Ft</span></li>
+          <li><span class="name">Pirítós ricottával és mézzel<span class="desc">Két szelet</span><span class="meta">180 g &middot; allergének 1, 7</span></span><span class="price">2160 Ft</span></li>
+          <li><span class="name">Joghurt granolával<span class="desc">Sült granola, szezonális gyümölcs</span><span class="meta">300 g &middot; allergének 1, 7, 8</span></span><span class="price">1920 Ft</span></li>
+          <li><span class="name">Zabkása<span class="desc">Vízzel vagy tejjel</span><span class="meta">300 g &middot; allergének 1, tejjel 7 is</span></span><span class="price">1680 Ft</span></li>
+          <li><span class="name">Reggelitál<span class="desc">Tojás, sajt, zöldség, péksütemény</span><span class="meta">380 g &middot; allergének 1, 3, 7</span></span><span class="price">3440 Ft</span></li>
+        </ul>
+        <p class="price-note">Reggelit 7:30-tól 11:00-ig szolgálunk fel, hétvégén 12:00-ig.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Saláták és levesek</h3>
+        <ul class="price-list">
+          <li><span class="name">A nap levese<span class="desc">A napi menün kívül is</span><span class="meta">0,33 l &middot; az allergének a napi menü beosztásánál, naponként</span></span><span class="price">1440 Ft</span></li>
+          <li><span class="name">Caprese<span class="desc">Mozzarella, paradicsom, bazsalikom</span><span class="meta">280 g &middot; allergének 7</span></span><span class="price">2960 Ft</span></li>
+          <li><span class="name">Rukkolás-körtés saláta<span class="desc">Dió, parmezán, méz</span><span class="meta">260 g &middot; allergének 7, 8</span></span><span class="price">3160 Ft</span></li>
+          <li><span class="name">Saláta sült cukkinivel<span class="desc">Csicseriborsó, ricotta, citromos öntet</span><span class="meta">300 g &middot; allergének 7</span></span><span class="price">3280 Ft</span></li>
+          <li><span class="name">Bruschetta<span class="desc">Három szelet, paradicsom és fokhagyma</span><span class="meta">210 g &middot; allergének 1</span></span><span class="price">2080 Ft</span></li>
+          <li><span class="name">Extra péksütemény<span class="desc">Kovászos kenyér, két szelet</span><span class="meta">90 g &middot; allergének 1</span></span><span class="price">560 Ft</span></li>
+        </ul>
+        <p class="price-note">A salátákat nagy adagban, főételként is elkészítjük, +800 Ft.</p>
+      </div>
+
+      <div class="price-col">
+        <h3>Bor, sör és üdítő</h3>
+        <ul class="price-list">
+          <li><span class="name">Fehér- vagy vörösbor<span class="desc">Pohárral</span><span class="meta">0,15 l &middot; allergének 12</span></span><span class="price">1360 Ft</span></li>
+          <li><span class="name">Bor, üveggel<span class="desc">Háromféle</span><span class="meta">0,75 l &middot; allergének 12</span></span><span class="price">6600 Ft</span></li>
+          <li><span class="name">Prosecco<span class="desc">Pohárral</span><span class="meta">0,15 l &middot; allergének 12</span></span><span class="price">1680 Ft</span></li>
+          <li><span class="name">Csapolt sör<span class="desc">Világos lager</span><span class="meta">0,5 l &middot; allergének 1</span></span><span class="price">1040 Ft</span></li>
+          <li><span class="name">Alkoholmentes sör<span class="desc">Üveges</span><span class="meta">0,33 l &middot; allergének 1</span></span><span class="price">960 Ft</span></li>
+          <li><span class="name">Ásványvíz<span class="desc">Enyhén szénsavas</span><span class="meta">0,33 l &middot; allergénmentes</span></span><span class="price">720 Ft</span></li>
+          <li><span class="name">Gyümölcslé<span class="desc">Narancs vagy alma</span><span class="meta">0,25 l &middot; allergénmentes</span></span><span class="price">880 Ft</span></li>
+        </ul>
+        <p class="price-note">Csapvizet az ételhez díjmentesen adunk.</p>
+      </div>
+    </div>
+
+    <div class="aleg reveal">
+      <h3>Allergének az árlistában szereplő számok szerint</h3>
+      <ol>
+        <li><b>1</b>Gluténtartalmú gabonafélék</li>
+        <li><b>3</b>Tojás</li>
+        <li><b>4</b>Halak</li>
+        <li><b>7</b>Tej</li>
+        <li><b>8</b>Diófélék</li>
+        <li><b>9</b>Zeller</li>
+        <li><b>11</b>Szezámmag</li>
+        <li><b>12</b>Kén-dioxid és szulfitok</li>
+      </ol>
+      <p>A számok minden árlistás tételnél és a napi menü minden napjánál szerepelnek. Ha egy ételt konkrét alapanyag nélkül kér, mondja el a rendelésnél, a kiszolgáló átveszi Önnel az összetételt.</p>
+    </div>
+
+    <div class="sub-head reveal"><h3>Pizza a kemencéből &ndash; tömeg, allergének és ár</h3></div>
+    <div class="gal reveal">
+      <div class="gal__item">
+        <!-- FOTO: celá Margherita zhora na drevenej doske, viditeľné tmavé škvrny na okraji cesta -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">33 cm-es pizza</p>
+            <p class="art__word">Margherita</p>
+            <p class="art__cap">Paradicsomalap, mozzarella, bazsalikom.</p>
+            <p class="art__foot">380 g &middot; allergének 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">2880 Ft</span><a class="btn btn--sm" href="#objednavka">Megrendelem</a></p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: Salame piccante v peci tesne pred vybratím, plameň vzadu -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">33 cm-es pizza</p>
+            <p class="art__word">Salame piccante</p>
+            <p class="art__cap">Csípős szalámi, chili, oregánó.</p>
+            <p class="art__foot">440 g &middot; allergének 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">3760 Ft</span><a class="btn btn--sm" href="#objednavka">Megrendelem</a></p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: Quattro formaggi rozkrojená na štyri diely, ťahajúci sa syr -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">33 cm-es pizza</p>
+            <p class="art__word">Quattro formaggi</p>
+            <p class="art__cap">Mozzarella, gorgonzola, parmezán, juhsajt.</p>
+            <p class="art__foot">470 g &middot; allergének 1, 7</p>
+          </div>
+        </figure>
+        <p class="gal__buy"><span class="gal__price">4320 Ft</span><a class="btn btn--sm" href="#objednavka">Megrendelem</a></p>
+      </div>
+    </div>
+
+    <div class="split split--top reveal" style="margin-top:clamp(2.6rem,5vw,4rem)">
+      <div class="card">
+        <h3>Szezonális változások a kínálatban</h3>
+        <p>Áprilistól októberig friss fűszernövényes limonádé és jeges kávé is van a kínálatban, télen forralt bor és sűrű forró csokoládé. A salátát és a sajttortát a szezonnak megfelelő gyümölccsel egészítjük ki, ezért az alapanyagok év közben változnak.</p>
+        <p>A szemes kávét kéthavonta cseréljük. Az aktuális keverék a bárpult melletti táblán szerepel, és otthonra csomagolva is áruljuk.</p>
+      </div>
+      <div class="card">
+        <h3>Diéták és allergének</h3>
+        <p>A gluténmentes tésztát külön deszkán készítjük, 600 Ft felárért, az üzem azonban nem gluténmentes, és a lisztnyomok teljes kizárását nem tudjuk garantálni.</p>
+        <p>A vegán ételek az árlistában név szerint szerepelnek: zöldséges pizza sajt nélkül, vízzel készült zabkása és saláta sült cukkinivel, ricotta nélkül. Növényi tejünk zabból és mandulából is van, 160 Ft felárért.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ DENNÉ MENU ============ -->
+<section class="section" id="denne">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">02</span>Hétfőtől péntekig, 11:00 &ndash; 14:30</p>
+        <h2>Napi menü</h2>
+      </div>
+      <p class="lead">A 3560 Ft-os ár tartalmazza a levest, a főételt és egy kis kávét vagy limonádét. A menüt 14:30-ig, illetve a készlet erejéig szolgáljuk fel.</p>
+    </div>
+
+    <div class="days reveal">
+      <div class="day" data-dow="1">
+        <p class="day__name">Hétfő</p>
+        <dl>
+          <div><dt>Leves</dt><dd>Sült paradicsomleves krutonnal</dd></div>
+          <div><dt>Főétel</dt><dd>Margherita koktélparadicsommal</dd></div>
+          <div><dt>Allergének</dt><dd>1, 7</dd></div>
+        </dl>
+        <p class="day__price">3560 Ft</p>
+      </div>
+      <div class="day" data-dow="2">
+        <p class="day__name">Kedd</p>
+        <dl>
+          <div><dt>Leves</dt><dd>Fokhagymakrémleves sajttal és kakukkfűvel</dd></div>
+          <div><dt>Főétel</dt><dd>Funghi tejszínes alappal</dd></div>
+          <div><dt>Allergének</dt><dd>1, 7</dd></div>
+        </dl>
+        <p class="day__price">3560 Ft</p>
+      </div>
+      <div class="day" data-dow="3">
+        <p class="day__name">Szerda</p>
+        <dl>
+          <div><dt>Leves</dt><dd>Lencseleves gyökérzöldségekkel</dd></div>
+          <div><dt>Főétel</dt><dd>Salame piccante oregánóval</dd></div>
+          <div><dt>Allergének</dt><dd>1, 7, 9</dd></div>
+        </dl>
+        <p class="day__price">3560 Ft</p>
+      </div>
+      <div class="day" data-dow="4">
+        <p class="day__name">Csütörtök</p>
+        <dl>
+          <div><dt>Leves</dt><dd>Borsóleves mentával</dd></div>
+          <div><dt>Főétel</dt><dd>Ortolana grillezett cukkinivel</dd></div>
+          <div><dt>Allergének</dt><dd>1, 7</dd></div>
+        </dl>
+        <p class="day__price">3560 Ft</p>
+      </div>
+      <div class="day" data-dow="5">
+        <p class="day__name">Péntek</p>
+        <dl>
+          <div><dt>Leves</dt><dd>Sütőtökleves pirított magokkal</dd></div>
+          <div><dt>Főétel</dt><dd>Pistacchio ricottával</dd></div>
+          <div><dt>Allergének</dt><dd>1, 7, 8</dd></div>
+        </dl>
+        <p class="day__price">3560 Ft</p>
+      </div>
+    </div>
+
+    <div class="grid-3 reveal" style="margin-top:clamp(2.2rem,4vw,3.2rem)">
+      <div class="card">
+        <h3>Hús nélküli választás minden nap</h3>
+        <p>A napi menü főétele mindig hús nélküli, vagy ugyanazon az áron kínálunk mellé hús nélküli cserét. Elég szólni a rendelésnél.</p>
+      </div>
+      <div class="card">
+        <h3>Menü elvitelre</h3>
+        <p>A napi menüt elvitelre is becsomagoljuk. A csomagolás 120 Ft, a levest külön edénybe tesszük. Az ebédrendelést 10:30-ig érdemes leadni.</p>
+      </div>
+      <div class="card">
+        <h3>A heti összeállítás</h3>
+        <p>A következő heti menüt csütörtökön tesszük ki az ajtóra és a bárpult melletti táblára. A levest külön is felszolgáljuk, 1440 Ft-ért.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ KONFIGURÁTOR PIZZE ============ -->
+<section class="section section--alt" id="konfigurator">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">03</span>Rendelési űrlap</p>
+        <h2>Egyedi pizza összeállítása</h2>
+      </div>
+      <p class="lead">Válasszon méretet, alapot, feltéteket és darabszámot. Az ár folyamatosan frissül. A kész összeállítást egyetlen gombbal átviszi az alábbi foglalási űrlapra.</p>
+    </div>
+
+    <form class="config" id="pizzaConfig" novalidate>
+      <div class="config__sheet">
+        <p class="config__sheet-head">
+          <b>Rendelőlap &middot; egyedi pizza</b>
+          <span>Az árak véglegesek, a felszolgálással együtt</span>
+        </p>
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">1</span>Méret</legend>
+          <ul class="choices">
+            <li>
+              <label class="choice">
+                <input type="radio" name="size" value="26" data-price="260000" data-mult="1" data-label="26 cm">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">26 cm<span class="sub">Egy adag</span></span>
+                <span class="val">2600 Ft</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="size" value="33" data-price="328000" data-mult="1" data-label="33 cm" checked>
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">33 cm<span class="sub">Szokásos méret</span></span>
+                <span class="val">3280 Ft</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="size" value="45" data-price="456000" data-mult="1.5" data-label="45 cm">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">45 cm<span class="sub">Ketten megosztva</span></span>
+                <span class="val">4560 Ft</span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">2</span>Alap</legend>
+          <ul class="choices">
+            <li>
+              <label class="choice">
+                <input type="radio" name="base" value="paradicsomos" data-price="0" checked>
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">Paradicsomos</span>
+                <span class="val">az árban benne van</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="base" value="tejszínes" data-price="16000">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">Tejszínes</span>
+                <span class="val">+160 Ft</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="base" value="bazsalikompeszto" data-price="48000">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">Bazsalikompeszto</span>
+                <span class="val">+480 Ft</span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">3</span>Feltétek <span class="hint">Tetszőleges számban</span></legend>
+          <ul class="choices tops-grid">
+            <li><label class="choice"><input type="checkbox" name="top" value="mozzarella" data-price="36000"><span class="box" aria-hidden="true"></span><span class="txt">Mozzarella</span><span class="val">360 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="koktélparadicsom" data-price="32000"><span class="box" aria-hidden="true"></span><span class="txt">Koktélparadicsom</span><span class="val">320 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="csiperkegomba" data-price="32000"><span class="box" aria-hidden="true"></span><span class="txt">Csiperkegomba</span><span class="val">320 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="csípős szalámi" data-price="52000"><span class="box" aria-hidden="true"></span><span class="txt">Csípős szalámi</span><span class="val">520 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="szárított sonka" data-price="64000"><span class="box" aria-hidden="true"></span><span class="txt">Szárított sonka</span><span class="val">640 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="rukola" data-price="28000"><span class="box" aria-hidden="true"></span><span class="txt">Rukkola</span><span class="val">280 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="ricotta" data-price="44000"><span class="box" aria-hidden="true"></span><span class="txt">Ricotta</span><span class="val">440 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="olivy" data-price="32000"><span class="box" aria-hidden="true"></span><span class="txt">Olajbogyó</span><span class="val">320 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="pisztácia" data-price="56000"><span class="box" aria-hidden="true"></span><span class="txt">Pisztácia</span><span class="val">560 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="chilli" data-price="16000"><span class="box" aria-hidden="true"></span><span class="txt">Chili</span><span class="val">160 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="kukurica" data-price="24000"><span class="box" aria-hidden="true"></span><span class="txt">Kukorica</span><span class="val">240 Ft</span></label></li>
+            <li><label class="choice"><input type="checkbox" name="top" value="lilahagyma" data-price="20000"><span class="box" aria-hidden="true"></span><span class="txt">Lilahagyma</span><span class="val">200 Ft</span></label></li>
+          </ul>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num" aria-hidden="true">4</span>Darabszám <span class="hint">Azonos összeállítással</span></legend>
+          <ul class="choices">
+            <li>
+              <label class="choice">
+                <input type="radio" name="qty" value="1" checked>
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">1 darab</span>
+                <span class="val">egy főre</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="qty" value="2">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">2 darab</span>
+                <span class="val">két főre</span>
+              </label>
+            </li>
+            <li>
+              <label class="choice">
+                <input type="radio" name="qty" value="4">
+                <span class="box" aria-hidden="true"></span>
+                <span class="txt">4 darab<span class="sub">Egy órával előbb jelezze</span></span>
+                <span class="val">csoportnak</span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <p class="config__foot">Gluténmentes tésztát darabonként 600 Ft felárért készítünk, elég beírni az űrlap üzenetébe. Az egyedi pizzát a konyha nyitvatartási ideje alatt sütjük, ebédidőben hosszabb lehet a várakozás.</p>
+      </div>
+
+      <aside class="summary" aria-label="A rendelés összegzése">
+        <h3>A rendelés összegzése</h3>
+        <dl>
+          <div class="row"><dt>Méret</dt><dd id="sumSize">33 cm</dd></div>
+          <div class="row"><dt>Alap</dt><dd id="sumBaseName">Paradicsomos</dd></div>
+          <div class="row"><dt>A pizza ára</dt><dd id="sumBase">3280 Ft</dd></div>
+          <div class="row"><dt id="sumTopsLabel">Feltétek (0)</dt><dd id="sumTops">0 Ft</dd></div>
+          <div class="row"><dt>Darabár</dt><dd id="sumUnit">3280 Ft</dd></div>
+          <div class="row"><dt>Darabszám</dt><dd id="sumQty">1</dd></div>
+        </dl>
+        <p class="summary__tops" id="sumTopsList">Egyelőre feltét nélkül.</p>
+        <p class="summary__total"><span>Összesen</span><b id="sumTotal">3280 Ft</b></p>
+        <p class="summary__hint" id="sumHint">45 cm-es méretnél a feltéteket 1,5-szeres áron számoljuk.</p>
+        <p class="vh" role="status" aria-live="polite" id="liveTotal">Összesen 3280 forint</p>
+        <button class="btn btn--wide" type="button" id="toOrder">Átvitel a megrendelésbe</button>
+      </aside>
+    </form>
+  </div>
+</section>
+<!-- ============ PREVÁDZKA ============ -->
+<section class="section" id="prevadzka">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">04</span>Az üzletről</p>
+        <h2>Az üzlet, a tér és a konyha</h2>
+      </div>
+      <p class="lead">Kávézó 42 ülőhellyel és egy 24 fős terasszal az udvarban. A tészta 48 órát kel hidegen, a pizzát kőkemencében sütjük 430 fokon.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <p>Délelőtt kávézóként működünk, tizenegytől napi menüt szolgálunk fel, délután és este kemencés pizzát. A konyha az utolsó rendeléseket a kávézó zárása előtt 45 perccel veszi fel.</p>
+        <ul class="plain-list">
+          <li>
+            <b>Befogadóképesség és terasz</b>
+            <p>42 hely bent, 24 a teraszon, az udvarban. A terasz áprilistól októberig üzemel.</p>
+          </li>
+          <li>
+            <b>Elviteles rendelés</b>
+            <p>Telefonon vagy az űrlapon. Általában 15 perc, ebédidőben és péntek este 25 perc alatt.</p>
+          </li>
+          <li>
+            <b>Nagyobb társaságok</b>
+            <p>A 8 főnél nagyobb társaságot legalább egy nappal előbb foglalja le. Céges ebédhez fix időpontot és menüt is egyeztetünk.</p>
+          </li>
+          <li>
+            <b>Akadálymentes megközelítés</b>
+            <p>A Hársfa utca felőli bejárat lépcső nélküli, a teraszra rámpa vezet az udvarból.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <!-- FOTO: ruky pizzára naťahujúce vykysnuté cesto na pomúčenej doske, detail -->
+        <figure class="obraz art art--wide">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Tészta</p>
+            <p class="art__num">48<small>óra hidegen</small></p>
+            <p class="art__cap">A tésztát két nappal a sütés előtt dagasztjuk, és 4 fokon kelesztjük. Kézzel nyújtjuk, nyújtófát nem használunk.</p>
+          </div>
+        </figure>
+      </div>
+    </div>
+
+    <div class="art-row reveal">
+      <!-- FOTO: ústie kamennej pece s ohňom, pizza na lopate tesne pred vložením -->
+      <figure class="obraz art art--dark art--square">
+        <span class="art__l art__l--hatch" aria-hidden="true"></span>
+        <span class="art__l art__l--warm" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Kőkemence</p>
+          <p class="art__num">430<small>Celsius-fok</small></p>
+          <p class="art__cap">Ezen a hőmérsékleten a pizza 90 másodperc alatt kész, a szélén sötét foltok vannak.</p>
+        </div>
+      </figure>
+
+      <!-- FOTO: šálka cappuccina zhora na bare, vedľa pákový stroj -->
+      <figure class="obraz art art--square">
+        <span class="art__l art__l--dots" aria-hidden="true"></span>
+        <span class="art__l art__l--slash" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Bár</p>
+          <p class="art__num">6<small>kávéfajta naponta</small></p>
+          <p class="art__cap">Eszpresszókeverék, a nap filteres főzete, cold brew és háromféle tejes kávé.</p>
+        </div>
+      </figure>
+
+      <!-- FOTO: terasa vo dvore s obsadenými stolmi a plachtou proti slnku -->
+      <figure class="obraz art art--square">
+        <span class="art__l art__l--grid" aria-hidden="true"></span>
+        <span class="art__l art__l--warm" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Terasz az udvarban</p>
+          <p class="art__num">24<small>hely, áprilistól októberig</small></p>
+          <p class="art__cap">Az udvarba autó nem hajt be, a megközelítés rámpán át van, nyáron az asztalok felett ponyva van.</p>
+        </div>
+      </figure>
+    </div>
+
+    <div class="sub-head reveal"><h3>A tér és akik benne dolgoznak</h3></div>
+    <div class="split split--top reveal">
+      <div>
+        <p>A fő teremnek magas, utcára néző ablakai és egy hosszú, tíz személyes tölgyfa asztala van, amely összetolható és szétválasztható. Az ablaknál négy kétszemélyes asztal áll konnektorral, hátul csendesebb rész van puha padokkal. A bár rögtön a bejáratnál van, így az elviteles rendelést anélkül veszi át, hogy végigmenne a termen.</p>
+        <p>Az udvari teraszt átjáró választja el az utcától, és autó nem hajt be az udvarba. Az asztalok között 90 centiméter van, elfér köztük kerekesszék és babakocsi is.</p>
+
+        <!-- FOTO: barista a pizzár za barom počas zmeny, pohľad zo sály -->
+        <figure class="obraz art art--wide" style="margin-top:1.8rem">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Ebédidős műszak</p>
+            <p class="art__num">5<small>ember az üzemben</small></p>
+            <p class="art__cap">Barista, pizzasütő, konyhai előkészítés, felszolgálás és egy ember az elviteles rendelések kiadásánál. Ebédidőn kívül négyen vannak műszakban.</p>
+          </div>
+        </figure>
+      </div>
+      <div>
+        <ul class="roles">
+          <li>
+            <b>Barista</b>
+            <p>Reggel a karos gépnél áll, elkészíti a nap filteres főzetét, és gondoskodik az őrlésről és a kávé beállításáról.</p>
+          </li>
+          <li>
+            <b>Pizzasütő</b>
+            <p>Nyújtja a tésztát, kezeli a kőkemencét, és tartja a tempót az esti csúcsban.</p>
+          </li>
+          <li>
+            <b>Konyha &ndash; előkészítés</b>
+            <p>Előkészíti az alapokat, a zöldséget és a leveseket a napi menühöz, délelőtt a reggelit is.</p>
+          </li>
+          <li>
+            <b>Felszolgálás</b>
+            <p>Két részre oszlik, bent és a teraszon. Ebédidőben egy ember jön az elviteles rendelések kiadásához.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ GALÉRIA PRIESTORU ============ -->
+<section class="section section--dark" id="galeria">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">05</span>A tér és a terasz</p>
+        <h2>Hogy néz ki nálunk</h2>
+      </div>
+      <p class="lead">A teremben 42 hely van, az udvari teraszon 24. Minden kép alatt olyan adat szerepel, amely a látogatás tervezésénél jól jön.</p>
+    </div>
+
+    <div class="gal reveal">
+      <div class="gal__item">
+        <!-- FOTO: hlavná sála s vysokými oknami do ulice, dlhý dubový stôl v strede -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Főterem</p>
+            <p class="art__word">Hosszú asztal</p>
+            <p class="art__foot">42 hely bent</p>
+          </div>
+        </figure>
+        <p class="gal__cap">A tíz személyes tölgyfa asztal összetolható és szétválasztható. Az ablaknál négy kétszemélyes asztal áll konnektorral.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: ranné pečivo na pulte pri bare, croissanty v koši -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Reggel</p>
+            <p class="art__word">Péksütemény a pulton</p>
+            <p class="art__foot">7:30-tól a készlet erejéig</p>
+          </div>
+        </figure>
+        <p class="gal__cap">A croissant-t minden reggel helyben sütjük, ára 840 Ft. Reggelit 11:00-ig szolgálunk fel, hétvégén 12:00-ig.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: terasa vo dvore z výšky, stoly pod plachtou -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Terasz az udvarban</p>
+            <p class="art__word">Autók nélkül</p>
+            <p class="art__foot">24 hely, áprilistól októberig</p>
+          </div>
+        </figure>
+        <p class="gal__cap">A teraszra az udvarból rámpa vezet. A kutyák a teraszon korlátozás nélkül lehetnek, vizet kérésre adunk nekik.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: bar pri vchode, obsluha odovzdáva zabalenú objednávku na odber -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Kiadás</p>
+            <p class="art__word">Bár a bejáratnál</p>
+            <p class="art__foot">általában 15 perc alatt</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Az elviteles rendelést rögtön az ajtónál veszi át. Ebédidőben és péntek este 25 percig tart, a csomagolás 120 Ft.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: tichšia časť vzadu s mäkkými lavicami, človek s notebookom -->
+        <figure class="obraz art art--square">
+          <span class="art__l art__l--dots" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Hátsó rész</p>
+            <p class="art__word">Padok és konnektorok</p>
+            <p class="art__foot">Ingyenes wifi</p>
+          </div>
+        </figure>
+        <p class="gal__cap">Konnektor a hosszú asztalnál és az ablaknál is van. 11:00 és 14:30 között kérjük, hagyják a nagy asztalokat az ebédelőknek.</p>
+      </div>
+
+      <div class="gal__item">
+        <!-- FOTO: pizza 45 cm na stole pre dvoch, rozkrojená na osem dielov -->
+        <figure class="obraz art art--dark art--square">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Megosztva</p>
+            <p class="art__word">45 cm-es pizza</p>
+            <p class="art__foot">Margherita 4160 Ft</p>
+          </div>
+        </figure>
+        <p class="gal__cap">A 45 cm-es méret 1280 Ft felár az árlista minden pizzájához. Az egyedi összeállítást a konfigurátorban rakja össze.</p>
+      </div>
+    </div>
+
+    <div class="hero__cta" style="margin-top:clamp(2.2rem,4vw,3rem)">
+      <a class="btn btn--accent-light" href="#objednavka">Foglalás</a>
+      <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+    </div>
+  </div>
+</section>
+<!-- ============ DENNÝ RYTMUS ============ -->
+<section class="section section--alt" id="rytmus">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">06</span>A nap menete</p>
+        <h2>Az üzlet napi ritmusa</h2>
+      </div>
+      <p class="lead">A kávézó, az ebéd és az esti kemence fix időpontokban váltja egymást. Ezek szerint tudja megtervezni a látogatást és a rendelés átvételét.</p>
+    </div>
+
+    <ol class="rhythm reveal">
+      <li>
+        <b>7:30</b>
+        <div>
+          <h3>Nyitunk</h3>
+          <p>Az első adag filteres kávé, a karos gép a napi keverékre van beállítva. A reggeli péksütemény a készlet erejéig van a pulton.</p>
+        </div>
+      </li>
+      <li>
+        <b>8:00</b>
+        <div>
+          <h3>Reggeli a teljes kínálattal</h3>
+          <p>Rántotta, kovászos kenyér, joghurt granolával és zabkása. A reggeli kínálatot 11:00-ig szolgáljuk fel, hétvégén 12:00-ig.</p>
+        </div>
+      </li>
+      <li>
+        <b>11:00</b>
+        <div>
+          <h3>Indul a napi menü</h3>
+          <p>Leves, főétel és ital 3560 Ft-ért. Az elviteles rendelést 10:30-ig érdemes leadni, hogy ne kelljen várni.</p>
+        </div>
+      </li>
+      <li>
+        <b>14:30</b>
+        <div>
+          <h3>Az ebéd vége</h3>
+          <p>A nagy asztalok felszabadulnak, az üzem visszatér kávézó üzemmódba. Levest és salátákat a készlet erejéig tovább szolgálunk fel.</p>
+        </div>
+      </li>
+      <li>
+        <b>17:00</b>
+        <div>
+          <h3>A kemence teljes gőzzel</h3>
+          <p>A kőkemence 430 fokot tart, a pizza 90 másodperc alatt kész. Pénteken és szombaton foglalást ajánlunk.</p>
+        </div>
+      </li>
+      <li>
+        <b>21:15</b>
+        <div>
+          <h3>Az utolsó rendelés a konyhába</h3>
+          <p>Pénteken és szombaton 22:15-ig. A kávézó utána már csak italt és desszertet szolgál fel zárásig.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ============ AKO SA K NÁM DOSTANETE ============ -->
+<section class="section" id="doprava">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">07</span>Út hozzánk</p>
+        <h2>Hogyan jut el hozzánk</h2>
+      </div>
+      <p class="lead">A Hársfa és a Kertész utca sarkán vagyunk, a bejárat közvetlenül a Hársfa utcából nyílik. A terasz az épület mögötti udvarban van, a bejárat melletti átjárón át jut oda.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <!-- FOTO: vchod z Lipovej ulice s tabuľou podniku a stojanom na bicykle -->
+        <figure class="obraz art art--tall">
+          <span class="art__l art__l--grid" aria-hidden="true"></span>
+          <span class="art__l art__l--slash" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Tájékozódás</p>
+            <p class="art__word">Hársfa utca 8.<br>a Kertész utca sarka</p>
+            <ul class="art__rows">
+              <li><b>30 m</b><span>Tömegközlekedési megálló, az utca ugyanazon oldalán</span></li>
+              <li><b>0 cm</b><span>Lépcső nélküli bejárat, az ajtó kifelé nyílik</span></li>
+              <li><b>udvar</b><span>Terasz az épület mögött, rámpával megközelíthető</span></li>
+            </ul>
+          </div>
+        </figure>
+        <p style="margin:1.2rem 0 0"><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=H%C3%A1rsfa+utca+8%2C+1074+Budapest" target="_blank" rel="noopener">A Hársfa utca 8. megnyitása a térképen</a></p>
+      </div>
+
+      <div>
+        <ul class="plain-list" style="margin-top:0">
+          <li>
+            <b>Tömegközlekedéssel</b>
+            <p>A legközelebbi megálló 30 méterre van a bejárattól, a Hársfa utcában, ugyanazon az oldalon, így nem kell átmennie az úttesten. A megállótól a Kertész utcai sarok felé induljon.</p>
+          </li>
+          <li>
+            <b>Autóval és parkolás</b>
+            <p>Az üzlet előtt nem lehet megállni, a legközelebbi szabad helyek a Kertész utcában vannak. Munkanapokon 8:00 és 18:00 között fizetősek, hétvégén és este a parkolás szabad. A rendelés átvételéhez rövid megállás lehetséges az udvari átjáróban.</p>
+          </li>
+          <li>
+            <b>Kerékpárral</b>
+            <p>A bejáratnál hat kerékpáros tároló van. A rollert vagy az összecsukott kerékpárt az átjáróban hagyhatja, csak kérjük, ne az asztalok közötti sávban.</p>
+          </li>
+          <li>
+            <b>Akadálymentes megközelítés</b>
+            <p>Az utcai bejárat lépcső nélküli, az ajtó szabad szélessége 90 cm. A teraszra az udvarból rámpa vezet. Az akadálymentes mosdó a földszinten, közvetlenül a bár mögött van.</p>
+          </li>
+          <li>
+            <b>Gyerekekkel</b>
+            <p>Két gyerekszék, pelenkázó a mosdóban. Az ablaknál van hely, ahol a babakocsi úgy állhat, hogy ne zavarjon a sávban.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ OTVÁRACIE HODINY ============ -->
+<section class="section section--alt" id="hodiny">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">08</span>Üzemidők</p>
+        <h2>Nyitvatartás</h2>
+      </div>
+      <p class="lead">A konyha az utolsó rendeléseket a kávézó zárása előtt 45 perccel veszi fel. Az ünnepi változásokat előre kiírjuk az üzlet ajtajára.</p>
+    </div>
+
+    <div class="hours-wrap reveal">
+      <div>
+        <p class="status" id="statusBadge">
+          <span class="status__dot" aria-hidden="true"></span>
+          <span id="statusText">A nyitvatartást a táblázatban találja</span>
+        </p>
+        <div class="table-scroll">
+          <table class="hours">
+            <caption>A napi menüt hétfőtől péntekig 11:00 és 14:30 között szolgáljuk fel.</caption>
+            <thead>
+              <tr><th scope="col">Nap</th><th scope="col">Kávézó</th><th scope="col">Konyha</th></tr>
+            </thead>
+            <tbody>
+              <tr data-dow="1"><th scope="row">Hétfő</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="2"><th scope="row">Kedd</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="3"><th scope="row">Szerda</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="4"><th scope="row">Csütörtök</th><td>7:30 &ndash; 22:00</td><td>11:00 &ndash; 21:15</td></tr>
+              <tr data-dow="5"><th scope="row">Péntek</th><td>7:30 &ndash; 23:00</td><td>11:00 &ndash; 22:15</td></tr>
+              <tr data-dow="6"><th scope="row">Szombat</th><td>9:00 &ndash; 23:00</td><td>12:00 &ndash; 22:15</td></tr>
+              <tr data-dow="0"><th scope="row">Vasárnap</th><td>9:00 &ndash; 21:00</td><td>12:00 &ndash; 20:15</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h3>Gyakorlati információk</h3>
+        <ul>
+          <li>A napi menüt 11:00-tól 14:30-ig, illetve a készlet erejéig szolgáljuk fel.</li>
+          <li>Reggelit 11:00-ig szolgálunk fel, hétvégén 12:00-ig.</li>
+          <li>Az elviteles rendelést általában 15 perc alatt elkészítjük.</li>
+          <li>A terasz áprilistól októberig, az időjárás szerint van nyitva.</li>
+          <li>A 8 fő feletti csoportnak legalább egy nappal előbb kell foglalni.</li>
+          <li>Fizetés kártyával, készpénzzel és SZÉP-kártyával.</li>
+          <li>Wifi rendelkezésre áll, a jelszó az asztalon van.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-3 reveal" style="margin-top:clamp(2.2rem,4vw,3.2rem)">
+      <div class="card">
+        <h3>Ünnepnapok és nyári hónapok</h3>
+        <p>Állami ünnepeken hétvégi rendben, tehát 9:00-tól tartunk nyitva. Júliusban és augusztusban a teraszt már 10:00-kor nyitjuk, és a napi menüt fél órával tovább szolgáljuk fel.</p>
+      </div>
+      <div class="card">
+        <h3>Csúcsidő és várakozás</h3>
+        <p>A legtöbb ember 12:00 és 13:00 között, valamint pénteken 18:30 után van. Ezekben az időszakokban foglalást vagy előrendelést ajánlunk.</p>
+      </div>
+      <div class="card">
+        <h3>Munka laptoppal</h3>
+        <p>Délelőtt és délután a hosszú asztalnál és az ablaknál minden helynél van konnektor. 11:00 és 14:30 között kérjük, hagyják a nagy asztalokat az ebédelőknek.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ POUKAZY, FIRMY A SKUPINY ============ -->
+<section class="section section--dark" id="akcie">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">09</span>Utalványok és nagyobb rendezvények</p>
+        <h2>Utalványok, céges ebédek és zártkörű rendezvények</h2>
+      </div>
+      <p class="lead">Az utalvány a bárnál vásárolható meg nyitvatartási időben. A céges ebédeket és a zártkörű rendezvényeket az űrlapon egyeztetjük, hogy a feltételek írásban is meglegyenek.</p>
+    </div>
+
+    <div class="split reveal">
+      <div>
+        <ul class="plain-list" style="margin-top:0">
+          <li>
+            <b>Ajándékutalvány</b>
+            <p>8000, 12 000 vagy 20 000 Ft értékben. A kiállítástól 12 hónapig érvényes a teljes kínálatra, az otthonra szánt szemes kávéra is. Névre szólóan vagy név nélkül, azonnal kiállítjuk. Az utalványt készpénzre nem váltjuk, a fennmaradó érték a felhasználásig rajta marad.</p>
+          </li>
+          <li>
+            <b>Céges ebédek</b>
+            <p>Fix időpontot, 11:30-at vagy 12:30-at, egy hétre előre összeállított menüt és egyetlen havi számlát beszélünk meg az egyenkénti fizetés helyett. Napi négy embertől érdemes.</p>
+          </li>
+          <li>
+            <b>Csoportos foglalás 9 főtől</b>
+            <p>Három előkészített menü közül választanak, hogy a konyha egyszerre tudja kiadni az ételt. A foglalást egy nappal előbb telefonon igazoljuk vissza, a számlát személyenként is meg tudjuk bontani, ha előre megbeszéljük.</p>
+          </li>
+          <li>
+            <b>Zártkörű rendezvény az egész helyen</b>
+            <p>Az egész helyet vasárnap 18:00-tól és hétfőn adjuk bérbe. A befogadóképesség bent 42, a teraszon 24 hely. Megbeszéljük a menüt, az időpontot és a felszolgálást, az előleg a megállapodott összeg 30 %-a.</p>
+          </li>
+        </ul>
+        <div class="hero__cta" style="margin-top:2rem">
+          <a class="btn btn--accent-light" href="#objednavka">Foglalás</a>
+          <a class="btn btn--light" href="#podmienky">Feltételek és lemondás</a>
+        </div>
+      </div>
+
+      <div>
+        <!-- FOTO: darčekový poukaz položený na stole vedľa šálky espressa -->
+        <figure class="obraz art art--tall">
+          <span class="art__l art__l--hatch" aria-hidden="true"></span>
+          <span class="art__l art__l--warm" aria-hidden="true"></span>
+          <span class="art__l art__l--grain" aria-hidden="true"></span>
+          <span class="art__ring" aria-hidden="true"></span>
+          <span class="art__bar" aria-hidden="true"></span>
+          <div class="art__in">
+            <p class="art__eyebrow">Ajándékutalvány</p>
+            <p class="art__num">12 000 Ft<small>érvényesség 12 hónap</small></p>
+            <p class="art__cap">Kávéra, ebédre és két főre szóló pizzára is. A bárnál azonnal kiállítjuk, és kérésre ráírjuk a nevet.</p>
+            <p class="art__foot">Hársfa &middot; kávézó és pizzéria</p>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ REZERVÁCIA A OBJEDNÁVKA ============ -->
+<section class="section" id="objednavka">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">10</span>Foglalás és rendelés</p>
+        <h2>Asztalfoglalás és elviteles rendelés</h2>
+      </div>
+      <p class="lead">Töltse ki az űrlapot, és 24 órán belül jelentkezünk. Elviteles rendelésnél adja meg, mikorra készítsük el. Ha azonnali válaszra van szüksége, hívjon minket.</p>
+    </div>
+
+    <div class="order">
+      <form class="form-card" id="orderForm" novalidate>
+        <div class="field-grid">
+          <div class="field field--full">
+            <label for="typ">A kérés típusa <span class="req" aria-hidden="true">*</span></label>
+            <select id="typ" name="typ" required>
+              <option value="Asztalfoglalás">Asztalfoglalás</option>
+              <option value="Elviteles rendelés">Elviteles rendelés</option>
+              <option value="Napi menü">Napi menü</option>
+              <option value="Csoport 8 fő felett">Csoport 8 fő felett</option>
+              <option value="Céges ebéd">Céges ebéd</option>
+              <option value="Ajándékutalvány">Ajándékutalvány</option>
+              <option value="Zártkörű rendezvény">Zártkörű rendezvény</option>
+              <option value="Munka nálunk">Munka nálunk</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="meno">Név <span class="req" aria-hidden="true">*</span></label>
+            <input id="meno" name="meno" type="text" autocomplete="name" required>
+          </div>
+
+          <div class="field">
+            <label for="tel">Telefon <span class="req" aria-hidden="true">*</span></label>
+            <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+          </div>
+
+          <div class="field">
+            <label for="datum">Dátum</label>
+            <input id="datum" name="datum" type="date">
+          </div>
+
+          <div class="field">
+            <label for="cas">Időpont</label>
+            <input id="cas" name="cas" type="time" value="18:30">
+          </div>
+
+          <div class="field">
+            <label for="osoby">Létszám</label>
+            <select id="osoby" name="osoby">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9 vagy több</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="miesto">Kívánt hely</label>
+            <select id="miesto" name="miesto">
+              <option>Nincs preferencia</option>
+              <option>Bent</option>
+              <option>A teraszon</option>
+            </select>
+          </div>
+
+          <div class="field field--full">
+            <label for="poznamka">Üzenet <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="poznamka" name="poznamka" rows="4" required></textarea>
+            <span class="field__hint">A rendelőlapról származó összeállítás a Átvitel a rendelésbe gombra kattintva kerül ide.</span>
+          </div>
+        </div>
+
+        <div class="form-foot">
+          <button class="btn" type="submit">Kérés elküldése</button>
+          <p>Az üzenet az üzlet postafiókjába érkezik. 24 órán belül válaszolunk, nyitvatartási időben általában hamarabb.</p>
+        </div>
+
+        <div class="form-note" id="formNote" role="status" aria-live="polite">
+          <h3>A küldés állapota</h3>
+          <p id="formNoteText">Kérjük, pótolja a hiányzó adatokat.</p>
+        </div>
+      </form>
+
+      <div class="aside-list">
+        <div class="aside-box">
+          <h3>Telefon</h3>
+          <p><span class="big"><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></span>Vissza is hívjuk, ha éppen a kemencénél vagyunk. Foglalást és elviteles rendelést nyitvatartási időben veszünk fel.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Válasz az üzenetre</h3>
+          <p>Az űrlap üzenete az üzlet postafiókjába érkezik, és 24 órán belül válaszolunk rá. A foglalás csak a visszaigazolásunk után érvényes.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Céges ebédek</h3>
+          <p>Az irodának szóló rendszeres ebédhez fix időpontot, menüt és havi számlát beszélünk meg. A létszámot írja be az üzenetbe.</p>
+        </div>
+        <div class="aside-box">
+          <h3>A foglalás lemondása</h3>
+          <p>A foglalást a megbeszélt időponttól 20 percig tartjuk. A változást elég telefonon jelezni.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Mit írjon az üzenetbe</h3>
+          <p>Gyerekszéket, allergiát az árlistában szereplő szám szerint, gluténmentes tésztát 600 Ft-ért, ünneplést vagy az elviteles rendelés átvételi idejét.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Fizetés</h3>
+          <p>Kártya, készpénz és SZÉP-kártya. SZÉP-kártyánál a különbözetet készpénzben nem adjuk vissza, a cégeknek havi számlát állítunk ki, 14 napos fizetési határidővel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ ČASTÉ OTÁZKY ============ -->
+<section class="section section--alt" id="otazky">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">11</span>Gyakori kérdések</p>
+        <h2>Gyakori kérdések és válaszok</h2>
+      </div>
+      <p class="lead">Ha itt nem találja a választ, írjon az űrlapon, vagy hívjon minket.</p>
+    </div>
+
+    <div class="faq reveal">
+      <div>
+        <h3>Kell asztalt foglalnom?</h3>
+        <p>Hétköznap délelőtt általában nem. Pénteken és szombaton 18:00 után, valamint ebédidőben 12:00 és 13:00 között foglalást ajánlunk, egyébként 15-20 perc várakozás lehet.</p>
+      </div>
+      <div>
+        <h3>Van gluténmentes pizzájuk?</h3>
+        <p>Igen, a gluténmentes tészta 600 Ft felár, és külön deszkán nyújtjuk. Az üzem azonban nem gluténmentes, a levegőben lévő lisztnyomokat nem tudjuk kizárni, ezért súlyos allergia esetén mindig szóljon a kiszolgálónak.</p>
+      </div>
+      <div>
+        <h3>Van valamijük vegánoknak?</h3>
+        <p>A sajt nélküli zöldséges pizza vegán, ugyanúgy a ricotta nélküli, sült cukkinis saláta és a vízzel készült zabkása. Növényi tejet zabból és mandulából is adunk a kávéba, 160 Ft felárért.</p>
+      </div>
+      <div>
+        <h3>Lehet kártyával és SZÉP-kártyával fizetni?</h3>
+        <p>Igen, fizethet kártyával, készpénzzel és SZÉP-kártyával is. A számlát meg tudjuk bontani; 8 fő feletti csoportnál ezt kérjük a rendelés előtt megbeszélni.</p>
+      </div>
+      <div>
+        <h3>Jöhetek kutyával?</h3>
+        <p>A teraszon igen, korlátozás nélkül. Bent ebédidőn kívül, a kiszolgálóval egyeztetve, ha a kutya az asztal mellett van. Vizet kérésre adunk neki.</p>
+      </div>
+      <div>
+        <h3>Házhoz szállítanak?</h3>
+        <p>Nem, kiszállításunk nincs. Személyes átvétellel működünk, a rendelést általában 15 perc, csúcsidőben 25 perc alatt elkészítjük. A becsomagolt pizzát fél órán belül érdemes megenni.</p>
+      </div>
+      <div>
+        <h3>Lehet Önöknél laptoppal dolgozni?</h3>
+        <p>Igen, a wifi ingyenes, és a hosszú asztalnál, valamint az ablaknál konnektor is van. 11:00 és 14:30 között kérjük, hagyják szabadon a nagy asztalokat az ebédelőknek, ilyenkor a hátsó rész a csendesebb.</p>
+      </div>
+      <div>
+        <h3>Ki lehet bérelni az egész helyet?</h3>
+        <p>Igen, vasárnap 18:00-tól és egész hétfőn. Megbeszéljük a menüt, az időpontot és a felszolgálást, az előleg a megállapodott összeg 30 %-a. Írjon az űrlapon, és válassza a Zártkörű rendezvény kéréstípust.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PODMIENKY ============ -->
+<section class="section" id="podmienky">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">12</span>Feltételek</p>
+        <h2>Foglalás, lemondás és fizetés</h2>
+      </div>
+      <p class="lead">A szabályok egyénekre és csoportokra egyformán érvényesek, csak a lemondási határidők térnek el.</p>
+    </div>
+
+    <div class="grid-3 reveal">
+      <div class="card">
+        <h3>Foglalás</h3>
+        <p>Az asztalt a megbeszélt időponttól 20 percig tartjuk. Ha késik, hívjon minket, és tovább tartjuk a helyet, amennyiben a foglaltság engedi.</p>
+        <p>A foglalást telefonon igazoljuk vissza, az űrlap üzenetére 24 órán belül válaszolunk. A visszaigazolásunk nélkül a foglalás nem érvényes.</p>
+      </div>
+      <div class="card">
+        <h3>Lemondás</h3>
+        <p>A szokásos foglalást bármikor, díjmentesen lemondhatja. A 8 fő feletti csoportot kérjük legkésőbb 24 órával előbb lemondani.</p>
+        <p>Zártkörű rendezvénynél az előleg a határidő előtt 7 napig teljes egészében visszajár, később a már megvásárolt alapanyagokra fordítjuk.</p>
+      </div>
+      <div class="card">
+        <h3>Fizetés</h3>
+        <p>Kártya, készpénz és SZÉP-kártya. SZÉP-kártyánál a különbözetet készpénzben nem adjuk vissza.</p>
+        <p>A felszolgálás benne van az árban, a borravaló önkéntes. A céges ügyfeleknek havi számlát állítunk ki, 14 napos fizetési határidővel.</p>
+      </div>
+      <div class="card">
+        <h3>Elviteles rendelés</h3>
+        <p>A rendelést a megbeszélt időpontra készítjük el. Ha 30 percen belül nem veszi át, az étel melegségét már nem garantáljuk.</p>
+        <p>A csomagolás 120 Ft. A saját edényt szívesen megtöltjük, ha tiszta és elég nagy.</p>
+      </div>
+      <div class="card">
+        <h3>Allergének és alapanyagok</h3>
+        <p>Az allergének számai minden árlistás tételnél és a napi menü minden napjánál szerepelnek, a listájukat <a href="#ponuka">az árlista alatt</a> találja. Az étel összetételét a kiszolgáló szóban is átveszi Önnel.</p>
+        <p>Az alapanyagok év közben a szezon szerint változnak, ezért eltérhet a desszertben lévő gyümölcs vagy a salátában lévő zöldség.</p>
+      </div>
+      <div class="card">
+        <h3>A helyben</h3>
+        <p>Bent nem lehet dohányozni, a teraszon a hátsó részen, a fal mellett engedélyezett.</p>
+        <p>Saját ételt és italt nem hozunk be az üzletbe, kivétel a bébiétel és az ünnepi torta, előzetes egyeztetéssel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ KARIÉRA ============ -->
+<section class="section section--alt" id="kariera">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__n">13</span>Kollégát keresünk</p>
+        <h2>Munka nálunk</h2>
+      </div>
+      <p class="lead">A gyakorlatot örömmel vesszük, de nem feltétel, helyben betanítjuk. Írjon magáról pár sort az űrlapon, és válassza a Munka nálunk kéréstípust.</p>
+    </div>
+
+    <div class="split split--top reveal">
+      <div>
+        <ul class="jobs">
+          <li>
+            <div>
+              <h3>Barista</h3>
+              <p>Reggeli és délutáni műszakok. Kávékészítés, a darálő beállítása, a gép és a bár gondozása. Olyan embert keresünk, aki szereti a tempót, és nem fél beszélni az emberekkel.</p>
+            </div>
+            <span class="tag">Teljes munkaidő</span>
+          </li>
+          <li>
+            <div>
+              <h3>Konyhai segítő</h3>
+              <p>A zöldség és az alapok előkészítése, a napi menü kiadása, rend a konyhában. Iskola mellett is végezhető, a műszakok megbeszélhetők.</p>
+            </div>
+            <span class="tag">Hétvégék</span>
+          </li>
+          <li>
+            <div>
+              <h3>Felszolgálás</h3>
+              <p>Terem és terasz, rendelésfelvétel, számlázás és az elviteles rendelések átadása. Magyar nyelvtudás és a kínálat megtanulására való hajlandóság szükséges.</p>
+            </div>
+            <span class="tag">Részmunkaidő</span>
+          </li>
+          <li>
+            <div>
+              <h3>Pizzasütő &ndash; betanítás a kemencénél</h3>
+              <p>A tészta nyújtása és sütés a kőkemencében. Ha már állt kemencénél, megmutatja nekünk egy próbaműszakon. Ha nem, alapoktól megtanítjuk.</p>
+            </div>
+            <span class="tag">Teljes munkaidő</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3>Amit kínálunk</h3>
+          <p>A műszakbeosztás két héttel előbb elkészül, hogy a munkán kívüli életet is lehessen tervezni.</p>
+          <p>Étel és ital a műszak alatt, havonta egy csomag szemes kávé haza.</p>
+          <p>Betanítás a kávéra és a kemencére is, együtt járunk kóstolóra a pörkölőbe.</p>
+          <p>Az üzlet zárva tart azokon az ünnepnapokon, amelyeknél a zárást az ajtón előre kiírjuk.</p>
+        </div>
+        <div class="card" style="margin-top:1.2rem">
+          <h3>Hogyan jelentkezhet</h3>
+          <p>Az űrlapon válassza a Munka nálunk kéréstípust, és írja meg, melyik pozíció érdekli, és mikor tud belépni. Az önéletrajz nem kötelező, elég pár mondat és egy telefonszám.</p>
+          <p>24 órán belül jelentkezünk, a próbaműszakra szóló meghívót három napon belül küldjük. A próbaműszak fizetett.</p>
+        </div>
+        <div class="hero__cta" style="margin-top:1.4rem">
+          <a class="btn" href="#objednavka">Írok az űrlapon</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ KONTAKT ============ -->
+<section class="section section--dark" id="kontakt">
+  <div class="wrap contact">
+    <div>
+      <p class="eyebrow"><span class="eyebrow__n">14</span>Kapcsolat</p>
+      <h2>Hársfa utca 8., Budapest</h2>
+      <p class="lead">A bejárat a Hársfa utcából nyílik, a terasz az udvarban van. A tömegközlekedési megálló 30 méterre van a bejárattól, parkolni a Kertész utcában lehet.</p>
+      <dl class="contact-list">
+        <div>
+          <dt>Cím</dt>
+          <dd>Hársfa utca 8., 1074 Budapest</dd>
+        </div>
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span><small>Foglalás és elviteles rendelés nyitvatartási időben.</small></dd>
+        </div>
+        <div>
+          <dt>Írásban</dt>
+          <dd><a href="#objednavka">Kapcsolatfelvételi űrlap</a><small>Az üzenet az üzlet postafiókjába érkezik, 24 órán belül válaszolunk.</small></dd>
+        </div>
+        <div>
+          <dt>Nyitva</dt>
+          <dd>H &ndash; Cs 7:30 &ndash; 22:00<small>P 7:30 &ndash; 23:00, Szo 9:00 &ndash; 23:00, V 9:00 &ndash; 21:00</small></dd>
+        </div>
+        <div>
+          <dt>Ma</dt>
+          <dd id="contactToday">Nézze meg a fenti nyitvatartást</dd>
+        </div>
+      </dl>
+
+      <div class="sub-head"><h3>Kövessen minket</h3></div>
+      <ul class="social">
+        <li><b>Instagram</b>@harsfakavezo &ndash; napi menü minden reggel</li>
+        <li><b>Facebook</b>Hársfa Kávézó &ndash; nyitvatartás-változások és zártkörű rendezvények</li>
+        <li><b>Hírlevél</b>havonta egyszer, a bárnál lehet feliratkozni</li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="art art--tall">
+        <span class="art__l art__l--grid" aria-hidden="true"></span>
+        <span class="art__l art__l--warm" aria-hidden="true"></span>
+        <span class="art__l art__l--rule" aria-hidden="true"></span>
+        <span class="art__l art__l--grain" aria-hidden="true"></span>
+        <span class="art__ring" aria-hidden="true"></span>
+        <span class="art__ring art__ring--sm" aria-hidden="true"></span>
+        <div class="art__in">
+          <p class="art__eyebrow">Itt talál minket</p>
+          <p class="art__word">Hársfa utca 8.<br>1074 Budapest</p>
+          <ul class="art__rows">
+            <li><b>H &ndash; Cs</b><span>7:30 &ndash; 22:00</span></li>
+            <li><b>Péntek</b><span>7:30 &ndash; 23:00</span></li>
+            <li><b>Szombat</b><span>9:00 &ndash; 23:00</span></li>
+            <li><b>Vasárnap</b><span>9:00 &ndash; 21:00</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<!-- ============ AUTOR UKÁŽKY — JEDINÉ SKUTOČNÉ ÚDAJE NA STRÁNKE ============ -->
+<aside class="author" id="autor" aria-labelledby="autorTitle">
+  <div class="wrap">
+    <div class="author__in">
+      <p class="author__tag">A minta szerzője</p>
+      <h2 id="autorTitle">Tetszik ez a weboldal?</h2>
+      <p class="author__lead">A Hársfa kitalált üzlet, az egész oldalt Alex Poliak tervezte és programozta. Ugyanilyen weboldalt az Ön cégének is megépítek, aszerint, hogy mit kínál, és kinek adja el. Az ebben a blokkban lévő adatok az oldal többi részével ellentétben valódiak.</p>
+      <ul class="author__points">
+        <li><b>250 &euro;-tól</b><span>Egyoldalas egyedi weboldal, az ár a terjedelem szerint</span></li>
+        <li><b>3 napon belül</b><span>Az első terv, amelyet saját linken néz meg</span></li>
+        <li><b>Ingyenes</b><span>A konzultáció ingyenes és nem kötelez</span></li>
+      </ul>
+      <dl class="author__contacts">
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span><br></dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Támogatás</dt>
+          <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Weboldal</dt>
+          <dd><a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+      </dl>
+      <p class="author__price">Egyedi weboldalak 250 &euro;-tól, első terv 3 napon belül. A konzultáció ingyenes és nem kötelez &mdash; írjon vagy telefonáljon.</p>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ PÄTA ============ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="brand__name">Hársfa</span> <span class="brand__sub">Kávézó és pizzéria</span>
+        </a>
+        <p style="margin-top:1rem;max-width:32ch">Hársfa utca 8., 1074 Budapest<br>Naponta 7:30-tól nyitva, hétvégén 9:00-tól.<br><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></p>
+      </div>
+      <nav aria-label="Hivatkozások a láblécben">
+        <ul class="foot-links">
+          <li><a href="#ponuka">Kínálat és árak</a></li>
+          <li><a href="#denne">Napi menü</a></li>
+          <li><a href="#konfigurator">Egyedi pizza</a></li>
+          <li><a href="#prevadzka">Működés</a></li>
+          <li><a href="#rytmus">Napi ritmus</a></li>
+          <li><a href="#doprava">Hogyan jut el hozzánk</a></li>
+          <li><a href="#hodiny">Nyitvatartás</a></li>
+          <li><a href="#akcie">Utalványok és rendezvények</a></li>
+          <li><a href="#objednavka">Foglalás</a></li>
+          <li><a href="#otazky">Gyakori kérdések</a></li>
+          <li><a href="#podmienky">Feltételek és lemondás</a></li>
+          <li><a href="#kariera">Munka nálunk</a></li>
+          <li><a href="#kontakt">Kapcsolat</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <p class="foot-note">
+      <span>A Hársfa kitalált üzlet. Az oldalon szereplő minden adat csak minta.</span>
+      <span>A mintaweboldalt Alex Poliak tervezte és programozta &middot; <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a> &middot; <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></span>
+    </p>
+  </div>
+</footer>
+
+<!-- ============ SPODNÝ PÁSIK UKÁŽKY ============ -->
+<div class="demobar" id="demobar">
+  <div class="wrap demobar__in">
+    <span class="demobar__tag">Mintaweboldal</span>
+    <span class="demobar__claim">Ilyen weboldalt készítek Önnek is.</span>
+    <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+    <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Výška spodného pásika ---------- */
+  var demobar = document.getElementById('demobar');
+  function syncBar(){
+    document.documentElement.style.setProperty('--bar-h', Math.ceil(demobar.getBoundingClientRect().height) + 'px');
+  }
+  syncBar();
+  window.addEventListener('resize', syncBar);
+  window.addEventListener('load', syncBar);
+
+  /* ---------- Mobilná navigácia ---------- */
+  var navToggle = document.getElementById('navToggle');
+  var mainnav = document.getElementById('mainnav');
+  function closeNav(){
+    navToggle.setAttribute('aria-expanded','false');
+    mainnav.removeAttribute('data-open');
+  }
+  navToggle.addEventListener('click', function(){
+    var open = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!open));
+    if(open){ mainnav.removeAttribute('data-open'); } else { mainnav.setAttribute('data-open','true'); }
+  });
+  mainnav.addEventListener('click', function(e){
+    if(e.target.closest('a')) closeNav();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeNav();
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 1000) closeNav();
+  });
+
+  /* ---------- Jemný nábeh sekcií ---------- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if(!reduce && 'IntersectionObserver' in window){
+    var revObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.classList.add('is-in');
+          revObs.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
+    reveals.forEach(function(el){ revObs.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  /* ---------- Dnešný deň a stav prevádzky ---------- */
+  var today = new Date().getDay();   /* 0 = nedeľa */
+  var OPEN = {
+    0:[540,1260], 1:[450,1320], 2:[450,1320], 3:[450,1320],
+    4:[450,1320], 5:[450,1380], 6:[540,1380]
+  };
+  var DAY_ACC = ['vasárnap','hétfő','kedd','szerda','csütörtök','péntek','szombat'];
+
+  function hhmm(m){
+    var h = Math.floor(m/60), mm = m % 60;
+    return h + ':' + (mm < 10 ? '0' + mm : mm);
+  }
+
+  (function(){
+    var now = new Date();
+    var mins = now.getHours()*60 + now.getMinutes();
+    var span = OPEN[today];
+    var isOpen = mins >= span[0] && mins < span[1];
+    var text = document.getElementById('statusText');
+
+    if(isOpen){
+      text.textContent = 'Nyitva, ma zárás: ' + hhmm(span[1]);
+    } else if(mins < span[0]){
+      text.textContent = 'Zárva, ma nyitás: ' + hhmm(span[0]);
+    } else {
+      var nx = (today + 1) % 7;
+      text.textContent = 'Zárva, nyitás: ' + DAY_ACC[nx] + ' ' + hhmm(OPEN[nx][0]);
+    }
+
+    var row = document.querySelector('table.hours tr[data-dow="' + today + '"]');
+    if(row) row.setAttribute('data-today','true');
+
+    var dayBlock = document.querySelector('.day[data-dow="' + today + '"]');
+    if(dayBlock){
+      dayBlock.setAttribute('data-today','true');
+      var mark = document.createElement('span');
+      mark.className = 'day__today';
+      mark.textContent = 'ma';
+      dayBlock.querySelector('.day__name').appendChild(mark);
+    }
+
+    var ct = document.getElementById('contactToday');
+    if(ct) ct.textContent = hhmm(span[0]) + ' – ' + hhmm(span[1]) + (isOpen ? ', éppen nyitva' : ', éppen zárva');
+  })();
+
+  /* ---------- Konfigurátor pizze ---------- */
+  var cfg = document.getElementById('pizzaConfig');
+  var sumSize = document.getElementById('sumSize');
+  var sumBaseName = document.getElementById('sumBaseName');
+  var sumBase = document.getElementById('sumBase');
+  var sumTops = document.getElementById('sumTops');
+  var sumTopsLabel = document.getElementById('sumTopsLabel');
+  var sumTopsList = document.getElementById('sumTopsList');
+  var sumUnit = document.getElementById('sumUnit');
+  var sumQty = document.getElementById('sumQty');
+  var sumTotal = document.getElementById('sumTotal');
+  var sumHint = document.getElementById('sumHint');
+  var liveTotal = document.getElementById('liveTotal');
+
+  function eur(cents){
+    return __f(cents/100) + ' ' + __m;
+  }
+  function capitalize(s){
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+  function state(){
+    var q = cfg.querySelector('input[name="qty"]:checked');
+    return {
+      size: cfg.querySelector('input[name="size"]:checked'),
+      base: cfg.querySelector('input[name="base"]:checked'),
+      tops: Array.prototype.slice.call(cfg.querySelectorAll('input[name="top"]:checked')),
+      qty: q ? Number(q.value) : 1
+    };
+  }
+  function totals(s){
+    var mult = parseFloat(s.size.dataset.mult);
+    var baseCents = Number(s.size.dataset.price) + Number(s.base.dataset.price);
+    var topsCents = 0;
+    s.tops.forEach(function(t){ topsCents += Math.round(Number(t.dataset.price) * mult); });
+    var unit = baseCents + topsCents;
+    return { mult: mult, base: baseCents, tops: topsCents, unit: unit, qty: s.qty, total: unit * s.qty };
+  }
+
+  function render(){
+    var s = state();
+    var t = totals(s);
+    var names = s.tops.map(function(x){ return x.value; });
+
+    sumSize.textContent = s.size.dataset.label;
+    sumBaseName.textContent = capitalize(s.base.value);
+    sumBase.textContent = eur(t.base);
+    sumTopsLabel.textContent = 'Feltétek (' + s.tops.length + ')';
+    sumTops.textContent = eur(t.tops);
+    sumUnit.textContent = eur(t.unit);
+    sumQty.textContent = String(t.qty);
+    sumTopsList.textContent = names.length ? capitalize(names.join(', ')) + '.' : 'Egyelőre feltét nélkül.';
+    sumTotal.textContent = eur(t.total);
+    sumHint.textContent = t.mult > 1
+      ? 'A 45 cm-es méretet választotta, a feltéteket 1,5-szeres áron számoljuk.'
+      : '45 cm-es méretnél a feltéteket 1,5-szeres áron számoljuk.';
+    liveTotal.textContent = 'Összesen ' + __f(t.total/100) + ' ' + __m;
+  }
+
+  cfg.addEventListener('change', render);
+  cfg.addEventListener('submit', function(e){ e.preventDefault(); });
+  render();
+
+  /* ---------- Prenos zloženia do formulára ---------- */
+  document.getElementById('toOrder').addEventListener('click', function(){
+    var s = state();
+    var t = totals(s);
+    var names = s.tops.map(function(x){ return x.value; });
+
+    var txt = 'Egyedi pizza ' + s.size.value + ' cm, alap: ' + s.base.value + '. ';
+    txt += names.length ? 'Feltétek: ' + names.join(', ') + '. ' : 'Feltét nélkül. ';
+    txt += 'Darabszám: ' + t.qty + '. ';
+    txt += 'Darabár ' + eur(t.unit) + ', összesen ' + eur(t.total) + '.';
+
+    var pozn = document.getElementById('poznamka');
+    pozn.value = txt;
+    document.getElementById('typ').value = 'Elviteles rendelés';
+
+    document.getElementById('objednavka').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    window.setTimeout(function(){ pozn.focus({ preventScroll: true }); }, reduce ? 0 : 600);
+  });
+
+  /* ---------- Formulár ---------- */
+  var form = document.getElementById('orderForm');
+  var note = document.getElementById('formNote');
+  var noteText = document.getElementById('formNoteText');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var meno = document.getElementById('meno');
+    var tel = document.getElementById('tel');
+    var sprava = document.getElementById('poznamka');
+    var chyba = null;
+
+    if(!meno.value.trim()){ chyba = meno; }
+    else if(!tel.value.trim()){ chyba = tel; }
+    else if(!sprava.value.trim()){ chyba = sprava; }
+
+    if(chyba){
+      note.setAttribute('data-shown','true');
+      noteText.textContent = 'Kérjük, adja meg a nevét, a telefonszámát és az üzenet szövegét. A többi mező nem kötelező.';
+      chyba.focus();
+      return;
+    }
+
+    note.setAttribute('data-shown','true');
+    noteText.textContent = 'Köszönjük, az üzenet készen áll az elküldésre az üzlet postafiókjába. 24 órán belül válaszolunk. A foglalás csak a visszaigazolásunk után érvényes.';
+    note.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+  });
+
+  /* ---------- Zvýraznenie aktívnej položky v navigácii ---------- */
+  if('IntersectionObserver' in window){
+    var links = {};
+    document.querySelectorAll('.nav-list a[href^="#"]').forEach(function(a){
+      links[a.getAttribute('href').slice(1)] = a;
+    });
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        var a = links[en.target.id];
+        if(!a) return;
+        if(en.isIntersecting){
+          Object.keys(links).forEach(function(k){ links[k].removeAttribute('aria-current'); });
+          a.setAttribute('aria-current','true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(links).forEach(function(id){
+      var sec = document.getElementById(id);
+      if(sec) obs.observe(sec);
+    });
+  }
+
+  /* ---------- Predvyplnený dátum ---------- */
+  (function(){
+    var d = new Date();
+    var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    var inp = document.getElementById('datum');
+    inp.value = iso;
+    inp.min = iso;
+  })();
+
+})();
+</script>
+</body>
+</html>
+
+
+
+

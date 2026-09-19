@@ -1,0 +1,2617 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/barber/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/barber/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/barber/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/barber/">
+<!-- /jazyky:hreflang -->
+<title>Penge Borbély — férfi borbélyüzlet, árlista és időpontfoglalás</title>
+<meta name="description" content="Férfi borbélyüzlet mintaweboldala: hajvágás 8800 Ft-tól, borotválás késsel, szakállformázás, időpontfoglalás a szolgáltatás, a terjedelem és az időpont kiválasztásával. Terv és kód: Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#15181B">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:site_name" content="Penge Borbély (mintaweboldal)">
+<meta property="og:title" content="Penge Borbély — férfi borbélyüzlet, árlista és időpontfoglalás">
+<meta property="og:description" content="Hajvágás 8800 Ft-tól, borotválás késsel, szakállformázás. Időpontfoglalás a szolgáltatás, a terjedelem és az időpont kiválasztásával. Mintaweboldal Alex Poliaktól, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%2315181B'/%3E%3Crect%20x='6'%20y='6'%20width='52'%20height='52'%20fill='none'%20stroke='%23C99A5B'%20stroke-width='2'/%3E%3Ctext%20x='32'%20y='43'%20font-family='Consolas,monospace'%20font-size='30'%20font-weight='700'%20fill='%23C99A5B'%20text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   HOLIČSTVO OSTRIE — ukážkový web
+   ============================================================ */
+
+/* ---------- 1. TOKENY ---------- */
+:root{
+  /* uhlíková paleta + jediný tlmený akcent: mosadz */
+  --deep:#101215;
+  --base:#15181B;
+  --surf:#1C2024;
+  --raise:#262B31;
+
+  --brass:#C99A5B;
+  --brass-hi:#D9AE72;
+  --brass-deep:#7A5320;
+  --on-brass:#14171A;
+
+  --ink-strong:#F4F6F7;
+  --ink-body:#E4E7EA;
+  --ink-mute:#A0A7AD;
+  --hair:#303740;
+  --hair-soft:#23282E;
+
+  --plate-ink:#F4F6F7;
+  --plate-mute:#C6CCD1;
+
+  /* premenné, ktoré prepisuje svetlá sekcia .paper */
+  --bg:var(--base);
+  --card:var(--surf);
+  --ink:var(--ink-body);
+  --title:var(--ink-strong);
+  --muted:var(--ink-mute);
+  --line:var(--hair);
+  --line-soft:var(--hair-soft);
+  --acc:var(--brass);
+  --btn-bg:var(--brass);
+  --btn-fg:var(--on-brass);
+  --btn-bg-h:var(--brass-hi);
+
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:Consolas,"SF Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+  --wrap:1220px;
+
+  /* jemné zrno cez feTurbulence, generované priamo v CSS */
+  --noise:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%3E%3Cfilter%20id='z'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.82'%20numOctaves='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='180'%20height='180'%20filter='url(%23z)'/%3E%3C/svg%3E");
+}
+
+/* ---------- 2. ZÁKLAD ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  background:var(--base);
+  color:var(--ink-body);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{color:var(--title);font-weight:700;line-height:1.12;letter-spacing:-.022em;margin:0 0 .5em}
+h1{font-size:clamp(2.05rem,4.6vw,3.5rem)}
+h2{font-size:clamp(1.62rem,3.1vw,2.5rem)}
+h3{font-size:clamp(1.06rem,1.5vw,1.26rem);line-height:1.3;letter-spacing:-.012em}
+h4{font-size:1rem;letter-spacing:.005em}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--acc);text-underline-offset:3px}
+ul,ol{margin:0;padding:0;list-style:none}
+strong{color:var(--title)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+[hidden]{display:none !important}
+
+.wrap{width:min(100% - 36px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--brass);color:var(--on-brass);font-weight:700;padding:12px 18px;z-index:400}
+.skip:focus{left:8px;top:8px}
+section{scroll-margin-top:var(--stick,148px)}
+.sec{padding:clamp(52px,6.4vw,102px) 0;background:var(--bg);color:var(--ink)}
+.sec--deep{--bg:var(--deep)}
+.paper{
+  --bg:#E9E5DE;
+  --card:#F4F1EB;
+  --ink:#16191C;
+  --title:#0F1215;
+  --muted:#4C525A;
+  --line:#CFC9C0;
+  --line-soft:#DED9D1;
+  --acc:var(--brass-deep);
+  --btn-bg:#1C2024;
+  --btn-fg:#F2EFEA;
+  --btn-bg-h:#333A42;
+}
+.paper h1,.paper h2,.paper h3,.paper h4{color:var(--title)}
+
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lede{font-size:1.04rem;color:var(--muted);max-width:58ch}
+.note{color:var(--muted);font-size:.92rem}
+.prose p{max-width:66ch}
+
+/* tabuľky sa na úzkych displejoch posúvajú vo vlastnom ráme */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line)}
+.dtab{width:100%;border-collapse:collapse;min-width:520px;font-size:.94rem}
+.dtab caption{text-align:left;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:14px 0 0}
+.dtab th,.dtab td{text-align:left;padding:14px 22px 14px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.dtab thead th{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+.dtab th[scope="row"]{font-weight:600;color:var(--title)}
+.dtab td{color:var(--muted)}
+.dtab td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--title);font-weight:700;text-align:right;padding-right:0}
+.dtab tr:last-child th,.dtab tr:last-child td{border-bottom:0}
+
+/* ---------- 3. HLAVIČKA SEKCIE (číslovaná lišta) ---------- */
+.shead{
+  display:grid;grid-template-columns:clamp(58px,7vw,112px) minmax(0,1fr);gap:10px clamp(20px,3vw,44px);
+  border-top:1px solid var(--line);padding-top:clamp(18px,2.2vw,26px);
+  margin-bottom:clamp(30px,3.8vw,52px);
+}
+.shead__idx{
+  font-family:var(--mono);font-size:clamp(1.42rem,2.6vw,2.05rem);font-weight:700;letter-spacing:-.03em;
+  color:var(--acc);margin:0;line-height:1;padding-top:3px;font-variant-numeric:tabular-nums;
+}
+.shead__main h2{margin-bottom:.34em;max-width:22ch}
+.shead__main .lede{margin-bottom:0}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px;
+}
+
+/* ---------- 4. TLAČIDLÁ ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font:inherit;font-size:.96rem;font-weight:700;letter-spacing:.01em;
+  padding:13px 24px;border:1px solid transparent;border-radius:2px;
+  cursor:pointer;text-decoration:none;white-space:nowrap;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--btn-bg);color:var(--btn-fg);border-color:var(--btn-bg)}
+.btn.btn--primary:hover{background:var(--btn-bg-h);border-color:var(--btn-bg-h);color:var(--btn-fg)}
+.btn.btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn.btn--brass{background:var(--brass);color:var(--on-brass);border-color:var(--brass)}
+.btn.btn--brass:hover{background:var(--brass-hi);border-color:var(--brass-hi);color:var(--on-brass)}
+.btn.btn--onplate{background:transparent;color:var(--plate-ink);border-color:rgba(228,231,234,.36)}
+.btn.btn--onplate:hover{border-color:var(--brass);color:var(--brass)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- 5. LEPIACI VRCH: PÁSIK UKÁŽKY + NAVIGÁCIA ---------- */
+.topstack{position:sticky;top:0;z-index:120}
+.demobar{
+  background:#08090B;color:var(--ink-body);font-size:.86rem;font-weight:500;
+  border-bottom:1px solid var(--brass-deep);box-shadow:inset 0 2px 0 var(--brass);
+}
+.demobar__in{
+  width:min(100% - 24px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 20px;
+  padding:11px 0 10px;text-align:center;
+}
+.demobar__tag{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;
+  font-weight:700;white-space:nowrap;color:var(--brass);
+  border:1px solid var(--brass-deep);padding:3px 9px;
+}
+.demobar a{color:var(--brass);font-weight:700;white-space:nowrap;text-decoration:none;border-bottom:1px solid rgba(201,154,91,.4)}
+.demobar a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
+
+.site-head{background:var(--deep);border-bottom:1px solid var(--hair);position:relative}
+.head__in{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink-strong);margin-right:auto}
+.brand__mark{
+  width:34px;height:34px;flex:none;border:1px solid var(--brass);
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;color:var(--brass);font-size:1rem;
+}
+.brand__txt strong{display:block;font-size:1.06rem;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;color:var(--ink-strong)}
+.brand__txt span{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute);margin-top:2px}
+.nav-list{display:flex;align-items:center;gap:1px;flex-wrap:wrap}
+.nav-list a{
+  display:block;text-decoration:none;color:var(--ink-body);
+  font-size:.92rem;padding:9px 11px;border-radius:2px;
+}
+.nav-list a:hover{color:var(--brass)}
+.nav-toggle{display:none}
+
+/* dominantná akcia + telefón: v hlavičke na každej obrazovke, aj na mobile mimo menu */
+.head__act{display:flex;align-items:center;gap:9px;flex:none}
+.head__tel{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;
+  font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.01em;
+  color:var(--brass);text-decoration:none;
+  border:1px solid var(--brass-deep);border-radius:2px;padding:12px 14px;
+  transition:border-color .16s ease,color .16s ease;
+}
+.head__tel svg{width:15px;height:15px;flex:none}
+.head__tel:hover{border-color:var(--brass);color:var(--brass-hi)}
+.btn.head__cta{padding:13px 22px}
+
+/* ---------- 6. PLOCHY: GRAFICKÉ KOMPOZÍCIE ---------- */
+.plate{
+  position:relative;overflow:hidden;isolation:isolate;display:flex;
+  background-color:#171B20;color:var(--plate-ink);
+  box-shadow:inset 0 0 0 1px rgba(228,231,234,.09);
+}
+.plate::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:var(--noise);background-size:180px 180px;opacity:.15;
+}
+.plate>*{position:relative;z-index:3}
+
+/* kruhové oblúky */
+.plate--arc{
+  background-image:
+    linear-gradient(118deg,rgba(201,154,91,.16) 0%,rgba(201,154,91,0) 48%),
+    linear-gradient(162deg,#252B33 0%,#171B20 54%,#0F1216 100%);
+}
+.plate--arc::after{
+  content:"";position:absolute;z-index:2;right:-24%;bottom:-52%;
+  width:min(130%,560px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(201,154,91,.30);
+  box-shadow:0 0 0 26px rgba(228,231,234,.035),0 0 0 27px rgba(201,154,91,.10),0 0 0 64px rgba(228,231,234,.025);
+}
+/* vlasové zvislice */
+.plate--rule{
+  background-image:
+    linear-gradient(212deg,rgba(201,154,91,.20) 0%,rgba(201,154,91,0) 44%),
+    repeating-linear-gradient(90deg,rgba(228,231,234,.085) 0 1px,rgba(0,0,0,0) 1px 18px),
+    linear-gradient(198deg,#1F242A 0%,#101317 100%);
+}
+/* bodkový raster */
+.plate--dot{
+  background-image:
+    radial-gradient(rgba(228,231,234,.16) 1px,rgba(0,0,0,0) 1.7px),
+    radial-gradient(circle at 18% 84%,rgba(201,154,91,.20),rgba(0,0,0,0) 58%),
+    linear-gradient(150deg,#232830 0%,#12161A 100%);
+  background-size:15px 15px,cover,cover;
+}
+/* šrafovanie */
+.plate--hatch{
+  background-image:
+    repeating-linear-gradient(45deg,rgba(228,231,234,.075) 0 1px,rgba(0,0,0,0) 1px 11px),
+    linear-gradient(148deg,#262B33 0%,#0F1216 100%);
+}
+/* mriežka */
+.plate--grid{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(228,231,234,.07) 0 1px,rgba(0,0,0,0) 1px 26px),
+    repeating-linear-gradient(90deg,rgba(228,231,234,.07) 0 1px,rgba(0,0,0,0) 1px 26px),
+    linear-gradient(206deg,#20252B 0%,#101317 100%);
+}
+/* sústredné kruhy */
+.plate--ring{
+  background-image:
+    repeating-radial-gradient(circle at 76% 26%,rgba(228,231,234,.11) 0 1px,rgba(0,0,0,0) 1px 20px),
+    linear-gradient(158deg,#242A31 0%,#111418 100%);
+}
+/* diagonálny klin */
+.plate--wedge{
+  background-image:
+    linear-gradient(64deg,rgba(0,0,0,0) 0 52%,rgba(201,154,91,.22) 52% 54%,rgba(0,0,0,0) 54%),
+    repeating-linear-gradient(0deg,rgba(228,231,234,.06) 0 1px,rgba(0,0,0,0) 1px 22px),
+    linear-gradient(200deg,#232830 0%,#0F1216 100%);
+}
+
+/* typografický obsah plochy */
+.plate__type{padding:clamp(18px,2.4vw,26px);flex:1 1 auto;width:100%;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+.plate__num{font-family:var(--mono);font-size:clamp(2.4rem,6vw,3.6rem);font-weight:700;line-height:.92;letter-spacing:-.03em;color:var(--brass);margin:0}
+.plate__word{
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--plate-mute);margin:0;
+}
+.plate__big{font-size:clamp(1.2rem,2.3vw,1.6rem);font-weight:700;letter-spacing:-.01em;color:var(--plate-ink);margin:0;line-height:1.16}
+
+/* ---------- 7. ÚVOD: OBÁLKA ---------- */
+.hero{background:var(--deep);border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.hero__in{padding:clamp(30px,4.2vw,62px) 0 clamp(30px,3.8vw,54px)}
+.hero__kicker{color:var(--brass);margin:0 0 clamp(14px,1.8vw,24px)}
+
+/* veľká farebná plocha, ktorú obrí nadpis čiastočne prekrýva */
+.mast{position:relative;padding-bottom:2px}
+.mast__block{
+  position:absolute;z-index:0;pointer-events:none;
+  inset:clamp(12px,2.2vw,28px) 0 clamp(2px,.6vw,8px) 26%;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(14,16,19,.16) 0 1px,rgba(0,0,0,0) 1px 26px),
+    linear-gradient(152deg,#8A5F24 0%,#5F401A 54%,#3A2611 100%);
+  border:1px solid rgba(201,154,91,.45);
+}
+.mast__block::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brass)}
+.mast__h1{position:relative;z-index:2;margin:0;letter-spacing:normal;line-height:1}
+.mast__lead{
+  display:block;font-family:var(--mono);font-weight:700;
+  font-size:clamp(.66rem,1.4vw,.84rem);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--plate-ink);line-height:1.5;margin-bottom:clamp(6px,1vw,12px);
+}
+.mast__name{
+  display:block;font-size:clamp(3.4rem,15vw,8rem);line-height:.99;
+  letter-spacing:-.045em;text-transform:uppercase;color:var(--ink-strong);
+  text-shadow:0 2px 26px rgba(8,9,11,.55);
+}
+
+.hero__corner{
+  position:relative;z-index:3;margin-top:clamp(20px,2.6vw,28px);max-width:340px;
+  background:var(--deep);border:1px solid var(--hair);border-top:2px solid var(--brass);
+  padding:15px 18px 17px;
+}
+.hero__corner .k{margin:0;font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-mute)}
+.hero__corner .v{margin:9px 0 7px;font-family:var(--mono);font-size:clamp(1.3rem,2.6vw,1.66rem);font-weight:700;letter-spacing:.005em;line-height:1.1}
+.hero__corner .v a{color:var(--brass);text-decoration:none}
+.hero__corner .v a:hover{color:var(--brass-hi)}
+.hero__corner .s{margin:0;font-size:.85rem;line-height:1.5;color:var(--ink-mute)}
+
+.hero__body{
+  margin-top:clamp(26px,3.2vw,44px);padding-top:clamp(22px,2.6vw,32px);border-top:1px solid var(--hair);
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(22px,3vw,56px);align-items:start;
+}
+.hero__lede{font-size:clamp(1.02rem,1.4vw,1.16rem);color:#C6CCD1;max-width:56ch;margin:0}
+.hero .btns{margin-top:clamp(20px,2.4vw,28px)}
+.hero__meta{margin:0;border-top:1px solid var(--hair)}
+.hero__meta li{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding:11px 0;border-bottom:1px solid var(--hair-soft);
+  font-family:var(--mono);font-size:.86rem;color:var(--ink-mute);
+}
+.hero__meta li b{font-weight:700;color:var(--ink-body);letter-spacing:.1em;text-transform:uppercase;font-size:.72rem}
+.hero__meta li span{color:var(--ink-body);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.facts{background:var(--base);border-bottom:1px solid var(--hair)}
+.facts dl{margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--hair)}
+.facts dl>div{background:var(--base);padding:clamp(18px,2.2vw,26px) clamp(16px,1.8vw,24px)}
+.facts dt{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:9px}
+.facts dd{margin:0;font-size:clamp(1rem,1.25vw,1.1rem);font-weight:600;color:var(--ink-strong);letter-spacing:-.01em}
+
+/* ---------- 8. O HOLIČSTVE ---------- */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,4vw,64px);align-items:start}
+.about>div>p{max-width:60ch}
+.about__plate{min-height:330px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chips li{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;
+  border:1px solid var(--line);color:var(--muted);padding:7px 12px;
+}
+/* ---------- 8b. OBRAZOVÉ MIESTA ---------- */
+.obraz{margin:0;display:block}
+.obraz figcaption{margin-top:11px;color:var(--muted);font-size:.9rem;max-width:44ch}
+
+/* ---------- 8c. BARBERI ---------- */
+.crew{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.bar .plate{aspect-ratio:3/4}
+.bar h3{margin:16px 0 3px}
+.bar__role{margin:0 0 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.bar__list{border-top:1px solid var(--line-soft)}
+.bar__list li{padding:9px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.91rem}
+.bar__list li b{color:var(--title);font-weight:600}
+.bar__ig{margin:12px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+
+/* ---------- 8d. GALÉRIA PRÁC ---------- */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.gal .plate{aspect-ratio:4/3}
+
+/* ---------- 9. CENNÍK ---------- */
+.pl{border-top:1px solid var(--line)}
+.pl__grp{
+  margin:clamp(26px,3.2vw,40px) 0 0;padding:12px 0 0;border-top:2px solid var(--acc);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--title);font-weight:700;
+}
+.pl>.pl__grp:first-child{margin-top:0;border-top:0;padding-top:0}
+.pl__row{
+  display:grid;grid-template-columns:minmax(0,1fr) 108px 96px 132px;
+  gap:6px 24px;align-items:baseline;padding:19px 0;border-bottom:1px solid var(--line);
+}
+.pl__row h3{margin:0 0 4px}
+.pl__row p{margin:0;color:var(--muted);font-size:.93rem;max-width:56ch}
+.pl__min,.pl__eur{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pl__min{color:var(--muted);font-size:.92rem}
+.pl__eur{font-size:1.28rem;font-weight:700;color:var(--title)}
+.pl__go{justify-self:end}
+.pl__go a{font-size:.9rem;font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.pl__go a:hover{color:var(--title);border-color:var(--title)}
+.pl__foot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.6vw,34px);margin-top:30px}
+.pl__foot div{border-top:2px solid var(--acc);padding-top:14px}
+.pl__foot h4{margin:0 0 6px}
+.pl__foot p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ---------- 10. PRIEBEH NÁVŠTEVY ---------- */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.steps li{background:var(--bg);padding:24px 22px 26px}
+.steps .n{font-family:var(--mono);font-size:.86rem;font-weight:700;color:var(--acc);display:block;margin-bottom:14px;letter-spacing:.08em}
+.steps h3{font-size:1.04rem;margin:0 0 8px}
+.steps p{margin:0;color:var(--muted);font-size:.92rem}
+.steps .t{display:block;margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--acc);letter-spacing:.06em}
+
+/* ---------- 11. PRIESTOR ---------- */
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.rooms .plate{aspect-ratio:4/3}
+.rooms h3{margin:18px 0 6px}
+.rooms p{margin:0;color:var(--muted);font-size:.94rem}
+.kit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(26px,5vw,68px);margin-top:clamp(30px,4vw,48px)}
+.kit div{padding:17px 0;border-top:1px solid var(--line-soft)}
+.kit dt{font-weight:600;color:var(--title);margin-bottom:4px}
+.kit dd{margin:0;color:var(--muted);font-size:.93rem;max-width:60ch}
+
+/* ---------- 12. PRODUKTY ---------- */
+.prods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.prod{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.prod .plate{aspect-ratio:5/3}
+.prod__body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
+.prod__body h3{margin:0 0 7px;font-size:1.06rem}
+.prod__body p{margin:0 0 18px;color:var(--muted);font-size:.93rem}
+.prod__body .prod__foot{margin:auto 0 0;display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:1px solid var(--line-soft);padding-top:14px}
+.prod__foot .eur{font-family:var(--mono);font-size:1.24rem;font-weight:700;color:var(--title)}
+.prod__foot .ml{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+
+/* ---------- 13. POUKAZY ---------- */
+.vouch{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(26px,4vw,58px);align-items:center}
+.vouch__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,18px)}
+.vouch__grid .plate{aspect-ratio:3/4;display:flex}
+.vouch__grid .plate__type{justify-content:space-between}
+.rules{margin-top:22px;border-top:1px solid var(--line)}
+.rules li{padding:13px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:22px minmax(0,1fr);gap:14px;font-size:.95rem}
+.rules li b{font-family:var(--mono);color:var(--acc);font-weight:700;font-size:.86rem}
+
+/* ---------- 14. HODINY ---------- */
+.hours{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(26px,4vw,58px);align-items:start}
+.htab{border-top:1px solid var(--line);width:100%}
+.htab div{
+  display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:6px 18px;align-items:baseline;
+  padding:13px 4px;border-bottom:1px solid var(--line-soft);
+}
+.htab dt{font-weight:600;color:var(--title)}
+.htab dd{margin:0;font-family:var(--mono);color:var(--ink);font-size:.96rem}
+.htab .tagcol{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:right}
+.htab div.is-today{background:rgba(201,154,91,.10);box-shadow:inset 3px 0 0 var(--acc)}
+.htab div.is-today .tagcol{color:var(--acc)}
+.htab div.is-closed dd{color:var(--muted)}
+.status{
+  border:1px solid var(--line);border-left:3px solid var(--acc);
+  background:var(--card);padding:18px 20px;margin-bottom:22px;
+}
+.status strong{display:block;font-size:1.08rem;margin-bottom:4px}
+.status p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ---------- 15. OBJEDNANIE ---------- */
+.book{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(20px,2.6vw,30px);align-items:start}
+.panel{background:var(--surf);border:1px solid var(--hair);padding:clamp(20px,2.8vw,30px)}
+.fset{border:0;padding:0;margin:0 0 26px}
+.fset:last-of-type{margin-bottom:0}
+.fset>legend,.flabel{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-mute);padding:0;margin-bottom:12px;display:block;
+}
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+.field input,.field select,.field textarea{
+  width:100%;font:inherit;font-size:1rem;color:var(--ink-body);
+  background:var(--deep);border:1px solid var(--hair);border-radius:2px;padding:12px 13px;
+}
+.field textarea{min-height:92px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#8A9198}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brass);outline:2px solid var(--brass);outline-offset:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+
+.opts{display:grid;gap:10px}
+.opt{
+  display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:4px 14px;align-items:start;
+  border:1px solid var(--hair);padding:13px 15px;cursor:pointer;
+  transition:border-color .15s ease,background-color .15s ease;
+}
+.opt:hover{border-color:var(--brass)}
+.opt input{margin:3px 0 0;accent-color:var(--brass);width:16px;height:16px}
+.opt b{font-weight:600;color:var(--ink-strong)}
+.opt span{grid-column:2;color:var(--ink-mute);font-size:.9rem}
+.opt em{font-family:var(--mono);font-style:normal;font-size:.92rem;color:var(--brass);white-space:nowrap}
+.opt:has(input:checked){border-color:var(--brass);background:rgba(201,154,91,.09)}
+
+.chipsrow{display:flex;flex-wrap:wrap;gap:8px}
+.daychip{
+  font:inherit;font-size:.88rem;cursor:pointer;line-height:1.25;text-align:center;
+  background:var(--deep);color:var(--ink-body);border:1px solid var(--hair);border-radius:2px;
+  padding:9px 13px;min-width:74px;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.daychip b{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.daychip:hover{border-color:var(--brass)}
+.daychip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
+.daychip[aria-pressed="true"] b{color:var(--on-brass)}
+.daychip:disabled{color:#8A9198;border-color:var(--hair-soft);background:transparent;cursor:not-allowed}
+.daychip:disabled b{color:#8A9198}
+.daychip:disabled:hover{border-color:var(--hair-soft)}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.slot{
+  font:inherit;font-family:var(--mono);font-size:.95rem;cursor:pointer;
+  background:var(--deep);color:var(--ink-body);border:1px solid var(--hair);border-radius:2px;
+  padding:10px 6px;text-align:center;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.slot:hover{border-color:var(--brass);color:var(--brass)}
+.slot[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass);font-weight:700}
+.slot:disabled{color:#8A9198;border-color:var(--hair-soft);background:transparent;cursor:not-allowed;text-decoration:line-through}
+.slot:disabled:hover{color:#8A9198;border-color:var(--hair-soft)}
+.freecount{font-family:var(--mono);font-size:.82rem;color:var(--ink-mute);margin:12px 0 0}
+.warn{margin:12px 0 0;font-size:.93rem;color:#F0C08A;border-left:2px solid #F0C08A;padding-left:12px}
+
+.sum{
+  background:var(--raise);border:1px solid var(--hair);border-top:3px solid var(--brass);
+  padding:clamp(20px,2.6vw,28px);position:sticky;top:var(--stick,148px);
+}
+.sum h3{margin:0 0 18px;font-size:1.16rem}
+.sum__rows{border-top:1px solid var(--hair)}
+.sum__rows div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 16px;padding:11px 0;border-bottom:1px solid var(--hair)}
+.sum__rows dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);padding-top:3px;min-width:88px}
+.sum__rows dd{margin:0;color:var(--ink-strong);font-size:.97rem;text-align:right;justify-self:end}
+.sum__total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:20px}
+.sum__total .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute)}
+.sum__total .v{font-family:var(--mono);font-size:2.05rem;font-weight:700;line-height:1;color:var(--brass);font-variant-numeric:tabular-nums}
+.sum__note{margin:16px 0 0;font-size:.86rem;color:var(--ink-mute)}
+.consent{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;align-items:start;font-size:.92rem;color:var(--ink-mute);margin:4px 0 18px}
+.consent input{margin:3px 0 0;accent-color:var(--brass);width:16px;height:16px}
+.done{margin-top:20px;border:1px solid var(--hair);border-left:3px solid var(--brass);background:var(--deep);padding:18px 20px}
+.done strong{display:block;font-size:1.1rem;margin-bottom:6px;color:var(--ink-strong)}
+.done p{margin:0;font-size:.93rem;color:var(--ink-mute)}
+.done p+p{margin-top:8px}
+
+/* ---------- 16. PODMIENKY ---------- */
+.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.terms>div{border-top:2px solid var(--acc);padding-top:16px}
+.terms h3{margin:0 0 12px}
+.terms li{padding:10px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.94rem}
+.terms li b{color:var(--title);font-weight:600}
+.pay{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pay li{border:1px solid var(--line);padding:8px 12px;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;color:var(--muted)}
+
+/* ---------- 17. OTÁZKY ---------- */
+.faq{border-top:1px solid var(--line);max-width:900px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:18px 44px 18px 0;position:relative;
+  font-weight:600;color:var(--title);font-size:1.02rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:1.3rem;color:var(--acc);line-height:1;
+}
+.faq details[open] summary::after{content:"–"}
+.faq summary:hover{color:var(--acc)}
+.faq p{margin:0 0 18px;color:var(--muted);max-width:68ch;font-size:.96rem}
+
+/* ---------- 18. KONTAKT ---------- */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:start}
+.cdl{border-top:1px solid var(--line);margin:0}
+.cdl>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:5px 20px;padding:15px 0;border-bottom:1px solid var(--line-soft)}
+.cdl dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.cdl dd{margin:0;overflow-wrap:anywhere;color:var(--ink)}
+.route{border-top:1px solid var(--line);margin-top:8px}
+.route li{padding:16px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:26px minmax(0,1fr);gap:14px}
+.route .n{font-family:var(--mono);color:var(--acc);font-size:.86rem;font-weight:700;padding-top:2px}
+.route b{display:block;color:var(--title);margin-bottom:3px}
+.route p{margin:0;color:var(--muted);font-size:.94rem;max-width:62ch}
+.mapplate{aspect-ratio:16/10;margin-bottom:26px;display:flex}
+
+/* ---------- 18b. STAROSTLIVOSŤ DOMA ---------- */
+.care{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,72px)}
+.care>div{padding:clamp(18px,2.2vw,26px) 0;border-top:1px solid var(--line-soft)}
+.care>div:first-child,.care>div:nth-child(2){border-top:1px solid var(--line)}
+.care .n{display:block;font-family:var(--mono);font-size:.76rem;letter-spacing:.22em;color:var(--acc);margin-bottom:11px;font-weight:700}
+.care h3{margin:0 0 8px}
+.care p{margin:0;color:var(--muted);font-size:.95rem;max-width:60ch}
+
+/* ---------- 18c. KARIÉRA ---------- */
+.jobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.job{border-top:2px solid var(--acc);padding-top:18px}
+.job h3{margin:0 0 6px}
+.job .role{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.job ul{border-top:1px solid var(--line-soft)}
+.job li{padding:11px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.94rem}
+.job li b{color:var(--title);font-weight:600}
+
+/* ---------- 18d. KONTAKTNÝ FORMULÁR ---------- */
+.cform{
+  margin-top:clamp(34px,4.4vw,60px);display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(20px,2.8vw,34px);align-items:start;
+}
+.cform__side{border-top:2px solid var(--brass);padding-top:18px}
+.cform__side h3{margin:0 0 12px}
+.cform__side p{color:var(--muted);font-size:.95rem;max-width:52ch}
+.cform__side dl{margin:18px 0 0;border-top:1px solid var(--line)}
+.cform__side dl>div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:4px 18px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.cform__side dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.cform__side dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.cform__side dd a:not(.btn){color:var(--acc);font-weight:600}
+
+/* ---------- 19. AUTOR UKÁŽKY ---------- */
+.author{background:var(--raise);border-top:2px solid var(--brass);padding:clamp(46px,6vw,82px) 0;scroll-margin-top:var(--stick,148px)}
+.author__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.86fr);gap:clamp(28px,4vw,64px);align-items:start}
+.author .eyebrow{color:var(--brass)}
+.author h2{color:var(--ink-strong)}
+.author p{color:var(--ink-body);max-width:56ch}
+.author__price{border-left:2px solid var(--brass);padding-left:14px;font-weight:600;color:var(--ink-strong)}
+.author__card{background:var(--deep);border:1px solid var(--hair);padding:clamp(20px,2.6vw,30px)}
+.author__name{font-size:1.34rem;font-weight:700;color:var(--ink-strong);margin:0}
+.author__role{margin:4px 0 0;color:var(--ink-mute);font-size:.9rem}
+.author__list{margin:22px 0 0;border-top:1px solid var(--hair)}
+.author__list>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:4px 16px;padding:13px 0;border-bottom:1px solid var(--hair)}
+.author__list dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);padding-top:4px}
+.author__list dd{margin:0;overflow-wrap:anywhere;color:var(--ink-body)}
+.author__list a{color:var(--brass);font-weight:600}
+.author .btns{margin-top:24px}
+
+/* ---------- 20. PÄTA ---------- */
+.foot{background:var(--deep);border-top:1px solid var(--hair);padding:clamp(38px,4.6vw,62px) 0 clamp(28px,3vw,40px);font-size:.92rem;color:var(--ink-mute)}
+.foot__in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.95fr) minmax(0,.95fr);gap:clamp(24px,3.4vw,54px);align-items:start}
+.foot strong{display:block;color:var(--ink-strong);font-size:1.04rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px}
+.foot h3{font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin:0 0 12px;color:var(--brass)}
+.foot a:not(.btn){color:var(--ink-body);text-decoration:none;border-bottom:1px solid var(--hair)}
+.foot a:not(.btn):hover{color:var(--brass);border-bottom-color:var(--brass)}
+.foot__links{display:grid;gap:9px}
+.foot p{margin:0 0 10px;max-width:40ch;line-height:1.6}
+.foot p:last-child{margin-bottom:0}
+.foot__hours{margin:0;font-family:var(--mono);font-size:.84rem;font-variant-numeric:tabular-nums}
+.foot__hours li{padding:6px 0;border-bottom:1px solid var(--hair-soft);display:flex;justify-content:space-between;gap:14px}
+.foot__hours li:last-child{border-bottom:0}
+.foot__base{
+  margin-top:clamp(26px,3vw,40px);padding-top:18px;border-top:1px solid var(--hair);
+  display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:space-between;font-size:.86rem;
+}
+.foot__base p{margin:0;max-width:66ch}
+
+/* ---------- 21. ODHAĽOVANIE ---------- */
+html.js .rv{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+html.js .rv.in{opacity:1;transform:none}
+
+/* ---------- 22. RESPONZÍVNE ---------- */
+@media (min-width:901px){
+  .mast{min-height:clamp(226px,21vw,300px);display:flex;flex-direction:column;justify-content:center}
+  .hero__corner{
+    position:absolute;right:clamp(14px,1.8vw,26px);bottom:clamp(14px,1.8vw,26px);
+    margin:0;width:clamp(248px,22vw,304px);max-width:none;
+  }
+}
+@media (max-width:1080px){
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .book{grid-template-columns:1fr}
+  .sum{position:static}
+  .prods{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .crew{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vouch{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}
+  .hours{grid-template-columns:1fr}
+  .contact{grid-template-columns:1fr}
+  .cform{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero__body{grid-template-columns:1fr}
+  .mast__block{inset:clamp(10px,2vw,20px) 0 0 22%}
+  .care{grid-template-columns:1fr}
+  .care>div:nth-child(2){border-top:1px solid var(--line-soft)}
+  .jobs{grid-template-columns:1fr}
+  .foot__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__in>div:first-child{grid-column:1/-1}
+  html.js .nav-list{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--deep);border-bottom:1px solid var(--hair);
+    flex-direction:column;align-items:stretch;gap:0;padding:6px 18px 14px;
+  }
+  html.js .nav-list[data-open="false"]{display:none}
+  html.js .nav-list a{padding:13px 4px;border-bottom:1px solid var(--hair-soft);border-radius:0}
+  html.js .nav-list li:last-child a{border-bottom:0}
+  /* tlačidlo aj telefón ostávajú viditeľné, do menu sa neskrývajú */
+  .head__act{order:5;flex:1 0 100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .head__tel{padding:12px 6px}
+  .btn.head__cta{width:100%;padding:13px 10px}
+  html.js .nav-toggle{
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:700;
+    background:transparent;border:1px solid var(--hair);color:var(--ink-body);
+    border-radius:2px;padding:9px 14px;cursor:pointer;
+  }
+  html.js .nav-toggle svg{width:16px;height:16px}
+  .shead{grid-template-columns:1fr;gap:2px}
+  .shead__idx{padding-top:0}
+  .rooms{grid-template-columns:1fr}
+  .rooms .plate{aspect-ratio:16/9}
+  .terms{grid-template-columns:1fr}
+  .pl__foot{grid-template-columns:1fr}
+  .pl__row{grid-template-columns:minmax(0,1fr) auto;gap:4px 20px}
+  .pl__row .pl__min{grid-column:1;color:var(--muted)}
+  .pl__row .pl__eur{grid-column:2;grid-row:1;text-align:right}
+  .pl__go{grid-column:2;grid-row:2;justify-self:end}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .steps{grid-template-columns:1fr}
+  .prods{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr}
+  .gal .plate{aspect-ratio:16/9}
+  .kit{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:1fr}
+  .vouch__grid{grid-template-columns:1fr}
+  .vouch__grid .plate{aspect-ratio:16/7}
+  .cdl>div{grid-template-columns:1fr}
+  .cform__side dl>div{grid-template-columns:1fr}
+  .author__in{grid-template-columns:1fr}
+  .author__list>div{grid-template-columns:1fr}
+  .htab div{grid-template-columns:96px minmax(0,1fr);gap:4px 14px}
+  .htab .tagcol{grid-column:2;text-align:left;margin-top:2px}
+  .foot__in{grid-template-columns:1fr}
+  .foot__in>div:first-child{grid-column:auto}
+  .brand__txt span{display:none}
+  .demobar__in{padding:8px 0;font-size:.82rem;line-height:1.45;gap:2px 12px}
+  .opt{grid-template-columns:20px minmax(0,1fr)}
+  .opt em{grid-column:2;margin-top:4px}
+  .btns .btn{flex:1 1 auto}
+}
+@media (max-width:420px){
+  .demobar__tag{display:none}
+  .slots{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html.js .rv{opacity:1;transform:none}
+}
+@media print{
+  .topstack,.chipsrow,.slots{display:none}
+  body{background:#fff;color:#000}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*400);return v.toLocaleString('hu-HU');}function __f(x){return Math.round(x).toLocaleString('hu-HU');}function __p(x){return Math.round(x*400/10)*10;}function __c(x){return x*400;}var __m="Ft";</script>
+</head>
+<body>
+<a class="skip" href="#obsah">Ugrás a tartalomra</a>
+
+<div class="topstack">
+  <!-- ===== PÁSIK UKÁŽKY ===== -->
+  <div class="demobar" role="complementary" aria-label="Tájékoztatás a mintaweboldalról">
+    <div class="demobar__in">
+      <span class="demobar__tag">Mintaweboldal</span>
+      <span>Ilyen weboldalt készítek Önnek is. <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a></span>
+      <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+    </div>
+  </div>
+
+  <!-- ===== HLAVIČKA ===== -->
+  <header class="site-head">
+    <div class="wrap head__in">
+      <a class="brand" href="#uvod" aria-label="Penge Borbély, az oldal eleje">
+        <span class="brand__mark" aria-hidden="true">P</span> <span class="brand__txt"> <strong>Penge Borbély</strong> <span>Férfi borbélyüzlet</span> </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        Menü
+      </button>
+
+      <nav aria-label="Fő navigáció">
+        <ul class="nav-list" id="hlavne-menu" data-open="false">
+          <li><a href="#cennik">Árak</a></li>
+          <li><a href="#barberi">Borbélyok</a></li>
+          <li><a href="#hodiny">Nyitvatartás</a></li>
+          <li><a href="#kontakt">Kapcsolat</a></li>
+        </ul>
+      </nav>
+
+      <div class="head__act">
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+        <a class="btn btn--brass head__cta" href="#objednanie">Időpontfoglalás</a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<main id="obsah">
+
+<!-- ===== 01 ÚVOD ===== -->
+<section class="hero" id="uvod">
+  <div class="wrap hero__in">
+    <p class="eyebrow hero__kicker">Rövid utca 6., történelmi belváros &middot; négy szék &middot; hajvágás előre foglalt időpontra</p>
+
+    <div class="mast">
+      <span class="mast__block" aria-hidden="true"></span>
+      <h1 class="mast__h1">
+        <span class="mast__lead">Férfi borbélyüzlet</span>
+        <span class="mast__name">Penge</span>
+      </h1>
+
+      <aside class="hero__corner" aria-label="Foglalás telefonon">
+        <p class="k">Foglalás</p>
+        <p class="v"><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></p>
+        <p class="s">Nyitvatartási időben telefonon elér minket, azon kívül írjon SMS-t. Időpontot közvetlenül ezen az oldalon is választhat.</p>
+      </aside>
+    </div>
+
+    <div class="hero__body">
+      <div>
+        <p class="hero__lede">Hajvágás ollóval és géppel, szakállformázás és klasszikus nedves borotválás késsel, forró törölközővel. Kizárólag előre foglalt időpontra dolgozunk, a foglalt sáv a szolgáltatástól függően 15-től 90 percig tart.</p>
+        <div class="btns">
+          <a class="btn btn--brass" href="#objednanie">Időpontfoglalás</a>
+          <a class="btn btn--ghost" href="#cennik">Árak megtekintése</a>
+        </div>
+      </div>
+      <ul class="hero__meta" aria-label="Nyitvatartás">
+        <li><b>Hétfő &ndash; szerda</b><span>9:00 &ndash; 19:00</span></li>
+        <li><b>Csütörtök &ndash; péntek</b><span>9:00 &ndash; 20:00</span></li>
+        <li><b>Szombat</b><span>8:00 &ndash; 14:00</span></li>
+        <li><b>Vasárnap</b><span>zárva</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="wrap">
+      <dl>
+        <div><dt>Munkahelyek</dt><dd>4 szék és egy borotválósarok</dd></div>
+        <div><dt>Klasszikus hajvágás</dt><dd>8800 Ft 30 percért</dd></div>
+        <div><dt>Foglalás</dt><dd>az oldalon vagy telefonon</dd></div>
+        <div><dt>Fizetés</dt><dd>kártya, telefon, készpénz</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 O HOLIČSTVE ===== -->
+<section class="sec" id="onas">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">01</p>
+      <div class="shead__main">
+        <h2>A borbélyüzletről</h2>
+        <p class="lede">Csak előre foglalt időpontra dolgozunk. Foglalás nélkül csak akkor tudunk kiszolgálni, ha éppen szabad egy szék, ami főleg hétfő és kedd délelőtt fordul elő.</p>
+      </div>
+    </header>
+
+    <div class="about">
+      <div class="rv">
+        <p>Négy szék, két mosdókagyló és külön sarok a késes borotváláshoz. A sáv a szolgáltatás szerint 15-től 90 percig van fenntartva, és a megbeszélt időben kezdődik.</p>
+        <p>Ollóval és géppel vágunk, az átmeneteket késsel tisztítjuk ki. Az első alkalommal átvesszük a fejforma, a hajsűrűség és az otthoni hajápolásra szánt idő kérdését, és ezek szerint állapítjuk meg a hosszt és a következő időpontok ritmusát.</p>
+        <ul class="chips">
+          <li>hajvágás ollóval</li>
+          <li>átmenetek géppel</li>
+          <li>egyenes borotvakés</li>
+          <li>forró törölköző</li>
+          <li>szakállformázás</li>
+          <li>gyerekhajvágás</li>
+        </ul>
+      </div>
+
+      <div class="rv">
+        <!-- FOTO: interiér holičstva — štyri kreslá pri stene so zrkadlami, tmavé drevo, mosadzné lampy -->
+        <figure class="obraz">
+          <div class="plate plate--rule about__plate">
+            <div class="plate__type">
+              <p class="plate__word">Rövid utca 6., földszint</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">a székek egy fal mentén, a borotválósarok elkülönítve</p>
+              </div>
+            </div>
+          </div>
+          <figcaption>A fő helyiség. Az utcai bejárat lépcső nélküli, az ajtó 90 cm széles.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 CENNÍK ===== -->
+<section class="sec paper" id="cennik">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">02</p>
+      <div class="shead__main">
+        <h2>Szolgáltatások és árlista</h2>
+        <p class="lede">A feltüntetett idő a teljes fenntartott sáv, benne a konzultációval és a munkahely rendbetételével. Az árak véglegesek, és a szolgáltatás után fizetendők.</p>
+      </div>
+    </header>
+
+    <div class="pl rv">
+      <p class="pl__grp">Egyes szolgáltatások</p>
+
+      <div class="pl__row">
+        <div>
+          <h3>Klasszikus férfi hajvágás</h3>
+          <p>Hajvágás ollóval, a kontúrok kitisztítása késsel, mosás és szárítás.</p>
+        </div>
+        <p class="pl__min">30 perc</p>
+        <p class="pl__eur">8800 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Klasszikus férfi hajvágás">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Gépi hajvágás átmenettel</h3>
+          <p>Rövid oldalak folyamatos átmenettel, a tető ollóval kidolgozva.</p>
+        </div>
+        <p class="pl__min">45 perc</p>
+        <p class="pl__eur">10 800 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Gépi hajvágás átmenettel">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Borotválás késsel, forró törölközővel</h3>
+          <p>Két forró törölköző, kemény szappan, borotválás két irányban, hűsítő pakolás.</p>
+        </div>
+        <p class="pl__min">40 perc</p>
+        <p class="pl__eur">10 000 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Borotválás késsel, forró törölközővel">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Szakáll- és bajuszigazítás</h3>
+          <p>Rövidítés, a vonalak formázása késsel, olajos ápolás.</p>
+        </div>
+        <p class="pl__min">25 perc</p>
+        <p class="pl__eur">6400 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Szakáll- és bajuszigazítás">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Gyerekhajvágás 12 éves korig</h3>
+          <p>Hajvágás nyugodt tempóban, a kísérő a szék mellett ül.</p>
+        </div>
+        <p class="pl__min">25 perc</p>
+        <p class="pl__eur">6000 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Gyerekhajvágás 12 éves korig">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Hajvágás 65 év feletti szépkorúaknak</h3>
+          <p>Kedvezményes ár hétfőtől szerdáig 9:00 és 12:00 között.</p>
+        </div>
+        <p class="pl__min">30 perc</p>
+        <p class="pl__eur">6800 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Hajvágás 65 év feletti szépkorúaknak">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Kontúrok igazítása két hajvágás között</h3>
+          <p>A nyak és a fül körüli rész kitisztítása az előző hajvágástól számított 14 napon belül.</p>
+        </div>
+        <p class="pl__min">15 perc</p>
+        <p class="pl__eur">3600 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Kontúrok igazítása két hajvágás között">Foglalás</a></p>
+      </div>
+
+      <p class="pl__grp">Csomagok</p>
+
+      <div class="pl__row">
+        <div>
+          <h3>Hajvágás és szakáll</h3>
+          <p>Klasszikus hajvágás, szakállformázás késsel, olaj és balzsam. Külön-külön 15 200 Ft.</p>
+        </div>
+        <p class="pl__min">60 perc</p>
+        <p class="pl__eur">14 400 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Hajvágás és szakáll">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Hajvágás és borotválás késsel</h3>
+          <p>Klasszikus hajvágás és nedves borotválás két forró törölközővel. Külön-külön 18 800 Ft.</p>
+        </div>
+        <p class="pl__min">70 perc</p>
+        <p class="pl__eur">16 800 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Hajvágás és borotválás késsel">Foglalás</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Hajvágás, szakáll és borotválás késsel</h3>
+          <p>Hajvágás, szakállformázás, valamint a nyak és az arc leborotválása késsel. Külön-külön 25 200 Ft.</p>
+        </div>
+        <p class="pl__min">90 perc</p>
+        <p class="pl__eur">22 000 Ft</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Hajvágás, szakáll és borotválás késsel">Foglalás</a></p>
+      </div>
+    </div>
+
+    <div class="pl__foot rv">
+      <div>
+        <h4>A látogatás terjedelme</h4>
+        <p>Hajformázás hajszárítóval és készítménnyel +2400 Ft és 15 perc. Hajformázás forró törölközővel és pakolással +4800 Ft és 30 perc. A terjedelmet foglaláskor választja ki.</p>
+      </div>
+      <div>
+        <h4>Hajvágás tanulónál</h4>
+        <p>Klasszikus hajvágás és átmenetes hajvágás borbély felügyelete mellett, az árból 30 % kedvezménnyel. A fenntartott idő 15 perccel hosszabb, telefonon lehet foglalni.</p>
+      </div>
+      <div>
+        <h4>Mit tartalmaz az ár</h4>
+        <p>Konzultáció, mosás a 30 perctől hosszabb szolgáltatásoknál, a kontúrok kitisztítása késsel, valamint víz vagy kávé a várakozás idejére.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BARBERI ===== -->
+<section class="sec sec--deep" id="barberi">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">03</p>
+      <div class="shead__main">
+        <h2>Borbélyok</h2>
+        <p class="lede">Foglaláskor konkrét borbélyt is választhat. Névre szóló foglalásnál a legközelebbi szabad időpont általában néhány nappal későbbi, mint bármelyik szabad széknél.</p>
+      </div>
+    </header>
+
+    <div class="crew">
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri svojom kresle, tmavé pozadie, pohľad do objektívu -->
+        <figure class="obraz">
+          <div class="plate plate--arc">
+            <div class="plate__type">
+              <p class="plate__word">01-es szék</p>
+              <div>
+                <p class="plate__num">HM</p>
+                <p class="plate__big">hajvágás, szakáll, borotválás késsel</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Hajdu Márk</h3>
+        <p class="bar__role">Borbély</p>
+        <ul class="bar__list">
+          <li><b>Mit csinál:</b> klasszikus hajvágás, átmenetes hajvágás, borotválás késsel.</li>
+          <li><b>Mikor vág:</b> hétfőtől péntekig.</li>
+          <li><b>Legtöbb szabad időpont:</b> hétfő és kedd délelőtt.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @penge.mark</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri práci, detail rúk s nožnicami -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">02-es szék</p>
+              <div>
+                <p class="plate__num">BT</p>
+                <p class="plate__big">átmenetek, szakáll, formázás</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Benkő Tamás</h3>
+        <p class="bar__role">Borbély</p>
+        <ul class="bar__list">
+          <li><b>Mit csinál:</b> átmenetes hajvágás, szakáll- és bajuszformázás, csomagok.</li>
+          <li><b>Mikor vág:</b> keddtől szombatig.</li>
+          <li><b>Legtöbb szabad időpont:</b> szerda délelőtt.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @penge.tamas</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča, ktorý strihá dieťa v kresle s podsedákom -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">03-as szék</p>
+              <div>
+                <p class="plate__num">KP</p>
+                <p class="plate__big">hajvágás, gyerekhajvágás</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Kardos Péter</h3>
+        <p class="bar__role">Borbély</p>
+        <ul class="bar__list">
+          <li><b>Mit csinál:</b> klasszikus hajvágás, gyerekhajvágás négyéves kortól.</li>
+          <li><b>Mikor vág:</b> hétfőn, szerdán, pénteken, szombaton.</li>
+          <li><b>Legtöbb szabad időpont:</b> szombat 11:00 után.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @penge.peter</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét učňa pri príprave pracoviska -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">04-es szék</p>
+              <div>
+                <p class="plate__num">SÁ</p>
+                <p class="plate__big">hajvágás borbély felügyeletével</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Simon Ádám</h3>
+        <p class="bar__role">Tanuló</p>
+        <ul class="bar__list">
+          <li><b>Mit csinál:</b> klasszikus és átmenetes hajvágás borbély felügyelete mellett.</li>
+          <li><b>Ár:</b> 30 %-kal alacsonyabb, a fenntartott idő 15 perccel hosszabb.</li>
+          <li><b>Foglalás:</b> telefonon, nem az űrlapon.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @penge.adam</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NAŠA PRÁCA ===== -->
+<section class="sec" id="praca">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">04</p>
+      <div class="shead__main">
+        <h2>Munkáink</h2>
+        <p class="lede">Hat felvétel az üzletből. Mindegyiknél szerepel a szolgáltatás, a sáv hossza és az árlistás ár.</p>
+      </div>
+    </header>
+
+    <div class="gal rv">
+      <!-- FOTO: detail prechodu na bokoch, pohľad zozadu na čerstvo dostrihanú hlavu -->
+      <figure class="obraz">
+        <div class="plate plate--wedge">
+          <div class="plate__type">
+            <p class="plate__word">Átmenet</p>
+            <div>
+              <p class="plate__num">0,5</p>
+              <p class="plate__big">mm alul, folyamatos átmenet a tető hosszába</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Gépi hajvágás átmenettel. 45 perc, 10 800 Ft.</figcaption>
+      </figure>
+
+      <!-- FOTO: klasický strih nožnicami, pohľad z boku po dokončení -->
+      <figure class="obraz">
+        <div class="plate plate--grid">
+          <div class="plate__type">
+            <p class="plate__word">Olló</p>
+            <div>
+              <p class="plate__num">30</p>
+              <p class="plate__big">perces sáv, mosással és szárítással együtt</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Klasszikus férfi hajvágás, a kontúrok késes kitisztításával. 8800 Ft.</figcaption>
+      </figure>
+
+      <!-- FOTO: detail vytvarovanej brady, línia na lícach a krku -->
+      <figure class="obraz">
+        <div class="plate plate--ring">
+          <div class="plate__type">
+            <p class="plate__word">Szakáll</p>
+            <div>
+              <p class="plate__num">25</p>
+              <p class="plate__big">perc a rövidítésre, a vonalra és az olajra</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Szakáll- és bajuszformázás késsel. 6400 Ft.</figcaption>
+      </figure>
+
+      <!-- FOTO: mokré holenie britvou, horúci uterák na tvári zákazníka -->
+      <figure class="obraz">
+        <div class="plate plate--arc">
+          <div class="plate__type">
+            <p class="plate__word">Borotválás</p>
+            <div>
+              <p class="plate__num">02</p>
+              <p class="plate__big">forró törölköző és hűsítő pakolás a végén</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Nedves borotválás késsel, két irányban. 40 perc, 10 000 Ft.</figcaption>
+      </figure>
+
+      <!-- FOTO: dieťa v kresle s podsedákom počas strihu -->
+      <figure class="obraz">
+        <div class="plate plate--dot">
+          <div class="plate__type">
+            <p class="plate__word">Gyerekek</p>
+            <div>
+              <p class="plate__num">04</p>
+              <p class="plate__big">éves kortól, ülésmagasító a székbe</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Gyerekhajvágás 12 éves korig. 25 perc, 6000 Ft.</figcaption>
+      </figure>
+
+      <!-- FOTO: kút na holenie — kreslo, ohrievač uterákov, britvy na poličke -->
+      <figure class="obraz">
+        <div class="plate plate--hatch">
+          <div class="plate__type">
+            <p class="plate__word">Borotválósarok</p>
+            <div>
+              <p class="plate__num">01</p>
+              <p class="plate__big">külön szék saját szellőzéssel</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Törölközőmelegítő és borotva egyszer használatos pengével.</figcaption>
+      </figure>
+    </div>
+
+    <div class="btns rv" style="margin-top:clamp(26px,3.2vw,36px)">
+      <a class="btn btn--brass" href="#objednanie">Időpontfoglalás</a>
+      <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRIEBEH NÁVŠTEVY ===== -->
+<section class="sec sec--deep" id="navsteva">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">03</p>
+      <div class="shead__main">
+        <h2>Hogyan zajlik a látogatás</h2>
+        <p class="lede">A teljes időpont pontosan annyi ideig tart, amennyi az árlistában szerepel. Érkezzen öt perccel előbb, további szolgáltatások utólagos berendelésére az időpont alatt már nincs hely.</p>
+      </div>
+    </header>
+
+    <ol class="steps rv">
+      <li>
+        <span class="n">01. lépés</span>
+        <h3>Érkezés és kávé</h3>
+        <p>Leteszi a kabátját, kap kávét vagy vizet. Ha korábban érkezik, a hatszemélyes váróban vár.</p>
+        <span class="t">5 perccel az időpont előtt</span>
+      </li>
+      <li>
+        <span class="n">02. lépés</span>
+        <h3>Konzultáció</h3>
+        <p>Átvesszük, mit szeretne változtatni, hogyan esik a haja, és mennyi időt fordít rá otthon. Megállapodunk a hosszban.</p>
+        <span class="t">3-tól 5 percig</span>
+      </li>
+      <li>
+        <span class="n">03. lépés</span>
+        <h3>Hajvágás</h3>
+        <p>Olló a tetőn, gép az oldalakon, az átmenetek késsel kitisztítva. A formát közben folyamatosan ellenőrizzük a tükörben.</p>
+        <span class="t">15-től 40 percig</span>
+      </li>
+      <li>
+        <span class="n">04. lépés</span>
+        <h3>Mosás és szárítás</h3>
+        <p>Mosás a kagylónál és szárítás, a 30 perctől hosszabb szolgáltatásoknál az árban van. A készítményt felvisszük, és a hosszabb terjedelemnél megmutatjuk az otthoni menetet is.</p>
+        <span class="t">10 perc</span>
+      </li>
+      <li>
+        <span class="n">05. lépés</span>
+        <h3>Fizetés és a következő időpont</h3>
+        <p>Kártyával vagy készpénzzel fizet. A helyszínen rögtön be is írhatja a következő időpontot négy-hat hét múlvára.</p>
+        <span class="t">2 perc</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== 05 PRIESTOR ===== -->
+<section class="sec" id="priestor">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">04</p>
+      <div class="shead__main">
+        <h2>Tér és felszereltség</h2>
+        <p class="lede">Az üzlet a földszinten van, lépcső nélkül, egy hajvágó helyiséggel és egy elkülönített borotválósarokkal.</p>
+      </div>
+    </header>
+
+    <div class="rooms">
+      <article class="rv">
+        <!-- FOTO: rad štyroch kresiel so zrkadlami, pohľad pozdĺž steny -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">Munkahelyek</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">szék saját tükörrel</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Hajvágó rész</h3>
+        <p>Négy szék egy fal mentén, mindegyiknek saját tükre, világítása és padlóról elszívó rendszere van.</p>
+      </article>
+
+      <article class="rv">
+        <!-- FOTO: umývací kút s dvomi sklápacími misami a opierkou krku -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">Mosdókagylók</p>
+              <div>
+                <p class="plate__num">02</p>
+                <p class="plate__big">dönthető kagylók nyaktámasszal</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Mosdósarok</h3>
+        <p>Két kagyló állítható nyaktámasszal. A víz 37 °C-ra van temperálva, a sampont a hajtípus szerint választjuk.</p>
+      </article>
+
+      <article class="rv">
+        <!-- FOTO: čakáreň s lavicou, vešiakom a poličkou na produkty -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">Váró</p>
+              <div>
+                <p class="plate__num">06</p>
+                <p class="plate__big">ülőhely és fogas</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Váró</h3>
+        <p>Hat hely, fogas, telefontöltő és ivóvíz. Nyáron nyitva van az udvar két paddal.</p>
+      </article>
+    </div>
+
+    <dl class="kit rv">
+      <div>
+        <dt>A szerszámok higiéniája</dt>
+        <dd>A borotvapengék egyszer használatosak. A fésűket, az ollókat és a vágófejeket minden vendég után tisztítjuk és fertőtlenítjük, a székhuzatot és a törölközőt cseréljük.</dd>
+      </div>
+      <div>
+        <dt>Akadálymentes bejárat</dt>
+        <dd>Utcai bejárat lépcső nélkül, 90 cm széles ajtó, az első szék körül nincs akadály.</dd>
+      </div>
+      <div>
+        <dt>Gyerekek</dt>
+        <dd>Ülésmagasító a székbe négyéves kortól. A kísérő a hajvágás teljes ideje alatt mellette ül.</dd>
+      </div>
+      <div>
+        <dt>Klíma és szellőzés</dt>
+        <dd>Klíma a fő helyiségben, gépi szellőzés a borotválósarokban.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ===== 06 PRODUKTY ===== -->
+<section class="sec paper" id="produkty">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">05</p>
+      <div class="shead__main">
+        <h2>Megvásárolható termékek</h2>
+        <p class="lede">Csak azt áruljuk, amit magunk is használunk munka közben. Az üzletben lehet megvenni, webáruházunk nincs. Minden vásárlásnál megmutatjuk az adagolást.</p>
+      </div>
+    </header>
+
+    <div class="prods">
+      <article class="prod rv">
+        <!-- FOTO: téglik matnej pasty na tmavom podklade, otvorené veko -->
+        <figure class="obraz">
+          <div class="plate plate--wedge">
+            <div class="plate__type">
+              <p class="plate__word">01 &middot; Paszta</p>
+              <p class="plate__big">Matt paszta<br>100 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Matt hajpaszta</h3>
+          <p>Közepes tartás fény nélkül. Rövidebb, textúrás frizurákhoz való, a nap közben átformázható.</p>
+          <p class="prod__foot"><span class="eur">6400 Ft</span><span class="ml">100 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: plechovka pomády s viditeľnou etiketou, bočný pohľad -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">02 &middot; Pomádé</p>
+              <p class="plate__big">Vízbázisú pomádé<br>100 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Vízbázisú pomádé</h3>
+          <p>Erős tartás fénnyel, sima vízzel lemosható. Hátrafésült és klasszikus, oldalválasztékos frizurákhoz.</p>
+          <p class="prod__foot"><span class="eur">7200 Ft</span><span class="ml">100 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: sklenená fľaštička oleja s kvapkadlom, odlesk svetla -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">03 &middot; Olaj</p>
+              <p class="plate__big">Szakállolaj<br>30 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Szakállolaj</h3>
+          <p>Jojoba- és mandulaolaj keveréke. Reggel három csepp a tenyérbe, lágyítja a szőrszálakat és megnyugtatja a bőrt.</p>
+          <p class="prod__foot"><span class="eur">5600 Ft</span><span class="ml">30 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: téglik balzamu, vedľa neho drevený hrebeň -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">04 &middot; Balzsam</p>
+              <p class="plate__big">Szakállbalzsam<br>60 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Szakállbalzsam</h3>
+          <p>Sűrűbb, mint az olaj, a hosszabb szakáll formáját is tartja. Öt centiméternél hosszabb szakállhoz ajánljuk.</p>
+          <p class="prod__foot"><span class="eur">6000 Ft</span><span class="ml">60 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: fľaša šampónu pri umývacej mise -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">05 &middot; Sampon</p>
+              <p class="plate__big">Sampon zsíros hajra<br>250 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Sampon zsíros hajra</h3>
+          <p>Szilikon nélkül, mentakivonattal. Ugyanaz, amellyel az üzletben mosunk.</p>
+          <p class="prod__foot"><span class="eur">5200 Ft</span><span class="ml">250 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: kefa z diviačích štetín zhora, viditeľné drevené telo -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">06 &middot; Kefe</p>
+              <p class="plate__big">Vaddisznósörte kefe<br>fa test</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Vaddisznósörte kefe</h3>
+          <p>A szakáll és a rövidebb haj napi fésüléséhez. Egyenletesen, a gyökerekig eloszlatja az olajat.</p>
+          <p class="prod__foot"><span class="eur">8800 Ft</span><span class="ml">1 darab</span></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07 STAROSTLIVOSŤ DOMA ===== -->
+<section class="sec sec--deep" id="starostlivost">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">06</p>
+      <div class="shead__main">
+        <h2>Haj- és szakállápolás otthon</h2>
+        <p class="lede">A menet, amelyet hajvágás közben közvetlenül az Ön haján mutatunk meg. Minden lépésnél szerepel az adagolás és az idő is.</p>
+      </div>
+    </header>
+
+    <div class="care rv">
+      <div>
+        <span class="n">01</span>
+        <h3>Mosás</h3>
+        <p>Rövidebb frizuránál elég kétnaponta hajat mosni, zsírosabb fejbőrnél naponta. A sampont csak a fejbőrre vigye fel, a hosszak az öblítéskor maguktól tisztulnak. A kondicionáló a végekre való, nem a hajtövekhez.</p>
+      </div>
+      <div>
+        <span class="n">02</span>
+        <h3>Szárítás és formázás</h3>
+        <p>Szárítsa meg a haját hajszárítóval körülbelül nyolcvan százalékig, és csak utána vigye fel a készítményt. Vizes hajban a paszta és a pomádé nem fog meg, a frizura egy órán belül leesik. A levegőt a növekedés irányával szemben vezesse, így tovább tartja a formát.</p>
+      </div>
+      <div>
+        <span class="n">03</span>
+        <h3>A készítmény adagolása</h3>
+        <p>Borsónyi paszta rövid frizurához, babnyi a hosszabb tetőhöz. Dörzsölje el a tenyerei között, amíg eltűnik a fénye, és csak utána menjen bele a hajba, hátulról előrefelé. A több termék nem javítja a formát, csak elnehezíti a hajat.</p>
+      </div>
+      <div>
+        <span class="n">04</span>
+        <h3>Szakáll és kefe</h3>
+        <p>Reggel három csepp olaj a száraz szakállra, öt centinél hosszabb szakállhoz használjon balzsamot. Kenje el a bőrtől a végek felé, és fésülje át kefével, elég egy perc. A sűrű fésű a nedves hajra való, a kefe mindig csak a szárazra. A nyakon és az arcon a kontúrokat otthon ne igazítsa, a látogatások között 3600 Ft-ért kitisztítjuk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 POUKAZY ===== -->
+<section class="sec" id="poukazy">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">07</p>
+      <div class="shead__main">
+        <h2>Ajándékutalványok</h2>
+        <p class="lede">Az utalványt az üzletben azonnal kiállítjuk, nyomtatva, saját sorszámmal. Szolgáltatásra és termékre is beváltható.</p>
+      </div>
+    </header>
+
+    <div class="vouch rv">
+      <div class="vouch__grid">
+        <div class="plate plate--arc">
+          <div class="plate__type">
+            <p class="plate__word">Utalvány</p>
+            <div>
+              <p class="plate__num">12 000 Ft</p>
+              <p class="plate__big">hajvágás vagy szakállformázás</p>
+            </div>
+          </div>
+        </div>
+        <div class="plate plate--wedge">
+          <div class="plate__type">
+            <p class="plate__word">Utalvány</p>
+            <div>
+              <p class="plate__num">20 000 Ft</p>
+              <p class="plate__big">hajvágás szakállal és egy termék</p>
+            </div>
+          </div>
+        </div>
+        <div class="plate plate--dot">
+          <div class="plate__type">
+            <p class="plate__word">Utalvány</p>
+            <div>
+              <p class="plate__num">32 000 Ft</p>
+              <p class="plate__big">két teljes látogatás</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p>Az utalvány értékét maga is meghatározhatja, 6000 Ft-tól felfelé. Utalványra ugyanúgy lehet időpontot foglalni, mint rendesen, elég az utalvány számát a megjegyzésbe írni.</p>
+        <ul class="rules">
+          <li><b>01</b><span>A kiállítás dátumától 12 hónapig érvényes.</span></li>
+          <li><b>02</b><span>Több részletben is felhasználható, a maradékot a hátoldalára írjuk.</span></li>
+          <li><b>03</b><span>Az utalvány átadható, a név feltüntetése nem kötelező.</span></li>
+          <li><b>04</b><span>A fel nem használt értéket készpénzben nem fizetjük ki.</span></li>
+          <li><b>05</b><span>Elvesztés esetén a sorszám alapján letiltjuk, és újat állítunk ki.</span></li>
+        </ul>
+        <div class="btns" style="margin-top:26px">
+          <a class="btn btn--brass" href="#kontakt">Üzenetet írok</a>
+          <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09 HODINY ===== -->
+<section class="sec paper" id="hodiny">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">08</p>
+      <div class="shead__main">
+        <h2>Nyitvatartás</h2>
+        <p class="lede">Az utolsó időpont úgy kezdődik, hogy zárásig be lehessen fejezni. Csütörtökön és pénteken meghosszabbított nyitvatartásunk van 20:00-ig.</p>
+      </div>
+    </header>
+
+    <div class="hours">
+      <div class="rv">
+        <div class="status" id="stav-teraz" role="status">
+          <strong id="stav-nadpis">Nyitvatartás</strong>
+          <p id="stav-text">H &ndash; Sze 9:00 &ndash; 19:00, Cs &ndash; P 9:00 &ndash; 20:00, Szo 8:00 &ndash; 14:00, vasárnap zárva.</p>
+        </div>
+
+        <dl class="htab" id="tab-hodin">
+          <div data-den="1"><dt>Hétfő</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">szépkorúak 12:00-ig</span></div>
+          <div data-den="2"><dt>Kedd</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">szépkorúak 12:00-ig</span></div>
+          <div data-den="3"><dt>Szerda</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">szépkorúak 12:00-ig</span></div>
+          <div data-den="4"><dt>Csütörtök</dt><dd>9:00 &ndash; 20:00</dd><span class="tagcol">meghosszabbítva</span></div>
+          <div data-den="5"><dt>Péntek</dt><dd>9:00 &ndash; 20:00</dd><span class="tagcol">meghosszabbítva</span></div>
+          <div data-den="6"><dt>Szombat</dt><dd>8:00 &ndash; 14:00</dd><span class="tagcol">szünet nélkül</span></div>
+          <div data-den="0" class="is-closed"><dt>Vasárnap</dt><dd>zárva</dd><span class="tagcol">&mdash;</span></div>
+        </dl>
+      </div>
+
+      <div class="rv">
+        <div class="plate plate--rule" style="aspect-ratio:4/3;display:flex">
+          <div class="plate__type">
+            <p class="plate__word">A legforgalmasabb idő</p>
+            <div>
+              <p class="plate__num">16&ndash;19</p>
+              <p class="plate__big">csütörtökön és pénteken van. Ha rövidebb ideig szeretne várni a szabad időpontra, próbálja meg hétfő vagy kedd délelőtt.</p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="rules" style="margin-top:22px">
+          <li><b>01</b><span>Ebédszünet nincs, a székek váltják egymást.</span></li>
+          <li><b>02</b><span>Ünnepnapokon zárva tartunk, a pótidőpontot egy nappal előbb ajánljuk fel.</span></li>
+          <li><b>03</b><span>Az utolsó időpont a szolgáltatás hosszától függően 15-től 90 perccel a zárás előtt kezdődik.</span></li>
+          <li><b>04</b><span>A <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik.">ide kerül az Ön telefonszáma</span> számon nyitvatartási időben ér el minket, azon kívül írjon SMS-t.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 OBJEDNANIE ===== -->
+<section class="sec sec--deep" id="objednanie">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">09</p>
+      <div class="shead__main">
+        <h2>Időpontfoglalás</h2>
+        <p class="lede">Válasszon szolgáltatást, terjedelmet és szabad időpontot. A foglalt időpontok át vannak húzva, és nem választhatók. A sáv hosszát a terjedelem szerint számoljuk ki.</p>
+      </div>
+    </header>
+
+    <div class="book">
+      <form class="panel rv" id="form-objednanie" novalidate>
+        <fieldset class="fset">
+          <legend>1. Szolgáltatás</legend>
+          <div class="field">
+            <label for="f-sluzba">Válasszon szolgáltatást</label>
+            <select id="f-sluzba" name="sluzba">
+              <optgroup label="Egyes szolgáltatások">
+                <option value="Klasszikus férfi hajvágás" data-min="30" data-cena="8800" selected>Klasszikus férfi hajvágás &mdash; 30 perc, 8800 Ft</option>
+                <option value="Gépi hajvágás átmenettel" data-min="45" data-cena="10800">Gépi hajvágás átmenettel &mdash; 45 perc, 10 800 Ft</option>
+                <option value="Borotválás késsel, forró törölközővel" data-min="40" data-cena="10000">Borotválás késsel &mdash; 40 perc, 10 000 Ft</option>
+                <option value="Szakáll- és bajuszigazítás" data-min="25" data-cena="6400">Szakáll- és bajuszformázás &mdash; 25 perc, 6400 Ft</option>
+                <option value="Gyerekhajvágás 12 éves korig" data-min="25" data-cena="6000">Gyerekhajvágás 12 éves korig &mdash; 25 perc, 6000 Ft</option>
+                <option value="Hajvágás 65 év feletti szépkorúaknak" data-min="30" data-cena="6800">Hajvágás 65 év feletti szépkorúaknak &mdash; 30 perc, 6800 Ft</option>
+                <option value="Kontúrok igazítása két hajvágás között" data-min="15" data-cena="3600">Kontúrok igazítása &mdash; 15 perc, 3600 Ft</option>
+              </optgroup>
+              <optgroup label="Csomagok">
+                <option value="Hajvágás és szakáll" data-min="60" data-cena="14400">Hajvágás és szakáll &mdash; 60 perc, 14 400 Ft</option>
+                <option value="Hajvágás és borotválás késsel" data-min="70" data-cena="16800">Hajvágás és borotválás késsel &mdash; 70 perc, 16 800 Ft</option>
+                <option value="Hajvágás, szakáll és borotválás késsel" data-min="90" data-cena="22000">Hajvágás, szakáll és borotválás &mdash; 90 perc, 22 000 Ft</option>
+              </optgroup>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>2. Borbély</legend>
+          <div class="field">
+            <label for="f-holic">Válasszon borbélyt</label>
+            <select id="f-holic" name="holic">
+              <option value="Bármelyik szabad" data-dni="1,2,3,4,5,6" selected>Bármelyik szabad &mdash; a legtöbb időpont</option>
+              <option value="Hajdu Márk" data-dni="1,2,3,4,5">Hajdu Márk &mdash; hétfőtől péntekig</option>
+              <option value="Benkő Tamás" data-dni="2,3,4,5,6">Benkő Tamás &mdash; keddtől szombatig</option>
+              <option value="Kardos Péter" data-dni="1,3,5,6">Kardos Péter &mdash; hétfő, szerda, péntek, szombat</option>
+            </select>
+          </div>
+          <p class="note" style="margin:10px 0 0">A tanulónál 30 % kedvezménnyel történő hajvágásra telefonon lehet foglalni.</p>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>3. Terjedelem és hossz</legend>
+          <div class="opts">
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Alap" data-min="0" data-cena="0" checked>
+              <b>Alap</b>
+              <em>+0 perc</em>
+              <span>Csak a szolgáltatás, kiegészítők nélkül.</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Hosszabbított" data-min="15" data-cena="2400">
+              <b>Hosszabbított</b>
+              <em>+15 perc &middot; +2400 Ft</em>
+              <span>Hajformázás hajszárítóval és készítménnyel, az otthoni menet bemutatásával.</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Teljes" data-min="30" data-cena="4800">
+              <b>Teljes</b>
+              <em>+30 perc &middot; +4800 Ft</em>
+              <span>Hajformázás, forró törölköző és hűsítő pakolás a végén.</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>4. Nap</legend>
+          <div class="chipsrow" id="obj-dni" role="group" aria-label="Nap kiválasztása">
+            <p class="note" style="margin:0">Bekapcsolt szkript nélkül az időpontot telefonon beszéljük meg, nyitvatartási időben.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>5. A kezdés időpontja</legend>
+          <div class="slots" id="obj-casy" role="group" aria-label="Időpont kiválasztása">
+            <p class="note" style="grid-column:1/-1;margin:0">A szabad időpontokat telefonon mondjuk meg, vagy SMS-ben válaszolunk a nyitvatartás végéig.</p>
+          </div>
+          <p class="freecount" id="obj-pocet" role="status"></p>
+          <p class="warn" id="obj-varovanie" role="status" hidden></p>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>6. Kapcsolat</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-meno">Név</label>
+              <input type="text" id="f-meno" name="meno" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="f-tel">Telefon</label>
+              <input type="tel" id="f-tel" name="telefon" autocomplete="tel" placeholder="az Ön telefonszáma">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-pozn">Megjegyzés</label>
+            <textarea id="f-pozn" name="poznamka" placeholder="Ajándékutalvány száma, első látogatás, hajvágás tanulónál"></textarea>
+          </div>
+        </fieldset>
+
+        <label class="consent">
+          <input type="checkbox" id="f-suhlas" name="suhlas">
+          <span>Hozzájárulok a megadott adatok kezeléséhez az időpont egyeztetése céljából.</span>
+        </label>
+
+        <button class="btn btn--brass" type="submit" style="width:100%">Időpontkérés elküldése</button>
+        <p class="sum__note">Ez egy mintaweboldal. Az űrlap semmit nem küld el, és semmilyen adatot nem tárol.</p>
+
+        <div class="done" id="obj-hotovo" hidden tabindex="-1">
+          <strong>Így nézne ki a visszaigazolás</strong>
+          <p id="obj-hotovo-detail">Egy éles weboldalon most kiment volna a visszaigazoló SMS a vendégnek, és az időpont bekerült volna a borbélyüzlet beosztásába.</p>
+          <p>Itt semmi nem lett elküldve, és időpont sem jött létre. Ha ilyen weboldalt szeretne a vállalkozásának, keressen az <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a> címen.</p>
+        </div>
+      </form>
+
+      <aside class="sum rv" aria-label="A foglalás összesítője">
+        <h3>Az időpont összefoglalója</h3>
+        <dl class="sum__rows">
+          <div><dt>Szolgáltatás</dt><dd id="s-sluzba">Klasszikus férfi hajvágás</dd></div>
+          <div><dt>Borbély</dt><dd id="s-holic">Bármelyik szabad</dd></div>
+          <div><dt>Kör</dt><dd id="s-rozsah">Alap</dd></div>
+          <div><dt>Hossz</dt><dd id="s-dlzka">30 perc</dd></div>
+          <div><dt>Nap</dt><dd id="s-den">nincs kiválasztva</dd></div>
+          <div><dt>Időpont</dt><dd id="s-cas">nincs kiválasztva</dd></div>
+        </dl>
+        <div class="sum__total">
+          <span class="l">Végösszeg</span>
+          <span class="v" id="s-cena">8800 Ft</span>
+        </div>
+        <p class="sum__note">Az ár végleges. A helyszínen fizetendő kártyával vagy készpénzzel, illetve ajándékutalvánnyal.</p>
+        <p class="sum__note">Az időpont lemondása a kezdés előtt négy óráig díjmentes.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 PODMIENKY ===== -->
+<section class="sec" id="podmienky">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">10</p>
+      <div class="shead__main">
+        <h2>Lemondási feltételek és késés</h2>
+        <p class="lede">A szabályokat egyszerűen tartjuk, hogy az időpontok mindenkinek passzoljanak. Ugyanúgy érvényesek az oldalon és a telefonon történő foglalásra.</p>
+      </div>
+    </header>
+
+    <div class="terms rv">
+      <div>
+        <h3>Időpont lemondása</h3>
+        <ul>
+          <li><b>4 órán belül</b> az időpont előtt díjmentesen, telefonon vagy SMS-ben.</li>
+          <li><b>Négy óránál kevesebb</b> idővel előtte az időpont díj nélkül megszűnik, de feljegyezzük.</li>
+          <li><b>Kétszeri meg nem jelenés</b> kimentés nélkül: a következő időpontot csak 4000 Ft előleg befizetése után igazoljuk vissza.</li>
+          <li><b>Az előleget</b> a következő látogatás szolgáltatásának árából levonjuk.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Késés</h3>
+        <ul>
+          <li><b>10 percen belül</b> a szolgáltatást úgy rövidítjük, hogy beleférjen az eredeti sávba.</li>
+          <li><b>10 perc felett</b> az időpont elvész, a legközelebbi szabad időpontot ajánljuk fel.</li>
+          <li><b>Foglalás nélkül</b> csak akkor tudunk kiszolgálni, ha éppen szabad egy szék.</li>
+          <li><b>A korábbi érkezés</b> rendben van, a hatszemélyes váróban vár.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Áthelyezés és pótlás</h3>
+        <ul>
+          <li><b>Az időpont áthelyezése</b> díjmentes, ha legalább 4 órával előbb szól.</li>
+          <li><b>A felszabadult időpontot</b> az adott napra elsőként várakozónak ajánljuk fel.</li>
+          <li><b>Ünnepnapokon</b> zárva tartunk, a pótidőpontot egy nappal előbb ajánljuk fel.</li>
+          <li><b>A hajvágással való elégedetlenséget</b> a látogatástól számított 7 napon belül felár nélkül rendezzük.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 PLATBA ===== -->
+<section class="sec sec--deep" id="platba">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">11</p>
+      <div class="shead__main">
+        <h2>Fizetés, bizonylat és felárak</h2>
+        <p class="lede">A fizetés a szolgáltatás után történik, foglaláskor előleget nem kérünk. Az árlistás ár végleges, egyedül az előre választott terjedelem módosítja.</p>
+      </div>
+    </header>
+
+    <div class="terms rv">
+      <div>
+        <h3>Hogyan történik a fizetés</h3>
+        <ul>
+          <li><b>A szolgáltatás után</b> közvetlenül a széknél vagy a pultnál, aszerint, hol van hely.</li>
+          <li><b>Minimális összeg nélkül</b> lehet kártyával fizetni, akár a 3600 Ft-os kontúrigazítást is.</li>
+          <li><b>Az ajándékutalvány</b> szolgáltatásra és termékre is felhasználható, a maradékot másként fizeti ki.</li>
+          <li><b>Borravalót</b> nem várunk el, és az árban sincs benne.</li>
+        </ul>
+        <ul class="pay">
+          <li>készpénz</li>
+          <li>bankkártya</li>
+          <li>érintés nélkül telefonnal</li>
+          <li>ajándékutalvány</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Bizonylat és ár</h3>
+        <ul>
+          <li><b>Bizonylatot</b> mindig kap, utalványos fizetésnél is.</li>
+          <li><b>Az árlistás árak</b> véglegesek, semmi nem jön hozzájuk.</li>
+          <li><b>A látogatás terjedelmét</b> foglaláskor, előre választja ki, és látja az időpont összefoglalójában.</li>
+          <li><b>Az időpont alatti változtatás</b> nem lehetséges, a sáv pontosan a megbeszélt hosszra van fenntartva.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Kedvezmények</h3>
+        <ul>
+          <li><b>Hajvágás tanulónál</b> 30 % kedvezménnyel, a fenntartott idő 15 perccel hosszabb.</li>
+          <li><b>65 év feletti szépkorúaknak</b> 6800 Ft hétfőtől szerdáig 9:00 és 12:00 között.</li>
+          <li><b>12 év alatti gyerekeknek</b> 6000 Ft bármelyik napon.</li>
+          <li><b>A kedvezmények nem adódnak össze</b>, mindig a kedvezőbb érvényesül.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tw rv" style="margin-top:clamp(30px,4vw,46px)">
+      <table class="dtab">
+        <caption>A látogatás terjedelme és a felárak</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kör</th>
+            <th scope="col">Mi a többlet</th>
+            <th scope="col">Többletidő</th>
+            <th scope="col">Felár</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Alap</th>
+            <td>Csak a szolgáltatás az árlista szerint, a konzultációval és a kontúrok kitisztításával együtt.</td>
+            <td class="num">+0 perc</td>
+            <td class="num">0 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">Hosszabbított</th>
+            <td>Hajmosás a kagylónál és hajformázás az otthoni menet bemutatásával.</td>
+            <td class="num">+15 perc</td>
+            <td class="num">2400 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">Teljes</th>
+            <td>Mosás, hajformázás, forró törölköző és hűsítő pakolás a végén.</td>
+            <td class="num">+30 perc</td>
+            <td class="num">4800 Ft</td>
+          </tr>
+          <tr>
+            <th scope="row">Hajvágás tanulónál</th>
+            <td>Ugyanaz a munka a borbély közvetlen felügyelete mellett, aki be is fejezi.</td>
+            <td class="num">+15 perc</td>
+            <td class="num">&minus;30 %</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 OTÁZKY ===== -->
+<section class="sec paper" id="otazky">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">12</p>
+      <div class="shead__main">
+        <h2>Gyakori kérdések</h2>
+        <p class="lede">Ha itt nem találja a választ, hívjon minket nyitvatartási időben, vagy írjon a kapcsolat szakasz űrlapján.</p>
+      </div>
+    </header>
+
+    <div class="faq rv">
+      <details>
+        <summary>Előre kell foglalnom?</summary>
+        <p>Ajánljuk. Pontos időpontokra dolgozunk, és foglalás nélkül csak akkor tudunk kiszolgálni, ha éppen szabad egy szék. A legnagyobb esély hétfőn és kedden délelőtt van, a legkisebb csütörtökön és pénteken 16:00 után.</p>
+      </details>
+      <details>
+        <summary>Mennyi ideig tart a hajvágás, és mi van az árban?</summary>
+        <p>A klasszikus hajvágásra 30 perc, az átmenetes hajvágásra 45 perc, a szakállal együtt 60 perc van fenntartva. Az árban benne van a konzultáció, a kontúrok késes kitisztítása, a 30 percnél hosszabb szolgáltatásoknál pedig a mosás is. A mosás és a hajformázás bármelyik rövidebb szolgáltatáshoz 2400 Ft felár, és 15 perccel hosszabbítja meg az időpontot.</p>
+      </details>
+      <details>
+        <summary>Vágnak gyereknek is hajat?</summary>
+        <p>Igen, 12 éves korig 6000 Ft-ért, 25 perc fenntartott idővel. Ülésmagasítónk van a székbe négyéves kortól. A kísérő a hajvágás teljes ideje alatt mellette ül. Az első hajvágásra szánjon egy kis pluszidőt, a tempót a gyerekhez igazítjuk.</p>
+      </details>
+      <details>
+        <summary>Mit jelent a hajvágás tanulónál?</summary>
+        <p>Ugyanazt a munkát a tanuló végzi a borbély közvetlen felügyelete mellett, aki ellenőrzi és befejezi a munkát. Az ár 30 %-kal alacsonyabb, a fenntartott idő pedig 15 perccel hosszabb. Ha nem lesz elégedett az eredménnyel, azonnal befejezzük, felár nélkül.</p>
+      </details>
+      <details>
+        <summary>Hogyan készüljek a késes borotválásra?</summary>
+        <p>Legalább kétnapos borostával jöjjön, és a foglalás napján ne borotválkozzon otthon. Ha a bőre irritált, aknés vagy friss sérülés van rajta, mondja el az elején, ilyenkor a borotválást elhalasztjuk, vagy csak a kontúrok formázására szorítkozunk.</p>
+      </details>
+      <details>
+        <summary>Fizethetek kártyával?</summary>
+        <p>Igen, bankkártyát és telefonos érintés nélküli fizetést is elfogadunk, ugyanúgy készpénzt és ajándékutalványt. Előleget nem kérünk, a fizetés a szolgáltatás után történik. Bizonylatot mindig kap.</p>
+      </details>
+      <details>
+        <summary>Milyen gyakran járjak hajvágásra?</summary>
+        <p>Rövid, átmenetes frizuránál a haj három-öt hétig néz ki a legjobban, hosszabbnál hat-nyolc hétig. A hajvágások között 3600 Ft-ért kitisztítjuk a nyakat és a fül körüli részt, ha az előző hajvágás óta nem telt el 14 napnál több.</p>
+      </details>
+      <details>
+        <summary>Lehet konkrét borbélyt kérni?</summary>
+        <p>Igen, írja be a megjegyzésbe foglaláskor, vagy mondja el a telefonban. Névre szóló foglalásnál a legközelebbi szabad időpont általában néhány nappal későbbi, mint bármelyik szabad széknél.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 KARIÉRA ===== -->
+<section class="sec sec--deep" id="kariera">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">13</p>
+      <div class="shead__main">
+        <h2>Munka a borbélyüzletben</h2>
+        <p class="lede">Négy székünk van, és az egyiket folyamatosan töltjük fel. Borbélyt keresünk teljes munkaidőben, és tanulót, aki végig szeretné járni a szakmát a mosástól a késig.</p>
+      </div>
+    </header>
+
+    <div class="jobs rv">
+      <div class="job">
+        <h3>Borbély</h3>
+        <p class="role">Teljes munkaidő &middot; saját szék</p>
+        <ul>
+          <li><b>Mit csinál:</b> hajvágás ollóval és géppel, átmenetek, szakállformázás és borotválás késsel.</li>
+          <li><b>Mit várunk el:</b> önállóságot a klasszikus hajvágásnál, és hajlandóságot a nedves borotválás nálunk való megtanulására.</li>
+          <li><b>Mit kap:</b> saját széket, szerszámokat és készítményeket az üzlettől, állandó időpontbeosztást.</li>
+          <li><b>Beosztás:</b> heti öt nap, minden második szombat szabad, a vasárnap mindig szabad.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <h3>Tanuló</h3>
+        <p class="role">Betanítás közvetlenül az üzletben</p>
+        <ul>
+          <li><b>Mit csinál:</b> mosás, a munkahely előkészítése, fokozatosan hajvágás a borbély felügyelete mellett.</li>
+          <li><b>Mit várunk el:</b> pontosságot, rendet és kedvet ahhoz, hogy egy mozdulatot addig ismételjen, amíg nem ül.</li>
+          <li><b>Mit kap:</b> betanítást az első naptól valódi vendégeken, kedvezményes árlistával.</li>
+          <li><b>Beosztás:</b> az iskolához igazítva, hetente legalább három nap.</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="route rv" style="margin-top:clamp(28px,3.6vw,44px)">
+      <li>
+        <span class="n">01</span>
+        <span><b>Keressen minket</b><p>Írjon az alábbi űrlapon, vagy hívjon minket. Elég a név, a telefonszám és egy mondat arról, hol vágott eddig hajat.</p></span>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <span><b>Rövid találkozó</b><p>Átvesszük, mit tud, és mit szeretne csinálni. Nagyjából húsz percig tart, ideálisan hétfő vagy kedd délelőtt.</p></span>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <span><b>Próbanap a széknél</b><p>Ledolgozik egy szokásos napot a mi beosztásunkkal. A szerszámokat és a készítményeket tőlünk kapja.</p></span>
+      </li>
+      <li>
+        <span class="n">04</span>
+        <span><b>Megállapodás</b><p>A díjazás feltételeit és a beosztást a próbanap után személyesen vesszük át. Válaszolni három munkanapon belül így is, úgy is fogunk.</p></span>
+      </li>
+    </ul>
+
+    <div class="btns rv" style="margin-top:clamp(26px,3.2vw,36px)">
+      <a class="btn btn--brass" href="#kontakt">Üzenetet írok</a>
+      <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 KONTAKT ===== -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">14</p>
+      <div class="shead__main">
+        <h2>Hol talál minket, parkolás és kapcsolat</h2>
+        <p class="lede">Az üzlet a sétálóövezetben, egy sarokház földszintjén van. A bejárat közvetlenül az utcáról nyílik, lépcső nélkül.</p>
+      </div>
+    </header>
+
+    <div class="contact">
+      <div class="rv">
+        <dl class="cdl">
+          <div>
+            <dt>Cím</dt>
+            <dd>Penge Borbély<br>Rövid utca 6., történelmi belváros</dd>
+          </div>
+          <div>
+            <dt>Telefon</dt>
+            <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></dd>
+          </div>
+          <div>
+            <dt>Nyitva</dt>
+            <dd>H &ndash; Sze 9:00 &ndash; 19:00<br>Cs &ndash; P 9:00 &ndash; 20:00<br>Szo 8:00 &ndash; 14:00, V zárva</dd>
+          </div>
+          <div>
+            <dt>Foglalás</dt>
+            <dd>az oldalon lévő űrlapon, telefonon vagy SMS-ben</dd>
+          </div>
+          <div>
+            <dt>Parkolás</dt>
+            <dd>parkolóház 120 m, az első óra 400 Ft<br>a belvárosi utcák 8:00 &ndash; 18:00 között fizetősek</dd>
+          </div>
+          <div>
+            <dt>Fizetés</dt>
+            <dd>készpénz, kártya, telefon, ajándékutalvány</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rv">
+        <div class="plate plate--grid mapplate">
+          <div class="plate__type">
+            <p class="plate__word">Sétálóövezet</p>
+            <div>
+              <p class="plate__num">3 perc</p>
+              <p class="plate__big">gyaloglás a tömegközlekedési megállótól, 120 m a parkolóháztól</p>
+            </div>
+          </div>
+        </div>
+
+        <h3>Hogyan jut el hozzánk</h3>
+        <ul class="route">
+          <li>
+            <span class="n">01</span>
+            <span><b>Gyalog</b><p>A fő sétálóutcáról a szökőkútnál forduljon be a mellékutcába. Az üzlet a sarkon van, a bal oldali második bejárat.</p></span>
+          </li>
+          <li>
+            <span class="n">02</span>
+            <span><b>Tömegközlekedéssel</b><p>A legközelebbi megálló három perc gyalog. A megállótól menjen át az aluljárón, és tartson a tér bal oldalán.</p></span>
+          </li>
+          <li>
+            <span class="n">03</span>
+            <span><b>Autóval és parkolás</b><p>A parkolóház 120 méterre van, az első óra 400 Ft. A belvárosi utcákon a parkolás 8:00 és 18:00 között fizetős.</p></span>
+          </li>
+          <li>
+            <span class="n">04</span>
+            <span><b>Kerékpárral</b><p>Négy kerékpáros tároló van közvetlenül a bejárat előtt. A rollert a váróban, a fogas mellett teheti le.</p></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cform">
+      <form class="panel rv" id="form-sprava" novalidate>
+        <fieldset class="fset">
+          <legend>Írjon nekünk</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="k-meno">Név</label>
+              <input type="text" id="k-meno" name="meno" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="k-tel">Telefon</label>
+              <input type="tel" id="k-tel" name="telefon" autocomplete="tel" placeholder="az Ön telefonszáma" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="k-sprava">Üzenet</label>
+            <textarea id="k-sprava" name="sprava" required placeholder="Például: szakállas hajvágást szeretnék szombat délelőtt, vagy borbélyként érdekel a munka."></textarea>
+          </div>
+        </fieldset>
+
+        <label class="consent">
+          <input type="checkbox" id="k-suhlas" name="suhlas">
+          <span>Hozzájárulok a megadott adatok kezeléséhez az üzenet megválaszolása céljából.</span>
+        </label>
+
+        <button class="btn btn--brass" type="submit" style="width:100%">Üzenet küldése</button>
+        <p class="warn" id="sprava-chyba" role="status" hidden></p>
+        <p class="sum__note">Ez egy mintaweboldal. Az űrlap semmit nem küld el, és semmilyen adatot nem tárol.</p>
+
+        <div class="done" id="sprava-hotovo" hidden tabindex="-1">
+          <strong>Így nézne ki a visszaigazolás</strong>
+          <p>Egy éles weboldalon az üzenet most ment volna el a borbélyüzlet postafiókjába, Ön pedig visszaigazolást kapott volna róla.</p>
+          <p>Itt semmi nem lett elküldve. Ha ilyen weboldalt szeretne a vállalkozásának, keressen az <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a> címen.</p>
+        </div>
+      </form>
+
+      <div class="cform__side rv">
+        <h3>Hogyan működik</h3>
+        <p>Az űrlap üzenete a borbélyüzlet postafiókjába érkezik. 24 órán belül válaszolunk, általában telefonon vagy SMS-ben a megadott számra. Hétvégén szombaton 14:00-ig válaszolunk, egyébként hétfő reggel.</p>
+        <p>Ha mára vagy holnapra kell időpont, inkább hívjon közvetlenül, nyitvatartási időben.</p>
+        <dl>
+          <div>
+            <dt>Telefon</dt>
+            <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></dd>
+          </div>
+          <div>
+            <dt>Cím</dt>
+            <dd>Rövid utca 6., történelmi belváros</dd>
+          </div>
+          <div>
+            <dt>Válasz</dt>
+            <dd>24 órán belül a nyitva tartási napokon</dd>
+          </div>
+        </dl>
+        <div class="btns" style="margin-top:22px">
+          <a class="btn btn--ghost" href="#objednanie">Időpont választása az oldalon</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY — jediné reálne kontaktné údaje na tejto stránke ===== -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap author__in">
+    <div class="rv">
+      <p class="eyebrow">A minta szerzője</p>
+      <h2 id="autor-nadpis">Tetszik ez a weboldal?</h2>
+      <p>A Penge Borbély kitalált vállalkozás, és minden adata, ára és címe csak minta. Ezt az oldalt Alex Poliak tervezte és programozta. Ugyanilyen weboldalt az Ön vállalkozásának is megépítek, az Ön szövegeivel, áraival és fényképeivel.</p>
+      <p>A konzultáció ingyenes és nem kötelez semmire. Átvesszük, mire van szüksége a vállalkozásának, és megmondom kerek perec, van-e értelme, és mennyibe kerül.</p>
+      <p class="author__price">Egyedi weboldalak 250 €-tól. Az első terv 3 napon belül. A konzultáció ingyenes és kötelezettség nélküli.</p>
+    </div>
+
+    <div class="author__card rv">
+      <p class="author__name">Alex Poliak</p>
+      <p class="author__role">Weboldalak tervezése és programozása</p>
+      <dl class="author__list">
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Támogatás</dt>
+          <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></dd>
+        </div>
+        <div>
+          <dt>Weboldal</dt>
+          <dd><a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Ár</dt>
+          <dd>250 €-tól, első terv 3 napon belül</dd>
+        </div>
+      </dl>
+      <div class="btns">
+        <a class="btn btn--brass" href="mailto:apoliak@apoliak.online?subject=%C3%89rdekl%C5%91d%C3%A9s%20weboldal%20ir%C3%A1nt">E-mail írása</a>
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== PÄTA ===== -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <strong>Penge Borbélyműhely</strong>
+        <p>Férfi borbélyüzlet, Rövid utca 6., történelmi belváros. Négy szék, hajvágás előre foglalt időpontra, klasszikus nedves borotválás késsel.</p>
+        <p>Foglalás és kérdések: <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></p>
+      </div>
+
+      <div>
+        <h3>Nyitvatartás</h3>
+        <ul class="foot__hours">
+          <li><span>H &ndash; Sze</span><span>9:00 &ndash; 19:00</span></li>
+          <li><span>Cs &ndash; P</span><span>9:00 &ndash; 20:00</span></li>
+          <li><span>Szombat</span><span>8:00 &ndash; 14:00</span></li>
+          <li><span>Vasárnap</span><span>zárva</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Az oldal tartalma</h3>
+        <ul class="foot__links">
+          <li><a href="#cennik">Szolgáltatások és árlista</a></li>
+          <li><a href="#navsteva">A látogatás menete</a></li>
+          <li><a href="#produkty">Megvásárolható termékek</a></li>
+          <li><a href="#poukazy">Ajándékutalványok</a></li>
+          <li><a href="#objednanie">Időpontfoglalás</a></li>
+          <li><a href="#podmienky">Lemondási feltételek</a></li>
+          <li><a href="#platba">Fizetés és felárak</a></li>
+          <li><a href="#kariera">Munka a borbélyüzletben</a></li>
+          <li><a href="#kontakt">Kapcsolat és parkolás</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__base">
+      <p>Mintaweboldal, valódi üzlet nélkül. A vállalkozás neve, címe, telefonszáma, nyitvatartása és árai kitaláltak.</p>
+      <p>Terv és kód: <a href="https://apoliak.online/hu/" target="_blank" rel="noopener">apoliak.online</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var d = document;
+  var root = d.documentElement;
+  root.className += " js";
+  var jemne = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- výška lepiaceho vrchu ---------- */
+  var stack = d.querySelector(".topstack");
+  function meraj(){
+    if(!stack) return;
+    root.style.setProperty("--stick", (stack.offsetHeight + 16) + "px");
+  }
+  meraj();
+  window.addEventListener("resize", meraj);
+  window.addEventListener("load", meraj);
+  /* pásik sa pri úzkych displejoch zalomí do viacerých riadkov, výšku preto sledujeme priebežne */
+  if(stack && "ResizeObserver" in window){
+    new ResizeObserver(meraj).observe(stack);
+  }
+
+  /* ---------- mobilné menu ---------- */
+  var tog = d.querySelector(".nav-toggle");
+  var menu = d.getElementById("hlavne-menu");
+  function zavri(){
+    if(!tog || !menu) return;
+    menu.setAttribute("data-open", "false");
+    tog.setAttribute("aria-expanded", "false");
+  }
+  if(tog && menu){
+    tog.addEventListener("click", function(){
+      var otv = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", otv ? "false" : "true");
+      tog.setAttribute("aria-expanded", otv ? "false" : "true");
+      meraj();
+    });
+  }
+  d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavri(); });
+
+  /* ============================================================
+     OBJEDNÁVANIE TERMÍNU
+     ============================================================ */
+  var sluzba = d.getElementById("f-sluzba");
+  var rozsahy = [].slice.call(d.querySelectorAll('input[name="rozsah"]'));
+  var boxDni = d.getElementById("obj-dni");
+  var boxCasy = d.getElementById("obj-casy");
+  var pocetTxt = d.getElementById("obj-pocet");
+  var varovanie = d.getElementById("obj-varovanie");
+
+  var vyst = {
+    sluzba: d.getElementById("s-sluzba"),
+    rozsah: d.getElementById("s-rozsah"),
+    dlzka: d.getElementById("s-dlzka"),
+    den: d.getElementById("s-den"),
+    cas: d.getElementById("s-cas"),
+    cena: d.getElementById("s-cena")
+  };
+
+  /* otváracie hodiny v minútach od polnoci, index = getDay() */
+  var HODINY = [null, [540,1140], [540,1140], [540,1140], [540,1200], [540,1200], [480,840]];
+  var KROK = 30;                 /* termíny začínajú každú polhodinu */
+  var PREDSTIH = 60;             /* v ten istý deň sa dá objednať najskôr o hodinu */
+  var DNI_KR = ["V","H","K","Sze","Cs","P","Szo"];
+  var DNI = ["vasárnap","hétfő","kedd","szerda","csütörtök","péntek","szombat"];
+  var DNI_V = ["vasárnap","hétfőn","kedden","szerdán","csütörtökön","pénteken","szombaton"];
+
+  var vybranyDen = null;   /* Date */
+  var vybranyCas = null;   /* minúty od polnoci */
+
+  function cas(m){
+    var h = Math.floor(m / 60), mi = m % 60;
+    return h + ":" + (mi < 10 ? "0" + mi : mi);
+  }
+  function kluc(dt){
+    return dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+  }
+  function minutySlovom(n){
+    if(n === 1) return "1 perc";
+    if(n >= 2 && n <= 4) return n + " perc";
+    return n + " perc";
+  }
+  function terminovSlovom(n){
+    if(n === 1) return "1 szabad időpont";
+    if(n >= 2 && n <= 4) return n + " szabad időpont";
+    return n + " szabad időpont";
+  }
+
+  /* stabilný pseudonáhodný rozvrh obsadenosti pre daný deň */
+  function hash(s){
+    var h = 2166136261;
+    for(var i = 0; i < s.length; i++){
+      h ^= s.charCodeAt(i);
+      h = (h * 16777619) >>> 0;
+    }
+    return h;
+  }
+  function obsadeny(dt, m){
+    return hash(kluc(dt) + "|" + m) % 100 < 27;
+  }
+
+  function trvanie(){
+    var zaklad = parseInt(sluzba.options[sluzba.selectedIndex].getAttribute("data-min"), 10);
+    var extra = 0;
+    rozsahy.forEach(function(r){ if(r.checked) extra = parseInt(r.getAttribute("data-min"), 10); });
+    return zaklad + extra;
+  }
+  function cenaSpolu(){
+    var zaklad = parseInt(sluzba.options[sluzba.selectedIndex].getAttribute("data-cena"), 10);
+    var extra = 0;
+    rozsahy.forEach(function(r){ if(r.checked) extra = parseInt(r.getAttribute("data-cena"), 10); });
+    return zaklad + extra;
+  }
+  function nazovRozsahu(){
+    var v = "Alap";
+    rozsahy.forEach(function(r){ if(r.checked) v = r.value; });
+    return v;
+  }
+
+  function volny(dt, start, dlzka){
+    var h = HODINY[dt.getDay()];
+    if(!h) return false;
+    if(start < h[0] || start + dlzka > h[1]) return false;
+    var teraz = new Date();
+    if(kluc(dt) === kluc(teraz)){
+      var m = teraz.getHours() * 60 + teraz.getMinutes();
+      if(start < m + PREDSTIH) return false;
+    }
+    for(var m2 = start; m2 < start + dlzka; m2 += KROK){
+      if(obsadeny(dt, Math.floor(m2 / KROK) * KROK)) return false;
+    }
+    return true;
+  }
+
+  /* zoznam najbližších otvorených dní */
+  function otvoreneDni(pocet){
+    var zoznam = [], dt = new Date();
+    dt.setHours(0, 0, 0, 0);
+    for(var i = 0; i < 21 && zoznam.length < pocet; i++){
+      var kandidat = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + i);
+      if(HODINY[kandidat.getDay()]) zoznam.push(kandidat);
+    }
+    return zoznam;
+  }
+
+  function vykresliDni(){
+    if(!boxDni) return;
+    boxDni.innerHTML = "";
+    var dni = otvoreneDni(7);
+    dni.forEach(function(dt, i){
+      var b = d.createElement("button");
+      b.type = "button";
+      b.className = "daychip";
+      b.setAttribute("aria-pressed", "false");
+      b.innerHTML = "<b>" + DNI_KR[dt.getDay()] + "</b>" + dt.getDate() + ". " + (dt.getMonth() + 1) + ".";
+      b.setAttribute("aria-label", DNI[dt.getDay()] + " " + dt.getDate() + ". " + (dt.getMonth() + 1) + ".");
+      b.addEventListener("click", function(){
+        vybranyDen = dt;
+        vybranyCas = null;
+        vykresliDni();
+        vykresliCasy();
+        prepis();
+      });
+      if(vybranyDen && kluc(vybranyDen) === kluc(dt)) b.setAttribute("aria-pressed", "true");
+      boxDni.appendChild(b);
+      if(i === 0 && !vybranyDen){
+        vybranyDen = dt;
+        b.setAttribute("aria-pressed", "true");
+      }
+    });
+  }
+
+  function vykresliCasy(){
+    if(!boxCasy || !vybranyDen) return;
+    boxCasy.innerHTML = "";
+    var h = HODINY[vybranyDen.getDay()];
+    var dlzka = trvanie();
+    var volnych = 0;
+    /* po zmene služby alebo rozsahu už zvolený čas nemusí vyhovovať dlhšiemu bloku */
+    if(vybranyCas !== null && !volny(vybranyDen, vybranyCas, dlzka)) vybranyCas = null;
+    for(var m = h[0]; m + dlzka <= h[1]; m += KROK){
+      (function(start){
+        var ok = volny(vybranyDen, start, dlzka);
+        var b = d.createElement("button");
+        b.type = "button";
+        b.className = "slot";
+        b.textContent = cas(start);
+        if(ok){
+          volnych++;
+          b.setAttribute("aria-pressed", String(vybranyCas === start));
+          b.addEventListener("click", function(){
+            vybranyCas = start;
+            vykresliCasy();
+            prepis();
+            if(varovanie) varovanie.hidden = true;
+          });
+        } else {
+          b.disabled = true;
+          b.setAttribute("aria-label", cas(start) + " foglalt");
+        }
+        boxCasy.appendChild(b);
+      })(m);
+    }
+    if(pocetTxt){
+      pocetTxt.textContent = volnych > 0
+        ? terminovSlovom(volnych) + " " + DNI_V[vybranyDen.getDay()] + " " + (vybranyDen.getMonth() + 1) + ". " + vybranyDen.getDate() + "., sáv: " + minutySlovom(dlzka)
+        : "Ezen a napon már nincs szabad sáv erre: " + minutySlovom(dlzka) + ". Próbáljon másik napot vagy rövidebb terjedelmet.";
+    }
+  }
+
+  function prepis(){
+    if(!vyst.sluzba) return;
+    var dlzka = trvanie();
+    vyst.sluzba.textContent = sluzba.value;
+    vyst.rozsah.textContent = nazovRozsahu();
+    vyst.dlzka.textContent = minutySlovom(dlzka);
+    vyst.cena.textContent = __f(cenaSpolu()) + " Ft";
+    vyst.den.textContent = vybranyDen
+      ? DNI[vybranyDen.getDay()] + " " + (vybranyDen.getMonth() + 1) + ". " + vybranyDen.getDate() + "."
+      : "nincs kiválasztva";
+    vyst.cas.textContent = vybranyCas !== null
+      ? cas(vybranyCas) + " – " + cas(vybranyCas + dlzka)
+      : "nincs kiválasztva";
+  }
+
+  if(sluzba && boxDni && boxCasy){
+    vykresliDni();
+    vykresliCasy();
+    prepis();
+    sluzba.addEventListener("change", function(){ vykresliCasy(); prepis(); });
+    rozsahy.forEach(function(r){
+      r.addEventListener("change", function(){ vykresliCasy(); prepis(); });
+    });
+  }
+
+  /* ---------- odoslanie (iba ukážka) ---------- */
+  var form = d.getElementById("form-objednanie");
+  var hotovo = d.getElementById("obj-hotovo");
+  var hotovoDetail = d.getElementById("obj-hotovo-detail");
+  if(form && hotovo){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      if(vybranyCas === null){
+        if(varovanie){
+          varovanie.textContent = "Kérjük, válassza ki a kezdés időpontját. Az áthúzott időpontok már foglaltak.";
+          varovanie.hidden = false;
+        }
+        if(boxCasy){
+          var prvy = boxCasy.querySelector(".slot:not([disabled])");
+          if(prvy) prvy.focus();
+        }
+        return;
+      }
+      if(varovanie) varovanie.hidden = true;
+      var dlzka = trvanie();
+      if(hotovoDetail){
+        hotovoDetail.textContent =
+          "Egy éles weboldalon most ment volna ki a visszaigazolás erre az időpontra: " +
+          DNI_V[vybranyDen.getDay()] + " " + (vybranyDen.getMonth() + 1) + ". " + vybranyDen.getDate() + ". " +
+          cas(vybranyCas) + " – " + cas(vybranyCas + dlzka) + ", " + sluzba.value.toLowerCase() +
+          ", terjedelem: " + nazovRozsahu().toLowerCase() + ", ár: " + __f(cenaSpolu()) + " Ft.";
+      }
+      hotovo.hidden = false;
+      hotovo.focus();
+      if(!jemne) hotovo.scrollIntoView({behavior: "smooth", block: "center"});
+    });
+  }
+
+  /* ---------- kontaktný formulár (iba ukážka) ---------- */
+  var kform = d.getElementById("form-sprava");
+  var kHotovo = d.getElementById("sprava-hotovo");
+  var kChyba = d.getElementById("sprava-chyba");
+  if(kform && kHotovo){
+    kform.addEventListener("submit", function(e){
+      e.preventDefault();
+      var meno = d.getElementById("k-meno");
+      var tel = d.getElementById("k-tel");
+      var text = d.getElementById("k-sprava");
+      var prazdne = [meno, tel, text].filter(function(pole){ return !pole || !pole.value.trim(); });
+      if(prazdne.length){
+        if(kChyba){
+          kChyba.textContent = "Kérjük, töltse ki a nevet, a telefonszámot és az üzenet szövegét.";
+          kChyba.hidden = false;
+        }
+        if(prazdne[0]) prazdne[0].focus();
+        return;
+      }
+      if(kChyba) kChyba.hidden = true;
+      kHotovo.hidden = false;
+      kHotovo.focus();
+      if(!jemne) kHotovo.scrollIntoView({behavior: "smooth", block: "center"});
+    });
+  }
+
+  /* ============================================================
+     OTVÁRACIE HODINY: dnešný riadok a aktuálny stav
+     ============================================================ */
+  (function(){
+    var tab = d.getElementById("tab-hodin");
+    var nadpis = d.getElementById("stav-nadpis");
+    var text = d.getElementById("stav-text");
+    if(!tab || !nadpis || !text) return;
+
+    var teraz = new Date();
+    var den = teraz.getDay();
+    var min = teraz.getHours() * 60 + teraz.getMinutes();
+
+    var riadok = tab.querySelector('[data-den="' + den + '"]');
+    if(riadok) riadok.className += " is-today";
+
+    var dnes = HODINY[den];
+    if(dnes && min >= dnes[0] && min < dnes[1]){
+      nadpis.textContent = "Most nyitva";
+      text.textContent = "Ma eddig vágunk: " + cas(dnes[1]) + ". Az utolsó időpont a szolgáltatás hosszától függően 15-től 90 perccel a zárás előtt kezdődik.";
+      return;
+    }
+    if(dnes && min < dnes[0]){
+      nadpis.textContent = "Ma nyitás: " + cas(dnes[0]);
+      text.textContent = "Ma ettől vágunk: " + cas(dnes[0]) + " eddig: " + cas(dnes[1]) + ". Az időpontot lentebb, a foglalási űrlapon választhatja ki.";
+      return;
+    }
+    for(var i = 1; i <= 7; i++){
+      var d2 = (den + i) % 7;
+      if(HODINY[d2]){
+        nadpis.textContent = "Most zárva";
+        text.textContent = "Nyitás: " + (i === 1 ? "a következő napon, " : "") + DNI_V[d2] + " " + cas(HODINY[d2][0]) + ". Foglalni az űrlapon bármikor lehet.";
+        return;
+      }
+    }
+  })();
+
+  /* ---------- plynulé skrolovanie a predvyplnenie služby ---------- */
+  d.addEventListener("click", function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if(!a) return;
+    var id = a.getAttribute("href");
+    if(id === "#") return;
+    var ciel = d.querySelector(id);
+    if(!ciel) return;
+    e.preventDefault();
+    zavri();
+    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
+    if(history.replaceState) history.replaceState(null, "", id);
+
+    var chce = a.getAttribute("data-sluzba");
+    if(chce && sluzba){
+      for(var i = 0; i < sluzba.options.length; i++){
+        if(sluzba.options[i].value === chce){ sluzba.selectedIndex = i; break; }
+      }
+      vykresliCasy();
+      prepis();
+      setTimeout(function(){
+        try{ sluzba.focus({preventScroll: true}); }catch(err){ sluzba.focus(); }
+      }, jemne ? 0 : 460);
+    }
+  });
+
+  /* ---------- odhaľovanie blokov ---------- */
+  var bloky = [].slice.call(d.querySelectorAll(".rv"));
+  if("IntersectionObserver" in window && !jemne){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, {rootMargin: "0px 0px -6% 0px", threshold: .04});
+    bloky.forEach(function(b){ io.observe(b); });
+  } else {
+    bloky.forEach(function(b){ b.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

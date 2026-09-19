@@ -1,0 +1,2496 @@
+<!doctype html>
+<html lang="hu" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/reality/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/reality/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/reality/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/reality/">
+<!-- /jazyky:hreflang -->
+<title>Kavics Ingatlan — ingatlaniroda Kavicsváron</title>
+<meta name="description" content="Kavics Ingatlaniroda: tizenkét ingatlan típus, városrész, szobaszám és ár szerinti szűrővel, hitelkalkulátor, 2,4 %-tól induló jutalék, az eladás menete és az együttműködés feltételei. Terv és kód: Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#1D242C">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:site_name" content="Kavics Ingatlan (mintaweboldal)">
+<meta property="og:title" content="Kavics Ingatlan — ingatlaniroda Kavicsváron">
+<meta property="og:description" content="Ingatlankínálat szűrővel, hitelkalkulátor, 2,4 %-tól induló jutalék jogi háttérrel az árban, és az eladás menete hat lépésben.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%231D242C'/%3E%3Crect%20x='16'%20y='16'%20width='32'%20height='32'%20fill='none'%20stroke='%23E9AC8A'%20stroke-width='3'/%3E%3Crect%20x='16'%20y='16'%20width='13'%20height='13'%20fill='%23E9AC8A'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   TOKENY — bridlicová neutrálna škála, jeden akcent: hlinená
+   ============================================================ */
+:root{
+  --slate:#1D242C;
+  --slate-2:#252E38;
+  --slate-3:#38424E;
+  --clay:#A9502B;          /* výplň tlačidiel, 5,43:1 s bielym textom */
+  --clay-dark:#8A3F20;     /* text a odkazy, 7,4:1 na papieri */
+  --clay-soft:#E9AC8A;     /* akcent na tmavom podklade, 8,0:1 */
+
+  --bg:#F6F5F2;
+  --bg-2:#EDECE8;
+  --card:#FFFFFF;
+  --ink:#161C22;
+  --muted:#535B63;
+  --line:#DCDAD4;
+  --line-2:#E8E6E1;
+  --line-dark:#333D48;
+  --line-dark-2:#46525F;
+  --field-dark:#151B22;
+  --on-dark:#F2F4F6;
+  --on-dark-muted:#A9B2BB;
+
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --wrap:1200px;
+  --r:2px;
+  --bar-h:46px;
+
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   ZÁKLAD
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  padding-top:var(--bar-h);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.64;
+  -webkit-text-size-adjust:100%;
+  text-rendering:optimizeLegibility;
+}
+h1,h2,h3,h4{font-weight:650;margin:0 0 .5em;letter-spacing:-.02em}
+h1{font-size:clamp(2.2rem,5.2vw,3.7rem);line-height:1.05;letter-spacing:-.03em}
+h2{font-size:clamp(1.6rem,3.1vw,2.35rem);line-height:1.12}
+h3{font-size:clamp(1.04rem,1.4vw,1.18rem);line-height:1.32;letter-spacing:-.008em}
+h4{font-size:1rem;letter-spacing:0;line-height:1.3}
+p{margin:0 0 1em;max-width:70ch}
+ul,ol{margin:0;padding:0;list-style:none}
+figure{margin:0}
+img,svg{max-width:100%}
+b,strong{font-weight:700}
+:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+.on-dark :focus-visible,.demobar :focus-visible,.toolband :focus-visible{outline-color:var(--clay-soft)}
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--slate);color:var(--on-dark);padding:12px 18px;z-index:300}
+.skip:focus{left:8px;top:8px}
+section,.panel[id]{scroll-margin-top:calc(var(--bar-h) + 84px)}
+.sec{padding:clamp(58px,7.2vw,116px) 0}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--dark{background:var(--slate);color:var(--on-dark)}
+.on-dark h2,.on-dark h3,.on-dark h4{color:var(--on-dark)}
+.on-dark .lede,.on-dark .muted{color:var(--on-dark-muted)}
+.num{font-variant-numeric:tabular-nums}
+.small{font-size:.87rem}
+.muted{color:var(--muted)}
+
+.eyebrow{
+  display:flex;align-items:baseline;gap:12px;
+  font-size:.69rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;
+  color:var(--muted);margin:0 0 18px;
+}
+.eyebrow__no{color:var(--clay-dark);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.on-dark .eyebrow{color:var(--on-dark-muted)}
+.on-dark .eyebrow__no{color:var(--clay-soft)}
+.lede{font-size:1.03rem;color:var(--muted);max-width:60ch;margin:0}
+
+.sec__head{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:16px clamp(28px,6vw,88px);align-items:end;
+  padding-bottom:22px;border-bottom:1px solid var(--line);
+  margin-bottom:clamp(30px,4vw,56px);
+}
+.on-dark .sec__head{border-bottom-color:var(--line-dark)}
+.sec__head h2{margin-bottom:0;max-width:20ch}
+
+/* ============================================================
+   ODKAZY (pozor: nižšia špecificita než tlačidlá)
+   ============================================================ */
+a{color:var(--clay-dark)}
+a:hover{color:var(--clay)}
+
+/* ============================================================
+   TLAČIDLÁ — vždy dve triedy, aby ich farbu neprebil odkaz
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font:inherit;font-size:.95rem;font-weight:650;letter-spacing:.004em;
+  padding:13px 24px;border-radius:var(--r);border:1px solid transparent;
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--clay);color:#FFFFFF;border-color:var(--clay)}
+.btn.btn--primary:hover{background:var(--clay-dark);border-color:var(--clay-dark);color:#FFFFFF}
+.btn.btn--dark{background:var(--slate);color:var(--on-dark);border-color:var(--slate)}
+.btn.btn--dark:hover{background:#0F151B;border-color:#0F151B;color:#FFFFFF}
+.btn.btn--line{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--line:hover{border-color:var(--clay-dark);color:var(--clay-dark)}
+.on-dark .btn.btn--line,.toolband .btn.btn--line{color:var(--on-dark);border-color:var(--line-dark-2)}
+.on-dark .btn.btn--line:hover,.toolband .btn.btn--line:hover{color:var(--clay-soft);border-color:var(--clay-soft)}
+.btn.btn--soft{background:var(--clay-soft);color:var(--slate);border-color:var(--clay-soft)}
+.btn.btn--soft:hover{background:#F4C6AB;border-color:#F4C6AB;color:var(--slate)}
+.btn.btn--sm{padding:9px 16px;font-size:.86rem}
+
+/* ============================================================
+   PÁSIK UKÁŽKY
+   ============================================================ */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  background:var(--slate);color:var(--on-dark);
+  border-bottom:1px solid var(--line-dark);
+  font-size:.87rem;
+}
+.demobar__in{
+  width:min(100% - 28px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;gap:4px 20px;flex-wrap:wrap;
+  padding:11px 0;text-align:center;
+}
+.demobar__tag{
+  font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;
+  color:var(--slate);background:var(--clay-soft);padding:4px 9px;white-space:nowrap;
+}
+.demobar a{color:var(--clay-soft);font-weight:650;text-underline-offset:3px}
+.demobar a:hover{color:#F7D3BC}
+.demobar__sep{color:#6B767F}
+
+/* ============================================================
+   HLAVIČKA
+   ============================================================ */
+.site-head{
+  position:sticky;top:var(--bar-h);z-index:100;
+  background:rgba(246,245,242,.97);
+  border-bottom:1px solid var(--line);
+}
+.head__in{display:flex;align-items:center;gap:10px 16px;padding:10px 0;position:relative}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand__mark{
+  width:36px;height:36px;flex:none;background:var(--slate);color:var(--clay-soft);
+  display:grid;place-items:center;border-radius:var(--r);
+  font-weight:700;font-size:1.05rem;letter-spacing:.02em;
+}
+.brand__txt strong{display:block;font-size:1.04rem;font-weight:700;letter-spacing:.09em;line-height:1.15}
+.brand__txt span{display:block;font-size:.61rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.site-nav{margin-left:auto}
+.nav-list{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.nav-list a{text-decoration:none;color:var(--ink);font-size:.9rem;padding:8px 9px;display:block;border-radius:var(--r)}
+.nav-list a:hover{color:var(--clay-dark)}
+.nav-toggle{display:none}
+
+/* stála akcia v hlavičke: telefón + dopyt, na mobile v druhom riadku */
+.head__act{display:flex;align-items:center;gap:10px;flex:none}
+.head__tel{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  color:var(--clay-dark);font-weight:700;font-size:.95rem;white-space:nowrap;
+  font-variant-numeric:tabular-nums;padding:9px 12px;border:1px solid var(--line);border-radius:var(--r);
+}
+.head__tel:hover{color:var(--clay-dark);border-color:var(--clay-dark)}
+.head__tel::before{
+  content:"";width:9px;height:9px;flex:none;border-radius:50%;background:var(--clay);
+}
+.nav-list .nav-sell a{
+  border:1px solid var(--slate);font-weight:650;color:var(--ink);
+  padding:8px 13px;margin-left:8px;white-space:nowrap;
+}
+.nav-list .nav-sell a:hover{background:var(--slate);color:var(--on-dark)}
+/* ============================================================
+   PLOCHY — vrstvené gradienty, rastre, vlasové linky, typografia
+   ============================================================ */
+.obraz{
+  position:relative;overflow:hidden;isolation:isolate;
+  background-color:var(--slate-2);
+  background-image:var(--noise),var(--grad,linear-gradient(150deg,var(--slate-3),var(--slate)));
+  background-size:180px 180px,auto;
+  background-blend-mode:soft-light,normal;
+}
+.obraz::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background-image:var(--pat,none);background-size:var(--patsize,auto);
+}
+.obraz--a{--grad:linear-gradient(152deg,#3A4652 0%,#242D36 55%,#1B222A 100%);
+  --pat:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 14px)}
+.obraz--b{--grad:linear-gradient(128deg,#1D242C 0%,#2C3742 62%,#38424E 100%);
+  --pat:radial-gradient(circle at 1px 1px,rgba(255,255,255,.15) 1px,transparent 1.6px);--patsize:16px 16px}
+.obraz--c{--grad:linear-gradient(196deg,#6B3A21 0%,#33272A 54%,#1D242C 100%);
+  --pat:repeating-linear-gradient(45deg,rgba(255,255,255,.055) 0 1px,transparent 1px 12px)}
+.obraz--d{--grad:linear-gradient(168deg,#2C3742 0%,#1D242C 74%);
+  --pat:linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(0deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  --patsize:30px 30px,30px 30px}
+.obraz--e{--grad:linear-gradient(112deg,#1D242C 0%,#262F39 46%,#4A2E1E 100%);
+  --pat:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 1px,transparent 1px 16px)}
+.obraz--f{--grad:linear-gradient(210deg,#38424E 0%,#232C35 58%,#1B222A 100%);
+  --pat:repeating-linear-gradient(135deg,rgba(233,172,138,.14) 0 1px,transparent 1px 18px)}
+
+.obraz__label{
+  position:absolute;left:18px;top:16px;
+  font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
+  color:var(--clay-soft);
+}
+.obraz__sub{
+  position:absolute;right:18px;top:15px;
+  color:#FFFFFF;font-size:.78rem;font-weight:650;
+  border:1px solid rgba(255,255,255,.35);padding:2px 8px;border-radius:var(--r);
+}
+.obraz__big{
+  position:absolute;left:18px;bottom:13px;right:18px;
+  color:#FFFFFF;font-weight:700;letter-spacing:-.03em;line-height:1.08;
+  font-size:clamp(1.5rem,3.4vw,1.95rem);font-variant-numeric:tabular-nums;
+}
+.obraz__name{
+  position:absolute;left:16px;right:16px;bottom:12px;
+  color:#FFFFFF;font-weight:700;font-size:1.02rem;letter-spacing:-.01em;line-height:1.2;
+}
+.obraz--portret{aspect-ratio:4/5;border-radius:var(--r)}
+.obraz--sirka{aspect-ratio:16/9;border-radius:var(--r)}
+
+/* plán okolia: geometria ulíc a značka kancelárie, bez kreslených objektov */
+.mapa{position:relative;aspect-ratio:16/10;border-radius:var(--r)}
+.mapa__ulica{position:absolute;background:rgba(255,255,255,.16)}
+.mapa__ulica--h1{left:0;right:0;top:31%;height:9px}
+.mapa__ulica--h2{left:0;right:0;top:72%;height:5px}
+.mapa__ulica--v1{top:0;bottom:0;left:26%;width:7px}
+.mapa__ulica--v2{top:0;bottom:0;left:68%;width:5px}
+.mapa__blok{position:absolute;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+.mapa__blok--a{left:4%;top:40%;width:18%;height:24%}
+.mapa__blok--c{left:32%;top:8%;width:30%;height:18%}
+.mapa__blok--d{left:74%;top:40%;width:20%;height:24%}
+.mapa__bod{
+  position:absolute;left:32%;top:40%;width:30%;height:24%;
+  background:var(--clay);border:1px solid var(--clay-soft);
+  display:grid;place-items:center;color:#FFFFFF;font-weight:700;font-size:.78rem;text-align:center;padding:4px;
+}
+.mapa__txt{position:absolute;color:#E4E8EC;font-size:.72rem;font-weight:650;letter-spacing:.02em;white-space:nowrap}
+.mapa__txt--a{left:4%;top:24%}
+.mapa__txt--b{left:4%;top:76%}
+.mapa__txt--c{left:70%;top:8%}
+.mapa__txt--d{left:74%;top:70%}
+
+/* ============================================================
+   HERO — krátky nadpis hore vľavo, dominantou je dátový panel
+   ============================================================ */
+.hero{background:var(--bg)}
+.hero__in{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:clamp(26px,4vw,72px);align-items:end;
+  padding:clamp(40px,5.4vw,78px) 0 clamp(26px,3vw,40px);
+}
+.hero h1{margin-bottom:.34em;max-width:14ch}
+.hero__lede{font-size:1.08rem;color:var(--muted);max-width:54ch;margin:0}
+.hero__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero__facts{margin:0;display:grid;gap:0}
+.hero__facts div{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:11px 0;border-bottom:1px solid var(--line);
+}
+.hero__facts div:first-child{border-top:1px solid var(--line)}
+.hero__facts dt{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--muted);flex:none}
+.hero__facts dd{margin:0;font-size:.95rem;font-weight:650;text-align:right}
+.hero__facts a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--clay);padding-bottom:1px}
+.hero__facts a:hover{color:var(--clay-dark);border-bottom-color:var(--clay-dark)}
+
+/* ============================================================
+   NÁSTROJ — celošírkový dátový panel (filter + kalkulačka)
+   ============================================================ */
+.toolband{
+  background:var(--slate);color:var(--on-dark);
+  border-block:1px solid var(--line-dark);
+  background-image:var(--noise),linear-gradient(160deg,#2B353F 0%,#1D242C 62%);
+  background-size:180px 180px,auto;background-blend-mode:soft-light,normal;
+}
+.tool{padding:clamp(24px,3.2vw,40px) 0 clamp(26px,3.4vw,44px)}
+.tool__head{
+  display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between;
+  padding-bottom:16px;border-bottom:1px solid var(--line-dark);margin-bottom:clamp(22px,2.8vw,34px);
+}
+.tool__title{
+  margin:0;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;
+  color:var(--clay-soft);max-width:none;
+}
+.tool__tabs{display:flex;border:1px solid var(--line-dark-2);border-radius:var(--r);overflow:hidden}
+.tool__tab{
+  font:inherit;font-size:.9rem;font-weight:650;padding:10px 20px;
+  background:transparent;color:var(--on-dark-muted);border:0;border-right:1px solid var(--line-dark-2);
+  cursor:pointer;white-space:nowrap;
+}
+.tool__tab:last-child{border-right:0}
+.tool__tab:hover{color:#FFFFFF}
+.tool__tab.is-active{background:var(--clay-soft);color:var(--slate)}
+.tool__panel.is-off{display:none}
+.no-js .tool__panel.is-off{display:block;margin-top:34px}
+.no-js .tool__tabs{display:none}
+
+.tool__grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px 20px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field>label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.toolband .field>label{color:var(--on-dark-muted)}
+select,input[type="text"],input[type="tel"],input[type="number"],textarea{
+  font:inherit;font-size:.94rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;width:100%;
+}
+.toolband select{background:var(--field-dark);color:#FFFFFF;border-color:var(--line-dark-2)}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--clay);outline-offset:1px;border-color:var(--clay)}
+.toolband select:focus{outline-color:var(--clay-soft);border-color:var(--clay-soft)}
+textarea{min-height:132px;resize:vertical}
+
+.readout{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px 40px;
+  margin-top:26px;padding-top:20px;border-top:1px solid var(--line-dark);
+}
+.readout__item span{
+  display:block;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:700;color:var(--on-dark-muted);margin-bottom:5px;
+}
+.readout__item b{font-size:1.08rem;font-weight:700;color:#FFFFFF;font-variant-numeric:tabular-nums;white-space:nowrap}
+.readout__cta{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+
+.calc{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(24px,3.2vw,52px);align-items:start}
+.rangefield{margin-bottom:24px}
+.rangefield:last-of-type{margin-bottom:6px}
+.rangefield__top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}
+.rangefield__top label{font-size:.85rem;font-weight:650;color:var(--on-dark)}
+.rangefield__val{font-weight:700;font-variant-numeric:tabular-nums;color:var(--clay-soft);white-space:nowrap}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:26px;background:transparent;cursor:pointer;margin:0}
+input[type="range"]::-webkit-slider-runnable-track{height:3px;background:rgba(255,255,255,.24)}
+input[type="range"]::-moz-range-track{height:3px;background:rgba(255,255,255,.24)}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--clay-soft);border:3px solid var(--slate);margin-top:-8.5px;
+}
+input[type="range"]::-moz-range-thumb{
+  width:20px;height:20px;border-radius:50%;background:var(--clay-soft);border:3px solid var(--slate);
+}
+input[type="range"]:focus-visible{outline:2px solid var(--clay-soft);outline-offset:4px}
+.calc__scale{display:flex;justify-content:space-between;font-size:.76rem;color:var(--on-dark-muted);margin-top:2px}
+.calc__disc{font-size:.83rem;color:var(--on-dark-muted);margin:18px 0 0;max-width:66ch}
+.calc__out{border-left:1px solid var(--line-dark);padding-left:clamp(20px,2.6vw,40px)}
+.calc__out .eyebrow{margin-bottom:8px}
+.calc__pay{
+  font-size:clamp(2.3rem,5.4vw,3.3rem);font-weight:700;letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums;line-height:1.02;margin:0 0 4px;color:#FFFFFF;max-width:none;
+}
+.calc__pay small{font-size:.95rem;font-weight:650;letter-spacing:0;color:var(--on-dark-muted)}
+.calc__rows{margin:22px 0 0;display:grid;gap:0}
+.calc__rows div{
+  display:flex;justify-content:space-between;gap:14px;padding:11px 0;
+  border-bottom:1px solid var(--line-dark);font-size:.93rem;
+}
+.calc__rows div:last-child{border-bottom:0}
+.calc__rows dt{color:var(--on-dark-muted)}
+.calc__rows dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums;color:#FFFFFF;white-space:nowrap}
+.calc__flag{
+  margin:18px 0 0;padding:12px 0 12px 14px;border-left:2px solid var(--clay-soft);
+  font-size:.88rem;color:#E4E8EC;max-width:60ch;
+}
+
+/* ============================================================
+   PÁS ÚDAJOV
+   ============================================================ */
+.strip{background:var(--bg-2);border-bottom:1px solid var(--line)}
+.strip__in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.strip__cell{padding:28px clamp(16px,2vw,30px) 30px;border-left:1px solid var(--line)}
+.strip__cell:first-child{border-left:0;padding-left:0}
+.strip__cell b{display:block;font-size:1.55rem;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.1}
+.strip__cell span{display:block;font-size:.86rem;color:var(--muted);margin-top:7px;max-width:30ch}
+/* ============================================================
+   KARTY PONUKY
+   ============================================================ */
+.grid-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,28px)}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.card.is-hidden{display:none}
+.card__obraz{aspect-ratio:4/3;width:100%}   /* jednotný orez vo všetkých kartách */
+.card__body{padding:22px clamp(16px,1.6vw,24px) 24px;display:flex;flex-direction:column;flex:1}
+.card__body h3{margin-bottom:5px}
+.card__loc{font-size:.87rem;color:var(--muted);margin:0 0 16px}
+.specs{margin:0 0 16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}
+.specs div{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:.86rem}
+.specs dt{color:var(--muted)}
+.specs dd{margin:0;font-weight:650;font-variant-numeric:tabular-nums}
+.card__note{font-size:.88rem;color:var(--muted);margin:0 0 18px}
+.card__foot{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+.empty{
+  display:none;padding:40px 24px;text-align:center;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--card);color:var(--muted);margin:26px auto 0;max-width:62ch;
+}
+.empty.is-on{display:block}
+
+/* ============================================================
+   MAKLÉRI
+   ============================================================ */
+.people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,28px)}
+.person{background:var(--card);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;overflow:hidden}
+.person__body{padding:20px clamp(16px,1.6vw,24px) 22px;display:flex;flex-direction:column;flex:1}
+.person__body h3{margin-bottom:4px}
+.person__role{font-size:.83rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--clay-dark);margin:0 0 14px}
+.person dl{margin:0 0 16px}
+.person dl div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line-2);font-size:.88rem}
+.person dl div:last-child{border-bottom:0}
+.person dt{color:var(--muted)}
+.person dd{margin:0;font-weight:650;text-align:right}
+.person__foot{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+
+/* ============================================================
+   TABUĽKY
+   ============================================================ */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tablewrap--bare{border:0;background:transparent}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.94rem}
+.tablewrap--bare table{min-width:0}
+caption{text-align:left;padding:16px 18px 2px;font-size:.84rem;color:var(--muted)}
+th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--line);white-space:nowrap;font-weight:700;
+}
+tbody tr:last-child td{border-bottom:0}
+td.price{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap--bare td{padding:12px 0}
+
+/* ============================================================
+   KROKY POSTUPU
+   ============================================================ */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 clamp(24px,3.6vw,54px)}
+.step{padding:26px 0 30px;border-top:1px solid var(--line)}
+.step__top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px}
+.step__no{font-size:2.1rem;font-weight:700;color:var(--clay-dark);letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}
+.step__when{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.step h3{margin-bottom:8px}
+.step p{margin:0;font-size:.93rem;color:var(--muted);max-width:44ch}
+
+/* ============================================================
+   PANELY, ZOZNAMY
+   ============================================================ */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,2.6vw,38px)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(24px,2.6vw,34px)}
+.panel--plain{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:26px 0 0}
+.panel--dark{background:transparent;border:0;border-top:1px solid var(--line-dark);border-radius:0;padding:26px 0 0;color:var(--on-dark)}
+.panel h3{margin-bottom:16px}
+.ticks li{position:relative;padding:9px 0 9px 26px;border-bottom:1px solid var(--line-2);font-size:.94rem}
+.panel--dark .ticks li{border-bottom-color:var(--line-dark)}
+.ticks li:last-child{border-bottom:0}
+.ticks li::before{
+  content:"";position:absolute;left:2px;top:17px;width:9px;height:9px;
+  border-left:2px solid var(--clay-dark);border-bottom:2px solid var(--clay-dark);transform:rotate(-45deg);
+}
+.panel--dark .ticks li::before{border-color:var(--clay-soft)}
+.panel__note{margin:18px 0 0;font-size:.87rem;color:var(--muted);max-width:56ch}
+.panel--dark .panel__note{color:var(--on-dark-muted)}
+
+/* ============================================================
+   CENOVÉ KARTY
+   ============================================================ */
+.pricecards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,28px);margin-top:clamp(22px,2.6vw,34px)}
+.pricecard{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--slate);border-radius:var(--r);padding:24px clamp(18px,1.8vw,26px) 26px}
+.pricecard__amount{
+  display:block;font-size:2.05rem;font-weight:700;letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums;line-height:1.1;margin-bottom:14px;
+}
+.pricecard h3{margin-bottom:8px}
+.pricecard p{font-size:.92rem;color:var(--muted);margin:0 0 12px;max-width:40ch}
+.pricecard p:last-child{margin-bottom:0}
+
+/* ============================================================
+   INFO MRIEŽKY, HODINY, DOPRAVA
+   ============================================================ */
+.infogrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,30px)}
+.infocard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.infocard h3{margin-bottom:12px}
+.infocard p{margin:0;font-size:.93rem;color:var(--muted)}
+.infocard ul li{font-size:.93rem;padding:8px 0;border-bottom:1px solid var(--line-2)}
+.infocard ul li:last-child{border-bottom:0}
+
+.route{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,2.6vw,38px);align-items:start}
+.route__col{display:grid;gap:clamp(18px,2vw,26px);align-content:start;min-width:0}
+.hours{width:100%;border-collapse:collapse;min-width:0;font-size:.94rem}
+.hours th,.hours td{padding:11px 0;border-bottom:1px solid var(--line-2)}
+.hours th{font-weight:650;text-align:left;color:var(--ink);text-transform:none;letter-spacing:0;font-size:.94rem;white-space:nowrap}
+.hours td{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:650}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:0}
+.hours .off{color:var(--muted);font-weight:400}
+.route__list li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line-2);font-size:.94rem}
+.route__list li:last-child{border-bottom:0}
+.route__list b{font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ============================================================
+   ČASTÉ OTÁZKY
+   ============================================================ */
+.faq{max-width:920px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:19px 46px 19px 0;position:relative;
+  font-weight:650;font-size:1.01rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";position:absolute;right:12px;top:26px;width:9px;height:9px;
+  border-right:2px solid var(--clay-dark);border-bottom:2px solid var(--clay-dark);transform:rotate(45deg);
+  transition:transform .16s ease;
+}
+.faq details[open] summary::after{transform:rotate(-135deg);top:30px}
+.faq summary:hover{color:var(--clay-dark)}
+.faq .answer{padding:0 46px 22px 0;color:var(--muted);font-size:.96rem;max-width:70ch}
+.faq .answer p:last-child{margin-bottom:0}
+
+/* ============================================================
+   KARIÉRA
+   ============================================================ */
+.jobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.2vw,30px)}
+.job{background:var(--card);border:1px solid var(--line);border-left:2px solid var(--clay);border-radius:var(--r);padding:26px}
+.job h3{margin-bottom:6px}
+.job .tagline{font-size:.85rem;color:var(--muted);margin:0 0 16px}
+.job dl{margin:0;display:grid;gap:0}
+.job dl div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:.91rem}
+.job dl div:last-child{border-bottom:0}
+.job dt{color:var(--muted)}
+.job dd{margin:0;font-weight:650;text-align:right}
+
+/* ============================================================
+   KONTAKT A FORMULÁR
+   ============================================================ */
+.contact{display:grid;grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);gap:clamp(24px,3.2vw,52px);align-items:start}
+.contact__list{margin:0 0 24px}
+.contact__list div{padding:15px 0;border-bottom:1px solid var(--line-dark)}
+.contact__list div:first-child{border-top:1px solid var(--line-dark)}
+.contact__list dt{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay-soft);font-weight:700;margin-bottom:4px}
+.contact__list dd{margin:0;font-size:1.04rem;font-weight:650;color:#FFFFFF}
+.contact__list a{color:#FFFFFF;text-decoration:underline;text-underline-offset:4px}
+.contact__list a:hover{color:var(--clay-soft)}
+.form{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(24px,2.8vw,36px)}
+.form__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}
+.form__grid .full{grid-column:1 / -1}
+.req{color:var(--clay-dark);font-weight:700}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.89rem;color:var(--muted)}
+.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--clay)}
+.form__foot{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:22px}
+.form__note{font-size:.85rem;color:var(--muted);margin:16px 0 0;max-width:62ch}
+.formstatus{
+  display:none;margin-top:18px;padding:16px 18px;border-radius:var(--r);
+  background:var(--slate);color:var(--on-dark);border-left:2px solid var(--clay-soft);font-size:.93rem;max-width:none;
+}
+.formstatus.is-on{display:block}
+.formstatus b{color:#FFFFFF}
+
+/* ============================================================
+   SEKCIA AUTORA
+   ============================================================ */
+.author{background:var(--clay-soft);color:var(--slate);border-block:1px solid #D2906A}
+.author__in{
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:clamp(24px,3.2vw,56px);align-items:center;padding:clamp(46px,5.4vw,82px) 0;
+}
+.author__tag{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#6E3018;margin:0 0 14px}
+.author h2{color:var(--slate);margin-bottom:.38em}
+.author p{color:#2A1F17;max-width:56ch}
+.author__price{font-weight:700;color:var(--slate)}
+.author__box{background:var(--slate);color:var(--on-dark);border-radius:var(--r);padding:clamp(24px,2.8vw,32px)}
+.author__box dl{margin:0}
+.author__box div{padding:13px 0;border-bottom:1px solid var(--line-dark)}
+.author__box div:last-child{border-bottom:0}
+.author__box dt{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay-soft);font-weight:700;margin-bottom:3px}
+.author__box dd{margin:0;font-size:1.01rem;font-weight:650}
+.author__box a{color:#FFFFFF;text-decoration:underline;text-underline-offset:4px}
+.author__box a:hover{color:var(--clay-soft)}
+.author__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.author__actions .btn.btn--dark{background:var(--slate);color:var(--on-dark);border-color:var(--slate)}
+.author__actions .btn.btn--dark:hover{background:#0F151B;border-color:#0F151B;color:#FFFFFF}
+.author__actions .btn.btn--line{border-color:#8A5B3C;color:#2A1F17;background:transparent}
+.author__actions .btn.btn--line:hover{border-color:var(--slate);color:var(--slate)}
+
+/* ============================================================
+   PÄTIČKA
+   ============================================================ */
+.site-foot{background:var(--slate);color:var(--on-dark-muted);padding:clamp(44px,5vw,68px) 0 34px;font-size:.91rem}
+.foot__cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;
+  padding-bottom:30px;margin-bottom:32px;border-bottom:1px solid var(--line-dark);
+}
+.foot__cta p{margin:0;color:var(--on-dark);font-size:1.06rem;font-weight:650;max-width:44ch}
+.foot__cta .foot__cta-act{display:flex;flex-wrap:wrap;gap:12px;margin-left:auto}
+.foot__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.foot__grid h4{color:var(--on-dark);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+.foot__grid li{padding:5px 0}
+.foot__grid a{color:var(--on-dark-muted);text-decoration:none}
+.foot__grid a:hover{color:var(--clay-soft)}
+.foot__addr{margin:0;line-height:1.75}
+.foot__addr a{color:var(--on-dark);text-decoration:none;border-bottom:1px solid var(--line-dark-2)}
+.foot__addr a:hover{color:var(--clay-soft)}
+.foot__bottom{
+  margin-top:36px;padding-top:22px;border-top:1px solid var(--line-dark);
+  display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:.84rem;
+}
+.foot__bottom a{color:var(--clay-soft)}
+/* ============================================================
+   RESPONZÍVNE
+   ============================================================ */
+@media (max-width:1080px){
+  .tool__grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid-cards,.steps,.infogrid,.pricecards,.people{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip__cell:nth-child(3){border-left:0;padding-left:0}
+
+  /* hlavička sa zalomí do dvoch riadkov, dopyt a telefón ostávajú viditeľné */
+  section,.panel[id]{scroll-margin-top:calc(var(--bar-h) + 128px)}
+  .head__in{flex-wrap:wrap}
+  .brand{order:1;margin-right:auto}
+  .nav-toggle{order:2}
+  .head__act{order:3;flex-basis:100%;gap:8px}
+  .head__act .head__tel,.head__act .btn{flex:1 1 0;min-width:0;justify-content:center}
+  .site-nav{order:4;margin-left:0}
+  .nav-toggle{
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:650;
+    background:transparent;border:1px solid var(--line);border-radius:var(--r);
+    padding:9px 14px;color:var(--ink);cursor:pointer;
+  }
+  .nav-toggle .bars{display:block;width:16px;height:2px;background:var(--ink);position:relative}
+  .nav-toggle .bars::before,.nav-toggle .bars::after{content:"";position:absolute;left:0;width:16px;height:2px;background:var(--ink)}
+  .nav-toggle .bars::before{top:-5px}
+  .nav-toggle .bars::after{top:5px}
+  .site-nav{
+    display:none;position:absolute;left:0;right:0;top:100%;
+    background:var(--bg);border-bottom:1px solid var(--line);
+    box-shadow:0 14px 26px rgba(29,36,44,.1);
+  }
+  .site-nav.is-open{display:block}
+  .no-js .site-nav{display:block;position:static;box-shadow:none;border-bottom:0}
+  .no-js .nav-toggle{display:none}
+  .nav-list{flex-direction:column;align-items:stretch;gap:0;padding:8px 20px 16px}
+  .nav-list a{padding:12px 4px;border-bottom:1px solid var(--line-2)}
+  .nav-list .nav-sell a{margin:10px 0 0;text-align:center;padding:12px;border:1px solid var(--slate)}
+}
+@media (max-width:900px){
+  .hero__in,.calc,.contact,.author__in,.route,.duo{grid-template-columns:minmax(0,1fr)}
+  .hero__in{align-items:start}
+  .sec__head{grid-template-columns:minmax(0,1fr);align-items:start}
+  .sec__head h2{max-width:none}
+  .jobs{grid-template-columns:minmax(0,1fr)}
+  .calc__out{border-left:0;border-top:1px solid var(--line-dark);padding-left:0;padding-top:26px}
+  .steps{gap:0}
+}
+@media (max-width:860px){
+  :root{--bar-h:70px}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .tool__grid,.form__grid{grid-template-columns:minmax(0,1fr)}
+  .grid-cards,.steps,.infogrid,.pricecards,.people{grid-template-columns:minmax(0,1fr)}
+  .strip__in{grid-template-columns:minmax(0,1fr)}
+  .strip__cell{border-left:0;padding-left:0;padding-right:0;border-top:1px solid var(--line)}
+  .strip__cell:first-child{border-top:0}
+  .foot__grid{grid-template-columns:minmax(0,1fr)}
+  .specs{grid-template-columns:minmax(0,1fr)}
+  .tool__tabs{width:100%}
+  .tool__tab{flex:1 1 50%;padding:11px 8px;font-size:.85rem}
+  .readout{gap:16px 26px}
+  .readout__cta{margin-left:0;width:100%}
+  .readout__cta .btn{flex:1 1 100%}
+  .hero__facts dd{font-size:.92rem}
+  .form__foot .btn{width:100%}
+  .card__foot .btn,.person__foot .btn{flex:1 1 100%}
+  .hours th,.hours td{font-size:.9rem}
+  .hero__actions .btn{flex:1 1 100%}
+  .foot__cta .foot__cta-act{margin-left:0;width:100%}
+  .foot__cta .foot__cta-act .btn{flex:1 1 100%}
+  .mapa__txt{font-size:.66rem}
+  .mapa__bod{font-size:.7rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+@media print{
+  .demobar,.site-head,.toolband,.author,.form{display:none}
+  body{padding-top:0}
+}
+
+/* ============================================================
+   POISTKA — farbu textu tlačidiel nesmie prebiť pravidlo pre odkazy
+   ============================================================ */
+a.btn.btn--primary,button.btn.btn--primary{color:#FFFFFF;background:var(--clay);border-color:var(--clay)}
+a.btn.btn--dark,button.btn.btn--dark{color:var(--on-dark);background:var(--slate);border-color:var(--slate)}
+a.btn.btn--soft,button.btn.btn--soft{color:var(--slate);background:var(--clay-soft);border-color:var(--clay-soft)}
+a.btn.btn--line,button.btn.btn--line{color:var(--ink);background:transparent;border-color:var(--line)}
+.on-dark a.btn.btn--line,.on-dark button.btn.btn--line,
+.toolband a.btn.btn--line,.toolband button.btn.btn--line{color:var(--on-dark);border-color:var(--line-dark-2)}
+.author__actions a.btn.btn--line{color:#2A1F17;border-color:#8A5B3C}
+.site-foot a.btn.btn--line,.site-foot button.btn.btn--line{color:var(--on-dark);background:transparent;border-color:var(--line-dark-2)}
+.site-foot a.btn.btn--line:hover,.site-foot button.btn.btn--line:hover{color:var(--clay-soft);border-color:var(--clay-soft)}
+.site-foot a.btn.btn--soft{color:var(--slate);background:var(--clay-soft);border-color:var(--clay-soft)}
+.site-head a.head__tel,.site-head a.head__tel:hover{color:var(--clay-dark)}
+.on-dark a.btn.btn--soft,.toolband a.btn.btn--soft{color:var(--slate);background:var(--clay-soft);border-color:var(--clay-soft)}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*400);return v.toLocaleString('hu-HU');}function __f(x){return Math.round(x).toLocaleString('hu-HU');}function __p(x){return Math.round(x*400/10)*10;}function __c(x){return x*400;}var __m="Ft";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Ugrás a tartalomra</a>
+
+<!-- ===================== PÁSIK UKÁŽKY ===================== -->
+<div class="demobar" id="demobar">
+  <div class="demobar__in">
+    <span class="demobar__tag">Mintaweboldal</span>
+    <span>Ilyen weboldalt készítek Önnek is.</span>
+    <span class="demobar__sep" aria-hidden="true">·</span>
+    <a href="https://apoliak.online/hu/">apoliak.online</a>
+    <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+  </div>
+</div>
+
+<!-- ===================== HLAVIČKA ===================== -->
+<header class="site-head">
+  <div class="wrap head__in">
+    <a class="brand" href="#obsah">
+      <span class="brand__mark" aria-hidden="true">K</span> <span class="brand__txt"> <strong>KAVICS</strong> <span>Ingatlaniroda</span> </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav">
+      <span class="bars" aria-hidden="true"></span> Navigáció
+    </button>
+
+    <nav class="site-nav" id="siteNav" aria-label="Fő navigáció">
+      <ul class="nav-list">
+        <li><a href="#ponuka">Kínálat</a></li>
+        <li class="nav-sell"><a href="#predaj">Eladnék</a></li>
+        <li><a href="#maklieri">Tanácsadók</a></li>
+        <li><a href="#provizia">Jutalék</a></li>
+        <li><a href="#prenajom">Bérbeadás</a></li>
+        <li><a href="#hodiny">Iroda</a></li>
+        <li><a href="#faq">Kérdések</a></li>
+      </ul>
+    </nav>
+
+    <div class="head__act">
+      <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      <a class="btn btn--primary btn--sm" href="#kontakt">Kötelezettség nélküli érdeklődés</a>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-labelledby="h-hero">
+  <div class="wrap hero__in">
+    <div>
+      <p class="eyebrow">Ingatlanok eladása, vétele és bérbeadása</p>
+      <h1 id="h-hero">Kavics Ingatlaniroda</h1>
+      <p class="hero__lede">Lakásokat, házakat, telkeket és üzlethelyiségeket értékesítünk Kavicsváron és környékén. A kínálatunkban 12 ingatlan szerepel 35 600 000 és 166 000 000 Ft között. A jutalék kizárólagos megbízásnál 2,4 %, és csak az adásvételi szerződés aláírásakor kell megfizetni.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#kontakt">Kötelezettség nélküli érdeklődés</a>
+        <a class="btn btn--line" href="#predaj">Eladnék</a>
+        <a class="btn btn--line" href="#nastroj">Keresés a kínálatban</a>
+      </div>
+    </div>
+    <dl class="hero__facts">
+      <div><dt>Iroda</dt><dd>Forrás utca 9., Folyópart városrész, Kavicsvár</dd></div>
+      <div><dt>Nyitva</dt><dd>H&nbsp;&ndash;&nbsp;P 9:00&nbsp;&ndash;&nbsp;17:00, Szo előzetes egyeztetéssel</dd></div>
+      <div><dt>Telefon</dt><dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></dd></div>
+    </dl>
+  </div>
+</section>
+<!-- ===================== NÁSTROJ: FILTER + KALKULAČKA ===================== -->
+<section class="toolband on-dark" id="nastroj" aria-labelledby="h-nastroj">
+  <div class="wrap tool">
+    <div class="tool__head">
+      <h2 class="tool__title" id="h-nastroj">Keresés a kínálatban és hitelszámítás</h2>
+      <div class="tool__tabs" id="toolTabs" role="tablist" aria-label="Az iroda eszközei">
+        <button class="tool__tab is-active" type="button" id="tabFilter" role="tab" aria-selected="true" aria-controls="panelFilter">A kínálat szűrése</button>
+        <button class="tool__tab" type="button" id="tabHypo" role="tab" aria-selected="false" aria-controls="panelHypo" tabindex="-1">Hitelkalkulátor</button>
+      </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="tool__panel" id="panelFilter" role="tabpanel" aria-labelledby="tabFilter">
+      <form id="filterForm" aria-label="Az ingatlankínálat szűrése">
+        <div class="tool__grid">
+          <div class="field">
+            <label for="fType">Az ingatlan típusa</label>
+            <select id="fType">
+              <option value="all">Minden típus</option>
+              <option value="byt">Lakás</option>
+              <option value="dom">Családi ház</option>
+              <option value="pozemok">Telek</option>
+              <option value="komercia">Üzlethelyiség</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fLoc">Városrész</label>
+            <select id="fLoc">
+              <option value="all">Minden városrész</option>
+              <option value="nad-riekou">Folyópart városrész</option>
+              <option value="kamenne-pole">Kőmező lakótelep</option>
+              <option value="podhorie">Hegyalja városrész</option>
+              <option value="stara-kolonia">Ótelep</option>
+              <option value="vinohrady">Szőlőhegy városrész</option>
+              <option value="dolne-luky">Alsórét község</option>
+              <option value="brezinka">Nyírespuszta község</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fRooms">Szobák száma</label>
+            <select id="fRooms">
+              <option value="all">Mindegy</option>
+              <option value="1">1 szoba</option>
+              <option value="2">2 szoba</option>
+              <option value="3">3 szoba</option>
+              <option value="4">4 vagy több szoba</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fMin">Kezdő ár</label>
+            <select id="fMin">
+              <option value="0">alsó határ nélkül</option>
+              <option value="40000000">40 000 000 Ft</option>
+              <option value="60000000">60 000 000 Ft</option>
+              <option value="80000000">80 000 000 Ft</option>
+              <option value="120000000">120 000 000 Ft</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fMax">Ár eddig</label>
+            <select id="fMax">
+              <option value="40000000">40 000 000 Ft</option>
+              <option value="60000000">60 000 000 Ft</option>
+              <option value="80000000">80 000 000 Ft</option>
+              <option value="120000000">120 000 000 Ft</option>
+              <option value="9999999999" selected>felső határ nélkül</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="readout" role="status" aria-live="polite">
+          <div class="readout__item"><span>Megfelel a szűrésnek</span><b id="rCount">12 / 12</b></div>
+          <div class="readout__item"><span>Ársáv</span><b id="rRange">35 600 000 &ndash; 166 000 000 Ft</b></div>
+          <div class="readout__item"><span>Átlagár</span><b id="rAvg">79 426 800 Ft</b></div>
+          <div class="readout__cta">
+            <button class="btn btn--line btn--sm" type="reset" id="filterReset">Szűrő törlése</button>
+            <a class="btn btn--soft btn--sm" href="#ponuka">Kínálat megtekintése</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- KALKULAČKA -->
+    <div class="tool__panel is-off" id="panelHypo" role="tabpanel" aria-labelledby="tabHypo">
+      <div class="calc">
+        <form id="calcForm" aria-label="Hitelkalkulátor">
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cPrice">Az ingatlan ára</label>
+              <output class="rangefield__val" id="cPriceOut" for="cPrice">72 000 000 Ft</output>
+            </div>
+            <input type="range" id="cPrice" min="16000000" max="240000000" step="2000000" value="72000000">
+            <div class="calc__scale"><span>16 000 000 Ft</span><span>240 000 000 Ft</span></div>
+          </div>
+
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cOwn">Önerő</label>
+              <output class="rangefield__val" id="cOwnOut" for="cOwn">20 % &middot; 14 400 000 Ft</output>
+            </div>
+            <input type="range" id="cOwn" min="0" max="60" step="1" value="20">
+            <div class="calc__scale"><span>0 %</span><span>60 %</span></div>
+          </div>
+
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cYears">Futamidő</label>
+              <output class="rangefield__val" id="cYearsOut" for="cYears">30 év</output>
+            </div>
+            <input type="range" id="cYears" min="5" max="30" step="1" value="30">
+            <div class="calc__scale"><span>5 év</span><span>30 év</span></div>
+          </div>
+
+          <div class="rangefield">
+            <div class="rangefield__top">
+              <label for="cRate">Kamat</label>
+              <output class="rangefield__val" id="cRateOut" for="cRate">évi 4,2 %</output>
+            </div>
+            <input type="range" id="cRate" min="1" max="8" step="0.1" value="4.2">
+            <div class="calc__scale"><span>1,0 %</span><span>8,0 %</span></div>
+          </div>
+
+          <p class="calc__disc">A számítás annuitásos, a bank díjai, az ingatlanbiztosítás és a törlesztési biztosítás nélkül. Nem hitelajánlat és nem hitelbírálat, azt a bank végzi.</p>
+        </form>
+
+        <div class="calc__out" aria-live="polite">
+          <p class="eyebrow">Havi törlesztő</p>
+          <p class="calc__pay" id="oPay">281 600 Ft<small> / hónap</small></p>
+          <dl class="calc__rows">
+            <div><dt>A hitel összege</dt><dd id="oLoan">57 600 000 Ft</dd></div>
+            <div><dt>Önerő</dt><dd id="oOwn">14 400 000 Ft</dd></div>
+            <div><dt>Hitel és érték aránya</dt><dd id="oLtv">80 %</dd></div>
+            <div><dt>Kifizetett kamat összesen</dt><dd id="oInterest">43 802 800 Ft</dd></div>
+            <div><dt>Összesen a banknak</dt><dd id="oTotal">101 402 800 Ft</dd></div>
+          </dl>
+          <p class="calc__flag" id="oFlag">80 % alatti hitel-érték aránynál a bankok általában nem kérnek további hitelt kiegészítésként.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PÁS ÚDAJOV ===================== -->
+<section class="strip" aria-label="Az együttműködés alapadatai">
+  <div class="wrap">
+    <div class="strip__in">
+      <div class="strip__cell">
+        <b>2,4 %</b>
+        <span>jutalék a vételárból kizárólagos megbízásnál, legalább 760 000 Ft</span>
+      </div>
+      <div class="strip__cell">
+        <b>6 portál</b>
+        <span>a hirdetés a szerződés aláírásától számított három munkanapon belül megjelenik</span>
+      </div>
+      <div class="strip__cell">
+        <b>0 Ft</b>
+        <span>előre, a jutalékot csak az adásvételi szerződés aláírásakor fizeti</span>
+      </div>
+      <div class="strip__cell">
+        <b>30 nap</b>
+        <span>a megbízási szerződés felmondási ideje, indoklás nélkül is</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== PONUKA ===================== -->
+<section class="sec" id="ponuka" aria-labelledby="h-ponuka">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">01</span> Aktuális kínálat</p>
+        <h2 id="h-ponuka">Eladó ingatlanok</h2>
+      </div>
+      <p class="lede">Tizenkét ingatlan a megadott alapterülettel, emelettel, energetikai besorolással és a jutalékot is tartalmazó árral. A kínálatot a fenti szűrővel szűkítheti.</p>
+    </div>
+
+    <div class="grid-cards" id="cardGrid">
+
+      <article class="card" data-type="byt" data-rooms="2" data-price="55800000" data-loc="nad-riekou" data-area="54">
+        <!-- FOTO: obyvacia izba 2-izboveho bytu po rekonstrukcii, stvrt Nad Riekou, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--a card__obraz">
+          <span class="obraz__label">Lakás</span>
+          <span class="obraz__sub">3./8. emelet</span>
+          <span class="obraz__big">55&nbsp;800&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>2 szobás lakás, 54 m²</h3>
+          <p class="card__loc">Folyópart városrész, 1998-as téglaépítésű ház</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>2</dd></div>
+            <div><dt>Terület</dt><dd>54 m²</dd></div>
+            <div><dt>Emelet</dt><dd>3./8.</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">Teljesen felújítva, 5 m²-es beüvegezett erkély, pince, lift. Azonnal költözhető.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="55800000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="3" data-price="69160000" data-loc="kamenne-pole" data-area="74">
+        <!-- FOTO: 3-izbovy byt na sidlisku Kamenne pole, pohlad z lodzie do izby, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--b card__obraz">
+          <span class="obraz__label">Lakás</span>
+          <span class="obraz__sub">5./7. emelet</span>
+          <span class="obraz__big">69&nbsp;160&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>3 szobás lakás, 74 m²</h3>
+          <p class="card__loc">Kőmező lakótelep, felújított panelház</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>3</dd></div>
+            <div><dt>Terület</dt><dd>74 m²</dd></div>
+            <div><dt>Emelet</dt><dd>5./7.</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>C</dd></div>
+          </dl>
+          <p class="card__note">Szigetelt ház, új vezetékek, 6 m²-es loggia, délnyugati tájolás. Átadás 60 napon belül.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="69160000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="1" data-price="38560000" data-loc="podhorie" data-area="34">
+        <!-- FOTO: 1-izbovy byt v stvrti Podhorie, kuchynska linka a okno, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--d card__obraz">
+          <span class="obraz__label">Lakás</span>
+          <span class="obraz__sub">6./9. emelet</span>
+          <span class="obraz__big">38&nbsp;560&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>1 szobás lakás, 34 m²</h3>
+          <p class="card__loc">Hegyalja városrész, 400 m-re a megállótól</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>1</dd></div>
+            <div><dt>Terület</dt><dd>34 m²</dd></div>
+            <div><dt>Emelet</dt><dd>6./9.</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>D</dd></div>
+          </dl>
+          <p class="card__note">Eredeti állapot, 2016-os műanyag nyílászárók, beépített konyhabútor. A városrészben hasonló lakásokat havi 152 000 – 180 000 Ft-ért adnak bérbe.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="38560000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="4" data-price="87600000" data-loc="nad-riekou" data-area="96">
+        <!-- FOTO: 4-izbovy byt v novostavbe Nad Riekou, terasa 18 m2, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--f card__obraz">
+          <span class="obraz__label">Lakás</span>
+          <span class="obraz__sub">1./4. emelet</span>
+          <span class="obraz__big">87&nbsp;600&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>4 szobás lakás, 96 m²</h3>
+          <p class="card__loc">Folyópart városrész, 2019-es új építés</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>4</dd></div>
+            <div><dt>Terület</dt><dd>96 m²</dd></div>
+            <div><dt>Emelet</dt><dd>1./4.</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">18 m²-es terasz, parkolóhely az árban, egyedi konyhabútor. A fűtési előleg a 2025-ös elszámolás szerint havi 25 600 Ft.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="87600000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="byt" data-rooms="3" data-price="63200000" data-loc="stara-kolonia" data-area="68">
+        <!-- FOTO: 3-izbovy byt v Starej kolonii, izba do vnutrobloku, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--c card__obraz">
+          <span class="obraz__label">Lakás</span>
+          <span class="obraz__sub">2./5. emelet</span>
+          <span class="obraz__big">63&nbsp;200&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>3 szobás lakás, 68 m²</h3>
+          <p class="card__loc">Ótelep, téglaház, csendes belső udvar</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>3</dd></div>
+            <div><dt>Terület</dt><dd>68 m²</dd></div>
+            <div><dt>Emelet</dt><dd>2./5.</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>C</dd></div>
+          </dl>
+          <p class="card__note">2021-es részleges felújítás, külön tároló, a garázs 5 600 000 Ft-ért megvásárolható.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="63200000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="dom" data-rooms="4" data-price="107200000" data-loc="dolne-luky" data-area="112">
+        <!-- FOTO: rodinny dom v Dolnych Lukach, celny pohlad z ulice, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--e card__obraz">
+          <span class="obraz__label">Családi ház</span>
+          <span class="obraz__sub">480 m²-es telek</span>
+          <span class="obraz__big">107&nbsp;200&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>Családi ház, 112 m²</h3>
+          <p class="card__loc">Alsórét község, 9 km-re a városközponttól</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>4</dd></div>
+            <div><dt>Terület</dt><dd>112 m²</dd></div>
+            <div><dt>Telek</dt><dd>480 m²</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">2008-as földszintes ház, hőszivattyú, egyautós garázs, bekerített kert.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="107200000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-type="dom" data-rooms="5" data-price="131600000" data-loc="vinohrady" data-area="148">
+        <!-- FOTO: rodinny dom vo Vinohradoch, zahradna strana s terasou, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--a card__obraz">
+          <span class="obraz__label">Családi ház</span>
+          <span class="obraz__sub">612 m²-es telek</span>
+          <span class="obraz__big">131&nbsp;600&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>Családi ház, 148 m²</h3>
+          <p class="card__loc">Szőlőhegy városrész, zsákutca végén</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>5</dd></div>
+            <div><dt>Terület</dt><dd>148 m²</dd></div>
+            <div><dt>Telek</dt><dd>612 m²</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>A0</dd></div>
+          </dl>
+          <p class="card__note">2021-es kétszintes ház, hővisszanyerő szellőzés, 6 kWp napelem, 34 m²-es déli terasz.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="131600000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="dom" data-rooms="6" data-price="166000000" data-loc="brezinka" data-area="186">
+        <!-- FOTO: rodinny dom v Brezinke, pohlad od lesneho okraja, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--b card__obraz">
+          <span class="obraz__label">Családi ház</span>
+          <span class="obraz__sub">845 m²-es telek</span>
+          <span class="obraz__big">166&nbsp;000&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>Családi ház, 186 m²</h3>
+          <p class="card__loc">Nyírespuszta község, az erdő szélén</p>
+          <dl class="specs">
+            <div><dt>Szobák</dt><dd>6</dd></div>
+            <div><dt>Terület</dt><dd>186 m²</dd></div>
+            <div><dt>Telek</dt><dd>845 m²</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>A1</dd></div>
+          </dl>
+          <p class="card__note">Két önálló lakóegység saját mérőórákkal, dupla garázs, 28 m mély fúrt kút.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="166000000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="pozemok" data-rooms="0" data-price="35600000" data-loc="dolne-luky" data-area="780">
+        <!-- FOTO: stavebny pozemok v Dolnych Lukach, pohlad z ulice na parcelu, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--d card__obraz">
+          <span class="obraz__label">Telek</span>
+          <span class="obraz__sub">780 m²</span>
+          <span class="obraz__big">35&nbsp;600&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>Építési telek, 780 m²</h3>
+          <p class="card__loc">Alsórét község, forgalomelterelővel lezárt utca</p>
+          <dl class="specs">
+            <div><dt>Terület</dt><dd>780 m²</dd></div>
+            <div><dt>Szélesség</dt><dd>21 m</dd></div>
+            <div><dt>Közművek</dt><dd>a telekhatáron</dd></div>
+            <div><dt>Akadálymentesség</dt><dd>aszfalt</dd></div>
+          </dl>
+          <p class="card__note">Sík telek, a településrendezési terv kétszintes, szabadon álló házat enged.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="35600000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="pozemok" data-rooms="0" data-price="52800000" data-loc="vinohrady" data-area="1240">
+        <!-- FOTO: stavebny pozemok vo Vinohradoch, juzny svah, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--f card__obraz">
+          <span class="obraz__label">Telek</span>
+          <span class="obraz__sub">1 240 m²</span>
+          <span class="obraz__big">52&nbsp;800&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>Építési telek, 1 240 m²</h3>
+          <p class="card__loc">Szőlőhegy városrész, déli lejtő</p>
+          <dl class="specs">
+            <div><dt>Terület</dt><dd>1 240 m²</dd></div>
+            <div><dt>Szélesség</dt><dd>28 m</dd></div>
+            <div><dt>Közművek</dt><dd>víz, villany</dd></div>
+            <div><dt>Akadálymentesség</dt><dd>szilárd burkolatú út</dd></div>
+          </dl>
+          <p class="card__note">8 %-os déli lejtés, a telek az önkormányzat hozzájárulásával két, egyenként 620 m²-es parcellára osztható.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="52800000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="komercia" data-rooms="2" data-price="47200000" data-loc="stara-kolonia" data-area="62">
+        <!-- FOTO: obchodny priestor v Starej kolonii, vyklad do hlavnej ulice, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--c card__obraz">
+          <span class="obraz__label">Üzlethelyiség</span>
+          <span class="obraz__sub">földszint</span>
+          <span class="obraz__big">47&nbsp;200&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>Üzlethelyiség, 62 m²</h3>
+          <p class="card__loc">Ótelep, kirakat a főutcára</p>
+          <dl class="specs">
+            <div><dt>Helyiségek</dt><dd>2</dd></div>
+            <div><dt>Terület</dt><dd>62 m²</dd></div>
+            <div><dt>Emelet</dt><dd>földszint</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>C</dd></div>
+          </dl>
+          <p class="card__note">Külön utcai bejárat, mosdó, 9 m²-es raktár, akadálymentes bejutás.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="47200000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="komercia" data-rooms="4" data-price="98400000" data-loc="nad-riekou" data-area="140">
+        <!-- FOTO: kancelarie Nad Riekou, otvoreny priestor s oknami, sirokouhly zaber v pomere 4:3 -->
+        <figure class="obraz obraz--e card__obraz">
+          <span class="obraz__label">Üzlethelyiség</span>
+          <span class="obraz__sub">2./4. emelet</span>
+          <span class="obraz__big">98&nbsp;400&nbsp;000&nbsp;Ft</span>
+        </figure>
+        <div class="card__body">
+          <h3>Irodák, 140 m²</h3>
+          <p class="card__loc">Folyópart városrész, irodaház</p>
+          <dl class="specs">
+            <div><dt>Helyiségek</dt><dd>4</dd></div>
+            <div><dt>Terület</dt><dd>140 m²</dd></div>
+            <div><dt>Emelet</dt><dd>2./4.</dd></div>
+            <div><dt>Energ. besorolás</dt><dd>B</dd></div>
+          </dl>
+          <p class="card__note">Klíma, hálózati kábelezés, három parkolóhely, recepció az épületben, lift.</p>
+          <div class="card__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Megtekintés egyeztetése</a>
+            <button class="btn btn--line btn--sm js-calc" type="button" data-price="98400000">Hitel kiszámítása</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="empty" id="emptyState">A megadott feltételeknek egyetlen ingatlan sem felel meg az aktuális kínálatból. Próbálja szélesíteni az ársávot, vagy írja meg, mit keres &ndash; az igényt a meghirdetett kínálaton kívül is fel tudjuk venni.</p>
+  </div>
+</section>
+
+<!-- ===================== LOKALITY ===================== -->
+<section class="sec sec--band" id="lokality" aria-labelledby="h-lokality">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">02</span> Hol dolgozunk</p>
+        <h2 id="h-lokality">Városrészek és a kínálat ársávjai</h2>
+      </div>
+      <p class="lede">Áttekintés azokról a városrészekről és községekről, ahol ingatlanjaink vannak. Az ársáv az aktuális kínálatunk árain alapul, nem a teljes piac hirdetési árain.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Az aktuális kínálat városrészek szerint</caption>
+        <thead>
+          <tr>
+            <th scope="col">Városrész</th>
+            <th scope="col">Jellemző beépítés</th>
+            <th scope="col">Kínálat</th>
+            <th scope="col">Ársáv</th>
+            <th scope="col">A városközpontig</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Folyópart városrész</td>
+            <td>téglaházak, új építések, irodák</td>
+            <td class="price">3</td>
+            <td class="price">55 800 000 &ndash; 98 400 000 Ft</td>
+            <td>10 perc gyalog</td>
+          </tr>
+          <tr>
+            <td>Kőmező lakótelep</td>
+            <td>felújított panelházak</td>
+            <td class="price">1</td>
+            <td class="price">69 160 000 Ft</td>
+            <td>4 perc busszal</td>
+          </tr>
+          <tr>
+            <td>Hegyalja városrész</td>
+            <td>nyolcvanas évekbeli társasházak</td>
+            <td class="price">1</td>
+            <td class="price">38 560 000 Ft</td>
+            <td>12 perc busszal</td>
+          </tr>
+          <tr>
+            <td>Ótelep</td>
+            <td>téglaházak, üzlethelyiségek</td>
+            <td class="price">2</td>
+            <td class="price">47 200 000 &ndash; 63 200 000 Ft</td>
+            <td>6 perc gyalog</td>
+          </tr>
+          <tr>
+            <td>Szőlőhegy városrész</td>
+            <td>családi házak és építési telkek</td>
+            <td class="price">2</td>
+            <td class="price">52 800 000 &ndash; 131 600 000 Ft</td>
+            <td>9 perc autóval</td>
+          </tr>
+          <tr>
+            <td>Alsórét község</td>
+            <td>családi házak és építési telkek</td>
+            <td class="price">2</td>
+            <td class="price">35 600 000 &ndash; 107 200 000 Ft</td>
+            <td>9 km, 12 perc autóval</td>
+          </tr>
+          <tr>
+            <td>Nyírespuszta község</td>
+            <td>szabadon álló házak az erdő mellett</td>
+            <td class="price">1</td>
+            <td class="price">166 000 000 Ft</td>
+            <td>14 km, 18 perc autóval</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- ===================== POSTUP PREDAJA ===================== -->
+<section class="sec" id="postup" aria-labelledby="h-postup">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">03</span> Hogyan zajlik</p>
+        <h2 id="h-postup">Az eladás menete hat lépésben</h2>
+      </div>
+      <p class="lede">Az első megtekintéstől a földhivatali bejegyzésig. Tehermentes lakásnál a folyamat általában 9–14 hétig tart, haszonélvezettel terhelt vagy hagyatéki eljárás alatt álló háznál tovább.</p>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <div class="step__top"><span class="step__no">01</span><span class="step__when">48 órán belül</span></div>
+        <h3>Megtekintés és árbecslés</h3>
+        <p>Végigjárjuk az ingatlant, lemérjük az alapterületet, és ellenőrizzük a tulajdoni lapot. A helyszíni bejárás és a szóbeli árbecslés díjmentes. Az írásos értékbecslés öt megvalósult eladás összehasonlításával 48 000 Ft, és az irodán keresztüli eladásnál levonjuk a jutalékból.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">02</span><span class="step__when">1. hét</span></div>
+        <h3>Szerződés és iratok</h3>
+        <p>Aláírjuk a megbízási szerződést a megadott árral, jutalékkal és időtartammal. Beszerezzük az energetikai tanúsítványt és az alaprajzot, és pótoljuk a hiányzó iratokat.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">03</span><span class="step__when">3 napon belül</span></div>
+        <h3>Előkészítés és hirdetés</h3>
+        <p>Lefényképezzük a belső tereket és a külsőt, felmérjük az alaprajzot a helyiségek méreteivel, és feladjuk a hirdetést hat portálra, erre a weboldalra és a keresési adatbázisunkba.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">04</span><span class="step__when">folyamatosan</span></div>
+        <h3>Megtekintések és visszajelzés</h3>
+        <p>A megtekintéseket mi tartjuk, Önnek nem kell jelen lennie. Kéthetente írásos összesítőt kap a hirdetés megnyitásainak számáról, a megtekintésekről és az érdeklődők észrevételeiről.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">05</span><span class="step__when">7 – 30 nap</span></div>
+        <h3>Foglalás és finanszírozás</h3>
+        <p>Az érdeklődővel foglalási szerződést kötünk, a foglaló pedig letétbe kerül. Ha a vevő hitelből fizet, egyeztetünk a bankkal és az értékbecslővel.</p>
+      </li>
+      <li class="step">
+        <div class="step__top"><span class="step__no">06</span><span class="step__when">30 nap a földhivatalban</span></div>
+        <h3>Adásvételi szerződés és átadás</h3>
+        <p>Elkészítjük az adásvételi szerződést, a bejegyzési kérelmet és az átadás-átvételi jegyzőkönyvet. A tulajdonjog bejegyzése után átírjuk a közműveket, és felszabadítjuk a vételárat a letétből.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== MAKLÉRI ===================== -->
+<section class="sec sec--band" id="maklieri" aria-labelledby="h-maklieri">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">04</span> Az iroda munkatársai</p>
+        <h2 id="h-maklieri">Az iroda tanácsadói</h2>
+      </div>
+      <p class="lede">Minden ingatlant a megtekintéstől a földhivatali bejegyzésig egy tanácsadó visz. A telefonszám közös, minden tanácsadónak saját melléke van. Konkrét tanácsadót az űrlapon kérhet.</p>
+    </div>
+
+    <div class="people">
+
+      <article class="person">
+        <!-- FOTO: portret veducej kancelarie, zaber po ramena, jednotny svetly podklad, pomer 4:5 -->
+        <figure class="obraz obraz--b obraz--portret">
+          <span class="obraz__label">Irodavezető</span>
+          <span class="obraz__name">Halmi Zsuzsanna</span>
+        </figure>
+        <div class="person__body">
+          <h3>Halmi Zsuzsanna</h3>
+          <p class="person__role">Irodavezető</p>
+          <dl>
+            <div><dt>Vezeti</dt><dd>lakások és új építések a városban</dd></div>
+            <div><dt>Városrészek</dt><dd>Folyópart, Kőmező lakótelep</dd></div>
+            <div><dt>Mellék</dt><dd>21</dd></div>
+            <div><dt>Az irodában</dt><dd>H &ndash; P 9:00 &ndash; 17:00</dd></div>
+          </dl>
+          <div class="person__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Kötelezettség nélküli érdeklődés</a>
+            <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="person">
+        <!-- FOTO: portret maklera pre domy a pozemky, zaber po ramena, jednotny svetly podklad, pomer 4:5 -->
+        <figure class="obraz obraz--e obraz--portret">
+          <span class="obraz__label">Ingatlantanácsadó</span>
+          <span class="obraz__name">Zatkó Márk</span>
+        </figure>
+        <div class="person__body">
+          <h3>Zatkó Márk</h3>
+          <p class="person__role">Ingatlantanácsadó</p>
+          <dl>
+            <div><dt>Vezeti</dt><dd>családi házak és telkek</dd></div>
+            <div><dt>Városrészek</dt><dd>Szőlőhegy, Alsórét, Nyírespuszta</dd></div>
+            <div><dt>Mellék</dt><dd>22</dd></div>
+            <div><dt>Megtekintések</dt><dd>17:00 után és szombaton is</dd></div>
+          </dl>
+          <div class="person__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Kötelezettség nélküli érdeklődés</a>
+            <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="person">
+        <!-- FOTO: portret maklerky pre komercne priestory a prenajom, zaber po ramena, jednotny svetly podklad, pomer 4:5 -->
+        <figure class="obraz obraz--f obraz--portret">
+          <span class="obraz__label">Ingatlantanácsadó</span>
+          <span class="obraz__name">Kraj Ivett</span>
+        </figure>
+        <div class="person__body">
+          <h3>Kraj Ivett</h3>
+          <p class="person__role">Ingatlantanácsadó</p>
+          <dl>
+            <div><dt>Vezeti</dt><dd>üzlethelyiségek és bérbeadás</dd></div>
+            <div><dt>Városrészek</dt><dd>Ótelep, Hegyalja</dd></div>
+            <div><dt>Mellék</dt><dd>23</dd></div>
+            <div><dt>Bérlemények kezelése</dt><dd>a lakás ellenőrzése évente 2-szer</dd></div>
+          </dl>
+          <div class="person__foot">
+            <a class="btn btn--primary btn--sm" href="#kontakt">Kötelezettség nélküli érdeklődés</a>
+            <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PREDAJ A KÚPA ===================== -->
+<section class="sec" id="predaj" aria-labelledby="h-sluzby">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">05</span> Mit teszünk Önért</p>
+        <h2 id="h-sluzby">Eladnék, vennék</h2>
+      </div>
+      <p class="lede">Az eladó a jutalékot csak az adásvételi szerződés aláírásakor fizeti. A vevő nálunk semmilyen közvetítői díjat nem fizet, csak a földhivatali eljárási díjat és — ha van — a letéti díjat.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Ingatlant adok el</h3>
+        <ul class="ticks">
+          <li>Írásos értékbecslés 48 000 Ft-ért, az irodán keresztüli eladásnál levonjuk a jutalékból</li>
+          <li>Javaslatok arról, mit érdemes eladás előtt rendezni, és mi nem éri meg</li>
+          <li>Energetikai tanúsítvány és alaprajz a helyiségek méreteivel</li>
+          <li>Hirdetés hat portálon és a keresési adatbázisban</li>
+          <li>A megtekintések megtartása az Ön jelenléte nélkül, esti órákban is</li>
+          <li>Az érdeklődő fizetőképességének és finanszírozási módjának ellenőrzése</li>
+          <li>Foglalási szerződés és a foglaló kezelése</li>
+          <li>Adásvételi szerződés, bejegyzési kérelem és kapcsolattartás a földhivatallal</li>
+          <li>Az ingatlan átadása és a közművek átírása</li>
+        </ul>
+        <p class="panel__note">Minden felsorolt szolgáltatás benne van a kizárólagos megbízás 2,4 %-os jutalékában. Utólag semmit nem számlázunk.</p>
+        <div class="card__foot" style="margin-top:20px">
+          <a class="btn btn--primary" href="#kontakt">Kötelezettség nélküli érdeklődés</a>
+          <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Ingatlant vásárolok</h3>
+        <ul class="ticks">
+          <li>Felvétel a keresési adatbázisba, a hirdetés megjelenése előtt jelentkezünk</li>
+          <li>A tulajdoni lap, a terhek, a szolgalmi jogok és a végrehajtások ellenőrzése</li>
+          <li>A tényleges állapot és a földhivatali térkép egyezésének ellenőrzése</li>
+          <li>Kíséret a megtekintésen és figyelmeztetés a műszaki kockázatokra</li>
+          <li>Iratok a bank részére és az értékbecslés összehangolása</li>
+          <li>Ügyvédi letét vagy a vételár banki zárolása</li>
+          <li>Átadás-átvételi jegyzőkönyv a mérőórák állásával</li>
+          <li>A közművek átírása és a korábbi tulajdonos kijelentése</li>
+        </ul>
+        <p class="panel__note">A keresési adatbázisba való felvétel díjmentes, és semmire nem kötelezi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== PROVÍZIA ===================== -->
+<section class="sec sec--band" id="provizia" aria-labelledby="h-provizia">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">06</span> Jutalék és árak</p>
+        <h2 id="h-provizia">Mennyibe kerül az irodán keresztüli eladás</h2>
+      </div>
+      <p class="lede">A jutalék az adásvételi szerződés aláírásakor esedékes, nem előre. Ha az ingatlan nem kel el, semmit nem fizet. A feltüntetett összegek véglegesek, az iroda alanyi adómentes.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Jutalékmértékek az együttműködés típusa szerint</caption>
+        <thead>
+          <tr>
+            <th scope="col">Az együttműködés típusa</th>
+            <th scope="col">Jutalék</th>
+            <th scope="col">Legkisebb összeg</th>
+            <th scope="col">A szerződés időtartama</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Eladás kizárólagos megbízással</td><td class="price">2,4 %</td><td class="price">760 000 Ft</td><td>6 hónap</td></tr>
+          <tr><td>Eladás kizárólagosság nélkül</td><td class="price">3,2 %</td><td class="price">960 000 Ft</td><td>3 hónap</td></tr>
+          <tr><td>Telek eladása</td><td class="price">3,0 %</td><td class="price">600 000 Ft</td><td>6 hónap</td></tr>
+          <tr><td>Üzlethelyiség</td><td class="price">2,8 %</td><td class="price">880 000 Ft</td><td>6 hónap</td></tr>
+          <tr><td>Lakás vagy ház bérbeadása</td><td class="price">1 havi bérleti díj</td><td class="price">180 000 Ft</td><td>3 hónap</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pricecards">
+      <div class="pricecard">
+        <span class="pricecard__amount">48 000 Ft</span>
+        <h3>Ingatlan értékbecslése</h3>
+        <p>Írásos ársáv öt, a környéken megvalósult eladás összehasonlításával, öt munkanapon belül.</p>
+        <p class="small muted">Ha utána az irodán keresztül ad el, az összeget levonjuk a jutalékból.</p>
+      </div>
+      <div class="pricecard">
+        <span class="pricecard__amount">116 000 Ft</span>
+        <h3>Adásvételi szerződés és bejegyzés</h3>
+        <p>Adásvételi szerződés, bejegyzési kérelem és átadás-átvételi jegyzőkönyv elkészítése olyan eladáshoz, amelyet Ön maga intézett.</p>
+        <p class="small muted">A földhivatali eljárási díj és a letéti díj nélkül.</p>
+      </div>
+      <div class="pricecard">
+        <span class="pricecard__amount">196 000 Ft</span>
+        <h3>Szolgáltatás vevőknek</h3>
+        <p>A kiválasztott ingatlan ellenőrzése, részvétel a megtekintésen, a szerződés ellenőrzése és kíséret egészen a tulajdonjog bejegyzéséig.</p>
+        <p class="small muted">Olyan vásárláshoz, amely nem a mi kínálatunkból való, például magánszemélytől.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINANCOVANIE ===================== -->
+<section class="sec" id="financovanie" aria-labelledby="h-fin">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">07</span> A vásárlás finanszírozása</p>
+        <h2 id="h-fin">Hitel és a jóváhagyás ütemezése</h2>
+      </div>
+      <p class="lede">A tájékoztató törlesztőt a fenti kalkulátorral számolhatja ki. Itt az olvasható, mit kér a bank, meddig tartanak az egyes lépések, és miben segítünk Önnek.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Mit kér a bank a vevőtől</h3>
+        <ul class="ticks">
+          <li>Személyazonosító igazolvány és jövedelemigazolás</li>
+          <li>Vállalkozónál az utolsó adóévre vonatkozó adóbevallás</li>
+          <li>Bankszámlakivonatok általában az elmúlt három hónapról</li>
+          <li>A fedezetül felajánlott ingatlan tulajdoni lapja és értékbecslése</li>
+          <li>Foglalási vagy adásvételi szerződés a megadott árral</li>
+          <li>Legalább 20 % önerő a vételárból, magasabb hitelaránynál szigorúbb bírálat</li>
+        </ul>
+        <p class="panel__note">Az iratokat együtt gyűjtjük össze Önnel, hogy a bank ne küldje vissza hiánypótlásra a kérelmet.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Ütemezés a kérelemtől a folyósításig</h3>
+        <div class="tablewrap tablewrap--bare">
+          <table>
+            <tbody>
+              <tr><td>Előzetes bírálat a bankban</td><td class="price">1 &ndash; 3 nap</td></tr>
+              <tr><td>Az ingatlan értékbecslése</td><td class="price">3 &ndash; 7 nap</td></tr>
+              <tr><td>A hitel jóváhagyása</td><td class="price">5 &ndash; 14 nap</td></tr>
+              <tr><td>A hitelszerződés aláírása</td><td class="price">1 nap</td></tr>
+              <tr><td>A jelzálogjog bejegyzése a földhivatalban</td><td class="price">30 napon belül</td></tr>
+              <tr><td>Folyósítás és a vételár felszabadítása</td><td class="price">2 &ndash; 5 nap</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="panel__note">Hitelből történő vásárlásnál a foglalási időt 45 napra hosszabbítjuk, hogy a teljes folyamat beleférjen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== PRENÁJOM ===================== -->
+<section class="sec sec--band" id="prenajom" aria-labelledby="h-prenajom">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">08</span> Bérbeadás</p>
+        <h2 id="h-prenajom">Bérbeadás és ingatlankezelés</h2>
+      </div>
+      <p class="lede">A bérbeadást egyszeri közvetítésként is elvállaljuk, és a kezelést is átvesszük a bérlet teljes idejére. A közvetítési jutalékot a bérbeadó fizeti, a bérlő semmit nem fizet.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Bérbeadás közvetítése</h3>
+        <ul class="ticks">
+          <li>Jutalék egy havi bérleti díj, legalább 180 000 Ft</li>
+          <li>Az érdeklődő ellenőrzése: személyazonosító igazolvány, munkahely, referenciák</li>
+          <li>Bérleti szerződés inflációs záradékkal és felmondási okokkal</li>
+          <li>Átadás-átvételi jegyzőkönyv a mérőórák állásával és fényképekkel</li>
+          <li>A kéthavi bérleti díjnak megfelelő kaució nyilvántartása</li>
+          <li>A bérlő bejelentése a társasház közös képviselőjénél</li>
+        </ul>
+        <p class="panel__note">Ha a bérlő három hónapon belül elköltözik, újat keresünk további jutalék nélkül.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Kezelés a bérlet ideje alatt</h3>
+        <ul class="ticks">
+          <li>Havi díj a bérleti díj 8 %-a, legalább havi 14 000 Ft</li>
+          <li>A befizetések követése és felszólítás késedelem esetén</li>
+          <li>Hibák elhárítása bevált mesteremberekkel</li>
+          <li>A lakás ellenőrzése évente kétszer, írásos feljegyzéssel</li>
+          <li>Éves közműelszámolás és az előlegek módosítása</li>
+          <li>Képviselet a társasházi közgyűlésen, megállapodás szerint</li>
+        </ul>
+        <p class="panel__note">A kezelési szerződést két hónapos határidővel, szankció nélkül mondhatja fel.</p>
+      </div>
+    </div>
+
+    <div class="tablewrap" style="margin-top:clamp(22px,2.6vw,34px)">
+      <table>
+        <caption>Tájékoztató bérleti díjak a kínálatunkban, a rezsi külön fizetendő</caption>
+        <thead>
+          <tr>
+            <th scope="col">Az ingatlan típusa</th>
+            <th scope="col">Havi bérleti díj</th>
+            <th scope="col">Kaució</th>
+            <th scope="col">Legrövidebb bérleti idő</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1 szobás lakás</td><td class="price">152 000 &ndash; 180 000 Ft</td><td class="price">2 havi díj</td><td>12 hónap</td></tr>
+          <tr><td>2 szobás lakás</td><td class="price">192 000 &ndash; 236 000 Ft</td><td class="price">2 havi díj</td><td>12 hónap</td></tr>
+          <tr><td>3 szobás lakás</td><td class="price">248 000 &ndash; 312 000 Ft</td><td class="price">2 havi díj</td><td>12 hónap</td></tr>
+          <tr><td>Családi ház</td><td class="price">360 000 &ndash; 520 000 Ft</td><td class="price">2 havi díj</td><td>24 hónap</td></tr>
+          <tr><td>Üzlethelyiség</td><td class="price">3600 &ndash; 5600 Ft / m²</td><td class="price">3 havi díj</td><td>36 hónap</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DOKUMENTY ===================== -->
+<section class="sec" id="dokumenty" aria-labelledby="h-doku">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">09</span> Iratok</p>
+        <h2 id="h-doku">Iratok, amelyeket Ön helyett intézünk</h2>
+      </div>
+      <p class="lede">Mi van benne a jutalékban, mit rendelhet felárért, és mire van szükségünk Öntől. Az iratok árát előre közöljük, útközben semmi nem kerül hozzá.</p>
+    </div>
+
+    <div class="infogrid">
+      <div class="infocard">
+        <h3>A jutalék árában</h3>
+        <ul>
+          <li>Hiteles tulajdoni lap jogi eljáráshoz</li>
+          <li>Térképmásolat a földhivataltól</li>
+          <li>Energetikai tanúsítvány</li>
+          <li>Alaprajz a helyiségek méreteivel</li>
+          <li>Adásvételi és foglalási szerződés</li>
+          <li>Bejegyzési kérelem a földhivatalhoz</li>
+          <li>Átadás-átvételi jegyzőkönyv a mérőórák állásával</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <h3>Felárért beszerezzük</h3>
+        <ul>
+          <li>Értékbecslés, 88 000 Ft-tól</li>
+          <li>Változási vázrajz, 136 000 Ft-tól</li>
+          <li>Aláírás-hitelesítés közjegyzőnél, 2000 Ft aláírásonként</li>
+          <li>Ügyvédi letét a vételárra, 72 000 Ft-tól</li>
+          <li>A közös képviselő igazolása a tartozásmentességről, 10 000 Ft</li>
+          <li>Soron kívüli földhivatali bejegyzés, 16 600 Ft</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <h3>Öntől kérjük</h3>
+        <ul>
+          <li>Minden tulajdonos személyazonosító igazolványa</li>
+          <li>A szerzés jogcíme, tehát adásvételi szerződés, hagyaték vagy ajándékozás</li>
+          <li>Háznál a használatbavételi engedély</li>
+          <li>Az utolsó közműelszámolás</li>
+          <li>Bankszámlaszám a vételár felszabadításához</li>
+          <li>A házastárs hozzájárulása közös vagyon esetén</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== HODINY A DOPRAVA ===================== -->
+<section class="sec sec--band" id="hodiny" aria-labelledby="h-hodiny">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">10</span> Iroda</p>
+        <h2 id="h-hodiny">Nyitvatartás és megközelítés</h2>
+      </div>
+      <p class="lede">Az iroda a földszinten van, lépcső nélkül. Az ingatlanok megtekintését nyitvatartási időn kívül is tartjuk, telefonos egyeztetés után hétvégén is.</p>
+    </div>
+
+    <div class="route">
+      <div class="route__col">
+        <!-- FOTO: vchod do kancelarie zo Studnicnej ulice, cely vyklad a cislo 9, sirokouhly zaber 16:9 -->
+        <figure class="obraz obraz--a obraz--sirka">
+          <span class="obraz__label">Iroda</span>
+          <span class="obraz__sub">földszint</span>
+          <span class="obraz__name">Forrás utca 9., Folyópart városrész</span>
+        </figure>
+
+        <div class="panel">
+          <h3>Nyitvatartás</h3>
+          <table class="hours">
+            <tbody>
+              <tr><th scope="row">Hétfő</th><td>9:00 &ndash; 17:00</td></tr>
+              <tr><th scope="row">Kedd</th><td>9:00 &ndash; 17:00</td></tr>
+              <tr><th scope="row">Szerda</th><td>9:00 &ndash; 17:00</td></tr>
+              <tr><th scope="row">Csütörtök</th><td>9:00 &ndash; 17:00</td></tr>
+              <tr><th scope="row">Péntek</th><td>9:00 &ndash; 17:00</td></tr>
+              <tr><th scope="row">Szombat</th><td>9:00 &ndash; 12:00, előzetes egyeztetéssel</td></tr>
+              <tr><th scope="row">Vasárnap</th><td class="off">zárva</td></tr>
+            </tbody>
+          </table>
+          <p class="panel__note">A megtekintéseket 17:00 után és szombaton is tartjuk, az időpontot telefonon egyeztetheti. Szombati irodai időpontot legkésőbb pénteken 16:00-ig kell kérni.</p>
+        </div>
+      </div>
+
+      <div class="route__col">
+        <!-- FOTO: letecka snimka alebo mapa okolia kancelarie s vyznacenym vchodom a parkoviskom, pomer 16:10 -->
+        <figure class="obraz obraz--d mapa" aria-label="Az iroda környékének térképe: Forrás utca, Folyó utca és a parkoló az épület mögött">
+          <span class="mapa__ulica mapa__ulica--h1" aria-hidden="true"></span>
+          <span class="mapa__ulica mapa__ulica--h2" aria-hidden="true"></span>
+          <span class="mapa__ulica mapa__ulica--v1" aria-hidden="true"></span>
+          <span class="mapa__ulica mapa__ulica--v2" aria-hidden="true"></span>
+          <span class="mapa__blok mapa__blok--a" aria-hidden="true"></span>
+          <span class="mapa__blok mapa__blok--c" aria-hidden="true"></span>
+          <span class="mapa__blok mapa__blok--d" aria-hidden="true"></span>
+          <span class="mapa__bod">Forrás utca 9.</span>
+          <span class="mapa__txt mapa__txt--a">Forrás utca</span>
+          <span class="mapa__txt mapa__txt--b">Folyó utca</span>
+          <span class="mapa__txt mapa__txt--c">megálló</span>
+          <span class="mapa__txt mapa__txt--d">parkoló</span>
+        </figure>
+
+        <div class="panel">
+          <h3>Megközelítés és parkolás</h3>
+          <ul class="route__list">
+            <li><span>Kőmező lakótelep buszmegálló</span><b>200 m</b></li>
+            <li><span>Kavicsvári vasútállomás</span><b>1,4 km</b></li>
+            <li><span>Parkolás közvetlenül az épület előtt</span><b>6 hely</b></li>
+            <li><span>Az első óra a parkolóban</span><b>díjmentes</b></li>
+            <li><span>Fizetős parkolás a környéken</span><b>óránként 320 Ft</b></li>
+            <li><span>Bejárat lépcső nélkül</span><b>igen</b></li>
+            <li><span>Kerékpártároló</span><b>a bejáratnál</b></li>
+          </ul>
+          <p class="panel__note">Ha autóval érkezik, hívjon minket, és fenntartjuk az épület előtti helyet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PLATBY ===================== -->
+<section class="sec" id="platby" aria-labelledby="h-platby">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">11</span> Fizetés</p>
+        <h2 id="h-platby">Fizetési módok és díjak</h2>
+      </div>
+      <p class="lede">A vételár soha nem megy át az iroda számláján. Ügyvédi letétbe vagy a vevő bankjában zárolt számlára kerül, ahonnan csak a tulajdonjog bejegyzése után szabadul fel.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <h3>Hogyan történik a fizetés</h3>
+        <ul class="ticks">
+          <li>A vételár ügyvédi letéten vagy zárolt számlán keresztül</li>
+          <li>A foglaló átutalással a letéti számlára</li>
+          <li>A jutalék átutalással az adásvételi szerződés aláírása után, 7 napos határidővel</li>
+          <li>Az önálló szolgáltatások átutalással vagy bankkártyával az irodában</li>
+          <li>Készpénzt 200 000 Ft-ig fogadunk el, mindig bizonylattal</li>
+        </ul>
+        <p class="panel__note">Minden fizetésről bizonylatot kap. Számlát cégre is kiállítunk.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Díjak, amelyeket nem nekünk fizet</h3>
+        <div class="tablewrap tablewrap--bare">
+          <table>
+            <tbody>
+              <tr><td>Bejegyzési kérelem papíron</td><td class="price">6600 Ft</td></tr>
+              <tr><td>Bejegyzési kérelem elektronikusan</td><td class="price">6600 Ft</td></tr>
+              <tr><td>Soron kívüli bejegyzés 15 napon belül</td><td class="price">16 600 Ft</td></tr>
+              <tr><td>Ügyvédi letét a vételárra</td><td class="price">72 000 Ft-tól</td></tr>
+              <tr><td>Aláírás-hitelesítés</td><td class="price">2000 Ft aláírásonként</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="panel__note">A földhivatali és a közjegyzői díjakat általában a vevő fizeti, ha a felek másként nem állapodnak meg.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PODMIENKY A STORNO ===================== -->
+<section class="sec sec--dark on-dark" id="podmienky" aria-labelledby="h-podm">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">12</span> Szerződési feltételek</p>
+        <h2 id="h-podm">Az együttműködés feltételei, garanciák és lemondás</h2>
+      </div>
+      <p class="lede">A szerződéstervezetet kinyomtatva, legalább egy nappal az aláírás előtt megkapja, az aláírás pedig a következő találkozón történik. A szerződések nem hosszabbodnak meg automatikusan, az időtartam leteltével megszűnnek.</p>
+    </div>
+
+    <div class="duo" style="margin-bottom:clamp(30px,3.4vw,48px)">
+      <div class="panel panel--dark">
+        <h3>Mit vállalunk írásban</h3>
+        <ul class="ticks">
+          <li>A szerződésben rögzített jutalék már nem változik, akkor sem, ha az eladás tovább tart</li>
+          <li>Az ingatlan árát az Ön írásos hozzájárulása nélkül nem csökkentjük</li>
+          <li>Kéthetente írásos összesítőt kap a megtekintésekről és az érdeklődésről</li>
+          <li>Ha a hirdetést az aláírástól számított 3 munkanapon belül nem adjuk fel, a jutalék 0,4 százalékponttal csökken</li>
+          <li>Ha a megjelenéstől számított 60 napon belül egyetlen megtekintés sem történik, a szerződést azonnal, a 30 napos felmondási idő nélkül felmondhatja</li>
+          <li>Az általunk készített szerződés hibájáért teljes mértékben felelünk</li>
+        </ul>
+      </div>
+      <div class="panel panel--dark">
+        <h3>Mit nem vállalunk</h3>
+        <ul class="ticks">
+          <li>Azt az árat, amelyen az ingatlan végül elkel, nem tudjuk garantálni</li>
+          <li>A vevő hiteldöntésére nincs befolyásunk</li>
+          <li>A földhivatali ügyintézés határidejét jogszabály állapítja meg, ez 30 nap, soron kívül 15 nap</li>
+          <li>Az eladás időpontját nem ígérjük meg, tehermentes lakásnál általában 9–14 hét</li>
+          <li>Adótanácsadást nem nyújtunk, az eladás utáni adót adótanácsadó rendezi</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="infogrid">
+      <div class="panel panel--dark">
+        <h3>Megbízási szerződés</h3>
+        <ul class="ticks">
+          <li>Kizárólagosság 6 hónapra, automatikus hosszabbítás nélkül</li>
+          <li>30 napos felmondási idő, indoklás nélkül is</li>
+          <li>Az ingatlan árát Ön határozza meg, mi javaslatot adunk</li>
+          <li>Az ár bármikor módosítható, írásos kiegészítéssel</li>
+          <li>A jutalék csak az adásvételi szerződés aláírásakor esedékes</li>
+        </ul>
+      </div>
+      <div class="panel panel--dark">
+        <h3>Foglalási szerződés</h3>
+        <ul class="ticks">
+          <li>1 200 000 Ft foglaló a letéti számlára</li>
+          <li>A foglalás 30 napig érvényes, hitel esetén 45 napig</li>
+          <li>A foglaló beleszámít a vételárba</li>
+          <li>Ha a bank nem hagyja jóvá a hitelt, a foglalót teljes egészében visszafizetjük</li>
+          <li>Ha a vevő indok nélkül eláll, a foglaló az eladóé marad</li>
+        </ul>
+      </div>
+      <div class="panel panel--dark">
+        <h3>Megtekintés és találkozó lemondása</h3>
+        <ul class="ticks">
+          <li>A megtekintés lemondása díjmentes, elég telefonálni</li>
+          <li>Kérjük, legalább 2 órával előre jelezze</li>
+          <li>A pótidőpontot telefonon egyeztetjük, általában 48 órán belül</li>
+          <li>A megtekintést szombatra is át tudjuk tenni</li>
+          <li>A külön megrendelt értékbecslést 24 órán belül díjmentesen mondhatja le</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================== ČASTÉ OTÁZKY ===================== -->
+<section class="sec" id="faq" aria-labelledby="h-faq">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">13</span> Gyakori kérdések</p>
+        <h2 id="h-faq">Válaszok a gyakori kérdésekre</h2>
+      </div>
+      <p class="lede">Ha a kérdések között nem találja a sajátját, írjon nekünk a kapcsolat résznél található űrlapon, vagy hívjon minket. Munkanapokon 24 órán belül válaszolunk.</p>
+    </div>
+
+    <div class="faq">
+      <details open>
+        <summary>Mikor és mennyi jutalékot fizetek?</summary>
+        <div class="answer">
+          <p>A jutalékot az eladó fizeti, és csak az adásvételi szerződés aláírásakor esedékes, 7 napos határidővel. Kizárólagos együttműködésnél ez a vételár 2,4 %-a, legalább 760 000 Ft. Ha az ingatlan nem kel el, semmit nem fizet: sem a hirdetésért, sem a megtekintésekért, sem az energetikai tanúsítványért.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Alá kell írnom a kizárólagos szerződést?</summary>
+        <div class="answer">
+          <p>Nem kell. Kizárólagosság nélkül a jutalék 3,2 %, a szerződés pedig 3 hónapra szól. A kizárólagosság lehetővé teszi, hogy többet fordítsunk az előkészítésre és a hirdetésre, ezért alacsonyabb mellette a mérték. Felmondani 30 napos határidővel, indoklás nélkül is lehet.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Hogyan határozzák meg az ingatlanom árát?</summary>
+        <div class="answer">
+          <p>Az elmúlt 12 hónapban ugyanabban a városrészben megvalósult, összehasonlítható eladásokból indulunk ki, nem a hirdetési árakból. Az árba beszámítjuk az állapotot, az emeletet, a tájolást, az energetikai besorolást és az üzemeltetési költségeket. Írásos ársávot és javasolt árat kap, a végső döntés az Öné.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Meddig tart az eladás?</summary>
+        <div class="answer">
+          <p>Tehermentes, teljes iratanyaggal rendelkező lakásnál a szerződés aláírásától a földhivatali bejegyzésig általában 9–14 hét. Maga a bejegyzés 30 napos határidejű, soron kívül 15 napos. A hagyatéki eljárás, a haszonélvezeti jog vagy a fel nem tüntetett épület meghosszabbítja a folyamatot, erre mindjárt az elején felhívjuk a figyelmét.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Jelen kell lennem a megtekintéseken?</summary>
+        <div class="answer">
+          <p>Nem. A megtekintéseket a kulcs átvétele után mi tartjuk, esti órákban és hétvégén is. Előtte mindig ellenőrizzük, hogy az érdeklődőnek valóban van-e finanszírozása. Minden megtekintés után rövid beszámolót kap arról, mi tetszett az érdeklődőnek, és mi zavarta.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Mi van, ha a vevőnek nem hagyja jóvá a bank a hitelt?</summary>
+        <div class="answer">
+          <p>Ezt a foglalási szerződés előre rendezi. Hitelből történő vásárlásnál a foglalási idő 45 nap, és ha a bank igazolhatóan nem hagyja jóvá a hitelt, a foglalót teljes egészében visszakapja a vevő. Az ingatlan visszakerül a kínálatba, és a további érdeklődőkkel folytatjuk.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Hitellel terhelt lakást adok el. Lehetséges ez?</summary>
+        <div class="answer">
+          <p>Igen, ez gyakori. A banktól bekérjük a fennálló hitel összegét, és a vételárat megosztjuk: egy része közvetlenül a hitel kiegyenlítésére és a jelzálog törlésére megy, a többi Önt illeti. Az egész folyamatot az adásvételi szerződés és a letét rendezi, hogy egyik fél se viseljen kockázatot.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Bérbeadást is közvetítenek?</summary>
+        <div class="answer">
+          <p>Igen. A jutalék egy havi bérleti díj, legalább 180 000 Ft, és a bérbeadó fizeti. Az árban benne van az érdeklődő ellenőrzése, a bérleti szerződés, az átadás-átvételi jegyzőkönyv a mérőórák állásával és a kaució nyilvántartása. A bérlemény kezelését a bérlet teljes idejére is átvállaljuk.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Hagyatékból származó ingatlant adunk el, mire van szükség?</summary>
+        <div class="answer">
+          <p>Jogerős hagyatékátadó végzésre és az új tulajdonos bejegyzésére a tulajdoni lapon. Amíg a bejegyzés nincs kész, az ingatlant előkészíthetjük és hirdethetjük, de az adásvételi szerződést csak utána írjuk alá. Ha több örökös van, a szerződést mindannyian aláírják, vagy egyikük teszi ezt hitelesített aláírású meghatalmazás alapján.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KARIÉRA ===================== -->
+<section class="sec sec--band" id="kariera" aria-labelledby="h-kariera">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">14</span> Karrier</p>
+        <h2 id="h-kariera">Nyitott pozíciók az irodában</h2>
+      </div>
+      <p class="lede">A betanítást az irodavezető tartja. Az első három hónapban egy olyan tanácsadóval dolgozik párban, aki saját megbízásokat visz, és a jutalékból már az első lezárt üzlet után részesedik.</p>
+    </div>
+
+    <div class="jobs">
+      <div class="job">
+        <h3>Ingatlantanácsadó</h3>
+        <p class="tagline">Teljes munkaidő &middot; kezdés megegyezés szerint</p>
+        <dl>
+          <div><dt>Fix rész</dt><dd>havi 360 000 Ft</dd></div>
+          <div><dt>Részesedés a jutalékból</dt><dd>25 &ndash; 40 %</dd></div>
+          <div><dt>Betanítás</dt><dd>3 hónap párban</dd></div>
+          <div><dt>Elvárások</dt><dd>B kategóriás jogosítvány, érettségi</dd></div>
+          <div><dt>Rendelkezésre áll</dt><dd>laptop, telefon, hirdetési keret</dd></div>
+        </dl>
+      </div>
+      <div class="job">
+        <h3>Irodai asszisztens</h3>
+        <p class="tagline">Napi 6 órás részmunkaidő &middot; kezdés megegyezés szerint</p>
+        <dl>
+          <div><dt>Bér</dt><dd>havi 328 000 Ft</dd></div>
+          <div><dt>A munka tartalma</dt><dd>szerződések előkészítése, kapcsolattartás a földhivatallal</dd></div>
+          <div><dt>Munkaidő</dt><dd>9:00 &ndash; 15:00</dd></div>
+          <div><dt>Elvárások</dt><dd>pontosság, adminisztrációs gyakorlat</dd></div>
+          <div><dt>Előny</dt><dd>ingatlanos vagy jogi területen szerzett tapasztalat</dd></div>
+        </dl>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:24px;max-width:62ch">Az önéletrajzot adja le személyesen az irodában, a Forrás utca 9. alatt, vagy egyeztessen időpontot telefonon, esetleg a kapcsolat résznél található űrlapon. Öt munkanapon belül jelentkezünk, elutasítás esetén is.</p>
+  </div>
+</section>
+<!-- ===================== KONTAKT ===================== -->
+<section class="sec sec--dark on-dark" id="kontakt" aria-labelledby="h-kontakt">
+  <div class="wrap">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">15</span> Kapcsolat</p>
+        <h2 id="h-kontakt">Írja meg, miben segíthetünk</h2>
+      </div>
+      <p class="lede">Az első konzultáció, a helyszíni bejárás és a szóbeli árbecslés díjmentes és kötelezettség nélküli. Az űrlapon küldött üzenetre 24 órán belül válaszolunk, szombaton és vasárnap a legközelebbi munkanapon.</p>
+    </div>
+
+    <div class="contact">
+      <div>
+        <dl class="contact__list">
+          <div>
+            <dt>Az iroda címe</dt>
+            <dd>Forrás utca 9., Folyópart városrész, Kavicsvár</dd>
+          </div>
+          <div>
+            <dt>Telefon</dt>
+            <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></dd>
+          </div>
+          <div>
+            <dt>Nyitvatartás</dt>
+            <dd>H &ndash; P 9:00 &ndash; 17:00, Szo 9:00 &ndash; 12:00 előzetes egyeztetéssel</dd>
+          </div>
+          <div>
+            <dt>Megtekintések</dt>
+            <dd>este és szombaton is, egyeztetés szerint</dd>
+          </div>
+        </dl>
+        <p class="small" style="color:var(--on-dark-muted);max-width:52ch">A vállalkozás adatai ezen az oldalon mintaadatok. A weboldal szerzőjének elérhetőségét a lenti részben találja.</p>
+      </div>
+
+      <form class="form" id="contactForm" novalidate>
+        <div class="form__grid">
+          <div class="field">
+            <label for="fName">Név <span class="req">*</span></label>
+            <input type="text" id="fName" name="meno" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="fPhone">Telefon <span class="req">*</span></label>
+            <input type="tel" id="fPhone" name="telefon" autocomplete="tel" required>
+          </div>
+          <div class="field">
+            <label for="fTopic">Mire van szüksége</label>
+            <select id="fTopic" name="tema">
+              <option>Ingatlant szeretnék eladni</option>
+              <option>Ingatlant szeretnék venni</option>
+              <option>Ingatlant szeretnék bérbe adni</option>
+              <option>Értékbecslés érdekel</option>
+              <option>Egy konkrét hirdetés megtekintése</option>
+              <option>Egyéb kérdés</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fAgent">Tanácsadó</label>
+            <select id="fAgent" name="makler">
+              <option>Mindegy, osszák be városrész szerint</option>
+              <option>Halmi Zsuzsanna, 21-es mellék</option>
+              <option>Zatkó Márk, 22-es mellék</option>
+              <option>Kraj Ivett, 23-as mellék</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="fMsg">Üzenet <span class="req">*</span></label>
+            <textarea id="fMsg" name="sprava" placeholder="Például: 3 szobás lakás, 74 m², 5. emelet, tavaszig el kellene adnom." required></textarea>
+          </div>
+          <div class="field full">
+            <label class="check" for="fGdpr">
+              <input type="checkbox" id="fGdpr" name="suhlas" required>
+              <span>Hozzájárulok a megadott adatok kezeléséhez az üzenet megválaszolása céljából. <span class="req">*</span></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form__foot">
+          <button class="btn btn--primary" type="submit">Üzenet küldése</button>
+          <span class="small muted">A <span class="req">*</span> jelölt mezők kitöltése kötelező.</span>
+        </div>
+
+        <p class="formstatus" id="formStatus" role="status" aria-live="polite"></p>
+        <p class="form__note">Az elküldött üzenet az iroda postafiókjába érkezik, és munkanapokon 24 órán belül választ kap. Ha még ma szeretne megtekintési időpontot, hívjon minket.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== SEKCIA AUTORA ===================== -->
+<section class="author" id="autor" aria-labelledby="h-autor">
+  <div class="wrap author__in">
+    <div>
+      <p class="author__tag">Erről a mintáról</p>
+      <h2 id="h-autor">Tetszik ez a weboldal?</h2>
+      <p>Ilyen weboldalt Alex Poliak készít Önnek. A Kavics Ingatlaniroda kitalált vállalkozás, az árak, a cím és a kínálat csak azt mutatja be, hogyan nézhet ki az Ön irodájának weboldala.</p>
+      <p>Az Ön weboldalát ugyanígy építem fel: szűrhető kínálat, kalkulátor, kapcsolatfelvételi űrlap, gyors betöltés és helyes megjelenés mobilon. <span class="author__price">Egyedi weboldalak 250 €-tól, első terv 3 napon belül. A konzultáció ingyenes és kötelezettség nélküli.</span></p>
+      <div class="author__actions">
+        <a class="btn btn--dark" href="https://apoliak.online/hu/">apoliak.online megnyitása</a>
+        <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      </div>
+    </div>
+
+    <div class="author__box">
+      <dl>
+        <div>
+          <dt>A terv és a kód szerzője</dt>
+          <dd>Alex Poliak</dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Támogatás</dt>
+          <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></dd>
+        </div>
+        <div>
+          <dt>Weboldal</dt>
+          <dd><a href="https://apoliak.online/hu/">apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Ár és határidő</dt>
+          <dd>250 €-tól, első terv 3 napon belül</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PÄTIČKA ===================== -->
+<footer class="site-foot">
+
+  <div class="wrap">
+    <div class="foot__cta">
+      <p>Eladna, vagy konkrét ingatlant keres? Írjon nekünk, munkanapokon 24 órán belül válaszolunk.</p>
+      <span class="foot__cta-act">
+        <a class="btn btn--soft" href="#kontakt">Kötelezettség nélküli érdeklődés</a> <span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span>
+      </span>
+    </div>
+
+    <div class="foot__grid">
+      <div>
+        <h4>Kavics Ingatlan</h4>
+        <p class="foot__addr">Forrás utca 9.<br>Folyópart városrész<br>Kavicsvár<br><span class="ukazka-kontakt" title="Mintaweboldal — a telefonszám szándékosan hiányzik, hogy senki ne hívjon idegen számot.">ide kerül az Ön telefonszáma</span></p>
+      </div>
+      <div>
+        <h4>Kínálat</h4>
+        <ul>
+          <li><a href="#ponuka">Lakások</a></li>
+          <li><a href="#ponuka">Családi házak</a></li>
+          <li><a href="#ponuka">Telkek</a></li>
+          <li><a href="#ponuka">Üzlethelyiségek</a></li>
+          <li><a href="#lokality">Városrészek</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Ügyfeleknek</h4>
+        <ul>
+          <li><a href="#postup">Az eladás menete</a></li>
+          <li><a href="#provizia">Jutalék</a></li>
+          <li><a href="#nastroj">Hitelkalkulátor</a></li>
+          <li><a href="#financovanie">A vásárlás finanszírozása</a></li>
+          <li><a href="#prenajom">Bérbeadás és kezelés</a></li>
+          <li><a href="#podmienky">Az együttműködés feltételei</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Iroda</h4>
+        <ul>
+          <li><a href="#maklieri">Tanácsadók</a></li>
+          <li><a href="#hodiny">Nyitvatartás</a></li>
+          <li><a href="#platby">Fizetési módok</a></li>
+          <li><a href="#dokumenty">Dokumentumok</a></li>
+          <li><a href="#kariera">Karrier</a></li>
+          <li><a href="#kontakt">Kapcsolat</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>Mintaweboldal, kitalált vállalkozás és mintaadatok. H &ndash; P 9:00 &ndash; 17:00, Forrás utca 9., Kavicsvár.</span>
+      <span>Terv és kód: <a href="https://apoliak.online/hu/">Alex Poliak &ndash; apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  root.classList.remove("no-js");
+
+  /* ---------- výška pásika ukážky ---------- */
+  var bar = document.getElementById("demobar");
+  function setBar(){
+    if(!bar) return;
+    var h = Math.round(bar.getBoundingClientRect().height);
+    if(!h || h > 160) return;
+    root.style.setProperty("--bar-h", h + "px");
+  }
+  setBar();
+  window.addEventListener("resize", setBar);
+  window.addEventListener("load", setBar);
+  if(window.ResizeObserver){ new window.ResizeObserver(setBar).observe(bar); }
+
+  /* ---------- mobilné menu ---------- */
+  var toggle = document.getElementById("navToggle");
+  var nav = document.getElementById("siteNav");
+  if(toggle && nav){
+    toggle.addEventListener("click", function(){
+      var open = nav.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.addEventListener("click", function(e){
+      if(e.target.closest("a")){
+        nav.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded","false");
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && nav.classList.contains("is-open")){
+        nav.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded","false");
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---------- formátovanie súm ---------- */
+  function eur(n){
+    return Math.round(n).toLocaleString("hu-HU").replace(/[  \s]/g," ") + " Ft";
+  }
+
+  /* ---------- prepínanie nástrojov v paneli ---------- */
+  var tabs = [
+    {tab: document.getElementById("tabFilter"), panel: document.getElementById("panelFilter")},
+    {tab: document.getElementById("tabHypo"), panel: document.getElementById("panelHypo")}
+  ];
+  function showTab(idx, focus){
+    for(var i = 0; i < tabs.length; i++){
+      var t = tabs[i];
+      if(!t.tab || !t.panel) continue;
+      var on = (i === idx);
+      t.tab.classList.toggle("is-active", on);
+      t.tab.setAttribute("aria-selected", on ? "true" : "false");
+      t.tab.setAttribute("tabindex", on ? "0" : "-1");
+      t.panel.classList.toggle("is-off", !on);
+      if(on && focus) t.tab.focus();
+    }
+  }
+  (function bindTabs(){
+    var box = document.getElementById("toolTabs");
+    if(!box || !tabs[0].tab || !tabs[1].tab) return;
+    tabs.forEach(function(t, i){
+      t.tab.addEventListener("click", function(){ showTab(i, false); });
+    });
+    box.addEventListener("keydown", function(e){
+      var cur = e.target.id === "tabHypo" ? 1 : 0;
+      if(e.key === "ArrowRight" || e.key === "ArrowDown"){ e.preventDefault(); showTab((cur + 1) % 2, true); }
+      if(e.key === "ArrowLeft" || e.key === "ArrowUp"){ e.preventDefault(); showTab((cur + 1) % 2, true); }
+      if(e.key === "Home"){ e.preventDefault(); showTab(0, true); }
+      if(e.key === "End"){ e.preventDefault(); showTab(1, true); }
+    });
+  })();
+
+  /* ---------- filter ponuky ---------- */
+  var form = document.getElementById("filterForm");
+  var grid = document.getElementById("cardGrid");
+  if(form && grid){
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".card"));
+    var fType = document.getElementById("fType");
+    var fLoc = document.getElementById("fLoc");
+    var fRooms = document.getElementById("fRooms");
+    var fMin = document.getElementById("fMin");
+    var fMax = document.getElementById("fMax");
+    var rCount = document.getElementById("rCount");
+    var rRange = document.getElementById("rRange");
+    var rAvg = document.getElementById("rAvg");
+    var emptyEl = document.getElementById("emptyState");
+    var total = cards.length;
+
+    function apply(){
+      var t = fType.value, l = fLoc.value, r = fRooms.value;
+      var min = parseInt(fMin.value, 10);
+      var max = parseInt(fMax.value, 10);
+      if(max < min){ max = 99999999; }
+      var shown = 0, sum = 0, lo = null, hi = null;
+
+      cards.forEach(function(card){
+        var ct = card.getAttribute("data-type");
+        var cl = card.getAttribute("data-loc");
+        var cr = parseInt(card.getAttribute("data-rooms"), 10);
+        var cp = parseInt(card.getAttribute("data-price"), 10);
+        var ok = true;
+        if(t !== "all" && ct !== t) ok = false;
+        if(l !== "all" && cl !== l) ok = false;
+        if(r !== "all"){
+          var want = parseInt(r, 10);
+          if(want === 4){ if(!(cr >= 4)) ok = false; }
+          else if(cr !== want){ ok = false; }
+        }
+        if(cp < min || cp > max) ok = false;
+        card.classList.toggle("is-hidden", !ok);
+        if(ok){
+          shown++;
+          sum += cp;
+          if(lo === null || cp < lo) lo = cp;
+          if(hi === null || cp > hi) hi = cp;
+        }
+      });
+
+      rCount.textContent = shown + " / " + total;
+      if(shown === 0){
+        rRange.textContent = "—";
+        rAvg.textContent = "—";
+      } else if(shown === 1){
+        rRange.textContent = eur(lo);
+        rAvg.textContent = eur(sum);
+      } else {
+        rRange.textContent = eur(lo).replace(" Ft","") + " – " + eur(hi);
+        rAvg.textContent = eur(sum / shown);
+      }
+      emptyEl.classList.toggle("is-on", shown === 0);
+    }
+
+    form.addEventListener("change", apply);
+    form.addEventListener("submit", function(e){ e.preventDefault(); apply(); });
+    form.addEventListener("reset", function(){ window.setTimeout(apply, 0); });
+    apply();
+  }
+  /* ---------- hypotekárna kalkulačka ---------- */
+  var cPrice = document.getElementById("cPrice");
+  var cOwn = document.getElementById("cOwn");
+  var cYears = document.getElementById("cYears");
+  var cRate = document.getElementById("cRate");
+
+  if(cPrice && cOwn && cYears && cRate){
+    var cPriceOut = document.getElementById("cPriceOut");
+    var cOwnOut = document.getElementById("cOwnOut");
+    var cYearsOut = document.getElementById("cYearsOut");
+    var cRateOut = document.getElementById("cRateOut");
+    var oPay = document.getElementById("oPay");
+    var oLoan = document.getElementById("oLoan");
+    var oOwn = document.getElementById("oOwn");
+    var oLtv = document.getElementById("oLtv");
+    var oInterest = document.getElementById("oInterest");
+    var oTotal = document.getElementById("oTotal");
+    var oFlag = document.getElementById("oFlag");
+
+    function rokySlovo(n){
+      if(n === 1) return "rok";
+      if(n >= 2 && n <= 4) return "roky";
+      return "rokov";
+    }
+
+    function calc(){
+      var price = parseFloat(cPrice.value);
+      var ownPct = parseFloat(cOwn.value);
+      var years = parseInt(cYears.value, 10);
+      var rate = parseFloat(cRate.value);
+
+      var own = price * ownPct / 100;
+      var loan = price - own;
+      var n = years * 12;
+      var i = rate / 100 / 12;
+      var pay = i > 0 ? loan * i / (1 - Math.pow(1 + i, -n)) : loan / n;
+      var totalPaid = pay * n;
+      var interest = totalPaid - loan;
+      var ltv = price > 0 ? (loan / price) * 100 : 0;
+
+      cPriceOut.textContent = eur(price);
+      cOwnOut.textContent = ownPct + " % · " + eur(own);
+      cYearsOut.textContent = years + " " + rokySlovo(years);
+      cRateOut.textContent = rate.toFixed(1).replace(".", ",") + " % évente";
+
+      oPay.innerHTML = eur(pay) + "<small> / hónap</small>";
+      oLoan.textContent = eur(loan);
+      oOwn.textContent = eur(own);
+      oLtv.textContent = Math.round(ltv) + " %";
+      oInterest.textContent = eur(interest);
+      oTotal.textContent = eur(totalPaid);
+
+      if(loan <= 0){
+        oFlag.textContent = "Teljes egészében saját forrásból történő fizetésnél nincs szükség hitelre, csak a földhivatali és a letéti díjak merülnek fel.";
+      } else if(ltv > 90){
+        oFlag.textContent = "90 % feletti hitel-érték aránynál a bankok általában nem adnak hitelt. Számoljon legalább 20 % önerővel.";
+      } else if(ltv > 80){
+        oFlag.textContent = "80 % feletti hitel-érték aránynál a kamat általában magasabb, és a bank szigorúbban bírálja el a jövedelmet.";
+      } else {
+        oFlag.textContent = "80 % alatti hitel-érték aránynál a bankok általában nem kérnek további hitelt kiegészítésként.";
+      }
+    }
+
+    [cPrice, cOwn, cYears, cRate].forEach(function(el){
+      el.addEventListener("input", calc);
+      el.addEventListener("change", calc);
+    });
+    var calcForm = document.getElementById("calcForm");
+    if(calcForm){ calcForm.addEventListener("submit", function(e){ e.preventDefault(); }); }
+    calc();
+
+    /* prepojenie kariet ponuky s kalkulačkou v paneli */
+    Array.prototype.forEach.call(document.querySelectorAll(".js-calc"), function(btn){
+      btn.addEventListener("click", function(){
+        var p = parseInt(btn.getAttribute("data-price"), 10);
+        var min = parseInt(cPrice.min, 10);
+        var max = parseInt(cPrice.max, 10);
+        var step = parseInt(cPrice.step, 10);
+        var v = Math.round(p / step) * step;
+        if(v < min) v = min;
+        if(v > max) v = max;
+        cPrice.value = v;
+        calc();
+        showTab(1, false);
+        var target = document.getElementById("nastroj");
+        if(target){
+          var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          target.scrollIntoView({behavior: reduce ? "auto" : "smooth", block: "start"});
+        }
+      });
+    });
+  }
+
+  /* ---------- kontaktný formulár ---------- */
+  var cf = document.getElementById("contactForm");
+  var status = document.getElementById("formStatus");
+  if(cf && status){
+    cf.addEventListener("submit", function(e){
+      e.preventDefault();
+      var name = document.getElementById("fName");
+      var phone = document.getElementById("fPhone");
+      var msg = document.getElementById("fMsg");
+      var gdpr = document.getElementById("fGdpr");
+      var missing = [];
+      if(!name.value.trim()) missing.push("nevét");
+      if(!phone.value.trim()) missing.push("telefonszámát");
+      if(!msg.value.trim()) missing.push("üzenetét");
+      if(!gdpr.checked) missing.push("hozzájárulását az adatkezeléshez");
+
+      status.classList.add("is-on");
+      if(missing.length){
+        status.innerHTML = "<b>Kérjük, pótolja: " + missing.join(", ") + ".</b> Az űrlap mintaűrlap, a kötelező mezőket azonban ugyanúgy ellenőrzi, mint egy éles weboldal.";
+        var first = missing[0] === "nevét" ? name : (missing[0] === "telefonszámát" ? phone : (missing[0] === "üzenetét" ? msg : gdpr));
+        first.focus();
+        return;
+      }
+      status.innerHTML = "<b>Ez egy mintaweboldal, az üzenet nem került elküldésre.</b> Egy éles weboldalon megérkezett volna az iroda postafiókjába, és 24 órán belül választ kapott volna. Szeretne ilyen weboldalt az irodájának? A szerző elérhetősége a lenti részben található.";
+      cf.reset();
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
