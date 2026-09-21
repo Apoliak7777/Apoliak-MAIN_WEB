@@ -1,0 +1,2233 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/penzion/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/penzion/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/penzion/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/penzion/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/penzion/">
+<!-- /jazyky:hreflang -->
+<title>Pensjonat Grań — pensjonat górski, pokoje i ceny</title>
+<meta name="description" content="Przykładowa strona pensjonatu górskiego: 8 pokoi i 2 apartamenty, cennik według sezonu od 296 zł za noc, śniadanie w cenie, formularz rezerwacji z przeliczeniem ceny pobytu, warunki i anulowanie. Projekt i kod Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#1E2A25">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Pensjonat Grań (przykładowa strona)">
+<meta property="og:title" content="Pensjonat Grań — pensjonat górski, pokoje i ceny">
+<meta property="og:description" content="8 pokoi i 2 apartamenty, cennik według sezonu od 296 zł za noc, śniadanie w cenie, rezerwacja z przeliczeniem ceny pobytu. Przykładowa strona od Alexa Poliaka, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='4'%20fill='%231E2A25'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Georgia,serif'%20font-size='36'%20fill='%23D8C4A4'%20text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<style>
+/* ================= TOKENY ================= */
+:root{
+  /* dve farby: bridlicová zelenosivá + teplý bronz. zvyšok sú neutrály */
+  --slate:#1E2A25;
+  --slate-2:#26312B;
+  --slate-3:#37453D;
+  --bronze:#6E5533;
+  --sand:#D8C4A4;
+
+  --bg:#FAF8F5;
+  --bg-2:#F2EFEA;
+  --card:#FFFFFF;
+  --ink:#1B221F;
+  --muted:#565E58;
+  --line:#DCD6CC;
+  --line-2:#EAE5DC;
+  --line-dark:#3A473F;
+  --on-dark:#EDEAE4;
+  --on-dark-muted:#A7B0A8;
+  --plate-sub:#CFD6CE;
+
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --wrap:1220px;
+  --r:3px;
+  /* výšku pásika ukážky dopočíta skript, toto je záložná hodnota */
+  --bar:44px;
+}
+
+/* ================= ZÁKLAD ================= */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+  padding-top:var(--bar);
+}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.14;letter-spacing:-.012em;margin:0 0 .5em}
+h1{font-size:clamp(2.45rem,8vw,7rem);line-height:1.03;letter-spacing:-.022em}
+h2{font-size:clamp(1.72rem,3.2vw,2.6rem);line-height:1.12}
+h3{font-size:clamp(1.1rem,1.6vw,1.32rem);line-height:1.28}
+p{margin:0 0 1em}
+a{color:var(--bronze)}
+ul{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.on-dark :focus-visible,.demobar :focus-visible{outline-color:var(--sand)}
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--slate);color:var(--on-dark);padding:12px 18px;z-index:200}
+.skip:focus{left:8px;top:8px}
+section{scroll-margin-top:calc(var(--bar) + 72px)}
+.sec{padding:clamp(58px,7.4vw,116px) 0}
+.scroll-x{overflow-x:auto}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--dark{background:var(--slate);color:var(--on-dark);border-block:1px solid var(--line-dark)}
+.sec--dark h2,.sec--dark h3{color:#F5F3EE}
+.sec--dark .lede{color:var(--on-dark-muted)}
+.sec--dark .eyebrow{color:var(--sand)}
+.sec--dark .sec__head{border-bottom-color:var(--line-dark)}
+.sec--dark .note{color:var(--on-dark-muted)}
+
+/* pomocná definícia filtra zrna, nič nevykresľuje */
+.defs{position:absolute;width:0;height:0;overflow:hidden}
+
+.eyebrow{
+  font-size:.71rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin:0 0 16px;
+}
+.eyebrow__no{
+  font-family:var(--serif);font-size:.86rem;letter-spacing:.06em;
+  color:var(--bronze);margin-right:14px;font-variant-numeric:tabular-nums;
+}
+.sec--dark .eyebrow__no{color:var(--sand)}
+.lede{font-size:1.05rem;color:var(--muted);max-width:60ch}
+.sec__head{
+  display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  gap:20px clamp(24px,5vw,72px);align-items:end;
+  padding-bottom:28px;border-bottom:1px solid var(--line);
+  margin-bottom:clamp(32px,4.4vw,56px);
+}
+.sec__head h2{margin-bottom:0;max-width:22ch}
+.sec__head .lede{margin-bottom:0}
+
+/* ================= TLAČIDLÁ ================= */
+/* Farby textu tlačidiel sú zámerne písané zdvojenou triedou (.btn.btn--x).
+   Bežné odkazové pravidlá typu .foot a alebo .author a majú špecificitu (0,1,1)
+   a jednoduchému .btn--x by prebili farbu textu — tlačidlo by splynulo s pozadím. */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font:inherit;font-size:.95rem;font-weight:600;letter-spacing:.01em;
+  padding:14px 26px;border-radius:var(--r);border:1px solid transparent;
+  cursor:pointer;text-decoration:none;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--bronze);color:#FFFFFF;border-color:var(--bronze)}
+.btn.btn--primary:hover{background:#54401F;border-color:#54401F;color:#FFFFFF}
+.btn.btn--line{border-color:var(--line);color:var(--ink);background:transparent}
+.btn.btn--line:hover{border-color:var(--bronze);color:var(--bronze)}
+.on-dark .btn.btn--line,.sec--dark .btn.btn--line{border-color:var(--line-dark);color:var(--on-dark)}
+.on-dark .btn.btn--line:hover,.sec--dark .btn.btn--line:hover{border-color:var(--sand);color:var(--sand)}
+.btn.btn--sand{background:var(--sand);color:var(--slate);border-color:var(--sand)}
+.btn.btn--sand:hover{background:#E6D5B9;color:var(--slate);border-color:#E6D5B9}
+.on-dark .btn.btn--sand,.author__actions .btn.btn--sand{background:var(--sand);color:var(--slate);border-color:var(--sand)}
+.on-dark .btn.btn--sand:hover,.author__actions .btn.btn--sand:hover{background:#E6D5B9;color:var(--slate)}
+/* .btn--sm mení iba veľkosť, farbu textu zámerne nikdy nenastavuje */
+.btn--sm{padding:11px 18px;font-size:.9rem}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ================= PÁSIK UKÁŽKY ================= */
+.demobar{
+  position:fixed;left:0;right:0;top:0;z-index:140;
+  background:#151D19;color:var(--on-dark);
+  border-bottom:1px solid var(--line-dark);
+  font-size:.88rem;
+}
+.demobar__in{
+  width:min(100% - 32px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;gap:6px 22px;flex-wrap:wrap;
+  padding:11px 0;text-align:center;
+}
+.demobar__tag{
+  font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--sand);font-weight:600;white-space:nowrap;
+  border:1px solid rgba(216,196,164,.42);padding:3px 10px;border-radius:2px;
+}
+.demobar__sep{color:var(--on-dark-muted)}
+.demobar a{color:var(--sand);font-weight:600;text-underline-offset:3px}
+.demobar a:hover{color:#EBDDC4}
+.demobar__tel{white-space:nowrap}
+
+/* ================= HLAVIČKA ================= */
+.site-head{
+  position:sticky;top:var(--bar);z-index:90;
+  background:rgba(250,248,245,.96);border-bottom:1px solid var(--line);
+}
+.head__in{display:flex;align-items:center;gap:14px;padding:13px 0}
+.brand{display:flex;align-items:baseline;gap:11px;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand strong{font-family:var(--serif);font-size:1.2rem;font-weight:400;letter-spacing:.01em}
+.brand span{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.nav-list{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.nav-list a{
+  text-decoration:none;color:var(--ink);font-size:.93rem;
+  padding:8px 11px;display:block;border-radius:var(--r);
+}
+.nav-list a:hover{color:var(--bronze)}
+/* Telefón a rezervačné tlačidlo sú mimo zoznamu odkazov, aby ich na mobile
+   neskrylo rozbaľovacie menu a aby pravidlo .nav-list a neprebilo farbu tlačidla. */
+.head__act{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0}
+.head__tel{
+  display:inline-flex;align-items:center;justify-content:center;
+  text-decoration:none;color:var(--ink);font-weight:600;font-size:.93rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+  padding:12px 16px;border:1px solid var(--line);border-radius:var(--r);
+}
+.head__tel:hover{border-color:var(--bronze);color:var(--bronze)}
+.head__cta{padding:12px 20px;font-size:.93rem;white-space:nowrap}
+.nav-toggle{display:none}
+
+/* ================= DIZAJNOVÉ KOMPOZÍCIE ================= */
+/* vrstvený gradient + geometria + vlásková mriežka + zrno, nesie vlastnú informáciu */
+/* .obraz je miesto pripravené na fotografiu, do jej doplnenia nesie kompozíciu a údaj */
+.obraz{margin:0}
+.obraz--wide{
+  aspect-ratio:21/9;border:1px solid var(--line-dark);border-radius:var(--r);
+  margin-bottom:clamp(28px,4vw,44px);
+}
+.plate{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:flex;align-items:flex-end;
+  background-color:var(--slate-2);
+  color:var(--on-dark);
+  background-image:
+    radial-gradient(120% 92% at 86% 4%,rgba(216,196,164,.17) 0%,rgba(216,196,164,0) 62%),
+    linear-gradient(158deg,var(--slate-3) 0%,var(--slate-2) 46%,#172019 100%);
+}
+.plate__art{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.plate::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:74%;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(20,27,23,0) 0%,rgba(20,27,23,.62) 100%);
+}
+.plate--grid .plate__art{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(243,241,236,.055) 0 1px,rgba(243,241,236,0) 1px 26px),
+    repeating-linear-gradient(90deg,rgba(243,241,236,.055) 0 1px,rgba(243,241,236,0) 1px 26px);
+}
+.plate__txt{position:relative;z-index:2;padding:clamp(18px,2.4vw,26px);width:100%}
+.plate__kicker{
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--sand);font-weight:600;margin:0 0 10px;
+}
+.plate__big{font-family:var(--serif);font-size:clamp(2rem,4.2vw,2.9rem);line-height:1;color:#F5F3EE;margin:0}
+.plate__big--sm{font-size:clamp(1.5rem,2.6vw,2rem)}
+.plate__sub{margin:10px 0 0;font-size:.9rem;line-height:1.5;color:var(--plate-sub);max-width:30ch}
+
+.plate--light{
+  background-color:var(--bg-2);color:var(--ink);
+  background-image:
+    radial-gradient(110% 84% at 10% 4%,rgba(216,196,164,.6) 0%,rgba(216,196,164,0) 62%),
+    linear-gradient(150deg,#F7F3EB 0%,#EDE6DA 52%,#E4DCCE 100%);
+}
+.plate--light::after{background:linear-gradient(180deg,rgba(246,242,234,0) 0%,rgba(246,242,234,.5) 100%)}
+.plate--light .plate__kicker{color:var(--bronze)}
+.plate--light .plate__big{color:var(--ink)}
+.plate--light .plate__sub{color:var(--muted)}
+.plate--light.plate--grid .plate__art{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(110,85,51,.09) 0 1px,rgba(110,85,51,0) 1px 26px),
+    repeating-linear-gradient(90deg,rgba(110,85,51,.09) 0 1px,rgba(110,85,51,0) 1px 26px);
+}
+
+/* ================= ÚVOD ================= */
+/* celošírkový typografický úvod: obrí nadpis, pod ním úzky stĺpec textu vľavo,
+   dole pás s veľkými číslami. Plocha je vyplnená vrstvenými gradientmi a vláskovou mriežkou. */
+.hero{position:relative;background:var(--bg);border-bottom:1px solid var(--line);overflow:hidden}
+.hero__bg{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(96% 78% at 88% -14%,rgba(216,196,164,.55) 0%,rgba(216,196,164,0) 60%),
+    radial-gradient(70% 62% at 2% 106%,rgba(110,85,51,.13) 0%,rgba(110,85,51,0) 62%),
+    repeating-linear-gradient(90deg,rgba(30,42,37,.055) 0 1px,rgba(30,42,37,0) 1px 112px),
+    linear-gradient(180deg,#FCFAF7 0%,#F3EFE7 100%);
+}
+.hero__in{position:relative;z-index:2;padding:clamp(48px,8vw,112px) 0 clamp(40px,5.4vw,72px)}
+.hero .eyebrow{margin-bottom:clamp(20px,3vw,34px)}
+.hero h1{
+  color:var(--ink);
+  margin:0 0 clamp(26px,4vw,48px);
+  max-width:100%;
+}
+.hero__col{max-width:44ch;border-top:1px solid var(--line);padding-top:24px}
+.hero__lede{color:var(--muted);font-size:clamp(1.02rem,1.25vw,1.14rem);margin:0 0 26px}
+.hero__actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero__tag{
+  margin:22px 0 0;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+}
+.hero__tag a{font-weight:600;text-underline-offset:3px;font-variant-numeric:tabular-nums}
+
+.facts{background:var(--slate);color:var(--on-dark);border-top:1px solid var(--line-dark);position:relative;z-index:2}
+.facts dl{
+  margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;background:var(--line-dark);
+}
+.facts dl>div{background:var(--slate);padding:clamp(24px,3.2vw,38px) clamp(18px,2.2vw,30px)}
+.facts dt{font-size:.67rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-muted);margin-bottom:14px}
+.facts dd{
+  margin:0;font-family:var(--serif);font-size:clamp(1.95rem,3.4vw,3.1rem);line-height:1.02;
+  color:var(--sand);font-variant-numeric:tabular-nums;letter-spacing:-.015em;
+}
+.facts dd small{
+  display:block;font-family:var(--sans);font-size:.86rem;line-height:1.45;
+  color:var(--on-dark-muted);margin-top:12px;letter-spacing:0;
+}
+
+/* ================= PÁS S PODMIENKAMI PLATBY ================= */
+.pledge{background:var(--bg-2);border-bottom:1px solid var(--line)}
+.pledge__in{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px clamp(24px,4vw,64px);padding:clamp(24px,3vw,34px) 0;
+}
+.pledge b{
+  display:block;font-family:var(--serif);font-weight:400;
+  font-size:clamp(1.06rem,1.5vw,1.2rem);color:var(--ink);margin-bottom:5px;
+}
+.pledge p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ================= IZBY ================= */
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.room{background:var(--card);display:flex;flex-direction:column}
+.room .plate{aspect-ratio:4/3}
+.room__body{padding:26px 24px 24px;display:flex;flex-direction:column;flex:1}
+.room__body h3{margin-bottom:.4em}
+.room__body>p{color:var(--muted);font-size:.96rem}
+.room__spec{margin:4px 0 20px;border-top:1px solid var(--line-2)}
+.room__spec div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:.9rem}
+.room__spec dt{color:var(--muted)}
+.room__spec dd{margin:0;text-align:right}
+.room__foot{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.price{font-family:var(--serif);font-size:1.8rem;line-height:1;color:var(--ink)}
+.price small{display:block;font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+.note{color:var(--muted);font-size:.92rem;margin:24px 0 0;max-width:78ch}
+
+/* ================= CENNÍK ================= */
+.tbl{width:100%;border-collapse:collapse;font-size:.95rem;min-width:660px}
+.tbl th,.tbl td{padding:15px 18px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left;white-space:normal;padding-left:0}
+.tbl th:last-child,.tbl td:last-child{padding-right:0}
+.tbl thead th{
+  font:inherit;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:12px;
+}
+.tbl thead th{white-space:normal}
+.tbl thead th span{display:block;text-transform:none;letter-spacing:0;font-size:.78rem;font-weight:400;margin-top:5px;color:var(--muted)}
+.tbl tbody th{font-weight:600;font-size:.98rem}
+.tbl tbody th small{display:block;font-weight:400;font-size:.86rem;color:var(--muted);margin-top:3px}
+.tbl td{font-family:var(--serif);font-size:1.16rem;font-variant-numeric:tabular-nums}
+.tbl tbody tr:last-child th,.tbl tbody tr:last-child td{border-bottom:0}
+.tbl tfoot td,.tbl tfoot th{border-bottom:0;border-top:1px solid var(--line);font-family:var(--sans);font-size:.9rem;color:var(--muted)}
+.tbl caption{text-align:left;color:var(--muted);font-size:.88rem;padding-bottom:14px;max-width:80ch}
+/* tabuľka hodín má rovnakú kostru, len sa číta zľava a nie sú v nej sumy */
+.tbl--hours{min-width:560px}
+.tbl--hours th,.tbl--hours td{text-align:left}
+.tbl--hours td{font-family:var(--sans);font-size:.95rem}
+.tbl--hours tbody th{white-space:nowrap}
+.hours{margin-top:clamp(34px,4.4vw,56px)}
+.hours h3{margin-bottom:.6em}
+
+/* ================= POSTUP ================= */
+.steps{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.steps>div{background:var(--bg);padding:28px 26px 34px}
+.steps .n{
+  font-family:var(--serif);font-size:2.6rem;line-height:1;color:var(--bronze);
+  margin:0 0 18px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.steps h3{margin:0 0 .45em;font-size:1.06rem}
+.steps p{margin:0;color:var(--muted);font-size:.94rem}
+.steps p+p{margin-top:.7em}
+
+/* ================= VYBAVENIE ================= */
+.list-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,72px)}
+.list-2 div{padding:20px 0;border-top:1px solid var(--line)}
+.list-2 dt{font-family:var(--serif);font-size:1.1rem;margin-bottom:5px}
+.list-2 dd{margin:0;color:var(--muted);font-size:.95rem}
+
+/* ================= PRIESTOR ================= */
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.plates .plate{aspect-ratio:3/4;border:1px solid var(--line-dark);border-radius:var(--r)}
+
+/* ================= STRAVA ================= */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,72px);align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,3vw,32px)}
+.rows{margin:0}
+.rows div{display:flex;justify-content:space-between;gap:20px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line-2)}
+.rows div:last-child{border-bottom:0}
+.rows dt{font-weight:600;font-size:.97rem}
+.rows dd{margin:0;color:var(--muted);font-size:.92rem;text-align:right}
+
+/* ================= OKOLIE ================= */
+.trips{border-top:1px solid var(--line)}
+.trips>div{
+  display:grid;grid-template-columns:110px minmax(0,1fr) 190px;
+  gap:6px 28px;align-items:baseline;
+  padding:20px 0;border-bottom:1px solid var(--line);
+}
+.trips .dist{font-family:var(--serif);font-size:1.24rem;margin:0}
+.trips h3{margin:0 0 3px;font-size:1.08rem}
+.trips p{margin:0;color:var(--muted);font-size:.95rem}
+.trips .season{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;margin:0}
+
+/* ================= SEZÓNA ================= */
+.season-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line-dark);border:1px solid var(--line-dark)}
+.season-grid article{background:var(--slate);padding:26px 22px;display:flex;flex-direction:column}
+.season-grid .rim{font-family:var(--serif);font-size:2.1rem;line-height:1;color:var(--sand);margin:0 0 14px;letter-spacing:.02em}
+.season-grid h3{margin:0 0 .35em;font-size:1.16rem}
+.season-grid>article>p{color:var(--plate-sub);font-size:.94rem}
+.season-grid ul{margin-top:auto;border-top:1px solid var(--line-dark)}
+.season-grid li{padding:10px 0;border-bottom:1px solid var(--line-dark);font-size:.88rem;color:var(--on-dark-muted)}
+.season-grid li:last-child{border-bottom:0}
+
+/* ================= RECENZIE ================= */
+.quotes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.quotes figure{
+  margin:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:26px 24px 22px;display:flex;flex-direction:column;
+}
+.quotes blockquote{margin:0 0 20px}
+.quotes blockquote p{
+  margin:0;font-family:var(--serif);font-size:1.05rem;line-height:1.46;color:var(--ink);
+}
+.quotes figcaption{
+  margin-top:auto;padding-top:14px;border-top:1px solid var(--line-2);
+  font-size:.85rem;color:var(--muted);letter-spacing:.02em;
+}
+
+/* ================= REZERVÁCIA ================= */
+.book{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:start}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:7px}
+.field input,.field select,.field textarea{
+  width:100%;font:inherit;font-size:1rem;color:var(--ink);
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;
+}
+.field textarea{min-height:96px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#6B726C}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--bronze);outline:2px solid var(--bronze);outline-offset:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.rule{border:0;border-top:1px solid var(--line);margin:24px 0}
+.hint{font-size:.88rem;color:var(--muted);margin:12px 0 0}
+
+.sum{background:var(--slate);color:var(--on-dark);border-radius:var(--r);padding:clamp(22px,3vw,30px);position:sticky;top:calc(var(--bar) + 84px)}
+.sum h3{color:#F5F3EE;margin-bottom:.25em}
+.sum .eyebrow{color:var(--on-dark-muted)}
+.sum__room{font-size:.95rem;color:var(--on-dark-muted);margin-bottom:22px}
+.nights{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
+.nights button{
+  font:inherit;font-size:.88rem;cursor:pointer;
+  background:transparent;color:var(--on-dark);
+  border:1px solid var(--line-dark);border-radius:var(--r);padding:8px 14px;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.nights button:hover{border-color:var(--sand);color:var(--sand)}
+.nights button[aria-pressed="true"]{background:var(--sand);color:var(--slate);border-color:var(--sand);font-weight:600}
+.sum__row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line-dark);font-size:.95rem}
+.sum__row span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}@media (max-width:420px){.sum__row span:last-child{white-space:normal;text-align:right}}
+.sum__total{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-top:20px}
+.sum__total .lbl{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);font-weight:600}
+.sum__total .val{font-family:var(--serif);font-size:2.1rem;line-height:1;color:var(--sand);font-variant-numeric:tabular-nums}
+.sum__note{font-size:.85rem;color:var(--on-dark-muted);margin:14px 0 0}
+.sum__warn{margin:14px 0 0;font-size:.9rem;color:#F0C9A2;border-left:2px solid #F0C9A2;padding-left:12px}
+
+.done{margin-top:20px;border:1px solid var(--line);border-left:3px solid var(--bronze);background:var(--bg-2);padding:18px 20px;border-radius:var(--r)}
+.done strong{display:block;font-family:var(--serif);font-weight:400;font-size:1.14rem;margin-bottom:6px}
+.done p{margin:0;font-size:.94rem;color:var(--muted)}
+[hidden]{display:none !important}
+
+/* ================= POUKAZY A SKUPINY ================= */
+.gift{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.gift .plate{min-height:320px;border:1px solid var(--line);border-radius:var(--r)}
+.cards-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:clamp(28px,4vw,44px)}
+.cards-3 .panel{display:flex;flex-direction:column}
+.cards-3 h3{margin-bottom:.45em}
+.cards-3 p{color:var(--muted);font-size:.95rem}
+.cards-3 ul{margin-top:auto;border-top:1px solid var(--line-2)}
+.cards-3 li{padding:10px 0;border-bottom:1px solid var(--line-2);font-size:.9rem;color:var(--muted)}
+.cards-3 li:last-child{border-bottom:0}
+.cards-3 li b{color:var(--ink);font-weight:600}
+
+/* ================= ČASTÉ OTÁZKY ================= */
+.faq{border-top:1px solid var(--line);max-width:96ch}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:18px 2px;
+  font-family:var(--serif);font-size:clamp(1.04rem,1.5vw,1.18rem);
+  display:flex;justify-content:space-between;gap:24px;align-items:baseline;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--sans);font-size:1.3rem;line-height:1;color:var(--bronze);font-weight:600}
+.faq details[open] summary::after{content:"–"}
+.faq summary:hover{color:var(--bronze)}
+.faq .ans{padding:0 2px 20px}
+.faq .ans p{margin:0 0 .8em;color:var(--muted);font-size:.97rem;max-width:68ch}
+.faq .ans p:last-child{margin-bottom:0}
+
+/* ================= KARIÉRA ================= */
+.jobs{border-top:1px solid var(--line)}
+.jobs>div{
+  display:grid;grid-template-columns:minmax(0,1fr) 260px 200px;
+  gap:8px 32px;align-items:baseline;
+  padding:22px 0;border-bottom:1px solid var(--line);
+}
+.jobs h3{margin:0 0 4px;font-size:1.12rem}
+.jobs p{margin:0;color:var(--muted);font-size:.95rem}
+.jobs .when{margin:0;font-size:.92rem;color:var(--muted)}
+.jobs .form{margin:0;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right}
+
+/* ================= KONTAKT ================= */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,72px);align-items:start}
+.contact dl{margin:0;border-top:1px solid var(--line)}
+.contact dl>div{padding:16px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 20px}
+.contact dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-top:3px}
+.contact dd{margin:0;overflow-wrap:anywhere}
+.route{margin-top:8px}
+.route li{padding:16px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px}
+.route li:first-child{border-top:1px solid var(--line)}
+.route .n{font-family:var(--serif);color:var(--muted)}
+.route b{display:block;font-weight:600;font-size:.98rem;margin-bottom:3px}
+.route p{margin:0;color:var(--muted);font-size:.95rem}
+.contact .plate{aspect-ratio:16/10;border-radius:var(--r);margin-bottom:28px}
+.contact__tel{font-family:var(--serif);font-size:1.5rem;font-variant-numeric:tabular-nums;text-underline-offset:4px;display:inline-block}
+.contact__form{margin-top:clamp(34px,4vw,52px)}
+.contact__form h3{margin-bottom:.5em}
+.contact__form .hint{max-width:64ch}
+.mini{margin:0;border-top:1px solid rgba(216,196,164,.30)}
+.mini>div{display:flex;justify-content:space-between;gap:18px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(216,196,164,.18)}
+.mini>div:last-child{border-bottom:0}
+.mini dt{color:var(--plate-sub);font-size:.92rem}
+.mini dd{margin:0;font-family:var(--serif);font-size:1.04rem;color:var(--sand);white-space:nowrap}
+
+/* ================= AUTOR UKÁŽKY ================= */
+.author{
+  background:var(--slate-2);color:var(--on-dark);border-top:1px solid var(--sand);
+  padding:clamp(54px,6.6vw,92px) 0;scroll-margin-top:calc(var(--bar) + 72px);
+  background-image:
+    radial-gradient(70% 60% at 88% 0%,rgba(216,196,164,.10) 0%,rgba(216,196,164,0) 62%),
+    repeating-linear-gradient(90deg,rgba(243,241,236,.03) 0 1px,rgba(243,241,236,0) 1px 112px);
+}
+.author__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start}
+.author .eyebrow{color:var(--sand)}
+.author h2{color:#F5F3EE;max-width:16ch}
+.author p{color:#D5DAD4;max-width:52ch}
+.author__price{border-left:2px solid var(--sand);padding-left:16px;margin-bottom:14px;color:#F0EDE6}
+.author__price b{font-weight:600}
+.author__free{
+  display:inline-block;margin:0;padding:9px 16px;border:1px solid var(--sand);
+  color:var(--sand);font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;border-radius:2px;
+}
+.author__card{background:var(--slate);border:1px solid var(--line-dark);border-radius:var(--r);padding:clamp(22px,3vw,30px)}
+.author__name{font-family:var(--serif);font-size:1.4rem;color:#F5F3EE;margin:0}
+.author__role{margin:4px 0 0;color:var(--on-dark-muted);font-size:.9rem}
+.author__list{margin:22px 0 0;border-top:1px solid var(--line-dark)}
+.author__list>div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 16px;padding:13px 0;border-bottom:1px solid var(--line-dark)}
+.author__list dt{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);font-weight:600;padding-top:4px}
+.author__list dd{margin:0;overflow-wrap:anywhere;color:var(--on-dark)}
+.author a{color:var(--sand);font-weight:600}
+.author__actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+
+/* ================= PÄTA ================= */
+.foot{background:var(--slate);color:var(--on-dark-muted);padding:48px 0 40px;font-size:.92rem;border-top:1px solid var(--line-dark)}
+.foot__in{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:32px}
+.foot a{color:var(--on-dark)}
+.foot strong{font-family:var(--serif);font-weight:400;font-size:1.06rem;color:var(--on-dark);display:block;margin-bottom:6px}
+.foot h3{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-muted);font-family:var(--sans);font-weight:600;margin:0 0 12px}
+.foot__links li,.foot__social li{padding:5px 0}
+.foot p{margin:0;max-width:40ch}
+.foot .foot__cta{margin-top:20px}
+.foot__bar{margin-top:34px;padding-top:18px;border-top:1px solid var(--line-dark);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.88rem}
+
+/* ================= ODHAĽOVANIE ================= */
+html.js .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+html.js .reveal.in{opacity:1;transform:none}
+
+/* ================= RESPONZÍVNE ================= */
+@media (max-width:1040px){
+  .rooms{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .book{grid-template-columns:1fr}
+  .sum{position:static}
+  .contact{grid-template-columns:1fr}
+  .plates{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .season-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quotes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards-3{grid-template-columns:1fr}
+  .gift{grid-template-columns:1fr}
+  .jobs>div{grid-template-columns:minmax(0,1fr) 220px}
+  .jobs .form{grid-column:2;text-align:left;margin-top:4px}
+  .foot__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .sec__head{grid-template-columns:1fr;align-items:start}
+  .sec__head h2{max-width:none}
+  .split{grid-template-columns:1fr}
+  .author__in{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .trips>div{grid-template-columns:88px minmax(0,1fr);gap:4px 20px}
+  .trips .season{grid-column:2;text-align:left;margin-top:6px}
+  html.js .nav-list{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--bg);border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0;padding:6px 20px 14px;
+  }
+  html.js .nav-list[data-open="false"]{display:none}
+  html.js .nav-list a{padding:13px 4px;border-bottom:1px solid var(--line-2);border-radius:0}
+  html.js .nav-list li:last-child a{border-bottom:0}
+  html.js .nav-toggle{
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:600;
+    background:transparent;border:1px solid var(--line);color:var(--ink);
+    border-radius:var(--r);padding:9px 14px;cursor:pointer;order:2;
+  }
+  html.js .nav-toggle svg{width:16px;height:16px}
+  /* telefón a rezervácia idú na druhý riadok hlavičky, na mobile nesmú zmiznúť */
+  .head__in{position:relative;flex-wrap:wrap;gap:10px 12px}
+  .head__act{order:3;flex:1 0 100%;gap:8px}
+  .head__tel{flex:1 1 auto;padding:11px 12px}
+  .head__cta{flex:2 1 auto;padding:11px 12px}
+  .pledge__in{grid-template-columns:1fr;gap:18px}
+  .quotes{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .rooms{grid-template-columns:1fr}
+  .list-2{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plates{grid-template-columns:1fr}
+  .plates .plate{aspect-ratio:16/10}
+  .season-grid{grid-template-columns:1fr}
+  .quotes{grid-template-columns:1fr}
+  .obraz--wide{aspect-ratio:4/3}
+  .steps{grid-template-columns:1fr}
+  .contact dl>div{grid-template-columns:1fr}
+  .brand span{display:none}
+  .demobar__in{gap:4px 14px;padding:9px 0;font-size:.82rem;line-height:1.5}
+  .demobar__sep{display:none}
+  .trips>div{grid-template-columns:1fr}
+  .trips .season{grid-column:1}
+  .jobs>div{grid-template-columns:1fr}
+  .jobs .form{grid-column:1}
+  .author__list>div{grid-template-columns:1fr}
+  .author__actions .btn{flex:1 1 auto}
+  .foot__in{grid-template-columns:1fr}
+}
+@media (max-width:460px){
+  .demobar__tag{display:none}
+  .facts dl{grid-template-columns:1fr}
+  .hero__actions .btn{flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html.js .reveal{opacity:1;transform:none}
+}
+@media print{
+  .demobar,.site-head,.nights{display:none}
+  body{padding-top:0}
+  .hero__bg{display:none}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*4.35);return v.toLocaleString('pl-PL');}function __f(x){return Math.round(x).toLocaleString('pl-PL');}function __p(x){return Math.round(x*4.35);}function __c(x){return x*4.35;}var __m="zł";</script>
+</head>
+<body>
+<a class="skip" href="#obsah">Przejdź do treści</a>
+
+<!-- filter zrna pre dizajnové plochy, sám o sebe nič nevykresľuje -->
+<svg class="defs" aria-hidden="true" focusable="false" width="0" height="0">
+  <defs>
+    <filter id="zrno" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ===== PÁSIK UKÁŽKY ===== -->
+<div class="demobar" id="pasik-ukazky" role="complementary" aria-label="Informacja o przykładowej stronie">
+  <div class="demobar__in">
+    <span class="demobar__tag">Przykładowa strona</span>
+    <span>Taką stronę zrobię dla Państwa. <a href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a></span>
+    <span class="demobar__sep" aria-hidden="true">·</span>
+    <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+  </div>
+</div>
+
+<!-- ===== HLAVIČKA ===== -->
+<header class="site-head">
+  <div class="wrap head__in">
+    <a class="brand" href="#uvod" aria-label="Pensjonat Grań, strona główna">
+      <strong>Pensjonat Grań</strong> <span>Pensjonat górski</span>
+    </a>
+
+    <nav aria-label="Nawigacja główna">
+      <ul class="nav-list" id="hlavne-menu" data-open="false">
+        <li><a href="#izby">Pokoje</a></li>
+        <li><a href="#cennik">Cennik</a></li>
+        <li><a href="#strava">Wyżywienie</a></li>
+        <li><a href="#okolie">Okolica</a></li>
+        <li><a href="#recenzie">Opinie</a></li>
+        <li><a href="#podmienky">Warunki</a></li>
+        <li><a href="#otazky">Pytania</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </nav>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Menu
+    </button>
+
+    <div class="head__act">
+      <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+      <a class="btn btn--primary head__cta" href="#rezervacia">Zarezerwuj pobyt</a>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===== ÚVOD ===== -->
+<section class="hero" id="uvod">
+  <div class="hero__bg" aria-hidden="true"></div>
+
+  <div class="wrap hero__in">
+    <p class="eyebrow">Pensjonat górski &middot; 940 m n.p.m. &middot; otwarte cały rok</p>
+    <h1>Pensjonat górski z ośmioma pokojami i dwoma apartamentami</h1>
+    <div class="hero__col">
+      <p class="hero__lede">Noclegi na skraju lasu nad wsią Podgrań. Cena od 296 zł za pokój i noc ze śniadaniem, sauną i parkingiem. Znakowany szlak zaczyna się przy płocie.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#rezervacia">Zarezerwuj pobyt</a>
+        <a class="btn btn--line" href="#cennik">Cennik i terminy</a>
+      </div>
+      <p class="hero__tag">Recepcja codziennie 8:00 – 20:00 &middot; <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span></p>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="wrap">
+      <dl>
+        <div><dt>Liczba miejsc</dt><dd>8 + 2<small>osiem pokoi i dwa apartamenty, razem 30 miejsc z dostawkami</small></dd></div>
+        <div><dt>Cena od</dt><dd>296 zł<small>za pokój i noc ze śniadaniem w formie bufetu</small></dd></div>
+        <div><dt>Wysokość n.p.m.</dt><dd>940 m<small>ostatnie 2 km drogi pod górę, zimą odśnieżone do 7:00</small></dd></div>
+        <div><dt>Śniadanie</dt><dd>7:30<small>bufet do 10:00, prowiant na drogę bez dopłaty</small></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ČO JE V CENE A KEDY SA PLATÍ ===== -->
+<section class="pledge" aria-label="Co jest w cenie i kiedy się płaci">
+  <div class="wrap pledge__in">
+    <div>
+      <b>Śniadanie, sauna, parking i internet w cenie</b>
+      <p>Za śniadanie w formie bufetu, saunę ani parking się nie dopłaca. Dodatkowo płaci się tylko opłatę miejscową 3 zł za osobę i dobę.</p>
+    </div>
+    <div>
+      <b>Przy pokojach nie pobieramy zaliczki</b>
+      <p>Płaci się dopiero na miejscu kartą, BLIK-iem albo gotówką. Zaliczki 30% wymagamy tylko przy grupach od pięciu pokoi.</p>
+    </div>
+    <div>
+      <b>Anulowanie do 7 dni przed przyjazdem bez opłat</b>
+      <p>Od 7 do 2 dni wcześniej 50% ceny pierwszej nocy, mniej niż 48 godzin wcześniej 100% ceny pierwszej nocy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== IZBY ===== -->
+<section class="sec" id="izby">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">01</span>Noclegi</p>
+        <h2>Pokoje i ceny</h2>
+      </div>
+      <p class="lede">Ceny są za pokój i noc ze śniadaniem i wstępem do sauny. Opłatę miejscową 3 zł za osobę i dobę płaci się osobno. Dzieci do 6 lat śpią z rodzicami bezpłatnie.</p>
+    </div>
+
+    <div class="rooms">
+      <article class="room reveal">
+        <!-- FOTO: dvojlôžková izba 03 v podkroví, ustlaná posteľ pod šikmým stropom a strešné okno -->
+        <figure class="obraz plate plate--grid">
+          <svg class="plate__art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M400 0 L400 300 L120 300 Z" fill="rgba(216,196,164,.07)"/>
+            <g fill="none" stroke="rgba(216,196,164,.20)" stroke-width="1">
+              <path d="M300 -40 L300 340"/>
+              <path d="M340 -40 L340 340"/>
+            </g>
+            <rect width="400" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+          </svg>
+          <figcaption class="plate__txt">
+            <p class="plate__kicker">Pokoje 01 – 04</p>
+            <p class="plate__big">18 m²</p>
+            <p class="plate__sub">Pokój 01 na parterze bez stopnia, pokoje 02 – 04 na poddaszu</p>
+          </figcaption>
+        </figure>
+        <div class="room__body">
+          <h3>Pokój dwuosobowy</h3>
+          <p>Łóżko małżeńskie, biurko i kabina prysznicowa. Pokoje 02 – 04 są na poddaszu ze skośnym sufitem i oknem dachowym, pokój 01 jest na parterze i ma dostęp bez barier bocznym wejściem.</p>
+          <dl class="room__spec">
+            <div><dt>Liczba miejsc</dt><dd>2 osoby</dd></div>
+            <div><dt>Powierzchnia</dt><dd>18 m²</dd></div>
+            <div><dt>Położenie</dt><dd>parter i poddasze</dd></div>
+            <div><dt>Łazienka</dt><dd>prysznic, WC</dd></div>
+            <div><dt>Wyposażenie</dt><dd>internet, telewizor, czajnik</dd></div>
+          </dl>
+          <div class="room__foot">
+            <p class="price" style="margin:0">296 zł<small>za pokój i noc</small></p>
+            <a class="btn btn--primary btn--sm" href="#rezervacia" data-room="dvojlozkova">Zarezerwuj pokój</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="room reveal">
+        <!-- FOTO: izba s balkónom na južnej strane, otvorené dvere na balkón s dvomi stoličkami -->
+        <figure class="obraz plate">
+          <svg class="plate__art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="rgba(216,196,164,.18)" stroke-width="1">
+              <circle cx="330" cy="70" r="46"/>
+              <circle cx="330" cy="70" r="84"/>
+              <circle cx="330" cy="70" r="126"/>
+            </g>
+            <g fill="none" stroke="rgba(237,234,228,.10)" stroke-width="1">
+              <path d="M-20 120 L420 120"/>
+              <path d="M-20 152 L420 152"/>
+              <path d="M-20 184 L420 184"/>
+              <path d="M-20 216 L420 216"/>
+            </g>
+            <rect width="400" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+          </svg>
+          <figcaption class="plate__txt">
+            <p class="plate__kicker">Pokoje 05 – 08</p>
+            <p class="plate__big">24 m²</p>
+            <p class="plate__sub">Strona południowa, balkon z dwoma krzesłami</p>
+          </figcaption>
+        </figure>
+        <div class="room__body">
+          <h3>Pokój z balkonem</h3>
+          <p>Pokój od strony południowej z własnym balkonem i dwoma krzesłami. Dostawka dla trzeciej osoby kosztuje 78 zł za noc.</p>
+          <dl class="room__spec">
+            <div><dt>Liczba miejsc</dt><dd>2 – 3 osoby</dd></div>
+            <div><dt>Powierzchnia</dt><dd>24 m²</dd></div>
+            <div><dt>Położenie</dt><dd>pierwsze piętro</dd></div>
+            <div><dt>Łazienka</dt><dd>wanna, WC</dd></div>
+            <div><dt>Wyposażenie</dt><dd>balkon, internet, telewizor, lodówka</dd></div>
+          </dl>
+          <div class="room__foot">
+            <p class="price" style="margin:0">365 zł<small>za pokój i noc</small></p>
+            <a class="btn btn--primary btn--sm" href="#rezervacia" data-room="balkon">Zarezerwuj pokój</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="room reveal">
+        <!-- FOTO: obývacia izba apartmánu A s pecou na drevo, priehľad do spálne a do kuchynského kúta -->
+        <figure class="obraz plate">
+          <svg class="plate__art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M0 0 L400 0 L400 110 L0 210 Z" fill="rgba(216,196,164,.06)"/>
+            <path d="M0 210 L400 110" fill="none" stroke="rgba(216,196,164,.22)" stroke-width="1"/>
+            <g fill="none" stroke="rgba(237,234,228,.12)" stroke-width="1">
+              <path d="M60 -20 L200 320"/>
+              <path d="M120 -20 L260 320"/>
+              <path d="M180 -20 L320 320"/>
+              <path d="M240 -20 L380 320"/>
+            </g>
+            <rect width="400" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+          </svg>
+          <figcaption class="plate__txt">
+            <p class="plate__kicker">Apartamenty A i B</p>
+            <p class="plate__big">46 m²</p>
+            <p class="plate__sub">Dwie sypialnie, piec na drewno, osobne wejście</p>
+          </figcaption>
+        </figure>
+        <div class="room__body">
+          <h3>Apartament</h3>
+          <p>Dwie oddzielne sypialnie, pokój dzienny z piecem na drewno i aneks kuchenny. Osobne wejście z bocznego tarasu, drewno do pieca jest w cenie.</p>
+          <dl class="room__spec">
+            <div><dt>Liczba miejsc</dt><dd>4 – 5 osób</dd></div>
+            <div><dt>Powierzchnia</dt><dd>46 m²</dd></div>
+            <div><dt>Położenie</dt><dd>parter, boczny taras</dd></div>
+            <div><dt>Łazienka</dt><dd>wanna, osobne WC</dd></div>
+            <div><dt>Wyposażenie</dt><dd>aneks kuchenny, pralka, piec na drewno</dd></div>
+          </dl>
+          <div class="room__foot">
+            <p class="price" style="margin:0">561 zł<small>za apartament i noc</small></p>
+            <a class="btn btn--primary btn--sm" href="#rezervacia" data-room="apartman">Zarezerwuj apartament</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <p class="note">Dostawka 78 zł za noc. Łóżeczko dziecięce bezpłatnie, trzeba je zgłosić przy rezerwacji. Pies 44 zł za noc po wcześniejszym uzgodnieniu. Przy pełnym obłożeniu dom ma 30 miejsc z dostawkami.</p>
+  </div>
+</section>
+
+<!-- ===== CENNÍK ===== -->
+<section class="sec sec--band" id="cennik">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">02</span>Cennik</p>
+        <h2>Cennik i terminy sezonów</h2>
+      </div>
+      <p class="lede">Ceny są za pokój i noc ze śniadaniem, sauną, parkingiem i internetem. Opłatę miejscową dolicza się na miejscu, przy pojedynczych pokojach nie pobieramy zaliczki.</p>
+    </div>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <caption>Ceny za pokój i noc w złotych. Cennik obowiązuje dla pobytów do końca następnego roku kalendarzowego.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Rodzaj noclegu</th>
+            <th scope="col">Poza sezonem<span>kwiecień – czerwiec, wrzesień – listopad</span></th>
+            <th scope="col">Sezon główny<span>lipiec – sierpień, grudzień – marzec</span></th>
+            <th scope="col">Boże Narodzenie i sylwester<span>22. 12. – 2. 1.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Pokój dwuosobowy<small>18 m², 2 osoby, poddasze</small></th>
+            <td>296</td><td>339</td><td>400</td>
+          </tr>
+          <tr>
+            <th scope="row">Pokój z balkonem<small>24 m², 2 do 3 osób, strona południowa</small></th>
+            <td>365</td><td>418</td><td>487</td>
+          </tr>
+          <tr>
+            <th scope="row">Apartament<small>46 m², 4 do 5 osób, osobne wejście</small></th>
+            <td>561</td><td>644</td><td>748</td>
+          </tr>
+          <tr>
+            <th scope="row">Cały dom dla grupy<small>osiem pokoi i dwa apartamenty naraz</small></th>
+            <td>3000</td><td>3440</td><td>4000</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">Przeliczenie w formularzu rezerwacji poniżej liczy z ceną podstawową poza sezonem. Dokładną cenę według terminu potwierdzimy w ciągu 24 godzin.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="split" style="margin-top:clamp(30px,4vw,52px)">
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Dopłaty i usługi dodatkowe</h3>
+        <dl class="rows">
+          <div><dt>Dostawka dla trzeciej osoby</dt><dd>78 zł za noc</dd></div>
+          <div><dt>Łóżeczko dziecięce</dt><dd>bez opłat</dd></div>
+          <div><dt>Pies po wcześniejszym uzgodnieniu</dt><dd>44 zł za noc</dd></div>
+          <div><dt>Kolacja, menu mięsne albo bezmięsne</dt><dd>96 zł za osobę</dd></div>
+          <div><dt>Porcja dziecięca do 12 lat</dt><dd>52 zł za osobę</dd></div>
+          <div><dt>Pranie, jeden cykl na żeton</dt><dd>13 zł</dd></div>
+          <div><dt>Opłata miejscowa</dt><dd>3 zł za osobę i dobę</dd></div>
+          <div><dt>Zgubienie klucza, wymiana wkładki</dt><dd>87 zł</dd></div>
+        </dl>
+        <p class="hint">Dzieci do 6 lat śpią z rodzicami bezpłatnie.</p>
+      </div>
+
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Najkrótszy pobyt i okno rezerwacji</h3>
+        <dl class="rows">
+          <div><dt>Poza sezonem</dt><dd>od 1 nocy</dd></div>
+          <div><dt>Sezon główny, weekend</dt><dd>od 2 nocy</dd></div>
+          <div><dt>Boże Narodzenie i ferie zimowe</dt><dd>od 3 nocy</dd></div>
+          <div><dt>Sylwester</dt><dd>od 4 nocy</dd></div>
+          <div><dt>Grupa od pięciu pokoi</dt><dd>od 2 nocy</dd></div>
+          <div><dt>Rezerwacje przyjmujemy</dt><dd>14 miesięcy do przodu</dd></div>
+          <div><dt>Zameldowanie i wymeldowanie</dt><dd>od 14:00, do 10:00</dd></div>
+          <div><dt>Przerwa techniczna, dom zamknięty</dt><dd>dwa tygodnie w listopadzie</dd></div>
+        </dl>
+        <p class="hint">Na lato polecamy rezerwować 4 do 6 tygodni wcześniej, na sylwestra już we wrześniu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VYBAVENIE ===== -->
+<section class="sec" id="vybavenie">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">03</span>Pensjonat</p>
+        <h2>Wyposażenie i usługi</h2>
+      </div>
+      <p class="lede">Wszystko poniżej jest wliczone w cenę noclegu. Klucz do przechowalni dostaną Państwo przy przyjeździe w recepcji.</p>
+    </div>
+
+    <dl class="list-2 reveal">
+      <div>
+        <dt>Tuż przy znakowanym szlaku</dt>
+        <dd>Niebieski szlak zaczyna się przy płocie, pętla przez przełęcz zajmuje około 3 godzin. Wyciąg narciarski jest 4 km dalej, zimą wozimy tam gości busem o 8:30 i z powrotem o 16:00.</dd>
+      </div>
+      <div>
+        <dt>Sauna</dt>
+        <dd>Sauna fińska dla sześciu osób, codziennie od 16:00 do 21:00. Godzinę rezerwuje się w recepcji.</dd>
+      </div>
+      <div>
+        <dt>Suszarnia i przechowalnia</dt>
+        <dd>Ogrzewana suszarnia na ubrania i buty, zamykane pomieszczenie na rowery i narty.</dd>
+      </div>
+      <div>
+        <dt>Parking</dt>
+        <dd>Osiem miejsc tuż przy budynku, bez opłat. Zimą plac jest odśnieżony.</dd>
+      </div>
+      <div>
+        <dt>Internet bezprzewodowy</dt>
+        <dd>Połączenie we wszystkich pokojach i w częściach wspólnych. Hasło jest na karcie w pokoju.</dd>
+      </div>
+      <div>
+        <dt>Świetlica</dt>
+        <dd>Kaflowy piec, herbata i kawa przez cały dzień, książki i gry planszowe.</dd>
+      </div>
+      <div>
+        <dt>Palenisko i altana</dt>
+        <dd>Drewno jest w cenie. Altanę rezerwuje się w recepcji do 18:00 tego samego dnia.</dd>
+      </div>
+      <div>
+        <dt>Pralka i suszarka</dt>
+        <dd>W piwnicy, na żetony z recepcji. Jeden cykl 13 zł, proszek jest na miejscu.</dd>
+      </div>
+      <div>
+        <dt>Wypożyczalnia</dt>
+        <dd>Kije trekkingowe, nosidło dla dziecka i sanki bez opłat. Łańcuchy śniegowe do wypożyczenia.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ===== PRIESTOR ===== -->
+<section class="sec sec--dark on-dark" id="priestor">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">04</span>Dom</p>
+        <h2>Pomieszczenia i godziny</h2>
+      </div>
+      <p class="lede">Dom ma trzy kondygnacje. Na parterze są recepcja, jadalnia, świetlica, pokój 01 i oba apartamenty z osobnym wejściem. Pokoje 05 – 08 są na piętrze, pokoje 02 – 04 na poddaszu, sauna i zaplecze techniczne w piwnicy.</p>
+    </div>
+
+    <div class="plates reveal">
+      <!-- FOTO: penzión zvonku v lete, južná stena s balkónmi a terasa pred jedálňou -->
+      <figure class="obraz plate">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <path d="M0 400 L110 205 L185 295 L300 145 L300 400 Z" fill="rgba(216,196,164,.08)"/>
+          <path d="M0 400 L110 205 L185 295 L300 145" fill="none" stroke="rgba(216,196,164,.24)" stroke-width="1"/>
+          <g fill="none" stroke="rgba(237,234,228,.10)" stroke-width="1">
+            <path d="M-20 70 L320 70"/><path d="M-20 104 L320 104"/><path d="M-20 138 L320 138"/>
+          </g>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <figcaption class="plate__txt">
+          <p class="plate__kicker">Na zewnątrz, czerwiec – wrzesień</p>
+          <p class="plate__big plate__big--sm">940 m n.p.m.</p>
+          <p class="plate__sub">Południowa ściana z balkonami pokoi 05 – 08, taras przed jadalnią</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: penzión zvonku v zime, odhrnutá príjazdová cesta a parkovacie miesta pri budove -->
+      <figure class="obraz plate plate--grid">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(237,234,228,.11)" stroke-width="1">
+            <path d="M-40 330 L340 190"/><path d="M-40 372 L340 232"/><path d="M-40 414 L340 274"/>
+          </g>
+          <path d="M0 400 L300 245 L300 400 Z" fill="rgba(216,196,164,.07)"/>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <figcaption class="plate__txt">
+          <p class="plate__kicker">Na zewnątrz, grudzień – marzec</p>
+          <p class="plate__big plate__big--sm">Do 7:00</p>
+          <p class="plate__sub">Droga dojazdowa odśnieżona, osiem miejsc parkingowych przy budynku</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: jedáleň na prízemí počas raňajok, bufetový pult a prestreté stoly -->
+      <figure class="obraz plate plate--grid">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <path d="M300 0 L300 400 L60 400 Z" fill="rgba(216,196,164,.07)"/>
+          <g fill="none" stroke="rgba(216,196,164,.20)" stroke-width="1">
+            <circle cx="240" cy="60" r="34"/>
+            <circle cx="240" cy="60" r="64"/>
+          </g>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <figcaption class="plate__txt">
+          <p class="plate__kicker">Jadalnia, parter</p>
+          <p class="plate__big plate__big--sm">7:30 – 10:00</p>
+          <p class="plate__sub">Śniadanie w formie bufetu, 32 miejsca, latem także na tarasie</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: fínska sauna v suteréne, drevené lavice a pec -->
+      <figure class="obraz plate">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(237,234,228,.12)" stroke-width="1">
+            <path d="M-20 90 L320 90"/><path d="M-20 130 L320 130"/><path d="M-20 170 L320 170"/>
+            <path d="M-20 210 L320 210"/><path d="M-20 250 L320 250"/>
+          </g>
+          <path d="M0 0 L300 0 L300 60 L0 140 Z" fill="rgba(216,196,164,.08)"/>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <figcaption class="plate__txt">
+          <p class="plate__kicker">Sauna, piwnica</p>
+          <p class="plate__big">6 osób</p>
+          <p class="plate__sub">Sauna fińska codziennie 16:00 – 21:00, godzinę rezerwuje się w recepcji</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: spoločenská miestnosť s kachľami, kreslá a police s knihami -->
+      <figure class="obraz plate plate--grid">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(216,196,164,.18)" stroke-width="1">
+            <circle cx="70" cy="330" r="50"/>
+            <circle cx="70" cy="330" r="96"/>
+            <circle cx="70" cy="330" r="150"/>
+          </g>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <figcaption class="plate__txt">
+          <p class="plate__kicker">Świetlica</p>
+          <p class="plate__big plate__big--sm">Do 22:00</p>
+          <p class="plate__sub">Kaflowy piec, herbata i kawa bez opłat, książki i gry planszowe</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: terasa a ohnisko za domom podvečer, lavice okolo ohniska -->
+      <figure class="obraz plate">
+        <svg class="plate__art" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(237,234,228,.11)" stroke-width="1">
+            <path d="M-40 60 L200 420"/><path d="M20 20 L260 380"/><path d="M80 -20 L320 340"/>
+          </g>
+          <path d="M0 400 L300 240 L300 400 Z" fill="rgba(216,196,164,.07)"/>
+          <rect width="300" height="400" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+        </svg>
+        <figcaption class="plate__txt">
+          <p class="plate__kicker">Taras i palenisko</p>
+          <p class="plate__big plate__big--sm">Maj – październik</p>
+          <p class="plate__sub">Drewno jest w cenie, altanę rezerwuje się do 18:00 tego samego dnia</p>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="note">W całym domu obowiązuje zakaz palenia. Palić można pod zadaszeniem przy wejściu, popielniczka jest na słupku po lewej.</p>
+  </div>
+</section>
+
+<!-- ===== STRAVA ===== -->
+<section class="sec" id="strava">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">05</span>Wyżywienie</p>
+        <h2>Śniadania i kolacje</h2>
+      </div>
+      <p class="lede">Śniadanie jest w cenie noclegu. Kolacje gotujemy od czwartku do niedzieli, zamówienie do 15:00 tego samego dnia.</p>
+    </div>
+
+    <!-- FOTO: tanier z večerného menu na prestretom stole v jedálni -->
+    <figure class="obraz obraz--wide plate plate--grid reveal">
+      <svg class="plate__art" viewBox="0 0 900 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="rgba(216,196,164,.20)" stroke-width="1">
+          <circle cx="700" cy="120" r="52"/>
+          <circle cx="700" cy="120" r="98"/>
+          <circle cx="700" cy="120" r="148"/>
+        </g>
+        <path d="M0 380 L340 150 L620 300 L900 190 L900 380 Z" fill="rgba(216,196,164,.06)"/>
+        <rect width="900" height="380" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+      </svg>
+      <figcaption class="plate__txt">
+        <p class="plate__kicker">Kolacja, od czwartku do niedzieli</p>
+        <p class="plate__big">96 zł</p>
+        <p class="plate__sub">Zupa, danie główne i deser. Menu mięsne i bezmięsne, 18:00 – 20:00.</p>
+      </figcaption>
+    </figure>
+
+    <div class="split">
+      <div class="reveal">
+        <p>Śniadanie podajemy w formie bufetu w jadalni na parterze od 7:30 do 10:00, latem także na tarasie. Jeśli wyruszają Państwo wcześniej, przygotujemy prowiant na drogę. Prosimy zgłosić to w recepcji dzień wcześniej do 20:00.</p>
+        <p>Kolacje podajemy od 18:00 do 20:00, cena to 96 zł za osobę. Do wyboru jest menu mięsne i bezmięsne. Zamówienie do 15:00 tego samego dnia.</p>
+        <p>Dania bezglutenowe i bez laktozy możemy przygotować, prosimy zaznaczyć to w rezerwacji. Do jadalni przyjmiemy też gości spoza pensjonatu, stolik prosimy zarezerwować telefonicznie do 15:00.</p>
+        <p>Menu układamy według tego, co jest dostępne w danym tygodniu. Powtarzają się rosół na kościach, placki ziemniaczane z bryndzą podhalańską, golonka pieczona w ciemnym piwie i duszona wołowina z domowym makaronem. Menu bezmięsne to zwykle strączki albo grzyby.</p>
+        <p>Alergeny są przy każdym daniu oznaczone numerem według obowiązującej listy. W stałej ofercie występują 1 zboża zawierające gluten, 3 jaja, 7 mleko, 9 seler i 12 dwutlenek siarki. Lista do aktualnego menu wisi przy wejściu do jadalni, a na życzenie przyniesiemy ją do stolika.</p>
+        <div class="actions" style="margin-top:4px">
+          <a class="btn btn--primary" href="#rezervacia">Zarezerwuj pobyt z kolacją</a>
+          <a class="btn btn--line" href="#cennik">Cennik dodatków</a>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Godziny i ceny</h3>
+        <dl class="rows">
+          <div><dt>Śniadanie</dt><dd>7:30 – 10:00, w cenie</dd></div>
+          <div><dt>Prowiant na drogę</dt><dd>na zamówienie, w cenie</dd></div>
+          <div><dt>Kolacja</dt><dd>18:00 – 20:00, 96 zł za osobę</dd></div>
+          <div><dt>Porcja dziecięca</dt><dd>do 12 lat, 52 zł za osobę</dd></div>
+          <div><dt>Zupa i deser</dt><dd>część kolacji</dd></div>
+          <div><dt>Bar i herbaciarnia</dt><dd>14:00 – 22:00</dd></div>
+          <div><dt>Butelka wina do pokoju</dt><dd>od 61 zł, na zamówienie</dd></div>
+        </dl>
+        <p class="hint">Poza czwartkiem, piątkiem, sobotą i niedzielą najbliższa restauracja jest w Podgrani, 2 km od pensjonatu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OKOLIE ===== -->
+<section class="sec sec--band" id="okolie">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">06</span>Okolica</p>
+        <h2>Odległości i wycieczki</h2>
+      </div>
+      <p class="lede">Znakowany szlak zaczyna się przy płocie pensjonatu. Papierowe mapy okolicy są w recepcji, wypożyczamy je bez opłat.</p>
+    </div>
+
+    <!-- FOTO: začiatok modrej značky pri plote penziónu a výhľad do doliny -->
+    <figure class="obraz obraz--wide plate reveal">
+      <svg class="plate__art" viewBox="0 0 900 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <path d="M0 380 L210 165 L390 265 L610 110 L900 250 L900 380 Z" fill="rgba(216,196,164,.07)"/>
+        <path d="M0 380 L210 165 L390 265 L610 110 L900 250" fill="none" stroke="rgba(216,196,164,.24)" stroke-width="1"/>
+        <path d="M60 380 C 240 300, 300 230, 610 110" fill="none" stroke="rgba(237,234,228,.22)" stroke-width="1" stroke-dasharray="6 8"/>
+        <g fill="none" stroke="rgba(237,234,228,.09)" stroke-width="1">
+          <path d="M-20 70 L920 70"/><path d="M-20 104 L920 104"/>
+        </g>
+        <rect width="900" height="380" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+      </svg>
+      <figcaption class="plate__txt">
+        <p class="plate__kicker">Niebieski szlak przy płocie</p>
+        <p class="plate__big">0 km</p>
+        <p class="plate__sub">Pętla przez przełęcz, około 3 godzin, przewyższenie 320 m</p>
+      </figcaption>
+    </figure>
+
+    <div class="trips reveal">
+      <div>
+        <p class="dist">0 km</p>
+        <div>
+          <h3>Pętla przez przełęcz</h3>
+          <p>Leśna droga na przełęcz i z powrotem doliną. Około 3 godzin, przewyższenie 320 m.</p>
+        </div>
+        <p class="season">Kwiecień – listopad</p>
+      </div>
+      <div>
+        <p class="dist">2,5 km</p>
+        <div>
+          <h3>Wodospad w wąwozie</h3>
+          <p>Odbicie z żółtego szlaku do skalnej ściany. Droga tam i z powrotem zajmuje godzinę.</p>
+        </div>
+        <p class="season">Maj – październik</p>
+      </div>
+      <div>
+        <p class="dist">4 km</p>
+        <div>
+          <h3>Wyciąg narciarski</h3>
+          <p>Dwie trasy zjazdowe i trasa biegowa. Zimą wozimy gości na wyciąg busem bez opłat.</p>
+        </div>
+        <p class="season">Grudzień – marzec</p>
+      </div>
+      <div>
+        <p class="dist">7 km</p>
+        <div>
+          <h3>Wycieczka granią</h3>
+          <p>Całodniowe wyjście powyżej granicy lasu. Przewyższenie 900 m, zalecane wyjście przed 7:00.</p>
+        </div>
+        <p class="season">Czerwiec – wrzesień</p>
+      </div>
+      <div>
+        <p class="dist">9 km</p>
+        <div>
+          <h3>Drewniany kościółek</h3>
+          <p>Budowla z bali nad sąsiednią wsią. Latem otwarta codziennie od 10:00 do 17:00.</p>
+        </div>
+        <p class="season">Cały rok</p>
+      </div>
+      <div>
+        <p class="dist">14 km</p>
+        <div>
+          <h3>Baseny termalne</h3>
+          <p>Baseny zewnętrzne otwarte także zimą. Biletów nie sprzedajemy w recepcji pensjonatu.</p>
+        </div>
+        <p class="season">Cały rok</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SEZÓNA ===== -->
+<section class="sec sec--dark on-dark" id="sezona">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">07</span>Rok w pensjonacie</p>
+        <h2>Pensjonat w ciągu roku</h2>
+      </div>
+      <p class="lede">Jesteśmy otwarci cały rok oprócz dwóch tygodni przerwy technicznej w listopadzie. Dokładny termin ogłaszamy we wrześniu, a gości z rezerwacją uprzedzamy wcześniej.</p>
+    </div>
+
+    <div class="season-grid reveal">
+      <article>
+        <p class="rim">XII – III</p>
+        <h3>Zima</h3>
+        <p>Wyciąg z trasami zjazdowymi jest 4 km od domu, trasa biegowa zaczyna się przy rozjeździe. Gości wozimy na wyciąg busem rano o 8:30 i z powrotem o 16:00.</p>
+        <ul>
+          <li>Suszarnia i narciarnia czynne</li>
+          <li>W Boże Narodzenie i ferie zimowe co najmniej 3 noce</li>
+          <li>Sylwester co najmniej 4 noce</li>
+          <li>Polecamy opony zimowe</li>
+        </ul>
+      </article>
+      <article>
+        <p class="rim">IV – V</p>
+        <h3>Wiosna</h3>
+        <p>Szlaki powyżej granicy lasu bywają do połowy maja miejscami zaśnieżone, trasy dolinne są suche. Obłożenie jest najniższe w roku, pokoje bywają wolne nawet tydzień wcześniej.</p>
+        <ul>
+          <li>Wodospad w wąwozie ma najwięcej wody</li>
+          <li>Kolacje od czwartku do niedzieli</li>
+          <li>Sauna codziennie 16:00 – 21:00</li>
+          <li>Wolne terminy nawet tydzień wcześniej</li>
+        </ul>
+      </article>
+      <article>
+        <p class="rim">VI – VIII</p>
+        <h3>Lato</h3>
+        <p>Śniadanie podajemy na tarasie, palenisko działa co wieczór. Najbardziej oblężone są dwa ostatnie tygodnie sierpnia.</p>
+        <ul>
+          <li>Proszę rezerwować 4 – 6 tygodni wcześniej</li>
+          <li>Altanę rezerwuje się do 18:00</li>
+          <li>Łóżeczko dziecięce bezpłatnie</li>
+          <li>Wycieczka granią z wyjściem przed 7:00</li>
+        </ul>
+      </article>
+      <article>
+        <p class="rim">IX – XI</p>
+        <h3>Jesień</h3>
+        <p>Sezon grzybowy, na grani rano bywa poniżej zera. W świetlicy palimy w piecu kaflowym od połowy września.</p>
+        <ul>
+          <li>Suszarnia na grzyby</li>
+          <li>Dwa tygodnie przerwy technicznej w listopadzie</li>
+          <li>Pobyty od 3 nocy są normą</li>
+          <li>Wcześnie robi się ciemno, proszę zabrać czołówkę</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RECENZIE ===== -->
+<section class="sec sec--band" id="recenzie">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">08</span>Opinie</p>
+        <h2>Co piszą goście</h2>
+      </div>
+      <p class="lede">Tydzień po wyjeździe wysyłamy gościom jedno pytanie krótką wiadomością. Odpowiedzi publikujemy z imieniem i miesiącem pobytu, skracamy tylko ich długość.</p>
+    </div>
+
+    <div class="quotes reveal">
+      <figure>
+        <blockquote><p>Przyjechaliśmy dopiero po dziewiątej wieczorem. Klucz był w skrzynce przy wejściu, a kod przysłali nam SMS-em, na śniadaniu byliśmy rano o 7:30 jako pierwsi.</p></blockquote>
+        <figcaption>Marta &middot; pobyt w listopadzie</figcaption>
+      </figure>
+      <figure>
+        <blockquote><p>Bus woził nas na wyciąg o 8:30 i z powrotem o 16:00, samochód cały tydzień stał przed domem. Narty trzymaliśmy w suszarni.</p></blockquote>
+        <figcaption>Piotr &middot; pobyt w lutym</figcaption>
+      </figure>
+      <figure>
+        <blockquote><p>Apartament ma dwie sypialnie, dzieci spały osobno. Łóżeczko przynieśli bez opłat, drewno do pieca było przygotowane przy wejściu.</p></blockquote>
+        <figcaption>Zuzanna &middot; pobyt w lipcu</figcaption>
+      </figure>
+      <figure>
+        <blockquote><p>Psa zgłosiliśmy wcześniej, koc pożyczyli w recepcji. Do jadalni nie może wchodzić, więc jedliśmy śniadania na tarasie i nikomu to nie przeszkadzało.</p></blockquote>
+        <figcaption>Igor &middot; pobyt we wrześniu</figcaption>
+      </figure>
+    </div>
+
+    <p class="note">Opinii nie poprawiamy ani nie wybieramy tylko tych pochwalnych. Jeśli coś podczas pobytu nie grało, prosimy powiedzieć o tym w recepcji jeszcze w trakcie pobytu — wtedy da się to rozwiązać.</p>
+  </div>
+</section>
+
+<!-- ===== POSTUP ===== -->
+<section class="sec" id="postup">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">09</span>Przebieg</p>
+        <h2>Jak przebiega rezerwacja</h2>
+      </div>
+      <p class="lede">Cztery kroki od zapytania do przekazania klucza. Nic z tego nie wymaga płatności z góry, przy pojedynczych pokojach nie pobieramy zaliczki.</p>
+    </div>
+
+    <div class="steps reveal">
+      <div>
+        <p class="n">01</p>
+        <h3>Zapytanie</h3>
+        <p>Wypełniają Państwo formularz rezerwacji albo dzwonią do recepcji. Potrzebujemy terminu, liczby osób i rodzaju pokoju.</p>
+        <p>Formularz od razu pokaże orientacyjną cenę pobytu z opłatą miejscową i kolacjami.</p>
+      </div>
+      <div>
+        <p class="n">02</p>
+        <h3>Potwierdzenie w ciągu 24 godzin</h3>
+        <p>Odezwiemy się telefonicznie albo krótką wiadomością. Potwierdzimy wolny termin i dokładną cenę według sezonu albo zaproponujemy najbliższy wolny termin.</p>
+        <p>Rezerwacja obowiązuje dopiero po tym potwierdzeniu.</p>
+      </div>
+      <div>
+        <p class="n">03</p>
+        <h3>Dwa dni przed przyjazdem</h3>
+        <p>Przypomnimy termin i ustalimy godzinę przyjazdu. Wtedy prosimy zgłosić kolacje, łóżeczko dziecięce, psa albo odbiór z przystanku.</p>
+        <p>Zmiana liczby osób jest do tego momentu bezpłatna.</p>
+      </div>
+      <div>
+        <p class="n">04</p>
+        <h3>Przyjazd i płatność</h3>
+        <p>Zameldowanie od 14:00, klucz odbiorą Państwo w recepcji. Przy późnym przyjeździe zostawimy go w skrzynce przy wejściu, a kod wyślemy wiadomością.</p>
+        <p>Płaci się przy wyjeździe kartą, BLIK-iem albo gotówką, firmom wystawimy fakturę.</p>
+      </div>
+    </div>
+
+    <p class="note">Jeśli wybrany termin nie jest już wolny, zaproponujemy najbliższy dostępny i zapiszemy Państwa na listę rezerwową. Przy anulowaniu odezwiemy się do Państwa jako pierwszych.</p>
+  </div>
+</section>
+
+<!-- ===== REZERVÁCIA ===== -->
+<section class="sec sec--band" id="rezervacia">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">09</span>Rezerwacja</p>
+        <h2>Przeliczenie ceny i niezobowiązujące zapytanie</h2>
+      </div>
+      <p class="lede">Proszę wybrać pokój, termin i liczbę osób. Cenę zobaczą Państwo od razu obok formularza. Potwierdzenie wysyłamy w ciągu 24 godzin, zaliczki nie pobieramy.</p>
+    </div>
+
+    <div class="book">
+      <form class="panel reveal" id="rezervacia-form" novalidate>
+        <div class="field">
+          <label for="izba">Pokój albo apartament</label>
+          <select id="izba" name="izba">
+            <option value="dvojlozkova" data-cena="296" data-max="2" selected>Pokój dwuosobowy, 296 zł za noc</option>
+            <option value="balkon" data-cena="365" data-max="3">Pokój z balkonem, 365 zł za noc</option>
+            <option value="apartman" data-cena="561" data-max="5">Apartament, 561 zł za noc</option>
+          </select>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="prichod">Przyjazd</label>
+            <input type="date" id="prichod" name="prichod">
+          </div>
+          <div class="field">
+            <label for="odchod">Wyjazd</label>
+            <input type="date" id="odchod" name="odchod">
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="osoby">Liczba osób</label>
+            <input type="number" id="osoby" name="osoby" value="2" min="1" max="5" step="1" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="strava-volba">Wyżywienie</label>
+            <select id="strava-volba" name="strava">
+              <option value="0" selected>Śniadanie, w cenie noclegu</option>
+              <option value="22">Obiadokolacja, 96 zł za osobę</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="grid2">
+          <div class="field">
+            <label for="meno">Imię i nazwisko</label>
+            <input type="text" id="meno" name="meno" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="telefon">Telefon</label>
+            <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="Państwa numer telefonu">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="poznamka">Uwagi</label>
+          <textarea id="poznamka" name="poznamka" placeholder="Łóżeczko dziecięce, śniadanie bezglutenowe, przyjazd po 20:00"></textarea>
+        </div>
+
+        <button class="btn btn--primary" type="submit" style="width:100%">Wyślij niezobowiązujące zapytanie</button>
+        <p class="hint">Zapytanie trafi do skrzynki pensjonatu, a odpowiadamy na nie w ciągu 24 godzin. To jest przykładowa strona, formularz niczego nie wysyła i żadne dane nie są zapisywane.</p>
+
+        <div class="done" id="rezervacia-hotovo" hidden tabindex="-1">
+          <strong>Tak gość zobaczyłby potwierdzenie</strong>
+          <p>Na prawdziwej stronie zapytanie trafiłoby w tej chwili do skrzynki pensjonatu, a gość dostałby potwierdzenie w ciągu 24 godzin. Tutaj nic nie zostało wysłane. Jeśli chcą Państwo taką stronę dla swojej firmy, zapraszam na <a href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a>.</p>
+        </div>
+      </form>
+
+      <aside class="sum reveal on-dark" aria-label="Przeliczenie ceny pobytu">
+        <h3>Przeliczenie pobytu</h3>
+        <p class="sum__room" id="sum-izba">Pokój dwuosobowy</p>
+
+        <p class="eyebrow">Długość pobytu</p>
+        <div class="nights" id="nights" role="group" aria-label="Szybki wybór długości pobytu">
+          <button type="button" data-noci="1" aria-pressed="false">1 noc</button>
+          <button type="button" data-noci="2" aria-pressed="true">2 noce</button>
+          <button type="button" data-noci="3" aria-pressed="false">3 noce</button>
+          <button type="button" data-noci="7" aria-pressed="false">7 nocy</button>
+        </div>
+
+        <div class="sum__row"><span>Termin</span><span id="sum-termin">2 noce</span></div>
+        <div class="sum__row"><span>Nocleg</span><span id="sum-ubytovanie">592 zł</span></div>
+        <div class="sum__row"><span>Śniadania</span><span>w cenie</span></div>
+        <div class="sum__row" id="riadok-vecere" hidden><span>Kolacje</span><span id="sum-vecere">0 zł</span></div>
+        <div class="sum__row"><span>Opłata miejscowa</span><span id="sum-dan">12 zł</span></div>
+
+        <div class="sum__total">
+          <span class="lbl">Razem</span>
+          <span class="val" id="sum-spolu">604 zł</span>
+        </div>
+
+        <p class="sum__note" id="sum-detail">2 osoby &middot; 296 zł za noc &middot; opłata miejscowa 3 zł za osobę i dobę</p>
+        <p class="sum__warn" id="sum-chyba" hidden role="status"></p>
+        <p class="sum__note">Sauna, parking i internet są w cenie. Płaci się na miejscu kartą, BLIK-iem albo gotówką.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== POUKAZY A SKUPINY ===== -->
+<section class="sec" id="poukazy">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">10</span>Prezenty i grupy</p>
+        <h2>Bony, firmy i cały dom</h2>
+      </div>
+      <p class="lede">Bon wystawimy na kwotę albo na konkretny pobyt. Grupom możemy wynająć cały dom razem z kolacjami i świetlicą.</p>
+    </div>
+
+    <div class="gift">
+      <div class="plate plate--light plate--grid reveal">
+        <svg class="plate__art" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="rgba(110,85,51,.20)" stroke-width="1">
+            <circle cx="320" cy="70" r="42"/>
+            <circle cx="320" cy="70" r="78"/>
+            <circle cx="320" cy="70" r="118"/>
+          </g>
+          <path d="M0 320 L400 190 L400 320 Z" fill="rgba(110,85,51,.06)"/>
+          <rect width="400" height="320" fill="#6E5533" filter="url(#zrno)" opacity=".10"/>
+        </svg>
+        <div class="plate__txt">
+          <p class="plate__kicker">Bon podarunkowy</p>
+          <p class="plate__big">200 &middot; 400 &middot; 600 zł</p>
+          <p class="plate__sub">Ważny 12 miesięcy od wystawienia. Bon na konkretny pobyt wystawimy na kwotę według cennika.</p>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <h3 style="margin-bottom:.7em">Jak to działa</h3>
+        <dl class="rows">
+          <div><dt>Na co jest ważny</dt><dd>nocleg, kolacje i bar</dd></div>
+          <div><dt>Forma</dt><dd>bon drukowany, odbiór w recepcji</dd></div>
+          <div><dt>Wystawienie</dt><dd>w ciągu 2 dni roboczych od zamówienia</dd></div>
+          <div><dt>Płatność za bon</dt><dd>przelewem albo osobiście w recepcji</dd></div>
+          <div><dt>Realizacja</dt><dd>numer bonu proszę podać w rezerwacji</dd></div>
+          <div><dt>Niewykorzystana część</dt><dd>zostaje na bonie do końca ważności</dd></div>
+          <div><dt>Wymiana na gotówkę</dt><dd>nie jest możliwa</dd></div>
+        </dl>
+        <p class="hint">Bon można zamówić przez formularz rezerwacji, w uwagach proszę wpisać kwotę i imię obdarowanej osoby.</p>
+      </div>
+    </div>
+
+    <div class="cards-3">
+      <article class="panel reveal">
+        <h3>Cały dom dla grupy</h3>
+        <p>Osiem pokoi i dwa apartamenty naraz, czyli do 30 miejsc z dostawkami. Dobre na spotkanie rodzinne albo weekend w górach.</p>
+        <ul>
+          <li><b>Co najmniej 2 noce</b>, w święta 3 noce</li>
+          <li>Śniadanie dla całej grupy o jednej porze</li>
+          <li>Kolacje na zamówienie także od poniedziałku do środy</li>
+          <li>Cena według liczby zajętych pokoi</li>
+        </ul>
+      </article>
+      <article class="panel reveal">
+        <h3>Spotkanie firmowe</h3>
+        <p>Świetlicę możemy przestawić na spotkanie robocze do 20 osób. Pozostałe pomieszczenia działają normalnie.</p>
+        <ul>
+          <li>Ekran, projektor i flipchart</li>
+          <li>Kawa, herbata i woda przez cały dzień</li>
+          <li>Obiad albo kolacja po uzgodnieniu</li>
+          <li>Faktura z 14-dniowym terminem płatności</li>
+        </ul>
+      </article>
+      <article class="panel reveal">
+        <h3>Rezerwacja grupowa</h3>
+        <p>Od pięciu pokoi pracujemy z zaliczką i stałą listą gości. Warunki wyślemy na piśmie przed potwierdzeniem terminu.</p>
+        <ul>
+          <li>Zaliczka <b>30 %</b> w ciągu 10 dni od potwierdzenia</li>
+          <li>Lista gości najpóźniej 7 dni wcześniej</li>
+          <li>Anulowanie do 21 dni bez opłat</li>
+          <li>Jedna osoba kontaktowa na grupę</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PODMIENKY ===== -->
+<section class="sec sec--band" id="podmienky">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">11</span>Zasady pobytu</p>
+        <h2>Warunki, rezygnacja i płatności</h2>
+      </div>
+      <p class="lede">Zasady są krótkie i jednakowe dla wszystkich. Wszystko poza nimi możemy uzgodnić wcześniej telefonicznie.</p>
+    </div>
+
+    <dl class="list-2 reveal">
+      <div>
+        <dt>Rezerwacja i potwierdzenie</dt>
+        <dd>Zapytanie z formularza jest niezobowiązujące. Potwierdzenie z terminem i ceną wysyłamy w ciągu 24 godzin telefonicznie albo krótką wiadomością, a rezerwacja obowiązuje dopiero po nim.</dd>
+      </div>
+      <div>
+        <dt>Zaliczka</dt>
+        <dd>Przy pojedynczych pokojach nie pobieramy zaliczki. Przy grupach od pięciu pokoi zaliczka wynosi 30% ceny noclegu.</dd>
+      </div>
+      <div>
+        <dt>Anulowanie pobytu</dt>
+        <dd>Do 7 dni przed przyjazdem bez opłat. Od 7 do 2 dni 50% ceny pierwszej nocy, mniej niż 48 godzin wcześniej 100% ceny pierwszej nocy.</dd>
+      </div>
+      <div>
+        <dt>Anulowanie przy grupach</dt>
+        <dd>Do 21 dni przed przyjazdem bez opłat, potem przepada wpłacona zaliczka. Zmiana liczby pokoi do 7 dni wcześniej jest bezpłatna.</dd>
+      </div>
+      <div>
+        <dt>Sposoby płatności</dt>
+        <dd>Gotówka, karta płatnicza albo BLIK w recepcji albo przelew na fakturę dla firm. Kart lunchowych ani kart benefitowych nie przyjmujemy.</dd>
+      </div>
+      <div>
+        <dt>Opłata miejscowa</dt>
+        <dd>3 zł za osobę i dobę, płatna na miejscu. Pobieramy ją na rzecz gminy.</dd>
+      </div>
+      <div>
+        <dt>Zameldowanie i wymeldowanie</dt>
+        <dd>Zameldowanie od 14:00, wymeldowanie do 10:00. Późny przyjazd po 20:00 prosimy zgłosić wcześniej, ustalimy odbiór klucza.</dd>
+      </div>
+      <div>
+        <dt>Cisza nocna</dt>
+        <dd>Od 22:00 do 7:00. Świetlica jest czynna do 22:00, potem prosimy przenieść się do paleniska albo do apartamentu.</dd>
+      </div>
+      <div>
+        <dt>Dzieci i dostawki</dt>
+        <dd>Dzieci do 6 lat śpią z rodzicami bezpłatnie. Dostawka 78 zł za noc, łóżeczko dziecięce bezpłatnie po zgłoszeniu.</dd>
+      </div>
+      <div>
+        <dt>Psy</dt>
+        <dd>44 zł za noc po wcześniejszym uzgodnieniu, najwyżej dwa psy w apartamencie. Do jadalni i do sauny psy nie mogą wchodzić, koc jest do dyspozycji w recepcji.</dd>
+      </div>
+      <div>
+        <dt>Szkody i zgubienie klucza</dt>
+        <dd>Wyrządzoną szkodę rozliczamy na miejscu według rzeczywistego kosztu naprawy. Zgubienie klucza to 87 zł za wymianę wkładki.</dd>
+      </div>
+      <div>
+        <dt>Palenie</dt>
+        <dd>W całym domu łącznie z balkonami obowiązuje zakaz palenia. Palić można pod zadaszeniem przy głównym wejściu.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ===== ČASTÉ OTÁZKY ===== -->
+<section class="sec" id="otazky">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">12</span>Pytania</p>
+        <h2>Odpowiedzi na częste pytania</h2>
+      </div>
+      <p class="lede">Jeśli nie znajdą tu Państwo odpowiedzi, prosimy zadzwonić do recepcji pod numer <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty.">tu będzie Państwa numer</span> albo napisać przez formularz poniżej. Odpowiadamy tego samego dnia, w weekend do wieczora.</p>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Czy śniadanie naprawdę jest w cenie noclegu?</summary>
+        <div class="ans">
+          <p>Tak. Cena pokoju obejmuje śniadanie w formie bufetu od 7:30 do 10:00 dla wszystkich zameldowanych osób, także dzieci. Jeśli wyruszają Państwo wcześniej, przygotujemy prowiant na drogę, również bez dopłaty. Wystarczy powiedzieć o tym w recepcji dzień wcześniej do 20:00.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Czy możemy przyjechać z psem?</summary>
+        <div class="ans">
+          <p>Tak, po wcześniejszym uzgodnieniu. Opłata wynosi 44 zł za noc i psa, w apartamencie najwyżej dwa psy. Koc i miskę pożyczymy w recepcji.</p>
+          <p>Do jadalni, sauny i świetlicy psy nie mogą wchodzić. W częściach wspólnych prosimy o smycz, wokół domu swobodne bieganie nikomu nie przeszkadza.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Gdzie zaparkujemy i czy parking jest płatny?</summary>
+        <div class="ans">
+          <p>Tuż przy budynku jest osiem bezpłatnych miejsc, bez rezerwacji. Zimą plac jest odśnieżony do 7:00.</p>
+          <p>Przy pełnym obłożeniu domu jest jeszcze plac postojowy 100 metrów niżej przy rozjeździe, również bez opłat. Przyczepkę albo busa prosimy zgłosić wcześniej.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Czy da się do Państwa dojechać bez samochodu?</summary>
+        <div class="ans">
+          <p>Tak. Do doliny kursuje z dworca kolejowego autobus regionalny, przystanek jest 10 minut pieszo od pensjonatu. Podróż z dworca trwa około 35 minut.</p>
+          <p>Jeśli wcześniej napiszą Państwo godzinę przyjazdu, odbierzemy Państwa z przystanku busem bez opłat. Dotyczy to także wyjazdu.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Czy pensjonat jest dostępny dla osób z niepełnosprawnością?</summary>
+        <div class="ans">
+          <p>Częściowo. Pokój 01 jest na parterze, dostępny bocznym wejściem bez stopnia, drzwi mają 90 cm, a kabina prysznicowa jest bez progu. Recepcja, jadalnia i świetlica też są na parterze bez schodów.</p>
+          <p>Sauna jest w piwnicy i prowadzi do niej 12 schodów, nie jest dostępna bez barier. Pozostałe pokoje są na piętrze i na poddaszu, windy w domu nie ma.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Jak to jest z sauną?</summary>
+        <div class="ans">
+          <p>Sauna jest w cenie noclegu i jest nagrzewana codziennie od 16:00 do 21:00. Mieści sześć osób, dlatego godziny zapisuje się w recepcji, zwykle rano przy śniadaniu.</p>
+          <p>Ręczniki są w pokoju, prześcieradło do siedzenia dostaną Państwo przy saunie. Dzieci do 12 lat tylko pod opieką dorosłego.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Czy musimy płacić zaliczkę z góry?</summary>
+        <div class="ans">
+          <p>Przy pojedynczych pokojach nie, płaci się dopiero na miejscu kartą, BLIK-iem albo gotówką. Zaliczki wymagamy tylko przy grupach od pięciu pokoi, i to 30% ceny noclegu.</p>
+          <p>Firmom wystawimy fakturę z 14-dniowym terminem płatności, dane do faktury potrzebujemy przed przyjazdem.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Co, jeśli przyjedziemy dopiero późnym wieczorem?</summary>
+        <div class="ans">
+          <p>Recepcja jest czynna do 20:00. Późniejszy przyjazd to nie problem, wystarczy zgłosić go w rezerwacji albo telefonicznie tego dnia.</p>
+          <p>Klucz zostawimy w zamykanej skrzynce przy wejściu, a kod wyślemy SMS-em. Nie ma za to opłaty.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KARIÉRA ===== -->
+<section class="sec sec--band" id="kariera">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">13</span>Kariera</p>
+        <h2>Oferty pracy</h2>
+      </div>
+      <p class="lede">Jesteśmy małym zespołem, w którym role się przenikają. Szukamy ludzi, którzy mieszkają w okolicy albo mogą przeprowadzić się na sezon. Zakwaterowanie na czas turnusu zapewniamy.</p>
+    </div>
+
+    <div class="jobs reveal">
+      <div>
+        <div>
+          <h3>Kucharz albo kucharka na weekendowe kolacje</h3>
+          <p>Przygotowanie kolacji dla 20 do 40 gości, menu mięsne i bezmięsne, zakupy z kierownikiem pensjonatu. Kuchnia jest mała, gotuje się we dwoje.</p>
+        </div>
+        <p class="when">Od czwartku do niedzieli, 15:00 – 21:30</p>
+        <p class="form">Umowa zlecenie albo B2B</p>
+      </div>
+      <div>
+        <div>
+          <h3>Pokojowa albo pokojowy na część etatu</h3>
+          <p>Sprzątanie pokoi i części wspólnych, wymiana pościeli, obsługa pralni. Przyuczenie trwa dwa dni.</p>
+        </div>
+        <p class="when">Poniedziałek, czwartek i sobota, 8:00 – 14:00</p>
+        <p class="form">Niepełny etat</p>
+      </div>
+      <div>
+        <div>
+          <h3>Recepcja, pomoc sezonowa zimą</h3>
+          <p>Przyjmowanie gości, telefony i rezerwacje, zapisy do sauny, wożenie gości busem na wyciąg. Prawo jazdy kat. B jest warunkiem.</p>
+        </div>
+        <p class="when">Od grudnia do marca, turnusy po 5 dni</p>
+        <p class="form">Umowa na sezon</p>
+      </div>
+    </div>
+
+    <p class="note">Wystarczy krótkie CV — prosimy napisać przez formularz kontaktowy albo zajrzeć do recepcji. Odezwiemy się w ciągu trzech dni i zaprosimy na godzinę do nas, żeby wiedzieli Państwo, dokąd idą.</p>
+  </div>
+</section>
+
+<!-- ===== KONTAKT ===== -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__no">14</span>Kontakt</p>
+        <h2>Gdzie nas znaleźć</h2>
+      </div>
+      <p class="lede">Pensjonat stoi nad wsią Podgrań, ostatnie 2 km drogi prowadzą pod górę. Zimą polecamy opony zimowe.</p>
+    </div>
+
+    <div class="contact">
+      <div class="reveal">
+        <dl>
+          <div>
+            <dt>Adres</dt>
+            <dd>Pensjonat Grań<br>ul. Graniowa 12, 34-434 Podgrań</dd>
+          </div>
+          <div>
+            <dt>Telefon</dt>
+            <dd><span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span></dd>
+          </div>
+          <div>
+            <dt>Recepcja</dt>
+            <dd>codziennie 8:00 – 20:00</dd>
+          </div>
+          <div>
+            <dt>Śniadanie</dt>
+            <dd>codziennie 7:30 – 10:00, w cenie noclegu</dd>
+          </div>
+          <div>
+            <dt>Kolacje</dt>
+            <dd>od czwartku do niedzieli 18:00 – 20:00, zamówienie do 15:00</dd>
+          </div>
+          <div>
+            <dt>Sauna</dt>
+            <dd>codziennie 16:00 – 21:00, godzinę rezerwuje się w recepcji</dd>
+          </div>
+          <div>
+            <dt>Zameldowanie i wymeldowanie</dt>
+            <dd>zameldowanie od 14:00, wymeldowanie do 10:00</dd>
+          </div>
+          <div>
+            <dt>Płatność</dt>
+            <dd>na miejscu kartą, BLIK-iem albo gotówką, firmom faktura z 14-dniowym terminem płatności</dd>
+          </div>
+          <div>
+            <dt>Odpowiadamy</dt>
+            <dd>w ciągu 24 godzin, w weekend najpóźniej do wieczora</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="reveal">
+        <div class="plate">
+          <svg class="plate__art" viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="rgba(216,196,164,.22)" stroke-width="1">
+              <circle cx="90" cy="230" r="46"/>
+              <circle cx="90" cy="230" r="92"/>
+              <circle cx="90" cy="230" r="150"/>
+              <circle cx="90" cy="230" r="215"/>
+            </g>
+            <path d="M90 230 L430 40" fill="none" stroke="rgba(237,234,228,.20)" stroke-width="1" stroke-dasharray="5 7"/>
+            <path d="M90 230 L470 210" fill="none" stroke="rgba(237,234,228,.12)" stroke-width="1" stroke-dasharray="5 7"/>
+            <rect width="480" height="300" fill="#EDEAE4" filter="url(#zrno)" opacity=".14"/>
+          </svg>
+          <div class="plate__txt">
+            <p class="plate__kicker">Odległości od pensjonatu</p>
+            <dl class="mini">
+              <div><dt>Podgrań, sklep i restauracja</dt><dd>2 km</dd></div>
+              <div><dt>Wyciąg narciarski</dt><dd>4 km</dd></div>
+              <div><dt>Przystanek autobusowy</dt><dd>10 min pieszo</dd></div>
+              <div><dt>Dworzec kolejowy</dt><dd>11 km</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <h3>Jak do nas dotrzeć</h3>
+        <ul class="route">
+          <li>
+            <span class="n" aria-hidden="true">1</span>
+            <span><b>Samochodem</b><p>Z głównej drogi proszę skręcić w Podgrani przy moście i trzymać się kierunku na wyciąg narciarski. Ostatnie 2 km prowadzą pod górę, droga jest asfaltowa i zimą odśnieżona do 7:00.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">2</span>
+            <span><b>Pociągiem i autobusem</b><p>Z dworca kolejowego kursuje do doliny autobus regionalny, podróż trwa około 35 minut. Przystanek jest 10 minut pieszo od pensjonatu.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">3</span>
+            <span><b>Odbiór z przystanku</b><p>Jeśli wcześniej napiszą Państwo godzinę przyjazdu, odbierzemy Państwa z przystanku. Bez opłat, dotyczy to także wyjazdu.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">4</span>
+            <span><b>Parking</b><p>Osiem bezpłatnych miejsc przy budynku, kolejny plac postojowy 100 metrów niżej przy rozjeździe. Ładowarki do samochodu elektrycznego przy domu nie mamy, najbliższa jest w Podgrani przy urzędzie gminy.</p></span>
+          </li>
+          <li>
+            <span class="n" aria-hidden="true">5</span>
+            <span><b>Dostęp bez barier</b><p>Pokój 01, recepcja, jadalnia i świetlica są na parterze, boczne wejście jest bez stopnia. Sauna w piwnicy jest dostępna tylko po schodach.</p></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="contact__form split">
+      <div class="reveal">
+        <h3>Napisz do nas</h3>
+        <p class="lede">Formularza proszę użyć do pytania, które nie dotyczy konkretnego terminu: bon podarunkowy, wyjazd grupowy, spotkanie firmowe, CV albo zapomniana rzecz.</p>
+        <p class="lede">Jeśli chcą Państwo zarezerwować pobyt, szybciej pójdzie przez <a href="#rezervacia">przeliczenie ceny i niezobowiązujące zapytanie</a>, gdzie od razu widać cenę. Jeśli potrzebują Państwo odpowiedzi od razu, prosimy zadzwonić do recepcji.</p>
+        <p class="actions" style="margin-top:24px">
+          <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+        </p>
+      </div>
+
+      <form class="panel reveal" id="kontakt-form" novalidate>
+        <div class="field">
+          <label for="k-meno">Imię i nazwisko</label>
+          <input type="text" id="k-meno" name="k-meno" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="k-telefon">Telefon</label>
+          <input type="tel" id="k-telefon" name="k-telefon" autocomplete="tel" placeholder="Państwa numer telefonu">
+        </div>
+        <div class="field">
+          <label for="k-sprava">Wiadomość</label>
+          <textarea id="k-sprava" name="k-sprava" placeholder="O co chcą Państwo zapytać"></textarea>
+        </div>
+        <button class="btn btn--primary" type="submit" style="width:100%">Wyślij wiadomość</button>
+        <p class="hint">Wiadomość trafi do skrzynki pensjonatu, a odpowiedź wysyłamy w ciągu 24 godzin. To jest przykładowa strona, formularz niczego nie wysyła i żadne dane nie są zapisywane.</p>
+
+        <div class="done" id="kontakt-hotovo" hidden tabindex="-1">
+          <strong>Tak zobaczyłby to odwiedzający</strong>
+          <p>Na prawdziwej stronie wiadomość trafiłaby do skrzynki pensjonatu, a recepcja odpowiedziałaby na nią w ciągu 24 godzin. Tutaj nic nie zostało wysłane.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY — jediné reálne kontaktné údaje na tejto stránke ===== -->
+<aside class="author on-dark" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap author__in">
+    <div class="reveal">
+      <p class="eyebrow">Autor przykładu</p>
+      <h2 id="autor-nadpis">Podoba się Państwu ta strona?</h2>
+      <p>Pensjonat Grań to wymyślona firma i wszystkie jej dane są przykładowe. Tę stronę zaprojektował i zaprogramował Alex Poliak, łącznie z przeliczeniem ceny pobytu, które mogli Państwo wypróbować powyżej.</p>
+      <p>Taką samą stronę zbuduję dla Państwa firmy, z Państwa zdjęciami, tekstami i cenami. W zestawie jest cennik, formularz rezerwacji albo kontaktowy i pełnowartościowa wersja mobilna.</p>
+      <p class="author__price"><b>Strony na zamówienie od 250 €.</b> Pierwszy projekt w 3 dni od zlecenia.</p>
+      <p class="author__free">Konsultacja bezpłatna i niezobowiązująca</p>
+    </div>
+
+    <div class="author__card reveal">
+      <p class="author__name">Alex Poliak</p>
+      <p class="author__role">Projektowanie i programowanie stron internetowych</p>
+      <dl class="author__list">
+        <div>
+          <dt>Cena</dt>
+          <dd>od 250 € za stronę na zamówienie</dd>
+        </div>
+        <div>
+          <dt>Pierwszy projekt</dt>
+          <dd>w 3 dni od zlecenia</dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Wsparcie</dt>
+          <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span></dd>
+        </div>
+        <div>
+          <dt>Strona</dt>
+          <dd><a href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+      </dl>
+      <div class="author__actions">
+        <a class="btn btn--sand" href="mailto:apoliak@apoliak.online?subject=Zainteresowanie%20stron%C4%85">Napisz na apoliak@apoliak.online</a>
+        <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== PÄTA ===== -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <strong>Pensjonat Grań</strong>
+        <p>Pensjonat górski z ośmioma pokojami i dwoma apartamentami, 940 m n.p.m. Recepcja codziennie 8:00 – 20:00, śniadanie w cenie noclegu. Otwarte cały rok oprócz dwóch tygodni przerwy technicznej w listopadzie.</p>
+      </div>
+      <div>
+        <h3>Na stronie</h3>
+        <ul class="foot__links">
+          <li><a href="#izby">Pokoje i ceny</a></li>
+          <li><a href="#cennik">Cennik i terminy sezonów</a></li>
+          <li><a href="#priestor">Pomieszczenia i godziny</a></li>
+          <li><a href="#strava">Śniadania i kolacje</a></li>
+          <li><a href="#okolie">Odległości i wycieczki</a></li>
+          <li><a href="#sezona">Pensjonat w ciągu roku</a></li>
+          <li><a href="#postup">Jak przebiega rezerwacja</a></li>
+          <li><a href="#rezervacia">Przeliczenie ceny pobytu</a></li>
+          <li><a href="#poukazy">Bony i grupy</a></li>
+          <li><a href="#podmienky">Warunki, rezygnacja i płatności</a></li>
+          <li><a href="#otazky">Częste pytania</a></li>
+          <li><a href="#kariera">Oferty pracy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Kontakt</h3>
+        <ul class="foot__social">
+          <li>Pensjonat Grań</li>
+          <li>ul. Graniowa 12, 34-434 Podgrań</li>
+          <li><span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span></li>
+          <li>Recepcja codziennie 8:00 – 20:00</li>
+          <li>Śniadanie 7:30 – 10:00</li>
+          <li>Kolacje od czwartku do niedzieli 18:00 – 20:00</li>
+          <li><a href="#kontakt">Formularz kontaktowy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <p>Przykładowa strona bez prawdziwego pensjonatu. Wymyślona firma na potrzeby przykładu.</p>
+      <p>Projekt i kod: <a href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var d = document;
+  d.documentElement.className += " js";
+  var jemne = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- výška horného pásika ukážky ----------
+     pásik je fixovaný, preto o jeho skutočnú výšku odsádzame telo stránky
+     aj lepivú hlavičku. Na úzkych displejoch sa obsah pásika zalomí. */
+  var pasik = d.getElementById("pasik-ukazky");
+  function odmeraj(){
+    if(!pasik) return;
+    var v = pasik.offsetHeight;
+    if(v > 0) d.documentElement.style.setProperty("--bar", v + "px");
+  }
+  if(pasik){
+    odmeraj();
+    window.addEventListener("resize", odmeraj);
+    window.addEventListener("load", odmeraj);
+    if(window.ResizeObserver){ new window.ResizeObserver(odmeraj).observe(pasik); }
+  }
+
+  /* ---------- prvky rezervácie ---------- */
+  var izba = d.getElementById("izba");
+  var prichod = d.getElementById("prichod");
+  var odchod = d.getElementById("odchod");
+  var osoby = d.getElementById("osoby");
+  var strava = d.getElementById("strava-volba");
+  var tlacidlaNoci = [].slice.call(d.querySelectorAll("#nights button"));
+  var DAN = 3;
+  var DEN = 86400000;
+
+  var vystup = {
+    izba: d.getElementById("sum-izba"),
+    termin: d.getElementById("sum-termin"),
+    ubytovanie: d.getElementById("sum-ubytovanie"),
+    riadokVecere: d.getElementById("riadok-vecere"),
+    vecere: d.getElementById("sum-vecere"),
+    dan: d.getElementById("sum-dan"),
+    spolu: d.getElementById("sum-spolu"),
+    detail: d.getElementById("sum-detail"),
+    chyba: d.getElementById("sum-chyba")
+  };
+
+  function eur(n){ return __f(n) + " " + __m; }
+
+  function naISO(datum){
+    var m = String(datum.getMonth() + 1);
+    var den = String(datum.getDate());
+    return datum.getFullYear() + "-" + (m.length < 2 ? "0" + m : m) + "-" + (den.length < 2 ? "0" + den : den);
+  }
+  function zoISO(hodnota){
+    if(!hodnota) return null;
+    var c = hodnota.split("-");
+    if(c.length !== 3) return null;
+    var dt = new Date(+c[0], +c[1] - 1, +c[2]);
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+  /* dni pripočítavame cez kalendár, nie cez milisekundy, inak by deň zmeny času posunul dátum */
+  function pridajDni(datum, n){
+    return new Date(datum.getFullYear(), datum.getMonth(), datum.getDate() + n);
+  }
+  function nociSlovom(n){
+    if(n === 1) return "1 noc";
+    if(n >= 2 && n <= 4) return n + " noce";
+    return n + " nocy";
+  }
+  function osobySlovom(n){
+    if(n === 1) return "1 osoba";
+    if(n < 5) return n + " osoby";
+    return n + " osób";
+  }
+  var mesiace = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+  function popisDatumu(dt){ return dt.getDate() + " " + mesiace[dt.getMonth()]; }
+
+  function pocetNoci(){
+    var od = zoISO(prichod.value), po = zoISO(odchod.value);
+    if(!od || !po) return null;
+    return Math.round((po - od) / DEN);
+  }
+
+  function prepocitaj(){
+    if(!izba) return;
+    var vybrana = izba.options[izba.selectedIndex];
+    var cena = parseFloat(vybrana.getAttribute("data-cena"));
+    var max = parseInt(vybrana.getAttribute("data-max"), 10);
+
+    osoby.max = max;
+    var poc = parseInt(osoby.value, 10);
+    if(isNaN(poc) || poc < 1) poc = 1;
+    if(poc > max) poc = max;
+    if(String(poc) !== osoby.value) osoby.value = poc;
+
+    var noci = pocetNoci();
+    var chyba = "";
+    if(noci === null) chyba = "Prosimy uzupełnić datę przyjazdu i datę wyjazdu.";
+    else if(noci === 0) chyba = "Przyjazd i wyjazd wypadają tego samego dnia. Pobyt musi trwać co najmniej jedną noc.";
+    else if(noci < 0) chyba = "Data wyjazdu jest wcześniejsza niż data przyjazdu. Prosimy poprawić termin.";
+
+    if(chyba){
+      vystup.chyba.textContent = chyba;
+      vystup.chyba.hidden = false;
+      noci = 0;
+    } else {
+      vystup.chyba.hidden = true;
+      vystup.chyba.textContent = "";
+    }
+
+    var vecera = parseFloat(strava.value) || 0;
+    var ubytovanie = cena * noci;
+    var vecere = vecera * poc * noci;
+    var dan = DAN * poc * noci;
+    var spolu = ubytovanie + vecere + dan;
+
+    var od = zoISO(prichod.value), po = zoISO(odchod.value);
+    vystup.izba.textContent = vybrana.textContent.split(",")[0];
+    vystup.termin.textContent = (od && po && noci > 0)
+      ? (od.getMonth() === po.getMonth() && od.getFullYear() === po.getFullYear() ? od.getDate() + "–" + popisDatumu(po) : popisDatumu(od) + " – " + popisDatumu(po)) + " (" + nociSlovom(noci) + ")"
+      : "0 nocy";
+    vystup.ubytovanie.textContent = eur(ubytovanie);
+    vystup.vecere.textContent = eur(vecere);
+    vystup.riadokVecere.hidden = vecera === 0;
+    vystup.dan.textContent = eur(dan);
+    vystup.spolu.textContent = eur(spolu);
+    vystup.detail.textContent = osobySlovom(poc) + " · " + __f(cena) + " " + __m + " za noc · opłata miejscowa " + __f(DAN) + " " + __m + " za osobę i dobę";
+
+    tlacidlaNoci.forEach(function(b){
+      b.setAttribute("aria-pressed", String(parseInt(b.getAttribute("data-noci"), 10) === noci));
+    });
+  }
+
+  function nastavNoci(n){
+    var od = zoISO(prichod.value) || new Date();
+    prichod.value = naISO(od);
+    odchod.value = naISO(pridajDni(od, n));
+    odchod.min = prichod.value;
+    prepocitaj();
+  }
+
+  if(izba){
+    var dnes = new Date();
+    var start = pridajDni(dnes, 14);
+    prichod.value = naISO(start);
+    odchod.value = naISO(pridajDni(start, 2));
+    prichod.min = naISO(dnes);
+    odchod.min = prichod.value;
+
+    [izba, prichod, odchod, osoby, strava].forEach(function(pole){
+      pole.addEventListener("change", prepocitaj);
+      pole.addEventListener("input", prepocitaj);
+    });
+    prichod.addEventListener("change", function(){
+      var od = zoISO(prichod.value), po = zoISO(odchod.value);
+      if(od){
+        odchod.min = prichod.value;
+        if(!po || po <= od){ odchod.value = naISO(pridajDni(od, 2)); }
+      }
+      prepocitaj();
+    });
+    tlacidlaNoci.forEach(function(b){
+      b.addEventListener("click", function(){ nastavNoci(parseInt(b.getAttribute("data-noci"), 10)); });
+    });
+    prepocitaj();
+  }
+
+  /* ---------- mobilné menu ---------- */
+  var toggle = d.querySelector(".nav-toggle");
+  var menu = d.getElementById("hlavne-menu");
+  function zavriMenu(){
+    if(!toggle || !menu) return;
+    menu.setAttribute("data-open", "false");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var otvorene = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", otvorene ? "false" : "true");
+      toggle.setAttribute("aria-expanded", otvorene ? "false" : "true");
+    });
+  }
+  d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavriMenu(); });
+
+  /* ---------- plynulé skrolovanie ---------- */
+  d.addEventListener("click", function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if(!a) return;
+    var id = a.getAttribute("href");
+    if(id === "#") return;
+    var ciel = d.querySelector(id);
+    if(!ciel) return;
+    e.preventDefault();
+    zavriMenu();
+    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
+    if(history.replaceState) history.replaceState(null, "", id);
+    var room = a.getAttribute("data-room");
+    if(room && izba){
+      izba.value = room;
+      prepocitaj();
+      setTimeout(function(){
+        try{ izba.focus({preventScroll:true}); }catch(err){ izba.focus(); }
+      }, jemne ? 0 : 450);
+    }
+  });
+
+  /* ---------- odhaľovanie sekcií ---------- */
+  var bloky = [].slice.call(d.querySelectorAll(".reveal"));
+  if("IntersectionObserver" in window && !jemne){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, {rootMargin:"0px 0px -6% 0px", threshold:.05});
+    bloky.forEach(function(b){ io.observe(b); });
+  } else {
+    bloky.forEach(function(b){ b.classList.add("in"); });
+  }
+
+  /* ---------- odoslanie formulárov (iba ukážka) ---------- */
+  [["rezervacia-form","rezervacia-hotovo"],["kontakt-form","kontakt-hotovo"]].forEach(function(par){
+    var form = d.getElementById(par[0]);
+    var hotovo = d.getElementById(par[1]);
+    if(!form || !hotovo) return;
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      hotovo.hidden = false;
+      hotovo.focus();
+      if(!jemne) hotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  });
+})();
+</script>
+</body>
+</html>

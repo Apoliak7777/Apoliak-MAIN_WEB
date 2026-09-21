@@ -1,0 +1,3211 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/uctovnictvo/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/uctovnictvo/">
+<!-- /jazyky:hreflang -->
+<title>SALDIA — księgowość, kadry i podatki, Kraków</title>
+<meta name="description" content="Biuro rachunkowe SALDIA, ul. Celna 21, Kraków: KPiR, ryczałt i pełna księgowość, kadry i płace oraz zeznania podatkowe za miesięczny abonament od 170 zł. Cennik, kalkulator abonamentu, godziny otwarcia i niezobowiązująca oferta w ciągu dwóch dni roboczych. Przykładowa strona od apoliak.online.">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="SALDIA — księgowość, kadry i podatki, Kraków (przykładowa strona)">
+<meta property="og:description" content="Miesięczny abonament od 170 zł, rozliczenie do 20. dnia, okres wypowiedzenia jeden miesiąc. Cennik, kalkulator abonamentu i przebieg współpracy. Przykładowa strona, którą zaprojektował i zaprogramował Alex Poliak.">
+<meta property="og:locale" content="pl_PL">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='2'%20fill='%2314181c'/%3E%3Cpath%20d='M7%2011h18M7%2016h18M7%2021h11'%20stroke='%23eceef0'%20stroke-width='1.8'/%3E%3Cpath%20d='M21%2021h4'%20stroke='%23c9a465'%20stroke-width='1.8'/%3E%3C/svg%3E">
+
+<style>
+/* ------------------------------------------------------------------
+   SALDIA — ukážkový web fiktívnej účtovnej kancelárie
+   Paleta: bridlicová neutrálna škála + jeden tlmený mosadzný akcent.
+   Bez sýtych a svietivých farieb, zaoblenie najviac 4 px.
+   Obrazové plochy sú riešené vlastnou kompozíciou: vrstvený
+   gradient, vlásočnicová mriežka, kruhové výseče a veľká typografia.
+   ------------------------------------------------------------------ */
+
+:root{
+  /* bridlica — svetlá časť */
+  --paper:       #f5f6f8;
+  --paper-2:     #ebedf0;
+  --paper-3:     #dfe2e6;
+  --surface:     #ffffff;
+  --line:        #d6dade;
+  --line-2:      #c0c5cb;
+  --line-input:  #868d95;
+
+  /* text na svetlom */
+  --ink:         #14181c;   /* 16,2:1 na --paper */
+  --ink-mut:     #535a62;   /* 6,4:1 na --paper, 5,9:1 na --paper-2 */
+  --ink-mut-2:   #474e56;   /* 6,5:1 aj na najtmavšom mieste svetlých plôch */
+
+  /* bridlica — tmavá časť */
+  --dark:        #14181c;
+  --dark-2:      #1a1f24;
+  --dark-3:      #222830;
+  --line-dark:   #2d343c;
+  --line-dark-2: #6e7780;   /* 3,4:1 aj na najsvetlejšom tmavom podklade */
+
+  /* text na tmavom */
+  --on-dark:     #c6ccd2;   /* 11,3:1 */
+  --on-dark-str: #f0f2f4;   /* 16,0:1 */
+  --on-dark-mut: #939aa2;   /* 6,4:1  */
+
+  /* mosadzný akcent */
+  --acc:         #7a5c22;   /* 5,8:1 na --paper, biely text na ňom 6,2:1 */
+  --acc-2:       #c9a465;   /* 7,9:1 na --dark */
+  --acc-soft:    rgba(122,92,34,.07);
+
+  /* jemné zrno pre kompozičné plochy (inline SVG, žiadny externý súbor) */
+  --grain: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='150'%20height='150'%3E%3Cfilter%20id='g'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='150'%20height='150'%20filter='url(%23g)'/%3E%3C/svg%3E");
+
+  --maxw: 1180px;
+  --gut: clamp(18px, 4vw, 44px);
+  --r: 3px;
+
+  --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+  overflow-x:clip;      /* clip nevytvára scrollovací kontajner, sticky hlavička ostáva funkčná */
+}
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth; }
+}
+
+body{
+  margin:0;
+  overflow-x:hidden;
+  overflow-x:clip;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{ max-width:100%; }
+
+h1,h2,h3,h4{
+  font-family:var(--serif);
+  font-weight:400;
+  line-height:1.16;
+  letter-spacing:-0.01em;
+  margin:0;
+  color:inherit;
+}
+
+p{ margin:0 0 1em; }
+p:last-child{ margin-bottom:0; }
+a{ color:inherit; }
+
+:focus-visible{
+  outline:2px solid var(--acc);
+  outline-offset:3px;
+}
+.band-dark :focus-visible,
+.plate-dark :focus-visible{ outline-color:var(--acc-2); }
+
+.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+.wrap{
+  width:100%;
+  max-width:var(--maxw);
+  margin-inline:auto;
+  padding-inline:var(--gut);
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:400;
+  background:var(--dark); color:var(--on-dark-str); padding:12px 18px; font-weight:600;
+}
+.skip:focus{ left:12px; top:12px; }
+
+/* ================= HORNÝ PÁSIK UKÁŽKY + NAVIGÁCIA ================= */
+
+.topstack{ position:sticky; top:0; z-index:120; }
+
+.demobar{
+  background:var(--dark);
+  color:var(--on-dark);
+  font-size:13px;
+  letter-spacing:.02em;
+  border-bottom:1px solid var(--line-dark);
+}
+.demobar .wrap{
+  display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+  gap:6px 18px; padding-block:9px; text-align:center;
+}
+.demobar .tag{
+  font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; font-weight:600;
+  color:var(--acc-2); border:1px solid rgba(201,164,101,.42);
+  padding:4px 9px 3px; border-radius:2px; white-space:nowrap;
+}
+.demobar .long{ color:var(--on-dark); }
+.demobar a{ text-decoration:none; }
+.demobar .tel{ color:var(--on-dark-str); border-bottom:1px solid rgba(201,164,101,.55); white-space:nowrap; }
+.demobar .tel:hover{ color:var(--acc-2); border-bottom-color:var(--acc-2); }
+.demobar .site{
+  color:var(--dark); background:var(--acc-2);
+  padding:3px 11px; border-radius:2px; font-weight:600; white-space:nowrap;
+  letter-spacing:.03em;
+}
+.demobar .site:hover{ background:#d8b87e; color:var(--dark); }
+
+@media (max-width: 700px){
+  .demobar{ font-size:12px; line-height:1.45; }
+  .demobar .wrap{ gap:5px 12px; padding-block:8px; }
+}
+@media (max-width: 430px){
+  .demobar{ font-size:11.5px; }
+  .demobar .wrap{ gap:5px 10px; }
+  .demobar .site{ padding:2px 8px; }
+  .demobar .tag{ font-size:9.5px; letter-spacing:.18em; padding:3px 7px 2px; }
+}
+
+.nav{
+  background:rgba(247,246,243,.97);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{ display:flex; align-items:center; gap:18px; min-height:64px; }
+
+.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; margin-right:auto; }
+.brand-mark{ flex:none; }
+.brand-txt{ display:flex; flex-direction:column; line-height:1.05; }
+.brand-name{ font-family:var(--serif); font-size:21px; letter-spacing:.16em; color:var(--ink); }
+.brand-sub{
+  font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-mut); margin-top:5px;
+}
+
+.menu{ display:flex; align-items:center; gap:2px; }
+.menu a{
+  text-decoration:none; color:var(--ink); font-size:14.5px;
+  padding:10px 11px; position:relative; white-space:nowrap;
+}
+.menu a::after{
+  content:""; position:absolute; left:11px; right:11px; bottom:5px; height:1px;
+  background:var(--acc); transform:scaleX(0); transform-origin:left;
+}
+.menu a:hover::after,
+.menu a[aria-current="true"]::after{ transform:scaleX(1); }
+.menu a[aria-current="true"]{ color:var(--acc); }
+
+/* telefón a hlavné tlačidlo sú mimo rozbaľovacieho menu, takže ostávajú
+   viditeľné na každej šírke obrazovky vrátane mobilu */
+.nav-act{ display:flex; align-items:center; gap:10px; margin-left:14px; }
+
+.nav .nav-act .nav-tel{
+  display:inline-flex; flex-direction:column; gap:2px; text-decoration:none;
+  white-space:nowrap; padding:6px 4px;
+}
+.nav .nav-act .nav-tel .l{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut-2);
+}
+.nav .nav-act .nav-tel .v{ font-family:var(--serif); font-size:17px; color:var(--ink); }
+.nav .nav-act .nav-tel:hover .v{ color:var(--acc); }
+
+/* Hlavné tlačidlo. Dvojtriedny selektor s prefixom .nav má vyššiu
+   špecificitu než akékoľvek pravidlo pre odkazy, takže biely text
+   na mosadznom podklade sa nedá prebiť (kontrast 6,2:1). */
+.nav .nav-act .nav-cta{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--acc); border:1px solid var(--acc); color:#ffffff;
+  padding:11px 18px; font-size:14.5px; font-weight:600; letter-spacing:.01em;
+  text-decoration:none; border-radius:2px; white-space:nowrap;
+}
+.nav .nav-act .nav-cta:hover{ background:#63491a; border-color:#63491a; color:#ffffff; }
+
+.burger{
+  display:none; background:transparent; border:1px solid var(--line-2);
+  color:var(--ink); width:46px; height:42px; border-radius:2px; cursor:pointer;
+  align-items:center; justify-content:center;
+}
+.burger:hover{ border-color:var(--ink); }
+
+@media (prefers-reduced-motion: no-preference){
+  .menu a::after{ transition:transform .22s ease; }
+  .btn, .nav-cta, .demobar .site{ transition:background-color .18s ease, color .18s ease, border-color .18s ease; }
+}
+
+@media (max-width: 1180px){
+  .nav{ position:relative; }
+  .nav-in{ min-height:58px; }
+  .burger{ display:inline-flex; order:4; }
+  .nav-act{ order:3; }
+  .menu{
+    display:none; position:absolute; left:0; right:0; top:100%;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:4px var(--gut) 16px;
+    box-shadow:0 22px 34px -26px rgba(0,0,0,.5);
+  }
+  .menu.is-open{ display:flex; }
+  .menu a{ padding:14px 2px; border-bottom:1px solid var(--line); font-size:16px; }
+  .menu a::after{ display:none; }
+}
+/* pod 700 px sa telefón a tlačidlo presunú do druhého riadku hlavičky,
+   aby sa na úzkom displeji zmestili celé a nikam sa neschovali */
+@media (max-width: 700px){
+  .nav-in{ flex-wrap:wrap; padding-bottom:10px; column-gap:10px; }
+  .burger{ order:2; }
+  .nav-act{ order:3; width:100%; margin-left:0; gap:8px; }
+  .nav .nav-act .nav-tel{
+    flex:none; flex-direction:row; align-items:center;
+    border:1px solid var(--line-2); border-radius:2px; padding:9px 13px;
+  }
+  .nav .nav-act .nav-tel .l{ display:none; }
+  .nav .nav-act .nav-tel .v{ line-height:1.2; }
+  .nav .nav-act .nav-cta{ flex:1 1 auto; padding:12px 10px; }
+}
+@media (max-width: 380px){
+  .nav .nav-act .nav-tel .v{ font-size:15.5px; }
+  .nav .nav-act .nav-tel{ padding:9px 10px; }
+  .nav .nav-act .nav-cta{ font-size:14px; padding:12px 6px; }
+}
+/* ================= SPOLOČNÉ SEKCIE ================= */
+
+section{ scroll-margin-top:calc(var(--stack, 112px) + 12px); }
+
+.sec{ padding:clamp(56px, 7vw, 96px) 0; border-top:1px solid var(--line); }
+.band-alt{ background:var(--paper-2); }
+.band-dark{ background:var(--dark); color:var(--on-dark); border-top:0; }
+.band-dark h2,.band-dark h3{ color:var(--on-dark-str); }
+
+.sec-head{
+  display:grid; grid-template-columns:190px 1fr; gap:clamp(18px,3vw,44px);
+  padding-bottom:clamp(28px,4vw,44px);
+  margin-bottom:clamp(28px,4vw,44px);
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.band-dark .sec-head{ border-bottom-color:var(--line-dark); }
+@media (max-width: 860px){
+  .sec-head{ grid-template-columns:1fr; gap:14px; }
+}
+
+.sec-idx{
+  display:flex; align-items:baseline; gap:12px; margin:0;
+  font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mut);
+  padding-top:9px;
+}
+.band-dark .sec-idx{ color:var(--on-dark-mut); }
+.sec-idx b{ color:var(--acc); font-weight:600; letter-spacing:.12em; }
+.band-dark .sec-idx b{ color:var(--acc-2); }
+
+.sec-h{ font-size:clamp(28px, 4vw, 46px); letter-spacing:-0.022em; }
+.lead{ font-size:clamp(16.5px,1.5vw,18.5px); color:var(--ink-mut); max-width:62ch; margin-top:16px; }
+.band-dark .lead{ color:var(--on-dark); }
+
+.sub-h{
+  font-size:clamp(20px,2.2vw,24px);
+  margin:clamp(38px,4.4vw,54px) 0 18px;
+  padding-top:clamp(26px,3vw,34px);
+  border-top:1px solid var(--line);
+}
+.band-dark .sub-h{ border-top-color:var(--line-dark); }
+
+/* ---------------- tlačidlá ----------------
+   Zámerne dvojtriedne selektory (.btn.btn-primary …). Majú vyššiu
+   špecificitu než ktorékoľvek pravidlo pre odkazy v sekciách
+   (.foot-grid a, .author-data a, .menu a …), takže farba textu
+   tlačidla sa nikdy neprebije farbou odkazu a text ostane čitateľný. */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 24px; font-size:15px; font-weight:600; font-family:var(--sans);
+  letter-spacing:.02em;
+  text-decoration:none; border-radius:2px; cursor:pointer; border:1px solid transparent;
+}
+.btn.btn-primary{ background:var(--ink); color:#ffffff; border-color:var(--ink); }
+.btn.btn-primary:hover{ background:#000000; border-color:#000000; color:#ffffff; }
+.btn.btn-acc{ background:var(--acc); color:#ffffff; border-color:var(--acc); }
+.btn.btn-acc:hover{ background:#63491a; border-color:#63491a; color:#ffffff; }
+.btn.btn-line{ background:transparent; color:var(--ink); border-color:var(--line-input); }
+.btn.btn-line:hover{ border-color:var(--ink); background:transparent; color:var(--ink); }
+.btn.btn-light{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+.btn.btn-light:hover{ background:#ffffff; border-color:#ffffff; color:var(--ink); }
+.btn.btn-ghost{ background:transparent; color:var(--on-dark-str); border-color:var(--line-dark-2); }
+.btn.btn-ghost:hover{ border-color:var(--acc-2); color:var(--acc-2); background:transparent; }
+/* akcentové tlačidlo na tmavom páse: tmavý text na mosadzi, 7,9:1 */
+.btn.btn-acc2{ background:var(--acc-2); color:#14181c; border-color:var(--acc-2); }
+.btn.btn-acc2:hover{ background:#d8b87e; border-color:#d8b87e; color:#14181c; }
+
+/* ================= HERO — obálka časopisu =================
+   Obrovská sadzba nadpisu prekrýva veľkú farebnú plochu vpravo hore,
+   v pravom dolnom rohu je malý blok s najdôležitejším údajom. */
+
+.hero{
+  position:relative;
+  padding:clamp(28px,4vw,58px) 0 clamp(40px,5vw,74px);
+}
+.hero-plane{
+  position:absolute; z-index:0; top:0; right:0;
+  width:min(62%, 740px);
+  height:clamp(232px, 30vw, 400px);
+  pointer-events:none;
+}
+.hero-plane svg{ display:block; width:100%; height:100%; }
+@media (max-width: 720px){
+  .hero-plane{ width:min(74%, 330px); height:clamp(168px, 40vw, 258px); }
+}
+.hero-in{ position:relative; z-index:1; }
+
+.hero-kicker{
+  margin:0 0 clamp(18px,2.6vw,32px);
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; color:var(--ink-mut-2);
+}
+.hero-kicker::before{
+  content:""; width:clamp(26px,5vw,64px); height:1px; background:var(--acc); flex:none;
+}
+
+h1{
+  font-size:clamp(2.6rem, 11.4vw, 8rem);
+  line-height:0.98;
+  letter-spacing:-0.035em;
+  margin:0;
+  color:var(--ink);
+}
+h1 .l{ display:block; }
+h1 .l2{ margin-left:clamp(0px, 4.5vw, 96px); }
+h1 .l3{
+  font-family:var(--sans); font-weight:600;
+  font-size:clamp(14px, 2.2vw, 25px); letter-spacing:.2em; text-transform:uppercase;
+  line-height:1.3; color:var(--acc);
+  margin:clamp(14px,1.8vw,22px) 0 0 clamp(0px, 9vw, 192px);
+}
+
+.hero-rule{
+  height:1px; background:var(--line-2); border:0; margin:clamp(26px,3.4vw,46px) 0 0;
+}
+.hero-sub{
+  font-family:var(--serif);
+  font-size:clamp(19px,2.4vw,28px);
+  line-height:1.3;
+  color:var(--ink-mut-2);
+  margin:clamp(16px,2vw,24px) 0 0;
+  max-width:36ch;
+}
+
+.hero-body{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,296px);
+  gap:clamp(26px,4vw,56px); align-items:end;
+  margin-top:clamp(28px,3.8vw,48px);
+}
+@media (max-width: 900px){
+  .hero-body{ grid-template-columns:1fr; align-items:stretch; }
+}
+.hero-lead{
+  font-size:clamp(16.5px,1.6vw,19px);
+  color:var(--ink-mut);
+  max-width:58ch;
+  margin:0 0 26px;
+}
+.hero-cta{ display:flex; flex-wrap:wrap; gap:12px; }
+.hero-meta{
+  margin:22px 0 0; font-size:14px; color:var(--ink-mut-2); max-width:60ch;
+}
+
+.hero-badge{
+  border:1px solid var(--ink); border-top:3px solid var(--acc);
+  border-radius:var(--r); background:var(--surface);
+  padding:clamp(18px,2.2vw,24px);
+}
+.hero-badge .lbl{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ink-mut-2);
+}
+.hero-badge .v{
+  display:flex; align-items:baseline; gap:8px; margin:12px 0 0; font-family:var(--serif);
+}
+.hero-badge .v b{
+  font-weight:400; font-size:clamp(46px,6vw,62px); line-height:1; color:var(--ink);
+  letter-spacing:-0.03em;
+}
+.hero-badge .v i{ font-style:normal; font-size:21px; color:var(--acc); }
+.hero-badge .n{
+  margin:14px 0 0; padding-top:13px; border-top:1px solid var(--line);
+  font-size:13.5px; line-height:1.5; color:var(--ink-mut-2);
+}
+
+/* pás s kľúčovými číslami */
+.figures{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--paper-2); }
+.figures-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+.figures-grid > div{
+  padding:clamp(22px,2.6vw,30px) clamp(16px,2vw,28px);
+  border-right:1px solid var(--line);
+}
+.figures-grid > div:last-child{ border-right:0; }
+.fig-v{
+  font-family:var(--serif); font-size:clamp(26px,3.2vw,36px); color:var(--ink);
+  display:block; line-height:1.1;
+}
+.fig-l{ display:block; margin-top:8px; font-size:14px; color:var(--ink-mut); }
+@media (max-width: 820px){
+  .figures-grid{ grid-template-columns:repeat(2,1fr); }
+  .figures-grid > div{ border-bottom:1px solid var(--line); }
+  .figures-grid > div:nth-child(2n){ border-right:0; }
+  .figures-grid > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width: 460px){
+  .figures-grid{ grid-template-columns:1fr; }
+  .figures-grid > div{ border-right:0; }
+  .figures-grid > div:last-child{ border-bottom:0; }
+}
+
+/* ================= KOMPOZIČNÉ PLOCHY ================= */
+
+.plate{
+  position:relative; overflow:hidden;
+  border:1px solid var(--line); border-radius:var(--r);
+  background:
+    repeating-linear-gradient(90deg, rgba(20,24,28,.030) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(20,24,28,.022) 0 1px, transparent 1px 34px),
+    linear-gradient(152deg, var(--paper) 0%, var(--paper-2) 48%, var(--paper-3) 100%);
+}
+.plate::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
+  background-image:var(--grain); background-size:150px 150px; opacity:.05;
+}
+.plate-dark{
+  border-color:#333029;
+  color:var(--on-dark);
+  background:
+    repeating-linear-gradient(90deg, rgba(201,164,101,.055) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(201,164,101,.040) 0 1px, transparent 1px 34px),
+    linear-gradient(152deg, #161a1e 0%, #1e2228 52%, #2b2a23 100%);
+}
+.plate-dark::after{ opacity:.07; }
+
+.plate-geo{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.plate-in{ position:relative; z-index:1; padding:clamp(26px,4vw,54px); }
+
+.plate-kicker{
+  margin:0 0 14px; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-mut-2);
+}
+.plate-dark .plate-kicker{ color:var(--acc-2); }
+.plate-h{ font-size:clamp(24px,3.2vw,34px); max-width:22ch; }
+.plate-dark .plate-h{ color:var(--on-dark-str); }
+.plate-note{ margin-top:16px; font-size:14.5px; color:var(--ink-mut-2); max-width:62ch; }
+.plate-dark .plate-note{ color:var(--on-dark); }
+
+/* plocha „mesačný rytmus“ */
+.plate-band{ padding-top:clamp(40px,5vw,64px); }
+.cyklus-grid{
+  list-style:none; margin:clamp(26px,3.4vw,40px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(201,164,101,.3);
+}
+.cyklus-grid li{
+  padding:clamp(18px,2.2vw,24px) clamp(14px,1.8vw,22px) 0;
+  border-left:1px solid rgba(201,164,101,.3);
+}
+.cyklus-grid li:first-child{ border-left:0; padding-left:0; }
+.cyklus-day{
+  display:block; font-family:var(--serif); font-size:clamp(38px,5vw,54px);
+  line-height:1; color:var(--acc-2);
+}
+.cyklus-t{ display:block; margin-top:14px; font-size:16px; color:var(--on-dark-str); }
+.cyklus-d{ display:block; margin-top:6px; font-size:14px; color:var(--on-dark); }
+@media (max-width: 780px){
+  .cyklus-grid{ grid-template-columns:repeat(2,1fr); }
+  .cyklus-grid li:nth-child(2n+1){ border-left:0; padding-left:0; }
+  .cyklus-grid li:nth-child(n+3){ margin-top:22px; padding-top:22px; border-top:1px solid rgba(201,164,101,.3); }
+}
+@media (max-width: 440px){
+  .cyklus-grid{ grid-template-columns:1fr; }
+  .cyklus-grid li{ border-left:0; padding-left:0; }
+  .cyklus-grid li + li{ margin-top:20px; padding-top:20px; border-top:1px solid rgba(201,164,101,.3); }
+}
+
+/* plocha „rok“ — dvanásť mesiacov ako vlásočnicová mriežka */
+.rok-grid{
+  display:grid; grid-template-columns:repeat(12,1fr);
+  margin-top:clamp(26px,3.4vw,40px);
+  border-left:1px solid var(--line-2); border-bottom:1px solid var(--line-2);
+}
+.rok-grid > div{
+  border-right:1px solid var(--line-2);
+  height:clamp(118px,15vw,168px);
+  display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
+  padding-bottom:9px; gap:9px;
+}
+.rok-bar{ width:52%; background:rgba(122,92,34,.13); border-top:2px solid var(--acc); }
+.rok-grid .hi .rok-bar{ background:rgba(122,92,34,.24); }
+.rok-m{ font-size:11.5px; letter-spacing:.1em; color:var(--ink-mut-2); }
+.rok-grid .hi .rok-m{ color:var(--acc); font-weight:600; }
+.rok-key{
+  list-style:none; margin:20px 0 0; padding:0;
+  display:flex; flex-wrap:wrap; gap:8px 26px; font-size:14.5px; color:var(--ink-mut-2);
+}
+.rok-key b{ color:var(--acc); font-weight:600; letter-spacing:.08em; }
+@media (max-width: 640px){
+  .rok-grid{ grid-template-columns:repeat(6,1fr); }
+  .rok-grid > div{ height:clamp(96px,24vw,130px); border-top:1px solid var(--line-2); }
+}
+
+/* plocha v kontakte */
+.plate-quote{
+  font-family:var(--serif); font-size:clamp(21px,2.6vw,27px); line-height:1.28;
+  margin:0; max-width:20ch; color:var(--ink);
+}
+.plate-facts{
+  list-style:none; margin:clamp(24px,3vw,32px) 0 0; padding:0;
+  border-top:1px solid var(--line-2);
+}
+.plate-facts li{
+  display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+  padding:11px 0; border-bottom:1px solid var(--line-2); font-size:15px; color:var(--ink-mut-2);
+}
+.plate-facts b{ font-family:var(--serif); font-weight:400; font-size:17px; color:var(--ink); text-align:right; }
+
+/* pás s adresou a otváracími hodinami */
+.addr{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line); background:var(--surface);
+  border-radius:var(--r);
+  margin-bottom:clamp(28px,3.6vw,46px);
+}
+.addr > div{ padding:clamp(18px,2.2vw,26px); border-right:1px solid var(--line); }
+.addr > div:last-child{ border-right:0; }
+.addr .lbl{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ink-mut-2); margin-bottom:11px;
+}
+.addr .v{
+  display:block; font-family:var(--serif); font-size:19px; line-height:1.34; color:var(--ink);
+}
+.addr a.v{ text-decoration:none; border-bottom:1px solid var(--line-2); width:max-content; }
+.addr a.v:hover{ color:var(--acc); border-bottom-color:var(--acc); }
+.addr .s{ display:block; margin-top:9px; font-size:13.5px; line-height:1.5; color:var(--ink-mut); }
+@media (max-width: 900px){
+  .addr{ grid-template-columns:1fr 1fr; }
+  .addr > div{ border-bottom:1px solid var(--line); }
+  .addr > div:nth-child(2n){ border-right:0; }
+  .addr > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width: 520px){
+  .addr{ grid-template-columns:1fr; }
+  .addr > div{ border-right:0; border-bottom:1px solid var(--line); }
+  .addr > div:last-child{ border-bottom:0; }
+}
+
+/* úzky odstavec a vnorený odkaz */
+.p-narrow{ font-size:15.5px; color:var(--ink-mut); max-width:64ch; }
+.band-dark .p-narrow{ color:var(--on-dark); }
+a.inl{ color:var(--acc); text-decoration:none; border-bottom:1px solid rgba(122,92,34,.42); white-space:nowrap; }
+a.inl:hover{ border-bottom-color:var(--acc); }
+.band-dark a.inl{ color:var(--acc-2); border-bottom-color:rgba(201,164,101,.5); }
+
+/* ================= KARTY ================= */
+
+.cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(16px,2vw,24px); }
+@media (max-width: 940px){ .cards{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 620px){ .cards{ grid-template-columns:1fr; } }
+
+.card{
+  position:relative; overflow:hidden;
+  border:1px solid var(--line); border-radius:var(--r);
+  background:linear-gradient(158deg, var(--surface) 0%, #f1f3f5 56%, #e4e8ec 100%);
+  padding:clamp(20px,2.4vw,28px);
+}
+.card::before,
+.card::after{
+  content:""; position:absolute; right:0; top:0; z-index:0; pointer-events:none;
+}
+.card::before{
+  width:clamp(84px,9vw,124px); height:clamp(84px,9vw,124px);
+  border-left:1px solid rgba(122,92,34,.20);
+  border-bottom:1px solid rgba(122,92,34,.20);
+}
+.card::after{
+  width:clamp(32px,4vw,50px); height:clamp(32px,4vw,50px);
+  background:rgba(122,92,34,.08);
+}
+.card > *{ position:relative; z-index:1; }
+.card-no{ font-family:var(--serif); font-size:13px; letter-spacing:.18em; color:var(--acc); }
+.card h3{ font-size:21px; margin:10px 0 10px; max-width:17ch; }
+.card p{ font-size:15px; color:var(--ink-mut-2); }
+.card ul{ list-style:none; margin:16px 0 0; padding:14px 0 0; border-top:1px solid var(--line); }
+.card li{ font-size:14.5px; color:var(--ink-mut-2); padding-left:16px; position:relative; }
+.card li + li{ margin-top:7px; }
+.card li::before{
+  content:""; position:absolute; left:0; top:.68em; width:7px; height:1px; background:var(--acc);
+}
+
+/* karta služby: geometrická značka, odrážky a cena v pätke karty */
+.card-ico{
+  display:flex; align-items:center; justify-content:center;
+  width:46px; height:46px; border:1px solid var(--line-2); border-radius:2px;
+  background:var(--surface);
+}
+.card-ico svg{ display:block; }
+.card-price{
+  margin-top:18px; padding-top:14px; border-top:1px solid var(--line);
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+}
+.card-price .k{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mut-2); }
+.card-price .v{ font-family:var(--serif); font-size:19px; color:var(--acc); text-align:right; }
+
+/* miesto pre fotografiu: vlastná kompozícia, nie ilustrácia predmetu */
+.obraz{ margin:0; }
+.obraz .ram{
+  position:relative; overflow:hidden; border:1px solid var(--line); border-radius:var(--r);
+  background:linear-gradient(154deg, var(--paper) 0%, var(--paper-2) 52%, var(--paper-3) 100%);
+}
+.obraz .ram::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--grain); background-size:150px 150px; opacity:.05;
+}
+.obraz .ram svg{ display:block; width:100%; height:auto; }
+.obraz figcaption{
+  margin-top:10px; font-size:13.5px; line-height:1.5; color:var(--ink-mut);
+}
+.band-dark .obraz figcaption{ color:var(--on-dark-mut); }
+
+/* orientačný plán príchodu */
+.plan{ border:1px solid var(--line); border-radius:var(--r); background:var(--surface); overflow:hidden; }
+.plan svg{ display:block; width:100%; height:auto; }
+.plan-key{
+  list-style:none; margin:0; padding:14px clamp(14px,2vw,20px);
+  border-top:1px solid var(--line); background:var(--paper);
+  display:flex; flex-wrap:wrap; gap:8px 22px; font-size:13.5px; color:var(--ink-mut-2);
+}
+.plan-key b{ color:var(--acc); font-weight:600; letter-spacing:.06em; }
+
+/* záverečný pás s hlavnou akciou */
+.cta-band{ background:var(--dark); color:var(--on-dark); }
+.cta-in{
+  display:grid; grid-template-columns:1.25fr auto; gap:clamp(20px,3vw,44px);
+  align-items:center; padding-block:clamp(38px,5vw,62px);
+}
+@media (max-width: 860px){ .cta-in{ grid-template-columns:1fr; } }
+.cta-in h2{ font-size:clamp(24px,3.2vw,36px); color:var(--on-dark-str); }
+.cta-in p{ margin:14px 0 0; font-size:16px; color:var(--on-dark); max-width:56ch; }
+.cta-btns{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* ================= TABUĽKY ================= */
+
+.tblwrap{
+  border:1px solid var(--line);
+  background:var(--surface);
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+table{ width:100%; border-collapse:collapse; font-size:15.5px; }
+caption{
+  text-align:left; padding:15px 20px; font-size:13.5px; color:var(--ink-mut);
+  border-bottom:1px solid var(--line); background:var(--paper);
+}
+thead th{
+  background:var(--paper-2); color:var(--ink);
+  font-family:var(--serif); font-weight:400; font-size:17px; text-align:left;
+  padding:14px 20px; border-bottom:1px solid var(--line-2); vertical-align:bottom;
+}
+thead th small{
+  display:block; font-family:var(--sans); font-size:12px; color:var(--ink-mut);
+  letter-spacing:.06em; margin-top:5px;
+}
+tbody th, tbody td{
+  padding:15px 20px; text-align:left; vertical-align:top;
+  border-bottom:1px solid var(--line);
+}
+tbody th{ font-weight:600; font-size:15px; color:var(--ink); }
+tbody td{ color:var(--ink-mut); }
+tbody tr:last-child th, tbody tr:last-child td{ border-bottom:0; }
+td.val, th.val{ color:var(--ink); white-space:nowrap; }
+td.acc{ color:var(--acc); font-weight:600; }
+col.hi{ background:var(--acc-soft); }
+.t-no{ color:var(--acc); font-size:13px; letter-spacing:.12em; width:56px; }
+
+.tbl-min{ min-width:720px; }
+.tbl-note{ margin-top:16px; font-size:13.5px; color:var(--ink-mut); max-width:70ch; }
+
+/* na úzkych displejoch sa riadkové tabuľky rozložia pod seba */
+@media (max-width: 780px){
+  .tbl-stack thead{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap;
+  }
+  .tbl-stack tr{ display:block; border-bottom:1px solid var(--line); padding:18px 18px 20px; }
+  .tbl-stack tr:last-child{ border-bottom:0; }
+  .tbl-stack th, .tbl-stack td{ display:block; border:0; padding:0; }
+  .tbl-stack tbody th{ font-size:17px; font-family:var(--serif); font-weight:400; margin-bottom:10px; }
+  .tbl-stack td{ margin-top:10px; }
+  .tbl-stack td::before{
+    content:attr(data-l); display:block;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mut);
+    margin-bottom:3px;
+  }
+  .tbl-stack .t-no{ width:auto; margin-bottom:4px; }
+  .tbl-stack td.val, .tbl-stack th.val{ white-space:normal; }
+}
+
+/* ================= KALKULAČKA (tmavý široký blok) ================= */
+
+.calc-grid{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line-dark);
+  border:1px solid var(--line-dark);
+  border-radius:var(--r);
+}
+.calc-cell{ background:var(--dark-2); padding:clamp(18px,2.2vw,26px); }
+@media (max-width: 1000px){ .calc-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 600px){ .calc-grid{ grid-template-columns:1fr; } }
+
+.calc-grid fieldset{ border:0; margin:0; padding:0; }
+.calc-grid legend{
+  padding:0; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:14px;
+}
+
+.opt{ display:grid; gap:8px; }
+.opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+.opt label{
+  display:block; cursor:pointer; padding:12px 14px;
+  border:1px solid var(--line-dark-2); border-radius:2px;
+  font-size:15px; color:var(--on-dark); background:var(--dark-3);
+}
+.opt label small{ display:block; font-size:12.5px; color:var(--on-dark-mut); margin-top:2px; }
+.opt input:checked + label{ border-color:var(--acc-2); color:var(--on-dark-str); background:#2a2721; }
+.opt input:checked + label small{ color:var(--acc-2); }
+.opt input:focus-visible + label{ outline:2px solid var(--acc-2); outline-offset:3px; }
+.opt label:hover{ border-color:var(--acc-2); }
+
+.ctl-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:10px; }
+.ctl-lab{ font-size:14px; color:var(--on-dark); }
+.ctl-val{ font-family:var(--serif); font-size:24px; color:var(--acc-2); }
+
+input[type="range"]{
+  -webkit-appearance:none; appearance:none; width:100%; height:26px;
+  background:transparent; cursor:pointer; margin:0;
+}
+input[type="range"]::-webkit-slider-runnable-track{ height:3px; background:var(--line-dark-2); }
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:14px; height:24px; margin-top:-11px; border-radius:2px;
+  background:var(--acc-2); border:1px solid var(--dark-2);
+}
+input[type="range"]::-moz-range-track{ height:3px; background:var(--line-dark-2); }
+input[type="range"]::-moz-range-thumb{
+  width:14px; height:24px; border-radius:2px; background:var(--acc-2);
+  border:1px solid var(--dark-2);
+}
+.scale{ display:flex; justify-content:space-between; font-size:12.5px; color:var(--on-dark-mut); }
+
+.stepper{ display:flex; align-items:center; gap:8px; }
+.stepper button{
+  width:44px; height:44px; border:1px solid var(--line-dark-2); background:var(--dark-3);
+  color:var(--on-dark-str); font-size:20px; line-height:1; cursor:pointer; border-radius:2px;
+  font-family:var(--sans);
+}
+.stepper button:hover{ border-color:var(--acc-2); color:var(--acc-2); }
+.stepper input{
+  width:84px; height:44px; text-align:center; font-size:18px; font-family:var(--serif);
+  background:var(--dark); color:var(--on-dark-str);
+  border:1px solid var(--line-dark-2); border-radius:2px;
+}
+.ctl-hint{ margin-top:10px; font-size:13px; color:var(--on-dark-mut); }
+
+.chk{
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer;
+  padding:12px 14px; border:1px solid var(--line-dark-2); border-radius:2px; background:var(--dark-3);
+}
+.chk:hover{ border-color:var(--acc-2); }
+.chk input{ width:19px; height:19px; margin:2px 0 0; accent-color:var(--acc-2); flex:none; }
+.chk span{ font-size:15px; color:var(--on-dark); }
+.chk small{ display:block; font-size:12.5px; color:var(--on-dark-mut); margin-top:2px; }
+
+/* výsledok */
+.calc-out{
+  margin-top:22px; border:1px solid var(--line-dark-2); border-radius:var(--r);
+  background:var(--dark-2);
+  display:grid; grid-template-columns:minmax(230px,.8fr) 1.2fr;
+}
+@media (max-width: 860px){ .calc-out{ grid-template-columns:1fr; } }
+.out-sum{
+  padding:clamp(20px,2.6vw,30px);
+  border-right:1px solid var(--line-dark);
+}
+@media (max-width: 860px){
+  .out-sum{ border-right:0; border-bottom:1px solid var(--line-dark); }
+}
+.out-lab{ font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--on-dark-mut); }
+.out-price{ display:flex; align-items:baseline; gap:10px; margin-top:12px; }
+.out-price b{
+  font-family:var(--serif); font-weight:400; font-size:clamp(42px,6vw,58px);
+  color:var(--acc-2); line-height:1;
+}
+.out-price span{ font-size:15px; color:var(--on-dark-mut); }
+.out-tier{
+  display:inline-block; margin-top:14px; font-size:12.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--on-dark-str);
+  border:1px solid var(--line-dark-2); padding:5px 11px; border-radius:2px;
+}
+.out-rows{ padding:clamp(20px,2.6vw,30px); }
+.out-rows ul{ list-style:none; margin:0; padding:0; }
+.out-rows li{
+  display:flex; justify-content:space-between; gap:16px;
+  padding:10px 0; border-bottom:1px solid var(--line-dark); font-size:15px; color:var(--on-dark);
+}
+.out-rows li:last-child{ border-bottom:0; }
+.out-rows li span:first-child{ color:var(--on-dark-mut); }
+.out-note{ margin-top:16px; font-size:13.5px; color:var(--on-dark-mut); }
+.calc-foot{
+  margin-top:22px; display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px;
+  justify-content:space-between;
+}
+.calc-foot p{ margin:0; font-size:13.5px; color:var(--on-dark-mut); max-width:64ch; }
+.nojs-note{
+  margin-top:20px; padding:16px 18px; border:1px solid var(--line-dark);
+  font-size:14.5px; color:var(--on-dark);
+}
+
+/* ================= PODKLADY, ZOZNAMY, ROLE ================= */
+
+.two{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,4vw,56px); }
+@media (max-width: 860px){ .two{ grid-template-columns:1fr; } }
+.two h3{ font-size:22px; letter-spacing:-0.012em; margin-bottom:16px; }
+.three{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px,3.4vw,44px); }
+@media (max-width: 940px){ .three{ grid-template-columns:1fr 1fr; } }
+@media (max-width: 620px){ .three{ grid-template-columns:1fr; } }
+.three h3{ font-size:20px; letter-spacing:-0.012em; margin-bottom:14px; }
+
+.dl{ margin:0; }
+.dl dt{ font-weight:600; font-size:15.5px; padding-top:14px; }
+.dl dd{
+  margin:0; padding-bottom:14px; border-bottom:1px solid var(--line);
+  font-size:15px; color:var(--ink-mut); max-width:64ch;
+}
+.dl dd:last-of-type{ border-bottom:0; }
+.dl dd b{ color:var(--ink); font-weight:600; }
+
+.band-dark .dl dt{ color:var(--on-dark-str); }
+.band-dark .dl dd{ color:var(--on-dark); border-bottom-color:var(--line-dark); }
+.band-dark .dl dd b{ color:var(--on-dark-str); }
+
+.roles{ list-style:none; margin:0; padding:0; }
+.roles li{ padding:16px 0; border-bottom:1px solid var(--line); }
+.roles li:first-child{ border-top:1px solid var(--line); }
+.roles .role-t{ display:block; font-family:var(--serif); font-size:19px; color:var(--ink); }
+.roles .role-d{ display:block; margin-top:5px; font-size:14.5px; color:var(--ink-mut); max-width:62ch; }
+
+.ticks{ list-style:none; margin:0; padding:0; }
+.ticks li{ position:relative; padding:0 0 0 20px; font-size:15.5px; color:var(--ink-mut); max-width:68ch; }
+.ticks li + li{ margin-top:10px; }
+.ticks li::before{
+  content:""; position:absolute; left:0; top:.72em; width:9px; height:1px; background:var(--acc);
+}
+.band-dark .ticks li{ color:var(--on-dark); }
+.band-dark .ticks li::before{ background:var(--acc-2); }
+.ticks b{ color:var(--ink); font-weight:600; }
+.band-dark .ticks b{ color:var(--on-dark-str); }
+
+/* ================= OTÁZKY ================= */
+
+details{ border-bottom:1px solid var(--line); }
+details:first-of-type{ border-top:1px solid var(--line); }
+summary{
+  cursor:pointer; list-style:none; padding:20px 44px 20px 0; position:relative;
+  font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--ink);
+}
+summary::-webkit-details-marker{ display:none; }
+summary::after{
+  content:""; position:absolute; right:10px; top:50%; width:11px; height:11px;
+  margin-top:-8px;
+  border-right:1.5px solid var(--acc); border-bottom:1.5px solid var(--acc);
+  transform:rotate(45deg);
+}
+details[open] summary::after{ transform:rotate(225deg) translate(-3px,-3px); }
+@media (prefers-reduced-motion: no-preference){
+  summary::after{ transition:transform .2s ease; }
+}
+summary:hover{ color:var(--acc); }
+.faq-body{ padding:0 10% 24px 0; color:var(--ink-mut); font-size:15.5px; max-width:72ch; }
+.faq-body strong{ color:var(--ink); }
+@media (max-width: 700px){ .faq-body{ padding-right:0; } }
+
+/* ================= KONTAKT ================= */
+
+.contact{ display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(26px,4vw,56px); align-items:start; }
+@media (max-width: 940px){ .contact{ grid-template-columns:1fr; } }
+
+.cdata{ list-style:none; margin:0 0 28px; padding:0; }
+.cdata li{ padding:15px 0; border-bottom:1px solid var(--line); }
+.cdata li:first-child{ border-top:1px solid var(--line); }
+.cdata .lbl{
+  display:block; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ink-mut); margin-bottom:5px;
+}
+.cdata .val{ font-family:var(--serif); font-size:20px; color:var(--ink); }
+.cdata .cnote{ display:block; margin-top:6px; font-size:13px; line-height:1.5; color:var(--ink-mut); max-width:52ch; }
+.cdata a.val{ text-decoration:none; border-bottom:1px solid var(--line-2); }
+.cdata a.val:hover{ color:var(--acc); border-bottom-color:var(--acc); }
+
+form{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:clamp(20px,3vw,32px);
+}
+.frow{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width: 620px){ .frow{ grid-template-columns:1fr; } }
+.f{ margin-bottom:16px; }
+label.lab{ display:block; font-size:13.5px; color:var(--ink); margin-bottom:7px; }
+label.lab .opt-l{ color:var(--ink-mut); }
+label.lab .req{ color:var(--acc); }
+
+input[type="text"], input[type="email"], input[type="tel"], select, textarea{
+  width:100%; padding:12px 14px; font-size:15.5px; font-family:var(--sans);
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--line-input); border-radius:2px;
+}
+select{
+  appearance:none; -webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%, var(--ink) 50%),
+                   linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:calc(100% - 20px) 21px, calc(100% - 14px) 21px;
+  background-size:6px 6px, 6px 6px; background-repeat:no-repeat; padding-right:44px;
+}
+textarea{ min-height:130px; resize:vertical; }
+input::placeholder, textarea::placeholder{ color:#6b7075; }
+input:hover, select:hover, textarea:hover{ border-color:var(--ink); }
+
+.consent{
+  display:flex; gap:12px; align-items:flex-start; margin:4px 0 20px;
+  font-size:14px; color:var(--ink-mut);
+}
+.consent input{ width:19px; height:19px; accent-color:var(--acc); margin-top:2px; flex:none; }
+.form-intro{
+  margin:0 0 20px; padding-bottom:18px; border-bottom:1px solid var(--line);
+  font-size:14.5px; color:var(--ink-mut); max-width:58ch;
+}
+.form-intro b{ color:var(--ink); font-weight:600; }
+.form-note{ font-size:13px; color:var(--ink-mut); margin-top:14px; max-width:58ch; }
+
+.sent{
+  border:1px solid var(--acc); border-left:3px solid var(--acc); border-radius:var(--r);
+  background:var(--surface); padding:clamp(22px,3.4vw,34px);
+}
+.sent h3{ font-size:23px; margin-bottom:10px; }
+.sent p{ color:var(--ink-mut); font-size:15.5px; }
+.sent a{ color:var(--acc); }
+.again{
+  margin-top:18px; background:transparent; border:1px solid var(--line-input);
+  color:var(--ink); padding:12px 20px; cursor:pointer; border-radius:2px;
+  font-family:var(--sans); font-size:15px;
+}
+.again:hover{ border-color:var(--ink); }
+
+/* ================= AUTOR UKÁŽKY ================= */
+
+.author{ background:var(--dark-2); color:var(--on-dark); padding:clamp(52px,6vw,84px) 0; }
+.author h2{ color:var(--on-dark-str); font-size:clamp(26px,3.4vw,38px); }
+.authorbox{
+  border:1px solid var(--line-dark); border-left:3px solid var(--acc-2);
+  border-radius:var(--r); background:var(--dark);
+  padding:clamp(24px,3.4vw,44px);
+}
+.author .eyebrow{
+  margin:0 0 16px; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--acc-2);
+}
+.author .lead{ color:var(--on-dark); margin-top:14px; }
+.author-num{
+  list-style:none; margin:clamp(26px,3vw,34px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--line-dark); border:1px solid var(--line-dark); border-radius:var(--r);
+}
+.author-num li{ background:var(--dark); padding:20px clamp(18px,2vw,24px); }
+.author-num .k{
+  display:block; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--on-dark-mut);
+}
+.author-num .n{
+  display:block; margin-top:10px; font-family:var(--serif); line-height:1;
+  font-size:clamp(28px,3.4vw,38px); color:var(--acc-2); letter-spacing:-0.02em;
+}
+.author-num .d{ display:block; margin-top:12px; font-size:14px; line-height:1.5; color:var(--on-dark); }
+@media (max-width: 760px){ .author-num{ grid-template-columns:1fr; } }
+
+.author-data{
+  list-style:none; margin:28px 0 0; padding:22px 0 0;
+  border-top:1px solid var(--line-dark);
+  display:grid; grid-template-columns:1fr 1fr; gap:0 clamp(20px,4vw,52px);
+}
+@media (max-width: 700px){ .author-data{ grid-template-columns:1fr; } }
+.author-data li{ padding:13px 0; border-bottom:1px solid var(--line-dark); }
+.author-data .lbl{
+  display:block; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:5px;
+}
+.author-data .val{
+  font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--on-dark-str);
+  overflow-wrap:anywhere; text-decoration:none;
+}
+.author-data a.val{ border-bottom:1px solid rgba(201,164,101,.5); }
+.author-data a.val:hover{ color:var(--acc-2); }
+.author-data .sub{ display:block; margin-top:5px; font-size:13.5px; color:var(--on-dark-mut); }
+.author-data .sub a{ color:var(--acc-2); }
+.author-foot{
+  margin-top:26px; display:flex; flex-wrap:wrap; align-items:center; gap:14px clamp(18px,3vw,30px);
+}
+.author-foot p{ margin:0; font-family:var(--serif); font-size:clamp(18px,2vw,21px); color:var(--on-dark-str); }
+
+/* ================= PÄTIČKA ================= */
+
+footer{ background:var(--dark); color:var(--on-dark); padding:clamp(44px,5vw,64px) 0 28px; }
+.foot-grid{
+  display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:clamp(24px,3.4vw,44px);
+  padding-bottom:32px; border-bottom:1px solid var(--line-dark);
+}
+@media (max-width: 900px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width: 520px){ .foot-grid{ grid-template-columns:1fr; } }
+.foot-grid h3{
+  font-family:var(--sans); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--on-dark-mut); margin-bottom:14px; font-weight:600;
+}
+.foot-brand{ font-family:var(--serif); font-size:21px; letter-spacing:.16em; color:var(--on-dark-str); }
+.foot-desc{ margin-top:12px; font-size:14.5px; color:var(--on-dark-mut); max-width:40ch; }
+.foot-grid ul{ list-style:none; margin:0; padding:0; }
+.foot-grid li{ padding:5px 0; }
+.foot-grid a{ color:var(--on-dark); text-decoration:none; font-size:15px; }
+.foot-grid a:hover{ color:var(--acc-2); }
+.foot-addr{ list-style:none; margin:0; padding:0; }
+.foot-addr li{ padding:6px 0; font-size:15px; line-height:1.5; color:var(--on-dark); }
+.foot-addr li span{ display:block; margin-top:3px; font-size:13.5px; color:var(--on-dark-mut); }
+.foot-addr a{ color:var(--on-dark-str); text-decoration:none; border-bottom:1px solid rgba(201,164,101,.5); }
+.foot-addr a:hover{ color:var(--acc-2); border-bottom-color:var(--acc-2); }
+.foot-note{
+  display:flex; flex-wrap:wrap; gap:12px 26px; justify-content:space-between;
+  padding-top:20px; font-size:13.5px; color:var(--on-dark-mut);
+}
+.foot-note a{ color:var(--acc-2); }
+.disclaimer{
+  margin-top:22px; padding:16px 18px; border:1px solid var(--line-dark);
+  font-size:13.5px; color:var(--on-dark-mut); border-radius:2px;
+}
+.disclaimer b{ color:var(--on-dark-str); }
+.disclaimer a{ color:var(--acc-2); }
+
+/* jemné nábehy pri scrollovaní */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{ opacity:0; transform:translateY(14px); }
+  .reveal.is-in{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease; }
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*4.35);return v.toLocaleString('pl-PL');}function __f(x){return Math.round(x).toLocaleString('pl-PL');}function __p(x){return Math.round(x*4.35);}function __c(x){return x*4.35;}var __m="zł";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Przejdź do treści</a>
+
+<div class="topstack">
+  <div class="demobar">
+    <div class="wrap">
+      <span class="tag">Przykładowa strona</span>
+      <span class="long">Taką stronę zrobię dla Państwa.</span>
+      <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+      <a class="site" href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Nawigacja główna">
+    <div class="wrap nav-in">
+      <a class="brand" href="#uvod" aria-label="SALDIA, księgowość i kadry — początek strony">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+            <rect x="0.6" y="0.6" width="32.8" height="32.8" rx="2" stroke="#14181c" stroke-width="1"/>
+            <path d="M8 12h18M8 17h18M8 22h11" stroke="#14181c" stroke-width="1.4"/>
+            <path d="M21 22h5" stroke="#7a5c22" stroke-width="1.4"/>
+          </svg>
+        </span>
+        <span class="brand-txt">
+          <span class="brand-name">SALDIA</span> <span class="brand-sub">Księgowość · Kraków</span>
+        </span>
+      </a>
+
+      <div class="menu" id="menu">
+        <a href="#sluzby">Usługi</a>
+        <a href="#cennik">Cennik</a>
+        <a href="#kalkulacka">Kalkulator</a>
+        <a href="#referencie">Referencje</a>
+        <a href="#otazky">Pytania</a>
+      </div>
+
+      <div class="nav-act">
+        <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+        <a class="nav-cta" href="#kontakt">Niezobowiązująca oferta</a>
+      </div>
+
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Otwórz menu">
+        <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
+          <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<noscript>
+  <style>
+    #burger{ display:none !important; }
+    #menu{ display:flex !important; position:static; flex-direction:row; flex-wrap:wrap;
+           background:transparent; border:0; box-shadow:none; padding:0 0 8px; }
+    #menu a{ border-bottom:0; }
+    @media (max-width:1180px){ .nav-in{ flex-wrap:wrap; padding-bottom:6px; } }
+    .reveal{ opacity:1 !important; transform:none !important; }
+  </style>
+</noscript>
+
+<main id="obsah">
+
+<!-- ================= ÚVOD ================= -->
+<section class="hero" id="uvod">
+  <div class="hero-plane" aria-hidden="true">
+    <svg viewBox="0 0 660 400" preserveAspectRatio="xMaxYMin slice" focusable="false">
+      <defs>
+        <linearGradient id="heroPole" x1="0" y1="0" x2="0.55" y2="1">
+          <stop offset="0" stop-color="#eae4d6"/>
+          <stop offset="0.52" stop-color="#e3ded4"/>
+          <stop offset="1" stop-color="#dcdfe3"/>
+        </linearGradient>
+      </defs>
+      <rect width="660" height="400" fill="url(#heroPole)"/>
+      <g fill="none" stroke="#7a5c22" stroke-opacity="0.18">
+        <circle cx="556" cy="44" r="118"/>
+        <circle cx="556" cy="44" r="194"/>
+        <circle cx="556" cy="44" r="270"/>
+        <circle cx="556" cy="44" r="346"/>
+      </g>
+      <g stroke="#14181c" stroke-opacity="0.07">
+        <path d="M0 56H660M0 112H660M0 168H660M0 224H660M0 280H660M0 336H660"/>
+      </g>
+      <path d="M660 0 L660 400 L452 400 Z" fill="#7a5c22" fill-opacity="0.09"/>
+      <rect x="0" y="0" width="1.5" height="400" fill="#14181c" fill-opacity="0.14"/>
+    </svg>
+  </div>
+
+  <div class="wrap hero-in">
+    <p class="hero-kicker">Biuro rachunkowe · ul. Celna 21, Kraków</p>
+    <h1><span class="l l1">Księgowość,</span><span class="l l2">kadry i podatki</span><span class="l l3">Kraków i online</span></h1>
+    <hr class="hero-rule">
+    <p class="hero-sub">Dla jednoosobowych działalności i spółek z o.o. do dziesięciu pracowników.</p>
+
+    <div class="hero-body">
+      <div>
+        <p class="hero-lead">Prowadzę KPiR, ryczałt i pełną księgowość, rozliczam płace i składam zeznania podatkowe. Dokumenty przesyłają mi Państwo raz w miesiącu, a cenę ustalamy z góry jako stały miesięczny abonament.</p>
+        <div class="hero-cta">
+          <a class="btn btn-acc" href="#kontakt">Niezobowiązująca oferta</a>
+          <a class="btn btn-line" href="#kalkulacka">Policz abonament</a>
+        </div>
+        <p class="hero-meta">Ofertę wyślę w ciągu dwóch dni roboczych. Księgowość przejmę także w trakcie roku, sprawdzenie przejętych danych jest bezpłatne, okres wypowiedzenia wynosi jeden miesiąc.</p>
+      </div>
+
+      <aside class="hero-badge">
+        <span class="lbl">Miesięczny abonament od</span>
+        <p class="v"><b class="num">170</b> <i>zł netto</i></p>
+        <p class="n">Jednoosobowa działalność, do 20 dokumentów miesięcznie. Spółka z o.o. od 300 zł miesięcznie.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="figures">
+  <div class="wrap">
+    <div class="figures-grid">
+      <div>
+        <span class="fig-v num">od 170 zł</span>
+        <span class="fig-l">Miesięczny abonament dla jednoosobowej działalności, netto</span>
+      </div>
+      <div>
+        <span class="fig-v num">do 20. dnia</span>
+        <span class="fig-l">Zaksięgowany poprzedni miesiąc</span>
+      </div>
+      <div>
+        <span class="fig-v num">do 24 godzin</span>
+        <span class="fig-l">Odpowiedź na zapytanie w dni robocze</span>
+      </div>
+      <div>
+        <span class="fig-v num">1 miesiąc</span>
+        <span class="fig-l">Okres wypowiedzenia, bez wiązania się na rok</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MESAČNÝ RYTMUS ================= -->
+<section class="plate-band" id="rytmus" aria-labelledby="rytmus-nadpis">
+  <div class="wrap">
+    <div class="plate plate-dark reveal">
+      <svg class="plate-geo" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="svetlo" cx="0.88" cy="0.06" r="0.62">
+            <stop offset="0" stop-color="#c9a465" stop-opacity="0.16"/>
+            <stop offset="1" stop-color="#c9a465" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="460" fill="url(#svetlo)"/>
+        <g fill="none" stroke="#c9a465" stroke-opacity="0.16">
+          <circle cx="1052" cy="52" r="128"/>
+          <circle cx="1052" cy="52" r="212"/>
+          <circle cx="1052" cy="52" r="296"/>
+          <circle cx="1052" cy="52" r="380"/>
+        </g>
+        <path d="M0 460 L470 0 L556 0 L86 460 Z" fill="#ffffff" fill-opacity="0.022"/>
+        <path d="M150 460 L620 0 L648 0 L178 460 Z" fill="#ffffff" fill-opacity="0.016"/>
+      </svg>
+      <div class="plate-in">
+        <p class="plate-kicker">Miesięczny rytm</p>
+        <h2 class="plate-h" id="rytmus-nadpis">Co miesiąc te same cztery daty</h2>
+        <p class="plate-note">Państwo pilnują dwóch dat: 3. i 10. dnia miesiąca. O obu przypomnę trzy dni wcześniej, pozostałe dwa terminy są po mojej stronie.</p>
+        <ol class="cyklus-grid">
+          <li>
+            <span class="cyklus-day num">3.</span>
+            <span class="cyklus-t">Dane do płac</span>
+            <span class="cyklus-d">Ewidencja czasu pracy, urlopy, zwolnienia lekarskie i zmiany w umowach.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">10.</span>
+            <span class="cyklus-t">Dokumenty za poprzedni miesiąc</span>
+            <span class="cyklus-d">Faktury, wyciągi bankowe i raporty kasowe w jednej wiadomości.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">20.</span>
+            <span class="cyklus-t">Zaksięgowane i uzgodnione</span>
+            <span class="cyklus-d">Dostają Państwo zestawienie wyników i listę płatności z terminami.</span>
+          </li>
+          <li>
+            <span class="cyklus-day num">25.</span>
+            <span class="cyklus-t">Deklaracje za Państwa</span>
+            <span class="cyklus-d">JPK_V7 z deklaracją VAT, a przy handlu w UE także informacja podsumowująca VAT-UE.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLUŽBY ================= -->
+<section class="sec" id="sluzby" style="border-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">01</b> Usługi</p>
+      <div>
+        <h2 class="sec-h">Zakres usług</h2>
+        <p class="lead">Pracuję dla jednoosobowych działalności i spółek z o.o. do dziesięciu pracowników. Księgowość, płace i podatki prowadzi jedna osoba, więc mają Państwo jeden kontakt do wszystkiego.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M7 8h12M7 12h12M7 16h7" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 16h3" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>KPiR i ryczałt</h3>
+        <p>Dla jednoosobowych działalności i podmiotów bez obowiązku prowadzenia pełnej księgowości.</p>
+        <ul>
+          <li>Podatkowa księga przychodów i rozchodów albo ewidencja przychodów</li>
+          <li>Ewidencja środków trwałych, amortyzacja i ewidencja przebiegu pojazdu</li>
+          <li>Dane do rocznego zeznania podatkowego</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">w abonamencie od 170 zł / miesiąc</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3.5" y="2.5" width="19" height="21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v21" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M6 8h4M6 12h4M16 8h4" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M16 12h4" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Pełna księgowość</h3>
+        <p>Dla spółek z o.o. i organizacji pozarządowych.</p>
+        <ul>
+          <li>Księga główna, dziennik i rozrachunki</li>
+          <li>JPK_V7 i deklaracja VAT</li>
+          <li>Sprawozdanie finansowe z informacją dodatkową</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">w abonamencie od 300 zł / miesiąc</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M4 22V11M9.667 22V7M15.333 22v-9" stroke="#14181c" stroke-width="1.4"/>
+            <path d="M21 22V4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M2.5 23.5h21" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Kadry i płace</h3>
+        <p>Dla firm z pracownikami i zleceniobiorcami.</p>
+        <ul>
+          <li>Naliczanie płac, paski wynagrodzeń i deklaracje ZUS</li>
+          <li>Zgłoszenia i wyrejestrowania w ZUS</li>
+          <li>Umowy zlecenia i o dzieło</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">52 zł / osoba / miesiąc</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M6 20L20 6" stroke="#7a5c22" stroke-width="1.6"/>
+            <circle cx="8" cy="8" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="18" cy="18" r="3.4" stroke="#14181c" stroke-width="1.2"/>
+          </svg>
+        </span>
+        <h3>Podatki, VAT i deklaracje</h3>
+        <p>Dla klientów z abonamentem i przy jednorazowym rozliczeniu.</p>
+        <ul>
+          <li>Zeznanie roczne PIT i CIT</li>
+          <li>JPK_V7 i informacja podsumowująca VAT-UE</li>
+          <li>Podatek od środków transportowych za 109 zł</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">VAT w abonamencie, zeznanie roczne od 391 zł</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="2.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <rect x="15.5" y="6.5" width="8" height="13" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M11 13h4" stroke="#7a5c22" stroke-width="1.6"/>
+            <path d="M13 11l2 2-2 2" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Przejęcie księgowości i odtworzenie</h3>
+        <p>Dla firm, które zmieniają księgową także w trakcie roku.</p>
+        <ul>
+          <li>Kontrola rozrachunków, środków trwałych i kart wynagrodzeń</li>
+          <li>Pisemna lista tego, co trzeba wyrównać</li>
+          <li>Uzupełnienie niezłożonych okresów i korekty deklaracji</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">przejęcie bez opłat</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card-ico" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <circle cx="13" cy="13" r="10.5" stroke="#14181c" stroke-width="1.2"/>
+            <circle cx="13" cy="13" r="5.5" stroke="#14181c" stroke-width="1.2"/>
+            <path d="M13 2.5v5M13 18.5v5" stroke="#7a5c22" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <h3>Reprezentacja przy kontroli</h3>
+        <p>Dla klientów z miesięcznym abonamentem, gdy przyjdzie wezwanie albo kontrola.</p>
+        <ul>
+          <li>Przygotowanie dokumentów i odpowiedź na wezwanie</li>
+          <li>Kontakt z urzędem na podstawie pełnomocnictwa</li>
+          <li>Wyjaśnienie różnic w deklaracjach</li>
+        </ul>
+        <p class="card-price"><span class="k">Cena</span><span class="v num">w abonamencie, poza nim 152 zł / godzina</span></p>
+      </article>
+    </div>
+
+    <p class="tbl-note">Ceny są netto. Nie robię badania sprawozdań, księgowości spółek akcyjnych ani opinii biegłego. Jeśli potrzebują Państwo takiej obsługi, powiem to podczas rozmowy wstępnej i polecę kolegę.</p>
+  </div>
+</section>
+
+<!-- ================= PRE KOHO ================= -->
+<section class="sec band-alt" id="odvetvia">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">02</b> Dla kogo</p>
+      <div>
+        <h2 class="sec-h">Dla kogo prowadzę księgowość</h2>
+        <p class="lead">Przy każdym rodzaju działalności powtarzają się inne pytania. Poniżej jest to, czym przy danej branży zajmuję się dodatkowo poza zwykłym księgowaniem dokumentów.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <p class="card-no num">01</p>
+        <h3>Usługi i rzemiosło</h3>
+        <p>Przedsiębiorcy, którzy fakturują robociznę i materiał i jeżdżą autem do zleceń.</p>
+        <ul>
+          <li>Porównanie ryczałtu, skali i podatku liniowego</li>
+          <li>Ewidencja przebiegu pojazdu i zużycie paliwa</li>
+          <li>Amortyzacja narzędzi i maszyn powyżej 10 000 zł</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">02</p>
+        <h3>Sklepy internetowe i sprzedaż online</h3>
+        <p>Zamówienia z bramek płatniczych, pobrania i zwroty, często setki operacji miesięcznie.</p>
+        <ul>
+          <li>Parowanie wypłat z bramki z zamówieniami</li>
+          <li>Faktury korygujące, zwroty i reklamacje</li>
+          <li>Procedura OSS przy sprzedaży do innych krajów UE</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">03</p>
+        <h3>IT, marketing i branża kreatywna</h3>
+        <p>Fakturowanie klientów za granicą, podwykonawcy i zakup licencji z zagranicy.</p>
+        <ul>
+          <li>Informacja podsumowująca i odwrotne obciążenie</li>
+          <li>Różnice kursowe i płatności przez zagraniczne bramki</li>
+          <li>Oprogramowanie i licencje jako koszt albo środek trwały</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">04</p>
+        <h3>Najem nieruchomości</h3>
+        <p>Mieszkania, garaże i lokale użytkowe wynajmowane jako osoba prywatna albo przez spółkę z o.o.</p>
+        <ul>
+          <li>Ryczałt od najmu prywatnego i jego rozliczenie</li>
+          <li>Remont a ulepszenie środka trwałego</li>
+          <li>Zaliczki na media i roczne rozliczenie</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">05</p>
+        <h3>Mała spółka z o.o. z pracownikami</h3>
+        <p>Firmy do dziesięciu osób, w których płace, składki i majątek firmy rozlicza się co miesiąc.</p>
+        <ul>
+          <li>Płace, umowy cywilnoprawne i PIT-11 dla pracowników</li>
+          <li>Świadczenia dla pracowników i delegacje</li>
+          <li>Samochód firmowy, amortyzacja i ograniczenia w kosztach</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">06</p>
+        <h3>Stowarzyszenia i fundacje</h3>
+        <p>Stowarzyszenia i fundacje, które otrzymują darowizny, dotacje i 1,5% podatku.</p>
+        <ul>
+          <li>Oddzielna ewidencja działalności statutowej i gospodarczej</li>
+          <li>Rozliczenie dotacji według umowy z grantodawcą</li>
+          <li>Wykorzystanie 1,5% podatku i sprawozdanie OPP</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="tbl-note">Nie pasują Państwo do żadnej kategorii? Proszę napisać, czym się Państwo zajmują. Jeśli nie znam się na Państwa branży, powiem to podczas rozmowy wstępnej i polecę kolegę z właściwą specjalizacją.</p>
+  </div>
+</section>
+
+<!-- ================= PAUŠÁLY ================= -->
+<section class="sec" id="cennik">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">03</b> Cennik</p>
+      <div>
+        <h2 class="sec-h">Abonamenty miesięczne i usługi jednorazowe</h2>
+        <p class="lead">Abonament obejmuje zwykłą miesięczną obsługę razem z kontaktem w ciągu roku. Jeśli Państwa księgowość urośnie ponad zakres abonamentu, odezwę się wcześniej i ustalimy przejście na wyższy abonament.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-min">
+        <caption>Porównanie miesięcznych abonamentów. Ceny są netto.</caption>
+        <colgroup><col><col><col class="hi"><col></colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Pozycja</th>
+            <th scope="col">Start <small>Jednoosobowa działalność</small></th>
+            <th scope="col">Standard <small>Mała spółka z o.o.</small></th>
+            <th scope="col">Rozszerzony <small>Spółka z o.o. z pracownikami</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Miesięczny abonament</th>
+            <td class="val acc num">170 zł</td>
+            <td class="val acc num">300 zł</td>
+            <td class="val acc num">561 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">Rodzaj księgowości</th>
+            <td class="val">KPiR / ryczałt</td>
+            <td class="val">Pełna</td>
+            <td class="val">Pełna</td>
+          </tr>
+          <tr>
+            <th scope="row">Dokumenty w cenie miesięcznie</th>
+            <td class="val num">do 20</td>
+            <td class="val num">do 40</td>
+            <td class="val num">do 80</td>
+          </tr>
+          <tr>
+            <th scope="row">Dokument ponad zakres</th>
+            <td class="val num">4,79 zł</td>
+            <td class="val num">4,79 zł</td>
+            <td class="val num">3,92 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">VAT i JPK_V7</th>
+            <td class="val num">dopłata 109 zł</td>
+            <td class="val num">dopłata 109 zł</td>
+            <td class="val">w cenie</td>
+          </tr>
+          <tr>
+            <th scope="row">Płace</th>
+            <td class="val num">52 zł za osobę</td>
+            <td class="val num">52 zł za osobę</td>
+            <td class="val">2 osoby w cenie, kolejna 52 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">Zestawienie wyników</th>
+            <td class="val">Kwartalnie</td>
+            <td class="val">Miesięcznie</td>
+            <td class="val">Miesięcznie</td>
+          </tr>
+          <tr>
+            <th scope="row">Konsultacje w ciągu roku</th>
+            <td class="val">Na piśmie</td>
+            <td class="val">Pisemnie i telefonicznie</td>
+            <td class="val">Bez ograniczeń, także spotkania</td>
+          </tr>
+          <tr>
+            <th scope="row">Reprezentacja przy kontroli</th>
+            <td class="val">Poza abonamentem</td>
+            <td class="val">W cenie do 3 godzin</td>
+            <td class="val">W cenie</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tblwrap reveal" style="margin-top:26px">
+      <table class="tbl-stack">
+        <caption>Usługi jednorazowe poza miesięcznym abonamentem. Ceny są netto.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Usługa</th>
+            <th scope="col">Co jest w cenie</th>
+            <th scope="col">Cena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Zeznanie roczne osoby fizycznej</th>
+            <td data-l="Co jest w cenie">Zeznanie, załączniki i wysyłka elektroniczna</td>
+            <td class="val acc num" data-l="Cena">od 391 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">Sprawozdanie finansowe i CIT-8 spółki z o.o.</th>
+            <td data-l="Co jest w cenie">Bilans, rachunek zysków i strat, informacja dodatkowa, złożenie do Repozytorium Dokumentów Finansowych</td>
+            <td class="val acc num" data-l="Cena">od 827 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">PIT-11 dla pracownika</th>
+            <td data-l="Co jest w cenie">Obliczenie, formularz i wysyłka do urzędu</td>
+            <td class="val acc num" data-l="Cena">65 zł za osobę</td>
+          </tr>
+          <tr>
+            <th scope="row">Rejestracja do VAT</th>
+            <td data-l="Co jest w cenie">Przygotowanie i złożenie VAT-R, kontakt z urzędem skarbowym</td>
+            <td class="val acc num" data-l="Cena">261 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">Deklaracja na podatek od środków transportowych</th>
+            <td data-l="Co jest w cenie">Wyliczenie za pojazdy powyżej 3,5 t i złożenie deklaracji DT-1</td>
+            <td class="val acc num" data-l="Cena">109 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">Zaświadczenie dla banku albo urzędu</th>
+            <td data-l="Co jest w cenie">Zestawienie przychodów i kosztów albo sprawozdanie na wymaganym formularzu</td>
+            <td class="val acc num" data-l="Cena">65 zł</td>
+          </tr>
+          <tr>
+            <th scope="row">Przejęcie księgowości od innego biura</th>
+            <td data-l="Co jest w cenie">Kontrola przejętych danych i otwartych rozrachunków</td>
+            <td class="val acc" data-l="Cena">bez opłat</td>
+          </tr>
+          <tr>
+            <th scope="row">Odtworzenie księgowości za zamknięte okresy</th>
+            <td data-l="Co jest w cenie">Uzupełnienie dokumentów, korekty zeznań i deklaracji</td>
+            <td class="val" data-l="Cena">według zakresu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">Kiedy płacą Państwo mniej</h3>
+    <div class="three">
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Kilka firm jednego właściciela</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Druga i każda kolejna firma tego samego właściciela ma miesięczny abonament niższy o 15%. Dokumenty przesyłają Państwo w jednej wiadomości, a wystawiam jedną fakturę.</p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Płatność za rok z góry</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Przy zapłacie za dwanaście miesięcy naraz abonament jest niższy o 5%. Jeśli zakończą Państwo współpracę wcześniej, niewykorzystaną część zwracam.</p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px">Firma bez ruchu</h3>
+        <p style="font-size:15px;color:var(--ink-mut)">Spółkę bez przychodów i bez pracowników prowadzę za 109 zł miesięcznie. Obejmuje to zerowe deklaracje, sprawozdanie finansowe i złożenie go do KRS.</p>
+      </div>
+    </div>
+
+    <p class="tbl-note">Fakturuję raz w miesiącu, z terminem płatności 14 dni. Ceny w tym przykładzie są ilustracyjne. Konkretną ofertę dostaną Państwo po przejrzeniu próbki dokumentów.</p>
+
+    <p style="margin-top:22px"><a class="btn btn-acc" href="#kontakt">Niezobowiązująca oferta</a></p>
+  </div>
+</section>
+
+<!-- ================= REFERENCIE ================= -->
+<section class="sec band-alt" id="referencie">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">04</b> Referencje</p>
+      <div>
+        <h2 class="sec-h">Trzech klientów i ceny, które płacą</h2>
+        <p class="lead">Zamiast pochwał podaję zakres księgowości i miesięczną kwotę na fakturze. Każdą z nich można przeliczyć w kalkulatorze poniżej.</p>
+      </div>
+    </header>
+
+    <div class="cards">
+      <article class="card reveal">
+        <p class="card-no num">01</p>
+        <h3>Firma budowlana, spółka z o.o.</h3>
+        <p>Sześciu pracowników, fakturowanie robocizny i materiału, dwa samochody firmowe.</p>
+        <ul>
+          <li>120 dokumentów miesięcznie</li>
+          <li>Płace dla 6 osób</li>
+          <li>Czynny podatnik VAT, JPK_V7 miesięcznie</li>
+          <li>Księgowość przejęłam w sierpniu, pierwszy miesiąc rozliczony do 20. dnia</li>
+        </ul>
+        <p class="card-price"><span class="k">Płaci miesięcznie</span><span class="v num">926 zł · abonament Rozszerzony</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">02</p>
+        <h3>Sklep internetowy, spółka z o.o.</h3>
+        <p>Sprzedaż przez bramkę płatniczą i za pobraniem, zwroty i sprzedaż konsumentom w dwóch krajach UE.</p>
+        <ul>
+          <li>180 dokumentów miesięcznie po ustawieniu automatycznego importu</li>
+          <li>Jeden pracownik</li>
+          <li>Czynny podatnik VAT i procedura OSS</li>
+          <li>Parowanie wypłat z bramki z zamówieniami raz w tygodniu</li>
+        </ul>
+        <p class="card-price"><span class="k">Płaci miesięcznie</span><span class="v num">953 zł · abonament Rozszerzony</span></p>
+      </article>
+
+      <article class="card reveal">
+        <p class="card-no num">03</p>
+        <h3>Konsultant IT, jednoosobowa działalność</h3>
+        <p>Fakturuje dwóch klientów, w tym jednego przedsiębiorcę w Austrii.</p>
+        <ul>
+          <li>14 dokumentów miesięcznie</li>
+          <li>Bez pracowników</li>
+          <li>Zwolniony z VAT, rejestracja VAT-UE i informacja podsumowująca</li>
+          <li>Zeznanie roczne fakturuję osobno, od 391 zł</li>
+        </ul>
+        <p class="card-price"><span class="k">Płaci miesięcznie</span><span class="v num">170 zł · abonament Start</span></p>
+      </article>
+    </div>
+
+    <p class="tbl-note">Nazw klientów nie podaję, tajemnica obejmuje także to, kto jest klientem biura. Jeśli chcą Państwo referencji od człowieka, przed podpisaniem umowy dam numery telefonów do dwóch klientów, którzy się na to zgodzili.</p>
+  </div>
+</section>
+
+<!-- ================= KALKULAČKA ================= -->
+<section class="sec band-dark" id="kalkulacka">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">05</b> Kalkulator</p>
+      <div>
+        <h2 class="sec-h">Kalkulator miesięcznego abonamentu</h2>
+        <p class="lead">Proszę ustawić cztery wartości, a zobaczą Państwo cenę według cennika powyżej. Przy spółce z o.o. kalkulator porówna abonament Standard i Rozszerzony i pokaże tańszy z nich.</p>
+      </div>
+    </header>
+
+    <div class="calc-grid">
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Rodzaj podmiotu</legend>
+          <div class="opt">
+            <input type="radio" name="typ" id="t-szco" value="szco" checked>
+            <label for="t-szco">Jednoosobowa działalność <small>KPiR albo ryczałt</small></label>
+
+            <input type="radio" name="typ" id="t-sro" value="sro">
+            <label for="t-sro">Spółka z o.o. <small>pełna księgowość</small></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Dokumenty miesięcznie</legend>
+          <div class="ctl-head">
+            <label class="ctl-lab" for="doklady">Faktury, raporty kasowe i pozycje wyciągu</label>
+            <span class="ctl-val num" id="dokladyOut">40</span>
+          </div>
+          <input type="range" id="doklady" min="0" max="250" step="5" value="40" aria-describedby="dokladyHint">
+          <div class="scale num"><span>0</span><span>125</span><span>250</span></div>
+          <p id="dokladyHint" class="ctl-hint">Strzałkami w lewo i w prawo przesuną Państwo wartość o pięć dokumentów.</p>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Pracownicy i zleceniobiorcy</legend>
+          <div class="stepper">
+            <button type="button" id="zamMinus" aria-label="Zmniejsz liczbę osób">−</button>
+            <input type="number" id="zam" class="num" value="1" min="0" max="20" step="1"
+                   inputmode="numeric" aria-label="Liczba pracowników i zleceniobiorców">
+            <button type="button" id="zamPlus" aria-label="Zwiększ liczbę osób">+</button>
+          </div>
+          <p class="ctl-hint">Liczba osób, którym naliczam płace. Członek zarządu bez umowy się nie liczy.</p>
+        </fieldset>
+      </div>
+
+      <div class="calc-cell">
+        <fieldset>
+          <legend>Czynny podatnik VAT</legend>
+          <label class="chk">
+            <input type="checkbox" id="dph">
+            <span>Jestem czynnym podatnikiem VAT <small>JPK_V7, a przy handlu w UE także informacja podsumowująca VAT-UE</small></span>
+          </label>
+          <p class="ctl-hint">W abonamencie Rozszerzony obsługa VAT jest w cenie.</p>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="calc-out" id="vysledok" aria-live="polite">
+      <div class="out-sum">
+        <span class="out-lab">Miesięczny abonament, netto</span>
+        <p class="out-price"><b class="num" id="sumaOut">317,70</b> <span>zł / miesiąc</span></p>
+        <span class="out-tier" id="tierOut">Abonament Start</span>
+      </div>
+      <div class="out-rows">
+        <span class="out-lab">Z czego składa się cena</span>
+        <ul id="rozpisOut">
+          <li><span>Abonament Start — KPiR albo ryczałt</span><span class="num">170 zł</span></li>
+          <li><span>Dokumenty ponad zakres: 20 × 4,79 zł</span><span class="num">95,70 zł</span></li>
+          <li><span>Płace: 1 osoba × 52 zł</span><span class="num">52 zł</span></li>
+        </ul>
+        <p class="out-note" id="poznamkaOut">Roczne sprawozdanie finansowe i zeznanie podatkowe rozlicza się osobno według cennika usług jednorazowych.</p>
+      </div>
+    </div>
+
+    <div class="calc-foot">
+      <p>Wynik jest orientacyjny. Ostateczną cenę potwierdzę, gdy przejrzę próbkę Państwa dokumentów, zwykle w ciągu dwóch dni roboczych.</p>
+      <a class="btn btn-light" href="#kontakt">Niezobowiązująca oferta</a>
+    </div>
+
+    <noscript>
+      <p class="nojs-note">Kalkulator wymaga włączonego JavaScriptu. Wszystkie ceny znajdą Państwo w tabeli abonamentów w sekcji Cennik.</p>
+    </noscript>
+  </div>
+</section>
+
+<!-- ================= POSTUP ================= -->
+<section class="sec" id="postup">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">06</b> Przebieg</p>
+      <div>
+        <h2 class="sec-h">Przebieg współpracy</h2>
+        <p class="lead">Ten sam przebieg dotyczy nowego klienta i przejścia od innej księgowej. W tabeli jest też to, czego potrzebuję od Państwa i do kiedy.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Przebieg współpracy od pierwszego kontaktu do zamknięcia roku.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Krok</th>
+            <th scope="col">Co się dzieje</th>
+            <th scope="col">Czego potrzebuję od Państwa</th>
+            <th scope="col">Termin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="t-no num">01</span> Rozmowa wstępna</th>
+            <td data-l="Co się dzieje">Omówimy zakres księgowości, liczbę dokumentów, pracowników i stan dotychczasowej ewidencji</td>
+            <td data-l="Czego potrzebuję od Państwa">Dwadzieścia minut rozmowy</td>
+            <td class="val" data-l="Termin">W ciągu 2 dni roboczych od zapytania</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">02</span> Oferta i umowa</th>
+            <td data-l="Co się dzieje">Dostają Państwo pisemny zakres usług, stały miesięczny abonament i okres wypowiedzenia jeden miesiąc</td>
+            <td data-l="Czego potrzebuję od Państwa">Podpisanie umowy</td>
+            <td class="val" data-l="Termin">W ciągu 2 dni roboczych po rozmowie</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">03</span> Przejęcie księgowości</th>
+            <td data-l="Co się dzieje">Przejmę dane, sprawdzę otwarte rozrachunki, ewidencję środków trwałych i karty wynagrodzeń</td>
+            <td data-l="Czego potrzebuję od Państwa">Pełnomocnictwo UPL-1 i kontakt do poprzedniej księgowej</td>
+            <td class="val" data-l="Termin">Pierwszy tydzień współpracy</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">04</span> Rozliczenie miesięczne</th>
+            <td data-l="Co się dzieje">Księgowanie dokumentów, płace, deklaracje, wysyłka do urzędów i zestawienie wyników z listą płatności</td>
+            <td data-l="Czego potrzebuję od Państwa">Dokumenty do 10. dnia, dane do płac do 3. dnia</td>
+            <td class="val" data-l="Termin">Gotowe do 20. dnia miesiąca</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="t-no num">05</span> Zamknięcie roku</th>
+            <td data-l="Co się dzieje">Sprawozdanie finansowe, zeznanie roczne i złożenie sprawozdania do KRS</td>
+            <td data-l="Czego potrzebuję od Państwa">Uzupełnienie brakujących dokumentów po moim wezwaniu</td>
+            <td class="val" data-l="Termin">Złożenie przed ustawowym terminem</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODKLADY ================= -->
+<section class="sec band-alt" id="podklady">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">07</b> Pliki do druku</p>
+      <div>
+        <h2 class="sec-h">Dokumenty, których potrzebuję od Państwa</h2>
+        <p class="lead">Co miesiąc ta sama lista sześciu pozycji. Programu księgowego nie trzeba kupować, wyniki dostają Państwo w PDF.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Co przesyłają Państwo co miesiąc</h3>
+        <dl class="dl">
+          <dt>Faktury zakupowe i sprzedażowe</dt>
+          <dd>Skan albo PDF, nazwany numerem dokumentu. Faktury z KSeF pobieram sama.</dd>
+          <dt>Wyciągi bankowe</dt>
+          <dd>Za cały miesiąc, w PDF albo w eksporcie z bankowości internetowej.</dd>
+          <dt>Dokumenty kasowe</dt>
+          <dd>Łącznie z raportami z kasy fiskalnej, jeśli prowadzą Państwo sprzedaż w sklepie.</dd>
+          <dt>Dane do płac</dt>
+          <dd>Ewidencja czasu pracy, urlopy i zwolnienia lekarskie do 3. dnia miesiąca.</dd>
+          <dt>Umowy długoterminowe</dt>
+          <dd>Najmy, leasingi, kredyty i harmonogramy spłat. Wystarczy raz na początku.</dd>
+          <dt>Pełnomocnictwo</dt>
+          <dd>Jednorazowo, żebym mogła wysyłać deklaracje za Państwa.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Jak mi je Państwo przesyłają</h3>
+        <dl class="dl">
+          <dt>Folder udostępniony</dt>
+          <dd>Wgrywają Państwo na bieżąco, w miarę jak dokumenty przychodzą. Dostęp dostaną Państwo pierwszego dnia współpracy.</dd>
+          <dt>Raz w miesiącu w jednej wiadomości</dt>
+          <dd>Zeskanowane dokumenty przesyłają Państwo naraz, najpóźniej do 10. dnia następnego miesiąca.</dd>
+          <dt>Osobiście albo do skrzynki</dt>
+          <dd>Segregator raz w miesiącu na ul. Celną 21 albo do zamykanej skrzynki przy wejściu. Odbiór potwierdzę.</dd>
+        </dl>
+
+        <h3 style="margin-top:34px">Co dostają Państwo z powrotem</h3>
+        <dl class="dl">
+          <dt>Zestawienie wyników</dt>
+          <dd>Przychody, koszty, bieżąca podstawa opodatkowania i stan należności.</dd>
+          <dt>Lista płatności</dt>
+          <dd>Co, komu i do kiedy zapłacić, łącznie ze składkami ZUS i zaliczkami na podatek.</dd>
+          <dt>Potwierdzenia złożenia</dt>
+          <dd>Do każdej deklaracji, w PDF (UPO).</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TERMÍNY ================= -->
+<section class="sec" id="terminy">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">08</b> Terminy</p>
+      <div>
+        <h2 class="sec-h">Rok w księgowości, miesiąc po miesiącu</h2>
+        <p class="lead">Żeby wiedzieli Państwo, co i kiedy się dzieje i kiedy się odezwę. Ustawowych terminów pilnuję ja, a Państwo dostają przypomnienie trzy dni przed tym, zanim będę czegoś od Państwa potrzebować.</p>
+      </div>
+    </header>
+
+    <div class="plate reveal">
+      <svg class="plate-geo" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="svetlo2" cx="0.06" cy="0.08" r="0.55">
+            <stop offset="0" stop-color="#7a5c22" stop-opacity="0.10"/>
+            <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="320" fill="url(#svetlo2)"/>
+        <g fill="none" stroke="#7a5c22" stroke-opacity="0.14">
+          <circle cx="118" cy="286" r="104"/>
+          <circle cx="118" cy="286" r="168"/>
+          <circle cx="118" cy="286" r="232"/>
+        </g>
+        <path d="M900 0 L1200 0 L1200 320 L1060 320 Z" fill="#7a5c22" fill-opacity="0.045"/>
+      </svg>
+      <div class="plate-in">
+        <p class="plate-kicker">Obciążenie w ciągu roku</p>
+        <h2 class="plate-h">Trzy miesiące, w których odzywam się częściej</h2>
+        <div class="rok-grid" role="img"
+             aria-label="Przegląd dwunastu miesięcy. Najwięcej pracy jest w marcu, w czerwcu i w grudniu.">
+          <div><span class="rok-bar" style="height:44%"></span><span class="rok-m">I</span></div>
+          <div><span class="rok-bar" style="height:54%"></span><span class="rok-m">II</span></div>
+          <div class="hi"><span class="rok-bar" style="height:84%"></span><span class="rok-m">III</span></div>
+          <div><span class="rok-bar" style="height:42%"></span><span class="rok-m">IV</span></div>
+          <div><span class="rok-bar" style="height:38%"></span><span class="rok-m">V</span></div>
+          <div class="hi"><span class="rok-bar" style="height:72%"></span><span class="rok-m">VI</span></div>
+          <div><span class="rok-bar" style="height:38%"></span><span class="rok-m">VII</span></div>
+          <div><span class="rok-bar" style="height:32%"></span><span class="rok-m">VIII</span></div>
+          <div><span class="rok-bar" style="height:42%"></span><span class="rok-m">IX</span></div>
+          <div><span class="rok-bar" style="height:46%"></span><span class="rok-m">X</span></div>
+          <div><span class="rok-bar" style="height:52%"></span><span class="rok-m">XI</span></div>
+          <div class="hi"><span class="rok-bar" style="height:88%"></span><span class="rok-m">XII</span></div>
+        </div>
+        <ul class="rok-key">
+          <li><b class="num">III</b> — sprawozdanie finansowe i CIT-8 za poprzedni rok</li>
+          <li><b class="num">VI</b> — zatwierdzenie sprawozdania i złożenie go do KRS</li>
+          <li><b class="num">XII</b> — inwentaryzacja i przygotowanie zamknięcia roku</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Co się dzieje kiedy</h3>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Powtarzające się terminy miesięczne i kamienie milowe w ciągu roku.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kiedy</th>
+            <th scope="col">Co się dzieje</th>
+            <th scope="col">Czego potrzebuję od Państwa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Co miesiąc do 3. dnia</th>
+            <td data-l="Co się dzieje">Zamykam listy płac za poprzedni miesiąc</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Ewidencja czasu pracy, urlopy, zwolnienia lekarskie</td>
+          </tr>
+          <tr>
+            <th scope="row">Co miesiąc do 10. dnia</th>
+            <td data-l="Co się dzieje">Przyjmuję i porządkuję dokumenty za poprzedni miesiąc</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Faktury, wyciągi, dokumenty kasowe</td>
+          </tr>
+          <tr>
+            <th scope="row">Co miesiąc do 20. dnia</th>
+            <td data-l="Co się dzieje">Wysyłam zestawienie wyników i listę płatności z terminami, rozliczam ZUS i zaliczki na podatek</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Nic, tylko przeczytać</td>
+          </tr>
+          <tr>
+            <th scope="row">Co miesiąc do 25. dnia</th>
+            <td data-l="Co się dzieje">Wysyłam JPK_V7 z deklaracją VAT, a przy handlu w UE także informację podsumowującą VAT-UE</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Nic, dokumenty mam z 10. dnia</td>
+          </tr>
+          <tr>
+            <th scope="row">Styczeń</th>
+            <td data-l="Co się dzieje">Zamykam rok płacowy, sprawdzam zmiany w składkach i ustawiam nowe stawki</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Potwierdzenie zmian w umowach</td>
+          </tr>
+          <tr>
+            <th scope="row">Luty</th>
+            <td data-l="Co się dzieje">Przygotowuję informacje PIT-11 dla pracowników i zleceniobiorców i wysyłam je do urzędu</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Aktualne adresy pracowników</td>
+          </tr>
+          <tr>
+            <th scope="row">Marzec</th>
+            <td data-l="Co się dzieje">Przygotowuję sprawozdanie finansowe i zeznanie CIT-8 za poprzedni rok</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Uzupełnienie brakujących dokumentów do 10 marca</td>
+          </tr>
+          <tr>
+            <th scope="row">Czerwiec</th>
+            <td data-l="Co się dzieje">Przygotowuję dokumenty do zatwierdzenia sprawozdania finansowego i składam je do KRS</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Uchwała wspólników o zatwierdzeniu sprawozdania</td>
+          </tr>
+          <tr>
+            <th scope="row">Lipiec</th>
+            <td data-l="Co się dzieje">Sprawdzam zaliczki na podatek i składkę zdrowotną po rozliczeniu rocznym i ustalam nowe kwoty</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Nic</td>
+          </tr>
+          <tr>
+            <th scope="row">Wrzesień</th>
+            <td data-l="Co się dzieje">Kontrola półroczna: czy abonament odpowiada rzeczywistej liczbie dokumentów i czy nie trzeba zmiany</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Krótka rozmowa, jeśli coś się zmienia</td>
+          </tr>
+          <tr>
+            <th scope="row">Od października do listopada</th>
+            <td data-l="Co się dzieje">Przeglądamy nieopłacone należności, planowane zakupy i wpływ na podstawę opodatkowania</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Lista planowanych inwestycji</td>
+          </tr>
+          <tr>
+            <th scope="row">Grudzień</th>
+            <td data-l="Co się dzieje">Inwentaryzacja kasy, magazynu i majątku, przygotowanie danych do zamknięcia roku</td>
+            <td class="val" data-l="Czego potrzebuję od Państwa">Stan kasy i magazynu na 31 grudnia</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-note">Ustawowe terminy mogą się zmieniać. Śledzę je za Państwa i w razie zmiany napiszę, co to oznacza dla Państwa firmy.</p>
+  </div>
+</section>
+
+<!-- ================= KANCELÁRIA, PRÍCHOD A PARKOVANIE ================= -->
+<section class="sec band-alt" id="kancelaria">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">09</b> Biuro</p>
+      <div>
+        <h2 class="sec-h">Adres, dojazd i parking</h2>
+        <p class="lead">Większość spraw załatwiamy zdalnie, klientów mam w całej Polsce. Jeśli chcą Państwo spotkać się osobiście, tu jest wszystko o dojeździe, parkowaniu i wejściu do budynku.</p>
+      </div>
+    </header>
+
+    <div class="addr">
+      <div>
+        <span class="lbl">Adres biura</span>
+        <span class="v">ul. Celna 21<br>31-066 Kraków</span>
+        <span class="s">Parter, wejście prosto z ulicy, dzwonek SALDIA.</span>
+      </div>
+      <div>
+        <span class="lbl">Telefon</span>
+        <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+        <span class="s">Od poniedziałku do piątku od 9.00 do 16.00.</span>
+      </div>
+      <div>
+        <span class="lbl">Spotkania osobiste</span>
+        <span class="v">Od poniedziałku do czwartku<br>9.00 – 15.00</span>
+        <span class="s">Zawsze po wcześniejszym umówieniu terminu.</span>
+      </div>
+      <div>
+        <span class="lbl">Przekazanie dokumentów</span>
+        <span class="v">Każdego dnia roboczego<br>do 16.00</span>
+        <span class="s">Zamykana skrzynka przy wejściu, odbiór potwierdzę.</span>
+      </div>
+    </div>
+
+    <h3 class="sub-h" id="hodiny">Godziny otwarcia według dni</h3>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Godziny otwarcia biura przy ul. Celnej 21. W święta biuro jest zamknięte, informuję o tym tydzień wcześniej.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Dzień</th>
+            <th scope="col">Telefon</th>
+            <th scope="col">Spotkania osobiste</th>
+            <th scope="col">Skrzynka na dokumenty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Poniedziałek</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Spotkania osobiste">9.00 – 15.00</td>
+            <td class="val num" data-l="Skrzynka na dokumenty">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Wtorek</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Spotkania osobiste">9.00 – 15.00</td>
+            <td class="val num" data-l="Skrzynka na dokumenty">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Środa</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Spotkania osobiste">9.00 – 15.00</td>
+            <td class="val num" data-l="Skrzynka na dokumenty">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Czwartek</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td class="val num" data-l="Spotkania osobiste">9.00 – 15.00</td>
+            <td class="val num" data-l="Skrzynka na dokumenty">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Piątek</th>
+            <td class="val num" data-l="Telefon">9.00 – 16.00</td>
+            <td data-l="Spotkania osobiste">dzień zarezerwowany na księgowanie i deklaracje</td>
+            <td class="val num" data-l="Skrzynka na dokumenty">do 16.00</td>
+          </tr>
+          <tr>
+            <th scope="row">Sobota</th>
+            <td data-l="Telefon">zamknięte</td>
+            <td data-l="Spotkania osobiste">zamknięte</td>
+            <td data-l="Skrzynka na dokumenty">zamknięte</td>
+          </tr>
+          <tr>
+            <th scope="row">Niedziela</th>
+            <td data-l="Telefon">zamknięte</td>
+            <td data-l="Spotkania osobiste">zamknięte</td>
+            <td data-l="Skrzynka na dokumenty">zamknięte</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-note">Spotkanie osobiste jest zawsze po wcześniejszym umówieniu terminu, a nie od ręki. Skrzynkę przy wejściu opróżniam każdego dnia roboczego o 16.00 i odbiór potwierdzam wiadomością. Spotkanie online trwa trzydzieści minut, link do wideorozmowy wyślę w potwierdzeniu terminu.</p>
+
+    <div class="two" style="margin-top:clamp(30px,4vw,46px)">
+      <div>
+        <!-- FOTO: budova na Mýtnej 21 zvonku, vchod z ulice so zvončekom SALDIA -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 420" role="img" focusable="false"
+                 aria-label="Kompozycja z adresem biura: ul. Celna 21, parter.">
+              <defs>
+                <linearGradient id="obr1a" x1="0" y1="0" x2="0.7" y2="1">
+                  <stop offset="0" stop-color="#eeeae1"/>
+                  <stop offset="0.55" stop-color="#e6e6e4"/>
+                  <stop offset="1" stop-color="#dcdfe3"/>
+                </linearGradient>
+                <radialGradient id="obr1b" cx="0.82" cy="0.16" r="0.7">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.16"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="420" fill="url(#obr1a)"/>
+              <rect width="640" height="420" fill="url(#obr1b)"/>
+              <g stroke="#14181c" stroke-opacity="0.08">
+                <path d="M0 70H640M0 140H640M0 210H640M0 280H640M0 350H640"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.20">
+                <circle cx="524" cy="66" r="96"/>
+                <circle cx="524" cy="66" r="158"/>
+                <circle cx="524" cy="66" r="220"/>
+              </g>
+              <path d="M640 130 L640 420 L360 420 Z" fill="#7a5c22" fill-opacity="0.07"/>
+              <rect x="52" y="96" width="2" height="232" fill="#14181c" fill-opacity="0.16"/>
+              <text x="84" y="214" font-family="Georgia, serif" font-size="104" fill="#14181c"
+                    fill-opacity="0.9" letter-spacing="-3">21</text>
+              <text x="86" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="23"
+                    letter-spacing="9" fill="#7a5c22">CELNA</text>
+              <text x="86" y="300" font-family="Segoe UI, Arial, sans-serif" font-size="18"
+                    letter-spacing="2" fill="#474e56">31-066 Kraków</text>
+            </svg>
+          </div>
+          <figcaption>Biuro jest na parterze, wejście prosto z ulicy, dzwonek SALDIA.</figcaption>
+        </figure>
+
+        <h3 style="margin-top:34px">Dojazd i parking</h3>
+        <ul class="ticks">
+          <li><b>Samochodem:</b> dwa wydzielone miejsca parkingowe na podwórzu budynku, dla klientów pierwsze dwie godziny bezpłatnie. Wjazd jest od ul. Celnej, szlaban otworzę po dzwonku.</li>
+          <li><b>Parkowanie na ulicy:</b> na ul. Celnej obowiązuje strefa płatnego parkowania, godzina kosztuje 9 zł i płaci się w parkomacie przy wejściu do budynku.</li>
+          <li><b>Komunikacją miejską:</b> przystanek jest trzy minuty pieszo, zatrzymują się przy nim tramwaje i autobusy z centrum i z osiedli.</li>
+          <li><b>Pociągiem albo autobusem:</b> z dworca głównego dziesięć minut pieszo po płaskim terenie, bez schodów i bez przechodzenia przez ruchliwą ulicę.</li>
+          <li><b>Dostęp bez barier:</b> biuro jest na parterze, do budynku wchodzi się bez schodów, drzwi mają 90 cm szerokości, a w budynku jest toaleta dla osób z niepełnosprawnością.</li>
+          <li><b>Z wózkiem:</b> drzwi wejściowe można zablokować w pozycji otwartej, w biurze jest miejsce na odstawienie wózka.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="plan reveal">
+          <svg viewBox="0 0 520 330" role="img" focusable="false"
+               aria-label="Orientacyjny plan: budynek ul. Celna 21 z wejściem od ulicy, wjazd na podwórze z dwoma miejscami parkingowymi i przystanek komunikacji miejskiej trzy minuty pieszo.">
+            <rect width="520" height="330" fill="#f5f6f8"/>
+
+            <rect x="0" y="172" width="520" height="60" fill="#e6e9ec"/>
+            <path d="M0 172H520M0 232H520" stroke="#c0c5cb" stroke-width="1.2"/>
+            <path d="M0 202H520" stroke="#c0c5cb" stroke-width="1.4" stroke-dasharray="16 12"/>
+            <text x="16" y="223" font-family="Segoe UI, Arial, sans-serif" font-size="17"
+                  letter-spacing="4" fill="#535a62">CELNA</text>
+
+            <rect x="110" y="14" width="210" height="64" fill="#ffffff" fill-opacity="0.7"
+                  stroke="#7a5c22" stroke-width="1.2" stroke-dasharray="7 5"/>
+            <rect x="126" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <rect x="190" y="36" width="52" height="30" fill="none" stroke="#c0c5cb" stroke-width="1.2"/>
+            <text x="256" y="56" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Podwórze</text>
+
+            <rect x="110" y="78" width="210" height="94" fill="#7a5c22" fill-opacity="0.10"
+                  stroke="#7a5c22" stroke-width="1.4"/>
+            <text x="128" y="118" font-family="Georgia, serif" font-size="26" fill="#14181c">ul. Celna 21</text>
+            <text x="128" y="144" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">SALDIA · parter</text>
+
+            <rect x="206" y="166" width="18" height="10" fill="#7a5c22"/>
+            <text x="234" y="194" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Wejście</text>
+
+            <path d="M92 256V44" stroke="#7a5c22" stroke-width="2"/>
+            <path d="M92 36l6 12H86z" fill="#7a5c22"/>
+            <text x="16" y="282" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7a5c22">Wjazd na podwórze</text>
+
+            <rect x="300" y="240" width="98" height="10" fill="#7a5c22" fill-opacity="0.42"/>
+            <text x="300" y="274" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#474e56">Przystanek</text>
+            <text x="300" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#535a62">3 minuty pieszo</text>
+          </svg>
+          <ul class="plan-key">
+            <li><b>Podwórze</b> 2 miejsca, pierwsze 2 godziny bezpłatnie</li>
+            <li><b>Ulica</b> parkomat przy wejściu, 9 zł za godzinę</li>
+            <li><b>Wejście</b> od ul. Celnej, bez schodów</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:34px">Pierwsze spotkanie</h3>
+        <p class="p-narrow">Prosimy przynieść wyciąg z konta za ostatni miesiąc i pięć typowych faktur. Na tej podstawie ocenię liczbę dokumentów i ostateczną cenę abonamentu. Spotkanie trwa od dwudziestu do trzydziestu minut i nie pobieram za nie opłaty.</p>
+        <p class="p-narrow">To samo omówimy także przez wideorozmowę albo telefonicznie. Dokumenty prześlą mi Państwo wtedy przez folder udostępniony.</p>
+        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Umów spotkanie</a></p>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Kto pracuje nad Państwa księgowością</h3>
+    <div class="two">
+      <div>
+        <ul class="roles">
+          <li>
+            <span class="role-t">Księgowa Państwa firmy</span>
+            <span class="role-d">Jedna osoba prowadzi Państwa księgowość przez cały rok i odpowiada bezpośrednio, w ciągu 24 godzin w dni robocze.</span>
+          </li>
+          <li>
+            <span class="role-t">Specjalistka ds. kadr i płac</span>
+            <span class="role-d">Rozlicza płace, umowy cywilnoprawne i kontakt z ZUS. Włącza się tylko wtedy, gdy mają Państwo pracowników albo zleceniobiorców.</span>
+          </li>
+          <li>
+            <span class="role-t">Doradca podatkowy</span>
+            <span class="role-d">Zewnętrzna współpraca przy trudniejszych sprawach, na przykład sprzedaży firmy, transakcjach międzynarodowych albo z podmiotami powiązanymi.</span>
+          </li>
+          <li>
+            <span class="role-t">Zastępstwo w czasie urlopu</span>
+            <span class="role-d">Podczas nieobecności księgowość przejmuje koleżanka z dostępem do tych samych dokumentów. Jej imię i numer dostaną Państwo najpóźniej tydzień wcześniej.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <!-- FOTO: účtovníčka a mzdová účtovníčka v kancelárii, skutočný tím, nie stock -->
+        <figure class="obraz">
+          <div class="ram">
+            <svg viewBox="0 0 640 400" role="img" focusable="false"
+                 aria-label="Kompozycja ze znakiem biura SALDIA.">
+              <defs>
+                <linearGradient id="obr2a" x1="0.1" y1="0" x2="0.9" y2="1">
+                  <stop offset="0" stop-color="#e9eaec"/>
+                  <stop offset="0.5" stop-color="#e4e3df"/>
+                  <stop offset="1" stop-color="#d9dce0"/>
+                </linearGradient>
+                <radialGradient id="obr2b" cx="0.18" cy="0.86" r="0.72">
+                  <stop offset="0" stop-color="#7a5c22" stop-opacity="0.15"/>
+                  <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="640" height="400" fill="url(#obr2a)"/>
+              <rect width="640" height="400" fill="url(#obr2b)"/>
+              <g stroke="#14181c" stroke-opacity="0.07">
+                <path d="M80 0V400M180 0V400M280 0V400M380 0V400M480 0V400M580 0V400"/>
+              </g>
+              <g fill="none" stroke="#7a5c22" stroke-opacity="0.22">
+                <circle cx="118" cy="336" r="74"/>
+                <circle cx="118" cy="336" r="126"/>
+                <circle cx="118" cy="336" r="178"/>
+              </g>
+              <path d="M0 0 L246 0 L0 246 Z" fill="#14181c" fill-opacity="0.05"/>
+              <g stroke="#14181c" stroke-opacity="0.55">
+                <path d="M330 150h226" stroke-width="2"/>
+                <path d="M330 186h226" stroke-width="2"/>
+                <path d="M330 222h132" stroke-width="2"/>
+              </g>
+              <path d="M478 222h78" stroke="#7a5c22" stroke-width="3"/>
+              <text x="330" y="122" font-family="Georgia, serif" font-size="30"
+                    letter-spacing="12" fill="#14181c">SALDIA</text>
+            </svg>
+          </div>
+          <figcaption>Księgowa i specjalistka ds. płac, które prowadzą księgowość klientów biura.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAKTURÁCIA A PLATBA ================= -->
+<section class="sec" id="platby">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">10</b> Płatność</p>
+      <div>
+        <h2 class="sec-h">Fakturowanie i sposób płatności</h2>
+        <p class="lead">Płaci się raz w miesiącu, przelewem na konto. Poniżej jest dokładnie to, kiedy przychodzi faktura, co jest w niej rozpisane i co się dzieje przy opóźnieniu.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Kiedy i za co fakturuję</h3>
+        <dl class="dl">
+          <dt>Dzień wystawienia faktury</dt>
+          <dd>Fakturę wystawiam na pierwszy dzień roboczy za poprzedni miesiąc. Termin płatności to <b>14 dni</b>.</dd>
+          <dt>Co jest na fakturze</dt>
+          <dd>Osobna pozycja za abonament i osobne pozycje za dokumenty ponad zakres, płace i usługi jednorazowe. Rozpis dostają Państwo w załączniku, nic nie jest ukryte w jednej kwocie.</dd>
+          <dt>Usługi jednorazowe</dt>
+          <dd>Fakturuję dopiero po zakończeniu. Cenę podam wcześniej na piśmie i bez Państwa akceptacji nie zaczynam.</dd>
+          <dt>Płatność za rok z góry</dt>
+          <dd>Dwanaście miesięcy naraz jest o <b>5 %</b> tańsze. Jeśli zakończą Państwo współpracę wcześniej, niewykorzystaną część zwracam w ciągu 14 dni.</dd>
+          <dt>Podwyżka abonamentu</dt>
+          <dd>Jeśli księgowość na stałe przerośnie zakres abonamentu, napiszę o tym <b>miesiąc wcześniej</b>. Nowa cena obowiązuje dopiero od następnego miesiąca i muszą ją Państwo zaakceptować.</dd>
+          <dt>Rabat przy kilku firmach</dt>
+          <dd>Druga i każda kolejna firma tego samego właściciela ma abonament niższy o <b>15 %</b>, a wszystko idzie na jednej fakturze.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Czym można zapłacić</h3>
+        <div class="tblwrap reveal">
+          <table class="tbl-stack">
+            <caption>Przyjmowane sposoby płatności i opłaty za nie.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Sposób płatności</th>
+                <th scope="col">Jak to działa</th>
+                <th scope="col">Opłata</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Przelewem na konto</th>
+                <td data-l="Jak to działa">Dane i tytuł przelewu są na fakturze, termin płatności 14 dni</td>
+                <td class="val acc" data-l="Opłata">bez opłat</td>
+              </tr>
+              <tr>
+                <th scope="row">Zleceniem stałym</th>
+                <td data-l="Jak to działa">Polecam przy abonamencie, kwota jest co miesiąc taka sama, różnice rozliczam raz w roku</td>
+                <td class="val acc" data-l="Opłata">bez opłat</td>
+              </tr>
+              <tr>
+                <th scope="row">Kartą płatniczą albo BLIK-iem</th>
+                <td data-l="Jak to działa">Przez link do płatności dołączony do faktury, płatność jest zaksięgowana w ciągu dwóch dni roboczych</td>
+                <td class="val acc" data-l="Opłata">bez opłat</td>
+              </tr>
+              <tr>
+                <th scope="row">Gotówką</th>
+                <td data-l="Jak to działa">Nie przyjmuję, żeby każda płatność była udokumentowana przelewem bankowym</td>
+                <td class="val" data-l="Opłata">nie przyjmuję</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top:34px">Jeśli faktura nie jest opłacona</h3>
+        <ul class="ticks">
+          <li><b>Trzy dni po terminie</b> wyślę przypomnienie i zadzwonię. Zakładam, że to przeoczenie.</li>
+          <li><b>Czternaście dni po terminie</b> wstrzymuję dalsze księgowanie i napiszę o tym wcześniej, żeby Państwa to nie zaskoczyło.</li>
+          <li><b>Deklaracje z ustawowym terminem złożę zawsze</b>, nawet jeśli faktura nie jest opłacona. Nie chcę, żeby wynikła z tego dla Państwa sankcja.</li>
+          <li><b>Odsetek za opóźnienie</b> nie naliczam, dopóki opóźnienie nie przekroczy 30 dni.</li>
+          <li><b>Wydania dokumentacji nie uzależniam</b> od zapłaty. Niezapłacone faktury rozwiązuję osobno.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="tbl-note">Ceny w tym przykładzie są ilustracyjne. Konkretną ofertę cenową dostaną Państwo po przejrzeniu próbki Państwa dokumentów, zwykle w ciągu dwóch dni roboczych.</p>
+  </div>
+</section>
+
+<!-- ================= STORNO A UKONČENIE ================= -->
+<section class="sec band-alt" id="storno">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">11</b> Rezygnacja</p>
+      <div>
+        <h2 class="sec-h">Zmiana terminu, odwołanie i zakończenie współpracy</h2>
+        <p class="lead">Termin można przesunąć i odwołać. Współpracę kończą Państwo na ostatni dzień miesiąca, a dokumentację dostają Państwo z powrotem w ciągu dziesięciu dni roboczych.</p>
+      </div>
+    </header>
+
+    <div class="tblwrap reveal">
+      <table class="tbl-stack">
+        <caption>Warunki odwołania umówionych terminów i zamówionych usług.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Sytuacja</th>
+            <th scope="col">Co Państwa obowiązuje</th>
+            <th scope="col">Opłata</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Odwołanie spotkania ponad 24 godziny wcześniej</th>
+            <td data-l="Co Państwa obowiązuje">Wystarczy wiadomość albo telefon, termin zwolnię dla kogoś innego</td>
+            <td class="val acc" data-l="Opłata">bez opłat</td>
+          </tr>
+          <tr>
+            <th scope="row">Odwołanie spotkania mniej niż 24 godziny wcześniej</th>
+            <td data-l="Co Państwa obowiązuje">Nic nie liczę, proszę tylko o krótką wiadomość, żebym nie czekała</td>
+            <td class="val acc" data-l="Opłata">bez opłat</td>
+          </tr>
+          <tr>
+            <th scope="row">Przesunięcie terminu na inny dzień</th>
+            <td data-l="Co Państwa obowiązuje">Zaproponuję najbliższy wolny termin, zwykle w ciągu trzech dni roboczych</td>
+            <td class="val acc" data-l="Opłata">bez opłat</td>
+          </tr>
+          <tr>
+            <th scope="row">Nieprzyjście bez uprzedzenia</th>
+            <td data-l="Co Państwa obowiązuje">Za pierwszym razem bez konsekwencji, kolejny termin potwierdzamy telefonicznie w dniu spotkania</td>
+            <td class="val acc" data-l="Opłata">bez opłat</td>
+          </tr>
+          <tr>
+            <th scope="row">Odwołanie zamówionej usługi jednorazowej</th>
+            <td data-l="Co Państwa obowiązuje">Jeśli jeszcze nie zaczęłam, nic nie liczę. Jeśli praca już trwa, fakturuję przepracowany czas</td>
+            <td class="val" data-l="Opłata">0 zł albo 152 zł / godzina</td>
+          </tr>
+          <tr>
+            <th scope="row">Odwołanie z mojej strony</th>
+            <td data-l="Co Państwa obowiązuje">Odezwę się najpóźniej 24 godziny wcześniej i zaproponuję termin zastępczy w ciągu trzech dni</td>
+            <td class="val acc" data-l="Opłata">bez opłat</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">Zakończenie współpracy</h3>
+    <div class="two">
+      <div>
+        <dl class="dl">
+          <dt>Okres wypowiedzenia</dt>
+          <dd>Jeden miesiąc, kończy się ostatnim dniem miesiąca kalendarzowego. Bez wiązania się na rok i bez warunku minimalnej liczby miesięcy.</dd>
+          <dt>Opłata za wcześniejsze zakończenie</dt>
+          <dd>Żadna. Jeśli współpraca Państwu nie odpowiada, nie ma sensu trzymać Państwa umową.</dd>
+          <dt>Przekazanie dokumentacji</dt>
+          <dd>W ciągu <b>10 dni roboczych</b> od zakończenia dostają Państwo pełną dokumentację w formie elektronicznej i papierowej, łącznie z dziennikiem, rozrachunkami i kartami wynagrodzeń.</dd>
+          <dt>Współpraca z nową księgową</dt>
+          <dd>Odpowiadam na jej pytania jeszcze 30 dni po zakończeniu, także bez opłat.</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Odpowiedzialność za błędy</h3>
+        <ul class="ticks">
+          <li><b>Za błędy po mojej stronie odpowiadam</b> i mam ubezpieczenie OC biura rachunkowego. Sankcję, która powstanie z mojej winy, pokryję.</li>
+          <li><b>Za dokumenty dostarczone po terminie</b> odpowiada klient. Dlatego terminy podaję wcześniej i trzy dni przed nimi przypominam.</li>
+          <li><b>Błąd przyznam sama</b> i napiszę, jak go poprawię i do kiedy. Nie czekam, aż Państwo go znajdą.</li>
+          <li><b>Korekty deklaracji</b> po moim błędzie robię bez opłat.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OCHRANA ÚDAJOV ================= -->
+<section class="sec band-dark" id="ochrana">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">12</b> Dane</p>
+      <div>
+        <h2 class="sec-h">Dokumenty, tajemnica i ochrona danych</h2>
+        <p class="lead">Gdzie są przechowywane Państwa dokumenty, kto ma do nich dostęp i jak długo je przechowuję.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Gdzie są Państwa dane</h3>
+        <ul class="ticks">
+          <li><b>Szyfrowany magazyn danych w Unii Europejskiej</b> z logowaniem dwuetapowym i codzienną kopią zapasową w drugim miejscu.</li>
+          <li><b>Dokumenty papierowe</b> są w zamkniętym pomieszczeniu biura. Dostęp do nich ma tylko osoba, która prowadzi Państwa księgowość, i jej zastępstwo w czasie urlopu.</li>
+          <li><b>Przekazywanie dokumentów</b> przez chroniony hasłem folder udostępniony albo osobiście. Poufnych załączników nie wysyłam bez zabezpieczenia.</li>
+          <li><b>Tajemnica</b> obowiązuje bez ograniczenia w czasie, także po zakończeniu współpracy.</li>
+          <li><b>Umowa powierzenia przetwarzania danych</b> według RODO jest częścią umowy o prowadzenie księgowości. Nie muszą Państwo prosić o nią osobno.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Kto ma dostęp do danych</h3>
+        <dl class="dl">
+          <dt>Księgowa Państwa firmy</dt>
+          <dd>Pełny dostęp do Państwa księgowości. To jedyna osoba, która na co dzień się z Państwem kontaktuje.</dd>
+          <dt>Specjalistka ds. kadr i płac</dt>
+          <dd>Tylko część płacowa i tylko wtedy, gdy mają Państwo pracowników albo zleceniobiorców.</dd>
+          <dt>Doradca podatkowy</dt>
+          <dd>Tylko do konkretnego pytania, które wspólnie rozwiązujemy, i tylko za Państwa wiedzą.</dd>
+          <dt>Urzędy</dt>
+          <dd>Urząd skarbowy i ZUS, w zakresie deklaracji, które składam za Państwa na podstawie pełnomocnictwa.</dd>
+          <dt>Archiwizacja</dt>
+          <dd>Dokumenty przechowuję przez okres wymagany prawem. Potem przekażę je Państwu albo po uzgodnieniu profesjonalnie zniszczę i dam na to potwierdzenie.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KARIÉRA ================= -->
+<section class="sec" id="kariera">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">13</b> Kariera</p>
+      <div>
+        <h2 class="sec-h">Wolne stanowisko i praktyki</h2>
+        <p class="lead">Szukam jednej osoby, która samodzielnie poprowadzi pełną księgowość. Portfel to 15 do 20 klientów, wynagrodzenie od 6090 zł brutto przy pełnym etacie.</p>
+      </div>
+    </header>
+
+    <div class="two">
+      <div>
+        <h3>Samodzielna księgowa albo samodzielny księgowy</h3>
+        <dl class="dl">
+          <dt>Etat</dt>
+          <dd>Pełny etat albo niepełny od 0,6. Elastyczny początek dnia, dwa dni w tygodniu z domu.</dd>
+          <dt>Miejsce pracy</dt>
+          <dd>ul. Celna 21, Kraków. Biuro jest na parterze, parking na podwórzu budynku.</dd>
+          <dt>Co będzie Pan albo Pani robić</dt>
+          <dd>Prowadzić własny portfel 15 do 20 klientów od dokumentów po sprawozdanie, łącznie z VAT i kontaktem z klientem.</dd>
+          <dt>Czego oczekuję</dt>
+          <dd>Co najmniej dwa lata doświadczenia w pełnej księgowości, doświadczenia z VAT i terminowości. Płace nie są warunkiem, doszkolimy.</dd>
+          <dt>Wynagrodzenie</dt>
+          <dd>Od <b>6090 zł brutto</b> przy pełnym etacie, konkretna kwota według doświadczenia. Po roku zakres portfela i wynagrodzenie są weryfikowane.</dd>
+          <dt>Co oferuję</dt>
+          <dd>Stała liczba klientów na osobę, płatne szkolenia i licencje, zastępstwo w czasie urlopu i żadnych nadgodzin poza marcem i czerwcem.</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3>Praktyki dla studentów i absolwentów</h3>
+        <p class="p-narrow">Dwa razy w roku przyjmuję jedną osobę na trzymiesięczne płatne praktyki. Przejdzie Pan albo Pani porządkowanie dokumentów, księgowanie zwykłych operacji i przygotowanie danych do sprawozdania pod nadzorem. Wynagrodzenie wynosi 32 zł za godzinę.</p>
+        <p class="p-narrow">Po praktykach dostają Państwo pisemną ocenę i rekomendację, nawet jeśli u nas nie zostaną. Terminy rozpoczęcia są zawsze w lutym i we wrześniu.</p>
+
+        <h3 style="margin-top:34px">Jak się zgłosić</h3>
+        <ul class="ticks">
+          <li><b>Proszę wypełnić formularz</b> w sekcji Kontakt i napisać w wiadomości, że to odpowiedź na ogłoszenie o pracy. Zadzwonię i powiem, gdzie wysłać CV.</li>
+          <li><b>W wiadomości proszę podać</b>, jaką księgowość prowadził Pan albo prowadziła Pani dotąd, w jakim programie i ilu klientów miał Pan albo miała Pani pod opieką.</li>
+          <li><b>Odpowiem w ciągu pięciu dni roboczych</b>, nawet jeśli się nie uda.</li>
+          <li><b>Rekrutacja ma dwa etapy:</b> rozmowę na trzydzieści minut i krótkie zadanie praktyczne, które nie zajmie więcej niż godzinę. Za zadanie płacę 174 zł.</li>
+        </ul>
+        <p style="margin-top:22px"><a class="btn btn-line" href="#kontakt">Przejdź do formularza</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OTÁZKY ================= -->
+<section class="sec band-alt" id="otazky">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">14</b> Pytania</p>
+      <div>
+        <h2 class="sec-h">Częste pytania</h2>
+        <p class="lead">Odpowiedzi na to, o co klienci pytają przed podpisaniem umowy.</p>
+      </div>
+    </header>
+
+    <details open>
+      <summary>Czy można przejść do Pani także w trakcie roku?</summary>
+      <div class="faq-body">
+        <p>Tak. Od poprzedniej księgowej potrzebuję dziennika albo księgi głównej, rozrachunków, ewidencji środków trwałych i kart wynagrodzeń. Przejęte dane sprawdzę i napiszę, co jest otwarte i co trzeba wyrównać. <strong>Za tę kontrolę nie pobieram opłaty.</strong></p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Do kiedy muszę przesłać dokumenty?</summary>
+      <div class="faq-body">
+        <p>Zwykłe dokumenty do 10. dnia następnego miesiąca, dane do płac do 3. dnia. Przy miesięcznym VAT termin jest ostrzejszy, ustalimy go podczas rozmowy wstępnej.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Co, jeśli brakuje mi jakiegoś dokumentu?</summary>
+      <div class="faq-body">
+        <p>Brakujący dokument zwykle rozpoznam po operacji na rachunku bankowym i napiszę, który to jest. Jeśli nie da się go odnaleźć, powiem, jaki ma to wpływ na podatek i VAT, jeszcze przed złożeniem deklaracji.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Kto odpowiada za karę, jeśli powstanie?</summary>
+      <div class="faq-body">
+        <p>Za błędy po mojej stronie odpowiadam ja i mam ubezpieczenie OC biura rachunkowego. Jeśli sankcja powstanie z dokumentów dostarczonych po umówionym terminie, jest po stronie klienta. Dlatego terminy podaję wcześniej i o nich przypominam.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Co Pani robi, gdy przyjdzie wezwanie albo kontrola z urzędu skarbowego?</summary>
+      <div class="faq-body">
+        <p>Wezwanie przesyłają mi Państwo, a ja przygotuję odpowiedź i dokumenty. Jeśli chodzi o kontrolę, kontaktuję się z urzędem bezpośrednio na podstawie pełnomocnictwa, a Państwo są przy tym tylko wtedy, gdy trzeba. W abonamencie Standard w cenie są trzy godziny, w abonamencie Rozszerzony reprezentacja jest bez ograniczeń; poza abonamentem stawka wynosi <strong>152 zł za godzinę</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Czy muszę kupić program księgowy?</summary>
+      <div class="faq-body">
+        <p>Nie. Księguję we własnym programie, a Państwo dostają wyniki w PDF. Jeśli mają Państwo już system do fakturowania, mogę przejmować z niego dane eksportem.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Czy prowadzi Pani też sklepy internetowe i sprzedaż za granicę?</summary>
+      <div class="faq-body">
+        <p>Tak. Zajmuję się parowaniem płatności z bramek płatniczych i pobrań, zwrotami i procedurą OSS przy sprzedaży konsumentom w innych krajach Unii Europejskiej. Przy większej liczbie transakcji ustawimy automatyczny import, żeby liczba dokumentów niepotrzebnie nie podniosła abonamentu.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Mam spółkę z o.o., która nie prowadzi działalności. Czy muszę płacić pełny abonament?</summary>
+      <div class="faq-body">
+        <p>Nie. Spółkę bez przychodów i bez pracowników prowadzę za <strong>109 zł miesięcznie</strong>. W cenie są zerowe deklaracje, sprawozdanie finansowe i złożenie go do KRS. Gdy firma zacznie działać, przejdziemy na zwykły abonament od następnego miesiąca.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Co się bardziej opłaca: ryczałt, skala czy podatek liniowy?</summary>
+      <div class="faq-body">
+        <p>Przeliczę wszystkie możliwości na Państwa rzeczywistych liczbach, zanim wybiorą Państwo formę opodatkowania na kolejny rok, i powiem różnicę w złotych. Przy KPiR trzeba prowadzić więcej ewidencji, więc do porównania liczę też czas i cenę obsługi.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Jak się ze sobą kontaktujemy?</summary>
+      <div class="faq-body">
+        <p>Piszą Państwo bezpośrednio do księgowej, która prowadzi Państwa księgowość, a nie na ogólną infolinię. Formularz na tej stronie ma odpowiedź w ciągu 24 godzin w dni robocze, telefon jest dostępny od 9.00 do 16.00. Konsultacje w ciągu roku są częścią abonamentu.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ================= ZÁVEREČNÁ VÝZVA ================= -->
+<section class="cta-band" aria-labelledby="ponuka-nadpis">
+  <div class="wrap cta-in">
+    <div>
+      <h2 id="ponuka-nadpis">Niezobowiązująca oferta w ciągu dwóch dni roboczych</h2>
+      <p>Proszę podać rodzaj podmiotu, przybliżoną liczbę dokumentów i czy mają Państwo pracowników. Wyślę stałą cenę miesięczną i zakres usług w jednym dokumencie. Oferta jest ważna 30 dni.</p>
+    </div>
+    <div class="cta-btns">
+      <a class="btn btn-acc2" href="#kontakt">Niezobowiązująca oferta</a>
+      <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT ================= -->
+<section class="sec" id="kontakt" style="border-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-idx"><b class="num">15</b> Kontakt</p>
+      <div>
+        <h2 class="sec-h">Kontakt i niezobowiązująca oferta</h2>
+        <p class="lead">Proszę napisać, czym się Państwo zajmują i w jakim stanie jest księgowość. Odezwę się i powiem, czego będę potrzebować i ile będzie kosztował miesięczny abonament.</p>
+      </div>
+    </header>
+
+    <div class="contact">
+      <div>
+        <ul class="cdata">
+          <li>
+            <span class="lbl">Adres biura</span>
+            <span class="val">ul. Celna 21, 31-066 Kraków</span>
+            <span class="cnote">Parter, wejście prosto z ulicy. Parking na podwórzu, dla klientów pierwsze dwie godziny bezpłatnie.</span>
+          </li>
+          <li>
+            <span class="lbl">Telefon</span>
+            <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+            <span class="cnote">Od poniedziałku do piątku od 9.00 do 16.00.</span>
+          </li>
+          <li>
+            <span class="lbl">Spotkania osobiste</span>
+            <span class="val num">Od poniedziałku do czwartku, 9.00 – 15.00</span>
+            <span class="cnote">Zawsze po umówieniu terminu. Piątek jest zarezerwowany na księgowanie i deklaracje.</span>
+          </li>
+          <li>
+            <span class="lbl">Przekazanie dokumentów</span>
+            <span class="val num">Każdego dnia roboczego do 16.00</span>
+            <span class="cnote">Zamykana skrzynka przy wejściu na ul. Celnej 21, odbiór potwierdzę.</span>
+          </li>
+          <li>
+            <span class="lbl">Gdzie pracuję</span>
+            <span class="val">Kraków i cała Polska</span>
+            <span class="cnote">Większość klientów załatwia sprawy zdalnie, osobiste spotkanie zależy od Państwa.</span>
+          </li>
+        </ul>
+
+        <div class="plate reveal">
+          <svg class="plate-geo" viewBox="0 0 640 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <defs>
+              <radialGradient id="svetlo3" cx="0.92" cy="0.94" r="0.6">
+                <stop offset="0" stop-color="#7a5c22" stop-opacity="0.11"/>
+                <stop offset="1" stop-color="#7a5c22" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="640" height="520" fill="url(#svetlo3)"/>
+            <path d="M640 92 L640 520 L214 520 Z" fill="#7a5c22" fill-opacity="0.05"/>
+            <g fill="none" stroke="#7a5c22" stroke-opacity="0.16">
+              <circle cx="566" cy="470" r="92"/>
+              <circle cx="566" cy="470" r="150"/>
+              <circle cx="566" cy="470" r="208"/>
+            </g>
+            <g stroke="#14181c" stroke-opacity="0.07">
+              <path d="M0 128 H640 M0 176 H640 M0 224 H640"/>
+            </g>
+          </svg>
+          <div class="plate-in">
+            <p class="plate-kicker">Jak to wygląda</p>
+            <p class="plate-quote">Piszą Państwo bezpośrednio do księgowej, która prowadzi Państwa księgowość.</p>
+            <ul class="plate-facts">
+              <li>Odpowiedź na zapytanie <b class="num">w ciągu 24 godzin</b></li>
+              <li>Rozmowa wstępna <b class="num">20 minut</b></li>
+              <li>Oferta cenowa <b class="num">w 2 dni</b></li>
+              <li>Pierwszy miesiąc rozliczeń <b class="num">bez zobowiązań</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <form id="dopyt" novalidate>
+          <p class="form-intro">Proszę wypełnić trzy pola i wysłać. Wiadomość trafi do skrzynki biura rachunkowego SALDIA na ul. Celnej 21, a odpowiedź dostaną Państwo <b>w ciągu 24 godzin</b> w dni robocze.</p>
+
+          <div class="frow">
+            <div class="f">
+              <label class="lab" for="meno">Imię i nazwisko <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="meno" name="meno" autocomplete="name" required placeholder="Jak mam się do Państwa zwracać">
+            </div>
+            <div class="f">
+              <label class="lab" for="tel">Telefon <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="tel" name="tel" autocomplete="tel" required placeholder="Numer, pod którym Państwa zastanę">
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="f">
+              <label class="lab" for="firma">Nazwa firmy <span class="opt-l">(nieobowiązkowo)</span></label>
+              <input type="text" id="firma" name="firma" autocomplete="organization" placeholder="Nazwa firmy albo działalności">
+            </div>
+            <div class="f">
+              <label class="lab" for="subjekt">Rodzaj podmiotu</label>
+              <select id="subjekt" name="subjekt">
+                <option>Jednoosobowa działalność</option>
+                <option>Spółka z o.o.</option>
+                <option>Fundacja albo stowarzyszenie</option>
+                <option>Jeszcze nie wiem, dopiero zaczynam</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="f">
+            <label class="lab" for="odkedy">Od kiedy potrzebują Państwo księgowej</label>
+            <select id="odkedy" name="odkedy">
+              <option>Jak najszybciej</option>
+              <option>Od następnego miesiąca</option>
+              <option>Od nowego roku</option>
+              <option>Na razie się informuję</option>
+            </select>
+          </div>
+
+          <div class="f">
+            <label class="lab" for="sprava">Czego Państwo potrzebują <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="sprava" name="sprava" required
+              placeholder="Na przykład: spółka z o.o., czynny podatnik VAT, dwóch pracowników, około 60 dokumentów miesięcznie, szukam biura od września."></textarea>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" id="suhlas" required>
+            <span>Wyrażam zgodę na kontakt biura w sprawie tego zapytania. W przykładzie nic nie jest wysyłane ani zapisywane.</span>
+          </label>
+
+          <button class="btn btn-acc" type="submit" style="width:100%">Chcę niezobowiązującą ofertę</button>
+          <p class="form-note">Przykładowy formularz. Na prawdziwej stronie wiadomość trafiłaby do skrzynki biura rachunkowego, a odpowiedź dostaliby Państwo w ciągu 24 godzin. Jeśli sprawa jest pilna, prosimy zadzwonić.</p>
+        </form>
+
+        <div class="sent" id="sent" hidden>
+          <h3>Formularz działa, ale to jest przykład</h3>
+          <p>Państwa dane nigdzie nie trafiły i nikt ich nie dostał. Na prawdziwej stronie zapytanie trafiłoby w tej chwili do skrzynki biura rachunkowego, a w ciągu 24 godzin dostaliby Państwo odpowiedź.</p>
+          <p style="margin-top:12px">Chcą Państwo taką stronę dla swojej firmy? <a href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a></p>
+          <button class="again" type="button" id="again">Wypróbuj formularz jeszcze raz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= AUTOR UKÁŽKY — reálne kontakty ================= -->
+<section class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap">
+    <div class="authorbox">
+      <p class="eyebrow">Autor przykładu — prawdziwe kontakty</p>
+      <h2 id="autor-nadpis">Podoba się Państwu ta strona?</h2>
+      <p class="lead">Wszystko nad tą ramką jest przykładem, biuro rachunkowe SALDIA nie istnieje. Tę stronę zaprojektował i zaprogramował <b>Alex Poliak</b>. Taką samą stronę zbuduje też dla Państwa firmy, razem z tekstami, cennikiem, kalkulatorem i działającym formularzem.</p>
+
+      <ul class="author-num">
+        <li>
+          <span class="k">Cena od</span>
+          <span class="n num">250 €</span>
+          <span class="d">Strona jednostronicowa na zamówienie, razem z tekstami i wdrożeniem.</span>
+        </li>
+        <li>
+          <span class="k">Pierwszy projekt</span>
+          <span class="n num">do 3 dni</span>
+          <span class="d">Zobaczą Państwo prawdziwą stronę, a nie obrazek w prezentacji.</span>
+        </li>
+        <li>
+          <span class="k">Konsultacja</span>
+          <span class="n">bezpłatnie</span>
+          <span class="d">Niezobowiązująco. Powiem, co strona powinna zawierać i co realnie Państwu przyniesie.</span>
+        </li>
+      </ul>
+
+      <ul class="author-data">
+        <li>
+          <span class="lbl">Autor strony</span>
+          <span class="val">Alex Poliak</span>
+        </li>
+        <li>
+          <span class="lbl">E-mail</span>
+          <a class="val" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a>
+        </li>
+        <li>
+          <span class="lbl">Wsparcie</span>
+          <a class="val" href="mailto:support@apoliak.online">support@apoliak.online</a>
+        </li>
+        <li>
+          <span class="lbl">Telefon</span>
+          <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+          <span class="sub">Wolą Państwo pisać? Proszę napisać przez formularz poniżej.</span>
+        </li>
+        <li>
+          <span class="lbl">Strona</span>
+          <a class="val" href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a>
+        </li>
+      </ul>
+
+      <div class="author-foot">
+        <p>Konsultacja jest bezpłatna i niezobowiązująca.</p>
+        <a class="btn btn-light" href="https://apoliak.online/pl/" target="_blank" rel="noopener">Otwórz apoliak.online</a>
+        <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="foot-brand">SALDIA</span>
+        <p class="foot-desc">KPiR, ryczałt i pełna księgowość, kadry i płace oraz zeznania podatkowe dla jednoosobowych działalności i małych spółek. Biuro w Krakowie, klienci z całej Polski.</p>
+        <p style="margin-top:18px"><a class="btn btn-acc2" href="#kontakt">Niezobowiązująca oferta</a></p>
+      </div>
+      <div>
+        <h3>Biuro</h3>
+        <ul class="foot-addr">
+          <li>SALDIA sp. z o.o.<br>ul. Celna 21<br>31-066 Kraków</li>
+          <li><span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty, żeby nikt nie dzwonił pod cudzy numer.">tu będzie Państwa numer</span>
+            <span>Od poniedziałku do piątku, 9.00 – 16.00</span></li>
+          <li>Spotkania osobiste<span>Od poniedziałku do czwartku, 9.00 – 15.00, po umówieniu</span></li>
+          <li class="num">NIP <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty.">tu będzie Państwa numer</span><span>REGON i KRS <span class="ukazka-kontakt" title="Przykładowa strona — dana celowo pominięta.">uzupełnia się według Państwa firmy</span></span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Strona</h3>
+        <ul>
+          <li><a href="#sluzby">Zakres usług</a></li>
+          <li><a href="#odvetvia">Dla kogo prowadzę księgowość</a></li>
+          <li><a href="#cennik">Miesięczne abonamenty</a></li>
+          <li><a href="#referencie">Referencje i ceny</a></li>
+          <li><a href="#kalkulacka">Kalkulator abonamentu</a></li>
+          <li><a href="#postup">Przebieg współpracy</a></li>
+          <li><a href="#podklady">Dokumenty od klienta</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Dalej</h3>
+        <ul>
+          <li><a href="#terminy">Terminy w ciągu roku</a></li>
+          <li><a href="#kancelaria">Adres i parking</a></li>
+          <li><a href="#hodiny">Godziny otwarcia</a></li>
+          <li><a href="#platby">Fakturowanie i płatność</a></li>
+          <li><a href="#storno">Odwołanie i zakończenie</a></li>
+          <li><a href="#ochrana">Ochrona danych</a></li>
+          <li><a href="#otazky">Częste pytania</a></li>
+          <li><a href="#kariera">Kariera i praktyki</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-note">
+      <span>© <span class="num">2026</span> SALDIA sp. z o.o. · ul. Celna 21, 31-066 Kraków · <span class="num">NIP <span class="ukazka-kontakt" title="Przykładowa strona — numer jest celowo pominięty.">tu będzie Państwa numer</span></span> · przykładowa strona</span>
+      <span>Stronę zaprojektował i zaprogramował <a href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a></span>
+    </div>
+
+
+    <p class="disclaimer"><b>Uwaga:</b> SALDIA to wymyślone biuro rachunkowe stworzone jako przykład strony. Nazwa, adres, NIP, REGON, ceny, terminy i dane kontaktowe są ilustracyjne i nie należą do żadnej istniejącej firmy. Chcą Państwo podobną stronę dla swojej firmy? Zapraszam na <a href="https://apoliak.online/pl/" target="_blank" rel="noopener">apoliak.online</a>.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- výška lepiacej hlavičky pre scroll-margin ---- */
+  var stack = document.querySelector('.topstack');
+  function setStack(){
+    if(!stack) return;
+    document.documentElement.style.setProperty('--stack', stack.offsetHeight + 'px');
+  }
+  setStack();
+  window.addEventListener('resize', setStack);
+  window.addEventListener('load', setStack);
+  if('ResizeObserver' in window && stack){ new ResizeObserver(setStack).observe(stack); }
+
+  /* ---- mobilné menu ---- */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('menu');
+
+  function closeMenu(){
+    menu.classList.remove('is-open');
+    burger.setAttribute('aria-expanded','false');
+    burger.setAttribute('aria-label','Otwórz menu');
+  }
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
+    setStack();
+  });
+  menu.addEventListener('click', function(e){
+    if(e.target.closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && menu.classList.contains('is-open')){
+      closeMenu(); burger.focus();
+    }
+  });
+
+  /* ---- zvýraznenie aktívnej sekcie v navigácii ---- */
+  var links = Array.prototype.slice.call(menu.querySelectorAll('a[href^="#"]'));
+  var map = {};
+  links.forEach(function(a){
+    var id = a.getAttribute('href').slice(1);
+    var sec = document.getElementById(id);
+    if(sec) map[id] = a;
+  });
+  if('IntersectionObserver' in window){
+    var navObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){ a.removeAttribute('aria-current'); });
+          var a = map[en.target.id];
+          if(a) a.setAttribute('aria-current','true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(map).forEach(function(id){ navObs.observe(document.getElementById(id)); });
+  }
+
+  /* ---- jemné nábehy pri scrollovaní (vypnuté pri prefers-reduced-motion) ---- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  var chce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(chce || !('IntersectionObserver' in window)){
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  } else {
+    var revObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.classList.add('is-in');
+          revObs.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+    reveals.forEach(function(el){ revObs.observe(el); });
+  }
+
+  /* ================= KALKULAČKA MESAČNÉHO PAUŠÁLU =================
+     Ceny sú totožné s tabuľkou paušálov v sekcii Cenník:
+       Štart      39 €, do 20 dokladov, ďalší 1,10 €, DPH +25 €, mzda 12 €/osoba
+       Štandard   69 €, do 40 dokladov, ďalší 1,10 €, DPH +25 €, mzda 12 €/osoba
+       Rozšírený 129 €, do 80 dokladov, ďalší 0,90 €, DPH v cene, 2 mzdy v cene
+     Pre s. r. o. sa počítajú paušály Štandard aj Rozšírený a vyberie sa lacnejší.
+     ================================================================ */
+
+  var TARIFY = {
+    start:     { nazov:'Start',     popis:'KPiR albo ryczałt', zaklad:__p(39),  doklady:20, zaDoklad:__c(1.10), dph:__p(25), mzdyVCene:0, zaMzdu:__p(12) },
+    standard:  { nazov:'Standard',  popis:'pełna księgowość',   zaklad:__p(69),  doklady:40, zaDoklad:__c(1.10), dph:__p(25), mzdyVCene:0, zaMzdu:__p(12) },
+    rozsireny: { nazov:'Rozszerzony', popis:'pełna księgowość',   zaklad:__p(129), doklady:80, zaDoklad:__c(0.90), dph:0,  mzdyVCene:2, zaMzdu:__p(12) }
+  };
+
+  var fmt0 = new Intl.NumberFormat('pl-PL', { maximumFractionDigits:0 });
+  var fmt2 = new Intl.NumberFormat('pl-PL', { minimumFractionDigits:2, maximumFractionDigits:2 });
+
+  function cent(x){ return Math.round(x * 100) / 100; }
+  function eur(x){
+    var v = cent(x);
+    return (v === Math.round(v) ? fmt0.format(v) : fmt2.format(v)) + ' zł';
+  }
+  function osob(n){
+    if(n === 1) return '1 osoba';
+    if(n >= 2 && n <= 4) return n + ' osoby';
+    return n + ' osób';
+  }
+
+  var elDoklady   = document.getElementById('doklady');
+  var elDokladyOut= document.getElementById('dokladyOut');
+  var elZam       = document.getElementById('zam');
+  var elDph       = document.getElementById('dph');
+  var elSuma      = document.getElementById('sumaOut');
+  var elTier      = document.getElementById('tierOut');
+  var elRozpis    = document.getElementById('rozpisOut');
+  var elPozn      = document.getElementById('poznamkaOut');
+  var typRadia    = document.querySelectorAll('input[name="typ"]');
+
+  function typSubjektu(){
+    var v = 'szco';
+    Array.prototype.forEach.call(typRadia, function(r){ if(r.checked) v = r.value; });
+    return v;
+  }
+
+  /* vypočíta cenu jedného paušálu a vráti aj rozpis položiek */
+  function vypocet(kluc, doklady, zam, jeDph){
+    var t = TARIFY[kluc];
+    var polozky = [];
+    var spolu = t.zaklad;
+
+    polozky.push(['Abonament ' + t.nazov + ' — ' + t.popis, t.zaklad]);
+
+    var navyse = Math.max(0, doklady - t.doklady);
+    if(navyse > 0){
+      var cenaDokladov = cent(navyse * t.zaDoklad);
+      spolu += cenaDokladov;
+      polozky.push(['Dokumenty ponad zakres: ' + navyse + ' × ' + fmt2.format(t.zaDoklad) + ' zł', cenaDokladov]);
+    } else {
+      polozky.push(['Dokumenty w zakresie abonamentu (do ' + t.doklady + ')', 0]);
+    }
+
+    var mzdyNavyse = Math.max(0, zam - t.mzdyVCene);
+    if(zam > 0){
+      if(mzdyNavyse > 0){
+        var cenaMzdy = cent(mzdyNavyse * t.zaMzdu);
+        spolu += cenaMzdy;
+        polozky.push([
+          (t.mzdyVCene > 0 ? 'Płace ponad zakres: ' : 'Płace: ') +
+          osob(mzdyNavyse) + ' × ' + fmt0.format(t.zaMzdu) + ' zł', cenaMzdy]);
+      } else {
+        polozky.push(['Płace: ' + osob(zam) + ' w cenie abonamentu', 0]);
+      }
+    }
+
+    if(jeDph){
+      if(t.dph > 0){
+        spolu += t.dph;
+        polozky.push(['VAT i JPK_V7', t.dph]);
+      } else {
+        polozky.push(['VAT i JPK_V7 w cenie abonamentu', 0]);
+      }
+    }
+
+    return { kluc:kluc, nazov:t.nazov, spolu:cent(spolu), polozky:polozky };
+  }
+
+  function riadok(popis, hodnota){
+    var li = document.createElement('li');
+    var a = document.createElement('span'); a.textContent = popis;
+    var b = document.createElement('span'); b.className = 'num'; b.textContent = eur(hodnota);
+    li.appendChild(a); li.appendChild(b);
+    return li;
+  }
+
+  function prepocitaj(){
+    var doklady = parseInt(elDoklady.value, 10) || 0;
+    var zam = Math.max(0, Math.min(20, parseInt(elZam.value, 10) || 0));
+    var jeDph = elDph.checked;
+
+    elDokladyOut.textContent = doklady;
+
+    var vysledok;
+    if(typSubjektu() === 'sro'){
+      var a = vypocet('standard', doklady, zam, jeDph);
+      var b = vypocet('rozsireny', doklady, zam, jeDph);
+      vysledok = (b.spolu < a.spolu) ? b : a;
+    } else {
+      vysledok = vypocet('start', doklady, zam, jeDph);
+    }
+
+    elSuma.textContent = eur(vysledok.spolu).replace(' zł','');
+    elTier.textContent = 'Abonament ' + vysledok.nazov;
+
+    elRozpis.textContent = '';
+    vysledok.polozky.forEach(function(p){ elRozpis.appendChild(riadok(p[0], p[1])); });
+
+    var pozn = 'Roczne sprawozdanie finansowe i zeznanie podatkowe rozlicza się osobno według cennika usług jednorazowych.';
+    if(doklady >= 200){
+      pozn = 'Przy ponad 200 dokumentach miesięcznie ustawimy automatyczny import danych i ustalimy indywidualny abonament. Cena bywa niższa, niż pokazuje kalkulator.';
+    } else if(zam >= 8){
+      pozn = 'Przy ośmiu i więcej pracownikach ustalimy abonament płacowy za cały zespół zamiast ceny za osobę.';
+    } else if(vysledok.kluc === 'rozsireny'){
+      pozn = 'Przy tym zakresie taniej wychodzi abonament Rozszerzony, który ma VAT i dwie osoby na liście płac w cenie.';
+    }
+    elPozn.textContent = pozn;
+  }
+
+  Array.prototype.forEach.call(typRadia, function(r){ r.addEventListener('change', prepocitaj); });
+  elDoklady.addEventListener('input', prepocitaj);
+  elDph.addEventListener('change', prepocitaj);
+  elZam.addEventListener('input', prepocitaj);
+  elZam.addEventListener('change', function(){
+    elZam.value = Math.max(0, Math.min(20, parseInt(elZam.value, 10) || 0));
+    prepocitaj();
+  });
+  document.getElementById('zamPlus').addEventListener('click', function(){
+    elZam.value = Math.min(20, (parseInt(elZam.value,10) || 0) + 1); prepocitaj();
+  });
+  document.getElementById('zamMinus').addEventListener('click', function(){
+    elZam.value = Math.max(0, (parseInt(elZam.value,10) || 0) - 1); prepocitaj();
+  });
+  prepocitaj();
+
+  /* ================= FORMULÁR (ukážka, nič sa neodosiela) ================= */
+
+  var form = document.getElementById('dopyt');
+  var sent = document.getElementById('sent');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var chyba = null;
+    ['meno','tel','sprava'].forEach(function(id){
+      var f = document.getElementById(id);
+      if(!f.value.trim() && !chyba) chyba = f;
+    });
+    var tel = document.getElementById('tel');
+    if(!chyba && tel.value.replace(/[^0-9]/g,'').length < 9) chyba = tel;
+    var suhlas = document.getElementById('suhlas');
+    if(!chyba && !suhlas.checked) chyba = suhlas;
+
+    if(chyba){
+      chyba.style.borderColor = '#8a2b2b';
+      chyba.focus();
+      return;
+    }
+
+    form.hidden = true;
+    sent.hidden = false;
+    sent.setAttribute('role','status');
+    sent.setAttribute('tabindex','-1');
+    sent.focus();
+  });
+
+  document.getElementById('again').addEventListener('click', function(){
+    sent.hidden = true;
+    form.hidden = false;
+    form.reset();
+    Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function(f){ f.style.borderColor = ''; });
+    document.getElementById('meno').focus();
+  });
+
+  Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function(f){
+    f.addEventListener('input', function(){ f.style.borderColor = ''; });
+  });
+})();
+</script>
+
+</body>
+</html>
+
