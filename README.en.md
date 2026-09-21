@@ -63,8 +63,8 @@ The site makes not a single external network request: no CDN, no web fonts, no a
 - ♿ **WCAG AA accessibility** - contrast ratios are verified and noted next to the tokens; the page has a skip link, a single `h1`, visible focus states and `scroll-padding-top` so anchors do not land under the sticky header.
 - 👁️ **Scroll reveal** - an `IntersectionObserver` adds the `.in` class to `.rv` elements. The effect only engages once the inline script in the head sets the `js` class on `<html>`, so without JavaScript the content is simply visible.
 - 🐢 **Respect for `prefers-reduced-motion`** - with the setting on, content is revealed at once and transitions are turned off.
-- 🔍 **SEO and sharing** - canonical URL, Open Graph and Twitter Card tags, a 1200 × 630 `og-image.png` (plus `og-image-cs.png`), schema.org `ProfessionalService` structured data, `sitemap.xml`, `robots.txt` and an inline SVG favicon.
-- 🌍 **Slovak and Czech on one domain** - the Czech version lives in `/cs/`, including all 44 demos, with prices converted (rate 25 CZK/€) and Czech facts in place of Slovak ones. The language switcher sits in the header, search engines get `hreflang` in the head and in `sitemap.xml`. The Slovak files stay the source of truth - the Czech ones are generated from them, so the two versions cannot drift apart.
+- 🔍 **SEO and sharing** - canonical URL, Open Graph and Twitter Card tags, a 1200 × 630 `og-image.png` (plus `og-image-cs.png`, `og-image-hu.png`, `og-image-pl.png` and `og-image-en.png`), schema.org `ProfessionalService` structured data, `sitemap.xml`, `robots.txt` and an inline SVG favicon.
+- 🌍 **Slovak, Czech, Hungarian, Polish and English on one domain** - the Czech version lives in `/cs/` (rate 25 CZK/€), the Hungarian one in `/hu/` (rate 400 HUF/€), the Polish one in `/pl/` (rate 4.35 PLN/€) and the English one in `/en/` (written for Ireland, prices stay in euro). Each includes all 44 demos, with prices converted and local facts in place of Slovak ones. The language switcher sits in the header, search engines get `hreflang` in the head and in `sitemap.xml`. The Slovak files stay the source of truth - the translations are generated from them, so the versions cannot drift apart.
 - 🚧 **Custom 404 page** - `404.html` in the same design, linking back to the home page and the gallery.
 - 🔒 **Privacy policy** - a dedicated `ochrana-osobnych-udajov.html` page.
 - 📅 **Automatic year in the footer** - `script.js` writes the current year into `#rok`, so it never needs a manual update.
@@ -135,11 +135,29 @@ Apoliak-MAIN_WEB/
 │   ├── ukazky/                   # gallery and all 44 demos in Czech
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
+├── hu/                           # Hungarian version of the whole site, all 44 demos
+│   ├── index.html                # the same page in Hungarian
+│   ├── ukazky/                   # gallery and all 44 demos in Hungarian
+│   ├── 404.html
+│   └── ochrana-osobnych-udajov.html
+├── pl/                           # Polish version of the whole site, all 44 demos
+│   ├── index.html                # the same page in Polish
+│   ├── ukazky/                   # gallery and all 44 demos in Polish
+│   ├── 404.html
+│   └── ochrana-osobnych-udajov.html
+├── en/                           # English version of the whole site, all 44 demos (for Ireland)
+│   ├── index.html                # the same page in English
+│   ├── ukazky/                   # gallery and all 44 demos in English
+│   ├── 404.html
+│   └── ochrana-osobnych-udajov.html
 ├── 404.html                      # custom page for unknown addresses
 ├── ochrana-osobnych-udajov.html  # privacy policy
 ├── og-image.png                  # sharing preview, 1200 × 630
 ├── og-image-cs.png               # the same for the Czech version
-├── sitemap.xml                   # sitemap (both languages + hreflang)
+├── og-image-hu.png               # the same for the Hungarian version
+├── og-image-pl.png               # the same for the Polish version
+├── og-image-en.png               # the same for the English version
+├── sitemap.xml                   # sitemap (all five languages + hreflang)
 ├── robots.txt                    # crawler rules
 ├── CNAME                         # custom domain for GitHub Pages
 ├── .nojekyll                     # disables Jekyll processing on Pages

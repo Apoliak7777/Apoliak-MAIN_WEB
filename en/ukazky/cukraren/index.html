@@ -1,0 +1,2385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/cukraren/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/cukraren/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/cukraren/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/cukraren/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/cukraren/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/cukraren/">
+<!-- /jazyky:hreflang -->
+<title>Crust Bakery — bread, pastries and cakes to order</title>
+<meta name="description" content="Example website for a bakery and patisserie: sourdough bread from €2.60, pastries from €1.70, cakes to order from €42, a cake builder that works out the price and date, allergens and opening hours. Design and code by Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#2E211A">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_IE">
+<meta property="og:site_name" content="Crust Bakery (example website)">
+<meta property="og:title" content="Crust Bakery — bread, pastries and cakes to order">
+<meta property="og:description" content="Sourdough bread, daily bakes and cakes to order from €42. A cake builder that works out the price and the earliest collection date. Example website by Alex Poliak, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='3'%20fill='%232E211A'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='19'%20fill='none'%20stroke='%23A3452C'%20stroke-width='3'/%3E%3Ctext%20x='32'%20y='42'%20font-family='Georgia,serif'%20font-size='26'%20fill='%23F0E7DA'%20text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   TOKENY — teplé neutrály (smotanová, kakaová) + tlmená tehlová
+   ============================================================ */
+:root{
+  --cocoa:#2E211A;
+  --cocoa-2:#3D2C22;
+  --cocoa-3:#6B3A26;
+  --accent:#A3452C;
+  --accent-d:#8A3823;
+  --accent-l:#E8A98C;
+  --sand:#D9C3A8;
+  --sand-2:#E8D9C4;
+
+  --bg:#FBF7F0;
+  --bg-2:#F4EDE1;
+  --paper:#FFFFFF;
+  --ink:#241B15;
+  --muted:#6A5A4E;
+  --line:#E2D7C6;
+  --line-2:#EFE7DA;
+  --line-dark:#4A3729;
+  --rule:#C9B49C;
+  --on-dark:#F0E7DA;
+  --on-dark-2:#D8CABA;
+
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --wrap:1200px;
+  --bar:44px;
+  --r:2px;
+  --measure:66ch;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   ZÁKLAD
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+body{
+  margin:0;
+  padding-top:var(--bar);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.14;letter-spacing:-.014em;margin:0 0 .5em}
+h1{font-size:clamp(2.3rem,5.2vw,4.05rem);line-height:1.06;letter-spacing:-.022em}
+h2{font-size:clamp(1.62rem,3.1vw,2.45rem);line-height:1.1}
+h3{font-size:clamp(1.1rem,1.45vw,1.28rem);line-height:1.3}
+h4{font-size:1.02rem;line-height:1.3}
+p{margin:0 0 1em;max-width:var(--measure)}
+ul,ol{margin:0 0 1em;padding:0 0 0 1.15em}
+li{margin:0 0 .35em}
+a{color:var(--accent)}
+a:hover{color:var(--accent-d)}
+table{border-collapse:collapse;width:100%}
+img,svg{max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.on-dark :focus-visible,.demobar :focus-visible,.plate :focus-visible{outline-color:var(--accent-l)}
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:0;background:var(--cocoa);color:var(--on-dark);padding:12px 18px;z-index:300}
+.skip:focus{left:8px;top:calc(var(--bar) + 8px)}
+section{scroll-margin-top:calc(var(--bar) + 78px)}
+.sec{padding:clamp(62px,7.8vw,118px) 0}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--dark{background:var(--cocoa);color:var(--on-dark)}
+.sec--tight{padding-block:clamp(52px,6vw,86px)}
+
+/* hlavička sekcie: vlasová linka + eyebrow nad nadpisom, text vľavo */
+.head{max-width:56ch;margin:0 0 clamp(30px,3.8vw,52px)}
+.head__rule{width:46px;height:1px;background:var(--accent);margin:0 0 20px}
+.sec--dark .head__rule{background:var(--accent-l)}
+.eyebrow{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 12px}
+.sec--dark .eyebrow{color:var(--on-dark-2)}
+.lede{font-size:1.06rem;color:var(--muted);margin-bottom:0;max-width:60ch}
+.sec--dark .lede{color:var(--on-dark-2)}
+.note{font-size:.9rem;color:var(--muted);margin:0;max-width:70ch}
+.sec--dark .note{color:var(--on-dark-2)}
+.sec--dark a{color:var(--accent-l)}
+.sec--dark a:hover{color:var(--sand)}
+
+/* ============================================================
+   TLAČIDLÁ (dvojtriedne selektory, aby ich neprebil odkazový color)
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font:inherit;font-size:.96rem;font-weight:600;
+  padding:13px 24px;border:1px solid transparent;border-radius:var(--r);
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--accent);color:#FFFFFF;border-color:var(--accent)}
+.btn.btn--primary:hover{background:var(--accent-d);border-color:var(--accent-d);color:#FFFFFF}
+.btn.btn--line{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--line:hover{border-color:var(--accent);color:var(--accent)}
+.btn.btn--onlight-dark{background:var(--cocoa);color:var(--on-dark);border-color:var(--cocoa)}
+.btn.btn--onlight-dark:hover{background:var(--cocoa-2);border-color:var(--cocoa-2);color:var(--on-dark)}
+.btn.btn--sand{background:var(--sand);color:var(--cocoa);border-color:var(--sand)}
+.btn.btn--sand:hover{background:var(--sand-2);border-color:var(--sand-2);color:var(--cocoa)}
+.btn.btn--ghost-dark{background:rgba(46,33,26,.5);color:var(--on-dark);border-color:rgba(240,231,218,.45)}
+.btn.btn--ghost-dark:hover{background:rgba(46,33,26,.75);border-color:var(--sand);color:var(--sand)}
+.btn--sm{padding:9px 16px;font-size:.88rem}
+.btn--full{width:100%}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+
+/* poistka proti prebitiu farby textu tlačidla pravidlom pre odkazy
+   (napr. .foot a, .author__box a, .nav-list a majú nižšiu, ale zradnú váhu) */
+a.btn.btn--primary,a.btn.btn--primary:hover{color:#FFFFFF}
+a.btn.btn--line{color:var(--ink)}
+a.btn.btn--line:hover{color:var(--accent)}
+a.btn.btn--onlight-dark,a.btn.btn--onlight-dark:hover{color:var(--on-dark)}
+a.btn.btn--sand,a.btn.btn--sand:hover{color:var(--cocoa)}
+a.btn.btn--ghost-dark{color:var(--on-dark)}
+a.btn.btn--ghost-dark:hover{color:var(--sand)}
+
+/* ============================================================
+   PÁSIK UKÁŽKY (hore, fixný)
+   ============================================================ */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:200;height:var(--bar);
+  background:var(--cocoa);color:var(--on-dark);
+  border-bottom:1px solid var(--line-dark);
+  font-size:.85rem;
+}
+.demobar__in{
+  width:min(100% - 28px,var(--wrap));margin-inline:auto;height:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+}
+.demobar p{margin:0}
+.demobar__tag{
+  display:inline-block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--cocoa);background:var(--sand);padding:4px 9px;border-radius:var(--r);
+  margin-right:12px;
+}
+.demobar__links{display:flex;gap:16px;align-items:center;white-space:nowrap}
+.demobar a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px}
+.demobar a:hover{color:var(--accent-l)}
+
+/* ============================================================
+   HLAVIČKA + NAVIGÁCIA
+   ============================================================ */
+.site-head{
+  position:sticky;top:var(--bar);z-index:150;
+  background:rgba(251,247,240,.97);
+  border-bottom:1px solid var(--line);
+}
+.site-head__in{
+  width:min(100% - 40px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  min-height:72px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand__mark{
+  width:38px;height:38px;flex:0 0 38px;border-radius:var(--r);
+  background:var(--cocoa);color:var(--sand);
+  display:grid;place-items:center;font-family:var(--serif);font-size:1.22rem;
+}
+.brand__name{font-family:var(--serif);font-size:1.16rem;line-height:1.1;display:block}
+.brand__sub{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.nav-toggle{
+  display:none;align-items:center;gap:9px;background:transparent;border:1px solid var(--line);
+  border-radius:var(--r);padding:9px 14px;font:inherit;font-size:.9rem;font-weight:600;color:var(--ink);cursor:pointer;
+}
+.nav-toggle__bars{display:inline-block;width:16px;height:10px;position:relative}
+.nav-toggle__bars::before,.nav-toggle__bars::after,.nav-toggle__bars span{
+  content:"";position:absolute;left:0;right:0;height:1.5px;background:var(--ink);
+}
+.nav-toggle__bars::before{top:0}
+.nav-toggle__bars span{top:4.25px}
+.nav-toggle__bars::after{bottom:0}
+.nav-list{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0}
+.nav-list a{
+  color:var(--ink);text-decoration:none;font-size:.94rem;font-weight:600;
+  padding:6px 0;border-bottom:2px solid transparent;display:inline-block;
+}
+.nav-list a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* trvalá dvojica v hlavičke: objednávka + telefón, na mobile ostáva viditeľná */
+.head-actions{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.head-actions .btn{white-space:nowrap}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{padding:clamp(50px,6.5vw,96px) 0 clamp(56px,7vw,104px)}
+.hero__loc{
+  font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+  font-weight:700;margin:0 0 22px;max-width:none;
+  padding-bottom:18px;border-bottom:1px solid var(--line);
+}
+.hero h1{margin:0 0 .3em;max-width:16ch}
+.hero__lede{
+  font-size:clamp(1.1rem,1.75vw,1.5rem);line-height:1.5;color:var(--cocoa-2);
+  max-width:60ch;margin:0;font-family:var(--serif);
+}
+.hero .actions{margin-top:clamp(26px,3vw,38px)}
+
+/* vodorovný rad úzkych kariet pod nadpisom */
+.hstrip{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;
+  margin-top:clamp(40px,5.2vw,72px);
+}
+.hcard{
+  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--r);
+  padding:22px 20px 24px;display:flex;flex-direction:column;gap:6px;min-width:0;
+}
+.hcard::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.1;mix-blend-mode:soft-light;
+}
+.hcard--1{background:linear-gradient(160deg,#F6EFE4,#F1E7D8)}
+.hcard--2{background:linear-gradient(160deg,#F2E9DB,#ECE0CE)}
+.hcard--3{background:linear-gradient(160deg,#EFE4D3,#E7D9C4)}
+.hcard--4{background:linear-gradient(160deg,#EBDECB,#E2D2BA)}
+.hcard--5{background:linear-gradient(160deg,#E7D8C2,#DCCAB0)}
+.hcard__k{
+  position:relative;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cocoa-3);font-weight:700;margin:0;
+}
+.hcard__n{
+  position:relative;font-family:var(--serif);font-size:clamp(1.75rem,2.7vw,2.5rem);
+  line-height:1.06;letter-spacing:-.02em;color:var(--ink);margin:2px 0 0;
+}
+.hcard__t{position:relative;font-size:.88rem;line-height:1.5;color:var(--muted);margin:6px 0 0}
+.hcard__rule{position:relative;width:26px;height:1px;background:var(--accent);margin:0 0 14px}
+
+/* tabuľa "čo je kedy v pulte" — typografický panel */
+.board{
+  position:relative;overflow:hidden;border-radius:var(--r);
+  background:
+    linear-gradient(155deg,#3D2C22 0%,#2E211A 46%,#55402F 100%);
+  color:var(--on-dark);padding:clamp(26px,3.2vw,40px);
+  display:flex;flex-direction:column;gap:24px;margin-top:clamp(30px,4vw,48px);
+}
+.board::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    repeating-radial-gradient(circle at 88% 8%,rgba(240,231,218,.11) 0 1px,transparent 1px 26px),
+    repeating-linear-gradient(0deg,rgba(240,231,218,.055) 0 1px,transparent 1px 32px);
+}
+.board::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.14;mix-blend-mode:soft-light;
+}
+.board__in{position:relative}
+.board__label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-2);margin:0 0 6px;max-width:none}
+.board h3{font-size:clamp(1.25rem,1.9vw,1.55rem);color:var(--on-dark);margin:0}
+.board__list{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.board__list li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:14px 0;border-top:1px solid rgba(240,231,218,.16);
+}
+.board__list li:first-child{border-top:0}
+.board__item{display:block;font-size:1.02rem}
+.board__desc{display:block;font-size:.84rem;color:var(--on-dark-2)}
+.board__time{font-family:var(--serif);font-size:1.22rem;color:var(--accent-l);white-space:nowrap}
+.board__foot{position:relative;font-size:.85rem;color:var(--on-dark-2);margin:0;border-top:1px solid rgba(240,231,218,.16);padding-top:18px;max-width:70ch}
+
+/* ============================================================
+   OBSAHOVÉ MRIEŽKY
+   ============================================================ */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,4.2vw,66px);align-items:start}
+.two--wide{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,40px)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:clamp(24px,3vw,38px)}
+
+/* karta = vlasová linka a typografia, nie rámček */
+.card{background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;padding:20px 0 0}
+.card h3{margin-bottom:.45em}
+.card p:last-child{margin-bottom:0}
+.card--flat{border-top-color:var(--line)}
+.card ul{margin-bottom:0}
+.stack > .card{margin-bottom:30px}
+.stack > .card:last-child{margin-bottom:0}
+
+/* ============================================================
+   OBRAZOVÉ PLOCHY — pripravené miesta pre fotografie
+   ============================================================ */
+.obraz{position:relative;overflow:hidden;margin:0;border-radius:var(--r);display:flex;flex-direction:column;justify-content:flex-end}
+.obraz > *{position:relative}
+.obraz--tile{min-height:170px;padding:16px 18px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--wide{min-height:250px;padding:22px 24px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--tile::after,.obraz--wide::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light;
+}
+.obraz__cap{position:relative;display:block}
+.obraz__k{display:block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-2);font-weight:700}
+.obraz__n{display:block;font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.72rem);line-height:1.1;color:#FFFFFF;margin-top:4px}
+.obraz--a{background:linear-gradient(150deg,#3D2C22,#2E211A 58%,#55402F)}
+.obraz--a::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(72deg,rgba(240,231,218,.08) 0 1px,transparent 1px 14px)}
+.obraz--b{background:linear-gradient(150deg,#55402F,#6B3A26 62%,#8A3823)}
+.obraz--b::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 78% 20%,rgba(255,255,255,.12) 0 1px,transparent 1px 18px)}
+.obraz--c{background:linear-gradient(150deg,#2E211A,#55402F 70%,#6B3A26)}
+.obraz--c::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.07) 0 1px,transparent 1px 20px)}
+.obraz--d{background:linear-gradient(150deg,#6B3A26,#8A3823 52%,#3D2C22)}
+.obraz--d::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-40deg,rgba(240,231,218,.09) 0 1px,transparent 1px 16px)}
+.obraz--e{background:linear-gradient(150deg,#3D2C22,#55402F 45%,#2E211A)}
+.obraz--e::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 22% 78%,rgba(240,231,218,.1) 0 1px,transparent 1px 22px)}
+
+/* dlaždice sortimentu */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:clamp(14px,1.8vw,22px)}
+.tile{
+  display:flex;flex-direction:column;text-decoration:none;color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden;
+  transition:border-color .16s ease;
+}
+.tile:hover{border-color:var(--accent)}
+.tile .obraz{border:0;border-radius:0}
+.tile__body{padding:15px 17px 18px;display:flex;flex-direction:column;gap:5px}
+.tile__body h3{margin:0;font-size:1.08rem;color:var(--ink)}
+.tile__body p{margin:0;font-size:.88rem;line-height:1.5;color:var(--muted);max-width:none}
+.tile:hover .tile__body h3{color:var(--accent)}
+
+/* cenový riadok s bodkovaným vodičom */
+.pl{list-style:none;margin:0;padding:0}
+.pl li{display:flex;align-items:baseline;gap:10px;padding:12px 0;border-bottom:1px dotted var(--line)}
+.pl li:last-child{border-bottom:0}
+.pl__name{flex:1 1 auto;min-width:0}
+.pl__name b{font-weight:600}
+.pl__desc{display:block;font-size:.85rem;color:var(--muted)}
+.pl__price{flex:0 0 auto;font-family:var(--serif);font-size:1.12rem;white-space:nowrap}
+.pl__tag{display:inline-block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:var(--r);padding:1px 6px;margin-left:6px;vertical-align:2px}
+
+.group{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,32px)}
+.group__head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:6px}
+.group__head h3{margin:0}
+.group__when{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* zákusky — typografický cenový panel */
+.sweet{background:transparent;border:0;display:flex;flex-direction:column}
+.sweet__plate{
+  position:relative;overflow:hidden;border-radius:var(--r);padding:24px;min-height:150px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  color:var(--on-dark);
+}
+.sweet__plate::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light;pointer-events:none}
+.sweet__plate--1{background:linear-gradient(140deg,#3D2C22,#2E211A 55%,#55402F)}
+.sweet__plate--1::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(240,231,218,.09) 0 1px,transparent 1px 10px)}
+.sweet__plate--2{background:linear-gradient(140deg,#55402F,#6B3A26 60%,#8A3823)}
+.sweet__plate--2::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 82% 18%,rgba(255,255,255,.13) 0 1px,transparent 1px 20px)}
+.sweet__plate--3{background:linear-gradient(140deg,#2E211A,#55402F 70%,#6B3A26)}
+.sweet__plate--3::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.08) 0 1px,transparent 1px 22px)}
+.sweet__cap{position:relative;display:block}
+.sweet__price{position:relative;display:block;font-family:var(--serif);font-size:2rem;line-height:1;color:#FFFFFF}
+.sweet__unit{position:relative;display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:8px}
+.sweet__body{padding:18px 0 0;display:flex;flex-direction:column;gap:8px;flex:1 1 auto}
+.sweet__body h3{margin:0}
+.sweet__body p{margin:0;font-size:.93rem;color:var(--muted)}
+.sweet__al{margin-top:auto;font-size:.78rem;letter-spacing:.04em;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+
+/* torty — technická schéma priemeru */
+.size{background:transparent;border:0;border-top:1px solid var(--rule);padding:20px 0 0;display:flex;flex-direction:column;gap:16px}
+.size__viz{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;place-items:center}
+.size__viz svg{display:block;width:100%;height:auto;max-width:210px}
+.size__rows{list-style:none;margin:0;padding:0;font-size:.92rem}
+.size__rows li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line-2)}
+.size__rows li:last-child{border-bottom:0}
+.size__rows span:first-child{color:var(--muted)}
+.size__price{font-family:var(--serif);font-size:1.9rem;line-height:1;letter-spacing:-.02em}
+
+/* ============================================================
+   KONFIGURÁTOR
+   ============================================================ */
+.cfg{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,3vw,44px);align-items:start}
+.cfg__steps{display:grid;gap:22px}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--paper);margin:0;padding:20px 22px 22px}
+legend{
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--muted);
+  padding:0 8px;margin-left:-8px;
+}
+legend b{color:var(--accent);font-weight:700}
+.opts{display:grid;gap:10px;margin-top:6px}
+.opts--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{display:block;cursor:pointer}
+.opt input{position:absolute;width:1px;height:1px;opacity:0;margin:0}
+.opt__in{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;
+  background:var(--bg);transition:border-color .15s ease,background-color .15s ease;
+}
+.opt:hover .opt__in{border-color:var(--accent)}
+.opt input:checked + .opt__in{border-color:var(--accent);background:var(--sand-2);box-shadow:inset 3px 0 0 var(--accent)}
+.opt input:focus-visible + .opt__in{outline:2px solid var(--accent);outline-offset:2px}
+.opt__t{display:block;font-weight:600;font-size:.96rem}
+.opt__s{display:block;font-size:.82rem;color:var(--muted)}
+.opt__p{flex:0 0 auto;font-size:.88rem;color:var(--muted);white-space:nowrap}
+.check{display:flex;gap:11px;align-items:flex-start;font-size:.95rem;margin-top:4px}
+.check input{margin-top:5px;accent-color:var(--accent);width:17px;height:17px}
+
+.sum{
+  position:sticky;top:calc(var(--bar) + 90px);
+  border:1px solid var(--line-dark);border-radius:var(--r);overflow:hidden;
+  background:linear-gradient(160deg,#3D2C22,#2E211A 60%,#55402F);
+  color:var(--on-dark);
+}
+.sum::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.12;mix-blend-mode:soft-light;pointer-events:none}
+.sum__in{position:relative;padding:24px}
+.sum h3{color:var(--on-dark);margin-bottom:.6em}
+.sum__list{list-style:none;margin:0 0 18px;padding:0;font-size:.92rem}
+.sum__list li{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid var(--line-dark)}
+.sum__list li span:first-child{color:var(--on-dark-2);flex:0 0 auto}
+.sum__list li span:last-child{text-align:right}
+.sum__total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:1px solid var(--accent-l);padding-top:16px;margin-top:4px}
+.sum__total b{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);font-weight:700}
+.sum__val{font-family:var(--serif);font-size:2.2rem;line-height:1;color:#FFFFFF}
+.sum__meta{font-size:.86rem;color:var(--on-dark-2);margin:14px 0 0}
+.sum__date{
+  margin:18px 0 0;padding:14px;border:1px solid var(--line-dark);border-radius:var(--r);
+  background:rgba(46,33,26,.55);
+}
+.sum__date b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);margin-bottom:5px;font-weight:700}
+.sum__date span{font-family:var(--serif);font-size:1.16rem;color:var(--accent-l)}
+
+/* ============================================================
+   ALERGÉNY
+   ============================================================ */
+.legendlist{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0 0 24px;padding:0}
+.legendlist li{font-size:.82rem;border:1px solid var(--line);background:var(--paper);border-radius:var(--r);padding:5px 10px}
+.legendlist b{color:var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 18px}
+.filter{
+  font:inherit;font-size:.88rem;font-weight:600;background:var(--paper);color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);padding:9px 15px;cursor:pointer;
+}
+.filter:hover{border-color:var(--accent);color:var(--accent)}
+.filter[aria-pressed="true"]{background:var(--cocoa);color:var(--on-dark);border-color:var(--cocoa)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--paper)}
+table.data{min-width:520px;font-size:.94rem}
+table.data th,table.data td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.data thead th{background:var(--bg-2);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+table.data tbody tr:last-child td{border-bottom:0}
+table.data td.num{font-family:var(--serif);white-space:nowrap}
+.count{font-size:.88rem;color:var(--muted);margin:12px 0 0}
+
+/* ============================================================
+   POSTUP
+   ============================================================ */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(24px,3vw,44px);background:transparent}
+.steps li{padding:20px 0 0;border-top:1px solid var(--rule);margin:0}
+.steps__n{font-family:var(--serif);font-size:2.2rem;line-height:1;color:var(--accent);display:block;margin-bottom:12px}
+.steps h3{font-size:1.05rem;margin-bottom:.4em}
+.steps p{font-size:.92rem;color:var(--muted);margin:0}
+
+/* ============================================================
+   FORMULÁR
+   ============================================================ */
+.form{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,32px)}
+.frow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.86rem;font-weight:600}
+.field .hint{font-size:.8rem;color:var(--muted)}
+input[type=text],input[type=tel],input[type=email],input[type=date],select,textarea{
+  font:inherit;font-size:.98rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;width:100%;
+}
+textarea{min-height:112px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.done{
+  border:1px solid var(--accent);border-left:4px solid var(--accent);
+  background:var(--sand-2);color:var(--ink);border-radius:var(--r);
+  padding:18px 20px;margin:0 0 20px;
+}
+.done h3{margin-bottom:.3em;font-size:1.1rem}
+.done p{margin:0;font-size:.94rem}
+
+/* ============================================================
+   HODINY / DOPRAVA / KONTAKT
+   ============================================================ */
+.hours{list-style:none;margin:0;padding:0;font-size:1rem}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line)}
+.hours li:last-child{border-bottom:0}
+.hours li[data-closed="1"] span:last-child{color:var(--muted)}
+.hours__d{font-weight:600}
+.plan{
+  border:1px solid var(--line);border-radius:var(--r);background:var(--paper);padding:16px;
+}
+.plan svg{display:block;width:100%;height:auto}
+.kv{list-style:none;margin:0;padding:0}
+.kv li{padding:12px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;font-size:.96rem}
+.kv li:last-child{border-bottom:0}
+.kv b{font-weight:600;color:var(--muted);font-size:.86rem;letter-spacing:.04em;text-transform:uppercase}
+
+/* FAQ */
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:19px 44px 19px 0;position:relative;
+  font-family:var(--serif);font-size:1.1rem;line-height:1.35;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:var(--sans);font-size:1.35rem;color:var(--accent);line-height:1;
+}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:hover{color:var(--accent)}
+.faq__a{padding:0 44px 20px 0;color:var(--muted);font-size:.98rem}
+.faq__a p:last-child{margin-bottom:0}
+
+/* kariéra */
+.job{border-top:1px solid var(--line-dark);padding:24px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:20px}
+.job:last-of-type{border-bottom:1px solid var(--line-dark)}
+.job h3{margin-bottom:.25em;color:var(--on-dark)}
+.job__meta{font-size:.86rem;color:var(--on-dark-2);margin:0}
+.job p{margin:0 0 .6em;color:var(--on-dark-2);font-size:.96rem}
+.job ul{color:var(--on-dark-2);font-size:.96rem;margin-bottom:0}
+
+/* poukážky */
+.vouchers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:24px}
+.voucher{
+  position:relative;overflow:hidden;border:1px solid var(--line-dark);border-radius:var(--r);
+  padding:26px 22px;color:var(--on-dark);
+  background:linear-gradient(135deg,#2E211A,#55402F 65%,#6B3A26);
+}
+.voucher::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(240,231,218,.07) 0 1px,transparent 1px 12px)}
+.voucher::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.12;mix-blend-mode:soft-light}
+.voucher span,.voucher b{position:relative}
+.voucher b{display:block;font-family:var(--serif);font-size:2.4rem;line-height:1;font-weight:400;color:#FFFFFF}
+.voucher span{display:block;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:10px}
+
+/* ============================================================
+   SEKCIA AUTORA
+   ============================================================ */
+.author{
+  position:relative;overflow:hidden;
+  background:linear-gradient(118deg,#2E211A 0%,#4A2B1E 52%,#8A3823 100%);
+  color:var(--on-dark);
+  padding:clamp(58px,6.6vw,98px) 0;
+  border-top:1px solid var(--sand);
+}
+.author::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.06) 0 1px,transparent 1px 34px)}
+.author::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light}
+.author .wrap{position:relative}
+.author__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(26px,4vw,58px);align-items:center}
+.author h2{color:#FFFFFF}
+.author p{color:var(--on-dark)}
+.author p.author__tag{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sand);font-weight:700;margin:0 0 14px}
+.author p.author__price{font-family:var(--serif);font-size:clamp(1.22rem,1.9vw,1.55rem);color:#FFFFFF;margin:0 0 18px}
+.author p.author__free{
+  display:inline-block;margin:0;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--cocoa);background:var(--sand);padding:9px 15px;border-radius:var(--r);
+  max-width:none;
+}
+.author__box{border:1px solid rgba(240,231,218,.35);border-radius:var(--r);padding:24px;background:rgba(46,33,26,.42)}
+.author__box ul{list-style:none;margin:0 0 20px;padding:0;font-size:1rem}
+.author__box li{padding:9px 0;border-bottom:1px solid rgba(240,231,218,.2)}
+.author__box li:last-of-type{border-bottom:0}
+.author__box a{color:#FFFFFF;text-decoration:underline;text-underline-offset:3px}
+.author__box a:hover{color:var(--sand)}
+
+/* ============================================================
+   PÄTIČKA
+   ============================================================ */
+.foot{background:var(--cocoa);color:var(--on-dark-2);padding:clamp(44px,5vw,66px) 0 30px;font-size:.94rem}
+.foot__cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;
+  padding-bottom:28px;margin-bottom:30px;border-bottom:1px solid var(--line-dark);
+}
+.foot__cta p{margin:0;max-width:44ch;color:var(--on-dark);font-size:1rem}
+.foot__cta .btn{flex:0 0 auto}
+.foot a.btn:hover{text-decoration:none}
+.foot__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;padding-bottom:30px;border-bottom:1px solid var(--line-dark)}
+.foot h3{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark);font-family:var(--sans);font-weight:700;margin-bottom:1em}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li{margin:0 0 8px}
+.foot a{color:var(--on-dark-2);text-decoration:none}
+.foot a:hover{color:var(--accent-l);text-decoration:underline;text-underline-offset:3px}
+.foot__bottom{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;padding-top:24px;font-size:.86rem}
+.foot__bottom p{margin:0}
+
+/* ============================================================
+   ANIMÁCIE
+   ============================================================ */
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.is-in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none}
+  *{transition-duration:.001ms !important;animation-duration:.001ms !important}
+}
+
+/* ============================================================
+   RESPONZÍVNE
+   ============================================================ */
+/* navigácia sa skladá skôr ako zvyšok, aby sa tlačidlo a telefón v hlavičke
+   nemuseli nikdy schovávať */
+@media (max-width:1120px){
+  .nav-toggle{display:inline-flex}
+  .site-head__in{position:relative;min-height:66px}
+  .nav-list{
+    display:none;position:absolute;left:0;right:0;top:100%;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:8px 20px 16px;box-shadow:0 14px 26px rgba(46,33,26,.09);
+  }
+  .nav-list[data-open="true"]{display:flex}
+  .nav-list li{border-bottom:1px solid var(--line-2)}
+  .nav-list li:last-child{border-bottom:0}
+  .nav-list a{display:block;padding:14px 0;border-bottom:0;font-size:1rem}
+  .nav-list a:hover{border-bottom-color:transparent}
+}
+@media (max-width:1040px){
+  .hstrip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cfg{grid-template-columns:1fr}
+  .sum{position:static}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero h1{max-width:none}
+  .two,.two--wide{grid-template-columns:1fr}
+  .three{grid-template-columns:1fr}
+  .hstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .job{grid-template-columns:1fr;gap:10px}
+  .author__grid{grid-template-columns:1fr}
+  .vouchers{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .hstrip{grid-template-columns:1fr;gap:0}
+  .hcard{border-radius:0;border-bottom:0}
+  .hcard:last-child{border-bottom:1px solid var(--line)}
+  .hcard__n{font-size:1.85rem}
+  /* hlavička na dva riadky: značka a menu hore, objednávka a telefón pod tým */
+  .site-head__in{flex-wrap:wrap;gap:10px 12px;padding-block:10px;min-height:0}
+  .brand{order:0}
+  .site-head__in nav{order:1}
+  .nav-toggle{order:2}
+  .head-actions{order:3;width:100%;gap:8px}
+  .head-actions .btn{flex:1 1 0;min-width:0;padding-inline:10px}
+}
+@media (max-width:640px){
+  :root{--bar:64px}
+  body{font-size:16px}
+  .demobar{font-size:.8rem}
+  .demobar__in{flex-direction:column;justify-content:center;align-items:flex-start;gap:2px;padding:6px 0}
+  .demobar__links{gap:14px}
+  .opts--2{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .foot__grid{grid-template-columns:1fr}
+  .kv li{grid-template-columns:1fr;gap:2px}
+  .sweet__price{font-size:1.75rem}
+  .board__list li{flex-direction:column;align-items:flex-start;gap:4px}
+}
+@media (max-width:420px){
+  .actions .btn{width:100%}
+  .group__head{flex-direction:column;align-items:flex-start;gap:4px}
+  .group__when{white-space:normal}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return (v<0?'-':'')+'€'+Math.abs(v).toLocaleString('en-IE');}function __f(x){return (x<0?'-':'')+'€'+Math.abs(x).toLocaleString('en-IE',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Skip to content</a>
+
+<div class="demobar">
+  <div class="demobar__in">
+    <p><span class="demobar__tag">Example website</span>I'll build you a website like this.</p>
+    <p class="demobar__links">
+      <a href="https://apoliak.online/en/">apoliak.online</a>
+      <span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span>
+    </p>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="site-head__in">
+    <a class="brand" href="#uvod">
+      <span class="brand__mark" aria-hidden="true">C</span> <span> <strong class="brand__name">Crust</strong> <span class="brand__sub">Bakery and patisserie</span> </span>
+    </a>
+
+    <nav aria-label="Main navigation">
+      <ul class="nav-list" id="hlavne-menu" data-open="false">
+        <li><a href="#sortiment">Range</a></li>
+        <li><a href="#zakusky">Pastries</a></li>
+        <li><a href="#torty">Cakes</a></li>
+        <li><a href="#konfigurator">Cake builder</a></li>
+        <li><a href="#alergeny">Allergens</a></li>
+        <li><a href="#doprava">Where to find us</a></li>
+      </ul>
+    </nav>
+
+    <div class="head-actions">
+      <span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span>
+      <a class="btn btn--primary btn--sm head-cta" href="#objednavka">Order a cake</a>
+    </div>
+
+    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="hlavne-menu">
+      <span class="nav-toggle__bars" aria-hidden="true"><span></span></span>
+      Menu
+    </button>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="uvod">
+  <div class="wrap">
+    <p class="hero__loc">21 Forge Lane, Kilkenny &middot; Tuesday to Saturday</p>
+    <h1>A bakery and patisserie with its own sourdough</h1>
+    <p class="hero__lede">We bake bread, rolls and pastries on site every day, and you can price a cake to order in the builder below.</p>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="#objednavka">Order a cake</a>
+      <a class="btn btn--line" href="#konfigurator">Build a cake and see the price</a>
+      <a class="btn btn--line" href="#doprava">Where to find us</a>
+    </div>
+
+    <div class="hstrip">
+      <article class="hcard hcard--1">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Opening</p>
+        <p class="hcard__n">6:30</p>
+        <p class="hcard__t">The first batch of rolls and plaits is on the counter when we open.</p>
+      </article>
+      <article class="hcard hcard--2">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Proving</p>
+        <p class="hcard__n">24 h</p>
+        <p class="hcard__t">How long our sourdough matures at 6 °C before it goes into the oven.</p>
+      </article>
+      <article class="hcard hcard--3">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Display case</p>
+        <p class="hcard__n">8 kinds</p>
+        <p class="hcard__t">of pastries and slices, restocked in the display case every day from 9:00.</p>
+      </article>
+      <article class="hcard hcard--4">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Cakes</p>
+        <p class="hcard__n">from €42</p>
+        <p class="hcard__t">Base price of an 18 cm cake for eight to ten portions.</p>
+      </article>
+      <article class="hcard hcard--5">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Notice</p>
+        <p class="hcard__n">3 days</p>
+        <p class="hcard__t">The shortest lead time for a cake to order; decoration takes longer.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SORTIMENT ================= -->
+<section class="sec sec--band sec--tight" id="sortiment">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Range</p>
+      <h2>Five product groups</h2>
+      <p class="lede">Each group shows the lowest price and the time it's on the counter from. Click through to the full price list with weights and allergens.</p>
+    </div>
+
+    <div class="tiles reveal">
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: rozkrojený bochník kváskového chleba na drevenej doske, detail na striedku a tmavú kôrku -->
+        <figure class="obraz obraz--tile obraz--a">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Bread</span>
+            <span class="obraz__n">from €2.60</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Sourdough bread</h3>
+          <p>Four kinds; the dough proves for 24 hours. On the counter from 8:00, day-old bread €2.20.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: plech s čerstvo upečenými rožkami a pletenkami vyťahovaný z pece -->
+        <figure class="obraz obraz--tile obraz--c">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Rolls and bakes</span>
+            <span class="obraz__n">from €0.45</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Everyday and savoury bakes</h3>
+          <p>Rolls, plaits, croissants, savoury scones. First batch at 6:30, second at 10:00.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#zakusky">
+        <!-- FOTO: cukrárska vitrína zhora, rad zákuskov a rezov na papierových podložkách -->
+        <figure class="obraz obraz--tile obraz--b">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Display case</span>
+            <span class="obraz__n">from €1.70</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Pastries and slices</h3>
+          <p>Eight kinds daily from 9:00. We'll put one aside if you call by 15:00 the day before.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#torty">
+        <!-- FOTO: hotová torta s krémovým povrchom zboku, vidno rovné hrany a vrstvy -->
+        <figure class="obraz obraz--tile obraz--d">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">To order</span>
+            <span class="obraz__n">from €42</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Cakes to order</h3>
+          <p>Five sizes from 8 to 36 portions. Shortest lead time three working days.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#sezona">
+        <!-- FOTO: sezónne pečivo podľa obdobia, napríklad mazanec alebo tácka vianočných medovníkov -->
+        <figure class="obraz obraz--tile obraz--e">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Through the year</span>
+            <span class="obraz__n">from €1.60</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Seasonal baking</h3>
+          <p>Easter, fruit season, nuts and Christmas. Each season has its own ordering deadline.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= O PEKÁRNI ================= -->
+<section class="sec" id="pekaren">
+  <div class="wrap">
+    <div class="two two--wide reveal">
+      <div>
+        <div class="head">
+          <div class="head__rule"></div>
+          <p class="eyebrow">About the bakery</p>
+          <h2>A small bakery where everything is baked on site</h2>
+        </div>
+        <p>Crust is a bakery with a pastry kitchen in one room behind the shop. We have no central production unit and no deliveries of frozen part-baked goods &mdash; we knead the dough in the evening, load the bread into the oven before dawn and finish the pastries during the morning.</p>
+        <p>Our flour comes from a mill 40 kilometres away, we use 82% butter and eggs from a farm in the county. Bread gets flour, water, salt and sourdough. Nothing else belongs in it, so you won't find improvers or preservatives in the ingredients.</p>
+        <p>Anything left over is sold at half price in the last hour before closing. Day-old bread costs €2.20 in the morning, whatever the size of the loaf.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#objednavka">Order a cake</a>
+          <a class="btn btn--line" href="#hodiny">Opening hours</a>
+        </div>
+      </div>
+      <div>
+        <!-- FOTO: pekár pri stole s rozrobeným kváskovým cestom, v pozadí otvorená pec -->
+        <figure class="obraz obraz--wide obraz--e" style="margin-bottom:30px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">The kitchen behind the shop</span>
+            <span class="obraz__n">We feed the sourdough twice a day</span>
+          </figcaption>
+        </figure>
+        <div class="three" style="grid-template-columns:1fr;gap:30px">
+          <div class="card">
+            <h3>Who bakes</h3>
+            <p class="note">Two bakers on the early shift, a pastry chef for cakes and pastries, and a shop manager. Cakes are always decorated by the same person so they look the same.</p>
+          </div>
+          <div class="card">
+            <h3>Ingredients</h3>
+            <p class="note">Wheat and rye flour from a regional mill, 82% butter, chocolate with 55 and 70% cocoa, seasonal fruit from local growers.</p>
+          </div>
+          <div class="card">
+            <h3>Packaging</h3>
+            <p class="note">Paper bags are free. We're happy to fill your own container or bag. Cakes go in a sturdy cardboard box, included in the price.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DENNÉ PEČIVO ================= -->
+<section class="sec sec--band" id="pecivo">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Daily range</p>
+      <h2>Bread and rolls</h2>
+      <p class="lede">Prices apply in the shop. For larger quantities (over 20 rolls or 5 loaves), order the day before so we can bake extra.</p>
+    </div>
+
+    <div class="two reveal">
+      <div class="group" style="margin-bottom:22px">
+        <div class="group__head">
+          <h3>Bread</h3>
+          <span class="group__when">On the counter from 8:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Wheat and rye sourdough, 1 kg</b><span class="pl__desc">Darker crust, proved for 24 hours</span></span>
+            <span class="pl__price">€4.60</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Wheat and rye sourdough, 0.5 kg</b><span class="pl__desc">A smaller loaf for one or two</span></span>
+            <span class="pl__price">€2.60</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Wholemeal rye, 1 kg</b><span class="pl__desc">Tuesday, Thursday and Saturday</span></span>
+            <span class="pl__price">€5.20</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Potato bread, 0.8 kg</b><span class="pl__desc">Friday, soft crumb</span></span>
+            <span class="pl__price">€4.90</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Day-old bread</b><span class="pl__desc">Thursday to Saturday mornings</span></span>
+            <span class="pl__price">€2.20</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group" style="margin-bottom:22px">
+        <div class="group__head">
+          <h3>Everyday bakes</h3>
+          <span class="group__when">On the counter from 6:30</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Butter roll, 60 g</b><span class="pl__desc">Second batch at 10:00</span></span>
+            <span class="pl__price">€0.45</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Poppy seed plait, 90 g</b></span>
+            <span class="pl__price">€0.90</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Butter croissant</b><span class="pl__desc">Pastry laminated by hand</span></span>
+            <span class="pl__price">€1.60</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Chocolate croissant</b></span>
+            <span class="pl__price">€1.90</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Multigrain baguette, 250 g</b></span>
+            <span class="pl__price">€1.80</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Curd cheese bun</b><span class="pl__desc">Wednesday and Friday</span></span>
+            <span class="pl__price">€1.40</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <div class="group__head">
+          <h3>Savoury</h3>
+          <span class="group__when">Baked until 15:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Pork crackling scones, 100 g</b></span>
+            <span class="pl__price">€1.50</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Seeded pretzel</b></span>
+            <span class="pl__price">€1.20</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Savoury cheese strudel, 150 g</b></span>
+            <span class="pl__price">€2.40</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Rosemary focaccia, 200 g</b><span class="pl__desc">Saturday</span></span>
+            <span class="pl__price">€2.80</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <div class="group__head">
+          <h3>Ordered in advance</h3>
+          <span class="group__when">By 15:00 the day before</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Bakes for an event, 20 or more</b><span class="pl__desc">A mix of rolls, plaits and pretzels</span></span>
+            <span class="pl__price">&minus;10%</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Bread bowls for dips, 5 pcs</b></span>
+            <span class="pl__price">€14.00</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Savoury platter, 40 pieces</b><span class="pl__desc">Mini scones, pretzels, cheese straws</span></span>
+            <span class="pl__price">€26.00</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Sweet platter, 40 pieces</b><span class="pl__desc">Mini pastries, slices, meringue sandwiches</span></span>
+            <span class="pl__price">€38.00</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:20px">You'll find the allergens for every product in the <a href="#alergeny">allergen table</a>. We're also happy to show you the ingredients in the shop.</p>
+  </div>
+</section>
+
+<!-- ================= ZÁKUSKY ================= -->
+<section class="sec" id="zakusky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Pastry display case</p>
+      <h2>Pastries and slices</h2>
+      <p class="lede">Eight kinds daily, from 9:00. We don't freeze our pastries, so once something sells out, it's back the next day. If you need a particular one for certain, reserve it by phone by 15:00 the day before.</p>
+    </div>
+
+    <div class="cards reveal">
+      <article class="sweet">
+        <!-- FOTO: čokoládový rez zboku na tanieriku, vidno tri vrstvy korpusu a pásik višňového želé -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">€2.60</span>
+            <span class="sweet__unit">each &middot; 90 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Chocolate slice</h3>
+          <p>Three layers of cocoa sponge, ganache made with 70% chocolate and a thin layer of sour cherry jelly.</p>
+          <p class="sweet__al">Allergens: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: veterník s karamelovou polevou, detail na vrstvu vanilkového krému -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">€2.20</span>
+            <span class="sweet__unit">each &middot; 80 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Caramel choux bun</h3>
+          <p>Choux pastry, vanilla custard made with real milk, caramel glaze. Baked every day.</p>
+          <p class="sweet__al">Allergens: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: punčový rez s ružovou polevou, rez cez piškótový stred -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">€2.10</span>
+            <span class="sweet__unit">each &middot; 85 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Rum punch slice</h3>
+          <p>A classic made from sponge trimmings, with rum flavouring and pink icing.</p>
+          <p class="sweet__al">Allergens: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: medovník nakrojený tak, aby bolo vidno šesť tenkých plátov a krém medzi nimi -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">€2.40</span>
+            <span class="sweet__unit">each &middot; 70 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Honey cake</h3>
+          <p>Six thin honey layers and caramel cream, matured for two days before it goes on sale.</p>
+          <p class="sweet__al">Allergens: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: tvarohový koláč s ovocím zhora, vidno hrubú vrstvu tvarohu a kúsky sezónneho ovocia -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">€2.30</span>
+            <span class="sweet__unit">each &middot; 110 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Curd cheese tart with fruit</h3>
+          <p>Shortcrust base, a thick layer of curd cheese and seasonal fruit. With pear from September, apricots in summer.</p>
+          <p class="sweet__al">Allergens: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: bezlepkový mandľový rez na oddelenej podložke, detail na hrubšiu mandľovú štruktúru -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">€2.90</span>
+            <span class="sweet__unit">each &middot; 90 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Gluten-free almond slice</h3>
+          <p>Almond flour and chocolate cream, no added wheat flour. We bake it in a separate tin, but the kitchen isn't gluten-free.</p>
+          <p class="sweet__al">Allergens: 3, 7, 8</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="two reveal" style="margin-top:clamp(34px,4vw,52px)">
+      <div class="group">
+        <div class="group__head">
+          <h3>Also in the case</h3>
+          <span class="group__when">Depending on the day</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Meringue sandwich</b><span class="pl__desc">Meringue layers with buttercream, Tuesday and Friday</span></span>
+            <span class="pl__price">€1.70</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Poppy seed roll, 100 g</b><span class="pl__desc">Cut to order, as much as you need</span></span>
+            <span class="pl__price">€1.90</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Jam turnover</b><span class="pl__desc">Plum or apricot, Wednesday and Saturday</span></span>
+            <span class="pl__price">€1.30</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Mini pastries</b><span class="pl__desc">From 20 pieces, order two days ahead</span><span class="pl__tag">to order</span></span>
+            <span class="pl__price">€0.95</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Reserving a pastry</h3>
+          <p class="note">We'll put a particular pastry aside if you call by 15:00 the day before. We hold at most six pieces per customer.</p>
+        </div>
+        <div class="card">
+          <h3>How to store them</h3>
+          <p class="note">Pastries belong in the fridge at 4 to 6 °C; eat them within two days. Anything with custard or cream is best eaten the same day.</p>
+        </div>
+        <div class="card">
+          <h3>Coffee counter</h3>
+          <p class="note">With your pastry we serve espresso for €1.60 and cappuccino for €2.20. There's a standing counter by the window and two tables for four. Coffee is served Tuesday to Friday until 16:30 and on Saturday until 12:00.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TORTY ================= -->
+<section class="sec sec--band" id="torty">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">To order</p>
+      <h2>Cakes and sizes</h2>
+      <p class="lede">The price shown is the base for the sponge, filling and a simple buttercream finish. Flavours and decoration cost extra — the builder below works out the exact amount. A sturdy cardboard box and candles are included.</p>
+    </div>
+
+    <!-- FOTO: hotová torta s priemerom 22 cm na cukrárskom podnose, pohľad zboku na rovný krémový povrch -->
+    <figure class="obraz obraz--wide obraz--d reveal" style="margin-bottom:clamp(26px,3.4vw,44px)">
+      <figcaption class="obraz__cap">
+        <span class="obraz__k">Ø 22 cm, three layers, 12 to 16 portions</span>
+        <span class="obraz__n">€58 in the basic version</span>
+      </figcaption>
+    </figure>
+
+    <div class="cards reveal">
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Diagram of an 18-centimetre cake">
+            <circle cx="105" cy="58" r="38" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="58" r="24" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M67 58V114M143 58V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M67 114H143M67 109V119M143 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">18 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Portions</span><span>8 &ndash; 10</span></li>
+          <li><span>Height</span><span>10 cm, three layers</span></li>
+          <li><span>Lead time</span><span>3 working days</span></li>
+        </ul>
+        <div class="size__price">€42</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Diagram of a 22-centimetre cake">
+            <circle cx="105" cy="56" r="46" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="29" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M59 56V114M151 56V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M59 114H151M59 109V119M151 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">22 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Portions</span><span>12 &ndash; 16</span></li>
+          <li><span>Height</span><span>10 cm, three layers</span></li>
+          <li><span>Lead time</span><span>3 working days</span></li>
+        </ul>
+        <div class="size__price">€58</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Diagram of a 26-centimetre cake">
+            <circle cx="105" cy="55" r="53" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="55" r="34" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M52 55V114M158 55V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M52 114H158M52 109V119M158 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">26 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Portions</span><span>18 &ndash; 24</span></li>
+          <li><span>Height</span><span>11 cm, four layers</span></li>
+          <li><span>Lead time</span><span>4 working days</span></li>
+        </ul>
+        <div class="size__price">€76</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Diagram of a two-tier cake, 22 and 16 centimetres across">
+            <circle cx="105" cy="56" r="46" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="33" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="18" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M59 56V114M151 56V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M59 114H151M59 109V119M151 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">22 + 16 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Portions</span><span>30 &ndash; 36</span></li>
+          <li><span>Height</span><span>18 cm, two tiers</span></li>
+          <li><span>Lead time</span><span>6 working days</span></li>
+        </ul>
+        <div class="size__price">€138</div>
+      </article>
+    </div>
+
+    <div class="two reveal" style="margin-top:34px">
+      <div class="card">
+        <h3>What's in the base price</h3>
+        <ul style="margin-bottom:0">
+          <li>Sponge of your choice, three to four layers</li>
+          <li>One filling and a simple buttercream finish</li>
+          <li>A sturdy cardboard box and a cool pack</li>
+          <li>Candles and a disposable cake knife</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>What costs extra</h3>
+        <ul style="margin-bottom:0">
+          <li>Walnut, carrot or gluten-free sponge</li>
+          <li>Ganache, caramel with nuts, curd cheese filling with raspberries</li>
+          <li>Marzipan covering or a hand-painted finish</li>
+          <li>A message on the cake and delivery in town (€5, free over €100)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONFIGURÁTOR ================= -->
+<section class="sec" id="konfigurator">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Interactive calculator</p>
+      <h2>Build your cake</h2>
+      <p class="lede">Choose the size, sponge, filling and finish. The price and the earliest possible collection date update instantly. Then transfer your cake to the order form with one click.</p>
+    </div>
+
+    <div class="cfg">
+      <div class="cfg__steps">
+        <fieldset>
+          <legend><b>1.</b> &nbsp;Size</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="18" data-cena="42" data-dni="3" data-porcie="10" data-popis="Ø 18 cm, 8 – 10 portions">
+              <span class="opt__in"><span><span class="opt__t">Ø 18 cm</span><span class="opt__s">8 &ndash; 10 portions</span></span><span class="opt__p">€42</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="22" data-cena="58" data-dni="3" data-porcie="16" data-popis="Ø 22 cm, 12 – 16 portions" checked>
+              <span class="opt__in"><span><span class="opt__t">Ø 22 cm</span><span class="opt__s">12 &ndash; 16 portions</span></span><span class="opt__p">€58</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="26" data-cena="76" data-dni="4" data-porcie="24" data-popis="Ø 26 cm, 18 – 24 portions">
+              <span class="opt__in"><span><span class="opt__t">Ø 26 cm</span><span class="opt__s">18 &ndash; 24 portions</span></span><span class="opt__p">€76</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="30" data-cena="98" data-dni="4" data-porcie="32" data-popis="Ø 30 cm, 26 – 32 portions">
+              <span class="opt__in"><span><span class="opt__t">Ø 30 cm</span><span class="opt__s">26 &ndash; 32 portions</span></span><span class="opt__p">€98</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="2216" data-cena="138" data-dni="6" data-porcie="36" data-popis="Two tiers, 22 + 16 cm, 30 – 36 portions">
+              <span class="opt__in"><span><span class="opt__t">Two tiers, 22 + 16 cm</span><span class="opt__s">30 &ndash; 36 portions</span></span><span class="opt__p">€138</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>2.</b> &nbsp;Sponge</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="kakaovy" data-cena="0" data-dni="0" data-popis="cocoa sponge" checked>
+              <span class="opt__in"><span><span class="opt__t">Cocoa</span><span class="opt__s">Dutch cocoa, moist</span></span><span class="opt__p">included</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="vanilkovy" data-cena="0" data-dni="0" data-popis="vanilla sponge">
+              <span class="opt__in"><span><span class="opt__t">Vanilla</span><span class="opt__s">Light and delicate</span></span><span class="opt__p">included</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="orechovy" data-cena="6" data-dni="0" data-popis="walnut sponge">
+              <span class="opt__in"><span><span class="opt__t">Walnut</span><span class="opt__s">Walnuts, no extra flour</span></span><span class="opt__p">+ €6</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="mrkvovy" data-cena="8" data-dni="0" data-popis="carrot sponge">
+              <span class="opt__in"><span><span class="opt__t">Carrot</span><span class="opt__s">With cinnamon and raisins</span></span><span class="opt__p">+ €8</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="bezlepkovy" data-cena="12" data-dni="1" data-popis="gluten-free cocoa sponge">
+              <span class="opt__in"><span><span class="opt__t">Gluten-free cocoa</span><span class="opt__s">Almond flour, one extra day</span></span><span class="opt__p">+ €12</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>3.</b> &nbsp;Filling</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="maslovy" data-cena="0" data-dni="0" data-popis="vanilla buttercream" checked>
+              <span class="opt__in"><span><span class="opt__t">Vanilla buttercream</span></span><span class="opt__p">included</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="citron" data-cena="6" data-dni="0" data-popis="lemon filling">
+              <span class="opt__in"><span><span class="opt__t">Lemon</span></span><span class="opt__p">+ €6</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="ganache" data-cena="7" data-dni="0" data-popis="chocolate ganache">
+              <span class="opt__in"><span><span class="opt__t">Chocolate ganache</span></span><span class="opt__p">+ €7</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="tvaroh" data-cena="9" data-dni="0" data-popis="curd cheese and cream filling with raspberries">
+              <span class="opt__in"><span><span class="opt__t">Curd cheese and cream with raspberries</span></span><span class="opt__p">+ €9</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="karamel" data-cena="11" data-dni="0" data-popis="salted caramel with roasted nuts">
+              <span class="opt__in"><span><span class="opt__t">Salted caramel with nuts</span></span><span class="opt__p">+ €11</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>4.</b> &nbsp;Finish and decoration</legend>
+          <div class="opts">
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="krem" data-cena="0" data-dni="0" data-popis="buttercream finish" checked>
+              <span class="opt__in"><span><span class="opt__t">Buttercream finish</span><span class="opt__s">Smooth or palette-knife textured</span></span><span class="opt__p">included</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="poleva" data-cena="9" data-dni="0" data-popis="chocolate glaze with fresh fruit">
+              <span class="opt__in"><span><span class="opt__t">Chocolate glaze and fresh fruit</span><span class="opt__s">Depending on the season</span></span><span class="opt__p">+ €9</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="marcipan" data-cena="18" data-dni="1" data-popis="smooth marzipan covering">
+              <span class="opt__in"><span><span class="opt__t">Marzipan covering</span><span class="opt__s">Single colour, one extra day</span></span><span class="opt__p">+ €18</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="malovany" data-cena="29" data-dni="2" data-popis="hand-painted finish">
+              <span class="opt__in"><span><span class="opt__t">Hand-painted finish</span><span class="opt__s">Design by agreement, two extra days</span></span><span class="opt__p">+ €29</span></span>
+            </label>
+          </div>
+          <label class="check" style="margin-top:14px">
+            <input type="checkbox" id="cfg-napis" data-cena="4">
+            <span>A message on the cake (a name, date or short text) &mdash; <b>+ €4</b></span>
+          </label>
+        </fieldset>
+      </div>
+
+      <aside class="sum" aria-label="Cake price calculation">
+        <div class="sum__in">
+          <h3>Your cake</h3>
+          <ul class="sum__list">
+            <li><span>Size</span><span id="s-velkost">Ø 22 cm, 12 &ndash; 16 portions</span></li>
+            <li><span>Sponge</span><span id="s-korpus">cocoa sponge</span></li>
+            <li><span>Filling</span><span id="s-plnka">vanilla buttercream</span></li>
+            <li><span>Finish</span><span id="s-povrch">buttercream finish</span></li>
+            <li><span>Message</span><span id="s-napis">no message</span></li>
+          </ul>
+
+          <div class="sum__total">
+            <b>Total price</b>
+            <span class="sum__val" id="s-cena">€58.00</span>
+          </div>
+          <p class="sum__meta" id="s-porcia">About €3.63 per portion for 16 portions. Deposit when ordering €17.40.</p>
+
+          <div class="sum__date">
+            <b>Earliest collection date</b>
+            <span id="s-termin">&mdash;</span>
+          </div>
+
+          <div class="actions" style="margin-top:20px">
+            <button class="btn btn--sand btn--full" type="button" id="cfg-prenies">Add to my order</button>
+          </div>
+          <p class="sum__meta">We count from today, not including Sundays and Mondays, when we're closed. You'll get the final confirmation by phone.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEZÓNA ================= -->
+<section class="sec sec--band" id="sezona">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Through the year</p>
+      <h2>Seasonal baking</h2>
+      <p class="lede">Part of our range changes with the fruit and the holidays. Orders for seasonal bakes close earlier, because we bake them in limited quantities.</p>
+    </div>
+
+    <div class="cards reveal">
+      <article class="card">
+        <p class="eyebrow">March &ndash; April</p>
+        <h3>Easter</h3>
+        <ul style="margin-bottom:12px">
+          <li>Easter sweet bread with raisins, 500 g &mdash; €5.90</li>
+          <li>Easter lamb cake &mdash; €8.50</li>
+          <li>Smoked cheese plait &mdash; €3.20</li>
+        </ul>
+        <p class="note">Orders close on the Wednesday before Good Friday.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">May &ndash; August</p>
+        <h3>Fruit season</h3>
+        <ul style="margin-bottom:12px">
+          <li>Strawberry cake Ø 22 cm &mdash; €67</li>
+          <li>Apricot traybake, 100 g &mdash; €1.60</li>
+          <li>Raspberry slice &mdash; €2.70</li>
+        </ul>
+        <p class="note">The strawberry cake is the €58 base plus €9 for fresh fruit on top. We buy fruit from local growers, and the range changes every week.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">September &ndash; November</p>
+        <h3>Nuts and pumpkin</h3>
+        <ul style="margin-bottom:12px">
+          <li>Walnut roll, 100 g &mdash; €2.10</li>
+          <li>Poppy seed roll, 100 g &mdash; €1.90</li>
+          <li>Pumpkin cake with cinnamon &mdash; €2.40</li>
+        </ul>
+        <p class="note">We bake the rolls whole and cut them to the weight you want.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">December</p>
+        <h3>Christmas baking</h3>
+        <ul style="margin-bottom:12px">
+          <li>Iced gingerbread &mdash; €34 per kg</li>
+          <li>Vanilla crescents &mdash; €29 per kg</li>
+          <li>Christmas plait, 600 g &mdash; €7.40</li>
+        </ul>
+        <p class="note">Orders for Christmas baking close on 10 December.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ALERGÉNY ================= -->
+<section class="sec" id="alergeny">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Ingredients</p>
+      <h2>Allergens in our products</h2>
+      <p class="lede">The numbers follow the list of 14 allergens set by food law. Choose what you want to avoid and the table will show only suitable products.</p>
+    </div>
+
+    <ul class="legendlist reveal">
+      <li><b>1</b> &ndash; cereals containing gluten</li>
+      <li><b>3</b> &ndash; eggs</li>
+      <li><b>6</b> &ndash; soya</li>
+      <li><b>7</b> &ndash; milk</li>
+      <li><b>8</b> &ndash; nuts</li>
+      <li><b>12</b> &ndash; sulphur dioxide</li>
+    </ul>
+
+    <div class="filters reveal" role="group" aria-label="Filter products by allergen">
+      <button class="filter" type="button" data-free="0" aria-pressed="true">Show all</button>
+      <button class="filter" type="button" data-free="1" aria-pressed="false">No gluten</button>
+      <button class="filter" type="button" data-free="7" aria-pressed="false">No milk</button>
+      <button class="filter" type="button" data-free="3" aria-pressed="false">No eggs</button>
+      <button class="filter" type="button" data-free="8" aria-pressed="false">No nuts</button>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table class="data">
+        <caption class="sr">List of products and the allergens they contain</caption>
+        <thead>
+          <tr><th scope="col">Product</th><th scope="col">Allergens</th><th scope="col">Note</th></tr>
+        </thead>
+        <tbody id="al-body">
+          <tr data-al="1"><td>Wheat and rye sourdough</td><td class="num">1</td><td>Flour, water, salt, sourdough</td></tr>
+          <tr data-al="1"><td>Wholemeal rye bread</td><td class="num">1</td><td>Tuesday, Thursday, Saturday</td></tr>
+          <tr data-al="1,7"><td>Butter roll</td><td class="num">1, 7</td><td>82% butter</td></tr>
+          <tr data-al="1,3,7"><td>Butter croissant</td><td class="num">1, 3, 7</td><td>Egg wash</td></tr>
+          <tr data-al="1,7"><td>Seeded pretzel</td><td class="num">1, 7</td><td>Sesame, linseed, sunflower</td></tr>
+          <tr data-al="1,3,7"><td>Pork crackling scones</td><td class="num">1, 3, 7</td><td>Pork crackling</td></tr>
+          <tr data-al="1,3,7"><td>Caramel choux bun</td><td class="num">1, 3, 7</td><td>Vanilla custard made with milk</td></tr>
+          <tr data-al="1,3,7,12"><td>Rum punch slice</td><td class="num">1, 3, 7, 12</td><td>Contains rum flavouring</td></tr>
+          <tr data-al="1,3,7"><td>Honey cake</td><td class="num">1, 3, 7</td><td>Honey, caramel cream</td></tr>
+          <tr data-al="1,3,7,6"><td>Chocolate slice</td><td class="num">1, 3, 6, 7</td><td>70% chocolate contains soya lecithin</td></tr>
+          <tr data-al="3,7,8"><td>Gluten-free almond slice</td><td class="num">3, 7, 8</td><td>No wheat flour; the kitchen isn't gluten-free</td></tr>
+          <tr data-al="1,3,7,8"><td>Walnut roll</td><td class="num">1, 3, 7, 8</td><td>Walnuts</td></tr>
+          <tr data-al="3,7"><td>Meringue sandwich</td><td class="num">3, 7</td><td>Meringue layers, no flour</td></tr>
+          <tr data-al="1,7"><td>Rosemary focaccia</td><td class="num">1, 7</td><td>Olive oil, sea salt</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="count" id="al-count" role="status">Showing all 14 products.</p>
+    <p class="note" style="margin-top:16px">Everything is baked in one kitchen, where we work with flour and nuts. With a severe allergy we can't rule out traces.</p>
+  </div>
+</section>
+
+<!-- ================= POSTUP ================= -->
+<section class="sec sec--band sec--tight" id="postup">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Ordering step by step</p>
+      <h2>How it works</h2>
+      <p class="lede">There are four steps from sending your message to collection. We confirm the date within 24 hours, and the deposit is due within two days of confirmation.</p>
+    </div>
+    <ol class="steps reveal">
+      <li>
+        <span class="steps__n">1</span>
+        <h3>Your cake and date</h3>
+        <p>Choose the size and flavours in the builder, or describe them to us in your own words. We confirm the date within 24 hours.</p>
+      </li>
+      <li>
+        <span class="steps__n">2</span>
+        <h3>30% deposit</h3>
+        <p>Once we've confirmed, we send you the deposit amount. Pay it by bank transfer or in the shop, and your date is booked.</p>
+      </li>
+      <li>
+        <span class="steps__n">3</span>
+        <h3>We bake</h3>
+        <p>We bake the sponge the day before collection, then fill and decorate it on the morning of collection so the cake is fresh.</p>
+      </li>
+      <li>
+        <span class="steps__n">4</span>
+        <h3>Collection</h3>
+        <p>Collect your cake in the shop at the agreed time. Pay the balance on collection, in cash or by card.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= OBJEDNÁVKA ================= -->
+<section class="sec" id="objednavka">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Form</p>
+      <h2>Order a cake or a larger bake</h2>
+      <p class="lede">Fill in what you need. You'll get a reply confirming the date and price within 24 hours. If you're in a hurry, call us Tuesday to Friday 8:00 &ndash; 16:00 or Saturday 8:00 &ndash; 12:00.</p>
+    </div>
+
+    <div class="two two--wide">
+      <form class="form reveal" id="objednavka-form" novalidate>
+        <div class="done" id="objednavka-hotovo" hidden tabindex="-1">
+          <h3>Message sent</h3>
+          <p>It's in the bakery's inbox. We'll call you within 24 hours to confirm the date and price. On this example website, no details are stored.</p>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-meno">Full name</label>
+            <input type="text" id="f-meno" name="meno" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-tel">Phone</label>
+            <input type="tel" id="f-tel" name="telefon" autocomplete="tel" placeholder="your phone number">
+            <span class="hint">We'll call you on this number to confirm.</span>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-typ">What you're ordering</label>
+            <select id="f-typ" name="typ">
+              <option value="torta">A cake to order</option>
+              <option value="zakusky">Pastries and mini pastries</option>
+              <option value="pecivo">A larger quantity of bread and rolls</option>
+              <option value="sezona">Seasonal baking</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-cas">Collection time</label>
+            <select id="f-cas" name="cas">
+              <option>7:00 &ndash; 9:00</option>
+              <option selected>9:00 &ndash; 12:00</option>
+              <option>12:00 &ndash; 15:00</option>
+              <option>15:00 &ndash; 17:30</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-datum">Collection date</label>
+            <input type="date" id="f-datum" name="datum">
+            <span class="hint" id="f-datum-hint">Three working days at the earliest, not including Sundays and Mondays.</span>
+          </div>
+          <div class="field">
+            <label for="f-pocet">Number of portions or pieces</label>
+            <input type="text" id="f-pocet" name="pocet" placeholder="e.g. 16 portions">
+            <span class="hint">We'll recommend a size based on this.</span>
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom:18px">
+          <label for="f-zostava">Message, cake details and notes</label>
+          <textarea id="f-zostava" name="zostava" placeholder="For example: Ø 22 cm, cocoa sponge, ganache, chocolate glaze, message “Happy Birthday”."></textarea>
+          <span class="hint">The button in the cake builder fills in your cake here automatically.</span>
+        </div>
+
+        <label class="check" style="margin-bottom:22px">
+          <input type="checkbox" id="f-suhlas" name="suhlas">
+          <span>I agree to my details being processed to handle my order, and I've read the cancellation terms.</span>
+        </label>
+
+        <button class="btn btn--primary btn--full" type="submit">Send message</button>
+        <p class="note" style="margin-top:16px">Sending this doesn't confirm the order yet. It becomes binding once we've confirmed the date by phone and you've paid a 30% deposit.</p>
+      </form>
+
+      <div class="reveal stack">
+        <div class="card">
+          <h3>Quicker by phone</h3>
+          <p class="note">If you're not sure about the size, tell us how many guests you have. On the call we'll tell you the diameter, the price and whether the date is still free.</p>
+          <ul class="kv" style="margin-top:16px">
+            <li><b>Phone</b><span><span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span></span></li>
+            <li><b>When we answer</b><span>Tuesday &ndash; Friday 8:00 &ndash; 16:00, Saturday 8:00 &ndash; 12:00</span></li>
+            <li><b>Address</b><span>21 Forge Lane, Kilkenny</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What we need to know from you</h3>
+          <ul>
+            <li>How many people the cake should feed</li>
+            <li>Whether anyone can't have gluten, milk or nuts</li>
+            <li>A colour or theme, if the cake should match the decorations</li>
+            <li>The exact wording of the message, spelling included</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>When we reply</h3>
+          <p class="note">We read messages from the form in the morning, once the counter is stocked, and again in the afternoon. We're closed on Sundays and Mondays; messages from those days are dealt with on Tuesday morning.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OTVÁRACIE HODINY ================= -->
+<section class="sec sec--band" id="hodiny">
+  <div class="wrap">
+    <div class="two reveal">
+      <div>
+        <div class="head">
+          <div class="head__rule"></div>
+          <p class="eyebrow">Opening hours</p>
+          <h2>Opening hours</h2>
+        </div>
+        <ul class="hours">
+          <li><span class="hours__d">Monday</span><span>Closed</span></li>
+          <li><span class="hours__d">Tuesday</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Wednesday</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Thursday</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Friday</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Saturday</span><span>6:30 &ndash; 12:30</span></li>
+          <li><span class="hours__d">Sunday</span><span>Closed</span></li>
+        </ul>
+        <p class="note" style="margin-top:18px">On bank holidays we bake a reduced range; we put the hours on the door a week in advance. Pastries usually sell out about an hour before closing.</p>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Collection after closing</h3>
+          <p class="note">If our opening hours don't suit you, we can arrange collection of an ordered cake Tuesday to Friday between 17:30 and 18:30. Just put it in the note on your order.</p>
+        </div>
+        <div class="card">
+          <h3>Evening sale</h3>
+          <p class="note">In the last hour before closing we sell leftover bread and rolls at half price. Pastries aren't in the sale — we keep them chilled until the next day. Day-old bread costs €2.20 in the morning.</p>
+        </div>
+        <div class="card">
+          <h3>Holidays</h3>
+          <p class="note">Once a year we close for two weeks; we announce the dates on the shop door a month in advance. We don't take orders for that period.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="board reveal">
+      <div class="board__in">
+        <p class="board__label">Daily schedule</p>
+        <h3>What's on the counter when</h3>
+      </div>
+      <ul class="board__list board__in">
+        <li>
+          <span>
+            <span class="board__item">Rolls, plaits, croissants</span> <span class="board__desc">First batch at opening, second at 10:00</span>
+          </span>
+          <span class="board__time">6:30</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Sourdough bread</span> <span class="board__desc">Cooled, sliced on request</span>
+          </span>
+          <span class="board__time">8:00</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Pastries and slices</span> <span class="board__desc">Eight kinds, restocked as they sell</span>
+          </span>
+          <span class="board__time">9:00</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Savoury bakes and scones</span> <span class="board__desc">Baked throughout the day until 15:00</span>
+          </span>
+          <span class="board__time">11:00</span>
+        </li>
+      </ul>
+      <p class="board__foot">We hand out ordered cakes and larger orders any time during opening hours — just come to the counter and give your name.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOPRAVA ================= -->
+<section class="sec" id="doprava">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Getting here</p>
+      <h2>Getting here</h2>
+      <p class="lede">We're on the corner of Forge Lane and Market Street, set back in a courtyard with the entrance straight off the footpath. The threshold is flush, so you can come in with a buggy.</p>
+    </div>
+
+    <div class="two two--wide reveal">
+      <div class="plan">
+        <svg viewBox="0 0 620 320" role="img" aria-labelledby="plan-nadpis plan-popis">
+          <title id="plan-nadpis">Map of the area around the shop</title>
+          <desc id="plan-popis">The shop is on the corner of Forge Lane and Market Street, parking is in front of the building and the bus stop is 120 metres to the south.</desc>
+          <rect x="0" y="0" width="620" height="320" fill="#F4EDE1"/>
+          <g stroke="#E2D7C6" stroke-width="1">
+            <path d="M0 40H620M0 80H620M0 120H620M0 160H620M0 200H620M0 240H620M0 280H620"/>
+            <path d="M40 0V320M80 0V320M120 0V320M160 0V320M200 0V320M240 0V320M280 0V320M320 0V320M360 0V320M400 0V320M440 0V320M480 0V320M520 0V320M560 0V320M600 0V320"/>
+          </g>
+          <rect x="0" y="128" width="620" height="46" fill="#E8D9C4"/>
+          <rect x="352" y="0" width="42" height="320" fill="#E8D9C4"/>
+          <rect x="96" y="60" width="176" height="60" fill="#2E211A"/>
+          <text x="184" y="97" text-anchor="middle" font-family="Georgia,serif" font-size="19" fill="#F0E7DA">Crust</text>
+          <rect x="96" y="24" width="176" height="26" fill="none" stroke="#A3452C" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="184" y="42" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#241B15">Parking, 8 spaces</text>
+          <text x="20" y="157" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Forge Lane</text>
+          <text x="373" y="300" text-anchor="middle" transform="rotate(-90 373 300)" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Market Street</text>
+          <circle cx="373" cy="236" r="9" fill="#A3452C"/>
+          <text x="392" y="241" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Bus stop, 120 m</text>
+          <rect x="440" y="52" width="140" height="60" fill="none" stroke="#6A5A4E" stroke-width="1"/>
+          <text x="510" y="88" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Town park</text>
+          <circle cx="184" cy="140" r="7" fill="#241B15"/>
+          <text x="198" y="145" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Shop entrance</text>
+        </svg>
+      </div>
+
+      <div>
+        <ul class="kv">
+          <li><b>Address</b><span>21 Forge Lane, Kilkenny</span></li>
+          <li><b>By car</b><span>Eight parking spaces right outside the shop, first hour free. More spaces on Market Street, 3 minutes' walk.</span></li>
+          <li><b>By bus</b><span>The stop is 120 metres south; buses to the city centre stop every 10 minutes.</span></li>
+          <li><b>By bike</b><span>A covered rack for four bikes by the entrance.</span></li>
+          <li><b>Accessibility</b><span>Flush threshold, 100 cm doorway, room to turn a wheelchair inside.</span></li>
+          <li><b>Deliveries</b><span>The yard is on the Market Street side; please keep the way through clear until 9:00.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODMIENKY ================= -->
+<section class="sec sec--band" id="podmienky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Ordering rules</p>
+      <h2>Payment, deposits and cancellations</h2>
+    </div>
+
+    <div class="three reveal">
+      <div class="card">
+        <h3>How you can pay</h3>
+        <ul style="margin-bottom:0">
+          <li>Cash</li>
+          <li>Card from €1, no fee</li>
+          <li>Cash, or contactless by phone or watch</li>
+          <li>Bank transfer for orders over €100</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Deposit</h3>
+        <p class="note">For cakes and orders over €60 we ask for a 30% deposit, due within two days of confirmation. Without a deposit we don't hold the date, because we only take a limited number of cakes per day.</p>
+      </div>
+      <div class="card">
+        <h3>Cancellations</h3>
+        <ul style="margin-bottom:0">
+          <li>More than 72 hours before the date: the deposit is refunded in full</li>
+          <li>48 to 72 hours: we refund half the deposit</li>
+          <li>Less than 48 hours: the deposit is kept, as the ingredients are already bought</li>
+          <li>You can change the date once for free if you let us know at least 72 hours ahead</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two reveal" style="margin-top:26px">
+      <div class="card">
+        <h3>Collection and transport</h3>
+        <p class="note">We keep your cake chilled until closing time on the agreed day. In the car, put it on a flat surface, not on a seat. We're not responsible for damage after collection.</p>
+      </div>
+      <div class="card">
+        <h3>Complaints</h3>
+        <p class="note">If something's not right, let us know on the day of collection. We'll replace a faulty product or refund your money. We deal with complaints within 30 days at the latest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VEĽKOOBCHOD ================= -->
+<section class="sec" id="velkoobchod">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">For cafés and businesses</p>
+      <h2>Wholesale and catering</h2>
+      <p class="lede">Two options for larger orders: a regular daily supply on a fixed schedule, and one-off catering for an event. We can bake an extra 200 rolls a day, so we take at most five regular customers.</p>
+    </div>
+
+    <div class="two two--wide reveal">
+      <div>
+        <!-- FOTO: prepravky s pečivom pripravené pri zadnom vchode na ranný rozvoz -->
+        <figure class="obraz obraz--wide obraz--c" style="margin-bottom:26px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Regular supply</span>
+            <span class="obraz__n">In your café by 8:00</span>
+          </figcaption>
+        </figure>
+        <ul class="kv">
+          <li><b>Minimum order</b><span>30 rolls or 10 loaves of bread a day</span></li>
+          <li><b>Price</b><span>20% below shop prices, 25% below for more than 60 pieces a day</span></li>
+          <li><b>Delivery</b><span>Around Kilkenny, Tuesday to Saturday, by 8:00. Free for more than 40 pieces a day, otherwise €5 per run.</span></li>
+          <li><b>Schedule</b><span>We confirm the next week's order by Thursday 12:00</span></li>
+          <li><b>Invoicing</b><span>Monthly, payable within 14 days</span></li>
+          <li><b>Changes and cancelling</b><span>We change or cancel the schedule with 14 days' notice, no fee</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="group">
+          <div class="group__head">
+            <h3>Catering for an event</h3>
+            <span class="group__when">Three working days in advance</span>
+          </div>
+          <ul class="pl">
+            <li>
+              <span class="pl__name"><b>Savoury platter, 40 pieces</b><span class="pl__desc">Mini scones, pretzels, cheese straws</span></span>
+              <span class="pl__price">€26.00</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Sweet platter, 40 pieces</b><span class="pl__desc">Mini pastries, slices, meringue sandwiches</span></span>
+              <span class="pl__price">€38.00</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Mini pastries, from 20 pieces</b><span class="pl__desc">Price per piece, choice by agreement</span></span>
+              <span class="pl__price">€0.95</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Bread bowls for dips, 5 pcs</b></span>
+              <span class="pl__price">€14.00</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Cake for over 30 portions</b><span class="pl__desc">Two tiers, 22 + 16 cm, six working days</span></span>
+              <span class="pl__price">from €138</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:26px">
+          <h3>What applies to catering</h3>
+          <ul style="margin-bottom:0">
+            <li>You confirm the final number of pieces no later than 48 hours before the event</li>
+            <li>Delivery in Kilkenny €5, free for orders over €100</li>
+            <li>The platters are returnable within three days of the event</li>
+            <li>You get a printed allergen list for every item</li>
+            <li>30% deposit for orders over €60, cancellation under the same rules as for cakes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="#objednavka">Arrange a supply</a>
+      <span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= POUKÁŽKY ================= -->
+<section class="sec sec--band" id="poukazky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Gifts</p>
+      <h2>Gift vouchers</h2>
+      <p class="lede">A paper voucher in an envelope, issued on the spot during opening hours. Valid for 12 months from the date of issue on everything we sell, including cakes to order.</p>
+    </div>
+
+    <div class="vouchers reveal">
+      <div class="voucher"><b>€20</b><span>For pastries and bread</span></div>
+      <div class="voucher"><b>€30</b><span>For a smaller cake</span></div>
+      <div class="voucher"><b>€50</b><span>For a decorated cake</span></div>
+    </div>
+
+    <div class="two reveal">
+      <div class="card">
+        <h3>How to use it</h3>
+        <p class="note">Hand over the voucher when you pay. If your order costs more, pay the difference. If it costs less, the balance stays on the voucher for next time.</p>
+      </div>
+      <div class="card">
+        <h3>What it doesn't cover</h3>
+        <p class="note">Vouchers can't be exchanged for cash and don't apply to the evening sale. Once they've expired, we can't accept them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">FAQ</p>
+      <h2>What people ask most often</h2>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>How far ahead should I order a cake?</summary>
+        <div class="faq__a"><p>A simple cake up to 22 cm needs three working days. Larger sizes need four, a two-tier cake six. A marzipan covering adds a day, a hand-painted finish two days. The builder shows the exact earliest date.</p></div>
+      </details>
+      <details>
+        <summary>Do you make gluten-free or lactose-free products?</summary>
+        <div class="faq__a"><p>Yes — we have a gluten-free almond slice every day, and a gluten-free cake sponge for an extra €12. We can make a lactose-free cake with plant-based cream by arrangement. The kitchen isn't separate, though, so with coeliac disease we can't rule out traces of gluten.</p></div>
+      </details>
+      <details>
+        <summary>Can you make a cake from my own design?</summary>
+        <div class="faq__a"><p>Send us a picture or a description. We'll adapt the colour and theme, but we don't promise to copy someone else's work in every detail. We price more complex decoration individually, always in advance and with your agreement.</p></div>
+      </details>
+      <details>
+        <summary>How long does sourdough bread keep?</summary>
+        <div class="faq__a"><p>Three to four days. Store it cut side down in a cloth bag or a bread bin, not in plastic. Don't put it in the fridge — that's where it goes stale fastest.</p></div>
+      </details>
+      <details>
+        <summary>How long does a finished cake keep?</summary>
+        <div class="faq__a"><p>Two days in the fridge at 4 to 6 °C. We recommend eating cakes with fresh fruit and cream on the day of collection. Leave the cake at room temperature for 30 minutes before serving — it tastes much better.</p></div>
+      </details>
+      <details>
+        <summary>Do you deliver?</summary>
+        <div class="faq__a"><p>We deliver in town Tuesday to Friday between 9:00 and 11:00 for €5. Delivery is free for orders over €100. We don't deliver outside town — cakes don't travel well.</p></div>
+      </details>
+      <details>
+        <summary>Can I sit down and have a coffee?</summary>
+        <div class="faq__a"><p>We have two tables for four and a standing counter by the window. Espresso is €1.60 and cappuccino €2.20. Coffee is served Tuesday to Friday until 16:30 and on Saturday until 12:00. We don't take table reservations.</p></div>
+      </details>
+      <details>
+        <summary>Do you also supply cafés wholesale?</summary>
+        <div class="faq__a"><p>Yes — for at least 30 rolls a day on a fixed schedule, prices are 20% below shop prices. You'll find the full terms, including capacity, in the <a href="#velkoobchod">Wholesale and catering</a> section.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KARIÉRA ================= -->
+<section class="sec sec--dark" id="kariera">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Work with us</p>
+      <h2>Who we're looking for</h2>
+      <p class="lede">Two vacancies on the day shift. Sundays and Mondays are off for the whole team, and on bank holidays we bake a reduced range.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="job">
+        <div>
+          <h3>Pastry chef</h3>
+          <p class="job__meta">Full-time &middot; start date by agreement &middot; from €17 an hour, depending on experience</p>
+        </div>
+        <div>
+          <p>Working on pastries and cakes, decorating on your own, shift starts at 5:00.</p>
+          <ul>
+            <li>At least two years' experience in pastry production</li>
+            <li>Confident with creams, ganache and marzipan work</li>
+            <li>Food safety training (HACCP)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job">
+        <div>
+          <h3>Shop assistant</h3>
+          <p class="job__meta">Full-time or part-time &middot; from €14.50 an hour</p>
+        </div>
+        <div>
+          <p>Serving at the counter, taking orders, restocking and closing up in the evening.</p>
+          <ul>
+            <li>Working with a till and cash</li>
+            <li>Early shift starts at 6:00</li>
+            <li>Food safety training (HACCP)</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:26px">Get in touch through the <a href="#objednavka">form</a> or give us a call, or bring your CV into the shop. We reply within a week and invite you for an interview in the morning, when you can see the kitchen in full swing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT ================= -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Contact</p>
+      <h2>Phone, address and large orders</h2>
+    </div>
+
+    <div class="two reveal">
+      <div>
+        <ul class="kv">
+          <li><b>Shop</b><span>Crust Bakery<br>21 Forge Lane, Kilkenny</span></li>
+          <li><b>Phone</b><span><span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span></span></li>
+          <li><b>Orders</b><span>By phone or through the <a href="#objednavka">form</a>, reply within 24 hours</span></li>
+          <li><b>Open</b><span>Tuesday &ndash; Friday 6:30 &ndash; 17:30, Saturday 6:30 &ndash; 12:30</span></li>
+          <li><b>Closed</b><span>Sunday and Monday</span></li>
+          <li><b>Parking</b><span>Eight spaces in front of the shop, first hour free</span></li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn--primary" href="#objednavka">Write through the form</a>
+          <span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Large orders</h3>
+          <p class="note">We sort out weddings, company events and catering in person. Come into the shop to talk it through on a Tuesday to Thursday afternoon, when the kitchen is quietest.</p>
+        </div>
+        <div class="card">
+          <h3>Tasting before you order</h3>
+          <p class="note">For cakes over €100 we prepare a tasting of three fillings. Book it at least a week ahead; it costs €8, and we take that amount off the cake when you order.</p>
+        </div>
+        <div class="card">
+          <h3>How we agree it</h3>
+          <p class="note">Use the form to tell us the date, the number of portions and the flavours you have in mind. We'll call you, fine-tune the details and send the deposit amount. We hold the date once it's paid.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= AUTOR UKÁŽKY ================= -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap">
+    <div class="author__grid">
+      <div>
+        <p class="author__tag">Example page</p>
+        <h2 id="autor-nadpis">Like this website?</h2>
+        <p><strong>Alex Poliak</strong> will build you a website like this. He designed and programmed this example himself, from the first line to the cake builder that works out the price and the date.</p>
+        <p>Crust Bakery is a made-up business; the prices and copy are only for demonstration. You get the same website with your price list, your opening hours and a form that really sends.</p>
+        <p class="author__price">Custom websites from €250. First design within 3 days.</p>
+        <p class="author__free">Free, no-obligation consultation</p>
+      </div>
+
+      <div class="author__box">
+        <ul>
+          <li><strong>Email</strong><br><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></li>
+          <li><strong>Support</strong><br><a href="mailto:support@apoliak.online">support@apoliak.online</a></li>
+          <li><strong>Phone</strong><br><span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span></li>
+          <li><strong>Web</strong><br><a href="https://apoliak.online/en/">https://apoliak.online</a></li>
+        </ul>
+        <div class="actions" style="margin-top:0">
+          <a class="btn btn--sand" href="https://apoliak.online/en/">Visit apoliak.online</a>
+          <span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ================= PÄTIČKA ================= -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__cta">
+      <p>Cakes to order from €42, shortest lead time three working days. We confirm the date and price within 24 hours.</p>
+      <a class="btn btn--primary" href="#objednavka">Order a cake</a>
+      <span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span>
+    </div>
+    <div class="foot__grid">
+      <div>
+        <h3>Crust Bakery</h3>
+        <p>21 Forge Lane<br>Kilkenny</p>
+        <p><span class="ukazka-kontakt" title="Example website — the number is left out on purpose so nobody calls a stranger's number.">your number here</span></p>
+        <p>Tuesday &ndash; Friday 6:30 &ndash; 17:30<br>Saturday 6:30 &ndash; 12:30<br>Sunday and Monday closed</p>
+      </div>
+      <div>
+        <h3>Range</h3>
+        <ul>
+          <li><a href="#pecivo">Bread and rolls</a></li>
+          <li><a href="#zakusky">Pastries and slices</a></li>
+          <li><a href="#torty">Cakes to order</a></li>
+          <li><a href="#sezona">Seasonal baking</a></li>
+          <li><a href="#poukazky">Gift vouchers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Order</h3>
+        <ul>
+          <li><a href="#konfigurator">Cake builder</a></li>
+          <li><a href="#postup">How it works</a></li>
+          <li><a href="#objednavka">Form</a></li>
+          <li><a href="#podmienky">Payment and cancellation</a></li>
+          <li><a href="#velkoobchod">Wholesale and catering</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Information</h3>
+        <ul>
+          <li><a href="#hodiny">Opening hours</a></li>
+          <li><a href="#doprava">Getting here</a></li>
+          <li><a href="#alergeny">Allergens</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#kontakt">Contact</a></li>
+          <li><a href="#kariera">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <p>Example website. The business, prices and address are made up.</p>
+      <p>Design and code: <a href="https://apoliak.online/en/">Alex Poliak &mdash; apoliak.online</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add("js");
+
+  /* ---------- mobilné menu ---------- */
+  var toggle = document.getElementById("nav-toggle");
+  var menu = document.getElementById("hlavne-menu");
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var open = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", open ? "false" : "true");
+      toggle.setAttribute("aria-expanded", open ? "false" : "true");
+    });
+    menu.addEventListener("click", function(e){
+      if(e.target.tagName === "A"){
+        menu.setAttribute("data-open","false");
+        toggle.setAttribute("aria-expanded","false");
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && menu.getAttribute("data-open") === "true"){
+        menu.setAttribute("data-open","false");
+        toggle.setAttribute("aria-expanded","false");
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---------- odhalenie obsahu pri scrollovaní ---------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.06});
+    reveals.forEach(function(el){ io.observe(el); });
+  }else{
+    reveals.forEach(function(el){ el.classList.add("is-in"); });
+  }
+
+  /* ---------- pomocné funkcie ---------- */
+  var DNI = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var MESIACE = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  function eur(n){
+    return __f(n);
+  }
+  function pridajDni(dni){
+    var d = new Date();
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate() + dni);
+    /* nedeľa (0) a pondelok (1) máme zatvorené */
+    while(d.getDay() === 0 || d.getDay() === 1){ d.setDate(d.getDate() + 1); }
+    return d;
+  }
+  function datumText(d){
+    return DNI[d.getDay()] + " " + d.getDate() + " " + MESIACE[d.getMonth()] + " " + d.getFullYear();
+  }
+  function datumISO(d){
+    var m = String(d.getMonth()+1);
+    var den = String(d.getDate());
+    if(m.length < 2){ m = "0" + m; }
+    if(den.length < 2){ den = "0" + den; }
+    return d.getFullYear() + "-" + m + "-" + den;
+  }
+
+  /* ---------- konfigurátor torty ---------- */
+  var napis = document.getElementById("cfg-napis");
+  var elCena = document.getElementById("s-cena");
+  var elPorcia = document.getElementById("s-porcia");
+  var elTermin = document.getElementById("s-termin");
+  var poleDatum = document.getElementById("f-datum");
+  var poleZostava = document.getElementById("f-zostava");
+  var poleTyp = document.getElementById("f-typ");
+  var stav = {};
+
+  function zvolene(skupina){
+    return document.querySelector('input[name="cfg-' + skupina + '"]:checked');
+  }
+
+  function prepocitaj(){
+    var v = zvolene("velkost");
+    var k = zvolene("korpus");
+    var p = zvolene("plnka");
+    var s = zvolene("povrch");
+    if(!v || !k || !p || !s){ return; }
+
+    var cena = 0, dni = 0;
+    [v,k,p,s].forEach(function(el){
+      cena += parseFloat(el.getAttribute("data-cena"));
+      dni += parseInt(el.getAttribute("data-dni"), 10);
+    });
+    var maNapis = napis && napis.checked;
+    if(maNapis){ cena += parseFloat(napis.getAttribute("data-cena")); }
+
+    var porcie = parseInt(v.getAttribute("data-porcie"), 10);
+    var termin = pridajDni(dni);
+
+    document.getElementById("s-velkost").textContent = v.getAttribute("data-popis");
+    document.getElementById("s-korpus").textContent = k.getAttribute("data-popis");
+    document.getElementById("s-plnka").textContent = p.getAttribute("data-popis");
+    document.getElementById("s-povrch").textContent = s.getAttribute("data-popis");
+    document.getElementById("s-napis").textContent = maNapis ? "yes, add the wording in your order" : "no message";
+
+    elCena.textContent = eur(cena);
+    elPorcia.textContent = "About " + eur(cena / porcie) + " per portion for " + porcie + " portions. Deposit when ordering " + eur(cena * 0.3) + ".";
+    elTermin.textContent = datumText(termin);
+
+    stav = {
+      cena: cena,
+      dni: dni,
+      termin: termin,
+      popis: v.getAttribute("data-popis") + ", " + k.getAttribute("data-popis") + ", " +
+             p.getAttribute("data-popis") + ", " + s.getAttribute("data-popis") +
+             (maNapis ? ", with a message on the cake" : "") + ". Guide price " + eur(cena) + "."
+    };
+
+    if(poleDatum){
+      poleDatum.min = datumISO(termin);
+      if(!poleDatum.value || poleDatum.value < poleDatum.min){ poleDatum.value = datumISO(termin); }
+    }
+  }
+
+  var vstupy = document.querySelectorAll('input[name^="cfg-"], #cfg-napis');
+  vstupy.forEach(function(el){ el.addEventListener("change", prepocitaj); });
+  if(vstupy.length){ prepocitaj(); }
+
+  var prenies = document.getElementById("cfg-prenies");
+  if(prenies){
+    prenies.addEventListener("click", function(){
+      if(poleZostava){ poleZostava.value = stav.popis || ""; }
+      if(poleTyp){ poleTyp.value = "torta"; }
+      var cielova = document.getElementById("objednavka");
+      if(cielova){ cielova.scrollIntoView({behavior:"smooth", block:"start"}); }
+      window.setTimeout(function(){
+        var meno = document.getElementById("f-meno");
+        if(meno){ meno.focus({preventScroll:true}); }
+      }, 500);
+    });
+  }
+
+  /* ---------- filter alergénov ---------- */
+  var filtre = document.querySelectorAll(".filter");
+  var riadky = document.querySelectorAll("#al-body tr");
+  var pocet = document.getElementById("al-count");
+  if(filtre.length && riadky.length){
+    filtre.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var kod = btn.getAttribute("data-free");
+        filtre.forEach(function(b){ b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+        var viditelne = 0;
+        riadky.forEach(function(tr){
+          var zoznam = tr.getAttribute("data-al").split(",");
+          var ok = (kod === "0") || zoznam.indexOf(kod) === -1;
+          tr.hidden = !ok;
+          if(ok){ viditelne++; }
+        });
+        if(pocet){
+          pocet.textContent = (kod === "0")
+            ? "Showing all " + riadky.length + " products."
+            : "Showing " + viditelne + " of " + riadky.length + " products for the selected filter.";
+        }
+      });
+    });
+  }
+
+  /* ---------- objednávkový formulár ---------- */
+  var form = document.getElementById("objednavka-form");
+  var hotovo = document.getElementById("objednavka-hotovo");
+  if(form && hotovo){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      hotovo.hidden = false;
+      hotovo.focus();
+      hotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  }
+})();
+</script>
+</body>
+</html>
