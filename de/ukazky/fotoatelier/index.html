@@ -1,0 +1,2083 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/fotoatelier/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/fotoatelier/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/fotoatelier/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/fotoatelier/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/fotoatelier/">
+<link rel="alternate" hreflang="de" href="https://apoliak.online/de/ukazky/fotoatelier/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/fotoatelier/">
+<!-- /jazyky:hreflang -->
+<title>Fotostudio Skala — Porträt-, Familien-, Produkt- und Businessfotos in Musterstadt</title>
+<meta name="description" content="Beispiel-Website eines Fotostudios in Musterstadt: vier Pakete ab 89 €, Porträt-, Familien-, Produkt- und Businessshootings, Preisrechner nach Zahl der bearbeiteten Fotos, Vorschaugalerie innerhalb von 5 Werktagen. Entwurf und Code Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#141414">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Fotostudio Skala (Beispiel-Website)">
+<meta property="og:title" content="Fotostudio Skala — Porträt-, Familien-, Produkt- und Businessfotos">
+<meta property="og:description" content="Studio mit Nordlicht in Musterstadt. Pakete ab 89 €, bearbeitete Fotos innerhalb von 10 Werktagen. Beispiel-Website von Alex Poliak, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23141414'/%3E%3Crect x='12' y='13' width='40' height='7' fill='%23F4F3F1'/%3E%3Crect x='12' y='24' width='40' height='7' fill='%23A5A5A5'/%3E%3Crect x='12' y='35' width='40' height='7' fill='%23565656'/%3E%3Crect x='12' y='46' width='40' height='7' fill='%239A4B34'/%3E%3C/svg%3E">
+<style>
+/* ===================== TOKENY ===================== */
+:root{
+  --graphite:#141414;
+  --graphite-2:#1C1C1C;
+  --graphite-3:#242424;
+  --graphite-4:#0F0F0F;
+  --ink:#161616;
+  --paper:#F5F4F1;
+  --paper-2:#EDEBE6;
+  --card:#FFFFFF;
+  --muted:#57534E;
+  --line:#DAD6CF;
+  --line-2:#E7E4DE;
+  --line-dark:#333333;
+  --on-dark:#EEEDEB;
+  --on-dark-mut:#A8A49F;
+  --accent:#9A4B34;
+  --accent-2:#7E3B28;
+  --accent-l:#D98E76;
+  --author-bg:#221310;
+
+  --mono:ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,"Liberation Mono",monospace;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --wrap:1200px;
+  --bar-h:72px;
+}
+@media (min-width:840px){:root{--bar-h:44px}}
+
+/* ===================== ZÁKLAD ===================== */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  padding-top:var(--bar-h);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{font-family:var(--sans);margin:0 0 .45em;letter-spacing:-.02em;overflow-wrap:break-word;hyphens:none}
+h1{font-size:clamp(2.9rem,13vw,7rem);font-weight:800;line-height:.97;letter-spacing:-.045em}
+h2{font-size:clamp(1.95rem,4.1vw,3.15rem);font-weight:800;line-height:1.05;letter-spacing:-.033em}
+h3{font-size:clamp(1.06rem,1.5vw,1.24rem);font-weight:700;line-height:1.34;letter-spacing:-.012em}
+h4{font-size:1rem;font-weight:700}
+p{margin:0 0 1em}
+ul,ol{margin:0;padding:0;list-style:none}
+dl{margin:0}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sec--dark :focus-visible,.demobar :focus-visible,.author :focus-visible,.foot :focus-visible,.panel :focus-visible{outline-color:var(--accent-l)}
+.wrap{width:min(100% - 32px,var(--wrap));margin-inline:auto}
+@media (min-width:700px){.wrap{width:min(100% - 64px,var(--wrap))}}
+section{scroll-margin-top:calc(var(--bar-h) + 122px)}
+@media (min-width:560px){section{scroll-margin-top:calc(var(--bar-h) + 86px)}}
+.sec{padding:clamp(70px,9vw,146px) 0}
+.sec--band{background:var(--paper-2)}
+.sec--dark{background:var(--graphite);color:var(--on-dark)}
+.skip{position:absolute;left:-9999px;top:0;z-index:300;background:var(--ink);color:var(--paper);padding:12px 18px}
+.skip:focus{left:8px;top:calc(var(--bar-h) + 8px)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}
+}
+
+/* ===================== TYPO POMOCNÍCI ===================== */
+.lede{font-size:1.07rem;color:var(--muted);max-width:56ch;margin:0}
+.sec--dark .lede{color:var(--on-dark-mut)}
+.small{font-size:.9rem;color:var(--muted);max-width:64ch}
+.sec--dark .small{color:var(--on-dark-mut)}
+.mono{font-family:var(--mono)}
+.mt{margin-top:clamp(28px,3.6vw,44px)}
+
+.shead{border-top:1px solid var(--line);padding-top:22px;margin-bottom:clamp(38px,5.5vw,74px);display:grid;gap:18px}
+.sec--dark .shead{border-top-color:var(--line-dark)}
+.shead__idx{font-family:var(--mono);font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+.sec--dark .shead__idx{color:var(--accent-l)}
+.shead h2{margin-bottom:0;max-width:20ch}
+@media (min-width:900px){
+  .shead{grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:12px 72px;align-items:end}
+}
+
+/* ===================== TLAČIDLÁ ===================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font:inherit;font-size:.92rem;font-weight:700;letter-spacing:.045em;
+  padding:16px 30px;border:1px solid transparent;border-radius:0;
+  cursor:pointer;text-decoration:none;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btnrow{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ===================== PÁSIK UKÁŽKY ===================== */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  background:#0B0B0B;color:var(--on-dark);
+  border-bottom:1px solid var(--accent);
+  font-size:.86rem;
+}
+.demobar__in{
+  width:min(100% - 24px,var(--wrap));margin-inline:auto;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:4px 20px;padding:9px 0;text-align:center;
+}
+.demobar__tag{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--accent-l);font-weight:700;white-space:nowrap;
+}
+.demobar__tag::before{content:"";width:9px;height:9px;background:var(--accent);flex:0 0 auto}
+.demobar__t{color:var(--on-dark-mut)}
+.demobar a{color:#FFFFFF;font-weight:700;text-decoration:none;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.34);padding-bottom:1px}
+.demobar a:hover{color:var(--accent-l);border-bottom-color:var(--accent-l)}
+
+/* ===================== HLAVIČKA ===================== */
+.site-head{
+  position:sticky;top:var(--bar-h);z-index:100;
+  background:var(--paper);border-bottom:1px solid var(--line);
+}
+.head__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;padding:10px 0;min-height:60px}
+.brand{display:inline-flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink)}
+.brand__mark{display:flex;flex-direction:column;gap:2px;width:26px}
+.brand__mark i{display:block;height:4px}
+.brand__mark i:nth-child(1){background:#141414}
+.brand__mark i:nth-child(2){background:#565656}
+.brand__mark i:nth-child(3){background:#A5A5A5}
+.brand__mark i:nth-child(4){background:var(--accent)}
+.brand__tx{display:flex;flex-direction:column;line-height:1.08}
+.brand__n{font-weight:800;letter-spacing:.03em;font-size:1.02rem;text-transform:uppercase}
+.brand__s{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:399.98px){.brand__s{display:none}}
+
+.nav{display:none}
+@media (min-width:1140px){
+  .nav{display:flex;align-items:center;gap:20px}
+  .nav a{color:var(--ink);text-decoration:none;font-size:.86rem;font-weight:600;padding:6px 0;border-bottom:1px solid transparent;white-space:nowrap}
+  .nav a:hover{border-bottom-color:var(--accent);color:var(--accent)}
+}
+
+/* akcia v hlavičke — viditeľná na každej šírke, nikdy nie v menu pod hamburgerom */
+.head__act{display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+.head__tel{
+  font-family:var(--mono);font-size:.92rem;font-weight:700;letter-spacing:-.01em;
+  color:var(--ink);text-decoration:none;white-space:nowrap;padding:6px 0;
+  border-bottom:1px solid var(--line);
+}
+.head__tel:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.btn.head__cta{padding:13px 20px;font-size:.84rem}
+@media (max-width:559.98px){
+  .brand{order:1}
+  .burger{order:2}
+  .head__act{order:3;width:100%;justify-content:space-between;gap:12px;padding-bottom:4px}
+  .btn.head__cta{flex:1 1 auto;padding:13px 14px}
+  .head__tel{font-size:.88rem}
+}
+.burger{
+  display:inline-flex;align-items:center;gap:10px;
+  font:inherit;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  font-family:var(--mono);
+  background:transparent;border:1px solid var(--line);color:var(--ink);
+  padding:11px 16px;cursor:pointer;
+}
+.burger:hover{border-color:var(--ink)}
+.burger i{display:block;width:18px;height:9px;border-top:2px solid currentColor;border-bottom:2px solid currentColor}
+@media (min-width:1140px){.burger{display:none}}
+
+.mobmenu{border-top:1px solid var(--line);background:var(--paper);padding:8px 0 20px;max-height:72vh;overflow-y:auto}
+.mobmenu[hidden]{display:none}
+.mobmenu ul{display:grid}
+.mobmenu a{
+  display:block;padding:13px 2px;text-decoration:none;color:var(--ink);
+  font-weight:600;border-bottom:1px solid var(--line-2);
+}
+.mobmenu a:hover{color:var(--accent)}
+.mobmenu .btn{margin-top:18px;width:100%}
+
+/* ===================================================================
+   OBRAZOVÉ MIESTA
+   Každý <figure class="obraz"> je pripravené miesto pre fotografiu.
+   Kompozícia je poskladaná z vrstvených svetelných prechodov, jednej
+   geometrickej vrstvy a mono popisky — nič sa nedoťahuje zvonka.
+   =================================================================== */
+.obraz{
+  --x:30%;--y:16%;--tint:255,255,255;--base:#1D1D1D;--base2:#0E0E0E;
+  position:relative;overflow:hidden;margin:0;isolation:isolate;
+  aspect-ratio:4/5;
+  background:linear-gradient(168deg,var(--base),var(--base2));
+}
+.obraz::before{
+  content:"";position:absolute;inset:0;z-index:1;
+  background:radial-gradient(112% 90% at var(--x) var(--y),
+    rgba(var(--tint),.38),rgba(var(--tint),.10) 44%,rgba(0,0,0,0) 74%);
+}
+.obraz::after{
+  content:"";position:absolute;inset:0;z-index:2;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 44%,rgba(0,0,0,.52));
+}
+.obraz__g{position:absolute;inset:0;z-index:1}
+.obraz__t{
+  position:absolute;left:clamp(11px,1.6vw,17px);bottom:clamp(9px,1.4vw,14px);z-index:3;
+  margin:0;font-family:var(--mono);font-size:.63rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(255,255,255,.72);
+}
+/* poloha a teplota svetla */
+.obraz--v2{--x:74%;--y:20%}
+.obraz--v3{--x:50%;--y:4%;--base:#191919}
+.obraz--v4{--x:18%;--y:52%;--base:#212121}
+.obraz--v5{--x:82%;--y:62%;--base:#161616}
+.obraz--v6{--x:44%;--y:30%;--tint:236,182,155;--base:#231916}
+.obraz--v7{--x:66%;--y:8%;--tint:236,182,155;--base:#1E1614}
+.obraz--v8{--x:24%;--y:26%;--base:#252525;--base2:#141414}
+/* geometria */
+.geo-kruh .obraz__g{background:radial-gradient(circle at 50% 42%,rgba(var(--tint),.20) 0 25%,rgba(0,0,0,0) 25.4%)}
+.geo-pas .obraz__g{background:linear-gradient(180deg,rgba(0,0,0,0) 56%,rgba(var(--tint),.15) 56.2% 68%,rgba(0,0,0,0) 68.2%)}
+.geo-hrana .obraz__g{background:linear-gradient(104deg,rgba(0,0,0,0) 44%,rgba(var(--tint),.14) 44.2% 57%,rgba(0,0,0,0) 57.2%)}
+.geo-stlpec .obraz__g{background:linear-gradient(90deg,rgba(0,0,0,0) 28%,rgba(var(--tint),.14) 28.2% 43%,rgba(0,0,0,0) 43.2%)}
+.geo-roh .obraz__g{background:linear-gradient(228deg,rgba(var(--tint),.19),rgba(0,0,0,0) 48%)}
+.geo-obluk .obraz__g{background:radial-gradient(78% 58% at 50% 108%,rgba(var(--tint),.17),rgba(0,0,0,0) 62%)}
+/* pomery strán */
+.obraz--sirka{aspect-ratio:3/2}
+.obraz--pas{aspect-ratio:21/9;max-height:56vh}
+.obraz--stvorec{aspect-ratio:1/1}
+
+.strip{
+  height:8px;
+  background:linear-gradient(90deg,
+    #0D0D0D 0 9.09%,#1F1F1F 0 18.18%,#2E2E2E 0 27.27%,#414141 0 36.36%,#565656 0 45.45%,
+    #6E6E6E 0 54.54%,#888888 0 63.63%,#A5A5A5 0 72.72%,#C2C2C2 0 81.81%,#DEDEDE 0 90.9%,#F5F5F5 0 100%);
+}
+
+/* ===================== HERO ===================== */
+.hero{background:var(--graphite);color:var(--on-dark);position:relative;overflow:hidden}
+.hero__in{padding:clamp(52px,7.5vw,116px) 0 clamp(44px,5.5vw,80px)}
+.hero__kick{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--accent-l);margin:0 0 clamp(22px,3.2vw,38px);line-height:1.8;
+}
+.hero h1{margin:0;color:#FFFFFF;padding-top:.05em}
+.hero h1 span{display:block}
+.hero__rule{height:1px;background:var(--line-dark);margin-top:clamp(26px,3.6vw,44px)}
+.hero__cols{margin-top:clamp(24px,3.4vw,40px);max-width:48ch}
+.hero__cols .lede{color:var(--on-dark-mut);font-size:1.09rem;max-width:none}
+.hero__cols .btnrow{margin-top:clamp(22px,3vw,32px)}
+.hero__foto{width:100%;border-top:1px solid var(--line-dark)}
+
+.hero__band{background:var(--graphite-4);border-top:1px solid var(--line-dark)}
+.hband{display:grid;grid-template-columns:minmax(0,1fr);border-bottom:1px solid var(--line-dark)}
+@media (min-width:620px){.hband{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1020px){.hband{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.hband__i{padding:26px 0 26px 0;border-bottom:1px solid var(--line-dark)}
+.hband__i:last-child{border-bottom:0}
+@media (min-width:620px){
+  .hband__i{border-right:1px solid var(--line-dark);padding-right:24px}
+  .hband__i:nth-child(2n){border-right:0;padding-left:24px}
+  .hband__i:nth-last-child(-n+2){border-bottom:0}
+}
+@media (min-width:1020px){
+  .hband__i{border-bottom:0;border-right:1px solid var(--line-dark);padding:34px 26px 38px 26px}
+  .hband__i:first-child{padding-left:0}
+  .hband__i:nth-child(2n){padding-left:26px}
+  .hband__i:last-child{border-right:0;padding-right:0}
+}
+.hband__n{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;color:var(--accent-l);margin-bottom:12px}
+.hband__t{display:block;font-size:1.02rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#FFFFFF}
+.hband__p{display:block;font-family:var(--mono);font-size:clamp(2.1rem,4.4vw,3.05rem);font-weight:700;letter-spacing:-.035em;line-height:1.06;color:#FFFFFF;margin-top:10px}
+.hband__m{display:block;font-size:.88rem;color:var(--on-dark-mut);margin-top:8px}
+.hband__foot{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--on-dark-mut);margin:0;padding:18px 0 24px;line-height:1.95;
+}
+
+/* ===================== BALÍČKY ===================== */
+.packs{display:grid;border-top:1px solid var(--line)}
+@media (min-width:980px){.packs{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.pack{padding:28px 0 32px;border-bottom:1px solid var(--line);display:flex;flex-direction:column}
+@media (min-width:980px){
+  .pack{border-bottom:0;border-right:1px solid var(--line);padding:32px 28px 34px 0}
+  .pack + .pack{padding-left:28px}
+  .pack:last-child{border-right:0;padding-right:0}
+}
+.pack__idx{font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;color:var(--accent);margin:0 0 14px}
+.pack__name{font-size:clamp(1.35rem,2.1vw,1.62rem);font-weight:800;letter-spacing:-.02em;text-transform:uppercase;line-height:1.1;margin:0 0 12px}
+.pack__price{font-family:var(--mono);font-size:clamp(2.2rem,3.5vw,2.95rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin:0 0 14px;color:var(--ink)}
+.pack__meta{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 18px;line-height:1.75}
+.pack ul{display:grid;gap:9px;font-size:.94rem;margin-bottom:18px}
+.pack li{padding-left:17px;position:relative}
+.pack li::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:1px;background:var(--accent)}
+.pack__foot{margin:auto 0 0;padding-top:16px;border-top:1px solid var(--line-2);font-size:.86rem;color:var(--muted)}
+
+/* ===================== TABUĽKY ===================== */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw + .tw{margin-top:clamp(38px,4.6vw,64px)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+.tw--wide table{min-width:700px}
+.tw--mid table{min-width:520px}
+caption{
+  caption-side:top;text-align:left;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--accent);padding:0 0 16px;font-weight:700;
+}
+th,td{text-align:left;padding:15px 26px 15px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+th:last-child,td:last-child{padding-right:0}
+thead th{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);font-weight:700;border-bottom:1px solid var(--ink);padding-top:0;
+}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+td.num,th.num{font-family:var(--mono);font-weight:700;white-space:nowrap}
+tbody th{font-weight:700}
+
+/* ===================== PREPOČET ===================== */
+.calc{display:grid;gap:34px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:1000px){.calc{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:56px;align-items:start}}
+.opts{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:560px){.opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.opt{position:relative;display:block;border:1px solid var(--line-dark);background:var(--graphite-2);padding:17px;cursor:pointer}
+.opt:hover{border-color:#4C4C4C}
+.opt.is-on{border-color:var(--accent-l);background:var(--graphite-3)}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt__t{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.opt__n{font-weight:700;font-size:1.05rem;color:#FFFFFF}
+.opt__p{font-family:var(--mono);font-weight:700;color:var(--accent-l);white-space:nowrap}
+.opt__m{display:block;font-size:.86rem;color:var(--on-dark-mut);margin-top:7px}
+.opt input:focus-visible + .opt__t{outline:2px solid var(--accent-l);outline-offset:4px}
+
+.ctrl{margin-top:30px;border-top:1px solid var(--line-dark);padding-top:24px}
+.ctrl__h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.ctrl__lab{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-mut)}
+.ctrl__val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:#FFFFFF}
+input[type=range]{width:100%;accent-color:var(--accent-l);height:26px}
+.ctrl__scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--on-dark-mut);margin-top:2px}
+.adds{display:grid;gap:10px;margin-top:24px}
+@media (min-width:560px){.adds{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.add{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--line-dark);background:var(--graphite-2);padding:14px 15px;cursor:pointer;font-size:.94rem}
+.add:hover{border-color:#4C4C4C}
+.add.is-on{border-color:var(--accent-l);background:var(--graphite-3)}
+.add input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent-l);flex:0 0 auto}
+.add b{display:block;color:#FFFFFF;font-weight:700}
+.add span{display:block}
+.add .add__p{font-family:var(--mono);font-size:.82rem;color:var(--accent-l);margin-top:4px}
+
+.sum{border:1px solid var(--line-dark);background:var(--graphite-2);padding:24px;position:sticky;top:calc(var(--bar-h) + 92px)}
+@media (max-width:999.98px){.sum{position:static}}
+.sum h3{color:#FFFFFF;margin-bottom:16px}
+.sum__row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #2E2E2E;font-size:.93rem;color:var(--on-dark-mut)}
+.sum__row b{color:var(--on-dark);font-weight:600}
+.sum__row span{font-family:var(--mono);color:#FFFFFF;white-space:nowrap;font-weight:600}
+.sum__tot{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:18px;padding-top:18px;border-top:1px solid var(--accent-l)}
+.sum__totl{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-mut)}
+.sum__totv{font-family:var(--mono);font-size:2.2rem;font-weight:700;color:var(--accent-l);letter-spacing:-.035em;line-height:1}
+.sum__note{font-size:.85rem;color:var(--on-dark-mut);margin:16px 0 18px}
+.sum .btn{width:100%}
+.noscript{border:1px solid var(--line-dark);padding:12px 14px;font-size:.9rem;color:var(--on-dark-mut);margin-top:16px}
+
+/* ===================== KROKY / PRAVIDLÁ ===================== */
+.steps{border-top:1px solid var(--line)}
+.step{display:grid;gap:8px;padding:26px 0;border-bottom:1px solid var(--line)}
+@media (min-width:880px){
+  .step{grid-template-columns:96px minmax(0,1fr) 220px;gap:40px;align-items:start;padding:32px 0}
+}
+.step__n{font-family:var(--mono);font-size:1.75rem;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-.03em}
+.step__t h3{margin-bottom:8px}
+.step__t p{margin:0;color:var(--muted);font-size:.97rem;max-width:64ch}
+.step__m{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;line-height:1.85}
+
+.rules{border-top:1px solid var(--line)}
+.rule{display:grid;gap:8px;padding:22px 0;border-bottom:1px solid var(--line)}
+@media (min-width:880px){.rule{grid-template-columns:290px minmax(0,1fr);gap:44px}}
+.rule h3{margin:0;font-size:1.02rem}
+.rule p{margin:0;color:var(--muted);font-size:.97rem;max-width:68ch}
+
+/* ===================== ROZDELENIE / ŠPECIFIKÁCIE ===================== */
+.split{display:grid;gap:clamp(30px,4.4vw,56px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.split{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);align-items:start}}
+.speclist{display:grid;gap:32px}
+@media (min-width:640px){.speclist{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.spec h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.spec ul{display:grid;gap:9px;font-size:.95rem}
+.spec li{padding-left:17px;position:relative;color:var(--ink)}
+.spec li::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:1px;background:var(--line)}
+
+.nums{display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:900px){.nums{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.numi{background:var(--paper);padding:26px 22px 28px 0}
+.sec--band .numi{background:var(--paper-2)}
+.numi__v{font-family:var(--mono);font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:700;letter-spacing:-.04em;line-height:1.05;color:var(--ink)}
+.numi__l{font-size:.88rem;color:var(--muted);margin-top:10px;max-width:24ch}
+
+/* ===================== KARTY ===================== */
+.cards{display:grid;gap:clamp(26px,3.4vw,42px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:800px){.cards--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:700px){.cards--2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{border-top:1px solid var(--line);padding-top:22px}
+.card h3{margin-bottom:10px}
+.card p{color:var(--muted);font-size:.96rem;max-width:64ch}
+.card p:last-child{margin-bottom:0}
+.card ul{display:grid;gap:9px;font-size:.94rem}
+.card li{padding-left:17px;position:relative}
+.card li::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:1px;background:var(--accent)}
+.card__k{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+
+/* ===================== KATEGÓRIE FOTENIA ===================== */
+.cats{display:grid;gap:clamp(22px,2.8vw,34px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:620px){.cats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:980px){.cats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cat{display:block;text-decoration:none;color:var(--ink)}
+.cat .obraz{margin-bottom:16px}
+.cat h3{margin:0 0 6px}
+.cat:hover h3{color:var(--accent)}
+.cat__p{font-family:var(--mono);font-size:1.42rem;font-weight:700;letter-spacing:-.03em;margin:0 0 8px;color:var(--ink)}
+.cat__m{font-size:.9rem;color:var(--muted);margin:0;max-width:34ch}
+
+.fotorad{display:grid;gap:12px;grid-template-columns:minmax(0,1fr);margin-bottom:clamp(30px,4vw,52px)}
+@media (min-width:700px){.fotorad{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* ===================== GALÉRIA PRÁC ===================== */
+.gal{display:grid;gap:10px;grid-auto-flow:dense;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:700px){.gal{gap:12px;grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1040px){.gal{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.gal .obraz--sirka{grid-column:span 2}
+
+/* ===================== TMAVÝ PANEL ===================== */
+.panel{
+  position:relative;
+  background:var(--graphite-2);color:var(--on-dark);
+  padding:clamp(26px,3.6vw,40px);display:flex;flex-direction:column;gap:18px;
+}
+.panel--warm{background:#241512}
+.panel__k{font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent-l);margin:0}
+.panel__t{color:#FFFFFF;margin:0;font-size:clamp(1.4rem,2.5vw,1.95rem);font-weight:800;letter-spacing:-.03em;line-height:1.12}
+.panel__addr{color:#FFFFFF;margin:0;font-size:clamp(1.5rem,3vw,2.15rem);font-weight:800;letter-spacing:-.035em;line-height:1.15}
+.panel p{color:var(--on-dark-mut);margin:0;font-size:.95rem}
+.panel a:not(.btn){color:var(--accent-l);font-weight:700;text-underline-offset:3px}
+.panel a:not(.btn):hover{color:#EDB6A2}
+.plist{display:grid;border-top:1px solid var(--line-dark)}
+.plist > div{display:flex;justify-content:space-between;gap:20px;padding:12px 0;border-bottom:1px solid var(--line-dark);font-size:.93rem}
+.plist dt{color:var(--on-dark-mut);margin:0}
+.plist dd{margin:0;font-family:var(--mono);font-weight:700;color:#FFFFFF;text-align:right}
+.psteps{display:grid;gap:13px;border-top:1px solid var(--line-dark);padding-top:18px;counter-reset:ps}
+.psteps li{counter-increment:ps;padding-left:32px;position:relative;font-size:.94rem;color:var(--on-dark-mut)}
+.psteps li::before{
+  content:counter(ps,decimal-leading-zero);position:absolute;left:0;top:.18em;
+  font-family:var(--mono);font-size:.76rem;font-weight:700;color:var(--accent-l);
+}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{font-family:var(--mono);font-size:.9rem;font-weight:700;border:1px solid var(--line-dark);padding:10px 15px;color:#FFFFFF}
+
+/* ===================== FAQ ===================== */
+.faq{border-top:1px solid var(--line);max-width:88ch}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;position:relative;
+  padding:20px 52px 20px 0;font-weight:700;font-size:1.02rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:1.5rem;font-weight:400;color:var(--accent);line-height:1;
+}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:hover{color:var(--accent)}
+.faq__a{padding:0 52px 22px 0;color:var(--muted);font-size:.97rem;max-width:72ch}
+.faq__a p:last-child{margin-bottom:0}
+
+/* ===================== KONTAKT / FORMULÁR ===================== */
+.contact{display:grid;gap:clamp(30px,4.4vw,56px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.contact{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:64px;align-items:start}}
+.info{display:grid;gap:26px}
+.info__b{border-top:1px solid var(--line);padding-top:16px}
+.info__b h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.info__b p{margin:0;font-size:1rem}
+.info__tel{
+  font-family:var(--mono);font-size:clamp(1.45rem,3vw,1.95rem);font-weight:700;
+  letter-spacing:-.03em;line-height:1.15;color:var(--ink);text-decoration:none;display:inline-block;
+}
+.info__tel:hover{color:var(--accent)}
+.form{border:1px solid var(--line);background:var(--card);padding:clamp(22px,3.2vw,36px)}
+.frow{display:grid;gap:18px}
+@media (min-width:620px){.frow--2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.field{display:grid;gap:7px;margin-bottom:18px}
+.field .lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.field input,.field select,.field textarea{
+  font:inherit;font-size:1rem;padding:13px 14px;border:1px solid var(--line);
+  background:#FFFFFF;color:var(--ink);border-radius:0;width:100%;
+}
+.field textarea{min-height:140px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);outline:none}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.consent{display:flex;align-items:flex-start;gap:12px;font-size:.9rem;color:var(--muted);margin:6px 0 20px}
+.consent input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--accent);flex:0 0 auto}
+.formmsg{display:none;border-left:3px solid var(--accent);background:#FAF0EC;color:#57291B;padding:14px 16px;font-size:.94rem;margin-bottom:20px}
+.formmsg.is-on{display:block}
+.req{color:var(--accent)}
+
+/* ===================== AUTOR ===================== */
+.author{background:var(--author-bg);color:var(--paper);border-top:3px solid var(--accent)}
+.author__in{padding:clamp(52px,6.5vw,96px) 0;display:grid;gap:clamp(28px,4.4vw,60px)}
+@media (min-width:940px){.author__in{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center}}
+.author__k{font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-l);margin:0 0 14px}
+.author h2{color:#FFFFFF;margin-bottom:16px}
+.author p{color:#E6DDD9;max-width:58ch}
+.author a:not(.btn){color:var(--accent-l);font-weight:700;text-underline-offset:3px}
+.author a:not(.btn):hover{color:#EDB6A2}
+.author__price{font-family:var(--mono);font-size:1.06rem;font-weight:700;color:#FFFFFF;margin:0 0 6px}
+.author__free{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-l);margin:0}
+.author__box{border:1px solid #4A2B24;padding:clamp(22px,3.2vw,32px);display:grid;gap:14px;background:#1B0E0C}
+.author__row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between;border-bottom:1px solid #3B221C;padding-bottom:13px}
+.author__row:last-of-type{border-bottom:0;padding-bottom:0}
+.author__lab{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:#BC9E95}
+.author__val{font-weight:700;text-align:right}
+
+/* ===================== PÄTIČKA ===================== */
+.foot{background:var(--graphite);color:var(--on-dark-mut);font-size:.92rem}
+.foot__in{padding:clamp(44px,5.5vw,72px) 0 34px;display:grid;gap:34px}
+@media (min-width:880px){.foot__in{grid-template-columns:minmax(0,1.25fr) repeat(2,minmax(0,.9fr))}}
+.foot h4{color:#FFFFFF;font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+.foot ul{display:grid;gap:9px}
+.foot a:not(.btn){color:var(--on-dark);text-decoration:none}
+.foot a:not(.btn):hover{color:var(--accent-l);text-decoration:underline}
+.foot__bot{border-top:1px solid var(--line-dark);padding:20px 0 28px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:.85rem}
+.foot__mark{display:flex;gap:3px;margin-bottom:16px}
+.foot__mark i{display:block;width:22px;height:6px}
+
+/* ===================================================================
+   FARBY TLACIDIEL — zamerne az na konci a vzdy s dvoma triedami
+   (.btn.btn--x, specificita 0-2-0). Pravidla pre odkazy v okoli
+   (".nav a", ".foot a", ".panel a", ".author a") maju nizsiu specificitu
+   alebo su odfiltrovane cez :not(.btn), takze farbu textu tlacidla
+   nikde neprebiju a tlacidlo nesplynie s pozadim.
+   =================================================================== */
+.btn.btn--accent{background:var(--accent);border-color:var(--accent);color:#FFFFFF}
+.btn.btn--accent:hover{background:var(--accent-2);border-color:var(--accent-2);color:#FFFFFF}
+.btn.btn--ink{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.btn.btn--ink:hover{background:#000000;border-color:#000000;color:#FFFFFF}
+.btn.btn--line{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn.btn--line:hover{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.btn.btn--lined{background:transparent;border-color:#4F4F4F;color:#FFFFFF}
+.btn.btn--lined:hover{background:transparent;border-color:var(--accent-l);color:var(--accent-l)}
+.btn.btn--paper{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+.btn.btn--paper:hover{background:#FFFFFF;border-color:#FFFFFF;color:#000000}
+.author .btn.btn--lined{border-color:#6A3D31;color:#FFFFFF}
+.author .btn.btn--lined:hover{border-color:var(--accent-l);color:var(--accent-l)}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return v.toLocaleString('de-DE');}function __f(x){return x.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Zum Inhalt springen</a>
+
+<!-- ===== PÁSIK UKÁŽKY ===== -->
+<div class="demobar" id="demobar">
+  <div class="demobar__in">
+    <span class="demobar__tag">Beispiel-Website</span>
+    <span class="demobar__t">So eine Website baue ich auch für Sie.</span>
+    <a href="https://apoliak.online/de/">apoliak.online</a>
+    <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+  </div>
+</div>
+
+<!-- ===== HLAVIČKA ===== -->
+<header class="site-head">
+  <div class="wrap">
+    <div class="head__in">
+      <a class="brand" href="#uvod">
+        <span class="brand__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="brand__tx">
+          <span class="brand__n">Skala</span> <span class="brand__s">Fotostudio Musterstadt</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="#kategorie">Shootings</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#cennik">Preise</a>
+        <a href="#atelier">Studio</a>
+        <a href="#poukazy">Gutscheine</a>
+        <a href="#kontakt">Buchung</a>
+      </nav>
+
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobmenu">
+        <i aria-hidden="true"></i> Menü
+      </button>
+
+      <div class="head__act">
+        <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+        <a class="btn btn--accent head__cta" href="#kontakt">Termin buchen</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobmenu" id="mobmenu" hidden>
+    <div class="wrap">
+      <ul>
+        <li><a href="#kategorie">Shootings und Preise</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#cennik">Preise und Extras</a></li>
+        <li><a href="#atelier">Studio und Ausstattung</a></li>
+        <li><a href="#poukazy">Geschenkgutscheine</a></li>
+        <li><a href="#kontakt">Terminbuchung</a></li>
+      </ul>
+      <a class="btn btn--accent" href="#kontakt">Termin buchen</a>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="uvod">
+  <div class="wrap">
+    <div class="hero__in">
+      <p class="hero__kick">Porträt-, Familien-, Produkt- und Businessfotos · Glasergasse 9, Musterstadt · Nur mit Termin</p>
+      <h1><span>Fotostudio</span><span>in Musterstadt</span></h1>
+      <div class="hero__rule" aria-hidden="true"></div>
+      <div class="hero__cols">
+        <p class="lede">Eine Halle mit Nordfenster, Blitz- und Dauerlicht und sechs Papierhintergründen. Wir fotografieren mit Vorschau am Monitor, so stimmen wir Licht und Ausdruck noch während des Termins ab.</p>
+        <div class="btnrow">
+          <a class="btn btn--accent" href="#kontakt">Termin buchen</a>
+          <a class="btn btn--lined" href="#prepocet">Preis berechnen</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOTO: hlavný záber na plnú šírku — portrét pred sivou cykloramou, svetlo zľava -->
+  <figure class="obraz obraz--pas obraz--v4 geo-obluk hero__foto">
+    <span class="obraz__g" aria-hidden="true"></span>
+    <p class="obraz__t">Studio Glasergasse 9</p>
+  </figure>
+
+  <div class="hero__band">
+    <div class="wrap">
+      <ul class="hband">
+        <li class="hband__i">
+          <span class="hband__n">01</span>
+          <span class="hband__t">Porträt</span>
+          <span class="hband__p">89 €</span>
+          <span class="hband__m">40 Minuten · 5 bearbeitete Fotos</span>
+        </li>
+        <li class="hband__i">
+          <span class="hband__n">02</span>
+          <span class="hband__t">Familie</span>
+          <span class="hband__p">149 €</span>
+          <span class="hband__m">60 Minuten · 10 bearbeitete Fotos</span>
+        </li>
+        <li class="hband__i">
+          <span class="hband__n">03</span>
+          <span class="hband__t">Produkt</span>
+          <span class="hband__p">190 €</span>
+          <span class="hband__m">90 Minuten · 12 bearbeitete Fotos</span>
+        </li>
+        <li class="hband__i">
+          <span class="hband__n">04</span>
+          <span class="hband__t">Business</span>
+          <span class="hband__p">240 €</span>
+          <span class="hband__m">120 Minuten · 8 bearbeitete Fotos</span>
+        </li>
+      </ul>
+      <p class="hband__foot">Vorschaugalerie innerhalb von 5 Werktagen · Bearbeitete Fotos innerhalb von 10 Werktagen nach der Auswahl · Während des Termins gehört das Studio nur Ihnen</p>
+    </div>
+  </div>
+  <div class="strip" aria-hidden="true"></div>
+</section>
+
+<!-- ===== 01 KATEGÓRIE FOTENIA ===== -->
+<section class="sec" id="kategorie">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">01 — Shootings</p>
+        <h2>Was wir im Studio fotografieren</h2>
+      </div>
+      <p class="lede">Sechs Arten von Shootings zum Festpreis. Den Umfang finden Sie jeweils in der Preisliste, einen Termin vereinbaren Sie über das Formular oder telefonisch.</p>
+    </div>
+
+    <div class="cats">
+
+      <!-- FOTO: portrét jednej osoby po pás, sivé papierové pozadie, svetlo zboku -->
+      <a class="cat" href="#cennik">
+        <figure class="obraz obraz--sirka obraz--v1 geo-stlpec">
+          <span class="obraz__g" aria-hidden="true"></span>
+          <p class="obraz__t">Porträt</p>
+        </figure>
+        <h3>Porträt</h3>
+        <p class="cat__p">89 €</p>
+        <p class="cat__m">40 Minuten · 1 Person · 2 Hintergründe · 5 bearbeitete Fotos inklusive</p>
+      </a>
+
+      <!-- FOTO: rodina so štyrmi členmi na svetlom pozadí, celá postava -->
+      <a class="cat" href="#cennik">
+        <figure class="obraz obraz--sirka obraz--v3 geo-obluk">
+          <span class="obraz__g" aria-hidden="true"></span>
+          <p class="obraz__t">Familie</p>
+        </figure>
+        <h3>Familie</h3>
+        <p class="cat__p">149 €</p>
+        <p class="cat__m">60 Minuten · bis 5 Personen · 3 Hintergründe · 10 bearbeitete Fotos inklusive</p>
+      </a>
+
+      <!-- FOTO: firemný portrét v obleku na tmavosivom pozadí, jednotné svetlo -->
+      <a class="cat" href="#cennik">
+        <figure class="obraz obraz--sirka obraz--v2 geo-hrana">
+          <span class="obraz__g" aria-hidden="true"></span>
+          <p class="obraz__t">Business-Porträts</p>
+        </figure>
+        <h3>Business-Porträts</h3>
+        <p class="cat__p">240 €</p>
+        <p class="cat__m">120 Minuten · bis 8 Personen · 8 bearbeitete Fotos inklusive</p>
+      </a>
+
+      <!-- FOTO: predmet na čistom bielom pozadí s mäkkým tieňom, produktový stôl -->
+      <a class="cat" href="#cennik">
+        <figure class="obraz obraz--sirka obraz--v5 geo-kruh">
+          <span class="obraz__g" aria-hidden="true"></span>
+          <p class="obraz__t">Produkt</p>
+        </figure>
+        <h3>Produkt</h3>
+        <p class="cat__p">190 €</p>
+        <p class="cat__m">90 Minuten · bis 12 Produkte · 12 bearbeitete Fotos inklusive</p>
+      </a>
+
+      <!-- FOTO: záber na doklady — tvár spredu, biele pozadie, rovnomerné svetlo -->
+      <a class="cat" href="#cennik">
+        <figure class="obraz obraz--sirka obraz--v8 geo-stlpec">
+          <span class="obraz__g" aria-hidden="true"></span>
+          <p class="obraz__t">Passbilder</p>
+        </figure>
+        <h3>Biometrische Passbilder</h3>
+        <p class="cat__p">12 €</p>
+        <p class="cat__m">6 Abzüge und digitale Übermittlung ans Amt · ohne Termin werktags 9:00 – 11:00 · fertig in 20 Minuten</p>
+      </a>
+
+      <!-- FOTO: fotenie mimo ateliéru — prenosné svetlo postavené v cudzom priestore -->
+      <a class="cat" href="#cennik">
+        <figure class="obraz obraz--sirka obraz--v7 geo-roh">
+          <span class="obraz__g" aria-hidden="true"></span>
+          <p class="obraz__t">Außer Haus</p>
+        </figure>
+        <h3>Shooting außerhalb des Studios</h3>
+        <p class="cat__p">+ 60 €</p>
+        <p class="cat__m">Aufpreis zum Paket bis 20 km · über 20 km 0,50 € pro Kilometer</p>
+      </a>
+
+    </div>
+
+    <div class="btnrow mt">
+      <a class="btn btn--accent" href="#kontakt">Termin buchen</a>
+      <a class="btn btn--line" href="#cennik">Preisliste ansehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 PORTFÓLIO ===== -->
+<section class="sec sec--dark" id="portfolio">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">02 — Arbeiten</p>
+        <h2>Fotos aus dem Studio</h2>
+      </div>
+      <p class="lede">Sechzehn Aufnahmen aus der Glasergasse 9: Porträts, Familien, Business-Sets und Produkte. Wir veröffentlichen nur Fotos, für die wir die schriftliche Einwilligung der Kunden haben.</p>
+    </div>
+
+    <div class="gal">
+
+      <!-- FOTO: portrét na výšku, mäkké svetlo zľava, sivé pozadie -->
+      <figure class="obraz obraz--v1 geo-stlpec"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">01 · Porträt</p></figure>
+
+      <!-- FOTO: portrét na výšku, tvrdšie svetlo sprava, čierne pozadie -->
+      <figure class="obraz obraz--v2 geo-hrana"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">02 · Porträt</p></figure>
+
+      <!-- FOTO: širokouhlý rodinný záber, päť osôb, biele pozadie -->
+      <figure class="obraz obraz--sirka obraz--v3 geo-obluk"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">03 · Familie</p></figure>
+
+      <!-- FOTO: firemný portrét na výšku, olivové pozadie -->
+      <figure class="obraz obraz--v8 geo-stlpec"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">04 · Business</p></figure>
+
+      <!-- FOTO: produkt na výšku, biele pozadie, mäkký tieň pod predmetom -->
+      <figure class="obraz obraz--v5 geo-kruh"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">05 · Produkt</p></figure>
+
+      <!-- FOTO: portrét na výšku, teplé svetlo, piesková rolka -->
+      <figure class="obraz obraz--v6 geo-roh"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">06 · Porträt</p></figure>
+
+      <!-- FOTO: rodičia s dieťaťom na výšku, svetlo od severného okna -->
+      <figure class="obraz obraz--v4 geo-pas"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">07 · Familie</p></figure>
+
+      <!-- FOTO: širokouhlá firemná sada, tri osoby vedľa seba, jednotné svetlo -->
+      <figure class="obraz obraz--sirka obraz--v2 geo-hrana"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">08 · Business</p></figure>
+
+      <!-- FOTO: produkt na výšku, detail povrchu, svetelný stan -->
+      <figure class="obraz obraz--v3 geo-kruh"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">09 · Produkt</p></figure>
+
+      <!-- FOTO: portrét na výšku, hrdzavá rolka, protisvetlo -->
+      <figure class="obraz obraz--v7 geo-obluk"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">10 · Porträt</p></figure>
+
+      <!-- FOTO: firemný portrét na výšku, sivé pozadie, orez po plecia -->
+      <figure class="obraz obraz--v5 geo-stlpec"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">11 · Business</p></figure>
+
+      <!-- FOTO: širokouhlá zostava produktov v jednej mierke, biele pozadie -->
+      <figure class="obraz obraz--sirka obraz--v8 geo-roh"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">12 · Produkt</p></figure>
+
+      <!-- FOTO: rodina na výšku, spoločný záber pri cyklorame -->
+      <figure class="obraz obraz--v1 geo-pas"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">13 · Familie</p></figure>
+
+      <!-- FOTO: portrét na výšku, čiernobiely, kruhový reflektor -->
+      <figure class="obraz obraz--v4 geo-hrana"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">14 · Porträt</p></figure>
+
+      <!-- FOTO: firemný portrét na výšku, postava v celku, olivová rolka -->
+      <figure class="obraz obraz--v3 geo-stlpec"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">15 · Business</p></figure>
+
+      <!-- FOTO: produkt na výšku, tmavé pozadie, bočné svetlo -->
+      <figure class="obraz obraz--v6 geo-kruh"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">16 · Produkt</p></figure>
+
+    </div>
+
+    <div class="btnrow mt">
+      <a class="btn btn--paper" href="#kontakt">Termin buchen</a>
+      <a class="btn btn--lined" href="#atelier">Studio ansehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 BALÍČKY ===== -->
+<section class="sec" id="balicky">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">03 — Angebot</p>
+        <h2>Shooting-Pakete</h2>
+      </div>
+      <p class="lede">Vier Pakete zum Festpreis. Jedes enthält das Shooting im Studio, die Bildauswahl in einer passwortgeschützten Galerie und die vereinbarte Zahl bearbeiteter Fotos in Druck- und Webauflösung.</p>
+    </div>
+
+    <div class="packs">
+
+      <article class="pack">
+        <p class="pack__idx">01</p>
+        <h3 class="pack__name">Porträt</h3>
+        <p class="pack__price">89 €</p>
+        <p class="pack__meta">40 Minuten · 1 Person · 2 Hintergründe</p>
+        <ul>
+          <li>5 bearbeitete Fotos inklusive</li>
+          <li>Kleidungstipps drei Tage vor dem Termin</li>
+          <li>Laufende Vorschau am Monitor während des Shootings</li>
+          <li>Galerie zur Bildauswahl, Zugang 14 Tage</li>
+        </ul>
+        <p class="pack__foot">Jedes weitere bearbeitete Foto 9 €</p>
+      </article>
+
+      <article class="pack">
+        <p class="pack__idx">02</p>
+        <h3 class="pack__name">Familie</h3>
+        <p class="pack__price">149 €</p>
+        <p class="pack__meta">60 Minuten · bis 5 Personen · 3 Hintergründe</p>
+        <ul>
+          <li>10 bearbeitete Fotos inklusive</li>
+          <li>Gruppenbilder und Einzelporträts</li>
+          <li>Kinderecke und Wickeltisch im Wartebereich</li>
+          <li>Jede weitere Person über das Paket hinaus 15 €</li>
+        </ul>
+        <p class="pack__foot">Jedes weitere bearbeitete Foto 9 €</p>
+      </article>
+
+      <article class="pack">
+        <p class="pack__idx">03</p>
+        <h3 class="pack__name">Produkt</h3>
+        <p class="pack__price">190 €</p>
+        <p class="pack__meta">90 Minuten · bis 12 Produkte</p>
+        <ul>
+          <li>12 bearbeitete Fotos inklusive</li>
+          <li>Reinweißer Hintergrund und exakter Freisteller</li>
+          <li>Lichtzelt und Aufnahmetisch, 120 cm breit</li>
+          <li>Dateien für Onlineshop und Druck</li>
+        </ul>
+        <p class="pack__foot">Jedes weitere bearbeitete Foto 12 €</p>
+      </article>
+
+      <article class="pack">
+        <p class="pack__idx">04</p>
+        <h3 class="pack__name">Business</h3>
+        <p class="pack__price">240 €</p>
+        <p class="pack__meta">120 Minuten · bis 8 Personen</p>
+        <ul>
+          <li>8 bearbeitete Fotos inklusive, eins pro Person</li>
+          <li>Einheitliches Licht und gleicher Hintergrund für das ganze Team</li>
+          <li>Ausschnitte für Web, Druck und Profilbilder</li>
+          <li>Rechnung mit 14 Tagen Zahlungsziel, ohne Anzahlung</li>
+        </ul>
+        <p class="pack__foot">Jedes weitere bearbeitete Foto 14 €</p>
+      </article>
+
+    </div>
+
+    <div class="btnrow mt">
+      <a class="btn btn--ink" href="#kontakt">Termin buchen</a>
+      <a class="btn btn--line" href="#cennik">Ganze Preisliste ansehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 CENNÍK ===== -->
+<section class="sec sec--band" id="cennik">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">04 — Preise</p>
+        <h2>Preise und Extras</h2>
+      </div>
+      <p class="lede">Alle Preise sind Endpreise und gelten für Shootings im Studio. Eine Anzahlung von 30 € bestätigt den Termin und wird vom Endpreis abgezogen. Extras können Sie auch nachträglich bestellen, spätestens fünf Tage vor dem Shooting.</p>
+    </div>
+
+    <div class="tw tw--wide">
+      <table>
+        <caption>Shooting-Pakete</caption>
+        <thead>
+          <tr>
+            <th scope="col">Paket</th>
+            <th scope="col">Umfang</th>
+            <th scope="col">Bearbeitete Fotos inklusive</th>
+            <th scope="col" class="num">Preis</th>
+            <th scope="col" class="num">Weiteres Foto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Porträt</th><td>40 Minuten, 1 Person, 2 Hintergründe</td><td>5</td><td class="num">89 €</td><td class="num">9 €</td></tr>
+          <tr><th scope="row">Familie</th><td>60 Minuten, bis 5 Personen, 3 Hintergründe</td><td>10</td><td class="num">149 €</td><td class="num">9 €</td></tr>
+          <tr><th scope="row">Produkt</th><td>90 Minuten, bis 12 Produkte</td><td>12</td><td class="num">190 €</td><td class="num">12 €</td></tr>
+          <tr><th scope="row">Business-Porträts</th><td>120 Minuten, bis 8 Personen</td><td>8</td><td class="num">240 €</td><td class="num">14 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tw tw--mid">
+      <table>
+        <caption>Extras und Einzelleistungen</caption>
+        <thead>
+          <tr>
+            <th scope="col">Position</th>
+            <th scope="col" class="num">Preis</th>
+            <th scope="col">Hinweis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Make-up und Frisur</th><td class="num">45 €</td><td>Buchbar bis spätestens 5 Tage vor dem Shooting</td></tr>
+          <tr><th scope="row">Weitere Person über das Paket hinaus</th><td class="num">15 €</td><td>Gilt für Familien- und Businessshootings</td></tr>
+          <tr><th scope="row">Verlängerung des Shootings um 30 Minuten</th><td class="num">35 €</td><td>Sofern der nächste Termin frei ist</td></tr>
+          <tr><th scope="row">Express-Lieferung in 48 Stunden</th><td class="num">40 €</td><td>Ab Bestätigung der Bildauswahl</td></tr>
+          <tr><th scope="row">Biometrische Passbilder</th><td class="num">12 €</td><td>6 Abzüge und digitale Übermittlung, fertig in 20 Minuten</td></tr>
+          <tr><th scope="row">Vergrößerung 20 × 30 cm</th><td class="num">14 € / Stück</td><td>Mattes oder seidenmattes Papier 250 g</td></tr>
+          <tr><th scope="row">Fotobuch 20 × 20 cm</th><td class="num">79 €</td><td>20 Seiten, Hardcover, Lieferung in 7 bis 10 Tagen</td></tr>
+          <tr><th scope="row">Shooting außerhalb des Studios</th><td class="num">60 €</td><td>Bis 20 km, über 20 km 0,50 € pro Kilometer</td></tr>
+          <tr><th scope="row">Übergabe auf USB-Stick</th><td class="num">8 €</td><td>Der Stick gehört Ihnen, fertig in 3 Tagen</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 PREPOČET ===== -->
+<section class="sec sec--dark" id="prepocet">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">05 — Rechner</p>
+        <h2>Preisrechner</h2>
+      </div>
+      <p class="lede">Wählen Sie ein Paket, die Zahl zusätzlicher bearbeiteter Fotos und Extras. Der Betrag wird sofort berechnet, und mit einem Klick übernehmen Sie ihn ins Buchungsformular.</p>
+    </div>
+
+    <form class="calc" id="calc" novalidate>
+      <div>
+        <fieldset style="border:0;padding:0;margin:0">
+          <legend class="ctrl__lab" style="padding:0;margin-bottom:14px">Paket</legend>
+          <div class="opts">
+            <label class="opt is-on" data-opt="portret">
+              <input type="radio" name="balik" value="portret" checked>
+              <span class="opt__t"><span class="opt__n">Porträt</span><span class="opt__p">89 €</span></span>
+              <span class="opt__m">40 Minuten, 1 Person, 5 bearbeitete Fotos inklusive</span>
+            </label>
+            <label class="opt" data-opt="rodina">
+              <input type="radio" name="balik" value="rodina">
+              <span class="opt__t"><span class="opt__n">Familie</span><span class="opt__p">149 €</span></span>
+              <span class="opt__m">60 Minuten, bis 5 Personen, 10 bearbeitete Fotos inklusive</span>
+            </label>
+            <label class="opt" data-opt="produkt">
+              <input type="radio" name="balik" value="produkt">
+              <span class="opt__t"><span class="opt__n">Produkt</span><span class="opt__p">190 €</span></span>
+              <span class="opt__m">90 Minuten, bis 12 Produkte, 12 bearbeitete Fotos inklusive</span>
+            </label>
+            <label class="opt" data-opt="firemne">
+              <input type="radio" name="balik" value="firemne">
+              <span class="opt__t"><span class="opt__n">Business-Porträts</span><span class="opt__p">240 €</span></span>
+              <span class="opt__m">120 Minuten, bis 8 Personen, 8 bearbeitete Fotos inklusive</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="ctrl">
+          <div class="ctrl__h">
+            <label class="ctrl__lab" for="extra">Zusätzliche bearbeitete Fotos</label>
+            <span class="ctrl__val"><output id="extraOut" for="extra">0</output> Stück</span>
+          </div>
+          <input type="range" id="extra" name="extra" min="0" max="30" step="1" value="0" aria-describedby="extraHint">
+          <div class="ctrl__scale" aria-hidden="true"><span>0</span><span>15</span><span>30</span></div>
+          <p class="small" id="extraHint" style="margin:12px 0 0">Der Preis pro zusätzlichem Foto hängt vom Paket ab: 9 € Porträt und Familie, 12 € Produkt, 14 € Business-Porträts.</p>
+        </div>
+
+        <div class="ctrl">
+          <p class="ctrl__lab" style="margin:0 0 14px">Extras</p>
+          <div class="adds">
+            <label class="add" data-add="vizaz"><input type="checkbox" name="doplnok" value="vizaz"><span><b>Make-up und Frisur</b><span class="add__p">+ 45 €</span></span></label>
+            <label class="add" data-add="osoba"><input type="checkbox" name="doplnok" value="osoba"><span><b>Weitere Person</b><span class="add__p">+ 15 €</span></span></label>
+            <label class="add" data-add="cas"><input type="checkbox" name="doplnok" value="cas"><span><b>Verlängerung um 30 Minuten</b><span class="add__p">+ 35 €</span></span></label>
+            <label class="add" data-add="expres"><input type="checkbox" name="doplnok" value="expres"><span><b>Express-Lieferung in 48 Stunden</b><span class="add__p">+ 40 €</span></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="sum" aria-live="polite">
+        <h3>Zusammenfassung der Buchung</h3>
+        <div id="sumRows">
+          <div class="sum__row"><b>Porträt — 40 Minuten</b><span>89 €</span></div>
+          <div class="sum__row"><b>Bearbeitete Fotos inklusive</b><span>5 Stück</span></div>
+        </div>
+        <div class="sum__tot">
+          <span class="sum__totl">Gesamtpreis</span>
+          <span class="sum__totv" id="sumTotal">89 €</span>
+        </div>
+        <p class="sum__note">Die Anzahlung von 30 € bestätigt den Termin und wird vom Preis abgezogen. Den Rest zahlen Sie bei Übergabe der Fotos.</p>
+        <button class="btn btn--paper" type="button" id="toForm">Ins Formular übernehmen</button>
+        <noscript><p class="noscript">Der Rechner braucht JavaScript. Alle Preise finden Sie in der Preisliste oben.</p></noscript>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ===== 06 PRIEBEH ===== -->
+<section class="sec" id="priebeh">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">06 — Ablauf</p>
+        <h2>So läuft ein Shooting ab</h2>
+      </div>
+      <p class="lede">Von der Buchung bis zur Übergabe der fertigen Fotos sind es fünf Schritte. Bei jedem wissen Sie, was passiert und bis wann es fertig ist.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step__n">01</div>
+        <div class="step__t">
+          <h3>Terminbuchung</h3>
+          <p>Den Termin vereinbaren Sie über das Formular auf dieser Seite oder telefonisch. Innerhalb von 24 Stunden rufen wir Sie mit zwei freien Terminen an und schicken die Zahlungsdaten für die Anzahlung von 30 €. Verbindlich gebucht ist der Termin, sobald die Anzahlung eingegangen ist.</p>
+        </div>
+        <div class="step__m">Antwort innerhalb von 24 Stunden</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">02</div>
+        <div class="step__t">
+          <h3>Vorbereitung</h3>
+          <p>Drei Tage vor dem Termin bekommen Sie schriftliche Tipps zu Kleidung, Farben und Zahl der Outfits. Beim Produktshooting stimmen wir vorher die Liste der Produkte, die gewünschten Ausschnitte und die Dateigrößen ab.</p>
+        </div>
+        <div class="step__m">3 Tage vor dem Termin</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">03</div>
+        <div class="step__t">
+          <h3>Shooting im Studio</h3>
+          <p>Kommen Sie 10 Minuten vor Beginn, eine Umkleide mit Spiegel und Dampfglätter steht bereit. Die Aufnahmen sehen Sie laufend auf einem großen Monitor, so stimmen wir Haltung, Licht und Ausdruck noch während des Shootings ab.</p>
+        </div>
+        <div class="step__m">40 bis 120 Minuten</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">04</div>
+        <div class="step__t">
+          <h3>Bildauswahl</h3>
+          <p>Innerhalb von 5 Werktagen bekommen Sie einen Link zu einer passwortgeschützten Galerie. Die Aufnahmen markieren Sie per Klick und senden die Auswahl mit einem Knopf ab. Für die Auswahl haben Sie 14 Tage, auf Wunsch verlängern wir.</p>
+        </div>
+        <div class="step__m">Galerie innerhalb von 5 Werktagen</div>
+      </div>
+
+      <div class="step">
+        <div class="step__n">05</div>
+        <div class="step__t">
+          <h3>Bearbeitung und Übergabe</h3>
+          <p>Die ausgewählten Aufnahmen bearbeiten wir und übergeben sie innerhalb von 10 Werktagen in Druck- und Webauflösung. Der Download-Link gilt 30 Tage, auf Wunsch gibt es die Dateien auch auf USB-Stick.</p>
+        </div>
+        <div class="step__m">Innerhalb von 10 Werktagen</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07 ATELIÉR ===== -->
+<section class="sec sec--band" id="atelier">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">07 — Räume</p>
+        <h2>Studio und Ausstattung</h2>
+      </div>
+      <p class="lede">Eine Halle mit Nordfenster und Verdunklung, Blitz- und Dauerlicht, sechs Papierhintergründe und Räume für Kunden. Eine Besichtigung ist nach Absprache kostenlos und dauert etwa 15 Minuten.</p>
+    </div>
+
+    <div class="fotorad">
+      <!-- FOTO: hlavná hala s cykloramou a postavenými svetlami, celkový pohľad -->
+      <figure class="obraz obraz--sirka obraz--v8 geo-obluk"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">Halle 62 m²</p></figure>
+      <!-- FOTO: severné okno s difúziou, dopad svetla na papierové pozadie -->
+      <figure class="obraz obraz--sirka obraz--v3 geo-stlpec"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">Nordfenster</p></figure>
+      <!-- FOTO: šatňa so zrkadlom a líčiacim stolom, čakáreň -->
+      <figure class="obraz obraz--sirka obraz--v6 geo-hrana"><span class="obraz__g" aria-hidden="true"></span><p class="obraz__t">Umkleide und Wartebereich</p></figure>
+    </div>
+
+    <div class="split">
+      <div class="speclist">
+        <div class="spec">
+          <h4>Raum</h4>
+          <ul>
+            <li>Haupthalle 62 m², Deckenhöhe 4,1 m</li>
+            <li>Nordfenster 3,2 × 2,4 m mit Diffusor und Verdunklung</li>
+            <li>Hohlkehle, 4 m breit</li>
+            <li>Barrierefreier Zugang vom Hof, das ganze Studio im Erdgeschoss</li>
+          </ul>
+        </div>
+        <div class="spec">
+          <h4>Licht</h4>
+          <ul>
+            <li>4 Blitzgeräte, zusammen 1200 Ws</li>
+            <li>Softboxen 60 × 90 und 90 × 120 cm</li>
+            <li>Octabox 150 cm, Beauty Dish 55 cm</li>
+            <li>2 Dauerlichter mit regelbarer Farbtemperatur</li>
+          </ul>
+        </div>
+        <div class="spec">
+          <h4>Hintergründe und Technik</h4>
+          <ul>
+            <li>Papierrollen 2,72 m breit: Weiß, Grau, Schwarz, Oliv, Sand, Rost</li>
+            <li>Aufnahmetisch 120 cm und Lichtzelt 80 cm</li>
+            <li>Kamera per Kabel am kalibrierten Monitor</li>
+            <li>Stativ, Drehteller, Unterlagen und Keile</li>
+          </ul>
+        </div>
+        <div class="spec">
+          <h4>Für Kunden</h4>
+          <ul>
+            <li>Umkleide mit Spiegel und Schminktisch</li>
+            <li>Bügeleisen, Dampfglätter und Fusselrolle</li>
+            <li>Wartebereich mit WLAN und Wickeltisch</li>
+            <li>Spielecke für Kinder bis 6 Jahre</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <p class="panel__k">Datenblatt</p>
+        <h3 class="panel__t">Das Studio in Zahlen</h3>
+        <dl class="plist">
+          <div><dt>Fläche der Haupthalle</dt><dd>62 m²</dd></div>
+          <div><dt>Deckenhöhe</dt><dd>4,1 m</dd></div>
+          <div><dt>Nordfenster</dt><dd>3,2 × 2,4 m</dd></div>
+          <div><dt>Breite der Hohlkehle</dt><dd>4 m</dd></div>
+          <div><dt>Blitzleistung gesamt</dt><dd>1200 Ws</dd></div>
+          <div><dt>Papierhintergründe</dt><dd>6 Farben</dd></div>
+          <div><dt>Breite der Eingangstür</dt><dd>110 cm</dd></div>
+          <div><dt>Parkplätze</dt><dd>4</dd></div>
+        </dl>
+        <p>Eine Besichtigung vereinbaren wir an jedem Werktag, an dem gerade kein Shooting läuft.</p>
+      </aside>
+    </div>
+
+    <div class="btnrow mt">
+      <a class="btn btn--accent" href="#kontakt">Termin buchen</a>
+      <a class="btn btn--line" href="#portfolio">Fotos ansehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 ČO DOSTANETE ===== -->
+<section class="sec" id="dodavka">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">08 — Lieferung</p>
+        <h2>Was Sie nach dem Shooting bekommen</h2>
+      </div>
+      <p class="lede">Jedes ausgewählte Foto bekommen Sie in zwei Größen: in Druckauflösung und verkleinert fürs Internet. Maße und Formate sind bei allen Paketen gleich.</p>
+    </div>
+
+    <div class="tw tw--wide">
+      <table>
+        <caption>Formate der gelieferten Dateien</caption>
+        <thead>
+          <tr>
+            <th scope="col">Datei</th>
+            <th scope="col">Format</th>
+            <th scope="col">Größe</th>
+            <th scope="col">Wann Sie sie bekommen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Foto für den Druck</th><td>JPG</td><td>längere Seite 4000 Pixel, 300 dpi</td><td>Bei jedem Paket</td></tr>
+          <tr><th scope="row">Foto fürs Internet</th><td>JPG</td><td>längere Seite 2048 Pixel</td><td>Bei jedem Paket</td></tr>
+          <tr><th scope="row">Quadratischer Ausschnitt fürs Profil</th><td>JPG</td><td>1200 × 1200 Pixel</td><td>Bei Business-Porträts</td></tr>
+          <tr><th scope="row">Produkt auf weißem Hintergrund</th><td>JPG</td><td>1600 × 1600 Pixel</td><td>Beim Produktshooting</td></tr>
+          <tr><th scope="row">Freisteller ohne Hintergrund</th><td>PNG</td><td>nach Vorgabe</td><td>Beim Produktshooting, 3 € pro Stück</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cards cards--3 mt">
+      <div class="card">
+        <p class="card__k">Übergabe</p>
+        <h3>Download-Link</h3>
+        <p>Die fertigen Dateien finden Sie in derselben Galerie, in der Sie ausgewählt haben. Der Link gilt 30 Tage, und Sie können beliebig oft herunterladen. Auf Wunsch gibt es die Dateien auch auf USB-Stick für 8 €.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Bearbeitung</p>
+        <h3>Was die Bearbeitung umfasst</h3>
+        <ul>
+          <li>Belichtungs- und Farbkorrektur</li>
+          <li>Horizont begradigen und Zuschnitt</li>
+          <li>Retusche vorübergehender Hautunreinheiten</li>
+          <li>Entfernen von Staub und Schmutz auf Produkten</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card__k">Archiv</p>
+        <h3>Aufnahmen nachbestellen</h3>
+        <p>Unbearbeitete Aufnahmen bewahren wir 6 Monate auf. In dieser Zeit können Sie weitere Fotos zum Paketpreis nachbestellen, die Galerie öffnen wir Ihnen innerhalb von zwei Werktagen wieder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09 PRE FIRMY ===== -->
+<section class="sec sec--band" id="firmy">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">09 — Firmen</p>
+        <h2>Shootings für Firmen und Onlineshops</h2>
+      </div>
+      <p class="lede">Business-Porträts und Produktshootings machen wir auf Rechnung ohne Anzahlung. Das Lichtsetup notieren wir, so fotografieren wir neue Kollegen später so, dass sie zum Rest des Teams passen.</p>
+    </div>
+
+    <div class="split">
+      <div class="cards cards--2">
+        <div class="card">
+          <p class="card__k">Teamporträts</p>
+          <h3>Ein einheitliches Set für die ganze Firma</h3>
+          <p>Wir fotografieren vor einem Hintergrund mit gleichem Licht und gleicher Bildaufteilung. Acht Personen schaffen wir in zwei Stunden, größere Teams teilen wir auf zwei Termine am selben Tag auf, damit niemand länger als ein paar Minuten wartet.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Produkte</p>
+          <h3>Fotos für den Onlineshop</h3>
+          <p>Produkte fotografieren wir vor reinweißem Hintergrund im gleichen Maßstab und mit gleichem Schatten, damit sie in der Artikelliste wie ein Set wirken. Freisteller ohne Hintergrund für Flyer und Kataloge liefern wir auch.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Termine</p>
+          <h3>Shootings außerhalb der Arbeitszeit</h3>
+          <p>Firmentermine beginnen wir auch ab 7:00 oder nach 19:00, damit das Team den Arbeitstag nicht unterbrechen muss. Für frühe oder späte Termine berechnen wir keinen Aufpreis.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Bestellung</p>
+          <h3>Rechnung und Rechnungsdaten</h3>
+          <p>Füllen Sie einfach das Formular auf dieser Seite aus und geben Sie in der Nachricht die Rechnungsdaten an. Bei Firmenaufträgen verlangen wir keine Anzahlung, der ganze Betrag wird per Rechnung mit 14 Tagen Zahlungsziel fällig.</p>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <p class="panel__k">Firmenpreise</p>
+        <h3 class="panel__t">Zusatzpositionen für Firmen</h3>
+        <dl class="plist">
+          <div><dt>Nachshooting einer Person für ein bestehendes Set</dt><dd>35 €</dd></div>
+          <div><dt>Jedes Produkt über zwölf Stück hinaus</dt><dd>12 € / Stück</dd></div>
+          <div><dt>Freisteller ohne Hintergrund</dt><dd>3 € / Stück</dd></div>
+          <div><dt>Shooting in Ihrer Firma</dt><dd>60 €</dd></div>
+          <div><dt>Express-Lieferung in 48 Stunden</dt><dd>40 €</dd></div>
+        </dl>
+        <p>Bei wiederholter Zusammenarbeit bauen wir Licht und Hintergrund genau nach den Notizen vom letzten Shooting nach.</p>
+        <a class="btn btn--paper" href="#kontakt" style="align-self:flex-start">Firmenshooting vereinbaren</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 LEHOTY ===== -->
+<section class="sec" id="lehoty">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">10 — Fristen</p>
+        <h2>Lieferzeiten</h2>
+      </div>
+      <p class="lede">Fristen rechnen wir in Werktagen. Sollte sich ein Termin aus irgendeinem Grund verschieben, melden wir uns, bevor er abläuft.</p>
+    </div>
+
+    <div class="nums">
+      <div class="numi"><div class="numi__v">5 Tage</div><div class="numi__l">Vorschaugalerie nach dem Shooting</div></div>
+      <div class="numi"><div class="numi__v">10 Tage</div><div class="numi__l">Bearbeitete Fotos ab Auswahl</div></div>
+      <div class="numi"><div class="numi__v">48 Stunden</div><div class="numi__l">Express-Lieferung gegen 40 € Aufpreis</div></div>
+      <div class="numi"><div class="numi__v">6 Monate</div><div class="numi__l">Archiv der unbearbeiteten Aufnahmen</div></div>
+    </div>
+
+    <div class="cards cards--3 mt">
+      <div class="card">
+        <p class="card__k">Druck</p>
+        <h3>Vergrößerungen und Fotobuch</h3>
+        <p>Einzelne Vergrößerungen liefern wir innerhalb von 7 Werktagen, das Fotobuch innerhalb von 10 Werktagen nach Freigabe des Layouts. Abholung im Studio während der Öffnungszeiten.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Sofort</p>
+        <h3>Biometrische Passbilder</h3>
+        <p>Ohne Termin werktags von 9:00 bis 11:00. Gedruckt in 20 Minuten; für Personalausweis und Reisepass übermitteln wir das Foto noch am selben Tag digital ans Bürgeramt.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Saison</p>
+        <h3>November und Dezember</h3>
+        <p>In der Vorweihnachtszeit verlängern sich die Fristen um 5 Werktage. Termine für diese zwei Monate öffnen wir Anfang September, und bis Ende Oktober sind sie meist vergeben.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 HODINY ===== -->
+<section class="sec sec--band" id="hodiny">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">11 — Öffnungszeiten</p>
+        <h2>Öffnungszeiten und Buchungen</h2>
+      </div>
+      <p class="lede">Shootings gibt es nur mit Termin, damit Sie im Studio allein sind. Ohne Termin machen wir nur Passbilder.</p>
+    </div>
+
+    <div class="split">
+      <div class="tw tw--mid">
+        <table>
+          <caption>Öffnungszeiten</caption>
+          <thead>
+            <tr>
+              <th scope="col">Tag</th>
+              <th scope="col">Shootings mit Termin</th>
+              <th scope="col">Passbilder ohne Termin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Montag</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Dienstag</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Mittwoch</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Donnerstag</th><td>9:00 – 19:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Freitag</th><td>9:00 – 17:00</td><td>9:00 – 11:00</td></tr>
+            <tr><th scope="row">Samstag</th><td>9:00 – 14:00</td><td>geschlossen</td></tr>
+            <tr><th scope="row">Sonntag</th><td>geschlossen</td><td>geschlossen</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <p class="card__k">Buchungen</p>
+          <h3>So vereinbaren Sie einen Termin</h3>
+          <ul>
+            <li>Formular auf dieser Seite, Antwort innerhalb von 24 Stunden</li>
+            <li>Telefonisch während der Öffnungszeiten</li>
+            <li>Das Formular funktioniert auch nachts und am Wochenende</li>
+            <li>Freie Termine gibt es meist 7 bis 14 Tage im Voraus</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="card__k">Außerhalb der Zeiten</p>
+          <h3>Früh- und Abendshootings</h3>
+          <p>Firmenshootings machen wir nach Absprache auch ab 7:00 oder nach 19:00, damit das Team den Arbeitstag nicht unterbrechen muss. Einen Aufpreis dafür berechnen wir nicht.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Feiertage</p>
+          <h3>Tage, an denen wir nicht fotografieren</h3>
+          <p>An gesetzlichen Feiertagen ist das Studio geschlossen. Zwischen dem 24. Dezember und dem 1. Januar fotografieren wir nicht, das Formular funktioniert aber, und wir antworten am 2. Januar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 DOPRAVA ===== -->
+<section class="sec" id="doprava">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">12 — Anfahrt</p>
+        <h2>So kommen Sie zu uns und hier parken Sie</h2>
+      </div>
+      <p class="lede">Das Studio liegt im Erdgeschoss einer ehemaligen Handwerkerwerkstatt in der Glasergasse in Musterstadt, der Eingang ist im Hof hinter dem Tor. Sind Sie zum ersten Mal bei uns, rufen Sie bei der Ankunft an, und wir öffnen das Tor.</p>
+    </div>
+
+    <div class="split">
+      <div class="cards cards--3">
+        <div class="card">
+          <p class="card__k">Mit dem Auto</p>
+          <h3>Parken im Hof</h3>
+          <p>Vier reservierte Plätze direkt im Hof, Einfahrt durch das Tor von der Straße. Ihr Platz ist für die ganze Dauer des Shootings reserviert. Die umliegenden Straßen sind bewirtschaftet, Parken kostet dort von 8:00 bis 18:00.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Mit Bus und Bahn</p>
+          <h3>Haltestelle 3 Minuten zu Fuß</h3>
+          <p>Die nächste Bus- und Straßenbahnhaltestelle ist 250 Meter vom Studio entfernt. Gehen Sie von dort an der Werkstattmauer entlang bis zum grünen Tor mit der Nummer 9, das Studio liegt gleich dahinter rechts.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Eingang</p>
+          <h3>Barrierefreier Zugang</h3>
+          <p>Das ganze Studio liegt stufenlos im Erdgeschoss, die Türen sind 110 cm breit und die Schwelle ist eingelassen. Am Wartebereich gibt es Platz für Kinderwagen und Rollstuhl.</p>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <p class="panel__k">Adresse</p>
+        <p class="panel__addr">Glasergasse 9<br>12345 Musterstadt</p>
+        <ol class="psteps">
+          <li>Suchen Sie das grüne Tor mit der Nummer 9 zwischen der Mauer und dem Eckhaus.</li>
+          <li>Gehen Sie durch das Tor in den Hof, das Studio ist im flachen Gebäude rechts.</li>
+          <li>Die Klingel ist mit „Studio“ beschriftet, wir öffnen innerhalb einer Minute.</li>
+        </ol>
+        <p>Ist das Tor zu, rufen Sie uns an, und wir öffnen.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 PODMIENKY ===== -->
+<section class="sec sec--band" id="podmienky">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">13 — Regeln</p>
+        <h2>Bedingungen und Stornierung</h2>
+      </div>
+      <p class="lede">Die Bedingungen sind kurz und gelten für beide Seiten gleich. Sie bekommen sie auch mit der Terminbestätigung, damit Sie sie zur Hand haben.</p>
+    </div>
+
+    <div class="rules">
+      <div class="rule">
+        <h3>Buchung und Anzahlung</h3>
+        <p>Verbindlich gebucht ist der Termin nach Zahlung der Anzahlung von 30 €. Sie wird vom Endpreis abgezogen, den Rest zahlen Sie bei Übergabe der Fotos. Bei Firmenaufträgen auf Rechnung verlangen wir keine Anzahlung.</p>
+      </div>
+      <div class="rule">
+        <h3>Absage und Verschiebung von Terminen</h3>
+        <p>Absagen oder Verschieben mehr als 48 Stunden vor dem Termin ist kostenlos, die Anzahlung geht auf den neuen Termin über oder wir erstatten sie innerhalb von 5 Werktagen. Bei einer Absage später als 48 Stunden vorher verfällt die Anzahlung.</p>
+      </div>
+      <div class="rule">
+        <h3>Verspätung</h3>
+        <p>Das Shooting beginnt zur vereinbarten Zeit. Verspätung verkürzt die reservierte Zeit, weil nach Ihnen der nächste Termin kommt. Bei mehr als 30 Minuten Verspätung verfällt der Termin samt Anzahlung.</p>
+      </div>
+      <div class="rule">
+        <h3>Krankheit und Ersatztermin</h3>
+        <p>Werden Sie krank, verschieben wir den Termin kostenlos, auch kurzfristig. Rufen Sie einfach vor Beginn des Shootings an, und wir vereinbaren einen Ersatztermin, meist innerhalb von zwei Wochen.</p>
+      </div>
+      <div class="rule">
+        <h3>Umfang der Lieferung</h3>
+        <p>Wir liefern die vereinbarte Zahl bearbeiteter Fotos. Unbearbeitete Dateien direkt aus der Kamera geben wir nicht heraus, ebenso wenig Aufnahmen, die die technische Auswahl nicht bestanden haben.</p>
+      </div>
+      <div class="rule">
+        <h3>Nutzungsrechte</h3>
+        <p>Das Urheberrecht bleibt beim Studio. Sie erhalten ein zeitlich unbegrenztes Nutzungsrecht für den privaten Gebrauch, beim Firmenpaket auch für die Werbung der Firma, ihre Website und Drucksachen.</p>
+      </div>
+      <div class="rule">
+        <h3>Veröffentlichung im Portfolio</h3>
+        <p>Fotos veröffentlichen wir nur mit Ihrer schriftlichen Einwilligung. Sie ist freiwillig, hat keinen Einfluss auf den Preis und lässt sich jederzeit widerrufen.</p>
+      </div>
+      <div class="rule">
+        <h3>Reklamation und neues Shooting</h3>
+        <p>Ist der Auftrag technisch fehlerhaft, bessern wir kostenlos nach oder fotografieren neu — am schnellsten, wenn Sie sich innerhalb von 30 Tagen nach der Übergabe melden. Unterschiedlicher Geschmack bei der Bildauswahl ist kein Mangel.</p>
+      </div>
+      <div class="rule">
+        <h3>Kinder und Tiere</h3>
+        <p>Kinder sind im Studio willkommen, begleitet von einem Erwachsenen. Haustiere fotografieren wir nach vorheriger Absprache, damit wir den Hintergrund anpassen und zwischen den Terminen mehr Zeit einplanen können.</p>
+      </div>
+      <div class="rule">
+        <h3>Datenverarbeitung</h3>
+        <p>Die Daten aus dem Formular nutzen wir ausschließlich für die Terminvereinbarung und den Auftrag. Wir geben sie nicht an Dritte weiter und bewahren sie nach Abschluss nur so weit auf, wie es für Buchhaltungsbelege nötig ist.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 PLATBA ===== -->
+<section class="sec" id="platba">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">14 — Zahlung</p>
+        <h2>Zahlungsarten</h2>
+      </div>
+      <p class="lede">Die Anzahlung überweisen Sie, den Rest zahlen Sie, wie Sie möchten, direkt im Studio. Firmen bekommen eine Rechnung mit 14 Tagen Zahlungsziel.</p>
+    </div>
+
+    <div class="cards cards--3">
+      <div class="card">
+        <p class="card__k">Im Studio</p>
+        <h3>Bar und mit Karte</h3>
+        <ul>
+          <li>Girocard und Kreditkarten</li>
+          <li>Kontaktlos mit Handy oder Uhr</li>
+          <li>Den Beleg bekommen Sie sofort</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card__k">Überweisung</p>
+        <h3>Überweisung</h3>
+        <ul>
+          <li>Anzahlung 30 € bei der Terminbestätigung</li>
+          <li>Die Zahlungsdaten schicken wir mit der Bestätigung</li>
+          <li>Den Termin halten wir 3 Tage frei, bis die Anzahlung eingeht</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card__k">Auf Rechnung</p>
+        <h3>Firmenauftrag</h3>
+        <ul>
+          <li>Zahlungsziel 14 Tage ab Übergabe der Fotos</li>
+          <li>Ohne Anzahlung, die Rechnungsdaten in der Buchung genügen</li>
+          <li>Die Rechnung kommt innerhalb von 2 Werktagen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 POUKAZY ===== -->
+<section class="sec sec--band" id="poukazy">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">15 — Gutscheine</p>
+        <h2>Geschenkgutscheine</h2>
+      </div>
+      <p class="lede">Gutscheine stellen wir über einen Betrag oder ein bestimmtes Paket aus. Sie gelten drei Jahre und sind übertragbar, den Termin vereinbart der oder die Beschenkte also selbst.</p>
+    </div>
+
+    <div class="split">
+      <aside class="panel panel--warm">
+        <p class="panel__k">Geschenkgutschein</p>
+        <h3 class="panel__t">Shooting-Gutschein, drei Jahre gültig</h3>
+        <div class="chips">
+          <span class="chip">50 €</span>
+          <span class="chip">89 €</span>
+          <span class="chip">149 €</span>
+          <span class="chip">Beliebiger Betrag</span>
+        </div>
+        <p>Den Gutschein holen Sie im Umschlag im Studio ab, oder wir schicken ihn innerhalb von 24 Stunden elektronisch. Er enthält Code, Wert, Gültigkeit und Platz für den Namen der beschenkten Person.</p>
+        <a class="btn btn--paper" href="#kontakt" style="align-self:flex-start">Gutschein bestellen</a>
+      </aside>
+
+      <div class="cards">
+        <div class="card">
+          <p class="card__k">Terminbuchung</p>
+          <h3>So bestellen Sie einen Gutschein</h3>
+          <p>Wählen Sie im Formular Geschenkgutschein und schreiben Sie in die Nachricht den Wert oder das Paket. Wir melden uns innerhalb von 24 Stunden und klären die Übergabe. Den Gutschein stellen wir innerhalb eines Werktags aus.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Einlösen</p>
+          <h3>So lösen Sie den Gutschein ein</h3>
+          <p>Geben Sie den Code bei der Buchung an. Ist das Shooting teurer als der Gutschein, zahlen Sie die Differenz im Studio. Ein Restwert wird nicht bar ausgezahlt, Sie können ihn aber für Extras oder Drucke nutzen.</p>
+        </div>
+        <div class="card">
+          <p class="card__k">Gültigkeit</p>
+          <h3>Verlängerung</h3>
+          <p>Der Gutschein gilt bis Ende des dritten Jahres nach dem Kauf. Wird es trotzdem knapp, verlängern wir ihn einmal um 3 Monate — fragen Sie einfach vor Ablauf. Bei Shootings mit Gutschein verlangen wir keine Anzahlung.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 16 KARIÉRA ===== -->
+<section class="sec" id="kariera">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">16 — Jobs</p>
+        <h2>Offene Stelle im Studio</h2>
+      </div>
+      <p class="lede">Wir suchen eine Person zur Unterstützung bei Shootings. Erfahrung ist keine Bedingung, wichtig sind Zuverlässigkeit, Genauigkeit und Interesse an der Arbeit mit Licht.</p>
+    </div>
+
+    <div class="cards cards--3">
+      <div class="card">
+        <p class="card__k">Stelle</p>
+        <h3>Studioassistenz (m/w/d)</h3>
+        <p>Aufbau von Licht und Hintergründen vor dem Shooting, Bedienung der Technik während des Termins, Aufräumen zwischen den Aufträgen und Empfang der Kunden im Wartebereich.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Umfang</p>
+        <h3>Aushilfe, 12 bis 20 Stunden pro Woche</h3>
+        <p>Überwiegend freitags und samstags, die genauen Zeiten legen wir nach dem Shootingplan jeweils zwei Wochen im Voraus fest. Lohn 14 € pro Stunde, nach drei Monaten 15 € pro Stunde.</p>
+      </div>
+      <div class="card">
+        <p class="card__k">Anmeldung</p>
+        <h3>Was Sie schreiben</h3>
+        <p>Schicken Sie über das Formular auf dieser Seite eine kurze Nachricht, was Sie an Fotografie interessiert und wann Sie arbeiten können. Einen Lebenslauf brauchen wir nicht. Zum persönlichen Gespräch laden wir innerhalb von 7 Tagen ein.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 17 FAQ ===== -->
+<section class="sec sec--band" id="faq">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">17 — Fragen</p>
+        <h2>Häufige Fragen</h2>
+      </div>
+      <p class="lede">Acht Fragen, die wir am häufigsten hören. Ist Ihre nicht dabei, schreiben Sie uns über das Formular, und wir ergänzen die Antwort.</p>
+    </div>
+
+    <div class="faq">
+      <details>
+        <summary>Was soll ich zum Shooting mitbringen?</summary>
+        <div class="faq__a"><p>Zwei bis drei Outfits ohne große Aufdrucke und auffällige Muster. Drei Tage vor dem Termin schicken wir konkrete Tipps zu Farben und Schnitten, die in unserem Licht am besten aussehen. In der Umkleide gibt es Spiegel, Dampfglätter und Fusselrolle.</p></div>
+      </details>
+      <details>
+        <summary>Bekomme ich auch unbearbeitete Aufnahmen direkt aus der Kamera?</summary>
+        <div class="faq__a"><p>Nein. Wir liefern ausgewählte und bearbeitete Fotos, die wir als fertiges Werk betrachten. Unbearbeitete Dateien geben wir nicht heraus. Brauchen Sie mehr Fotos, bestellen Sie sie zum Paketpreis nach, jederzeit innerhalb von sechs Monaten nach dem Shooting.</p></div>
+      </details>
+      <details>
+        <summary>Wie läuft die Bildauswahl ab?</summary>
+        <div class="faq__a"><p>Innerhalb von 5 Werktagen bekommen Sie einen Link zu einer passwortgeschützten Galerie. Dort markieren Sie die Aufnahmen per Klick und senden die Auswahl mit einem Knopf ab. Für die Auswahl haben Sie 14 Tage. Können Sie sich nicht entscheiden, helfen wir mit Empfehlungen direkt in der Galerie.</p></div>
+      </details>
+      <details>
+        <summary>Kann ich mit einem kleinen Kind oder mit Hund kommen?</summary>
+        <div class="faq__a"><p>Kinder sind im Studio willkommen, im Wartebereich gibt es eine Spielecke und einen Wickeltisch. Haustiere fotografieren wir nach vorheriger Absprache, damit wir einen passenden Hintergrund wählen und zwischen den Terminen Zeit zum Aufräumen einplanen.</p></div>
+      </details>
+      <details>
+        <summary>Was, wenn mir das Ergebnis nicht gefällt?</summary>
+        <div class="faq__a"><p>Die Aufnahmen sehen Sie während des Shootings laufend am Monitor, über das Ergebnis sprechen wir also schon im Studio. Wäre der Auftrag technisch fehlerhaft, bessern wir kostenlos nach oder fotografieren neu — am schnellsten, wenn Sie sich innerhalb von 30 Tagen nach der Übergabe melden.</p></div>
+      </details>
+      <details>
+        <summary>Machen Sie Passbilder?</summary>
+        <div class="faq__a"><p>Ja, werktags von 9:00 bis 11:00 ohne Termin. Sechs Abzüge kosten 12 € und sind in 20 Minuten gedruckt. Für Personalausweis und Reisepass übermitteln wir das Foto noch am selben Tag digital ans Bürgeramt — Sie bekommen dafür einen Code.</p></div>
+      </details>
+      <details>
+        <summary>Kann man das Studio mieten oder vorher ansehen?</summary>
+        <div class="faq__a"><p>Eine Besichtigung nach Absprache ist kostenlos und dauert etwa 15 Minuten. Die Miete des Studios mit Licht vereinbaren wir individuell, je nachdem, wie viel Technik Sie brauchen und ob unsere Assistenz dabei ist. Schreiben Sie uns über das Formular, und wir melden uns innerhalb von 24 Stunden.</p></div>
+      </details>
+      <details>
+        <summary>Wie schnell erfahre ich freie Termine?</summary>
+        <div class="faq__a"><p>Auf Nachrichten aus dem Formular antworten wir an Werktagen innerhalb von 24 Stunden. In der Antwort stehen zwei konkrete freie Termine und die Zahlungsdaten für die Anzahlung. Freie Termine gibt es meist 7 bis 14 Tage im Voraus, für November und Dezember buchen Sie besser einen Monat früher.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 18 KONTAKT ===== -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <div class="shead">
+      <div>
+        <p class="shead__idx">18 — Kontakt</p>
+        <h2>Terminbuchung</h2>
+      </div>
+      <p class="lede">Schreiben Sie, welches Shooting Sie brauchen und wann es Ihnen passt. Die Nachricht landet im Postfach des Studios, und wir antworten an Werktagen innerhalb von 24 Stunden mit zwei freien Terminen.</p>
+    </div>
+
+    <div class="contact">
+      <div class="info">
+        <div class="info__b">
+          <h4>Telefon</h4>
+          <p><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></p>
+          <p class="small" style="margin:10px 0 0">Montag bis Freitag während der Öffnungszeiten. Fotografieren wir gerade, melden wir uns gleich nach dem Termin.</p>
+        </div>
+        <div class="info__b">
+          <h4>Adresse</h4>
+          <p>Fotostudio Skala<br>Glasergasse 9<br>12345 Musterstadt</p>
+          <p class="small" style="margin:10px 0 0">Eingang vom Hof durch das grüne Tor mit der Nummer 9, Parken direkt im Hof.</p>
+        </div>
+        <div class="info__b">
+          <h4>Öffnungszeiten</h4>
+          <p>Montag bis Donnerstag 9:00 – 19:00<br>Freitag 9:00 – 17:00<br>Samstag 9:00 – 14:00<br>Sonntag geschlossen</p>
+        </div>
+        <div class="info__b">
+          <h4>Shootings mit Termin</h4>
+          <p class="small" style="margin:0">Während des Shootings gehört das Studio nur Ihnen. Ohne Termin machen wir nur Passbilder, werktags von 9:00 bis 11:00.</p>
+        </div>
+      </div>
+
+      <form class="form" id="rezervacia" novalidate>
+        <div class="formmsg" id="formmsg" role="status"></div>
+
+        <div class="frow frow--2">
+          <div class="field">
+            <label class="lbl" for="f-meno">Vor- und Nachname <span class="req">*</span></label>
+            <input type="text" id="f-meno" name="meno" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label class="lbl" for="f-tel">Telefon <span class="req">*</span></label>
+            <input type="tel" id="f-tel" name="telefon" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="frow frow--2">
+          <div class="field">
+            <label class="lbl" for="f-balik">Was Sie brauchen</label>
+            <select id="f-balik" name="balik">
+              <option value="portret">Porträt — 89 €</option>
+              <option value="rodina">Familie — 149 €</option>
+              <option value="produkt">Produkt — 190 €</option>
+              <option value="firemne">Business-Porträts — 240 €</option>
+              <option value="poukaz">Geschenkgutschein</option>
+              <option value="doklady">Biometrische Passbilder</option>
+              <option value="obhliadka">Studiobesichtigung</option>
+              <option value="praca">Bewerbung auf die offene Stelle</option>
+              <option value="ine">Anderes, schreibe ich in der Nachricht</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="f-datum">Wunschdatum</label>
+            <input type="date" id="f-datum" name="datum">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="lbl" for="f-osoby">Zahl der Personen oder Produkte</label>
+          <input type="number" id="f-osoby" name="osoby" min="1" max="30" step="1" value="1">
+        </div>
+
+        <div class="field">
+          <label class="lbl" for="f-sprava">Nachricht <span class="req">*</span></label>
+          <textarea id="f-sprava" name="sprava" required placeholder="Zum Beispiel: Familienshooting, 2 Erwachsene und 2 Kinder, am liebsten Samstagvormittag."></textarea>
+        </div>
+
+        <label class="consent" for="f-suhlas">
+          <input type="checkbox" id="f-suhlas" name="suhlas" required>
+          <span>Ich willige in die Verarbeitung meiner Angaben zur Bearbeitung meiner Anfrage ein. <span class="req">*</span></span>
+        </label>
+
+        <button class="btn btn--accent" type="submit">Anfrage senden</button>
+        <p class="small" style="margin:16px 0 0">Mit <span class="req">*</span> markierte Felder sind Pflicht. Die Nachricht landet im Postfach des Studios, die Antwort kommt an Werktagen innerhalb von 24 Stunden. Die Telefonnummer brauchen wir zur Terminbestätigung.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY ===== -->
+<section class="author" id="autor" aria-labelledby="autor-h">
+  <div class="wrap">
+    <div class="author__in">
+      <div>
+        <p class="author__k">Über dieses Beispiel</p>
+        <h2 id="autor-h">Gefällt Ihnen diese Website?</h2>
+        <p>Dieses Beispiel hat Alex Poliak entworfen und programmiert. Fotostudio Skala ist ein erfundenes Unternehmen und zeigt nur, wie eine fertige Website aussehen kann. Die gleiche Website baue ich auch für Ihr Geschäft — mit Ihren Inhalten, Ihren Preisen und Ihren Fotos.</p>
+        <p class="author__price">Websites nach Maß ab 250 €. Erster Entwurf in 3 Tagen.</p>
+        <p class="author__free">Beratung kostenlos und unverbindlich</p>
+        <div class="btnrow" style="margin-top:24px">
+          <a class="btn btn--accent" href="https://apoliak.online/de/">apoliak.online</a>
+          <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+        </div>
+      </div>
+
+      <div class="author__box">
+        <div class="author__row">
+          <span class="author__lab">Autor</span>
+          <span class="author__val">Alex Poliak</span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">E-Mail</span>
+          <span class="author__val"><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Support</span>
+          <span class="author__val"><a href="mailto:support@apoliak.online">support@apoliak.online</a></span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Telefon</span>
+          <span class="author__val"><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Web</span>
+          <span class="author__val"><a href="https://apoliak.online/de/">apoliak.online</a></span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Preis</span>
+          <span class="author__val">ab 250 €</span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Erster Entwurf</span>
+          <span class="author__val">innerhalb von 3 Tagen</span>
+        </div>
+        <div class="author__row">
+          <span class="author__lab">Beratung</span>
+          <span class="author__val">kostenlos und unverbindlich</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PÄTIČKA ===== -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <div class="foot__mark" aria-hidden="true">
+          <i style="background:#141414;border:1px solid #3A3A3A"></i>
+          <i style="background:#565656"></i>
+          <i style="background:#A5A5A5"></i>
+          <i style="background:#F5F5F5"></i>
+        </div>
+        <h4>Fotostudio Skala</h4>
+        <p style="margin:0 0 12px">Glasergasse 9, 12345 Musterstadt<br><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></p>
+        <p style="margin:0">Porträt-, Familien-, Produkt- und Businessshootings mit Termin. Montag bis Donnerstag 9:00 – 19:00, Freitag 9:00 – 17:00, Samstag 9:00 – 14:00.</p>
+      </div>
+
+      <div>
+        <h4>Seite</h4>
+        <ul>
+          <li><a href="#balicky">Shooting-Pakete</a></li>
+          <li><a href="#cennik">Preise und Extras</a></li>
+          <li><a href="#prepocet">Preisberechnung</a></li>
+          <li><a href="#priebeh">So läuft ein Shooting ab</a></li>
+          <li><a href="#atelier">Studio und Ausstattung</a></li>
+          <li><a href="#dodavka">Was Sie nach dem Shooting bekommen</a></li>
+          <li><a href="#firmy">Shootings für Firmen</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Informationen</h4>
+        <ul>
+          <li><a href="#lehoty">Lieferzeiten</a></li>
+          <li><a href="#hodiny">Öffnungszeiten</a></li>
+          <li><a href="#doprava">Anfahrt</a></li>
+          <li><a href="#podmienky">Bedingungen und Stornierung</a></li>
+          <li><a href="#platba">Zahlungsarten</a></li>
+          <li><a href="#poukazy">Geschenkgutscheine</a></li>
+          <li><a href="#kariera">Offene Stelle</a></li>
+          <li><a href="#kontakt">Kontakt und Buchung</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bot">
+      <span>© 2026 Fotostudio Skala — Beispiel-Website, die Unternehmensdaten sind erfunden.</span>
+      <span>Entwurf und Code: <a href="https://apoliak.online/de/">Alex Poliak</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- výška pásika ukážky ---- */
+  var bar = document.getElementById('demobar');
+  function barH(){
+    if(!bar) return;
+    var h = bar.offsetHeight;
+    /* poistka proti nezmyselnej hodnote pri prvom vykreslení */
+    if(h < 28 || h > 140) return;
+    document.documentElement.style.setProperty('--bar-h', h + 'px');
+  }
+  barH();
+  if(window.requestAnimationFrame){ window.requestAnimationFrame(barH); }
+  window.addEventListener('resize', barH);
+  window.addEventListener('load', barH);
+  window.addEventListener('orientationchange', barH);
+  if(bar && window.ResizeObserver){ new ResizeObserver(barH).observe(bar); }
+
+  /* ---- mobilné menu ---- */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('mobmenu');
+  function closeMenu(){
+    if(!menu || !burger) return;
+    menu.hidden = true;
+    burger.setAttribute('aria-expanded','false');
+  }
+  if(burger && menu){
+    burger.addEventListener('click', function(){
+      var open = burger.getAttribute('aria-expanded') === 'true';
+      menu.hidden = open;
+      burger.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+    menu.addEventListener('click', function(e){
+      if(e.target.tagName === 'A') closeMenu();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeMenu();
+    });
+    window.addEventListener('resize', function(){
+      if(window.innerWidth >= 1140) closeMenu();
+    });
+  }
+
+  /* ---- prepočet ceny ---- */
+  var PACKS = {
+    portret:{ name:'Porträt', base:89, incl:5, extra:9, time:'40 Minuten' },
+    rodina:{ name:'Familie', base:149, incl:10, extra:9, time:'60 Minuten' },
+    produkt:{ name:'Produkt', base:190, incl:12, extra:12, time:'90 Minuten' },
+    firemne:{ name:'Business-Porträts', base:240, incl:8, extra:14, time:'120 Minuten' }
+  };
+  var ADDS = {
+    vizaz:{ name:'Make-up und Frisur', price:45 },
+    osoba:{ name:'Weitere Person', price:15 },
+    cas:{ name:'Verlängerung des Shootings um 30 Minuten', price:35 },
+    expres:{ name:'Express-Lieferung in 48 Stunden', price:40 }
+  };
+
+  var calc = document.getElementById('calc');
+  var extra = document.getElementById('extra');
+  var extraOut = document.getElementById('extraOut');
+  var sumRows = document.getElementById('sumRows');
+  var sumTotal = document.getElementById('sumTotal');
+  var toForm = document.getElementById('toForm');
+
+  function eur(n){ return n + ' €'; }
+
+  function currentPack(){
+    if(!calc) return 'portret';
+    var r = calc.querySelector('input[name="balik"]:checked');
+    return (r && PACKS[r.value]) ? r.value : 'portret';
+  }
+
+  function row(label, value){
+    var d = document.createElement('div');
+    d.className = 'sum__row';
+    var b = document.createElement('b');
+    b.textContent = label;
+    var s = document.createElement('span');
+    s.textContent = value;
+    d.appendChild(b); d.appendChild(s);
+    return d;
+  }
+
+  function state(){
+    var key = currentPack();
+    var p = PACKS[key];
+    var n = extra ? parseInt(extra.value, 10) || 0 : 0;
+    var chosen = [];
+    if(calc){
+      var boxes = calc.querySelectorAll('input[name="doplnok"]');
+      for(var i=0;i<boxes.length;i++){
+        if(boxes[i].checked && ADDS[boxes[i].value]) chosen.push(ADDS[boxes[i].value]);
+      }
+    }
+    return { key:key, pack:p, n:n, adds:chosen };
+  }
+
+  function render(){
+    if(!calc || !sumRows || !sumTotal) return;
+    var st = state();
+    var total = st.pack.base;
+
+    sumRows.textContent = '';
+    sumRows.appendChild(row(st.pack.name + ' — ' + st.pack.time, eur(st.pack.base)));
+    sumRows.appendChild(row('Bearbeitete Fotos inklusive', st.pack.incl + ' Stück'));
+
+    if(st.n > 0){
+      var addPhotos = st.n * st.pack.extra;
+      total += addPhotos;
+      sumRows.appendChild(row('Zusätzliche Fotos: ' + st.n + ' × ' + st.pack.extra + ' €', eur(addPhotos)));
+    }
+    for(var i=0;i<st.adds.length;i++){
+      total += st.adds[i].price;
+      sumRows.appendChild(row(st.adds[i].name, eur(st.adds[i].price)));
+    }
+    sumRows.appendChild(row('Fotos gesamt', (st.pack.incl + st.n) + ' Stück'));
+
+    sumTotal.textContent = eur(total);
+    if(extraOut) extraOut.textContent = String(st.n);
+
+    var opts = calc.querySelectorAll('.opt');
+    for(var j=0;j<opts.length;j++){
+      var input = opts[j].querySelector('input');
+      opts[j].classList.toggle('is-on', !!(input && input.checked));
+    }
+    var adds = calc.querySelectorAll('.add');
+    for(var k=0;k<adds.length;k++){
+      var cb = adds[k].querySelector('input');
+      adds[k].classList.toggle('is-on', !!(cb && cb.checked));
+    }
+  }
+
+  if(calc){
+    calc.addEventListener('input', render);
+    calc.addEventListener('change', render);
+    calc.addEventListener('submit', function(e){ e.preventDefault(); });
+    render();
+  }
+
+  /* ---- prenos prepočtu do formulára ---- */
+  var fBalik = document.getElementById('f-balik');
+  var fSprava = document.getElementById('f-sprava');
+  if(toForm && calc){
+    toForm.addEventListener('click', function(){
+      var st = state();
+      var txt = 'Paket: ' + st.pack.name + ' (' + st.pack.base + ' €).';
+      if(st.n > 0){
+        txt += ' Zusätzliche Fotos: ' + st.n + ' Stück.';
+      }
+      if(st.adds.length){
+        var names = [];
+        for(var i=0;i<st.adds.length;i++) names.push(st.adds[i].name);
+        txt += ' Extras: ' + names.join(', ') + '.';
+      }
+      if(sumTotal) txt += ' Vorläufiger Preis: ' + sumTotal.textContent + '.';
+      if(fBalik && PACKS[st.key]) fBalik.value = st.key;
+      if(fSprava) fSprava.value = txt;
+      var target = document.getElementById('kontakt');
+      if(target && target.scrollIntoView) target.scrollIntoView({behavior:'smooth', block:'start'});
+      var meno = document.getElementById('f-meno');
+      if(meno){
+        window.setTimeout(function(){
+          try { meno.focus({preventScroll:true}); } catch(err) { meno.focus(); }
+        }, 450);
+      }
+    });
+  }
+
+  /* ---- formulár ---- */
+  var form = document.getElementById('rezervacia');
+  var msg = document.getElementById('formmsg');
+  if(form && msg){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      msg.textContent = 'Danke. Dies ist eine Beispiel-Website — das Formular sendet nichts, und es werden keine Daten gespeichert. Auf einer echten Website käme diese Nachricht im Postfach des Studios an, und die Antwort käme innerhalb von 24 Stunden.';
+      msg.classList.add('is-on');
+      if(msg.scrollIntoView) msg.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  }
+
+  /* ---- dátum: len budúce termíny ---- */
+  var fDatum = document.getElementById('f-datum');
+  if(fDatum){
+    var d = new Date();
+    d.setDate(d.getDate() + 1);
+    var m = String(d.getMonth() + 1);
+    var day = String(d.getDate());
+    if(m.length < 2) m = '0' + m;
+    if(day.length < 2) day = '0' + day;
+    fDatum.min = d.getFullYear() + '-' + m + '-' + day;
+  }
+})();
+</script>
+
+</body>
+</html>

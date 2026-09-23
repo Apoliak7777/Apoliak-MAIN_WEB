@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/salon/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/salon/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/salon/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/salon/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/salon/">
+<link rel="alternate" hreflang="de" href="https://apoliak.online/de/ukazky/salon/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/salon/">
+<!-- /jazyky:hreflang -->
+<title>Salon Birke | Friseur- und Kosmetiksalon</title>
+<meta name="description" content="Beispiel-Website eines Friseur- und Kosmetiksalons: Preisliste mit Preisen und Dauer, Pakete, Gutscheine, Öffnungszeiten, Anfahrt und Parken, häufige Fragen und Terminbuchung online. Das Unternehmen ist erfunden, das Beispiel hat Alex Poliak entworfen und programmiert.">
+<meta name="theme-color" content="#F4F1EC">
+<meta name="author" content="Alex Poliak">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Salon Birke">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Salon Birke – Beispiel-Website eines Friseur- und Kosmetiksalons">
+<meta property="og:description" content="Preisliste, Pakete, Gutscheine, Öffnungszeiten, Adresse und Terminbuchung online. Das Unternehmen ist erfunden, die Beispiel-Website hat Alex Poliak gemacht, apoliak.online.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%23241C22'/%3E%3Crect%20x='14'%20y='14'%20width='36'%20height='36'%20fill='none'%20stroke='%23C8BDB0'%20stroke-width='1.6'/%3E%3Cpath%20d='M14%2044h36'%20stroke='%237A3E52'%20stroke-width='4'/%3E%3C/svg%3E">
+<script>document.documentElement.className = 'js';</script>
+<style>
+/* =========================================================
+   1. PALETA
+   Dve farby (atramentová a tlmená slivková) + neutrály
+   (piesok, kameň). Kontrasty sú prepočítané na WCAG AA.
+   ========================================================= */
+:root{
+  --sand:      #F4F1EC;   /* pozadie stránky */
+  --paper:     #FBFAF7;   /* karty */
+  --stone:     #EAE5DC;   /* jemná výplň */
+  --line:      #DAD4C9;   /* dekoratívna vlásočnica */
+  --control:   #8F8779;   /* orámovanie ovládacích prvkov, 3,4:1 */
+  --ink:       #241C22;   /* nadpisy a tmavé plochy, 14,7:1 */
+  --body:      #4A4249;   /* bežný text, 8,6:1 */
+  --muted:     #6B6169;   /* doplnkový text, 5,3:1 */
+  --faint:     #6F6871;   /* neaktívne prvky, 4,8:1 */
+  --plum:      #7A3E52;   /* akcent, 7,1:1 */
+  --plum-dk:   #5E2E3F;
+  --on-dark:      #EDE8E4;  /* text na atramentovej, 13,6:1 */
+  --on-dark-mut:  #B3A8AE;  /* doplnkový text na tmavej, 7,2:1 */
+  --on-dark-acc:  #C8BDB0;  /* akcent na tmavej, 9,0:1 */
+
+  --head-h: 72px;
+  --bar-h: 40px;
+  --wrap: 1180px;
+  --r: 3px;
+
+  /* jemný papierový sum, vykreslený lokálne cez SVG feTurbulence */
+  --noise: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='180'%20height='180'%20filter='url(%23n)'/%3E%3C/svg%3E");
+
+  --serif: "Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;
+  --sans: "Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+}
+
+/* =========================================================
+   2. ZÁKLAD
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+  scroll-padding-top:calc(var(--bar-h) + var(--head-h) + 18px);
+  /* hidden je poistka proti vodorovnému rolovaniu, clip ju v moderných
+     prehliadačoch prepíše a nechá fungovať prilepené pásy hore */
+  overflow-x:hidden;
+  overflow-x:clip;
+}
+body{
+  margin:0;
+  overflow-x:hidden;
+  overflow-x:clip;
+  background:var(--sand);
+  color:var(--body);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+}
+img,svg{max-width:100%;display:block}
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--ink);line-height:1.14;margin:0}
+h1{font-size:clamp(2.3rem,6vw,4.25rem);line-height:1.06;letter-spacing:-.022em}
+h2{font-size:clamp(1.72rem,3.6vw,2.6rem);line-height:1.1;letter-spacing:-.014em}
+h3{font-size:1.18rem;line-height:1.32}
+h4{font-family:var(--sans);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 12px}
+p{margin:0 0 1em}
+a{color:var(--plum)}
+a:hover{color:var(--plum-dk)}
+ul,ol{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--plum);outline-offset:2px}
+
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 28px}
+.eyebrow{font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;color:var(--plum);font-weight:600;margin:0 0 18px}
+.lead{font-size:1.04rem;color:var(--muted);max-width:58ch}
+.sec{padding:clamp(52px,7vw,96px) 0}
+.sec--paper{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec--ink{background:var(--ink);color:var(--on-dark)}
+.sec--ink h2,.sec--ink h3{color:var(--on-dark)}
+.sec--ink .eyebrow{color:var(--on-dark-acc)}
+.sec--ink .lead{color:var(--on-dark-mut)}
+.sec__head{max-width:56ch;margin-bottom:clamp(32px,4.4vw,56px)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+[hidden]{display:none !important}
+
+/* odkaz na tmavom páse: nesmie zostať slivkový, splynul by s pozadím */
+.linklight{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px}
+.linklight:hover{color:var(--on-dark-acc)}
+
+.skip{position:absolute;left:-9999px;top:0;z-index:400;background:var(--ink);color:var(--sand);padding:12px 18px}
+.skip:focus{left:12px;top:12px}
+
+/* =========================================================
+   3. TLAČIDLÁ
+   Každý variant má farbu textu zapísanú aj cez selektor a.btn,
+   aby ju neprebilo všeobecnejšie pravidlo pre odkazy.
+   ========================================================= */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--sans);font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:16px 30px;border:1px solid var(--ink);border-radius:var(--r);
+  background:var(--ink);color:var(--sand);text-decoration:none;cursor:pointer;
+  transition:background .2s ease,border-color .2s ease,color .2s ease;
+}
+.btn:hover{background:var(--plum);border-color:var(--plum);color:#FBFAF7}
+/* hlavná akcia celej stránky: akcentová slivková, biely text má na nej 7,6:1 */
+.btn--acc{background:var(--plum);border-color:var(--plum);color:#FBFAF7}
+.btn--acc:hover{background:var(--plum-dk);border-color:var(--plum-dk);color:#FBFAF7}
+.btn--line{background:transparent;color:var(--ink);border-color:var(--control)}
+.btn--line:hover{background:var(--stone);color:var(--ink);border-color:var(--ink)}
+.btn--light{background:var(--on-dark);border-color:var(--on-dark);color:var(--ink)}
+.btn--light:hover{background:var(--on-dark-acc);border-color:var(--on-dark-acc);color:var(--ink)}
+.btn--ghost{background:transparent;border-color:rgba(200,189,176,.5);color:var(--on-dark)}
+.btn--ghost:hover{background:rgba(237,232,228,.12);border-color:var(--on-dark);color:var(--on-dark)}
+.btn--sm{padding:12px 20px;font-size:.72rem}
+.btn--wide{width:100%}
+
+/* poistka proti prebitiu farby textu pravidlom pre odkazy */
+a.btn{color:var(--sand)}
+a.btn:hover{color:#FBFAF7}
+a.btn--acc,a.btn--acc:hover{color:#FBFAF7}
+a.btn--line,a.btn--line:hover{color:var(--ink)}
+a.btn--light,a.btn--light:hover{color:var(--ink)}
+a.btn--ghost,a.btn--ghost:hover{color:var(--on-dark)}
+
+/* =========================================================
+   4. HLAVIČKA
+   ========================================================= */
+.topstack{position:sticky;top:0;z-index:90;background:var(--sand)}
+.site{position:relative;z-index:60;background:var(--sand);border-bottom:1px solid var(--line)}
+.site__in{display:flex;align-items:center;gap:18px;height:var(--head-h);position:relative}
+.brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink);margin-right:auto;min-width:0}
+.brand__mark{
+  width:38px;height:38px;flex:none;border:1px solid var(--control);border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:.95rem;letter-spacing:.04em;color:var(--ink);
+}
+.brand__txt{min-width:0;display:block}
+.brand__name{font-family:var(--serif);font-size:1.14rem;line-height:1.15;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand__sub{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.nav{display:flex;align-items:center;gap:22px}
+.nav a:not(.btn){color:var(--body);text-decoration:none;font-size:.86rem;padding:6px 0;border-bottom:1px solid transparent;white-space:nowrap}
+.nav a:not(.btn):hover{color:var(--ink);border-bottom-color:var(--plum)}
+.nav .btn{display:none}
+.burger{
+  display:none;width:44px;height:42px;border:1px solid var(--control);border-radius:var(--r);
+  background:transparent;color:var(--ink);cursor:pointer;align-items:center;justify-content:center;flex:none;
+}
+
+/* klikacie číslo a hlavná akcia sú v hlavičke na každej šírke obrazovky */
+.site__act{display:flex;align-items:center;gap:10px;flex:none}
+.site__tel{
+  display:inline-flex;align-items:center;gap:9px;flex:none;
+  padding:11px 15px;border:1px solid var(--control);border-radius:var(--r);
+  color:var(--ink);text-decoration:none;font-size:.82rem;font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.site__tel:hover{color:var(--plum);border-color:var(--plum)}
+.site__tel svg{width:15px;height:15px;flex:none}
+.site__cta .sm{display:none}
+
+/* =========================================================
+   5. DIZAJNOVÉ PLOCHY
+   Vrstvený prechod + vlásočnicový vzor + veľká typografia.
+   Plocha nesie informáciu, nie je to výplň.
+   ========================================================= */
+.art{
+  position:relative;display:flex;overflow:hidden;isolation:isolate;
+  border:1px solid var(--line);border-radius:var(--r);
+  background:linear-gradient(146deg,#F8F5F0 0%,#EDE8DF 40%,#DFD7CC 76%,#D3CAC2 100%);
+}
+.art::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none}
+.art::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.06;background-image:var(--noise);background-size:180px 180px}
+.art__geo{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.art__body{position:relative;z-index:2;display:flex;flex-direction:column;width:100%;padding:clamp(20px,3.2vw,34px)}
+
+.art--grid::before{
+  background-image:
+    linear-gradient(rgba(36,28,34,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(36,28,34,.06) 1px,transparent 1px);
+  background-size:56px 56px;
+}
+.art--hatch::before{background-image:repeating-linear-gradient(135deg,rgba(36,28,34,.055) 0 1px,transparent 1px 14px)}
+.art--dots::before{background-image:radial-gradient(rgba(36,28,34,.13) 1px,transparent 1.4px);background-size:16px 16px}
+
+.art--dark{
+  border-color:rgba(200,189,176,.3);
+  background:
+    radial-gradient(120% 140% at 88% 10%,rgba(122,62,82,.55) 0%,rgba(122,62,82,0) 58%),
+    linear-gradient(142deg,#2C2229 0%,#241C22 46%,#1E181D 100%);
+}
+.art--dark.art--grid::before{
+  background-image:
+    linear-gradient(rgba(200,189,176,.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,189,176,.10) 1px,transparent 1px);
+}
+.art--dark.art--hatch::before{background-image:repeating-linear-gradient(135deg,rgba(200,189,176,.09) 0 1px,transparent 1px 14px)}
+.art--dark.art--dots::before{background-image:radial-gradient(rgba(200,189,176,.16) 1px,transparent 1.4px)}
+
+.art__eyebrow{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--plum);font-weight:600;margin:0}
+.art__num{font-family:var(--serif);font-size:clamp(3rem,7vw,4.6rem);line-height:1;color:var(--ink);margin:auto 0 0}
+.art__num span{display:block;font-family:var(--sans);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--body);margin-top:14px}
+.art__title{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.16;color:var(--ink);margin:auto 0 0}
+.art__title span{display:block;font-family:var(--sans);font-size:.94rem;color:var(--body);margin-top:14px}
+.art__foot{margin:16px 0 0;font-size:.82rem;color:var(--body)}
+.art--dark .art__eyebrow{color:var(--on-dark-acc)}
+.art--dark .art__num,.art--dark .art__title{color:var(--on-dark)}
+.art--dark .art__num span,.art--dark .art__title span,.art--dark .art__foot{color:var(--on-dark-mut)}
+
+.art--room{min-height:clamp(250px,24vw,320px)}
+.art--addr{min-height:clamp(250px,26vw,330px)}
+.art--gift{min-height:clamp(250px,26vw,330px)}
+.art--gift .art__num{font-size:clamp(2rem,4.6vw,3.2rem)}
+
+/* =========================================================
+   5b. OBRAZOVÉ MIESTA
+   Rámy pripravené na fotografie salónu, tímu a hotovej práce.
+   Kým fotky nie sú vložené, rám drží vrstvený prechod,
+   geometriu a typografiu, ktorá nesie údaj o obsahu.
+   ========================================================= */
+.obraz{margin:0;display:flex;flex-direction:column}
+.obraz .art{width:100%}
+.obraz--sirka .art{aspect-ratio:16/10;min-height:180px}
+.obraz--stvorec .art{aspect-ratio:1/1;min-height:190px}
+.obraz--vyska .art{aspect-ratio:4/5;min-height:210px}
+.obraz--pas .art{aspect-ratio:21/9;min-height:200px}
+.obraz__cap{margin:14px 0 0;font-size:.92rem;color:var(--muted);max-width:46ch}
+.obraz__cap b{display:block;font-family:var(--serif);font-weight:400;font-size:1.06rem;color:var(--ink);margin-bottom:4px}
+.sec--ink .obraz__cap{color:var(--on-dark-mut)}
+.sec--ink .obraz__cap b{color:var(--on-dark)}
+.prepo{display:flex;margin:0;gap:0}
+.prepo span{flex:1;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--plum);font-weight:600}
+.prepo span + span{padding-left:14px}
+.art--dark .prepo span{color:var(--on-dark-acc)}
+.art__ini{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3rem);line-height:1;color:var(--ink);margin:auto 0 0;letter-spacing:.04em}
+
+/* =========================================================
+   5c. DLAŽDICE SLUŽIEB, TÍM, GALÉRIA, RECENZIE, MAPA
+   ========================================================= */
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(26px,3.4vw,44px)}
+.tile h3{margin:18px 0 6px}
+.tile > p{font-size:.95rem;color:var(--muted);margin:0;max-width:48ch}
+.tile ul{margin:14px 0 0;border-top:1px solid var(--line)}
+.tile li{display:flex;justify-content:space-between;gap:8px 18px;padding:11px 0;border-bottom:1px solid var(--line);font-size:.93rem;color:var(--body)}
+.tile li b{font-family:var(--serif);font-weight:400;color:var(--ink);white-space:nowrap}
+.tile__more{display:inline-block;margin-top:14px;font-size:.86rem;color:var(--plum);text-decoration:none;border-bottom:1px solid var(--line)}
+.tile__more:hover{color:var(--plum-dk);border-bottom-color:var(--plum)}
+
+.team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.member h3{margin:16px 0 3px;font-size:1.08rem}
+.member .role{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--plum);font-weight:600;margin:0 0 10px}
+.member p{font-size:.9rem;color:var(--muted);margin:0 0 8px}
+.member .dni{font-size:.82rem;color:var(--body);margin:0 0 14px;font-variant-numeric:tabular-nums}
+.member .btn{margin-top:auto}
+.member{display:flex;flex-direction:column}
+
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(22px,3vw,34px)}
+
+.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,28px)}
+.quote{display:flex;flex-direction:column;margin:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,30px)}
+.quote blockquote{margin:0 0 20px;font-family:var(--serif);font-size:1.06rem;line-height:1.5;color:var(--ink)}
+.quote figcaption{margin:auto 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted)}
+.quote figcaption b{display:block;font-weight:600;color:var(--ink);margin-bottom:3px}
+
+.mapa{margin:0;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden}
+.mapa svg{display:block;width:100%;height:auto}
+.mapa figcaption{padding:16px 20px;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.mapa figcaption b{color:var(--ink);font-weight:600}
+
+.endcta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px 44px}
+.endcta > div{max-width:52ch}
+.endcta h2{margin-bottom:12px}
+.endcta p{margin:0;color:var(--on-dark-mut);font-size:1rem}
+.endcta__act{display:flex;flex-wrap:wrap;gap:14px}
+
+/* =========================================================
+   6. ÚVOD
+   Editoriálny dvojstĺpec: úzky ľavý stĺpec s otočeným popiskom
+   odvetvia a zoznamom služieb, široký pravý stĺpec s nadpisom
+   a dvoma odstavcami. Hierarchiu drží typografia a biele miesto.
+   ========================================================= */
+.hero{padding:clamp(46px,7vw,96px) 0 clamp(44px,6vw,82px)}
+.hero__grid{display:grid;grid-template-columns:clamp(168px,19vw,248px) 1fr;gap:clamp(30px,5vw,76px);align-items:start}
+.hero__side{display:flex;gap:clamp(14px,1.8vw,24px);padding-right:clamp(16px,2vw,30px);border-right:1px solid var(--line)}
+.hero__vert{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  margin:0;align-self:flex-start;white-space:nowrap;
+  font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;color:var(--plum);font-weight:600;
+}
+.hero__svc{flex:1;min-width:0}
+.hero__svc li{padding:10px 0;border-bottom:1px solid var(--line);font-size:.84rem;color:var(--body)}
+.hero__svc li:first-child{padding-top:0}
+.hero__svc li:last-child{border-bottom:0;padding-bottom:0}
+.hero__kicker{font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+.hero h1{margin:0 0 clamp(24px,3.2vw,38px);max-width:15ch}
+.hero__text{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(22px,3.4vw,54px);align-items:start}
+.hero__p1{font-family:var(--serif);font-size:clamp(1.1rem,1.5vw,1.35rem);line-height:1.5;color:var(--ink);margin:0;max-width:42ch}
+.hero__p2{font-size:.97rem;color:var(--muted);margin:0;max-width:44ch}
+.hero__p2 a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--control);white-space:nowrap}
+.hero__p2 a:hover{color:var(--plum);border-bottom-color:var(--plum)}
+.hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(28px,3.6vw,42px)}
+.hero__meta{display:flex;flex-wrap:wrap;gap:10px 42px;margin-top:clamp(30px,4vw,46px);padding-top:20px;border-top:1px solid var(--line)}
+.hero__meta li{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+.facts{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;
+  margin:clamp(32px,4.4vw,54px) 0 0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.facts > div{padding:22px 26px 22px 0;border-right:1px solid var(--line)}
+.facts > div:last-child{border-right:0;padding-right:0}
+.facts dt{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.facts dd{margin:0;font-family:var(--serif);font-size:1.06rem;color:var(--ink);line-height:1.4}
+.facts dd a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--control)}
+.facts dd a:hover{color:var(--plum);border-bottom-color:var(--plum)}
+
+/* =========================================================
+   7. CENNÍK
+   ========================================================= */
+.pricegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(34px,4vw,56px) clamp(40px,5vw,72px)}
+.pricegroup h3{padding-bottom:12px;border-bottom:1px solid var(--ink);margin-bottom:4px}
+.pricegroup h3 span{display:block;font-family:var(--sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.plist li{display:grid;grid-template-columns:1fr auto auto;gap:6px 18px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.plist .nm{font-size:1rem;color:var(--ink)}
+.plist .ds{display:block;font-size:.84rem;color:var(--muted);margin-top:2px}
+.plist .tm{font-size:.84rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.plist .pr{font-family:var(--serif);font-size:1.06rem;color:var(--ink);white-space:nowrap;min-width:64px;text-align:right}
+.pnote{margin:clamp(34px,4vw,48px) 0 0;padding:20px 24px;background:var(--stone);border-left:2px solid var(--plum);font-size:.94rem;color:var(--body)}
+.pnote p:last-child{margin-bottom:0}
+
+.subhead{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px 24px;flex-wrap:wrap;
+  margin:clamp(40px,5vw,64px) 0 clamp(18px,2vw,26px);padding-bottom:12px;border-bottom:1px solid var(--ink);
+}
+.subhead h3{font-size:1.35rem}
+.subhead p{margin:0;font-size:.88rem;color:var(--muted)}
+.pkgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.pkg{display:flex;flex-direction:column;background:var(--stone);border:1px solid var(--line);border-radius:var(--r);padding:clamp(20px,2.6vw,28px)}
+.pkg h3{margin-bottom:8px}
+.pkg .in{font-size:.92rem;color:var(--muted);margin:0 0 20px}
+.pkg .pr{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:auto 0 0;font-family:var(--serif);font-size:1.85rem;color:var(--ink)}
+.pkg .was{font-family:var(--sans);font-size:.86rem;color:var(--muted);text-decoration:line-through}
+.pkg .dur{margin:10px 0 0;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+/* =========================================================
+   8. PRIEBEH NÁVŠTEVY
+   ========================================================= */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.steps > li{padding:26px 26px 0 0;border-top:1px solid rgba(200,189,176,.35)}
+.steps > li:last-child{padding-right:0}
+.steps .no{font-size:.72rem;letter-spacing:.2em;color:var(--on-dark-acc);margin-bottom:14px}
+.steps h3{margin-bottom:10px}
+.steps p{font-size:.94rem;color:var(--on-dark-mut);margin:0}
+.steps .dur{display:block;margin-top:14px;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-acc)}
+
+/* =========================================================
+   9. PRIESTOR, STĹPCE, BLOKY, OTÁZKY
+   ========================================================= */
+.rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.5vw,30px)}
+.room h3{margin:18px 0 6px}
+.room p{font-size:.94rem;color:var(--muted);margin:0;max-width:44ch}
+
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(26px,3.4vw,44px)}
+.col h3{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.col p{font-size:.95rem;margin:0 0 .8em;max-width:62ch}
+.col p:last-child{margin-bottom:0}
+.col ul li{padding:10px 0;border-bottom:1px solid var(--line);font-size:.94rem}
+.col ul li:last-child{border-bottom:0}
+.sec--ink .col h3{border-bottom-color:rgba(200,189,176,.3)}
+.sec--ink .col p,.sec--ink .col ul li{color:var(--on-dark-mut)}
+.sec--ink .col ul li{border-bottom-color:rgba(200,189,176,.2)}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,4vw,64px);align-items:start}
+.blk{padding:22px 0;border-top:1px solid var(--line)}
+.blk:first-child{padding-top:0;border-top:0}
+.blk h3{margin-bottom:8px}
+.blk p{margin:0 0 .6em;font-size:.96rem;max-width:62ch}
+.blk p:last-child{margin-bottom:0}
+.sec--ink .blk{border-top-color:rgba(200,189,176,.28)}
+.sec--ink .blk p{color:var(--on-dark-mut)}
+
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(40px,5vw,72px)}
+.faq > div{padding:24px 0;border-top:1px solid var(--line)}
+.faq h3{margin-bottom:8px}
+.faq p{margin:0;font-size:.95rem;color:var(--body);max-width:60ch}
+
+/* =========================================================
+   10. HODINY A INFORMÁCIE
+   ========================================================= */
+.hours{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:start}
+.htab{width:100%;border-collapse:collapse;margin-top:8px}
+.htab th{text-align:left;font-weight:400;font-family:var(--serif);font-size:1.05rem;color:var(--ink);padding:13px 0}
+.htab td{text-align:right;padding:13px 0;color:var(--body);font-variant-numeric:tabular-nums}
+.htab tr{border-bottom:1px solid var(--line)}
+.htab tr.today th,.htab tr.today td{color:var(--plum);font-weight:600}
+.htab td.off{color:var(--muted)}
+.status{display:inline-flex;align-items:center;gap:9px;margin:0 0 6px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:600}
+.status .dot{width:8px;height:8px;background:var(--plum);flex:none}
+.infolist li{display:grid;grid-template-columns:clamp(96px,26%,134px) 1fr;gap:4px 20px;padding:15px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.infolist li:last-child{border-bottom:0}
+.infolist .lb{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding-top:5px}
+.infolist .sub{display:block;font-size:.84rem;color:var(--muted);margin-top:3px;max-width:50ch}
+.infolist a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--control)}
+.infolist a:hover{color:var(--plum);border-bottom-color:var(--plum)}
+.infobox{background:var(--stone);border:1px solid var(--line);padding:clamp(24px,3vw,34px)}
+
+.itab{width:100%;border-collapse:collapse;min-width:540px}
+.itab th,.itab td{text-align:left;font-weight:400;padding:14px 28px 14px 0;border-bottom:1px solid var(--line);font-size:.96rem;color:var(--body)}
+.itab thead th{font-family:var(--sans);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding-bottom:11px;border-bottom-color:var(--ink)}
+.itab tbody th{font-family:var(--serif);font-size:1.04rem;color:var(--ink)}
+.itab td{font-variant-numeric:tabular-nums}
+.itab tbody tr:last-child th,.itab tbody tr:last-child td{border-bottom:0}
+
+/* =========================================================
+   11. OBJEDNANIE (interaktívna časť)
+   ========================================================= */
+.step{background:var(--paper);border:1px solid var(--line);padding:clamp(22px,3vw,32px)}
+.step + .step,.daytime,.sum{margin-top:20px}
+.step__n{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--plum);font-weight:700;margin:0 0 6px}
+.step h3{margin-bottom:6px}
+.step__hint{font-size:.88rem;color:var(--muted);margin:0 0 22px}
+
+.svcgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 48px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt label{
+  display:grid;grid-template-columns:auto 1fr auto;gap:2px 13px;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;
+}
+.opt .box{
+  width:17px;height:17px;border:1px solid var(--control);border-radius:2px;background:#fff;
+  display:flex;align-items:center;justify-content:center;grid-row:span 2;
+}
+.opt .box svg{width:11px;height:11px;color:var(--sand);opacity:0}
+.opt .t{font-size:.98rem;color:var(--ink)}
+.opt .p{font-family:var(--serif);font-size:1rem;color:var(--ink);white-space:nowrap;text-align:right}
+.opt .m{grid-column:2/4;font-size:.82rem;color:var(--muted)}
+.opt input:checked + label .box{background:var(--ink);border-color:var(--ink)}
+.opt input:checked + label .box svg{opacity:1}
+.opt input:checked + label .t{color:var(--plum)}
+.opt label:hover .box{border-color:var(--ink)}
+.opt input:focus-visible + label{outline:2px solid var(--plum);outline-offset:3px}
+
+.daytime{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.daytime .step{margin-top:0}
+.calhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.calhead strong{font-family:var(--serif);font-weight:400;font-size:1.1rem;color:var(--ink)}
+.calnav{display:flex;gap:8px}
+.calnav button{
+  width:36px;height:36px;border:1px solid var(--control);border-radius:var(--r);background:var(--paper);
+  color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.calnav button:hover:not(:disabled){background:var(--stone)}
+.calnav button:disabled{opacity:.4;cursor:default}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{text-align:center;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:4px 0}
+.day{
+  aspect-ratio:1/1;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);
+  font-family:var(--sans);font-size:.9rem;color:var(--body);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.day:hover:not(:disabled){border-color:var(--ink);color:var(--ink)}
+.day:disabled{color:var(--faint);background:transparent;border-color:transparent;cursor:default}
+.day.today:not(.sel){box-shadow:inset 0 0 0 1px var(--plum)}
+.day.sel{background:var(--ink);border-color:var(--ink);color:var(--sand)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.slot{
+  padding:11px 4px;border:1px solid var(--control);border-radius:var(--r);background:var(--paper);
+  font-size:.92rem;color:var(--body);cursor:pointer;text-align:center;font-variant-numeric:tabular-nums;
+}
+.slot:hover:not(:disabled){background:var(--stone);color:var(--ink)}
+.slot:disabled{color:var(--faint);background:var(--stone);border-color:var(--line);cursor:default;text-decoration:line-through}
+.slot.sel{background:var(--ink);border-color:var(--ink);color:var(--sand)}
+.emptynote{font-size:.9rem;color:var(--muted);margin:0}
+
+/* Súhrn je vodorovný pás cez celú šírku, nie bočný panel */
+.sum{
+  background:var(--ink);color:var(--on-dark);border:1px solid var(--ink);
+  padding:clamp(22px,3vw,32px);
+  display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:clamp(20px,3vw,44px);
+}
+.sum h4{color:var(--on-dark-acc);margin-bottom:14px}
+.sum__col + .sum__col{border-left:1px solid rgba(200,189,176,.28);padding-left:clamp(20px,3vw,44px)}
+.sumlist li{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid rgba(200,189,176,.2);font-size:.93rem}
+.sumlist li:last-child{border-bottom:0}
+.sumlist span:last-child{white-space:nowrap}
+.sumtxt{font-size:.95rem;color:var(--on-dark-mut);margin:0}
+.sumbig{font-family:var(--serif);font-size:1.45rem;color:var(--on-dark);margin:0;line-height:1.3}
+.sumval{font-family:var(--serif);font-size:2.1rem;color:var(--on-dark);margin:0;line-height:1.1}
+.sumdur{font-size:.86rem;color:var(--on-dark-mut);margin:6px 0 0}
+
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.field--full{grid-column:1/-1}
+.field label{display:block;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.field input,.field textarea{
+  width:100%;padding:13px 14px;border:1px solid var(--control);border-radius:var(--r);
+  background:#fff;color:var(--body);font-family:var(--sans);font-size:1rem;
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted)}
+.field input:focus,.field textarea:focus{border-color:var(--ink);outline:2px solid var(--plum);outline-offset:1px}
+.field textarea{resize:vertical;min-height:80px}
+.submitrow{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+.submitrow .btn{flex:none}
+.legal{font-size:.84rem;color:var(--muted);margin:0;max-width:52ch}
+.err{margin:20px 0 0;padding:13px 16px;background:#F6E7EA;border-left:2px solid var(--plum);color:var(--plum-dk);font-size:.92rem}
+
+.done{background:var(--paper);border:1px solid var(--line);padding:clamp(26px,4vw,44px)}
+.done h3{margin-bottom:12px}
+.recap{margin:22px 0;border-top:1px solid var(--line)}
+.recap > div{display:grid;grid-template-columns:150px 1fr;gap:4px 18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.recap dt{color:var(--muted);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;padding-top:3px}
+.recap dd{margin:0;color:var(--ink)}
+.done__note{font-size:.9rem;color:var(--muted)}
+
+/* =========================================================
+   12. KONTAKT, AUTOR, PÄTA
+   ========================================================= */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:start}
+.cform{background:var(--stone);border:1px solid var(--line);padding:clamp(24px,3vw,34px)}
+.cform h3{margin-bottom:6px}
+.formdone{margin:20px 0 0;padding:15px 18px;background:var(--paper);border-left:2px solid var(--plum);font-size:.94rem;color:var(--ink);max-width:56ch}
+.social{margin-top:26px;border-top:1px solid var(--line)}
+.social li{padding:12px 0;border-bottom:1px solid var(--line);font-size:.94rem;color:var(--body)}
+.social b{font-weight:600;color:var(--ink)}
+
+.author{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(30px,5vw,64px);align-items:start}
+.author__price{font-family:var(--serif);font-size:1.28rem;color:var(--on-dark);margin:26px 0 0}
+.author__free{font-size:.96rem;color:var(--on-dark-mut);margin:10px 0 0}
+.authorcard{border:1px solid rgba(200,189,176,.4);padding:clamp(24px,3vw,32px)}
+.authorcard .nm{font-family:var(--serif);font-size:1.45rem;color:var(--on-dark);margin:0}
+.authorcard .role{font-size:.88rem;color:var(--on-dark-mut);margin:6px 0 20px}
+.authorcard li{display:grid;grid-template-columns:clamp(80px,30%,100px) 1fr;gap:4px 18px;padding:14px 0;border-bottom:1px solid rgba(200,189,176,.2);font-size:.95rem}
+.authorcard li:last-child{border-bottom:0}
+.authorcard .lb{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-mut);padding-top:5px}
+.authorcard a:not(.btn){color:var(--on-dark);overflow-wrap:anywhere}
+.authorcard a:not(.btn):hover{color:var(--on-dark-acc)}
+.authorcard .sub{display:block;font-size:.84rem;color:var(--on-dark-mut);margin-top:3px}
+.authorcard a.btn{background:var(--on-dark);border-color:var(--on-dark);color:var(--ink);margin-top:24px}
+.authorcard a.btn:hover{background:var(--on-dark-acc);border-color:var(--on-dark-acc);color:var(--ink)}
+.author__note{font-size:.84rem;color:var(--on-dark-mut);margin:16px 0 0}
+
+.foot{background:var(--sand);border-top:1px solid var(--line);padding:clamp(40px,5vw,64px) 0 34px}
+.foot__grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:28px 44px}
+.foot p{margin:0;font-size:.94rem}
+.foot__name{font-family:var(--serif);font-size:1.16rem;color:var(--ink);margin:0 0 8px}
+.footnav li{padding:5px 0}
+.footnav a{color:var(--body);text-decoration:none;font-size:.93rem}
+.footnav a:hover{color:var(--plum)}
+.foot__contact a{color:var(--body);text-decoration:none;border-bottom:1px solid var(--line)}
+.foot__contact a:hover{color:var(--plum);border-bottom-color:var(--plum)}
+.foot__bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;font-size:.84rem;color:var(--muted)}
+
+/* =========================================================
+   13. PÁSIK UKÁŽKY (prilepený hore, nad hlavičkou)
+   ========================================================= */
+.demobar{background:var(--ink);color:var(--on-dark);border-bottom:1px solid rgba(200,189,176,.22)}
+.demobar__in{
+  max-width:var(--wrap);margin:0 auto;padding:10px 28px;
+  display:flex;align-items:center;justify-content:center;gap:6px 20px;flex-wrap:wrap;
+  font-size:.78rem;text-align:center;
+}
+.demobar__tag{
+  border:1px solid rgba(200,189,176,.45);padding:3px 9px;border-radius:2px;
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-acc);font-weight:600;flex:none;
+}
+.demobar__txt{color:var(--on-dark-mut)}
+.demobar a{color:var(--on-dark-acc);font-weight:600;white-space:nowrap;text-decoration:none;border-bottom:1px solid rgba(200,189,176,.42)}
+.demobar a:hover{color:var(--on-dark);border-bottom-color:var(--on-dark)}
+.demobar__sm{display:none}
+
+/* =========================================================
+   14. ANIMÁCIE
+   ========================================================= */
+.js .rev{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+.js .rev.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .js .rev{opacity:1;transform:none;transition:none}
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+
+/* =========================================================
+   15. RESPONZÍVNE
+   ========================================================= */
+@media (max-width:1100px){
+  .nav{gap:16px}
+  .nav a:not(.btn){font-size:.82rem}
+  .site__in{gap:14px}
+  .site__act{gap:8px}
+  .team{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+/* číslo sa zmení na ikonu, aby sa zmestilo aj menu; odkaz ostáva klikací */
+@media (max-width:1080px){
+  .site__tel{padding:12px;gap:0}
+  .site__tel span{display:none}
+}
+/* menu ide pod tlačidlo skôr než ostatný obsah, hlavička je najplnejší riadok */
+@media (max-width:980px){
+  :root{--head-h:64px}
+  .nav{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--sand);border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0;padding:6px 0 20px;
+  }
+  .js .nav{display:none}
+  .js .nav.open{display:flex}
+  .nav a:not(.btn){padding:14px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+  .nav a:not(.btn):hover{border-bottom-color:var(--line)}
+  .burger{display:flex}
+  .no-js .topstack{position:static}
+  .no-js .burger{display:none}
+  .no-js .site__in{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+  .no-js .nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px 18px;padding:0;background:transparent;border:0}
+  .no-js .nav a:not(.btn){padding:4px 0;border-bottom:0;font-size:.86rem}
+}
+@media (max-width:1040px){
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pricegrid,.svcgrid{grid-template-columns:1fr}
+  .sum{grid-template-columns:1fr}
+  .sum__col + .sum__col{border-left:0;border-top:1px solid rgba(200,189,176,.28);padding-left:0;padding-top:22px}
+  .steps{grid-template-columns:repeat(2,1fr);gap:0 26px}
+  .steps > li{padding-right:0;margin-top:26px}
+  .author,.split{grid-template-columns:1fr}
+  .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__grid{grid-template-columns:1fr 1fr}
+  .hero__grid{grid-template-columns:clamp(140px,21vw,190px) 1fr;gap:clamp(22px,3.4vw,42px)}
+  .hero__text{grid-template-columns:1fr;gap:16px}
+  .hero__p1,.hero__p2{max-width:62ch}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts > div{padding-right:26px;border-right:1px solid var(--line)}
+  .facts > div:nth-child(2n){border-right:0;padding-right:0}
+  .facts > div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:860px){
+  .team{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tiles,.quotes{grid-template-columns:1fr}
+  .endcta{flex-direction:column;align-items:flex-start}
+  .hours,.contact,.rooms,.daytime,.fields,.cols,.cols--2,.pkgs,.faq{grid-template-columns:1fr}
+  .hero__grid{grid-template-columns:1fr;gap:26px}
+  .hero__side{flex-direction:column;gap:14px;padding-right:0;padding-bottom:22px;border-right:0;border-bottom:1px solid var(--line)}
+  .hero__vert{writing-mode:horizontal-tb;transform:none;letter-spacing:.24em}
+  .hero__svc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 26px}
+  .hero__svc li:first-child{padding-top:10px}
+  .hero h1{max-width:none}
+  .hero__meta{gap:8px 28px}
+  .foot__grid{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  body{font-size:16px}
+  .wrap{padding:0 18px}
+  .demobar__in{padding:8px 16px;font-size:.72rem;gap:4px 12px}
+  .team{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal{grid-template-columns:1fr}
+  .brand__sub{display:none}
+  .brand__name{font-size:1.02rem}
+  .steps{grid-template-columns:1fr}
+  .hero__cta .btn{width:100%}
+  .hero__svc{grid-template-columns:1fr}
+  .hero__svc li:first-child{padding-top:0}
+  .facts{grid-template-columns:1fr}
+  .facts > div,.facts > div:nth-child(2n){padding:18px 0;border-right:0;border-bottom:1px solid var(--line)}
+  .facts > div:last-child{border-bottom:0}
+  .infolist li,.authorcard li{grid-template-columns:1fr;gap:5px}
+  .infolist .lb,.authorcard .lb{padding-top:0}
+  .plist li{grid-template-columns:1fr auto}
+  .plist .tm{grid-row:2;grid-column:1;margin-top:2px}
+  .plist .pr{grid-row:1;grid-column:2}
+  .cal{gap:3px}
+  .day{font-size:.85rem}
+  .slots{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}
+  .recap > div{grid-template-columns:1fr}
+  .submitrow .btn{width:100%}
+  .demobar__lg{display:none}
+  .demobar__sm{display:inline}
+}
+/* na najužších telefónoch sa skracuje len popis tlačidla, akcia ostáva */
+@media (max-width:430px){
+  .site__in{gap:10px}
+  .site__act{gap:6px}
+  .site__cta{padding:12px 14px;font-size:.68rem}
+  .site__cta .lg{display:none}
+  .site__cta .sm{display:inline}
+  .site__tel{padding:11px}
+  .brand{gap:9px}
+  .brand__mark{width:34px;height:34px;font-size:.86rem}
+  .member h3{font-size:1rem}
+  .member p{font-size:.86rem}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return v.toLocaleString('de-DE');}function __f(x){return x.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Zum Inhalt springen</a>
+
+<div class="topstack">
+
+<!-- ====================== PÁSIK UKÁŽKY ====================== -->
+<div class="demobar">
+  <div class="demobar__in">
+    <span class="demobar__tag">Beispiel-Website</span>
+    <span class="demobar__txt demobar__lg">So eine Website baue ich auch für Sie.</span>
+    <span class="demobar__txt demobar__sm">So eine mache ich auch für Sie.</span>
+    <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+    <a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a>
+  </div>
+</div>
+
+<!-- ====================== HLAVIČKA ====================== -->
+<header class="site">
+  <div class="wrap site__in">
+    <a class="brand" href="#uvod">
+      <span class="brand__mark" aria-hidden="true">SB</span> <span class="brand__txt"> <span class="brand__name">Salon Birke</span> <span class="brand__sub">Friseur und Kosmetik</span> </span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Hauptnavigation">
+      <a href="#sluzby">Leistungen</a>
+      <a href="#cennik">Preise</a>
+      <a href="#tim">Team</a>
+      <a href="#galeria">Unsere Arbeit</a>
+      <a href="#hodiny">Öffnungszeiten</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="site__act">
+      <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+      <a class="btn btn--sm btn--acc site__cta" href="#objednanie"><span class="lg">Termin buchen</span><span class="sm">Buchen</span></a>
+    </div>
+
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menü öffnen">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+</div><!-- /topstack -->
+
+<main id="obsah">
+
+<!-- ====================== ÚVOD ====================== -->
+<section class="hero" id="uvod">
+  <div class="wrap">
+    <div class="hero__grid">
+      <div class="hero__side">
+        <p class="hero__vert">Friseur und Kosmetik</p>
+        <ul class="hero__svc">
+          <li>Schneiden und Styling</li>
+          <li>Färben, Strähnen, Balayage</li>
+          <li>Gesichtsbehandlung</li>
+          <li>Wimpern und Augenbrauen</li>
+          <li>Maniküre und Pediküre</li>
+          <li>Frisuren für Hochzeiten und Feiern</li>
+        </ul>
+      </div>
+
+      <div class="hero__main">
+        <p class="hero__kicker">Birkenstraße 14, Bernkastel-Kues</p>
+        <h1>Friseur- und Kosmetiksalon in Bernkastel-Kues</h1>
+        <div class="hero__text">
+          <p class="hero__p1">Haare, Haut und Nägel an einer Adresse und in einem Termin. Der Salon hat drei getrennte Arbeitsplätze, Sie können also zwei Leistungen nacheinander buchen, ohne dazwischen zu warten.</p>
+          <p class="hero__p2">Wir arbeiten ausschließlich nach Termin, damit jeder Gast seine feste Zeit hat. Den Termin wählen Sie direkt auf dieser Seite, die Zusammenfassung zeigt laufend den Preis und wie lange Sie im Salon sind. Wer lieber anruft, erreicht uns unter <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>.</p>
+        </div>
+        <div class="hero__cta">
+          <a class="btn btn--acc" href="#objednanie">Termin buchen</a>
+          <a class="btn btn--line" href="#cennik">Preisliste</a>
+        </div>
+      </div>
+    </div>
+
+    <ul class="hero__meta">
+      <li>Drei Arbeitsplätze</li>
+      <li>Buchung online</li>
+      <li>Kartenzahlung</li>
+      <li>Parken vor dem Haus</li>
+      <li>Barrierefreier Eingang</li>
+    </ul>
+
+    <dl class="facts">
+      <div>
+        <dt>Öffnungszeiten</dt>
+        <dd id="heroHours">Mo bis Fr 9:00 – 19:00, Sa 9:00 – 14:00 Uhr</dd>
+      </div>
+      <div>
+        <dt>Buchungen</dt>
+        <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></dd>
+      </div>
+      <div>
+        <dt>Adresse</dt>
+        <dd>Birkenstraße 14, 54470 Bernkastel-Kues</dd>
+      </div>
+      <div>
+        <dt>Preise</dt>
+        <dd>Herrenschnitt 22 €, Damenschnitt 38 €</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ====================== SLUŽBY ====================== -->
+<section class="sec" id="sluzby">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Leistungen</p>
+      <h2>Was wir im Salon machen und was es kostet</h2>
+      <p class="lead">Vier Gruppen von Leistungen, bei jeder stehen die drei häufigsten mit Preis und Dauer. Die vollständige Liste finden Sie in der Preisliste weiter unten.</p>
+    </div>
+
+    <div class="tiles">
+      <article class="tile rev">
+        <!-- FOTO: hotový dámsky strih po fúkanej, záber od chrbta pri kresle -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--grid">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#7A3E52" stroke-opacity=".18" stroke-width="1">
+                <circle cx="318" cy="60" r="44"/><circle cx="318" cy="60" r="84"/><circle cx="318" cy="60" r="124"/>
+              </g>
+              <path d="M0 186h400" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Schnitt und Föhnen<span>45 Minuten inklusive Waschen und Kopfmassage</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Haare</h3>
+        <p>Schneiden, Föhnen und Frisuren für festliche Anlässe. Die Kopfmassage beim Waschen ist bei jedem Schnitt inklusive.</p>
+        <ul>
+          <li><span>Damenschnitt mit Föhnen, 45 Min.</span><b>38 €</b></li>
+          <li><span>Herrenschnitt, 30 Min.</span><b>22 €</b></li>
+          <li><span>Festliche Frisur, 60 Min.</span><b>55 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Ganze Preisliste Haare</a>
+      </article>
+
+      <article class="tile rev">
+        <!-- FOTO: miešanie farby v miske pri pracovnom stole, detail rúk -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1">
+                <rect x="228" y="-46" width="190" height="190" transform="rotate(20 323 49)"/>
+                <rect x="262" y="-12" width="122" height="122" transform="rotate(20 323 49)"/>
+              </g>
+              <path d="M0 200h400" stroke="#7A3E52" stroke-opacity=".24" stroke-width="1"/>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Ansatz, Strähnen, Balayage<span>Den Farbton mischen wir erst vor Ort, nach der Beratung</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Färben</h3>
+        <p>Vor dem ersten Färben machen wir 48 Stunden vorher einen Allergietest. Er dauert fünf Minuten und ist kostenlos.</p>
+        <ul>
+          <li><span>Ansatzfärbung bis 3 cm, 90 Min.</span><b>55 €</b></li>
+          <li><span>Strähnen oder Balayage, 150 Min.</span><b>ab 95 €</b></li>
+          <li><span>Tönung für graues Haar, 60 Min.</span><b>40 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Ganze Preisliste Färben</a>
+      </article>
+
+      <article class="tile rev">
+        <!-- FOTO: kozmetická kabínka s polohovacím lehátkom a lupou, zapnuté svetlo -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--dots">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <path d="M-20 168C86 92 214 232 420 118" fill="none" stroke="#7A3E52" stroke-opacity=".22" stroke-width="1"/>
+              <path d="M-20 200C86 124 214 264 420 150" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="64" cy="58" r="38" fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1"/>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Reinigung und Verlängerung<span>In einer eigenen Kabine mit Tür</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Haut und Wimpern</h3>
+        <p>Die Kosmetikkabine ist ein eigener Raum, in den man vom Wartebereich nicht hineinsieht.</p>
+        <ul>
+          <li><span>Tiefenreinigung der Haut, 75 Min.</span><b>48 €</b></li>
+          <li><span>Wimpernverlängerung, 90 Min.</span><b>65 €</b></li>
+          <li><span>Augenbrauen zupfen und färben, 30 Min.</span><b>18 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Ganze Preisliste Kosmetik</a>
+      </article>
+
+      <article class="tile rev">
+        <!-- FOTO: hotová manikúra, detail rúk na podložke pri stole s odsávaním -->
+        <figure class="obraz obraz--sirka">
+          <div class="art art--grid">
+            <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1">
+                <path d="M300 0v250M0 108h400"/>
+              </g>
+              <g fill="none" stroke="#7A3E52" stroke-opacity=".24" stroke-width="1">
+                <circle cx="300" cy="108" r="24"/><circle cx="300" cy="108" r="52"/><circle cx="300" cy="108" r="86"/>
+              </g>
+            </svg>
+            <div class="art__body">
+              <p class="art__title">Maniküre und Pediküre<span>Einmalfeilen und Einmalunterlagen für jeden Gast</span></p>
+            </div>
+          </div>
+        </figure>
+        <h3>Nägel</h3>
+        <p>Die Fräse saugt den Staub direkt an der Hand ab. Gel entfernen wir auch einzeln, ohne weitere Leistung.</p>
+        <ul>
+          <li><span>Gelnägel, neues Set, 90 Min.</span><b>45 €</b></li>
+          <li><span>Japanische Maniküre, 45 Min.</span><b>25 €</b></li>
+          <li><span>Klassische Pediküre, 60 Min.</span><b>32 €</b></li>
+        </ul>
+        <a class="tile__more" href="#cennik">Ganze Preisliste Nägel</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== CENNÍK ====================== -->
+<section class="sec sec--paper" id="cennik">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Preise</p>
+      <h2>Preise der Leistungen und ihre Dauer</h2>
+      <p class="lead">Die Preise gelten für übliche Länge und Fülle des Haares. Braucht eine Leistung mehr Zeit oder mehr Material, sagen wir Ihnen den Preis bei der Beratung vor dem Beginn. Das Material ist im Preis.</p>
+    </div>
+
+    <div class="pricegrid">
+      <div class="pricegroup rev">
+        <h3>Schneiden und Styling<span>Haarstudio</span></h3>
+        <ul class="plist">
+          <li><span class="nm">Damenschnitt mit Waschen und Föhnen<span class="ds">Inklusive Kopfmassage</span></span><span class="tm">45 Min.</span><span class="pr">38 €</span></li>
+          <li><span class="nm">Herrenschnitt<span class="ds">Maschine und Schere</span></span><span class="tm">30 Min.</span><span class="pr">22 €</span></li>
+          <li><span class="nm">Kinderschnitt bis 12 Jahre</span><span class="tm">25 Min.</span><span class="pr">15 €</span></li>
+          <li><span class="nm">Festliche Frisur<span class="ds">Hochzeiten, Abschlussfeiern, Feste</span></span><span class="tm">60 Min.</span><span class="pr">55 €</span></li>
+          <li><span class="nm">Aufbaubehandlung für das Haar<span class="ds">Nach dem Färben oder nach Strähnen</span></span><span class="tm">30 Min.</span><span class="pr">25 €</span></li>
+          <li><span class="nm">Föhnen ohne Schnitt</span><span class="tm">30 Min.</span><span class="pr">20 €</span></li>
+          <li><span class="nm">Bart und Schnurrbart<span class="ds">Maschine, Rasiermesser, heißes Tuch</span></span><span class="tm">15 Min.</span><span class="pr">12 €</span></li>
+          <li><span class="nm">Waschen und Kopfmassage<span class="ds">Auch einzeln, ohne weitere Leistung</span></span><span class="tm">15 Min.</span><span class="pr">10 €</span></li>
+          <li><span class="nm">Haardiagnose<span class="ds">Analyse des Haares und Pflegeplan</span></span><span class="tm">20 Min.</span><span class="pr">kostenlos</span></li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3>Färben<span>Den Farbton mischen wir vor Ort</span></h3>
+        <ul class="plist">
+          <li><span class="nm">Ansatzfärbung<span class="ds">Bis 3 cm, inklusive Föhnen</span></span><span class="tm">90 Min.</span><span class="pr">55 €</span></li>
+          <li><span class="nm">Strähnen oder Balayage<span class="ds">Der Preis hängt von der Haarlänge ab</span></span><span class="tm">150 Min.</span><span class="pr">ab 95 €</span></li>
+          <li><span class="nm">Tönung</span><span class="tm">60 Min.</span><span class="pr">42 €</span></li>
+          <li><span class="nm">Färben der ganzen Länge<span class="ds">Ein Farbton</span></span><span class="tm">120 Min.</span><span class="pr">68 €</span></li>
+          <li><span class="nm">Blondierung und neue Farbe<span class="ds">Braucht eine Beratung vorab</span></span><span class="tm">180 Min.</span><span class="pr">120 €</span></li>
+          <li><span class="nm">Tönung für graues Haar<span class="ds">Ohne Ammoniak, inklusive Föhnen</span></span><span class="tm">60 Min.</span><span class="pr">40 €</span></li>
+          <li><span class="nm">Allergietest vor dem ersten Färben<span class="ds">Wir machen ihn 48 Stunden vor dem Termin</span></span><span class="tm">5 Min.</span><span class="pr">kostenlos</span></li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3>Kosmetik<span>Eigene Kabine</span></h3>
+        <ul class="plist">
+          <li><span class="nm">Tiefenreinigung der Haut<span class="ds">Inklusive Gesichtsmassage</span></span><span class="tm">75 Min.</span><span class="pr">48 €</span></li>
+          <li><span class="nm">Behandlung mit Säuren<span class="ds">Gegen Pigmentflecken und kleine Narben</span></span><span class="tm">60 Min.</span><span class="pr">55 €</span></li>
+          <li><span class="nm">Augenbrauen zupfen und färben</span><span class="tm">30 Min.</span><span class="pr">18 €</span></li>
+          <li><span class="nm">Wimpernverlängerung<span class="ds">Neues Set, Technik 1:1</span></span><span class="tm">90 Min.</span><span class="pr">65 €</span></li>
+          <li><span class="nm">Auffüllen der Wimpern<span class="ds">Empfohlener Abstand 3 Wochen</span></span><span class="tm">60 Min.</span><span class="pr">40 €</span></li>
+          <li><span class="nm">Wimpernlifting und Färben<span class="ds">Ohne Verlängerung</span></span><span class="tm">60 Min.</span><span class="pr">40 €</span></li>
+          <li><span class="nm">Gesichtsbehandlung für Männer<span class="ds">Reinigung und Augenbrauen</span></span><span class="tm">60 Min.</span><span class="pr">45 €</span></li>
+          <li><span class="nm">Gesichtshaarentfernung mit Wachs<span class="ds">Oberlippe und Kinn</span></span><span class="tm">20 Min.</span><span class="pr">12 €</span></li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3>Maniküre und Pediküre<span>Fräse mit Absaugung</span></h3>
+        <ul class="plist">
+          <li><span class="nm">Japanische Maniküre<span class="ds">Ohne Lack, mit Polieren</span></span><span class="tm">45 Min.</span><span class="pr">25 €</span></li>
+          <li><span class="nm">Gelnägel, neues Set<span class="ds">Inklusive Formen</span></span><span class="tm">90 Min.</span><span class="pr">45 €</span></li>
+          <li><span class="nm">Auffüllen der Gelnägel<span class="ds">Empfohlener Abstand 3 Wochen</span></span><span class="tm">75 Min.</span><span class="pr">35 €</span></li>
+          <li><span class="nm">Klassische Pediküre<span class="ds">Inklusive Fußbad und Massage</span></span><span class="tm">60 Min.</span><span class="pr">32 €</span></li>
+          <li><span class="nm">Gellack auftragen<span class="ds">Auf den Naturnagel</span></span><span class="tm">45 Min.</span><span class="pr">22 €</span></li>
+          <li><span class="nm">Gel oder Gellack entfernen<span class="ds">Ohne weitere Leistung</span></span><span class="tm">30 Min.</span><span class="pr">12 €</span></li>
+          <li><span class="nm">Paraffinbad für die Hände<span class="ds">Als Ergänzung zur Maniküre</span></span><span class="tm">20 Min.</span><span class="pr">10 €</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="subhead rev">
+      <h3>Pakete zum Vorteilspreis</h3>
+      <p>Zwei Leistungen nacheinander in einem Termin, an einem Ort.</p>
+    </div>
+
+    <div class="pkgs">
+      <div class="pkg rev">
+        <h3>Schnitt und Farbe</h3>
+        <p class="in">Damenschnitt mit Föhnen und Ansatzfärbung bis 3 cm. Passt zur regelmäßigen Auffrischung der Farbe.</p>
+        <p class="pr">85 € <span class="was">93 €</span></p>
+        <p class="dur">Zusammen 120 Minuten</p>
+      </div>
+      <div class="pkg rev">
+        <h3>Haut und Augenbrauen</h3>
+        <p class="in">Tiefenreinigung der Haut mit Gesichtsmassage und danach Augenbrauen zupfen und färben.</p>
+        <p class="pr">60 € <span class="was">66 €</span></p>
+        <p class="dur">Zusammen 100 Minuten</p>
+      </div>
+      <div class="pkg rev">
+        <h3>Hände und Füße</h3>
+        <p class="in">Japanische Maniküre und klassische Pediküre mit Fußbad und Fußmassage.</p>
+        <p class="pr">52 € <span class="was">57 €</span></p>
+        <p class="dur">Zusammen 105 Minuten</p>
+      </div>
+    </div>
+
+    <div class="pnote">
+      <p>Zahlung mit Karte, bar, mit Gutschein oder per Überweisung auf Rechnung. Einen Beleg bekommen Sie zu jeder Zahlung.</p>
+      <p>Einen Termin können Sie bis 24 Stunden vorher kostenlos absagen oder verschieben. Für lange Haare und für einen Samstagstermin berechnen wir keinen Aufschlag.</p>
+      <p>Hinweis zur Saison: Von Mitte November bis Weihnachten und im Mai sind die Termine bis zu drei Wochen im Voraus vergeben. An Feiertagen haben wir geschlossen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== PRIEBEH NÁVŠTEVY ====================== -->
+<section class="sec sec--ink" id="priebeh">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Ablauf des Besuchs</p>
+      <h2>Wie ein Besuch abläuft</h2>
+      <p class="lead">Denselben Ablauf halten wir beim Schneiden, beim Färben und bei der Gesichtsbehandlung ein. So wissen Sie, wie viel Zeit Sie einplanen müssen.</p>
+    </div>
+
+    <ol class="steps">
+      <li class="rev">
+        <p class="no">01</p>
+        <h3>Beratung</h3>
+        <p>Wir schauen uns den Zustand von Haar oder Haut an und einigen uns auf das Ergebnis. Den Preis sagen wir Ihnen vor dem Beginn.</p>
+        <span class="dur">10 Minuten</span>
+      </li>
+      <li class="rev">
+        <p class="no">02</p>
+        <h3>Vorbereitung</h3>
+        <p>Haarwäsche mit Kopfmassage oder Hautdiagnose. Beim Färben mischen wir den Farbton erst vor Ort.</p>
+        <span class="dur">15 Minuten</span>
+      </li>
+      <li class="rev">
+        <p class="no">03</p>
+        <h3>Leistung</h3>
+        <p>Die Dauer hängt von der gewählten Leistung ab. Kaffee, Tee und Wasser füllen wir nach.</p>
+        <span class="dur">30 bis 180 Minuten</span>
+      </li>
+      <li class="rev">
+        <p class="no">04</p>
+        <h3>Styling und Empfehlungen</h3>
+        <p>Wir zeigen Ihnen, wie Sie die Frisur zu Hause hinbekommen, und nennen den Termin zum Auffrischen der Farbe oder zum Auffüllen des Gels.</p>
+        <span class="dur">10 Minuten</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ====================== PRIESTOR A TÍM ====================== -->
+<section class="sec" id="priestor">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Raum</p>
+      <h2>Der Salon hat drei Arbeitsplätze</h2>
+      <p class="lead">Der Friseurbereich mit zwei Stühlen, eine getrennte Kosmetikkabine und ein Tisch für die Maniküre. Jeder Arbeitsplatz hat seinen eigenen Zeitplan, deshalb lassen sich auch zwei Leistungen nacheinander buchen.</p>
+    </div>
+
+    <div class="rooms">
+      <article class="room rev">
+        <!-- FOTO: kadernícka časť, dve kreslá a zrkadlá, denné svetlo od okna -->
+        <figure class="obraz obraz--sirka">
+        <div class="art art--room art--grid">
+          <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1">
+              <circle cx="330" cy="272" r="60"/><circle cx="330" cy="272" r="104"/><circle cx="330" cy="272" r="150"/>
+            </g>
+            <path d="M0 96h400" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+          </svg>
+          <div class="art__body">
+            <p class="art__eyebrow">Arbeitsplatz 01</p>
+            <p class="art__num">2<span>Stühle</span></p>
+          </div>
+        </div>
+        </figure>
+        <h3>Friseurbereich</h3>
+        <p>Zwei Waschplätze mit klappbarer Nackenstütze und Massagekopf. Zwischen den Stühlen ist Platz für einen Kinderwagen.</p>
+      </article>
+
+      <article class="room rev">
+        <!-- FOTO: kozmetická kabínka, polohovacie lehátko a lupa s osvetlením -->
+        <figure class="obraz obraz--sirka">
+        <div class="art art--room art--hatch">
+          <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1">
+              <rect x="196" y="-40" width="230" height="230" transform="rotate(18 311 75)"/>
+              <rect x="236" y="0" width="150" height="150" transform="rotate(18 311 75)"/>
+            </g>
+            <path d="M0 250h400" stroke="#7A3E52" stroke-opacity=".22" stroke-width="1"/>
+          </svg>
+          <div class="art__body">
+            <p class="art__eyebrow">Arbeitsplatz 02</p>
+            <p class="art__num">1<span>Kabine mit Tür</span></p>
+          </div>
+        </div>
+        </figure>
+        <h3>Kosmetikkabine</h3>
+        <p>Ein eigener Raum mit verstellbarer Liege und beleuchteter Lupe. In die Kabine sieht man vom Wartebereich nicht hinein.</p>
+      </article>
+
+      <article class="room rev">
+        <!-- FOTO: stôl na manikúru s frézkou a odsávaním, kreslo na pedikúru v pozadí -->
+        <figure class="obraz obraz--sirka">
+        <div class="art art--room art--dots">
+          <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M-20 210C90 120 220 300 420 170" fill="none" stroke="#7A3E52" stroke-opacity=".22" stroke-width="1"/>
+            <path d="M-20 250C90 160 220 340 420 210" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            <circle cx="70" cy="70" r="46" fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1"/>
+          </svg>
+          <div class="art__body">
+            <p class="art__eyebrow">Arbeitsplatz 03</p>
+            <p class="art__num">1<span>Tisch mit Absaugung</span></p>
+          </div>
+        </div>
+        </figure>
+        <h3>Maniküre und Pediküre</h3>
+        <p>Fräse mit Staubabsaugung und ein eigener Stuhl für die Pediküre mit Fußbad.</p>
+      </article>
+    </div>
+
+    <div class="cols cols--2 rev" style="margin-top:clamp(38px,5vw,60px)">
+      <div class="col">
+        <h3>Material und Hygiene</h3>
+        <ul>
+          <li>Die Farben mischen wir vor Ort aus einer Profiserie</li>
+          <li>Die Werkzeuge sterilisieren wir nach jedem Gast</li>
+          <li>Einmalfeilen und Einmalunterlagen</li>
+          <li>Die Fräse hat eine Staubabsaugung</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>Komfort während des Besuchs</h3>
+        <ul>
+          <li>Kaffee, Tee und Wasser sind inklusive</li>
+          <li>WLAN, das Passwort bekommen Sie an der Rezeption</li>
+          <li>Garderobe und ein abschließbares Fach für den Mantel</li>
+          <li>Für Begleitung gibt es einen eigenen Platz neben dem Stuhl</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== TÍM ====================== -->
+<section class="sec sec--paper" id="tim">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Team</p>
+      <h2>Wer im Salon arbeitet und wann</h2>
+      <p class="lead">Fünf Leute, drei Arbeitsplätze. Bei jedem steht, was er macht und an welchen Tagen Sie ihn im Salon finden. Wenn Sie zu einer bestimmten Person möchten, schreiben Sie es bei der Buchung in die Anmerkung.</p>
+    </div>
+
+    <div class="team">
+      <article class="member rev">
+        <!-- FOTO: portrét Kataríny v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">K</p></div>
+          </div>
+        </figure>
+        <h3>Katharina</h3>
+        <p class="role">Friseurin</p>
+        <p>Färben, Strähnen und Balayage. Für Blondierung und neue Farbe planen Sie bei ihr drei Stunden ein.</p>
+        <p class="dni">Montag bis Donnerstag</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Termin bei Katharina buchen">Buchen</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Zuzany v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">S</p></div>
+          </div>
+        </figure>
+        <h3>Susanne</h3>
+        <p class="role">Friseurin</p>
+        <p>Damenschnitte und festliche Frisuren. Am Hochzeitsmorgen fängt sie auch um sieben an.</p>
+        <p class="dni">Dienstag, Mittwoch, Freitag und Samstag</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Termin bei Susanne buchen">Buchen</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Michala v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">M</p></div>
+          </div>
+        </figure>
+        <h3>Michael</h3>
+        <p class="role">Friseur</p>
+        <p>Herren- und Kinderschnitte, Bartpflege mit dem Rasiermesser und heißem Tuch.</p>
+        <p class="dni">Montag, Donnerstag und Freitag</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Termin bei Michael buchen">Buchen</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Ivany v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">I</p></div>
+          </div>
+        </figure>
+        <h3>Iris</h3>
+        <p class="role">Kosmetikerin</p>
+        <p>Hautreinigung, Behandlung mit Säuren und Wimpern in der eigenen Kabine.</p>
+        <p class="dni">Montag, Mittwoch und Freitag</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Termin bei Iris buchen">Buchen</a>
+      </article>
+
+      <article class="member rev">
+        <!-- FOTO: portrét Lenky v salóne, rovnaké svetlo a pozadie ako pri ostatných -->
+        <figure class="obraz obraz--vyska">
+          <div class="art art--hatch">
+            <svg class="art__geo" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <circle cx="160" cy="150" r="86" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+              <circle cx="160" cy="150" r="126" fill="none" stroke="#7A3E52" stroke-opacity=".16" stroke-width="1"/>
+              <path d="M0 268h320" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+            </svg>
+            <div class="art__body"><p class="art__ini">L</p></div>
+          </div>
+        </figure>
+        <h3>Lena</h3>
+        <p class="role">Nageldesignerin</p>
+        <p>Gelnägel, japanische Maniküre und Pediküre am Tisch mit Absaugung.</p>
+        <p class="dni">Dienstag bis Samstag</p>
+        <a class="btn btn--line btn--sm btn--wide" href="#objednanie" aria-label="Termin bei Lena buchen">Buchen</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== NAŠA PRÁCA ====================== -->
+<section class="sec" id="galeria">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Unsere Arbeit</p>
+      <h2>Vorher und nachher, mit Zeit und Preis</h2>
+      <p class="lead">Die Fotos sind aus diesem Salon und von diesen Stühlen. Bei jedem steht, was gemacht wurde, wie lange es gedauert hat und was es laut Preisliste gekostet hat.</p>
+    </div>
+
+    <div class="gal">
+      <!-- FOTO: pred a po odfarbení, rovnaký uhol a rovnaké svetlo na oboch záberoch -->
+      <figure class="obraz obraz--sirka rev">
+        <div class="art art--grid">
+          <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M200 0v250" stroke="#241C22" stroke-opacity=".14" stroke-width="1"/>
+            <rect x="200" y="0" width="200" height="250" fill="#241C22" fill-opacity=".035"/>
+            <circle cx="300" cy="124" r="58" fill="none" stroke="#7A3E52" stroke-opacity=".2" stroke-width="1"/>
+          </svg>
+          <div class="art__body">
+            <p class="prepo"><span>Vorher</span><span>Nachher</span></p>
+            <p class="art__title">Blondierung und neue Farbe<span>180 Minuten im Stuhl</span></p>
+          </div>
+        </div>
+        <figcaption class="obraz__cap"><b>Von Schwarz auf dunkles Kastanienbraun</b>Die Farbe aus der Drogerie musste zuerst herausblondiert werden. Drei Stunden, 120 € laut Preisliste, ein zweiter Termin war nicht nötig.</figcaption>
+      </figure>
+
+      <!-- FOTO: pred a po melíre, rovnaký uhol a rovnaké svetlo na oboch záberoch -->
+      <figure class="obraz obraz--sirka rev">
+        <div class="art art--hatch">
+          <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M200 0v250" stroke="#241C22" stroke-opacity=".14" stroke-width="1"/>
+            <rect x="200" y="0" width="200" height="250" fill="#241C22" fill-opacity=".035"/>
+            <g fill="none" stroke="#7A3E52" stroke-opacity=".2" stroke-width="1">
+              <path d="M244 0v250M300 0v250M356 0v250"/>
+            </g>
+          </svg>
+          <div class="art__body">
+            <p class="prepo"><span>Vorher</span><span>Nachher</span></p>
+            <p class="art__title">Strähnen und Tönung<span>150 Minuten im Stuhl</span></p>
+          </div>
+        </div>
+        <figcaption class="obraz__cap"><b>Herausgewachsene Strähnen nach einem halben Jahr</b>Neue Strähnen und Tönung in einen kühlen Farbton. Zweieinhalb Stunden, 95 €, die Tönung ist im Preis der Leistung.</figcaption>
+      </figure>
+
+      <!-- FOTO: pred a po hĺbkovom čistení pleti, rovnaký uhol a rovnaké svetlo -->
+      <figure class="obraz obraz--sirka rev">
+        <div class="art art--dots">
+          <svg class="art__geo" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M200 0v250" stroke="#241C22" stroke-opacity=".14" stroke-width="1"/>
+            <rect x="200" y="0" width="200" height="250" fill="#241C22" fill-opacity=".035"/>
+            <circle cx="300" cy="110" r="34" fill="none" stroke="#7A3E52" stroke-opacity=".22" stroke-width="1"/>
+            <circle cx="300" cy="110" r="70" fill="none" stroke="#241C22" stroke-opacity=".1" stroke-width="1"/>
+          </svg>
+          <div class="art__body">
+            <p class="prepo"><span>Vorher</span><span>Nachher</span></p>
+            <p class="art__title">Tiefenreinigung der Haut<span>75 Minuten in der Kabine</span></p>
+          </div>
+        </div>
+        <figcaption class="obraz__cap"><b>Verstopfte Poren an Nase und Kinn</b>Reinigung mit Gesichtsmassage für 48 €. Das Nachher-Foto haben wir erst zwei Tage später gemacht, als die Rötung weg war.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== RECENZIE ====================== -->
+<section class="sec sec--ink" id="recenzie">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Bewertungen</p>
+      <h2>Was Gäste uns nach dem Besuch geschrieben haben</h2>
+      <p class="lead">Wir wählen die aus, die von einer konkreten Leistung, einem Preis oder einem Termin sprechen.</p>
+    </div>
+
+    <div class="quotes">
+      <figure class="quote rev">
+        <blockquote>Ich habe über die Seite für Freitag 15:00 Uhr gebucht und saß um 15:00 Uhr im Stuhl. Die Blondierung hat drei Stunden gedauert, genau so, wie sie es bei der Beratung gesagt haben.</blockquote>
+        <figcaption><b>Monika</b>Blondierung und neue Farbe, 120 €</figcaption>
+      </figure>
+      <figure class="quote rev">
+        <blockquote>Den Preis haben sie mir vor dem Beginn gesagt und am Ende habe ich genau diese Summe bezahlt. Für lange Haare kam nichts obendrauf.</blockquote>
+        <figcaption><b>Veronika</b>Ansatzfärbung mit Föhnen, 55 €</figcaption>
+      </figure>
+      <figure class="quote rev">
+        <blockquote>Ich habe den Termin einen Tag vorher telefonisch abgesagt und es wurde nichts berechnet. Einen neuen haben sie mir gleich im selben Gespräch angeboten.</blockquote>
+        <figcaption><b>Peter</b>Herrenschnitt und Bartpflege, 34 €</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== OTVÁRACIE HODINY ====================== -->
+<section class="sec sec--paper" id="hodiny">
+  <div class="wrap hours">
+    <div class="rev">
+      <p class="eyebrow">Öffnungszeiten</p>
+      <h2>Wann der Salon geöffnet ist</h2>
+      <p class="status" id="openStatus" hidden><span class="dot" aria-hidden="true"></span><span id="openStatusText"></span></p>
+      <div class="tablewrap">
+        <table class="htab" id="hoursTable">
+          <caption class="skip">Öffnungszeiten des Salons</caption>
+          <tbody>
+            <tr data-day="1"><th scope="row">Montag</th><td>9:00 – 19:00</td></tr>
+            <tr data-day="2"><th scope="row">Dienstag</th><td>9:00 – 19:00</td></tr>
+            <tr data-day="3"><th scope="row">Mittwoch</th><td>9:00 – 19:00</td></tr>
+            <tr data-day="4"><th scope="row">Donnerstag</th><td>9:00 – 19:00</td></tr>
+            <tr data-day="5"><th scope="row">Freitag</th><td>9:00 – 19:00</td></tr>
+            <tr data-day="6"><th scope="row">Samstag</th><td>9:00 – 14:00</td></tr>
+            <tr data-day="0"><th scope="row">Sonntag</th><td class="off">geschlossen</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lead" style="margin-top:22px">Den letzten Termin beginnen wir eine Stunde vor Schließung. Eine frühere oder spätere Zeit schreiben Sie bei der Buchung in die Anmerkung, an ruhigeren Tagen lässt sich das einrichten.</p>
+      <p class="lead">An Feiertagen haben wir geschlossen. Änderungen vor Weihnachten und im Sommer schreiben wir in die sozialen Netze und hierher, in diese Tabelle.</p>
+    </div>
+
+    <div class="infobox rev">
+      <h3 style="margin-bottom:16px">Vor dem Besuch</h3>
+      <ul class="infolist">
+        <li>
+          <span class="lb">Anreise</span>
+          <span>Kommen Sie fünf Minuten vor dem Termin, damit wir die Beratung schaffen.</span>
+        </li>
+        <li>
+          <span class="lb">Terminänderung</span>
+          <span>Absage und Verschieben sind bis 24 Stunden vorher kostenlos.</span>
+        </li>
+        <li>
+          <span class="lb">Farbwechsel</span>
+          <span>Für einen deutlichen Farbwechsel planen Sie drei Stunden ein.<span class="sub">Blondierung und neue Farbe gehen nicht schneller.</span></span>
+        </li>
+        <li>
+          <span class="lb">Allergietest</span>
+          <span>Vor dem ersten Färben machen wir ihn 48 Stunden vorher.<span class="sub">Er dauert fünf Minuten und ist kostenlos.</span></span>
+        </li>
+        <li>
+          <span class="lb">Parken</span>
+          <span>Bewirtschaftete Plätze vor dem Haus, die erste Stunde mit Parkscheibe frei.</span>
+        </li>
+        <li>
+          <span class="lb">Telefon</span>
+          <span><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span class="sub">Wenn Sie sich verspäten oder es nicht schaffen, rufen Sie an, dann verschieben wir den Termin.</span></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== OBJEDNANIE ====================== -->
+<section class="sec" id="objednanie">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Terminvereinbarung</p>
+      <h2>Wählen Sie Leistungen, Tag und Uhrzeit</h2>
+      <p class="lead">Die Zusammenfassung unter der Auswahl rechnet laufend Preis und Gesamtdauer aus. Bezahlt wird erst im Salon.</p>
+    </div>
+
+    <form id="bookForm" novalidate>
+      <div id="bookLive">
+
+        <div class="step">
+          <p class="step__n">Schritt 1</p>
+          <h3>Auswahl der Leistungen</h3>
+          <p class="step__hint">Sie können auch mehrere Leistungen auf einmal wählen, die Zeiten addieren sich. Wenn eine Leistung aus der Preisliste in der Auswahl fehlt, schreiben Sie sie in Schritt 4 in die Anmerkung.</p>
+
+          <div class="svcgrid">
+            <div>
+              <h4>Schneiden und Styling</h4>
+              <div class="opt"><input type="checkbox" id="s1" data-price="38" data-min="45" data-name="Damenschnitt mit Föhnen"><label for="s1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Damenschnitt mit Föhnen</span><span class="p">38 €</span><span class="m">45 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s2" data-price="22" data-min="30" data-name="Herrenschnitt"><label for="s2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Herrenschnitt</span><span class="p">22 €</span><span class="m">30 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s3" data-price="55" data-min="60" data-name="Festliche Frisur"><label for="s3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Festliche Frisur</span><span class="p">55 €</span><span class="m">60 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s4" data-price="25" data-min="30" data-name="Aufbaubehandlung für das Haar"><label for="s4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Aufbaubehandlung für das Haar</span><span class="p">25 €</span><span class="m">30 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s17" data-price="12" data-min="15" data-name="Bart- und Schnurrbartpflege"><label for="s17"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Bart und Schnurrbart</span><span class="p">12 €</span><span class="m">15 Minuten</span></label></div>
+            </div>
+
+            <div>
+              <h4>Färben</h4>
+              <div class="opt"><input type="checkbox" id="s5" data-price="55" data-min="90" data-name="Ansatzfärbung"><label for="s5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Ansatzfärbung</span><span class="p">55 €</span><span class="m">90 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s6" data-price="95" data-min="150" data-from="1" data-name="Strähnen oder Balayage"><label for="s6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Strähnen oder Balayage</span><span class="p">ab 95 €</span><span class="m">150 Minuten, den genauen Preis legen wir bei der Beratung fest</span></label></div>
+              <div class="opt"><input type="checkbox" id="s7" data-price="42" data-min="60" data-name="Tönung"><label for="s7"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Tönung</span><span class="p">42 €</span><span class="m">60 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s8" data-price="68" data-min="120" data-name="Färben der ganzen Länge"><label for="s8"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Färben der ganzen Länge</span><span class="p">68 €</span><span class="m">120 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s18" data-price="40" data-min="60" data-name="Tönung für graues Haar"><label for="s18"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Tönung für graues Haar</span><span class="p">40 €</span><span class="m">60 Minuten</span></label></div>
+            </div>
+
+            <div>
+              <h4>Kosmetik</h4>
+              <div class="opt"><input type="checkbox" id="s9" data-price="48" data-min="75" data-name="Tiefenreinigung der Haut"><label for="s9"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Tiefenreinigung der Haut</span><span class="p">48 €</span><span class="m">75 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s10" data-price="55" data-min="60" data-name="Behandlung mit Säuren"><label for="s10"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Behandlung mit Säuren</span><span class="p">55 €</span><span class="m">60 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s11" data-price="18" data-min="30" data-name="Augenbrauen zupfen und färben"><label for="s11"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Augenbrauen zupfen und färben</span><span class="p">18 €</span><span class="m">30 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s12" data-price="65" data-min="90" data-name="Wimpernverlängerung"><label for="s12"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Wimpernverlängerung</span><span class="p">65 €</span><span class="m">90 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s19" data-price="40" data-min="60" data-name="Wimpernlifting und Färben"><label for="s19"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Wimpernlifting und Färben</span><span class="p">40 €</span><span class="m">60 Minuten</span></label></div>
+            </div>
+
+            <div>
+              <h4>Maniküre und Pediküre</h4>
+              <div class="opt"><input type="checkbox" id="s13" data-price="25" data-min="45" data-name="Japanische Maniküre"><label for="s13"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Japanische Maniküre</span><span class="p">25 €</span><span class="m">45 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s14" data-price="45" data-min="90" data-name="Gelnägel, neues Set"><label for="s14"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Gelnägel, neues Set</span><span class="p">45 €</span><span class="m">90 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s15" data-price="35" data-min="75" data-name="Auffüllen der Gelnägel"><label for="s15"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Auffüllen der Gelnägel</span><span class="p">35 €</span><span class="m">75 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s16" data-price="32" data-min="60" data-name="Klassische Pediküre"><label for="s16"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Klassische Pediküre</span><span class="p">32 €</span><span class="m">60 Minuten</span></label></div>
+              <div class="opt"><input type="checkbox" id="s20" data-price="22" data-min="45" data-name="Gellack auftragen"><label for="s20"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span><span class="t">Gellack auftragen</span><span class="p">22 €</span><span class="m">45 Minuten</span></label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="daytime">
+          <div class="step">
+            <p class="step__n">Schritt 2</p>
+            <h3>Tag</h3>
+            <p class="step__hint">Sonntags ist geschlossen, deshalb lässt sich der Tag nicht wählen.</p>
+
+            <div class="calhead">
+              <strong id="calLabel">&nbsp;</strong>
+              <div class="calnav">
+                <button type="button" id="calPrev" aria-label="Voriger Monat"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>
+                <button type="button" id="calNext" aria-label="Nächster Monat"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+              </div>
+            </div>
+            <div class="cal" id="cal" role="group" aria-label="Tag wählen">
+              <div class="dow">Mo</div><div class="dow">Di</div><div class="dow">Mi</div><div class="dow">Do</div><div class="dow">Fr</div><div class="dow">Sa</div><div class="dow">So</div>
+            </div>
+            <noscript><p class="emptynote" style="margin-top:14px">Der Kalender braucht eingeschaltetes JavaScript. Schreiben Sie Ihren Wunschtermin in die Anmerkung oder rufen Sie im Salon an.</p></noscript>
+          </div>
+
+          <div class="step">
+            <p class="step__n">Schritt 3</p>
+            <h3>Uhrzeit</h3>
+            <p class="step__hint">Durchgestrichene Zeiten sind vergeben.</p>
+            <div class="slots" id="slots"></div>
+            <p class="emptynote" id="slotsEmpty">Wählen Sie zuerst in Schritt 2 einen Tag.</p>
+          </div>
+        </div>
+
+        <!-- Súhrn: vodorovný pás cez celú šírku -->
+        <div class="sum" aria-live="polite">
+          <div class="sum__col">
+            <h4>Gewählte Leistungen</h4>
+            <ul class="sumlist" id="sumList"></ul>
+            <p class="sumtxt" id="sumEmpty">Es ist noch keine Leistung gewählt.</p>
+          </div>
+          <div class="sum__col">
+            <h4>Termin</h4>
+            <p class="sumbig" id="sumWhen">Nicht gewählt</p>
+          </div>
+          <div class="sum__col">
+            <h4>Gesamtpreis</h4>
+            <p class="sumval" id="sumTotal">0 €</p>
+            <p class="sumdur" id="sumDur">0 Minuten</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <p class="step__n">Schritt 4</p>
+          <h3>Kontaktdaten</h3>
+          <p class="step__hint">Die Bestätigung des Termins schicken wir per SMS.</p>
+
+          <div class="fields">
+            <div class="field">
+              <label for="fname">Vor- und Nachname</label>
+              <input type="text" id="fname" name="meno" autocomplete="name" placeholder="Vor- und Nachname">
+            </div>
+            <div class="field">
+              <label for="fphone">Telefon</label>
+              <input type="tel" id="fphone" name="telefon" autocomplete="tel" placeholder="+49">
+            </div>
+            <div class="field field--full">
+              <label for="fnote">Hinweis</label>
+              <textarea id="fnote" name="poznamka" placeholder="Zum Beispiel der Wunsch nach einer bestimmten Uhrzeit oder nach einer bestimmten Friseurin"></textarea>
+            </div>
+          </div>
+
+          <p class="err" id="formErr" hidden></p>
+
+          <div class="submitrow">
+            <button class="btn" type="submit">Buchung senden</button>
+            <p class="legal">Dies ist eine Beispiel-Website. Das Formular sendet nichts, und es werden keine Daten gespeichert.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="done" id="doneBox" hidden>
+        <h3 id="doneTitle" tabindex="-1">Die Buchung ist fertig</h3>
+        <p>Auf einer echten Website wäre jetzt die Bestätigung auf Ihr Telefon gegangen und der Termin stünde im Kalender des Salons.</p>
+        <dl class="recap" id="doneRecap"></dl>
+        <p class="done__note">Das ist eine Beispiel-Website, es wurde nichts abgeschickt. Wollen Sie so eine Website für Ihren Betrieb? Den Kontakt zum Autor finden Sie <a href="#autor">am Ende der Seite</a>.</p>
+        <button class="btn btn--line" type="button" id="againBtn">Noch einmal ausprobieren</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ====================== POUKAZY A SKUPINY ====================== -->
+<section class="sec sec--ink" id="poukazy">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Gutscheine und Gruppen</p>
+      <h2>Gutschein, Hochzeitsmorgen und Firmenbuchungen</h2>
+      <p class="lead">Außer den normalen Terminen machen wir auch Gutscheine und größere Buchungen außerhalb der Öffnungszeiten. Die sprechen wir telefonisch oder über das Formular auf dieser Seite ab.</p>
+    </div>
+
+    <div class="split">
+      <div>
+        <div class="blk rev">
+          <h3>Geschenkgutschein</h3>
+          <p>Den Gutschein stellen wir über 30, 50 oder 80 € aus, wahlweise auch für eine bestimmte Leistung aus der Preisliste. Er gilt drei Jahre ab dem Ende des Jahres, in dem er ausgestellt wurde.</p>
+          <p>Sie bekommen ihn sofort im Salon, auf Wunsch legen wir ihn für einen vereinbarten Tag bereit. Ist der Wert des Gutscheins niedriger als der Preis der Leistung, zahlen Sie die Differenz vor Ort dazu.</p>
+        </div>
+        <div class="blk rev">
+          <h3>Hochzeitsmorgen und Gruppen</h3>
+          <p>Ab drei Personen öffnen wir den Salon auch außerhalb der Öffnungszeiten, auch sonntags. Frisuren und Make-up machen wir nacheinander in der abgesprochenen Reihenfolge.</p>
+          <p>Eine Gruppenbuchung bestätigen wir mit 20 € Anzahlung, die vom Endpreis abgezogen wird. Absagen muss man spätestens 48 Stunden vorher.</p>
+        </div>
+        <div class="blk rev">
+          <h3>Firmenbestellungen</h3>
+          <p>Gutscheine für Mitarbeiter bereiten wir auf einmal vor und rechnen sie mit einer Rechnung ab. Auf Wunsch liefern wir sie in Umschlägen mit Namen.</p>
+          <p>Für Firmen aus der Nachbarschaft machen wir auch kürzere Termine in der Mittagspause, nach Absprache zu einer festen Zeit.</p>
+        </div>
+      </div>
+
+      <div class="art art--dark art--hatch art--gift rev">
+        <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="#C8BDB0" stroke-opacity=".2" stroke-width="1">
+            <circle cx="60" cy="286" r="70"/><circle cx="60" cy="286" r="120"/><circle cx="60" cy="286" r="172"/>
+          </g>
+          <path d="M0 74h400" stroke="#C8BDB0" stroke-opacity=".24" stroke-width="1"/>
+          <path d="M0 82h400" stroke="#7A3E52" stroke-opacity=".6" stroke-width="1"/>
+        </svg>
+        <div class="art__body">
+          <p class="art__eyebrow">Geschenkgutschein</p>
+          <p class="art__num">30 · 50 · 80 €<span>oder für eine bestimmte Leistung</span></p>
+          <p class="art__foot">Gültig drei Jahre. Stellen wir sofort aus.</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin:clamp(30px,4vw,44px) 0 0"><a class="btn btn--light" href="#kontakt">Gutschein oder Gruppe vereinbaren</a></p>
+  </div>
+</section>
+
+<!-- ====================== AKO SA K NÁM DOSTANETE ====================== -->
+<section class="sec" id="doprava">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Anfahrt</p>
+      <h2>Anfahrt, Parken und Eingang zum Salon</h2>
+      <p class="lead">Der Salon liegt in der Birkenstraße, ein Stück vom Markt entfernt. Der Eingang ist im Hof, nicht von der Straße, deshalb schreiben wir hier auch das hin, was man am Gebäude nicht sieht.</p>
+    </div>
+
+    <div class="cols">
+      <div class="col rev">
+        <h3>Mit dem Auto und Parken</h3>
+        <ul>
+          <li>Vor dem Haus sind bewirtschaftete Plätze, die erste Stunde ist mit Parkscheibe frei</li>
+          <li>Jede weitere Stunde kostet 0,50 €, gezahlt wird am Automaten an der Ecke</li>
+          <li>Nach 18:00 Uhr und am Wochenende ist das Parken frei</li>
+          <li>Ein größerer Parkplatz liegt in der Weinstraße, etwa 150 Meter zu Fuß</li>
+        </ul>
+      </div>
+      <div class="col rev">
+        <h3>Mit dem Bus und zu Fuß</h3>
+        <ul>
+          <li>Die Haltestelle Markt ist drei Minuten zu Fuß entfernt</li>
+          <li>Von der Weinbauschule sind es etwa zehn Minuten zu Fuß über die Birkenstraße</li>
+          <li>Der Fahrradständer steht im Hof unter dem Vordach</li>
+          <li>Der Hof ist während der ganzen Öffnungszeiten offen</li>
+        </ul>
+      </div>
+      <div class="col rev">
+        <h3>Barrierefreier Zugang</h3>
+        <ul>
+          <li>Der Salon liegt im Erdgeschoss, der Eingang vom Hof ist stufenlos</li>
+          <li>Die Tür hat eine lichte Breite von 90 cm</li>
+          <li>Zwischen den Stühlen ist Platz, um mit dem Rollstuhl zu wenden</li>
+          <li>Die Toilette ist nicht barrierefrei, nach Absprache helfen wir gern</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="split" style="margin-top:clamp(38px,5vw,58px)">
+      <div class="pnote rev" style="margin-top:0">
+        <p>Kommen Sie zum ersten Mal? Den Eingang finden Sie im Hof hinter dem Durchgang beim Blumenladen, nicht von der Straße. An der Tür hängt ein Schild mit dem Namen des Salons.</p>
+        <p>Wenn Sie sich verlaufen oder es nicht schaffen, rufen Sie an. Wir melden uns auch später am Tag, wenn wir zwischen zwei Terminen die Hände frei haben.</p>
+        <p>Lieferungen nehmen wir bis 9:00 Uhr im Hof an, damit wir keine Termine aufhalten.</p>
+      </div>
+
+      <div class="art art--addr art--grid rev">
+        <svg class="art__geo" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="#241C22" stroke-opacity=".12" stroke-width="1">
+            <path d="M0 214h400M262 0v320"/>
+          </g>
+          <g fill="none" stroke="#7A3E52" stroke-opacity=".26" stroke-width="1">
+            <circle cx="262" cy="214" r="26"/><circle cx="262" cy="214" r="58"/><circle cx="262" cy="214" r="96"/>
+          </g>
+          <path d="M0 300 400 60" stroke="#241C22" stroke-opacity=".07" stroke-width="1"/>
+        </svg>
+        <div class="art__body">
+          <p class="art__eyebrow">Wo Sie uns finden</p>
+          <p class="art__title">Birkenstraße 14<span>54470 Bernkastel-Kues, Erdgeschoss, Eingang im Hof hinter dem Durchgang beim Blumenladen.</span></p>
+          <p class="art__foot">Bewirtschaftete Plätze vor dem Haus, die erste Stunde mit Parkscheibe frei.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== PODMIENKY A PLATBA ====================== -->
+<section class="sec sec--paper" id="podmienky">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Bedingungen</p>
+      <h2>Zahlung, Storno und was wir vorher wissen sollten</h2>
+      <p class="lead">Kurz und ohne Kleingedrucktes. Wenn etwas zu Ihrem Termin nicht passt, sagen Sie es uns vorher, dann finden wir eine Lösung.</p>
+    </div>
+
+    <div class="cols">
+      <div class="col rev">
+        <h3>Zahlung</h3>
+        <p>Wir nehmen Karten und Bargeld, gezahlt wird nach der Behandlung. Einen Beleg bekommen Sie zu jeder Zahlung.</p>
+        <p>Eine Rechnung auf die Firma machen wir auf Wunsch, sagen Sie es einfach bei der Buchung. Trinkgeld ist freiwillig und nicht Teil des Preises.</p>
+      </div>
+      <div class="col rev">
+        <h3>Absage und Verspätung</h3>
+        <p>Absagen oder verschieben können Sie den Termin bis 24 Stunden vorher kostenlos, telefonisch oder per SMS.</p>
+        <p>Eine Verspätung bis 15 Minuten schaffen wir, dann kürzen wir die Behandlung eventuell. Bei mehr verschieben wir den Termin, damit der nächste Gast nicht warten muss.</p>
+      </div>
+      <div class="col rev">
+        <h3>Vor dem Färben</h3>
+        <p>Vor dem ersten Färben machen wir 48 Stunden vorher einen Allergietest. Er dauert fünf Minuten und ist kostenlos.</p>
+        <p>Sagen Sie uns, wenn Sie schwanger sind, stillen, Medikamente für die Haut nehmen oder sich die Haare zu Hause gefärbt haben. Das beeinflusst Ergebnis und Vorgehen.</p>
+      </div>
+      <div class="col rev">
+        <h3>Gruppen und Anzahlungen</h3>
+        <p>Eine Buchung ab drei Personen bestätigen wir mit 20 € Anzahlung. Wir ziehen sie vom Endpreis ab.</p>
+        <p>Einen Gruppentermin muss man spätestens 48 Stunden vorher absagen, sonst verfällt die Anzahlung als Ausgleich für die blockierte Zeit.</p>
+      </div>
+      <div class="col rev">
+        <h3>Kinder und Begleitung</h3>
+        <p>Kinder schneiden wir ab drei Jahren, der Kinderschnitt bis 12 Jahre hat seinen eigenen Preis.</p>
+        <p>Neben dem Stuhl ist Platz für eine Begleitperson. Eine Kinderecke haben wir nicht, aber Bücher und Buntstifte am Fenster schon.</p>
+      </div>
+      <div class="col rev">
+        <h3>Ihre Daten</h3>
+        <p>Aus der Buchung brauchen wir Name und Telefonnummer. Wir nutzen sie nur für die Bestätigung und die Erinnerung an den Termin und geben sie nirgendwohin weiter.</p>
+        <p>Das ist eine Beispiel-Website, deshalb werden hier keine Daten gespeichert oder verschickt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== STAROSTLIVOSŤ ====================== -->
+<section class="sec" id="starostlivost">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Pflege</p>
+      <h2>Wie das Ergebnis zwischen den Besuchen hält</h2>
+      <p class="lead">Dasselbe sagen wir Ihnen auch im Stuhl. Hier steht es geschrieben, damit Sie sich zu Hause nicht daran erinnern müssen.</p>
+    </div>
+
+    <div class="cols">
+      <div class="col rev">
+        <h3>Nach dem Färben</h3>
+        <p>Waschen Sie das erste Mal erst nach 48 Stunden. Bis dahin schließt sich die Farbe, ein früheres Shampoo spült ihr den Glanz heraus.</p>
+        <p>Waschen Sie mit lauwarmem Wasser, heißes öffnet die Schuppenschicht und die Farbe geht schneller heraus. Nehmen Sie ein Shampoo ohne Sulfate.</p>
+        <p>Chlorwasser und direkte Sonne verändern den Ton am meisten. Vor dem Schwimmbad und im Urlaub hilft ein Schutzspray.</p>
+      </div>
+      <div class="col rev">
+        <h3>Nach der Gesichtsbehandlung</h3>
+        <p>Schminken Sie sich die ersten 24 Stunden nicht. Die Haut ist durchblutet und die Poren sind offen, Make-up setzt sich sofort hinein.</p>
+        <p>Lassen Sie zwei Tage Sauna, Schwimmbad und anstrengenden Sport weg. Schweiß und Chlor reizen frisch gereinigte Haut.</p>
+        <p>Nach einer Behandlung mit Säuren tragen Sie Sonnenschutz, auch im Winter, sonst kommen die Pigmentflecken schneller zurück, als sie gegangen sind.</p>
+      </div>
+      <div class="col rev">
+        <h3>Nach Maniküre und Pediküre</h3>
+        <p>Ziehen Sie beim Putzen und Abwaschen Handschuhe an. Reinigungsmittel lösen den Glanz des Gellacks am schnellsten.</p>
+        <p>Benutzen Sie die Nägel nicht als Werkzeug zum Öffnen. Gel bricht durch Hebeln, nicht durch normales Tragen.</p>
+        <p>Nagelöl einmal täglich verlängert die Haltbarkeit um einige Tage und die Nägel wirken nicht ausgetrocknet.</p>
+      </div>
+    </div>
+
+    <div class="subhead rev">
+      <h3>Empfohlene Abstände</h3>
+      <p>Richtwerte. Wir passen sie daran an, wie Ihre Haare und Nägel wachsen.</p>
+    </div>
+
+    <div class="tablewrap rev">
+      <table class="itab">
+        <caption class="skip">Empfohlene Abstände zwischen den Besuchen und die Dauer des nächsten Termins</caption>
+        <thead>
+          <tr><th scope="col">Leistung</th><th scope="col">Abstand</th><th scope="col">Nächster Termin</th><th scope="col">Preis</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Damenschnitt mit Föhnen</th><td>6 bis 8 Wochen</td><td>45 Minuten</td><td>38 €</td></tr>
+          <tr><th scope="row">Herrenschnitt</th><td>3 bis 5 Wochen</td><td>30 Minuten</td><td>22 €</td></tr>
+          <tr><th scope="row">Ansatzfärbung</th><td>4 bis 6 Wochen</td><td>90 Minuten</td><td>55 €</td></tr>
+          <tr><th scope="row">Strähnen oder Balayage</th><td>3 bis 4 Monate</td><td>150 Minuten</td><td>ab 95 €</td></tr>
+          <tr><th scope="row">Tiefenreinigung der Haut</th><td>6 bis 8 Wochen</td><td>75 Minuten</td><td>48 €</td></tr>
+          <tr><th scope="row">Auffüllen der Wimpern</th><td>3 Wochen</td><td>60 Minuten</td><td>40 €</td></tr>
+          <tr><th scope="row">Auffüllen der Gelnägel</th><td>3 Wochen</td><td>75 Minuten</td><td>35 €</td></tr>
+          <tr><th scope="row">Klassische Pediküre</th><td>5 bis 7 Wochen</td><td>60 Minuten</td><td>32 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pnote rev">
+      <p>Den Termin für den nächsten Besuch können wir gleich beim Gehen eintragen. Einen Tag vorher schicken wir eine Erinnerung per SMS.</p>
+      <p>Die Produkte, mit denen wir arbeiten, verkaufen wir nicht. Gern sagen wir Ihnen, worauf Sie achten sollten und was Sie meiden können.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== ČASTÉ OTÁZKY ====================== -->
+<section class="sec" id="otazky">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Häufige Fragen</p>
+      <h2>Was Sie uns am häufigsten fragen</h2>
+      <p class="lead">Wenn Ihre Frage unten nicht dabei ist, rufen Sie an oder schreiben Sie. Wir antworten auch außerhalb der Öffnungszeiten, nur mit etwas Verzögerung.</p>
+    </div>
+
+    <div class="faq">
+      <div class="rev">
+        <h3>Muss ich vorher einen Termin buchen?</h3>
+        <p>Ja, wir arbeiten nur nach Termin. Wird kurzfristig einer frei, rufen wir die Leute an, die bei der Buchung in der Anmerkung darum gebeten haben.</p>
+      </div>
+      <div class="rev">
+        <h3>Was ist, wenn ich zu spät komme?</h3>
+        <p>Eine Verspätung bis 15 Minuten schaffen wir, dann kürzen wir die Behandlung eventuell. Bei mehr verschieben wir den Termin lieber, damit der nächste Gast nicht warten muss.</p>
+      </div>
+      <div class="rev">
+        <h3>Wie sage ich einen Termin ab oder verschiebe ihn?</h3>
+        <p>Rufen Sie an oder schicken Sie eine SMS. Bis 24 Stunden vor dem Termin ist die Änderung kostenlos und einen neuen Termin bieten wir Ihnen gleich im Gespräch an.</p>
+      </div>
+      <div class="rev">
+        <h3>Wie lange dauert ein deutlicher Farbwechsel?</h3>
+        <p>Bei Blondierung und neuer Farbe rechnen Sie mit drei Stunden. Wir möchten Sie ein paar Tage vorher zur Beratung sehen, um den Zustand des Haares zu beurteilen und einen realistischen Farbton zu vereinbaren.</p>
+      </div>
+      <div class="rev">
+        <h3>Machen Sie einen Allergietest?</h3>
+        <p>Vor dem ersten Färben ja. Wir machen ihn 48 Stunden vor dem Termin, er dauert fünf Minuten und ist kostenlos.</p>
+      </div>
+      <div class="rev">
+        <h3>Kann ich nur zur Beratung kommen?</h3>
+        <p>Ja. Die Haardiagnose dauert 20 Minuten und ist kostenlos. Buchen Sie sie wie einen normalen Termin, am Ende steht ein Pflegeplan.</p>
+      </div>
+      <div class="rev">
+        <h3>Kann ich eigene Farbe mitbringen?</h3>
+        <p>Mit Farbe aus der Drogerie arbeiten wir nicht, dafür können wir nicht geradestehen. Mit eigener Profifarbe ja, nach vorheriger Absprache und ohne Garantie für den Farbton.</p>
+      </div>
+      <div class="rev">
+        <h3>Zahlt man im Voraus?</h3>
+        <p>Nein, bezahlt wird erst nach der Behandlung im Salon. Die Ausnahme ist eine Gruppenbuchung ab drei Personen, dort nehmen wir 20 € Anzahlung.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== KARIÉRA ====================== -->
+<section class="sec sec--ink" id="kariera">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Karriere</p>
+      <h2>Wir suchen Verstärkung fürs Team</h2>
+      <p class="lead">Wir haben einen freien Stuhl und einen freien Platz in der Kabine. Wenn Ihnen das Handwerk Spaß macht und Sie in ruhigem Tempo arbeiten wollen, melden Sie sich.</p>
+    </div>
+
+    <div class="cols">
+      <div class="col rev">
+        <h3>Friseur oder Friseurin (m/w/d)</h3>
+        <p>Vollzeit, mindestens zwei Jahre Erfahrung. Eigener Stuhl, Material und Werkzeug zahlt der Salon.</p>
+        <p>Das Gehalt besteht aus einem festen Teil und einem Anteil am Umsatz, die konkreten Zahlen nennen wir im persönlichen Gespräch.</p>
+      </div>
+      <div class="col rev">
+        <h3>Kosmetikerin</h3>
+        <p>Teilzeit, drei Tage in der Woche, eigene Kabine ohne Teilen.</p>
+        <p>Die Arbeit mit Säuren und mit Wimpern können wir danach aufteilen, was Sie am liebsten machen.</p>
+      </div>
+      <div class="col rev">
+        <h3>Was Sie bei uns haben</h3>
+        <ul>
+          <li>Fester Dienstplan, sonntags und an Feiertagen frei</li>
+          <li>Eine bezahlte Fortbildung im Jahr</li>
+          <li>Material, Werkzeug und Arbeitskleidung</li>
+          <li>Die Termine führt die Rezeption, nicht Sie zwischen den Behandlungen</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="lead rev" style="margin-top:clamp(28px,3.5vw,40px);max-width:66ch">Schreiben Sie ein paar Sätze darüber, womit Sie sich beschäftigen, über das <a class="linklight" href="#kontakt">Formular auf dieser Seite</a>, oder rufen Sie an. Wir melden uns innerhalb einer Woche und vereinbaren eine Probearbeit direkt im Salon, die wir Ihnen wie eine normale Behandlung bezahlen.</p>
+    <p class="rev" style="margin:clamp(24px,3vw,34px) 0 0"><a class="btn btn--light" href="#kontakt">Dem Salon schreiben</a></p>
+  </div>
+</section>
+
+<!-- ====================== KONTAKT ====================== -->
+<section class="sec sec--paper" id="kontakt">
+  <div class="wrap">
+    <div class="sec__head rev">
+      <p class="eyebrow">Kontakt</p>
+      <h2>Adresse, Telefon und eine Nachricht an den Salon</h2>
+      <p class="lead">Der Salon liegt im Erdgeschoss, der Eingang ist im Hof. An Werktagen gehen wir zwischen den Behandlungen ans Telefon, sonst rufen wir bis zum Abend zurück.</p>
+    </div>
+
+    <div class="contact">
+      <div class="rev">
+        <ul class="infolist">
+          <li>
+            <span class="lb">Adresse</span>
+            <span>Birkenstraße 14, 54470 Bernkastel-Kues<span class="sub">Erdgeschoss, Eingang im Hof hinter dem Durchgang beim Blumenladen.</span></span>
+          </li>
+          <li>
+            <span class="lb">Telefon</span>
+            <span><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span class="sub">Anrufen oder SMS schreiben. Wenn wir nicht abnehmen, sind wir beim Gast und rufen zurück.</span></span>
+          </li>
+          <li>
+            <span class="lb">Öffnungszeiten</span>
+            <span>Montag bis Freitag 9:00 – 19:00 Uhr<span class="sub">Samstag 9:00 – 14:00 Uhr. Sonntag und Feiertage geschlossen.</span></span>
+          </li>
+          <li>
+            <span class="lb">Nachricht</span>
+            <span>Formular nebenan<span class="sub">Kommt ins Postfach des Salons, wir antworten innerhalb von 24 Stunden.</span></span>
+          </li>
+          <li>
+            <span class="lb">Terminbuchung</span>
+            <span><a href="#objednanie">Online auf dieser Seite</a><span class="sub">Sie wählen Leistungen, Tag und Uhrzeit und sehen gleich den Preis.</span></span>
+          </li>
+        </ul>
+
+        <h3 style="margin-top:clamp(30px,3.6vw,42px)">Neues und soziale Netze</h3>
+        <ul class="social">
+          <li><b>Instagram</b> — salonbirke, kurzfristig freie Termine stellen wir in die Storys</li>
+          <li><b>Facebook</b> — Salon Birke, dort schreiben wir Änderungen der Öffnungszeiten und Feiertage</li>
+          <li><b>Newsletter</b> — einmal pro Saison, anmelden können Sie sich an der Rezeption, abmelden mit einem Klick</li>
+        </ul>
+      </div>
+
+      <div class="rev">
+        <form class="cform" id="msgForm" novalidate>
+          <h3>Schreiben Sie uns</h3>
+          <p class="step__hint">Die Nachricht landet im Postfach des Salons. Wir antworten innerhalb von 24 Stunden, am Wochenende spätestens Montagfrüh. Wenn Sie einen Termin für morgen brauchen, rufen Sie lieber an.</p>
+
+          <div class="fields">
+            <div class="field">
+              <label for="kmeno">Vor- und Nachname</label>
+              <input type="text" id="kmeno" name="meno" autocomplete="name" placeholder="Vor- und Nachname">
+            </div>
+            <div class="field">
+              <label for="ktel">Telefon</label>
+              <input type="tel" id="ktel" name="telefon" autocomplete="tel" placeholder="Nummer, unter der wir Sie erreichen">
+            </div>
+            <div class="field field--full">
+              <label for="ksprava">Nachricht</label>
+              <textarea id="ksprava" name="sprava" placeholder="Schreiben Sie, welche Leistung Sie interessiert und wann Ihnen ein Termin passt"></textarea>
+            </div>
+          </div>
+
+          <p class="err" id="msgErr" hidden></p>
+
+          <div class="submitrow">
+            <button class="btn" type="submit">Nachricht senden</button>
+            <p class="legal">Das ist eine Beispiel-Website. Die Nachricht wird nirgendwohin geschickt und es werden keine Daten gespeichert.</p>
+          </div>
+
+          <p class="formdone" id="msgDone" hidden tabindex="-1">Danke, wir haben Ihre Nachricht. Auf einer echten Website wäre sie jetzt ins Postfach des Salons gegangen und die Antwort käme innerhalb von 24 Stunden.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== AUTOR UKÁŽKY ====================== -->
+<section class="sec sec--ink" id="autor" aria-labelledby="autorNadpis">
+  <div class="wrap author">
+    <div class="rev">
+      <p class="eyebrow">Über dieses Beispiel</p>
+      <h2 id="autorNadpis">Gefällt Ihnen diese Website?</h2>
+      <p class="lead">Der Salon Birke ist ein erfundenes Unternehmen. Diese Website hat Alex Poliak entworfen und programmiert, als Beispiel dafür, wie die Seite eines kleineren Betriebs aussehen kann. So eine Website baue ich auch für Sie — mit Ihren Inhalten, Ihren Leistungen und Ihren Farben.</p>
+      <p class="author__price">Websites nach Maß ab 250 €. Erster Entwurf in 3 Tagen.</p>
+      <p class="author__free">Das Erstgespräch ist kostenlos und unverbindlich. Sie sagen mir, was Sie brauchen, und ich nenne Ihnen vorher Preis und Termin.</p>
+    </div>
+
+    <div class="authorcard rev">
+      <p class="nm">Alex Poliak</p>
+      <p class="role">Webdesign</p>
+      <ul>
+        <li>
+          <span class="lb">E-Mail</span>
+          <span><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></span>
+        </li>
+        <li>
+          <span class="lb">Support</span>
+          <span><a href="mailto:support@apoliak.online">support@apoliak.online</a></span>
+        </li>
+        <li>
+          <span class="lb">Telefon</span>
+          <span><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span class="sub">Anrufen oder SMS schreiben.</span></span>
+        </li>
+        <li>
+          <span class="lb">Web</span>
+          <span><a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a></span>
+        </li>
+      </ul>
+      <a class="btn btn--wide" href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online ansehen</a>
+      <p class="author__note">Diese Kontaktdaten sind echt. Die Kontaktdaten des Salons weiter oben gehören einem erfundenen Unternehmen.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ====================== PÄTA ====================== -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <p class="foot__name">Salon Birke</p>
+        <p>Friseur- und Kosmetiksalon. Schneiden, Färben, Kosmetik, Maniküre und Pediküre an einer Adresse. Wir arbeiten nach Termin, für Gruppen auch außerhalb der Öffnungszeiten.</p>
+      </div>
+      <div class="foot__contact">
+        <h4>Salon</h4>
+        <p>Birkenstraße 14, 54470 Bernkastel-Kues<br><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><br>Eingang im Hof, Erdgeschoss<br>Instagram: salonbirke</p>
+      </div>
+      <div>
+        <h4>Öffnungszeiten</h4>
+        <p>Montag bis Freitag 9:00 – 19:00 Uhr<br>Samstag 9:00 – 14:00 Uhr<br>Sonntag und Feiertage geschlossen</p>
+      </div>
+      <div>
+        <h4>Auf der Seite</h4>
+        <ul class="footnav">
+          <li><a href="#cennik">Preise und Pakete</a></li>
+          <li><a href="#priestor">Räume und Team</a></li>
+          <li><a href="#objednanie">Terminvereinbarung</a></li>
+          <li><a href="#poukazy">Gutscheine und Gruppen</a></li>
+          <li><a href="#doprava">Anfahrt und Parken</a></li>
+          <li><a href="#podmienky">Bedingungen und Zahlung</a></li>
+          <li><a href="#starostlivost">Pflege</a></li>
+          <li><a href="#otazky">Häufige Fragen</a></li>
+          <li><a href="#kariera">Karriere</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>Erfundenes Unternehmen für die Beispiel-Website. Es werden keine Daten erhoben.</span>
+      <span>Entworfen und programmiert von Alex Poliak, <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>, <a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var $  = function(s,c){ return (c||document).querySelector(s); };
+  var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var behavior = reduced ? 'auto' : 'smooth';
+
+  /* ---------- presné výšky prilepených pásov pre kotvy ----------
+     --bar-h posúva hlavičku pod pásik ukážky, kotvy dostanú súčet oboch.
+     Zapisujeme len --bar-h, aby sa meranie samo neposúvalo o rám. */
+  function measure(){
+    var top = $('.topstack');
+    if(top) document.documentElement.style.scrollPaddingTop = (top.offsetHeight + 18) + 'px';
+  }
+  measure();
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', measure);
+  if(window.requestAnimationFrame) requestAnimationFrame(measure);
+  if(window.ResizeObserver){
+    var top = $('.topstack');
+    if(top) new ResizeObserver(measure).observe(top);
+  }
+
+  /* ---------- mobilné menu ---------- */
+  var burger = $('#burger'), nav = $('#nav');
+  if(burger && nav){
+    burger.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    $$('a', nav).forEach(function(a){
+      a.addEventListener('click', function(){
+        nav.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
+        burger.setAttribute('aria-label','Menü öffnen');
+      });
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && nav.classList.contains('open')){
+        nav.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
+        burger.setAttribute('aria-label','Menü öffnen');
+        burger.focus();
+      }
+    });
+  }
+
+  /* ---------- otváracie hodiny: dnešný deň a stav ---------- */
+  var OPEN = {1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[9,14],0:null};
+  (function(){
+    var now = new Date(), d = now.getDay();
+    var row = $('#hoursTable tr[data-day="'+d+'"]');
+    if(row) row.classList.add('today');
+
+    var box = $('#openStatus'), txt = $('#openStatusText');
+    var h = OPEN[d], mins = now.getHours()*60 + now.getMinutes();
+    var open = !!h && mins >= h[0]*60 && mins < h[1]*60;
+    if(box && txt){
+      txt.textContent = open ? ('Jetzt geöffnet, heute bis ' + h[1] + ':00') : 'Jetzt geschlossen, buchen geht online';
+      box.hidden = false;
+    }
+    var hero = $('#heroHours');
+    if(hero && open) hero.textContent = 'Heute geöffnet bis ' + h[1] + ':00';
+  })();
+
+  /* ---------- objednanie termínu ---------- */
+  var MES  = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  var MESG = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  var DNI  = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+
+  var today = new Date(); today.setHours(0,0,0,0);
+  var view  = new Date(today.getFullYear(), today.getMonth(), 1);
+  var minM  = new Date(today.getFullYear(), today.getMonth(), 1);
+  var maxM  = new Date(today.getFullYear(), today.getMonth()+2, 1);
+  var picked = null, pickedTime = null;
+
+  var cal = $('#cal'), calLabel = $('#calLabel');
+  var prevBtn = $('#calPrev'), nextBtn = $('#calNext');
+  var slotsBox = $('#slots'), slotsEmpty = $('#slotsEmpty');
+  var boxes = $$('.opt input[type="checkbox"]');
+  var sumList = $('#sumList'), sumEmpty = $('#sumEmpty'),
+      sumTotal = $('#sumTotal'), sumDur = $('#sumDur'), sumWhen = $('#sumWhen');
+
+  function chosen(){
+    return boxes.filter(function(b){ return b.checked; }).map(function(b){
+      return {
+        name:  b.getAttribute('data-name'),
+        price: +b.getAttribute('data-price'),
+        min:   +b.getAttribute('data-min'),
+        from:  b.hasAttribute('data-from')   /* cena od, presnú určíme pri konzultácii */
+      };
+    });
+  }
+  function priceOf(list){
+    var t = 0, from = false;
+    list.forEach(function(s){ t += s.price; if(s.from) from = true; });
+    return { total:t, from:from, text:(from ? 'ab ' : '') + t + ' €' };
+  }
+  function fmtMin(t){
+    var h = Math.floor(t/60), m = t%60;
+    if(h === 0) return m + ' Minuten';
+    var slovo = h === 1 ? ' Stunde' : (h < 5 ? ' Stunden' : ' Stunden');
+    return h + slovo + (m ? ' ' + m + ' Minuten' : '');
+  }
+  function fmtTime(m){ var hh = Math.floor(m/60), mm = m%60; return hh + ':' + (mm < 10 ? '0'+mm : mm); }
+  function dateText(d){ return DNI[d.getDay()] + ', ' + d.getDate() + '. ' + MESG[d.getMonth()]; }
+
+  function drawCal(){
+    if(!cal) return;
+    $$('.day, .pad', cal).forEach(function(n){ n.remove(); });
+    calLabel.textContent = MES[view.getMonth()] + ' ' + view.getFullYear();
+    prevBtn.disabled = view <= minM;
+    nextBtn.disabled = view >= maxM;
+
+    var first = new Date(view.getFullYear(), view.getMonth(), 1);
+    var lead  = (first.getDay() + 6) % 7;
+    var days  = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+
+    for(var i=0;i<lead;i++){
+      var pad = document.createElement('div'); pad.className = 'pad'; cal.appendChild(pad);
+    }
+    for(var d=1; d<=days; d++){
+      (function(d){
+        var date = new Date(view.getFullYear(), view.getMonth(), d);
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'day'; b.textContent = d;
+        var closed = !OPEN[date.getDay()], past = date < today;
+        b.disabled = closed || past;
+        if(closed && !past) b.title = 'Sonntags geschlossen';
+        if(+date === +today) b.classList.add('today');
+        if(picked && +date === +picked) b.classList.add('sel');
+        b.setAttribute('aria-label', DNI[date.getDay()] + ', ' + d + '. ' + MESG[date.getMonth()] + ' ' + date.getFullYear());
+        b.addEventListener('click', function(){
+          picked = date; pickedTime = null;
+          drawCal(); drawSlots(); update();
+          /* kalendár sa prekreslí, preto vrátime fókus na vybraný deň */
+          var sel = cal.querySelector('.day.sel');
+          if(sel){ try{ sel.focus({preventScroll:true}); }catch(e){ sel.focus(); } }
+        });
+        cal.appendChild(b);
+      })(d);
+    }
+  }
+
+  function drawSlots(){
+    if(!slotsBox) return;
+    slotsBox.innerHTML = '';
+    if(!picked){
+      slotsEmpty.hidden = false;
+      slotsEmpty.textContent = 'Wählen Sie zuerst in Schritt 2 einen Tag.';
+      return;
+    }
+    var h = OPEN[picked.getDay()];
+    if(!h){ slotsEmpty.hidden = false; return; }
+
+    /* posledný možný začiatok tak, aby sa úkon stihol do zatvorenia */
+    var need = 0;
+    chosen().forEach(function(s){ need += s.min; });
+    var start = h[0]*60;
+    var end = need ? (h[1]*60 - need) : (h[1]-1)*60;
+
+    if(end < start){
+      slotsEmpty.hidden = false;
+      slotsEmpty.textContent = 'Die gewählten Leistungen dauern länger, als an diesem Tag geöffnet ist. Wählen Sie einen anderen Tag oder teilen Sie die Leistungen auf zwei Besuche auf.';
+      pickedTime = null;
+      return;
+    }
+    slotsEmpty.hidden = true;
+
+    var seed = picked.getDate()*37 + (picked.getMonth()+1)*101 + picked.getFullYear();
+    for(var m = start; m <= end; m += 30){
+      (function(m){
+        var label = fmtTime(m);
+        var taken = ((seed + (m/30)*17) % 7) < 2;
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'slot'; b.textContent = label;
+        b.disabled = taken;
+        if(taken) b.setAttribute('aria-label', label + ', belegt');
+        if(pickedTime === m) b.classList.add('sel');
+        b.addEventListener('click', function(){
+          pickedTime = m;
+          $$('.slot', slotsBox).forEach(function(s){ s.classList.remove('sel'); });
+          b.classList.add('sel');
+          update();
+        });
+        slotsBox.appendChild(b);
+      })(m);
+    }
+  }
+
+  function update(){
+    var list = chosen(), mins = 0;
+    sumList.innerHTML = '';
+    list.forEach(function(s){
+      mins += s.min;
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.textContent = s.name;
+      var b = document.createElement('span'); b.textContent = (s.from ? 'ab ' : '') + s.price + ' €';
+      li.appendChild(a); li.appendChild(b); sumList.appendChild(li);
+    });
+    sumEmpty.hidden = list.length > 0;
+    sumTotal.textContent = priceOf(list).text;
+    sumDur.textContent = mins ? fmtMin(mins) : '0 Minuten';
+
+    if(picked && pickedTime !== null){
+      var koniec = mins ? (' bis ' + fmtTime(pickedTime + mins)) : '';
+      sumWhen.textContent = dateText(picked) + ', ' + fmtTime(pickedTime) + koniec;
+    } else if(picked){
+      sumWhen.textContent = dateText(picked) + ', Uhrzeit nicht gewählt';
+    } else {
+      sumWhen.textContent = 'Nicht gewählt';
+    }
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click', function(){
+    view = new Date(view.getFullYear(), view.getMonth()-1, 1); drawCal();
+    if(prevBtn.disabled && nextBtn) nextBtn.focus();
+  });
+  if(nextBtn) nextBtn.addEventListener('click', function(){
+    view = new Date(view.getFullYear(), view.getMonth()+1, 1); drawCal();
+    if(nextBtn.disabled && prevBtn) prevBtn.focus();
+  });
+  if(cal){
+    cal.addEventListener('keydown', function(e){
+      var step = {ArrowLeft:-1, ArrowRight:1, ArrowUp:-7, ArrowDown:7}[e.key];
+      if(!step) return;
+      var btns = $$('.day', cal);
+      var idx = btns.indexOf(document.activeElement);
+      if(idx < 0) return;
+      e.preventDefault();
+      var n = idx + step;
+      while(n >= 0 && n < btns.length && btns[n].disabled) n += (step > 0 ? 1 : -1);
+      if(n >= 0 && n < btns.length) btns[n].focus();
+    });
+  }
+  boxes.forEach(function(b){
+    b.addEventListener('change', function(){
+      drawSlots();
+      if(pickedTime !== null && slotsBox && !slotsBox.querySelector('.slot.sel')) pickedTime = null;
+      update();
+    });
+  });
+
+  drawCal(); drawSlots(); update();
+
+  /* ---------- odoslanie: nikam nič neodchádza ---------- */
+  var form = $('#bookForm'), err = $('#formErr'),
+      live = $('#bookLive'), doneBox = $('#doneBox'), recap = $('#doneRecap');
+
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var list = chosen(), chyby = [];
+      if(!list.length) chyby.push('mindestens eine Leistung');
+      if(!picked) chyby.push('ein Tag');
+      if(pickedTime === null) chyby.push('eine Uhrzeit');
+      if(!$('#fname').value.trim()) chyby.push('den Namen');
+      if(!$('#fphone').value.trim()) chyby.push('die Telefonnummer');
+
+      if(chyby.length){
+        err.hidden = false;
+        err.textContent = 'Es fehlt noch: ' + chyby.join(', ') + '.';
+        err.scrollIntoView({block:'nearest', behavior:behavior});
+        return;
+      }
+      err.hidden = true;
+
+      var cena = priceOf(list), mins = 0;
+      list.forEach(function(s){ mins += s.min; });
+
+      recap.innerHTML = '';
+      function line(l, v){
+        var w  = document.createElement('div');
+        var dt = document.createElement('dt'); dt.textContent = l;
+        var dd = document.createElement('dd'); dd.textContent = v;
+        w.appendChild(dt); w.appendChild(dd); recap.appendChild(w);
+      }
+      line('Name', $('#fname').value.trim());
+      line('Telefon', $('#fphone').value.trim());
+      line('Termin', dateText(picked) + ' ' + picked.getFullYear() + ', ' + fmtTime(pickedTime) + ' bis ' + fmtTime(pickedTime + mins));
+      line('Leistungen', list.map(function(s){ return s.name; }).join(', '));
+      line('Dauer', fmtMin(mins));
+      line('Gesamtpreis', cena.text);
+
+      live.hidden = true;
+      doneBox.hidden = false;
+      doneBox.scrollIntoView({block:'center', behavior:behavior});
+      /* fókus bol na tlačidle, ktoré sa práve skrylo, preto ho presunieme na potvrdenie */
+      var dt = $('#doneTitle');
+      if(dt){ try{ dt.focus({preventScroll:true}); }catch(er){ dt.focus(); } }
+    });
+  }
+
+  var again = $('#againBtn');
+  if(again){
+    again.addEventListener('click', function(){
+      doneBox.hidden = true;
+      live.hidden = false;
+      boxes.forEach(function(b){ b.checked = false; });
+      picked = null; pickedTime = null;
+      form.reset();
+      drawCal(); drawSlots(); update();
+      live.scrollIntoView({block:'start', behavior:behavior});
+      if(boxes.length){ try{ boxes[0].focus({preventScroll:true}); }catch(er){ boxes[0].focus(); } }
+    });
+  }
+
+  /* ---------- kontaktný formulár: overenie a potvrdenie ---------- */
+  var msgForm = $('#msgForm'), msgErr = $('#msgErr'), msgDone = $('#msgDone');
+  if(msgForm){
+    msgForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var chyby = [];
+      if(!$('#kmeno').value.trim())   chyby.push('den Namen');
+      if(!$('#ktel').value.trim())    chyby.push('die Telefonnummer');
+      if(!$('#ksprava').value.trim()) chyby.push('der Text der Nachricht');
+
+      if(chyby.length){
+        msgDone.hidden = true;
+        msgErr.hidden = false;
+        msgErr.textContent = 'Es fehlt noch: ' + chyby.join(', ') + '.';
+        msgErr.scrollIntoView({block:'nearest', behavior:behavior});
+        return;
+      }
+      msgErr.hidden = true;
+      msgDone.hidden = false;
+      msgForm.reset();
+      try{ msgDone.focus({preventScroll:true}); }catch(er){ msgDone.focus(); }
+      msgDone.scrollIntoView({block:'nearest', behavior:behavior});
+    });
+  }
+
+  /* ---------- jemné odhalenie sekcií (s poistkou) ---------- */
+  var revs = $$('.rev');
+  function showAll(){ revs.forEach(function(el){ el.classList.add('in'); }); }
+  if(reduced || !('IntersectionObserver' in window)){
+    showAll();
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.06});
+    revs.forEach(function(el){ io.observe(el); });
+    setTimeout(showAll, 2500);
+  }
+})();
+</script>
+</body>
+</html>

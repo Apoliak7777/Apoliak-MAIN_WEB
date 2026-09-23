@@ -1,0 +1,2620 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/optika/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/optika/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/optika/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/optika/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/optika/">
+<link rel="alternate" hreflang="de" href="https://apoliak.online/de/ukazky/optika/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/optika/">
+<!-- /jazyky:hreflang -->
+<title>Optik Meridian — Sehtest, Brillen und Kontaktlinsen, Musterstadt</title>
+<meta name="description" content="Augenoptik in Musterstadt: Sehtest für 20 € in 30 Minuten, Brillen nach Maß in 3 – 7 Werktagen, Preise für Gläser und Fassungen, Kontaktlinsen, Myopie-Management bei Kindern und Terminbuchung. Entwurf und Code Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#0D3B45">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Optik Meridian (Beispiel-Website)">
+<meta property="og:title" content="Optik Meridian — Sehtest, Brillen und Kontaktlinsen, Musterstadt">
+<meta property="og:description" content="Sehtest für 20 € in 30 Minuten, Brille in 3 – 7 Werktagen, Preise für Gläser und Fassungen, Terminbuchung. Beispiel-Website von Alex Poliak, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%230D3B45'/%3E%3Ctext%20x='32'%20y='46'%20font-family='Georgia,serif'%20font-size='42'%20fill='%23BCD7DD'%20text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<style>
+/* ==================== TOKENY ==================== */
+:root{
+  --deep:#0D3B45;
+  --deep-2:#092931;
+  --deep-3:#17505C;
+  --deep-4:#24616E;
+  --sky:#BCD7DD;
+  --sky-2:#D6E4E7;
+
+  --paper:#F5F5F3;
+  --paper-2:#EBECE8;
+  --card:#FFFFFF;
+
+  --ink:#13181A;
+  --ink-2:#394347;
+  --muted:#5D666A;
+
+  --line:#D3D6D5;
+  --line-2:#E4E6E4;
+  --line-deep:#1E5361;
+  --on-deep:#FFFFFF;
+  --on-deep-2:#AEC6CB;
+
+  --serif:Georgia,"Iowan Old Style","Times New Roman",Times,serif;
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Consolas","DejaVu Sans Mono","Courier New",monospace;
+
+  --wrap:1200px;
+  --r:3px;
+  --barmin:64px;   /* vlastná minimálna výška pásika, JS ju nemení */
+  --barh:64px;     /* odsadenie obsahu pod pásikom, JS ho dopočíta */
+}
+@media (min-width:760px){ :root{ --barmin:46px; --barh:46px; } }
+
+/* ==================== ZÁKLAD ==================== */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){ html,body{overflow-x:clip} }
+body{
+  margin:0;
+  padding-top:var(--barh);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.66;
+  -webkit-text-size-adjust:100%;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0 0 .5em}
+h1,h2{font-family:var(--serif);font-weight:400;letter-spacing:-.018em}
+h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.0}
+h2{font-size:clamp(1.72rem,3.4vw,2.65rem);line-height:1.08}
+h3{font-family:var(--sans);font-weight:600;font-size:1.03rem;line-height:1.38;letter-spacing:-.005em}
+h4{font-family:var(--sans);font-weight:600;font-size:.95rem;line-height:1.4;margin-bottom:.35em}
+p{margin:0 0 1em}
+ul,ol{margin:0;padding:0;list-style:none}
+img,svg{max-width:100%}
+a{color:var(--deep)}
+a:hover{color:var(--deep-4)}
+strong{font-weight:600}
+:focus-visible{outline:2px solid var(--deep);outline-offset:3px}
+.panel :focus-visible,.demobar :focus-visible,.sec--deep :focus-visible,.author :focus-visible,.foot :focus-visible{outline-color:var(--sky)}
+
+.wrap{width:min(100% - 34px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--deep);color:#FFFFFF;padding:12px 18px;z-index:300}
+.skip:focus{left:8px;top:calc(var(--barh) + 8px)}
+section{scroll-margin-top:calc(var(--barh) + 82px)}
+@media (max-width:1080px){ section{scroll-margin-top:calc(var(--barh) + 128px)} }
+.sec{padding:clamp(58px,7.4vw,116px) 0}
+.sec--band{background:var(--paper-2);border-block:1px solid var(--line)}
+.sec--deep{background:var(--deep);color:var(--on-deep)}
+.sec--tight{padding:clamp(44px,5vw,74px) 0}
+
+.eyebrow{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px;
+}
+.sec--deep .eyebrow{color:var(--on-deep-2)}
+.lede{font-size:1.06rem;color:var(--ink-2);max-width:60ch}
+.sec--deep .lede{color:var(--on-deep-2)}
+.note{font-size:.9rem;color:var(--muted);max-width:66ch}
+.sec--deep .note{color:var(--on-deep-2)}
+
+/* hlavička sekcie */
+.head{
+  display:grid;grid-template-columns:76px minmax(0,1fr);
+  gap:8px 28px;align-items:start;
+  padding-bottom:26px;border-bottom:1px solid var(--ink);
+  margin-bottom:clamp(34px,4.4vw,58px);
+}
+.sec--deep .head{border-bottom-color:var(--line-deep)}
+.head__num{
+  grid-row:1 / span 2;
+  font-family:var(--mono);font-size:.82rem;letter-spacing:.1em;color:var(--deep);
+  border-top:2px solid var(--deep);padding-top:10px;margin:10px 0 0;
+}
+.sec--deep .head__num{color:var(--sky);border-top-color:var(--sky)}
+.head h2{margin-bottom:.2em}
+.head .lede{margin-bottom:0}
+@media (max-width:660px){
+  .head{grid-template-columns:minmax(0,1fr);gap:0}
+  .head__num{grid-row:auto;display:inline-block;margin:0 0 16px}
+}
+
+/* ==================== TLAČIDLÁ ==================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--sans);font-size:.93rem;font-weight:600;line-height:1.2;
+  padding:14px 24px;border-radius:var(--r);border:1px solid transparent;
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:background-color .16s ease,border-color .16s ease,color .16s ease;
+}
+.link--light{color:var(--sky)}
+.link--light:hover{color:var(--sky-2)}
+
+/* ==================== PÁSIK UKÁŽKY ==================== */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  min-height:var(--barmin);
+  background:var(--deep-2);color:#FFFFFF;
+  border-bottom:1px solid var(--line-deep);
+  font-size:.78rem;line-height:1.35;
+}
+.demobar__in{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:6px 16px;min-height:var(--barmin);padding:8px 0;text-align:center;
+}
+.demobar__tag{
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid var(--line-deep);padding:3px 9px;color:var(--sky);white-space:nowrap;
+}
+.demobar__row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 16px}
+.demobar a:not(.btn){color:var(--sky);text-decoration:none;border-bottom:1px solid rgba(188,215,221,.5);white-space:nowrap}
+.demobar a:not(.btn):hover{color:var(--sky-2);border-bottom-color:var(--sky-2)}
+
+/* ==================== HLAVIČKA ==================== */
+.site-head{
+  position:sticky;top:var(--barh);z-index:150;
+  background:rgba(245,245,243,.97);
+  border-bottom:1px solid var(--line);
+}
+.head__in{display:flex;align-items:center;gap:18px;min-height:70px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);margin-right:auto;line-height:1.18}
+.brand b{font-family:var(--serif);font-size:1.24rem;font-weight:400;letter-spacing:-.01em}
+.brand span{font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.nav-toggle{
+  display:none;align-items:center;gap:8px;font:inherit;font-size:.84rem;font-weight:600;
+  background:transparent;border:1px solid var(--line);border-radius:var(--r);
+  padding:9px 14px;cursor:pointer;color:var(--ink);
+}
+.nav-toggle svg{width:18px;height:18px}
+.nav-list{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.nav-list a:not(.btn){
+  display:inline-block;text-decoration:none;color:var(--muted);
+  font-size:.88rem;padding:9px 11px;border-radius:var(--r);
+}
+.nav-list a:not(.btn):hover{color:var(--deep);background:var(--paper-2)}
+
+/* trvalá akcia v hlavičke: tlačidlo + telefón, na mobile ostáva viditeľná */
+.head__act{display:flex;align-items:center;gap:10px}
+.head__tel{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.85rem;font-weight:600;line-height:1.2;
+  color:var(--deep);text-decoration:none;white-space:nowrap;
+  border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;
+}
+.head__tel:hover{color:var(--deep);background:var(--paper-2);border-color:var(--deep)}
+
+@media (max-width:1080px){
+  .js .nav-toggle{display:inline-flex}
+  .js .nav-list[data-open="false"]{display:none}
+  .head__in{row-gap:0;column-gap:12px;min-height:58px;padding-bottom:12px}
+  .brand{order:1}
+  .nav-toggle{order:2}
+  .head__act{order:3;width:100%;margin-top:10px}
+  .site-nav{order:4;width:100%}
+  .head__act .btn{flex:1 1 auto;min-width:0;padding:12px 12px;font-size:.85rem}
+  .head__tel{flex:0 0 auto;padding:12px 12px;font-size:.8rem}
+  .nav-list{width:100%;flex-direction:column;align-items:stretch;gap:0;padding:6px 0 14px;border-top:1px solid var(--line-2)}
+  .nav-list a:not(.btn){padding:13px 2px;border-bottom:1px solid var(--line-2);border-radius:0}
+}
+@media (max-width:400px){
+  .head__tel{padding:12px 9px;font-size:.75rem}
+  .head__act .btn{font-size:.8rem;padding:12px 8px}
+}
+
+/* ==================== ÚVOD ==================== */
+.hero{padding:clamp(46px,7vw,104px) 0 0}
+.hero__in{display:grid;grid-template-columns:minmax(0,232px) minmax(0,1fr);gap:clamp(26px,4.6vw,74px);align-items:start}
+@media (max-width:900px){ .hero__in{grid-template-columns:minmax(0,1fr);gap:34px} }
+
+.rail{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 20px;border-right:1px solid var(--line);padding-right:clamp(14px,1.8vw,26px)}
+.rail__label{
+  writing-mode:vertical-rl;transform:rotate(180deg);margin:0;align-self:start;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.rail__list li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:12px 0;border-top:1px solid var(--line-2);font-size:.92rem;
+}
+.rail__list li:first-child{border-top:0;padding-top:0}
+.rail__list a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+.rail__list a:hover{color:var(--deep);border-bottom-color:var(--deep)}
+.rail__list span{font-family:var(--mono);font-size:.76rem;color:var(--muted);white-space:nowrap}
+@media (max-width:900px){
+  .rail{grid-template-columns:minmax(0,1fr);border-right:0;border-top:1px solid var(--ink);padding:22px 0 0}
+  .rail__label{writing-mode:horizontal-tb;transform:none;margin-bottom:16px}
+}
+
+.hero h1{max-width:16ch;margin-bottom:clamp(26px,3.2vw,44px)}
+.hero__cols{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(18px,2.8vw,44px);border-top:1px solid var(--ink);padding-top:24px;max-width:78ch;
+}
+@media (max-width:780px){ .hero__cols{grid-template-columns:minmax(0,1fr)} }
+.hero__cols p{margin:0;font-size:1rem;color:var(--ink-2);max-width:46ch}
+.hero__cols p:first-child{font-size:1.1rem;color:var(--ink)}
+.hero__cols p:first-child::first-letter{
+  font-family:var(--serif);font-size:3.2em;line-height:.84;float:left;
+  padding:.06em .1em 0 0;color:var(--deep);
+}
+.hero__actions{display:flex;flex-wrap:wrap;gap:12px;margin:clamp(26px,3vw,38px) 0 0}
+
+.facts{border-top:1px solid var(--line);margin-top:clamp(44px,6vw,80px)}
+.facts dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0}
+.facts div{padding:24px 26px 26px 0;border-right:1px solid var(--line-2)}
+.facts div:last-child{border-right:0}
+.facts dt{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.facts dd{margin:0;font-family:var(--serif);font-size:1.24rem;line-height:1.3}
+.facts dd a{text-decoration:none;border-bottom:1px solid var(--line)}
+.facts dd a:hover{border-bottom-color:var(--deep-4)}
+@media (max-width:840px){
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts div{border-bottom:1px solid var(--line-2);padding-right:20px}
+  .facts div:nth-child(2n){border-right:0}
+}
+@media (max-width:430px){
+  .facts dl{grid-template-columns:minmax(0,1fr)}
+  .facts div{border-right:0}
+}
+
+/* ==================== MRIEŽKY A BLOKY ==================== */
+.grid{display:grid;gap:clamp(22px,2.6vw,38px)}
+.grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid--4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid--side{grid-template-columns:minmax(0,1fr) minmax(0,.68fr);gap:clamp(26px,3.4vw,52px);align-items:start}
+@media (max-width:1020px){ .grid--4{grid-template-columns:repeat(2,minmax(0,1fr))} .grid--side{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:860px){ .grid--3{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:660px){ .grid--2,.grid--4{grid-template-columns:minmax(0,1fr)} }
+
+/* vlasový blok namiesto rámčeka */
+.blk{border-top:1px solid var(--ink);padding-top:20px}
+.blk h3{margin:0 0 10px}
+.blk p{color:var(--ink-2);font-size:.97rem;max-width:60ch}
+.blk p:last-child{margin-bottom:0}
+.blk__num{
+  display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:14px;
+}
+.blk__meta{
+  font-family:var(--mono);font-size:.86rem;color:var(--deep);
+  border-top:1px solid var(--line-2);padding-top:12px;margin-top:16px;
+}
+.blk__akcia{margin-top:18px}
+.sec--deep .blk{border-top-color:var(--sky)}
+.sec--deep .blk p{color:var(--on-deep-2)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.4vw,30px)}
+.card h3{margin-top:0}
+.card p{color:var(--ink-2);font-size:.97rem}
+.card p:last-child{margin-bottom:0}
+
+.ticks li{position:relative;padding:9px 0 9px 24px;border-bottom:1px solid var(--line-2);font-size:.95rem;color:var(--ink-2)}
+.ticks li:last-child{border-bottom:0}
+.ticks li::before{
+  content:"";position:absolute;left:0;top:18px;width:9px;height:9px;
+  border-left:1.5px solid var(--deep);border-bottom:1.5px solid var(--deep);transform:rotate(-45deg);
+}
+.sec--deep .ticks li{border-bottom-color:var(--line-deep);color:var(--on-deep-2)}
+.sec--deep .ticks li::before{border-color:var(--sky)}
+
+/* ==================== KROKY ==================== */
+.steps{display:grid;gap:0}
+.steps li{
+  display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:6px 24px;
+  padding:24px 0;border-top:1px solid var(--line);align-items:baseline;
+}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps__n{font-family:var(--mono);font-size:.82rem;letter-spacing:.1em;color:var(--deep)}
+.steps h3{margin:0 0 6px}
+.steps p{margin:0;color:var(--ink-2);font-size:.95rem;max-width:58ch}
+.steps__t{font-family:var(--mono);font-size:.82rem;color:var(--muted);white-space:nowrap}
+@media (max-width:660px){
+  .steps li{grid-template-columns:58px minmax(0,1fr)}
+  .steps__t{grid-column:2}
+}
+
+/* ==================== TABUĽKY ==================== */
+.tablewrap{overflow-x:auto;border-top:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:440px;font-size:.95rem}
+caption{
+  text-align:left;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);padding:14px 0 12px;
+}
+th,td{text-align:left;padding:14px 22px 14px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+th:last-child,td:last-child{padding-right:0}
+thead th{
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);font-weight:400;border-bottom:1px solid var(--line);
+}
+tbody th{font-weight:600}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody td.num{font-weight:600;color:var(--ink)}
+.t-sub{display:block;font-size:.85rem;font-weight:400;color:var(--muted);margin-top:3px;max-width:38ch}
+.sec--deep .tablewrap{border-top-color:var(--sky)}
+.sec--deep th,.sec--deep td{border-bottom-color:var(--line-deep)}
+.sec--deep tbody td.num{color:#FFFFFF}
+.sec--deep caption,.sec--deep thead th{color:var(--on-deep-2)}
+
+/* ==================== GEOMETRICKÉ PLOCHY ==================== */
+.panel{position:relative;overflow:hidden;background:var(--deep);color:var(--on-deep);border-radius:var(--r)}
+.panel__art{position:absolute;inset:0;width:100%;height:100%}
+.panel__in{position:relative;z-index:2}
+.panel--grad{background:linear-gradient(152deg,var(--deep-2) 0%,var(--deep) 48%,var(--deep-3) 100%)}
+.panel--grad2{background:linear-gradient(26deg,var(--deep-2) 0%,var(--deep-3) 60%,var(--deep-4) 100%)}
+.tp{display:flex;flex-direction:column;justify-content:space-between;gap:26px;min-height:220px;padding:clamp(22px,2.6vw,34px)}
+.tp__lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-deep-2);margin:0}
+.tp__big{font-family:var(--serif);font-size:clamp(2.2rem,4.6vw,3.3rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 12px}
+.tp p:last-child{margin:0;font-size:.94rem;color:var(--on-deep-2);max-width:44ch}
+
+/* ==================== OBRAZOVÉ MIESTA ==================== */
+.obraz{
+  position:relative;margin:0;overflow:hidden;border-radius:var(--r);
+  background-color:var(--deep-2);color:var(--on-deep);
+  display:flex;align-items:flex-end;aspect-ratio:4 / 3;min-height:180px;isolation:isolate;
+}
+.obraz--vysoky{aspect-ratio:4 / 5}
+.obraz--siroky{aspect-ratio:16 / 9;min-height:200px}
+.obraz::before{content:"";position:absolute;z-index:1;pointer-events:none}
+.obraz figcaption{
+  position:relative;z-index:2;width:100%;padding:clamp(15px,2vw,22px);
+  background-image:linear-gradient(to top,rgba(9,41,49,.88) 0%,rgba(9,41,49,.52) 58%,rgba(9,41,49,0) 100%);
+}
+.obraz__lbl{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--sky);margin:0;
+}
+.obraz__t{font-family:var(--serif);font-size:1.3rem;font-weight:400;line-height:1.16;margin:6px 0 0;color:#FFFFFF}
+.obraz__d{margin:5px 0 0;font-size:.85rem;line-height:1.45;color:var(--on-deep-2)}
+
+.obraz--a{
+  background-image:
+    repeating-linear-gradient(90deg,rgba(188,215,221,.10) 0 1px,rgba(188,215,221,0) 1px 28px),
+    radial-gradient(115% 85% at 16% 6%,rgba(188,215,221,.24) 0%,rgba(188,215,221,0) 60%),
+    linear-gradient(158deg,#0B333C 0%,#17505C 54%,#24616E 100%);
+}
+.obraz--a::before{inset:16% 14% 34% 14%;border:1px solid rgba(188,215,221,.28)}
+.obraz--b{
+  background-image:
+    repeating-linear-gradient(38deg,rgba(214,228,231,.10) 0 1px,rgba(214,228,231,0) 1px 16px),
+    radial-gradient(90% 70% at 82% 14%,rgba(214,228,231,.22) 0%,rgba(214,228,231,0) 62%),
+    linear-gradient(22deg,#092931 0%,#123F49 52%,#1E5966 100%);
+}
+.obraz--b::before{left:-10%;top:10%;width:62%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(214,228,231,.26)}
+.obraz--c{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(188,215,221,.09) 0 1px,rgba(188,215,221,0) 1px 22px),
+    radial-gradient(100% 80% at 50% 0%,rgba(188,215,221,.20) 0%,rgba(188,215,221,0) 66%),
+    linear-gradient(196deg,#10404B 0%,#0B333C 46%,#092931 100%);
+}
+.obraz--c::before{left:50%;top:18%;width:44%;aspect-ratio:1;transform:translateX(-50%) rotate(45deg);border:1px solid rgba(188,215,221,.24)}
+.obraz--d{
+  background-image:
+    repeating-linear-gradient(126deg,rgba(188,215,221,.10) 0 1px,rgba(188,215,221,0) 1px 20px),
+    radial-gradient(120% 90% at 8% 92%,rgba(36,97,110,.55) 0%,rgba(36,97,110,0) 64%),
+    linear-gradient(340deg,#092931 0%,#144653 58%,#1E5966 100%);
+}
+.obraz--d::before{right:10%;bottom:34%;width:52%;height:1px;background:rgba(214,228,231,.32);box-shadow:0 -18px 0 rgba(214,228,231,.18),0 -36px 0 rgba(214,228,231,.1)}
+.obraz--e{
+  background-image:
+    repeating-linear-gradient(90deg,rgba(214,228,231,.08) 0 1px,rgba(214,228,231,0) 1px 34px),
+    radial-gradient(80% 60% at 26% 22%,rgba(214,228,231,.24) 0%,rgba(214,228,231,0) 58%),
+    linear-gradient(120deg,#0B333C 0%,#17505C 62%,#0F3C46 100%);
+}
+.obraz--e::before{inset:auto 18% 30% 18%;height:1px;background:rgba(188,215,221,.34)}
+
+/* ==================== MRIEŽKA ZNAČIEK ==================== */
+.znacky{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.znacky li{
+  background:var(--card);display:flex;align-items:center;justify-content:center;
+  min-height:78px;padding:16px 12px;text-align:center;
+}
+.znacky b{font-family:var(--serif);font-size:1.04rem;font-weight:400;letter-spacing:.03em;color:var(--ink)}
+.znacky--maly li{min-height:66px}
+.znacky--maly b{font-size:.98rem}
+@media (max-width:860px){ .znacky{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:560px){ .znacky{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.znacky.znacky--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.znacky.znacky--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:560px){ .znacky.znacky--3{grid-template-columns:minmax(0,1fr)} }
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.tile b{display:block;font-family:var(--serif);font-size:1.08rem;font-weight:400;line-height:1.25;margin-bottom:5px}
+.tile span{display:block;font-size:.85rem;line-height:1.45;color:var(--muted)}
+
+/* ==================== ORIENTAČNÝ PLÁNIK ==================== */
+.planwrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.plan{display:block;width:100%;min-width:420px;height:auto}
+.plan .cesta{fill:#E4E6E4}
+.plan .os{stroke:#FFFFFF;stroke-width:2;stroke-dasharray:11 11;fill:none}
+.plan .obrys{fill:none;stroke:#D3D6D5;stroke-width:1}
+.plan .dom{fill:#0D3B45}
+.plan .box{fill:#FFFFFF;stroke:#D3D6D5;stroke-width:1}
+.plan .sipka{stroke:#5D666A;stroke-width:1.2;fill:none}
+.plan text{font-family:var(--sans);font-size:12.5px;fill:#394347}
+.plan .nazov{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;fill:#5D666A}
+.plan .zvyraz{font-weight:600;fill:#0D3B45}
+.plan .biely{fill:#FFFFFF;font-weight:600;font-size:12px}
+
+/* ==================== KALKULAČKA ==================== */
+.calc{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(24px,3.4vw,48px);align-items:start}
+@media (max-width:940px){ .calc{grid-template-columns:minmax(0,1fr)} }
+.field{margin-bottom:20px}
+.field > label,.legend{
+  display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:9px;
+}
+select,input[type="text"],input[type="tel"],input[type="date"],textarea{
+  width:100%;font-family:var(--sans);font-size:.97rem;color:var(--ink);background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;
+}
+select:hover,input:hover,textarea:hover{border-color:#B4BCBE}
+textarea{min-height:118px;resize:vertical}
+fieldset{border:0;padding:0;margin:0 0 20px;min-width:0}
+.checks{display:grid;gap:0}
+.check{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line-2);font-size:.95rem}
+.check:last-child{border-bottom:0}
+.check input{margin:4px 0 0;width:17px;height:17px;flex:0 0 auto;accent-color:var(--deep)}
+.check span{flex:1;color:var(--ink-2)}
+.check b{font-family:var(--mono);font-weight:600;white-space:nowrap}
+
+.sumbox{background:var(--card);border:1px solid var(--line);border-radius:var(--r);position:sticky;top:calc(var(--barh) + 86px)}
+@media (max-width:940px){ .sumbox{position:static} }
+.sumbox__hd{padding:22px 24px;border-bottom:1px solid var(--line)}
+.sumbox__hd p{margin:0;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.sumbox__hd h3{margin:8px 0 0;font-family:var(--serif);font-weight:400;font-size:1.5rem;line-height:1.15}
+.sumrows{padding:6px 24px}
+.sumrows div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line-2);font-size:.94rem}
+.sumrows div:last-child{border-bottom:0}
+.sumrows dt{color:var(--muted)}
+.sumrows dd{margin:0;font-family:var(--mono);font-weight:600;white-space:nowrap}
+.sumtotal{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:20px 24px;background:var(--deep);color:#FFFFFF;border-radius:0 0 var(--r) var(--r)}
+.sumtotal span{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sky)}
+.sumtotal strong{font-family:var(--serif);font-size:1.8rem;font-weight:400;line-height:1.1}
+.sumfoot{padding:16px 24px 20px;font-size:.87rem;color:var(--muted)}
+
+/* ==================== FORMULÁRE ==================== */
+.slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:560px){ .slots{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.slot{position:relative;display:block}
+.slot input{position:absolute;opacity:0;width:1px;height:1px}
+.slot span{
+  display:block;text-align:center;font-family:var(--mono);font-size:.92rem;
+  padding:13px 4px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--card);cursor:pointer;
+}
+.slot input:checked + span{background:var(--deep);border-color:var(--deep);color:#FFFFFF}
+.slot input:focus-visible + span{outline:2px solid var(--deep);outline-offset:2px}
+.slot input:disabled + span{background:var(--paper-2);color:#5B666C;border-color:var(--line-2);cursor:not-allowed;text-decoration:line-through}
+.msg{
+  margin:16px 0 0;padding:14px 18px;background:var(--card);
+  border:1px solid var(--line);border-left:3px solid var(--deep);
+  font-size:.93rem;color:var(--ink-2);
+}
+.done{margin:22px 0 0;padding:20px 22px;background:var(--card);border:1px solid var(--deep);border-left-width:4px}
+.done h3{margin:0 0 8px}
+.done p{margin:0;color:var(--ink-2);font-size:.95rem}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px}
+@media (max-width:660px){ .formgrid{grid-template-columns:minmax(0,1fr)} }
+.full{grid-column:1 / -1}
+.consent{display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:var(--muted);margin:4px 0 22px;max-width:62ch}
+.consent input{margin:3px 0 0;width:17px;height:17px;flex:0 0 auto;accent-color:var(--deep)}
+
+/* ==================== HODINY A KONTAKT ==================== */
+.hours{width:100%;border-collapse:collapse;min-width:0}
+.hours th,.hours td{padding:13px 0;border-bottom:1px solid var(--line-deep);font-size:.97rem;vertical-align:baseline}
+.hours th{font-weight:400;color:var(--on-deep-2);text-align:left}
+.hours td{text-align:right;font-family:var(--mono)}
+.hours tr[data-dnes="1"] th,.hours tr[data-dnes="1"] td{color:#FFFFFF;font-weight:600}
+.hours tr[data-dnes="1"] th::after{content:" — heute";font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--sky)}
+.stav{
+  display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.7rem;
+  letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--line-deep);
+  padding:8px 13px;color:var(--sky);margin:0 0 22px;
+}
+.stav i{width:7px;height:7px;background:var(--sky);display:block;flex:0 0 auto}
+.contact-list div{padding:16px 0;border-bottom:1px solid var(--line-deep)}
+.contact-list div:last-child{border-bottom:0}
+.contact-list dt{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-deep-2);margin-bottom:6px}
+.contact-list dd{margin:0;font-size:1.02rem}
+.contact-list dd a{color:#FFFFFF;text-decoration:none;border-bottom:1px solid var(--line-deep)}
+.contact-list dd a:hover{color:var(--sky);border-bottom-color:var(--sky)}
+.tel-big{font-family:var(--serif);font-size:1.6rem;line-height:1.3;letter-spacing:-.01em}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+
+/* ==================== FAQ ==================== */
+.faq{border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:21px 48px 21px 0;position:relative;
+  font-weight:600;font-size:1.01rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";position:absolute;right:8px;top:28px;width:9px;height:9px;
+  border-right:1.5px solid var(--deep);border-bottom:1.5px solid var(--deep);
+  transform:rotate(45deg);transition:transform .18s ease;
+}
+.faq details[open] summary::after{transform:rotate(-135deg);top:32px}
+.faq__body{padding:0 48px 22px 0;color:var(--ink-2);font-size:.97rem;max-width:70ch}
+.faq__body p:last-child{margin-bottom:0}
+
+/* ==================== AUTOR ==================== */
+.author{background:var(--deep-2);color:#FFFFFF;border-top:2px solid var(--sky)}
+.author__in{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(28px,4vw,60px);padding:clamp(58px,6.6vw,96px) 0;align-items:start}
+@media (max-width:900px){ .author__in{grid-template-columns:minmax(0,1fr)} }
+.author h2{color:#FFFFFF}
+.author p{color:#DDE8EA;max-width:60ch}
+.author .eyebrow{color:var(--sky)}
+.author__price{font-family:var(--serif);font-size:1.34rem;line-height:1.45;color:#FFFFFF;border-top:1px solid var(--line-deep);padding-top:20px;margin-top:24px}
+.author__card{background:var(--deep);border:1px solid var(--line-deep);border-radius:var(--r);padding:clamp(24px,2.6vw,32px)}
+.author__name{font-family:var(--serif);font-size:1.5rem;line-height:1.25;margin:0 0 4px;color:#FFFFFF}
+.author__role{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-deep-2);margin:0 0 22px}
+.author__list div{padding:13px 0;border-top:1px solid var(--line-deep)}
+.author__list dt{font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-deep-2);margin-bottom:4px}
+.author__list dd{margin:0}
+.author__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+
+/* ==================== PÄTA ==================== */
+.foot{background:var(--deep);color:#FFFFFF;padding:56px 0 62px;font-size:.92rem}
+.foot__cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+  padding-bottom:32px;margin-bottom:36px;border-bottom:1px solid var(--line-deep);
+}
+.foot__cta p{margin:0 auto 0 0;color:#FFFFFF;font-family:var(--serif);font-size:1.24rem;line-height:1.4;max-width:44ch}
+.foot__in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:30px}
+@media (max-width:860px){ .foot__in{grid-template-columns:minmax(0,1fr)} }
+.foot b{display:block;font-family:var(--serif);font-weight:400;font-size:1.2rem;margin-bottom:10px}
+.foot p{color:var(--on-deep-2);margin:0 0 .7em}
+.foot p a{color:#FFFFFF;text-decoration:none;border-bottom:1px solid var(--line-deep)}
+.foot p a:hover{color:var(--sky);border-bottom-color:var(--sky)}
+.foot__links li{margin-bottom:9px}
+.foot__links a:not(.btn){color:#FFFFFF;text-decoration:none;border-bottom:1px solid var(--line-deep)}
+.foot__links a:not(.btn):hover{color:var(--sky);border-bottom-color:var(--sky)}
+.foot__bottom{border-top:1px solid var(--line-deep);margin-top:40px;padding-top:22px;color:var(--on-deep-2)}
+.foot__bottom a{color:var(--sky)}
+
+/* ==================== ODHAĽOVANIE ==================== */
+.js .reveal{opacity:0;transform:translateY(12px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none;transition:none}
+  *{transition-duration:.001ms !important;animation-duration:.001ms !important}
+}
+@media print{
+  .demobar,.site-head,.slots,.btn{display:none}
+  body{padding-top:0;font-size:11pt;background:#FFFFFF}
+  .sec--deep,.author,.foot,.panel{background:#FFFFFF;color:#000000}
+  .tp__lbl,.tp p:last-child,.contact-list dt,.foot p{color:#333333}
+}
+
+/* ========= KONTRAST TLAČIDIEL: posledné slovo v kaskáde ========= */
+.btn.btn--deep,.head__act .btn.btn--deep,.foot .btn.btn--deep{background:var(--deep);border-color:var(--deep);color:#FFFFFF}
+.btn.btn--deep:hover,.head__act .btn.btn--deep:hover,.foot .btn.btn--deep:hover{background:var(--deep-2);border-color:var(--deep-2);color:#FFFFFF}
+.btn.btn--line{background:transparent;border-color:var(--ink);color:var(--ink)}
+.btn.btn--line:hover{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.btn.btn--sky,.foot .btn.btn--sky,.sec--deep .btn.btn--sky{background:var(--sky);border-color:var(--sky);color:var(--deep-2)}
+.btn.btn--sky:hover,.foot .btn.btn--sky:hover,.sec--deep .btn.btn--sky:hover{background:var(--sky-2);border-color:var(--sky-2);color:var(--deep-2)}
+.btn.btn--ghost,.foot .btn.btn--ghost,.sec--deep .btn.btn--ghost{background:transparent;border-color:var(--sky);color:#FFFFFF}
+.btn.btn--ghost:hover,.foot .btn.btn--ghost:hover,.sec--deep .btn.btn--ghost:hover{background:var(--sky);border-color:var(--sky);color:var(--deep-2)}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return v.toLocaleString('de-DE');}function __f(x){return x.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+<a class="skip" href="#obsah">Zum Inhalt springen</a>
+
+<!-- ===== PÁSIK UKÁŽKY ===== -->
+<div class="demobar" role="complementary" aria-label="Hinweis zur Beispiel-Website">
+  <div class="wrap demobar__in">
+    <span class="demobar__tag">Beispiel-Website</span>
+    <span class="demobar__row">
+      <span>So eine Website baue ich auch für Sie.</span> <a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a> <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+    </span>
+  </div>
+</div>
+
+<!-- ===== HLAVIČKA ===== -->
+<header class="site-head">
+  <div class="wrap head__in">
+    <a class="brand" href="#uvod" aria-label="Optik Meridian, Seitenanfang">
+      <b>Optik Meridian</b> <span>Augenoptik &middot; Musterstadt</span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Menü
+    </button>
+
+    <nav class="site-nav" aria-label="Hauptnavigation">
+      <ul class="nav-list" id="hlavne-menu" data-open="false">
+        <li><a href="#sluzby">Leistungen</a></li>
+        <li><a href="#meranie">Sehtest</a></li>
+        <li><a href="#specializacie">Spezialgebiete</a></li>
+        <li><a href="#cennik">Preise</a></li>
+        <li><a href="#hodiny">Kontakt</a></li>
+      </ul>
+    </nav>
+
+    <div class="head__act">
+      <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+      <a class="btn btn--deep" href="#objednanie">Termin für den Sehtest</a>
+    </div>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ===== ÚVOD ===== -->
+<section class="hero" id="uvod">
+  <div class="wrap hero__in">
+    <aside class="rail" aria-label="Überblick der Leistungen">
+      <p class="rail__label">Augenoptik &middot; Musterstadt</p>
+      <ul class="rail__list">
+        <li><a href="#meranie">Sehtest</a><span>30 Min.</span></li>
+        <li><a href="#typy">Brillengläser</a><span>ab 39 €</span></li>
+        <li><a href="#ramy">Fassungen</a><span>6 Kategorien</span></li>
+        <li><a href="#kontaktne">Kontaktlinsen</a><span>ab 22 €</span></li>
+        <li><a href="#specializacie">Spezialgebiete</a><span>3 Bereiche</span></li>
+        <li><a href="#objednanie">Terminbuchung</a><span>online</span></li>
+      </ul>
+    </aside>
+
+    <div class="hero__main">
+      <h1>Sehtest, Brillen nach Maß und Kontaktlinsen</h1>
+      <div class="hero__cols">
+        <p>Den Sehtest macht ein Augenoptikermeister, er dauert 30 Minuten und kostet 20 €. Es wird nichts ins Auge getropft, Sie können danach ohne Einschränkung fahren. Das Ergebnis bekommen Sie noch am selben Tag schriftlich, auch wenn Sie die Brille nicht bei uns bestellen.</p>
+        <p>Wir schleifen und montieren in der eigenen Werkstatt in der Brunnenstraße: normalerweise in drei bis fünf Werktagen, individuelle Gleitsichtgläser in sieben. Beim Kauf einer Brille über 90 € ziehen wir den Preis des Sehtests vom Endbetrag ab.</p>
+      </div>
+      <div class="hero__actions">
+        <a class="btn btn--deep" href="#objednanie">Termin für den Sehtest</a>
+        <a class="btn btn--line" href="#kalkulacka">Brillenpreis berechnen</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="facts">
+      <dl>
+        <div><dt>Anfertigung</dt><dd>3 – 7 Werktage</dd></div>
+        <div><dt>Express</dt><dd>in 24 Stunden für 25 €</dd></div>
+        <div><dt>Garantie</dt><dd>24 Monate</dd></div>
+        <div><dt>Telefon</dt><dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 01 SLUŽBY ===== -->
+<section class="sec" id="sluzby">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">01</p>
+      <div>
+        <p class="eyebrow">Arbeitsumfang</p>
+        <h2>Leistungen der Optik</h2>
+      </div>
+      <p class="lede">Sehtest, Anfertigung der Brille, Kontaktlinsen und Service. Service machen wir auch an Brillen, die Sie woanders gekauft haben.</p>
+    </div>
+
+    <div class="grid grid--4">
+      <article class="blk reveal">
+        <span class="blk__num">Leistung 01</span>
+        <h3>Sehtest</h3>
+        <p>Objektive Messung mit dem Autorefraktometer, subjektive Refraktion in der Messbrille, Nahtest und binokularer Abgleich. Die Werte bekommen Sie schriftlich.</p>
+        <p class="blk__meta">20 € &middot; 30 Minuten</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Leistung 02</span>
+        <h3>Anfertigung der Brille</h3>
+        <p>Zentrierung, Auswahl von Fassung und Gläsern, Schleifen und Montage in der eigenen Werkstatt. Bei der Übergabe passen wir die Brille an, späteres Nachjustieren ist kostenlos.</p>
+        <p class="blk__meta">Gläser ab 39 € pro Paar</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Leistung 03</span>
+        <h3>Kontaktlinsen</h3>
+        <p>Messen der Augenparameter, erste Anpassung und Übung im Ein- und Absetzen. Die Kontrolle nach vierzehn Tagen ist im Preis der Anpassung, danach einmal im Jahr.</p>
+        <p class="blk__meta">Anpassung 25 € &middot; 45 Minuten</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Leistung 04</span>
+        <h3>Service und Reparaturen</h3>
+        <p>Nachziehen und Richten der Fassung, Tausch von Pads und Schrauben, Löten von Metallfassungen, Ultraschallreinigung. Kleinen Service machen wir sofort.</p>
+        <p class="blk__meta">Reinigen und Nachziehen kostenlos</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 PRIEBEH MERANIA ===== -->
+<section class="sec sec--band" id="meranie">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">02</p>
+      <div>
+        <p class="eyebrow">Ablauf des Besuchs</p>
+        <h2>So läuft der Sehtest ab</h2>
+      </div>
+      <p class="lede">Fünf Schritte, zusammen 30 Minuten. Während der Messung ist der Raum für eine Kundin oder einen Kunden reserviert.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <ol class="steps reveal">
+        <li>
+          <span class="steps__n">Schritt 1</span>
+          <div>
+            <h3>Erstes Gespräch</h3>
+            <p>Wir gehen durch, wie Sie jetzt sehen, was Sie einschränkt, was Sie beruflich machen und welche Brille Sie tragen. Die Werte Ihrer aktuellen Brille lesen wir am Scheitelbrechwertmesser ab.</p>
+          </div>
+          <span class="steps__t">5 Minuten</span>
+        </li>
+        <li>
+          <span class="steps__n">Schritt 2</span>
+          <div>
+            <h3>Objektive Messung</h3>
+            <p>Das Autorefraktometer misst die Ausgangswerte für beide Augen samt Hornhautkrümmung. Die Messung ist berührungslos und tut nicht weh.</p>
+          </div>
+          <span class="steps__t">5 Minuten</span>
+        </li>
+        <li>
+          <span class="steps__n">Schritt 3</span>
+          <div>
+            <h3>Subjektive Refraktion</h3>
+            <p>In der Messbrille vergleichen wir Schritt für Schritt Gläser auf fünf Meter Prüfentfernung. Hier entscheidet sich der Wert, der in die Brille kommt.</p>
+          </div>
+          <span class="steps__t">10 Minuten</span>
+        </li>
+        <li>
+          <span class="steps__n">Schritt 4</span>
+          <div>
+            <h3>Nahsehen und Zusammenspiel der Augen</h3>
+            <p>Wir bestimmen die Addition fürs Lesen, prüfen den binokularen Abgleich und das Gleichgewicht zwischen den Augen. Daraus sehen wir, ob eine Arbeitsplatz- oder Gleitsichtbrille sinnvoll ist.</p>
+          </div>
+          <span class="steps__t">5 Minuten</span>
+        </li>
+        <li>
+          <span class="steps__n">Schritt 5</span>
+          <div>
+            <h3>Empfehlung und Auswahl</h3>
+            <p>Wir erklären das Ergebnis, empfehlen den Glastyp und die Verdünnung passend zu Stärke und Fassung. Die schriftlichen Werte nehmen Sie auch dann mit, wenn Sie die Brille nicht bei uns bestellen.</p>
+          </div>
+          <span class="steps__t">5 Minuten</span>
+        </li>
+      </ol>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:22px">
+          <h3>Was Sie mitbringen</h3>
+          <ul class="ticks">
+            <li>Die Brille, die Sie jetzt tragen, und die Lesebrille</li>
+            <li>Die letzten gemessenen Werte, falls Sie sie haben</li>
+            <li>Eine Liste der Medikamente, die Sie dauerhaft nehmen</li>
+            <li>Kontaktlinsen bitte mindestens zwei Stunden vor dem Termin herausnehmen</li>
+            <li>Bei Kindern unter fünfzehn Jahren kommt ein Elternteil mit</li>
+          </ul>
+        </div>
+        <p class="note">Ein Sehtest beim Optiker ersetzt keine Untersuchung beim Augenarzt. Finden wir einen Befund, der zum Arzt gehört, sagen wir es Ihnen und empfehlen eine Untersuchung.</p>
+        <div class="actions">
+          <a class="btn btn--deep" href="#objednanie">Termin für den Sehtest</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 ŠPECIALIZÁCIE ===== -->
+<section class="sec" id="specializacie">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">03</p>
+      <div>
+        <p class="eyebrow">Über die normale Brille hinaus</p>
+        <h2>Spezialgebiete</h2>
+      </div>
+      <p class="lede">Drei Bereiche mit eigenem Ablauf, Preis und Frist. Der Sehtest davor gilt wie bei einer normalen Brille: 20 € und 30 Minuten.</p>
+    </div>
+
+    <!-- FOTO: dieťa vo veku 8 – 10 rokov pri kontrolnom meraní, optometrista pri foropteri, prirodzené svetlo vo vyšetrovni -->
+    <figure class="obraz obraz--siroky obraz--a reveal" style="margin-bottom:clamp(30px,3.4vw,48px)">
+      <figcaption>
+        <p class="obraz__lbl">Myopie-Management</p>
+        <p class="obraz__t">Kontrolle alle sechs Monate</p>
+        <p class="obraz__d">Kinder ab 6 Jahren &middot; jeden gemessenen Wert tragen wir in die Karte ein</p>
+      </figcaption>
+    </figure>
+
+    <div class="grid grid--3">
+      <article class="blk reveal">
+        <span class="blk__num">Spezialgebiet 01</span>
+        <h3>Myopie-Management bei Kindern</h3>
+        <p>Kurzsichtigkeit nimmt im Schulalter meist zu. Wir setzen Brillengläser mit peripherem Defokus oder multifokale Tageslinsen ein und kontrollieren die Werte alle sechs Monate. Die gemessenen Werte tragen wir in die Karte ein, nach einem Jahr sehen Sie den ganzen Verlauf schwarz auf weiß.</p>
+        <p class="blk__meta">Gläser ab 249 € pro Paar &middot; Kontrollen inklusive</p>
+        <div class="blk__akcia"><a class="btn btn--deep" href="#objednanie">Kind zum Sehtest anmelden</a></div>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Spezialgebiet 02</span>
+        <h3>Keratokonus</h3>
+        <p>Beim Keratokonus verändert die Hornhaut ihre Form, und eine Brille reicht nicht mehr. Wir passen formstabile und sklerale Linsen an, und zwar nur mit einem augenärztlichen Befund, der nicht älter als sechs Monate ist. Die Anpassung dauert 60 Minuten, die Probelinsen tragen Sie zwei Wochen, erst danach bestellen wir die eigene Linse.</p>
+        <p class="blk__meta">Anpassung 60 € &middot; Linse ab 120 € pro Stück &middot; Lieferung 3 – 4 Wochen</p>
+        <div class="blk__akcia"><a class="btn btn--deep" href="#objednanie">Termin zur Anpassung</a></div>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Spezialgebiet 03</span>
+        <h3>Formstabile und Nachtlinsen</h3>
+        <p>Orthokeratologische Nachtlinsen setzt man zum Schlafen ein, tagsüber sehen Sie ohne Brille. Wir passen sie bis -4,50 Dioptrien und bis 2,00 Zylinder an. Die Kontrollen nach der ersten Nacht, nach einer Woche und nach einem Monat sind im Preis der Anpassung. Passen sie Ihnen innerhalb von 30 Tagen nach der Übergabe nicht, erstatten wir den Preis der Linsen.</p>
+        <p class="blk__meta">Anpassung 90 € &middot; erstes Paar 320 € &middot; Kontrollen inklusive</p>
+        <div class="blk__akcia"><a class="btn btn--deep" href="#objednanie">Termin zur Anpassung</a></div>
+      </article>
+    </div>
+
+    <p class="note" style="margin-top:clamp(26px,3vw,40px)">Beim Keratokonus und bei Nachtlinsen verlangen wir einen augenärztlichen Befund. Ohne ihn beginnen wir die Anpassung nicht, auch wenn Sie zum Termin kommen.</p>
+  </div>
+</section>
+
+<!-- ===== 04 TYPY ŠOŠOVIEK ===== -->
+<section class="sec sec--band" id="typy">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">04</p>
+      <div>
+        <p class="eyebrow">Auswahl nach Verwendung</p>
+        <h2>Arten von Brillengläsern</h2>
+      </div>
+      <p class="lede">Der Glastyp entscheidet, auf welche Entfernungen Sie mit der Brille scharf sehen. Wir empfehlen ihn nach dem Ergebnis der Messung und danach, was Sie tagsüber machen.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <article class="blk reveal">
+        <span class="blk__num">Typ 01</span>
+        <h3>Einstärkengläser</h3>
+        <p>Ein Wert über die ganze Glasfläche. Sie werden entweder für die Ferne oder fürs Lesen genutzt. Am einfachsten zu gewöhnen, gut für die erste Brille und für Kinder.</p>
+        <p class="blk__meta">Ab 39 € pro Paar</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 02</span>
+        <h3>Arbeitsplatzgläser (Raumkomfort)</h3>
+        <p>Scharfes Sehen vom Schreibtisch bis etwa vier Meter. Breites Feld für Monitor und Papier, zum Autofahren nicht geeignet. Sie funktionieren gut als Zweitbrille zur Gleitsichtbrille.</p>
+        <p class="blk__meta">Monitor und Schreibtisch &middot; 129 €</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 03</span>
+        <h3>Gleitsichtgläser</h3>
+        <p>Fließender Übergang von der Ferne über den Zwischenbereich bis zum Lesen in einem Glas, ohne sichtbare Trennlinie. Wir bieten drei Stufen je nach Breite des bequemen Sehfelds.</p>
+        <p class="blk__meta">Ab 45 Jahren &middot; 189 – 359 €</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 04</span>
+        <h3>Sonnenbrillengläser mit Stärke</h3>
+        <p>Glas mit Stärke, getönt oder polarisierend. Die Polarisation nimmt Spiegelungen von Straße, Wasser und Schnee, deshalb empfehlen wir sie Autofahrern.</p>
+        <p class="blk__meta">Tönung 20 € &middot; Polarisation 55 €</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 05</span>
+        <h3>Selbsttönende Gläser</h3>
+        <p>Ein Glas, das im Tageslicht dunkler wird und drinnen wieder aufklart. Hinter der Windschutzscheibe tönt es nur teilweise, das sollten Sie einplanen.</p>
+        <p class="blk__meta">Aufpreis 65 € pro Paar</p>
+      </article>
+
+      <article class="blk reveal">
+        <span class="blk__num">Typ 06</span>
+        <h3>Dünnere Gläser</h3>
+        <p>Ein höherer Index bedeutet ein dünneres und leichteres Glas bei gleicher Stärke. Über vier Dioptrien empfehlen wir ihn immer, bei randlosen Brillen auch früher.</p>
+        <p class="blk__meta">Index 1.6 bis 1.74 &middot; 30 – 140 €</p>
+      </article>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <h3>So wählen Sie</h3>
+        <ul class="ticks">
+          <li>Sie arbeiten mehr als vier Stunden am Tag am Monitor — Arbeitsplatzgläser</li>
+          <li>Der Wechsel zwischen zwei Brillen stört Sie — Gleitsichtgläser</li>
+          <li>Sie haben über vier Dioptrien und die Dicke stört — höherer Index</li>
+          <li>Sie fahren im Dunkeln und Spiegelungen stören — Entspiegelung</li>
+          <li>Sie sind viel draußen — selbsttönend oder Sonnenbrille mit Stärke</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3>Was bei jedem Glas im Preis ist</h3>
+        <ul class="ticks">
+          <li>Zentrierung auf die gewählte Fassung</li>
+          <li>Schleifen und Montage in der eigenen Werkstatt</li>
+          <li>Anpassen der Brille bei der Übergabe</li>
+          <li>Späteres Nachjustieren ohne Gebühr</li>
+          <li>24 Monate Gewährleistung auf Material- und Verarbeitungsfehler</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 RÁMY ===== -->
+<section class="sec" id="ramy">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">05</p>
+      <div>
+        <p class="eyebrow">Kategorien der Fassungen</p>
+        <h2>Brillenfassungen</h2>
+      </div>
+      <p class="lede">Wir haben 71 Fassungen ausgestellt und teilen sie nach Material und Verwendung in sechs Kategorien. Die genannten Preise gelten für die Fassung allein, ohne Gläser.</p>
+    </div>
+
+    <div class="grid grid--4" style="margin-bottom:clamp(30px,3.4vw,48px)">
+      <!-- FOTO: titánový rám v detaile na bielom pozadí, pohľad spredu a zboku, viditeľný bezskrutkový pánt -->
+      <figure class="obraz obraz--a reveal">
+        <figcaption>
+          <p class="obraz__lbl">Titan</p>
+          <p class="obraz__t">12 Modelle</p>
+          <p class="obraz__d">Ab 14 g &middot; 149 – 219 €</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: acetátový rám v detaile na bielom pozadí, viditeľná hrúbka materiálu a kovové jadro v stranici -->
+      <figure class="obraz obraz--b reveal">
+        <figcaption>
+          <p class="obraz__lbl">Acetat</p>
+          <p class="obraz__t">18 Modelle</p>
+          <p class="obraz__d">Metallkern im Bügel &middot; 99 – 169 €</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: detský rám na bielom pozadí, viditeľný gumený mostík a pružný pánt, vedľa neho meradlo veľkosti -->
+      <figure class="obraz obraz--c reveal">
+        <figcaption>
+          <p class="obraz__lbl">Kinder</p>
+          <p class="obraz__t">11 Modelle</p>
+          <p class="obraz__d">Fünf Größen &middot; 59 – 99 €</p>
+        </figcaption>
+      </figure>
+
+      <!-- FOTO: športový rám zboku na bielom pozadí, zakrivený tvar a protišmykové stranice -->
+      <figure class="obraz obraz--d reveal">
+        <figcaption>
+          <p class="obraz__lbl">Sport</p>
+          <p class="obraz__t">7 Modelle</p>
+          <p class="obraz__d">Rutschfeste Bügel &middot; 109 – 159 €</p>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table>
+        <caption>Kategorien der Fassungen und Preisspannen</caption>
+        <thead>
+          <tr>
+            <th scope="col">Kategorie</th>
+            <th scope="col">Material und Ausführung</th>
+            <th scope="col" class="num">Modelle</th>
+            <th scope="col" class="num">Preis der Fassung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Titan<span class="t-sub">zum ganztägigen Tragen</span></th>
+            <td>Titan, schraubenlose Scharniere, ab 14 g</td>
+            <td class="num">12</td>
+            <td class="num">149 – 219 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Acetat<span class="t-sub">markantere Form</span></th>
+            <td>Handpoliertes Acetat, Metallkern im Bügel</td>
+            <td class="num">18</td>
+            <td class="num">99 – 169 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Dünnes Metall<span class="t-sub">unauffällige Brille</span></th>
+            <td>Metallprofil 1,2 mm, Silikonpads</td>
+            <td class="num">14</td>
+            <td class="num">79 – 139 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Randlos<span class="t-sub">gebohrte Gläser</span></th>
+            <td>Gläser mit Schrauben gehalten, ohne Rand</td>
+            <td class="num">9</td>
+            <td class="num">129 – 189 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Kinder<span class="t-sub">6 – 15 Jahre</span></th>
+            <td>Federscharniere, Gummisteg, fünf Größen</td>
+            <td class="num">11</td>
+            <td class="num">59 – 99 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Sport<span class="t-sub">für Bewegung und Sonne</span></th>
+            <td>Gebogene Form, rutschfeste Bügel und Steg</td>
+            <td class="num">7</td>
+            <td class="num">109 – 159 €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="blk reveal">
+        <h3>Eigene Fassung</h3>
+        <p>Wir setzen Gläser auch in eine Fassung ein, die Sie schon haben. Vorher prüfen wir ihren Zustand und sagen Ihnen, wenn beim Schleifen ein Bruch droht.</p>
+        <p class="blk__meta">Montage 15 €</p>
+      </div>
+      <div class="blk reveal">
+        <h3>Anprobieren ohne Termin</h3>
+        <p>Fassungen können Sie jederzeit während der Öffnungszeiten anprobieren, auch ohne Sehtest. Eine gewählte Fassung legen wir drei Tage zurück.</p>
+        <p class="blk__meta">Kostenlos</p>
+      </div>
+      <div class="blk reveal">
+        <h3>Modell nachbestellen</h3>
+        <p>Passt Ihnen ein Modell, das in Ihrer Größe gerade ausverkauft ist, bestellen wir es nach. Die übliche Lieferzeit beträgt 7 – 10 Werktage.</p>
+        <p class="blk__meta">Ohne Anzahlung bis 200 €</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 ZNAČKY ===== -->
+<section class="sec sec--band" id="znacky">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">06</p>
+      <div>
+        <p class="eyebrow">Was wir führen</p>
+        <h2>Marken der Fassungen und Hersteller der Gläser</h2>
+      </div>
+      <p class="lede">Fassungen führen wir von zwölf Marken, Brillengläser von vier Herstellern und Kontaktlinsen von vier. Ein Modell, das wir nicht ausgestellt haben, bestellen wir in 7 – 10 Werktagen.</p>
+    </div>
+
+    <div class="reveal">
+      <p class="eyebrow">Brillenfassungen</p>
+      <ul class="znacky">
+        <li><b>Ray-Ban</b></li>
+        <li><b>Oakley</b></li>
+        <li><b>Persol</b></li>
+        <li><b>Vogue Eyewear</b></li>
+        <li><b>Police</b></li>
+        <li><b>Guess</b></li>
+        <li><b>Tommy Hilfiger</b></li>
+        <li><b>Hugo Boss</b></li>
+        <li><b>Morel</b></li>
+        <li><b>Silhouette</b></li>
+        <li><b>Lindberg</b></li>
+        <li><b>Nike Vision</b></li>
+      </ul>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <p class="eyebrow">Brillengläser</p>
+        <ul class="znacky znacky--maly znacky--2">
+          <li><b>Zeiss</b></li>
+          <li><b>Essilor</b></li>
+          <li><b>Hoya</b></li>
+          <li><b>Rodenstock</b></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">Kontaktlinsen</p>
+        <ul class="znacky znacky--maly znacky--2">
+          <li><b>CooperVision</b></li>
+          <li><b>Alcon</b></li>
+          <li><b>Bausch + Lomb</b></li>
+          <li><b>Acuvue</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="blk reveal">
+        <h3>Wenn Ihnen ein bestimmtes Glas verordnet wurde</h3>
+        <p>Wir bestellen es auch dann, wenn wir es sonst nicht führen. Den Preis bestätigen wir innerhalb von zwei Werktagen nach der Anfrage, die Lieferzeit verlängert sich um 5 Werktage.</p>
+        <p class="blk__meta">Preisbestätigung in 2 Werktagen</p>
+      </div>
+      <div class="blk reveal">
+        <h3>Die Preise gelten für alle Marken</h3>
+        <p>Der Preis eines Glases richtet sich nach Typ und Verdünnung aus der Preisliste unten, nicht nach dem Hersteller. Der Preis der Fassung richtet sich nach der Kategorie aus der Tabelle oben.</p>
+        <p class="blk__meta">Gleicher Preis bei allen Herstellern</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07 CENNÍK ŠOŠOVIEK ===== -->
+<section class="sec" id="cennik">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">07</p>
+      <div>
+        <p class="eyebrow">Preise</p>
+        <h2>Brillengläser und Veredelungen</h2>
+      </div>
+      <p class="lede">Alle Preise gelten pro Paar Gläser inklusive Schleifen, Montage und Zentrierung. Basis ist Index 1.5, dünnere Gläser kosten Aufpreis.</p>
+    </div>
+
+    <div class="grid grid--2">
+      <div class="tablewrap reveal">
+        <table>
+          <caption>Glastyp &middot; Preis pro Paar</caption>
+          <thead>
+            <tr><th scope="col">Typ</th><th scope="col" class="num">Preis</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Einstärkengläser<span class="t-sub">für die Ferne oder fürs Lesen</span></th><td class="num">39 €</td></tr>
+            <tr><th scope="row">Arbeitsplatzgläser<span class="t-sub">Monitor und Schreibtisch bis 4 Meter</span></th><td class="num">129 €</td></tr>
+            <tr><th scope="row">Gleitsicht Standard<span class="t-sub">normale Breite des bequemen Felds</span></th><td class="num">189 €</td></tr>
+            <tr><th scope="row">Gleitsicht Komfort<span class="t-sub">breiteres Feld im Nahbereich</span></th><td class="num">269 €</td></tr>
+            <tr><th scope="row">Gleitsicht individuell<span class="t-sub">berechnet auf Ihre Fassung und Zentrierung</span></th><td class="num">359 €</td></tr>
+            <tr><th scope="row">Myopie-Management<span class="t-sub">peripherer Defokus, Kinder ab 6 Jahren</span></th><td class="num">249 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reveal">
+        <div class="tablewrap" style="margin-bottom:clamp(26px,3vw,40px)">
+          <table>
+            <caption>Verdünnung &middot; Aufpreis pro Paar</caption>
+            <thead>
+              <tr><th scope="col">Index</th><th scope="col">Empfohlen ab</th><th scope="col" class="num">Aufpreis</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">1.5</th><td>bis 2 Dioptrien</td><td class="num">inklusive</td></tr>
+              <tr><th scope="row">1.6</th><td>2 – 4 Dioptrien</td><td class="num">30 €</td></tr>
+              <tr><th scope="row">1.67</th><td>4 – 6 Dioptrien</td><td class="num">80 €</td></tr>
+              <tr><th scope="row">1.74</th><td>über 6 Dioptrien</td><td class="num">140 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Veredelungen &middot; Aufpreis pro Paar</caption>
+            <thead>
+              <tr><th scope="col">Bearbeitung</th><th scope="col" class="num">Aufpreis</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Entspiegelung</th><td class="num">25 €</td></tr>
+              <tr><th scope="row">Hartschicht gegen Kratzer</th><td class="num">12 €</td></tr>
+              <tr><th scope="row">Blaulichtfilter</th><td class="num">29 €</td></tr>
+              <tr><th scope="row">Selbsttönend</th><td class="num">65 €</td></tr>
+              <tr><th scope="row">Polarisation</th><td class="num">55 €</td></tr>
+              <tr><th scope="row">Farbtönung</th><td class="num">20 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tablewrap reveal" style="margin-top:clamp(30px,3.4vw,48px)">
+      <table>
+        <caption>Pakete: Fassung und Gläser zusammen</caption>
+        <thead>
+          <tr><th scope="col">Tarif</th><th scope="col">Was drin ist</th><th scope="col" class="num">Einzeln</th><th scope="col" class="num">Paketpreis</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Basis<span class="t-sub">erste Brille und Kinderbrille</span></th>
+            <td>Fassung aus der Kategorie dünnes Metall oder Kinder bis 79 €, Einstärkengläser Index 1.5, Hartschicht</td>
+            <td class="num">130 €</td><td class="num">119 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Alltag<span class="t-sub">zum ganztägigen Tragen</span></th>
+            <td>Fassung aus der Kategorie Acetat oder Sport bis 99 €, Einstärkengläser Index 1.6, Entspiegelung</td>
+            <td class="num">193 €</td><td class="num">179 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Büro<span class="t-sub">Arbeit am Monitor</span></th>
+            <td>Fassung bis 99 €, Arbeitsplatzgläser, Entspiegelung, Blaulichtfilter</td>
+            <td class="num">282 €</td><td class="num">269 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Gleitsicht<span class="t-sub">eine Brille für alle Entfernungen</span></th>
+            <td>Fassung bis 149 €, Gleitsichtgläser Standard, Entspiegelung und Hartschicht</td>
+            <td class="num">375 €</td><td class="num">349 €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="note" style="margin-top:clamp(26px,3vw,40px)">Der Preis pro Paar gilt auch dann, wenn jedes Auge eine andere Stärke hat. Vom Paketpreis ziehen wir den Sehtest genauso ab wie bei der Bestellung nach Einzelpositionen. Ab 200 € Auftragswert nehmen wir bei der Bestellung 30 % Anzahlung, den Rest zahlen Sie bei der Abholung.</p>
+  </div>
+</section>
+
+<!-- ===== 08 CENNÍK MERANIA A SLUŽIEB ===== -->
+<section class="sec sec--band" id="cennik-sluzby">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">08</p>
+      <div>
+        <p class="eyebrow">Preise</p>
+        <h2>Sehtest und Leistungen im Laden</h2>
+      </div>
+      <p class="lede">Preise für die Arbeit des Augenoptikermeisters und des Optikers in der Werkstatt. Den Sehtest ziehen wir vom Preis der Brille ab, wenn Sie sie bei uns über 90 € bestellen.</p>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table>
+        <caption>Messung, Service und Leistungen &middot; Dauer und Preis</caption>
+        <thead>
+          <tr><th scope="col">Leistung</th><th scope="col">Dauer</th><th scope="col" class="num">Preis</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Sehtest<span class="t-sub">beim Kauf einer Brille über 90 € wird er abgezogen</span></th><td>30 Minuten</td><td class="num">20 €</td></tr>
+          <tr><th scope="row">Kontrollmessung innerhalb von 12 Monaten<span class="t-sub">für Kunden, die bei uns gemessen haben</span></th><td>20 Minuten</td><td class="num">10 €</td></tr>
+          <tr><th scope="row">Sehtest für Kinder ab 6 Jahren<span class="t-sub">immer im Beisein eines Elternteils</span></th><td>30 Minuten</td><td class="num">20 €</td></tr>
+          <tr><th scope="row">Kontrolle beim Myopie-Management<span class="t-sub">alle 6 Monate, Eintrag in die Karte</span></th><td>20 Minuten</td><td class="num">im Preis der Gläser</td></tr>
+          <tr><th scope="row">Berührungslose Messung des Augeninnendrucks</th><td>5 Minuten</td><td class="num">10 €</td></tr>
+          <tr><th scope="row">Ablesen der Werte einer Brille am Scheitelbrechwertmesser</th><td>5 Minuten</td><td class="num">kostenlos</td></tr>
+          <tr><th scope="row">Anpassung von Kontaktlinsen und Übung</th><td>45 Minuten</td><td class="num">25 €</td></tr>
+          <tr><th scope="row">Anpassung formstabiler Linsen<span class="t-sub">nur mit augenärztlichem Befund</span></th><td>60 Minuten</td><td class="num">60 €</td></tr>
+          <tr><th scope="row">Anpassung orthokeratologischer Nachtlinsen<span class="t-sub">nur mit augenärztlichem Befund</span></th><td>60 Minuten</td><td class="num">90 €</td></tr>
+          <tr><th scope="row">Kontrolle nach der ersten Anpassung</th><td>15 Minuten</td><td class="num">im Preis der Anpassung</td></tr>
+          <tr><th scope="row">Gläser in die eigene Fassung einsetzen</th><td>innerhalb von 3 Tagen</td><td class="num">15 €</td></tr>
+          <tr><th scope="row">Expressanfertigung in 24 Stunden<span class="t-sub">Einstärken- und Arbeitsplatzgläser</span></th><td>1 Werktag</td><td class="num">25 €</td></tr>
+          <tr><th scope="row">Tausch der Pads</th><td>sofort</td><td class="num">6 €</td></tr>
+          <tr><th scope="row">Tausch von Schraube oder Scharnier</th><td>sofort</td><td class="num">4 €</td></tr>
+          <tr><th scope="row">Löten einer Metallfassung</th><td>2 Werktage</td><td class="num">ab 18 €</td></tr>
+          <tr><th scope="row">Ultraschallreinigung und Nachziehen</th><td>sofort</td><td class="num">kostenlos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09 PREPOČET CENY ===== -->
+<section class="sec" id="kalkulacka">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">09</p>
+      <div>
+        <p class="eyebrow">Unverbindliche Berechnung</p>
+        <h2>Brillenpreis berechnen</h2>
+      </div>
+      <p class="lede">Wählen Sie Glastyp, Verdünnung, Veredelungen und Fassung. Der Preis wird sofort berechnet und entspricht der Preisliste oben.</p>
+    </div>
+
+    <div class="calc">
+      <form class="reveal" id="kalk" novalidate>
+        <div class="field">
+          <label for="typ">Glastyp</label>
+          <select id="typ" data-cena="39" data-dni="3">
+            <option value="jedno" data-cena="39" data-dni="3" selected>Einstärkengläser — 39 €</option>
+            <option value="kancel" data-cena="129" data-dni="4">Arbeitsplatzgläser — 129 €</option>
+            <option value="prog1" data-cena="189" data-dni="5">Gleitsicht Standard — 189 €</option>
+            <option value="prog2" data-cena="269" data-dni="5">Gleitsicht Komfort — 269 €</option>
+            <option value="prog3" data-cena="359" data-dni="7">Gleitsicht individuell — 359 €</option>
+            <option value="myo" data-cena="249" data-dni="7">Myopie-Management — 249 €</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="stencenie">Verdünnung</label>
+          <select id="stencenie">
+            <option value="1.5" data-cena="0" selected>Index 1.5 — Basis, im Preis</option>
+            <option value="1.6" data-cena="30">Index 1.6 — dünner, 30 €</option>
+            <option value="1.67" data-cena="80">Index 1.67 — sehr dünn, 80 €</option>
+            <option value="1.74" data-cena="140">Index 1.74 — am dünnsten, 140 €</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend class="legend">Veredelungen</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" class="uprava" data-cena="25" data-nazov="Entspiegelung"><span>Entspiegelung</span><b>25 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="12" data-nazov="Hartschicht"><span>Hartschicht gegen Kratzer</span><b>12 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="29" data-nazov="Blaulichtfilter"><span>Blaulichtfilter</span><b>29 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="65" data-nazov="selbsttönend"><span>Selbsttönend</span><b>65 €</b></label>
+            <label class="check"><input type="checkbox" class="uprava" data-cena="55" data-nazov="Polarisation"><span>Polarisation</span><b>55 €</b></label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="ram">Fassung</label>
+          <select id="ram">
+            <option value="vlastny" data-cena="15" selected>Eigene Fassung — Montage 15 €</option>
+            <option value="tenke" data-cena="79">Dünnes Metall — ab 79 €</option>
+            <option value="acetat" data-cena="99">Acetat — ab 99 €</option>
+            <option value="sport" data-cena="109">Sport — ab 109 €</option>
+            <option value="bezramove" data-cena="129">Randlos — ab 129 €</option>
+            <option value="titan" data-cena="149">Titan — ab 149 €</option>
+            <option value="detske" data-cena="59">Kinder — ab 59 €</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="expres">Liefertermin</label>
+          <select id="expres">
+            <option value="bezny" data-cena="0" selected>Normaler Termin — im Preis</option>
+            <option value="expres" data-cena="25">Express in 24 Stunden — 25 €</option>
+          </select>
+        </div>
+
+        <p class="note">Die Berechnung ist unverbindlich und kein Angebot. Der Preis der Fassung geht vom niedrigsten Preis der jeweiligen Kategorie aus. Die genaue Summe bestätigen wir nach der Messung, wenn Stärke und Fassung feststehen. Entspricht Ihre Zusammenstellung einem Paket aus der Preisliste oben, gilt der günstigere Paketpreis.</p>
+      </form>
+
+      <div class="sumbox reveal">
+        <div class="sumbox__hd">
+          <p>Summe</p>
+          <h3>Ihre Brille</h3>
+        </div>
+        <dl class="sumrows" id="sum-vypis" aria-live="polite">
+          <div><dt>Gläser</dt><dd id="sum-sosovky">39 €</dd></div>
+          <div><dt id="sum-sten-lbl">Verdünnung 1.5</dt><dd id="sum-sten">0 €</dd></div>
+          <div><dt id="sum-upravy-lbl">Veredelungen</dt><dd id="sum-upravy">0 €</dd></div>
+          <div><dt id="sum-ram-lbl">Montage in die eigene Fassung</dt><dd id="sum-ram">15 €</dd></div>
+          <div><dt>Express</dt><dd id="sum-expres">0 €</dd></div>
+        </dl>
+        <div class="sumtotal">
+          <span>Gesamt</span>
+          <strong id="sum-spolu">54 €</strong>
+        </div>
+        <p class="sumfoot" id="sum-lehota">Anfertigung in 3 Werktagen. Der Preis gilt pro Paar Gläser inklusive Schleifen und Zentrierung.</p>
+        <div style="padding:0 24px 24px">
+          <a class="btn btn--deep" href="#objednanie">Termin für den Sehtest</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 KONTAKTNÉ ŠOŠOVKY ===== -->
+<section class="sec sec--band" id="kontaktne">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">10</p>
+      <div>
+        <p class="eyebrow">Zum täglichen Tragen</p>
+        <h2>Kontaktlinsen</h2>
+      </div>
+      <p class="lede">Linsen verkaufen wir erst nach dem Messen der Augenparameter. Die erste Anpassung enthält das Üben von Ein- und Absetzen bei uns, bis Sie es allein können.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <div class="tablewrap reveal">
+        <table>
+          <caption>Preise für Kontaktlinsen und Pflegemittel</caption>
+          <thead>
+            <tr><th scope="col">Typ</th><th scope="col">Verpackung</th><th scope="col" class="num">Preis</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Tageslinsen sphärisch</th><td>30 Stück</td><td class="num">22 €</td></tr>
+            <tr><th scope="row">Tageslinsen torisch<span class="t-sub">bei Astigmatismus</span></th><td>30 Stück</td><td class="num">32 €</td></tr>
+            <tr><th scope="row">Zweiwochenlinsen</th><td>6 Stück</td><td class="num">24 €</td></tr>
+            <tr><th scope="row">Monatslinsen sphärisch</th><td>6 Stück</td><td class="num">28 €</td></tr>
+            <tr><th scope="row">Monatslinsen torisch</th><td>6 Stück</td><td class="num">42 €</td></tr>
+            <tr><th scope="row">Multifokale Monatslinsen</th><td>6 Stück</td><td class="num">48 €</td></tr>
+            <tr><th scope="row">Formstabil<span class="t-sub">bei Keratokonus, nach Maß</span></th><td>1 Stück</td><td class="num">ab 120 €</td></tr>
+            <tr><th scope="row">Orthokeratologische Nachtlinsen</th><td>Paar</td><td class="num">320 €</td></tr>
+            <tr><th scope="row">Pflegemittel mit Behälter</th><td>360 ml</td><td class="num">9 €</td></tr>
+            <tr><th scope="row">Abnahme für sechs Monate auf einmal</th><td>6 Packungen</td><td class="num">10 % Rabatt</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:22px">
+          <h3>So läuft es ab</h3>
+          <ul class="ticks">
+            <li>Messen der Parameter und Wahl des Typs — 45 Minuten</li>
+            <li>Üben von Ein- und Absetzen im Laden</li>
+            <li>Probepaar für die ersten zwei Tage</li>
+            <li>Kontrolle nach vierzehn Tagen, im Preis der Anpassung</li>
+            <li>Weitere Kontrolle einmal im Jahr vor der nächsten Bestellung</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <h3>Regeln, an die wir uns halten</h3>
+          <p>Ohne gültige Kontrolle, die nicht älter als zwölf Monate ist, verkaufen wir keine Linsen. Tageslinsen trägt man einen Tag und reinigt sie nicht. Bei Rötung oder Schmerzen nehmen Sie die Linse heraus und kommen vorbei, solche Besuche behandeln wir vorrangig.</p>
+          <div class="blk__akcia"><a class="btn btn--deep" href="#objednanie">Termin zur Anpassung</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 STAROSTLIVOSŤ O OKULIARE ===== -->
+<section class="sec" id="starostlivost">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">11</p>
+      <div>
+        <p class="eyebrow">Nach der Übergabe</p>
+        <h2>Pflege der Brille</h2>
+      </div>
+      <p class="lede">Kratzer entstehen vor allem beim trockenen Putzen, und eine verzogene Fassung beim Aufsetzen mit einer Hand.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <div class="blk reveal">
+        <span class="blk__num">Täglich</span>
+        <h3>Gläser reinigen</h3>
+        <p>Mit lauwarmem Wasser abspülen, einen Tropfen Spülmittel auftragen, abspülen und mit einem sauberen Mikrofasertuch trocknen. Trockenes Putzen reibt Staub in die Schicht und zerkratzt sie.</p>
+        <p class="blk__meta">Mikrofasertuch im Preis der Brille</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Täglich</span>
+        <h3>Ablegen</h3>
+        <p>Ins Etui, nie mit den Gläsern nach unten auf den Tisch. Lassen Sie die Brille im Sommer nicht im Auto auf dem Armaturenbrett, über 60 °C nehmen Entspiegelung und Fassung Schaden.</p>
+        <p class="blk__meta">Etui im Preis der Brille</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Täglich</span>
+        <h3>Aufsetzen</h3>
+        <p>Immer mit beiden Händen. Das Aufsetzen mit einer Hand weitet einen Bügel, die Brille sitzt schief, und Gleitsichtgläser stehen dann nicht mehr auf der richtigen Höhe.</p>
+        <p class="blk__meta">Anpassen jederzeit kostenlos</p>
+      </div>
+    </div>
+
+    <div class="tablewrap reveal" style="margin-top:clamp(30px,3.4vw,48px)">
+      <table>
+        <caption>Wartung und Service &middot; Intervall und Preis</caption>
+        <thead>
+          <tr><th scope="col">Leistung</th><th scope="col">Wie oft</th><th scope="col" class="num">Preis</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Ultraschallreinigung<span class="t-sub">holt Schmutz unter dem Rand und aus den Scharnieren</span></th><td>alle 3 Monate</td><td class="num">kostenlos</td></tr>
+          <tr><th scope="row">Kontrolle der Passform und Nachziehen</th><td>alle 6 Monate</td><td class="num">kostenlos</td></tr>
+          <tr><th scope="row">Tausch der Silikonpads</th><td>einmal im Jahr</td><td class="num">6 €</td></tr>
+          <tr><th scope="row">Neues Mikrofasertuch</th><td>einmal im Jahr</td><td class="num">3 €</td></tr>
+          <tr><th scope="row">Neues Etui</th><td>nach Bedarf</td><td class="num">ab 5 €</td></tr>
+          <tr><th scope="row">Richten einer verbogenen Fassung</th><td>nach Bedarf</td><td class="num">kostenlos</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <h3>Was Sie vermeiden sollten</h3>
+        <ul class="ticks">
+          <li>Putzen mit T-Shirt, Serviette oder Papiertaschentuch</li>
+          <li>Alkohol und Glasreiniger — sie greifen die Entspiegelung an</li>
+          <li>Heißes Wasser über 40 °C</li>
+          <li>Die Brille in die Haare schieben, das weitet die Bügel</li>
+          <li>Schrauben zu Hause mit dem falschen Schraubendreher nachziehen</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3>Wann Sie auch ohne Termin kommen sollten</h3>
+        <ul class="ticks">
+          <li>Die Brille rutscht oder drückt hinter dem Ohr</li>
+          <li>Lose Schraube oder herausgefallenes Glas</li>
+          <li>Gebrochenes Pad oder gebrochener Bügel</li>
+          <li>Auf den Gläsern bleiben auch nach dem Reinigen fettige Flecken</li>
+          <li>Verbogene Fassung nach einem Sturz — wir richten sie sofort</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 KTO VÁS OBSLÚŽI ===== -->
+<section class="sec sec--band" id="tim">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">12</p>
+      <div>
+        <p class="eyebrow">Die Leute im Laden</p>
+        <h2>Wer Sie bedient</h2>
+      </div>
+      <p class="lede">Die Messung macht ein Augenoptikermeister, die Gläser schleift ein Optiker in der Werkstatt, und die Fassung wählen Sie mit einer Beraterin aus. Während der Öffnungszeiten sind alle drei im Haus.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <article class="blk reveal">
+        <!-- FOTO: portrét optometristu vo vyšetrovni pri foropteri, pohľad do objektívu, štvorcový orez -->
+        <figure class="obraz obraz--vysoky obraz--a" style="margin-bottom:18px">
+          <figcaption><p class="obraz__lbl">Messraum</p></figcaption>
+        </figure>
+        <h3>Augenoptikermeister</h3>
+        <p>Macht den Sehtest, passt Kontaktlinsen an und wertet die Kontrollen aus. Augenoptik ist in Deutschland ein Handwerk mit Meisterpflicht, dazu kommt die Ausbildung in Optometrie. Einen Befund, der zum Augenarzt gehört, benennt er und empfiehlt eine Untersuchung.</p>
+        <p class="blk__meta">Messung 30 Minuten &middot; Anpassung 45 Minuten</p>
+      </article>
+
+      <article class="blk reveal">
+        <!-- FOTO: portrét optického technika pri brúsnom automate v dielni, ruky pri práci so šošovkou -->
+        <figure class="obraz obraz--vysoky obraz--d" style="margin-bottom:18px">
+          <figcaption><p class="obraz__lbl">Schleifwerkstatt</p></figcaption>
+        </figure>
+        <h3>Optiker in der Werkstatt</h3>
+        <p>Schleift und montiert Gläser, bohrt randlose Brillen, lötet Metallfassungen und macht die Ultraschallreinigung. Er arbeitet in der Werkstatt an derselben Adresse, deshalb schaffen wir kleinen Service sofort.</p>
+        <p class="blk__meta">Express in 24 Stunden &middot; Service sofort</p>
+      </article>
+
+      <article class="blk reveal">
+        <!-- FOTO: portrét predajného poradcu pri skúšobnom pulte s rámami, zrkadlo v pozadí -->
+        <figure class="obraz obraz--vysoky obraz--e" style="margin-bottom:18px">
+          <figcaption><p class="obraz__lbl">Laden</p></figcaption>
+        </figure>
+        <h3>Beratung im Verkauf</h3>
+        <p>Hilft bei der Wahl der Fassung nach Gesichtsform, Stärke und Trageweise, misst die Zentrierung und schreibt den Preis Position für Position auf, noch bevor Sie den Auftrag unterschreiben.</p>
+        <p class="blk__meta">Fassungen anprobieren ohne Termin</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 POSTUP ===== -->
+<section class="sec" id="postup">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">13</p>
+      <div>
+        <p class="eyebrow">Von der Bestellung bis zur Abholung</p>
+        <h2>So entsteht bei uns eine Brille</h2>
+      </div>
+      <p class="lede">Sechs Schritte. Die ersten drei schaffen Sie bei einem Besuch, der etwa eine Stunde dauert.</p>
+    </div>
+
+    <ol class="steps reveal">
+      <li>
+        <span class="steps__n">Schritt 1</span>
+        <div>
+          <h3>Terminvereinbarung</h3>
+          <p>Den Termin wählen Sie im Formular unten oder telefonisch. Wir bestätigen ihn spätestens am nächsten Werktag per Anruf.</p>
+        </div>
+        <span class="steps__t">in 1 Tag</span>
+      </li>
+      <li>
+        <span class="steps__n">Schritt 2</span>
+        <div>
+          <h3>Sehtest</h3>
+          <p>Fünf Schritte der Messung beim Augenoptikermeister. Am Ende bekommen Sie die Werte schriftlich, sie gelten auch in jeder anderen Optik.</p>
+        </div>
+        <span class="steps__t">30 Minuten</span>
+      </li>
+      <li>
+        <span class="steps__n">Schritt 3</span>
+        <div>
+          <h3>Wahl von Fassung und Gläsern</h3>
+          <p>Sie probieren Fassungen, wir empfehlen Glastyp und Verdünnung zu Ihrer Stärke und messen die Zentrierung auf die gewählte Fassung.</p>
+        </div>
+        <span class="steps__t">20 – 40 Minuten</span>
+      </li>
+      <li>
+        <span class="steps__n">Schritt 4</span>
+        <div>
+          <h3>Auftrag und Anzahlung</h3>
+          <p>Wir schreiben den Preis Position für Position in den Auftrag, zusammen mit dem Abholtermin. Ab 200 € Auftragswert zahlen Sie 30 % Anzahlung.</p>
+        </div>
+        <span class="steps__t">am selben Tag</span>
+      </li>
+      <li>
+        <span class="steps__n">Schritt 5</span>
+        <div>
+          <h3>Schleifen und Montage</h3>
+          <p>Die Gläser bestellen wir beim Hersteller, nach der Lieferung schleifen und montieren wir sie in der eigenen Werkstatt in der Brunnenstraße.</p>
+        </div>
+        <span class="steps__t">3 – 7 Werktage</span>
+      </li>
+      <li>
+        <span class="steps__n">Schritt 6</span>
+        <div>
+          <h3>Abholung und Anpassung</h3>
+          <p>Wir rufen an, passen die Brille an Ihr Gesicht an, und Sie zahlen den Rest. Die 24 Monate Gewährleistung beginnen am Tag der Übergabe.</p>
+        </div>
+        <span class="steps__t">20 Minuten</span>
+      </li>
+    </ol>
+
+    <div class="actions reveal">
+      <a class="btn btn--deep" href="#objednanie">Termin für den Sehtest</a>
+      <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 OBJEDNANIE ===== -->
+<section class="sec sec--band" id="objednanie">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">14</p>
+      <div>
+        <p class="eyebrow">Termin</p>
+        <h2>Termin für den Sehtest</h2>
+      </div>
+      <p class="lede">Die freien Termine richten sich nach den Messzeiten: Montag bis Freitag 9:00 – 12:00 und 13:00 – 17:30, samstags 9:00 – 12:00, sonntags messen wir nicht.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <form class="reveal" id="objednavka" novalidate>
+        <div class="formgrid">
+          <div class="field">
+            <label for="ucel">Grund des Besuchs</label>
+            <select id="ucel" name="ucel">
+              <option value="Sehtest (30 Minuten)" selected>Sehtest — 30 Minuten</option>
+              <option value="Anpassung von Kontaktlinsen (45 Minuten)">Anpassung von Kontaktlinsen — 45 Minuten</option>
+              <option value="Anpassung formstabiler oder Nachtlinsen (60 Minuten)">Anpassung formstabiler oder Nachtlinsen — 60 Minuten</option>
+              <option value="Brillenauswahl und Zentrierung (20 Minuten)">Brillenauswahl und Zentrierung — 20 Minuten</option>
+              <option value="Service oder Reparatur (15 Minuten)">Service oder Reparatur — 15 Minuten</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="datum">Datum</label>
+            <input type="date" id="datum" name="datum">
+          </div>
+
+          <fieldset class="full">
+            <legend class="legend">Uhrzeit</legend>
+            <div class="slots">
+              <label class="slot"><input type="radio" name="cas" value="9:00" data-hod="9"><span>9:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="10:00" data-hod="10"><span>10:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="11:00" data-hod="11"><span>11:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="13:00" data-hod="13"><span>13:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="14:00" data-hod="14"><span>14:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="15:00" data-hod="15"><span>15:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="16:00" data-hod="16"><span>16:00</span></label>
+              <label class="slot"><input type="radio" name="cas" value="17:00" data-hod="17"><span>17:00</span></label>
+            </div>
+            <p class="msg" id="slot-info">Nach der Wahl des Datums bleiben nur die Zeiten übrig, in denen wir an dem Tag messen. Mittagspause ist 12:00 – 13:00.</p>
+          </fieldset>
+
+          <div class="field">
+            <label for="meno">Vor- und Nachname</label>
+            <input type="text" id="meno" name="meno" autocomplete="name" placeholder="Vor- und Nachname">
+          </div>
+
+          <div class="field">
+            <label for="telefon">Telefon</label>
+            <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="Ihre Telefonnummer">
+          </div>
+
+          <div class="field full">
+            <label for="poznamka">Hinweis</label>
+            <textarea id="poznamka" name="poznamka" placeholder="Zum Beispiel: Ich trage seit drei Jahren eine Gleitsichtbrille, in letzter Zeit passt das Lesen nicht mehr."></textarea>
+          </div>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="suhlas" name="suhlas">
+          <span>Ich bin einverstanden, dass die Optik mich zur Bestätigung des Termins anruft. Die Daten nutzen wir nur dafür.</span>
+        </label>
+
+        <button class="btn btn--deep" type="submit">Terminbuchung senden</button>
+
+        <div class="done" id="objednavka-hotovo" hidden tabindex="-1">
+          <h3>Dies ist eine Beispiel-Website</h3>
+          <p id="objednavka-recap">Das Formular sendet nichts, und der Termin wird nirgends gespeichert.</p>
+        </div>
+      </form>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:22px">
+          <h3>Buchung per Telefon</h3>
+          <p>Einen Termin vereinbaren wir auch telefonisch während der Öffnungszeiten. Brauchen Sie noch heute einen Termin, rufen Sie an — im Formular wird der heutige Tag nicht angeboten.</p>
+          <p class="blk__meta"><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></p>
+        </div>
+        <div class="card" style="margin-bottom:22px">
+          <h3>Ohne Termin</h3>
+          <p>Ohne Termin können Sie Fassungen anprobieren, die Brille reinigen und nachziehen lassen oder eine fertige Bestellung abholen. Einen Sehtest ohne Termin machen wir nur, wenn gerade Kapazität frei ist.</p>
+        </div>
+        <div class="blk">
+          <h3>Wenn der Termin nicht passt</h3>
+          <ul class="ticks">
+            <li>Den Termin sagen Sie telefonisch bis 4 Stunden vorher ab</li>
+            <li>Verschieben können wir ihn auch in dieselbe Woche</li>
+            <li>Bei mehr als 15 Minuten Verspätung messen wir verkürzt</li>
+            <li>Ein nicht abgesagter und nicht genutzter Termin kostet nichts</li>
+          </ul>
+          <p class="blk__meta">Änderungen telefonisch</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 PREVÁDZKA, CESTA A PARKOVANIE ===== -->
+<section class="sec" id="prevadzka">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">15</p>
+      <div>
+        <p class="eyebrow">Betrieb</p>
+        <h2>Räume, Anfahrt und Parken</h2>
+      </div>
+      <p class="lede">Laden, Messraum und Schleifwerkstatt sind an einem Ort im Erdgeschoss. Deshalb schleifen und montieren wir vor Ort und schicken die Brille nicht in eine fremde Werkstatt.</p>
+    </div>
+
+    <div class="grid grid--3">
+      <div class="panel panel--grad reveal">
+        <svg class="panel__art" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="art-mriezka-a" width="24" height="24" patternUnits="userSpaceOnUse">
+              <path d="M24 0 L0 0 0 24" fill="none" stroke="#BCD7DD" stroke-width="1" opacity=".13"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="240" fill="url(#art-mriezka-a)"/>
+          <g stroke="#BCD7DD" fill="none" stroke-width="1">
+            <path d="M0 200 L300 40" opacity=".22"/>
+            <path d="M0 224 L300 64" opacity=".14"/>
+          </g>
+        </svg>
+        <div class="tp panel__in">
+          <p class="tp__lbl">Messraum</p>
+          <div>
+            <p class="tp__big">5 Meter</p>
+            <p>Abdunkelbarer Raum mit fünf Meter Prüfentfernung, Autorefraktometer, Phoropter und berührungslosem Tonometer.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel--grad2 reveal">
+        <svg class="panel__art" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="art-srafy" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+              <line x1="0" y1="0" x2="0" y2="12" stroke="#BCD7DD" stroke-width="1" opacity=".22"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="240" fill="url(#art-srafy)"/>
+          <g stroke="#D6E4E7" fill="none" stroke-width="1">
+            <path d="M0 56 L300 56" opacity=".3"/>
+            <path d="M0 184 L300 184" opacity=".2"/>
+          </g>
+        </svg>
+        <div class="tp panel__in">
+          <p class="tp__lbl">Schleifwerkstatt</p>
+          <div>
+            <p class="tp__big">24 Stunden</p>
+            <p>Schleifautomat mit Formscanner, Bohrmaschine für randlose Brillen und Ultraschallreiniger. Eine Expressanfertigung schaffen wir in 24 Stunden.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <svg class="panel__art" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="art-mriezka-b" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0 L0 0 0 30" fill="none" stroke="#BCD7DD" stroke-width="1" opacity=".1"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="240" fill="url(#art-mriezka-b)"/>
+          <g stroke="#BCD7DD" fill="none" stroke-width="1">
+            <path d="M40 0 L40 240" opacity=".2"/>
+            <path d="M260 0 L260 240" opacity=".2"/>
+          </g>
+        </svg>
+        <div class="tp panel__in">
+          <p class="tp__lbl">Laden</p>
+          <div>
+            <p class="tp__big">71 Fassungen</p>
+            <p>Ausgestellte Fassungen in sechs Kategorien, davon elf für Kinder. Anprobieren können Sie sie ohne Termin während der ganzen Öffnungszeit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <p class="eyebrow">Orientierungsplan der Umgebung</p>
+        <div class="planwrap">
+          <svg class="plan" viewBox="0 0 460 300" role="img" aria-label="Umgebungsplan: Optik Meridian liegt an der Ecke Brunnenstraße und Kurze Gasse, vor dem Laden gibt es vier reservierte Parkplätze, der Parkplatz in der Kurzen Gasse ist 80 Meter entfernt, die Haltestelle 120 Meter und der Bahnhof 900 Meter.">
+            <rect x="0" y="190" width="460" height="44" class="cesta"/>
+            <rect x="300" y="0" width="36" height="190" class="cesta"/>
+            <line x1="0" y1="212" x2="460" y2="212" class="os"/>
+            <line x1="318" y1="0" x2="318" y2="190" class="os"/>
+
+            <rect x="236" y="124" width="60" height="52" class="dom"/>
+            <rect x="236" y="176" width="60" height="14" class="box"/>
+            <text x="266" y="187" text-anchor="middle" class="nazov">4 PLÄTZE</text>
+            <line x1="220" y1="118" x2="234" y2="126" class="sipka"/>
+            <text x="106" y="108" class="zvyraz">Optik Meridian</text>
+            <text x="106" y="126">Brunnenstraße 6</text>
+
+            <rect x="84" y="176" width="64" height="14" class="box"/>
+            <text x="89" y="187" class="nazov">HALTESTELLE</text>
+            <text x="84" y="164">120 m vom Eingang</text>
+
+            <rect x="346" y="56" width="92" height="74" class="box"/>
+            <text x="382" y="106" class="zvyraz" style="font-size:28px">P</text>
+            <text x="340" y="44">Parkplatz &middot; 80 m</text>
+
+            <polyline points="30,252 10,252" class="sipka"/>
+            <polyline points="16,247 10,252 16,257" class="sipka"/>
+            <text x="38" y="257">Bahnhof, 900 m zu Fuß</text>
+
+            <text x="20" y="206" class="nazov">BRUNNENSTRASSE</text>
+            <text transform="translate(314 78) rotate(-90)" x="0" y="0" class="nazov">KURZE GASSE</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <!-- FOTO: výklad predajne z ulice pri dennom svetle, vchod priamo z chodníka, tmavozelený rám výkladu a číslo 6 nad dverami -->
+        <figure class="obraz obraz--siroky obraz--b" style="margin-bottom:22px">
+          <figcaption>
+            <p class="obraz__lbl">Brunnenstraße 6</p>
+            <p class="obraz__t">Eingang direkt vom Gehweg</p>
+            <p class="obraz__d">Ohne Stufe &middot; Tür 90 cm breit &middot; alles im Erdgeschoss</p>
+          </figcaption>
+        </figure>
+        <div class="blk">
+          <h3>So erkennen Sie den Eingang</h3>
+          <ul class="ticks">
+            <li>Ecke Brunnenstraße und Kurze Gasse, Erdgeschoss</li>
+            <li>Schaufenster mit dunkelgrünem Rahmen und der Nummer 6 über der Tür</li>
+            <li>Eingang direkt vom Gehweg, ohne Stufe</li>
+            <li>Der Nebeneingang Nummer 8 gehört zu einem anderen Geschäft</li>
+            <li>Im Schaufenster hängt die gültige Preisliste für den Sehtest</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="blk reveal">
+        <span class="blk__num">Mit dem Auto</span>
+        <h3>Parken</h3>
+        <p>Vor dem Laden gibt es vier reservierte Plätze für Kunden der Optik, davon einen für Inhaber eines Behindertenparkausweises. Sind sie belegt, ist der Parkplatz in der Kurzen Gasse 80 Meter entfernt, und die erste Stunde ist dort kostenlos.</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Mit Bus und Bahn</span>
+        <h3>Haltestelle</h3>
+        <p>Die nächste Haltestelle ist 120 Meter vom Eingang, auf derselben Straßenseite. Von dort gehen Sie geradeaus, die erste Kreuzung ist unsere.</p>
+      </div>
+      <div class="blk reveal">
+        <span class="blk__num">Zu Fuß</span>
+        <h3>Vom Bahnhof</h3>
+        <p>Vom Bahnhof sind es 900 Meter, also etwa zwölf Minuten zu Fuß. Der Weg führt über einen Gehweg ohne Stufen, mit einer Ampelquerung.</p>
+      </div>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="reveal">
+        <h3>Barrierefreiheit</h3>
+        <ul class="ticks">
+          <li>Tür 90 cm breit, ohne Schwelle</li>
+          <li>Alles im Erdgeschoss, auch der Messraum</li>
+          <li>Sitzplatz an jedem Anprobetisch</li>
+          <li>Blindenführhunde sind in allen Räumen willkommen</li>
+          <li>Auf Wunsch reservieren wir eine ruhigere Zeit ohne Wartezeit</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3>Was sofort erledigt wird</h3>
+        <ul class="ticks">
+          <li>Ultraschallreinigung und Nachziehen der Fassung</li>
+          <li>Tausch der Pads für 6 € und der Schraube für 4 €</li>
+          <li>Richten einer verbogenen Fassung nach einem Sturz</li>
+          <li>Ablesen der Werte einer Brille am Scheitelbrechwertmesser</li>
+          <li>Abholung einer fertigen Bestellung ohne Termin</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 16 HODINY A KONTAKT ===== -->
+<section class="sec sec--deep" id="hodiny">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">16</p>
+      <div>
+        <p class="eyebrow">Wann und wo</p>
+        <h2>Öffnungszeiten, Messzeiten und Kontakt</h2>
+      </div>
+      <p class="lede">Der Laden hat werktags länger geöffnet, als der Augenoptikermeister misst. Der letzte Termin für eine Messung beginnt um 17:00, samstags um 11:00.</p>
+    </div>
+
+    <div class="grid grid--2">
+      <div class="reveal">
+        <p class="stav" id="stav-otvorene"><i aria-hidden="true"></i><span>Öffnungszeiten</span></p>
+        <div class="tablewrap" style="border-top:0">
+          <table class="hours">
+            <caption>Laden &middot; Wochenplan</caption>
+            <tbody>
+              <tr data-den="1"><th scope="row">Montag</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="2"><th scope="row">Dienstag</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="3"><th scope="row">Mittwoch</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="4"><th scope="row">Donnerstag</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="5"><th scope="row">Freitag</th><td>9:00 – 18:00</td></tr>
+              <tr data-den="6"><th scope="row">Samstag</th><td>9:00 – 12:00</td></tr>
+              <tr data-den="0"><th scope="row">Sonntag</th><td>geschlossen</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin:18px 0 30px">Mittagspause Montag bis Freitag 12:00 – 13:00. An gesetzlichen Feiertagen ist geschlossen.</p>
+
+        <p class="stav" id="stav-meranie"><i aria-hidden="true"></i><span>Zeiten für den Sehtest</span></p>
+        <div class="tablewrap" style="border-top:0">
+          <table class="hours">
+            <caption>Augenoptikermeister &middot; wann wir messen</caption>
+            <tbody>
+              <tr data-den="1"><th scope="row">Montag</th><td>9:00 – 12:00<br>13:00 – 17:30</td></tr>
+              <tr data-den="2"><th scope="row">Dienstag</th><td>9:00 – 12:00<br>13:00 – 17:30</td></tr>
+              <tr data-den="3"><th scope="row">Mittwoch</th><td>9:00 – 12:00<br>13:00 – 17:30</td></tr>
+              <tr data-den="4"><th scope="row">Donnerstag</th><td>9:00 – 12:00<br>13:00 – 17:30</td></tr>
+              <tr data-den="5"><th scope="row">Freitag</th><td>9:00 – 12:00<br>13:00 – 17:30</td></tr>
+              <tr data-den="6"><th scope="row">Samstag</th><td>9:00 – 12:00</td></tr>
+              <tr data-den="0"><th scope="row">Sonntag</th><td>keine Messung</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-top:18px">Werktags beginnen wir in der letzten halben Stunde vor Ladenschluss keine neue Messung mehr, sondern beenden angefangene Aufträge. Fassungen anprobieren können Sie in dieser Zeit aber.</p>
+      </div>
+
+      <div class="reveal">
+        <dl class="contact-list">
+          <div>
+            <dt>Adresse</dt>
+            <dd>Optik Meridian, Brunnenstraße 6, 12345 Musterstadt</dd>
+          </div>
+          <div>
+            <dt>Telefon</dt>
+            <dd class="tel-big"><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></dd>
+          </div>
+          <div>
+            <dt>Schriftlich</dt>
+            <dd>Über das Kontaktformular auf dieser Seite. Die Nachricht landet im Postfach der Optik, und wir antworten innerhalb von 24 Stunden.</dd>
+          </div>
+          <div>
+            <dt>Wer Sie bedient</dt>
+            <dd>Augenoptikermeister, Werkstattoptiker und Beratung im Verkauf</dd>
+          </div>
+          <div>
+            <dt>Abholung der Bestellung</dt>
+            <dd>Jederzeit während der Öffnungszeiten, ohne Termin</dd>
+          </div>
+          <div>
+            <dt>Parken</dt>
+            <dd>Vier reservierte Plätze vor dem Laden, ein weiterer Parkplatz 80 Meter entfernt in der Kurzen Gasse</dd>
+          </div>
+        </dl>
+        <div class="actions">
+          <a class="btn btn--sky" href="#objednanie">Termin für den Sehtest</a>
+          <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 17 PODMIENKY, PLATBA A POUKAZY ===== -->
+<section class="sec" id="podmienky">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">17</p>
+      <div>
+        <p class="eyebrow">Regeln im Voraus</p>
+        <h2>Zahlung, Krankenkasse, Garantie und Stornierung</h2>
+      </div>
+      <p class="lede">Was bei der Bestellung, bei der Absage eines Termins, bei einer Reklamation und beim Zuschuss der Krankenkasse gilt.</p>
+    </div>
+
+    <div class="grid grid--2">
+      <div class="reveal">
+        <h3>Zahlungsarten</h3>
+        <ul class="tiles" style="margin-bottom:22px">
+          <li class="tile"><b>Bar</b><span>Im Laden, den Beleg bekommen Sie sofort</span></li>
+          <li class="tile"><b>Karte</b><span>Auch kontaktlos und mit der Uhr</span></li>
+          <li class="tile"><b>Rechnung</b><span>Für Firmen, 14 Tage Zahlungsziel</span></li>
+          <li class="tile"><b>Geschenkgutschein</b><span>Werte 30 €, 50 € und 100 €</span></li>
+        </ul>
+        <ul class="ticks">
+          <li>30 % Anzahlung ab 200 € Auftragswert, der Rest bei der Abholung</li>
+          <li>Bis 200 € zahlen Sie den ganzen Betrag erst bei der Abholung</li>
+          <li>Den Preis schreiben wir Position für Position auf, bevor Sie den Auftrag unterschreiben</li>
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <h3>Zuschuss der Krankenkasse</h3>
+        <ul class="znacky znacky--maly znacky--3" style="margin-bottom:22px">
+          <li><b>Gesetzlich versichert</b></li>
+          <li><b>AOK</b></li>
+          <li><b>Barmer</b></li>
+        </ul>
+        <ul class="ticks">
+          <li>Die gesetzliche Kasse zahlt Brillengläser nur in engen Fällen — für Kinder und Jugendliche bis 18 und bei starker Sehbeeinträchtigung</li>
+          <li>Zu jedem Auftrag stellen wir einen Beleg mit Datum, Werten, Glastyp und Preis aus</li>
+          <li>Den Beleg stellen wir auch später aus, bis 24 Monate nach der Übergabe</li>
+          <li>Voraussetzungen und Höhe des Zuschusses bestimmt Ihre Kasse, nicht wir</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:clamp(30px,3.4vw,48px)">
+      <div class="blk reveal">
+        <h3>Garantie und Reklamationen</h3>
+        <ul class="ticks">
+          <li>24 Monate auf Material- und Verarbeitungsfehler an Gläsern und Fassung</li>
+          <li>60 Tage Verträglichkeitsgarantie auf Gleitsichtgläser</li>
+          <li>Beim Wechsel des Glastyps zahlen Sie nur die Preisdifferenz</li>
+          <li>Eine Reklamation bearbeiten wir innerhalb von 30 Tagen</li>
+          <li>Das Nachjustieren der Fassung ist immer kostenlos</li>
+        </ul>
+      </div>
+
+      <div class="blk reveal">
+        <h3>Stornobedingungen</h3>
+        <ul class="ticks">
+          <li>Den Termin sagen Sie telefonisch bis 4 Stunden vorher ab oder verschieben ihn</li>
+          <li>Ein abgesagter wie ein nicht genutzter Termin kostet nichts</li>
+          <li>Bei mehr als 15 Minuten Verspätung messen wir verkürzt</li>
+          <li>Eine bestellte Fassung ohne Anzahlung stornieren Sie jederzeit vor der Lieferung</li>
+          <li>Einen Auftrag mit Anzahlung stornieren Sie innerhalb von 24 Stunden nach der Bestellung, danach geht die Anzahlung in die Fertigung der individuellen Gläser</li>
+          <li>Eine fertige Bestellung halten wir 60 Tage nach der Benachrichtigung im Laden bereit</li>
+        </ul>
+      </div>
+
+      <div class="blk reveal">
+        <h3>Geschenkgutscheine</h3>
+        <ul class="ticks">
+          <li>Werte 30 €, 50 € und 100 €, wir stellen sie sofort aus</li>
+          <li>Drei Jahre gültig ab dem Kauf</li>
+          <li>Einlösen können Sie sie für Sehtest, Brille und Kontaktlinsen</li>
+          <li>Was über den Wert hinausgeht, zahlen Sie einfach dazu</li>
+          <li>Der Gutschein ist übertragbar, bar zahlen wir ihn nicht aus</li>
+        </ul>
+        <p class="blk__meta">Gutschein telefonisch bestellen</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 18 ČASTÉ OTÁZKY ===== -->
+<section class="sec sec--band" id="faq">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">18</p>
+      <div>
+        <p class="eyebrow">Sie fragen</p>
+        <h2>Häufige Fragen</h2>
+      </div>
+      <p class="lede">Acht Fragen, die wir im Laden am häufigsten hören. Fehlt Ihnen hier eine Antwort, rufen Sie an oder schreiben Sie über das Formular.</p>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Muss ich für den Sehtest einen Termin machen?</summary>
+        <div class="faq__body"><p>Wir empfehlen es, weil die Messung 30 Minuten dauert und der Messraum in dieser Zeit für eine Person reserviert ist. Ohne Termin messen wir nur, wenn gerade Kapazität frei ist. Fassungen können Sie aber jederzeit während der Öffnungszeiten anprobieren.</p></div>
+      </details>
+      <details>
+        <summary>Wie lange dauert die Anfertigung einer Brille?</summary>
+        <div class="faq__body"><p>Üblich sind 3 bis 5 Werktage, bei individuellen Gleitsichtgläsern 7 Werktage. Die Expressanfertigung in 24 Stunden kostet 25 € und gilt für Einstärken- und Arbeitsplatzgläser; Gleitsichtgläser und Gläser fürs Myopie-Management schaffen wir so nicht.</p></div>
+      </details>
+      <details>
+        <summary>Kann ich neue Gläser in meine eigene Fassung bekommen?</summary>
+        <div class="faq__body"><p>Ja, die Montage in die eigene Fassung kostet 15 €. Die Fassung prüfen wir vorher — bei altem oder sprödem Acetat droht beim Schleifen ein Bruch, und darauf weisen wir Sie vorher hin. Sind Sie damit nicht einverstanden, fangen wir nicht an.</p></div>
+      </details>
+      <details>
+        <summary>Was, wenn ich mich an Gleitsichtgläser nicht gewöhne?</summary>
+        <div class="faq__body"><p>Auf Gleitsichtgläser gilt eine Verträglichkeitsgarantie von 60 Tagen. Innerhalb von zwei Monaten nach der Übergabe tauschen wir die Gläser gegen einen anderen Typ, zum Beispiel Arbeitsplatzgläser oder zwei Einstärkenbrillen. Sie zahlen nur die Preisdifferenz, die zusätzliche Arbeit ist kostenlos.</p></div>
+      </details>
+      <details>
+        <summary>Machen Sie auch Sehtests bei Kindern?</summary>
+        <div class="faq__body"><p>Wir messen Kinder ab sechs Jahren, immer im Beisein eines Elternteils. Nimmt die Stärke zu, bieten wir Gläser fürs Myopie-Management mit Kontrolle alle sechs Monate. Bei Verdacht auf Schwachsichtigkeit, Schielen oder einen anderen Befund übernehmen wir das Kind nicht in die Betreuung und empfehlen eine Untersuchung beim Augenarzt.</p></div>
+      </details>
+      <details>
+        <summary>Was ist der Unterschied zwischen Index 1.5 und 1.67?</summary>
+        <div class="faq__body"><p>Der Index sagt, wie stark das Glas das Licht bricht, und damit auch, wie dick es ist. Bei gleicher Stärke ist ein Glas mit Index 1.67 deutlich dünner und leichter als 1.5. Bis vier Dioptrien ist der Unterschied klein, über vier Dioptrien empfehlen wir die Verdünnung, vor allem bei randlosen Brillen.</p></div>
+      </details>
+      <details>
+        <summary>Zahlt die Krankenkasse meine Brille?</summary>
+        <div class="faq__body"><p>Die gesetzliche Krankenkasse zahlt Brillengläser nur in engen Fällen — für Kinder und Jugendliche bis 18 Jahre und bei starker Sehbeeinträchtigung. Wir rechnen nicht direkt mit den Kassen ab, stellen aber zu jedem Auftrag einen Beleg mit Datum, Werten, Glastyp und Preis aus, mit dem Sie den Zuschuss selbst einreichen. Den Beleg stellen wir auch später aus, bis 24 Monate nach der Übergabe.</p></div>
+      </details>
+      <details>
+        <summary>Womit soll ich die Brille reinigen?</summary>
+        <div class="faq__body"><p>Mit lauwarmem Wasser und einem Tropfen Spülmittel, danach mit einem Mikrofasertuch. Alkohol, Glasreiniger und trockenes Putzen mit dem T-Shirt greifen die Entspiegelung an. Bringen Sie die Brille alle drei Monate vorbei, die Ultraschallreinigung machen wir sofort und kostenlos.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KARIÉRA ===== -->
+<section class="sec sec--tight" id="kariera">
+  <div class="wrap">
+    <div class="grid grid--side">
+      <div class="reveal">
+        <p class="eyebrow">Karriere</p>
+        <h2>Wir suchen einen Optiker für die Werkstatt</h2>
+        <p class="lede">Vollzeit, Montag bis Freitag, keine Abendschichten. Samstags 9:00 – 12:00 nach einem Plan, den Sie einen Monat vorher bekommen. Erfahrung in der Optik ist willkommen, die Arbeit am Schleifautomaten lernen Sie bei uns.</p>
+        <p class="note">Melden Sie sich über das Kontaktformular unten oder rufen Sie an, dann treffen wir uns direkt in der Werkstatt. Wir antworten innerhalb von fünf Werktagen.</p>
+        <div class="actions">
+          <a class="btn btn--line" href="#napiste">Schreiben Sie uns</a>
+        </div>
+      </div>
+      <div class="card reveal">
+        <h3>Was wir bieten</h3>
+        <ul class="ticks">
+          <li>Gehalt ab 2.600 € brutto je nach Erfahrung</li>
+          <li>Einarbeitung am Schleifautomaten und am Formscanner</li>
+          <li>Fester Schichtplan einen Monat im Voraus</li>
+          <li>Brille für Mitarbeiter zum Einkaufspreis</li>
+          <li>Start nach Vereinbarung, auch später</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 19 KONTAKTNÝ FORMULÁR ===== -->
+<section class="sec sec--band" id="napiste">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="head__num">19</p>
+      <div>
+        <p class="eyebrow">Schreiben Sie uns</p>
+        <h2>Kontaktformular</h2>
+      </div>
+      <p class="lede">Die Nachricht landet im Postfach der Optik. Wir antworten innerhalb von 24 Stunden, Nachrichten vom Wochenende am Montagmorgen.</p>
+    </div>
+
+    <div class="grid grid--side">
+      <form class="reveal" id="kontakt" novalidate>
+        <div class="formgrid">
+          <div class="field">
+            <label for="k-meno">Vor- und Nachname</label>
+            <input type="text" id="k-meno" name="k-meno" autocomplete="name" placeholder="Vor- und Nachname">
+          </div>
+          <div class="field">
+            <label for="k-telefon">Telefon</label>
+            <input type="tel" id="k-telefon" name="k-telefon" autocomplete="tel" placeholder="Ihre Telefonnummer">
+          </div>
+          <div class="field full">
+            <label for="k-sprava">Nachricht</label>
+            <textarea id="k-sprava" name="k-sprava" placeholder="Zum Beispiel: Ich bräuchte neue Gläser in meine eigene Fassung, wann ist der nächste freie Termin?"></textarea>
+          </div>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="k-suhlas" name="k-suhlas">
+          <span>Ich bin einverstanden, dass die Optik mich wegen der Antwort auf diese Nachricht kontaktiert. Die Daten nutzen wir nur dafür und geben sie nicht weiter.</span>
+        </label>
+
+        <button class="btn btn--deep" type="submit">Nachricht senden</button>
+
+        <div class="done" id="kontakt-hotovo" hidden tabindex="-1">
+          <h3>Dies ist eine Beispiel-Website</h3>
+          <p id="kontakt-recap">Das Formular sendet nichts, und die Nachricht wird nirgends gespeichert.</p>
+        </div>
+      </form>
+
+      <div class="reveal">
+        <div class="blk" style="margin-bottom:26px">
+          <h3>Wann ein Anruf schneller ist</h3>
+          <p>Wenn Sie noch heute einen Termin brauchen, Augenschmerzen haben oder die Brille gebrochen ist, rufen Sie an. Wir gehen während der ganzen Öffnungszeit ans Telefon.</p>
+          <p class="blk__meta"><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></p>
+        </div>
+        <div class="blk">
+          <h3>Was in die Nachricht gehört</h3>
+          <ul class="ticks">
+            <li>Welche Leistung Sie interessiert</li>
+            <li>Wann es Ihnen passt</li>
+            <li>Ob Sie bei uns schon gemessene Werte haben</li>
+            <li>Eine Nummer, unter der wir Sie tagsüber erreichen</li>
+          </ul>
+          <div class="blk__akcia"><a class="btn btn--deep" href="#objednanie">Termin für den Sehtest</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY — jediné reálne kontaktné údaje na tejto stránke ===== -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap author__in">
+    <div class="reveal">
+      <p class="eyebrow">Über dieses Beispiel</p>
+      <h2 id="autor-nadpis">Gefällt Ihnen diese Website?</h2>
+      <p>Optik Meridian ist ein erfundenes Unternehmen, und alle Angaben auf dieser Seite — Adresse, Telefon, Preise und Kategorien der Fassungen — sind Beispiele. Diese Seite hat Alex Poliak entworfen und programmiert.</p>
+      <p>Genauso fertig baue ich die Website auch für Ihr Geschäft: mit Ihren Texten, Preisen, Öffnungszeiten und Formularen, die die Nachricht wirklich in Ihr Postfach bringen.</p>
+      <p>Zuerst gehen wir unverbindlich durch, was Sie brauchen, und ich sage Ihnen, was sich machen lässt und was es kostet. Die Beratung ist kostenlos und unverbindlich, sie bindet Sie an nichts.</p>
+      <p class="author__price">Websites nach Maß ab 250 €. Erster Entwurf in 3 Tagen. Beratung kostenlos und unverbindlich.</p>
+    </div>
+
+    <div class="author__card reveal">
+      <p class="author__name">Alex Poliak</p>
+      <p class="author__role">Webdesign und Programmierung</p>
+      <dl class="author__list">
+        <div>
+          <dt>E-Mail</dt>
+          <dd><a class="link--light" href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Support</dt>
+          <dd><a class="link--light" href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefon</dt>
+          <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></dd>
+        </div>
+        <div>
+          <dt>Web</dt>
+          <dd><a class="link--light" href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+      </dl>
+      <div class="author__actions">
+        <a class="btn btn--sky" href="mailto:apoliak@apoliak.online?subject=Interesse%20an%20einer%20Website">E-Mail schreiben</a>
+        <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== PÄTA ===== -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__cta">
+      <p>Der Sehtest kostet 20 €, dauert 30 Minuten, und beim Kauf einer Brille über 90 € ziehen wir ihn vom Preis ab.</p>
+      <a class="btn btn--sky" href="#objednanie">Termin für den Sehtest</a>
+      <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+    </div>
+
+    <div class="foot__in">
+      <div>
+        <b>Optik Meridian</b>
+        <p>Brunnenstraße 6, 12345 Musterstadt<br><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></p>
+        <p>Erfundenes Unternehmen für die Zwecke dieser Beispiel-Website.</p>
+      </div>
+      <div>
+        <b>Seite</b>
+        <ul class="foot__links">
+          <li><a href="#sluzby">Leistungen der Optik</a></li>
+          <li><a href="#specializacie">Spezialgebiete</a></li>
+          <li><a href="#znacky">Marken der Fassungen und Gläser</a></li>
+          <li><a href="#cennik">Preise für Gläser und Pakete</a></li>
+          <li><a href="#postup">Ablauf von der Bestellung bis zur Abholung</a></li>
+          <li><a href="#podmienky">Zahlung, Krankenkasse und Stornierung</a></li>
+          <li><a href="#napiste">Kontaktformular</a></li>
+        </ul>
+      </div>
+      <div>
+        <b>Wann wir geöffnet haben</b>
+        <p>Laden: Montag – Freitag 9:00 – 18:00, Samstag 9:00 – 12:00, Sonntag geschlossen. Mittagspause 12:00 – 13:00.</p>
+        <p>Sehtest: Montag – Freitag 9:00 – 12:00 und 13:00 – 17:30, Samstag 9:00 – 12:00.</p>
+      </div>
+    </div>
+    <p class="foot__bottom">Beispiel-Website ohne echten Betrieb. Entwurf und Code: <a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a> &middot; <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var d = document;
+  d.documentElement.className += " js";
+  var jemne = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var NBSP = String.fromCharCode(160);
+
+  function eur(n){
+    var s = String(Math.round(n));
+    if(s.length > 3) s = s.slice(0, s.length - 3) + "." + s.slice(s.length - 3);
+    return s + NBSP + "€";
+  }
+
+  /* ---------- 0. skutočná výška pásika ukážky ---------- */
+  var pasik = d.querySelector(".demobar");
+  function nastavVyskuPasika(){
+    if(!pasik) return;
+    var v = Math.ceil(pasik.getBoundingClientRect().height);
+    if(v > 0) d.documentElement.style.setProperty("--barh", v + "px");
+  }
+  if(pasik){
+    nastavVyskuPasika();
+    window.addEventListener("resize", nastavVyskuPasika);
+    if(window.ResizeObserver) new ResizeObserver(nastavVyskuPasika).observe(pasik);
+    window.addEventListener("load", nastavVyskuPasika);
+  }
+
+  /* ---------- 1. mobilné menu ---------- */
+  var toggle = d.querySelector(".nav-toggle");
+  var menu = d.getElementById("hlavne-menu");
+  function zavriMenu(){
+    if(!toggle || !menu) return;
+    menu.setAttribute("data-open", "false");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var otvorene = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", otvorene ? "false" : "true");
+      toggle.setAttribute("aria-expanded", otvorene ? "false" : "true");
+    });
+    d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavriMenu(); });
+  }
+
+  /* ---------- 2. plynulé skrolovanie ---------- */
+  d.addEventListener("click", function(e){
+    var t = e.target;
+    var a = (t && t.closest) ? t.closest('a[href^="#"]') : null;
+    if(!a) return;
+    var id = a.getAttribute("href");
+    if(id === "#") return;
+    var ciel = d.querySelector(id);
+    if(!ciel) return;
+    e.preventDefault();
+    zavriMenu();
+    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
+    if(history.replaceState) history.replaceState(null, "", id);
+  });
+
+  /* ---------- 3. prepočet ceny okuliarov ---------- */
+  var typ = d.getElementById("typ");
+  var stencenie = d.getElementById("stencenie");
+  var ramSel = d.getElementById("ram");
+  var expresSel = d.getElementById("expres");
+  var upravy = [].slice.call(d.querySelectorAll(".uprava"));
+  var out = {
+    sosovky: d.getElementById("sum-sosovky"),
+    sten: d.getElementById("sum-sten"),
+    stenLbl: d.getElementById("sum-sten-lbl"),
+    upravy: d.getElementById("sum-upravy"),
+    upravyLbl: d.getElementById("sum-upravy-lbl"),
+    ram: d.getElementById("sum-ram"),
+    ramLbl: d.getElementById("sum-ram-lbl"),
+    expres: d.getElementById("sum-expres"),
+    spolu: d.getElementById("sum-spolu"),
+    lehota: d.getElementById("sum-lehota")
+  };
+
+  function cenaOption(sel){
+    var o = sel.options[sel.selectedIndex];
+    return parseFloat(o.getAttribute("data-cena")) || 0;
+  }
+
+  function bezExpresu(hodnota){
+    return hodnota.indexOf("prog") === 0 || hodnota === "myo";
+  }
+
+  function prepocitaj(){
+    var expresOpt = expresSel.querySelector('option[value="expres"]');
+    var zakazany = bezExpresu(typ.value);
+    if(expresOpt){
+      expresOpt.disabled = zakazany;
+      if(zakazany && expresSel.value === "expres") expresSel.value = "bezny";
+    }
+
+    var optTyp = typ.options[typ.selectedIndex];
+    var cSosovky = parseFloat(optTyp.getAttribute("data-cena")) || 0;
+    var dni = parseInt(optTyp.getAttribute("data-dni"), 10) || 3;
+    var cSten = cenaOption(stencenie);
+    var cRam = cenaOption(ramSel);
+    var cExpres = cenaOption(expresSel);
+
+    var cUpravy = 0, nazvy = [];
+    upravy.forEach(function(ch){
+      if(ch.checked){
+        cUpravy += parseFloat(ch.getAttribute("data-cena")) || 0;
+        nazvy.push(ch.getAttribute("data-nazov"));
+      }
+    });
+
+    var spolu = cSosovky + cSten + cUpravy + cRam + cExpres;
+
+    out.sosovky.textContent = eur(cSosovky);
+    out.stenLbl.textContent = "Verdünnung " + stencenie.value;
+    out.sten.textContent = eur(cSten);
+    out.upravyLbl.textContent = nazvy.length ? "Veredelungen (" + nazvy.length + ")" : "Veredelungen";
+    out.upravy.textContent = eur(cUpravy);
+    out.ramLbl.textContent = ramSel.value === "vlastny"
+      ? "Montage in die eigene Fassung"
+      : "Fassung — " + ramSel.options[ramSel.selectedIndex].textContent.split("—")[0].trim();
+    out.ram.textContent = eur(cRam);
+    out.expres.textContent = eur(cExpres);
+    out.spolu.textContent = eur(spolu);
+
+    var lehota = expresSel.value === "expres"
+      ? "Expressanfertigung in 24 Stunden."
+      : "Anfertigung in " + dni + " Werktagen.";
+    if(zakazany) lehota += " Bei diesem Glastyp bieten wir keinen Express in 24 Stunden an.";
+    var doplnok = nazvy.length ? " Gewählte Veredelungen: " + nazvy.join(", ") + "." : " Ohne Veredelung.";
+    out.lehota.textContent = lehota + doplnok + " Der Preis gilt pro Paar Gläser inklusive Schleifen und Zentrierung.";
+  }
+
+  if(typ && stencenie && ramSel && expresSel && out.spolu){
+    [typ, stencenie, ramSel, expresSel].forEach(function(el){
+      el.addEventListener("change", prepocitaj);
+    });
+    upravy.forEach(function(ch){ ch.addEventListener("change", prepocitaj); });
+    prepocitaj();
+  }
+
+  /* ---------- 4. otváracie hodiny predajne a hodiny merania ---------- */
+  var HODINY = {
+    1:[[9,12],[13,18]], 2:[[9,12],[13,18]], 3:[[9,12],[13,18]],
+    4:[[9,12],[13,18]], 5:[[9,12],[13,18]], 6:[[9,12]], 0:[]
+  };
+  var MERANIE = {
+    1:[[9,12],[13,17.5]], 2:[[9,12],[13,17.5]], 3:[[9,12],[13,17.5]],
+    4:[[9,12],[13,17.5]], 5:[[9,12],[13,17.5]], 6:[[9,12]], 0:[]
+  };
+
+  var teraz = new Date();
+  var denDnes = teraz.getDay();
+  var minutyTeraz = teraz.getHours() * 60 + teraz.getMinutes();
+
+  [].slice.call(d.querySelectorAll(".hours tr")).forEach(function(r){
+    if(parseInt(r.getAttribute("data-den"), 10) === denDnes) r.setAttribute("data-dnes", "1");
+  });
+
+  function naCas(h){
+    var cele = Math.floor(h);
+    var min = Math.round((h - cele) * 60);
+    return cele + ":" + (min < 10 ? "0" + min : min);
+  }
+  function vIntervale(rozvrh){
+    return rozvrh.some(function(i){ return minutyTeraz >= i[0] * 60 && minutyTeraz < i[1] * 60; });
+  }
+  function nastavStav(el, rozvrh, slova){
+    if(!el) return;
+    var pole = el.querySelector("span");
+    if(!pole) return;
+    if(!rozvrh.length){ pole.textContent = slova.zavrete; return; }
+    if(vIntervale(rozvrh)){ pole.textContent = slova.teraz; return; }
+    if(minutyTeraz < rozvrh[0][0] * 60){ pole.textContent = slova.pred + naCas(rozvrh[0][0]); return; }
+    for(var i = 0; i < rozvrh.length; i++){
+      if(minutyTeraz < rozvrh[i][0] * 60){ pole.textContent = slova.pauza + naCas(rozvrh[i][0]); return; }
+    }
+    pole.textContent = slova.po;
+  }
+
+  nastavStav(d.getElementById("stav-otvorene"), HODINY[denDnes], {
+    teraz:"Jetzt geöffnet", pred:"Heute öffnen wir um ", pauza:"Mittagspause bis ",
+    po:"Heute schon geschlossen", zavrete:"Heute geschlossen"
+  });
+  nastavStav(d.getElementById("stav-meranie"), MERANIE[denDnes], {
+    teraz:"Der Augenoptikermeister misst gerade", pred:"Heute messen wir ab ", pauza:"Wir messen wieder ab ",
+    po:"Heute messen wir nicht mehr", zavrete:"Heute messen wir nicht"
+  });
+
+  /* ---------- 5. objednanie: dátum, voľné časy, odoslanie ---------- */
+  var datum = d.getElementById("datum");
+  var sloty = [].slice.call(d.querySelectorAll('input[name="cas"]'));
+  var info = d.getElementById("slot-info");
+  var DNI = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+
+  function naISO(dt){
+    var m = String(dt.getMonth() + 1), den = String(dt.getDate());
+    return dt.getFullYear() + "-" + (m.length < 2 ? "0" + m : m) + "-" + (den.length < 2 ? "0" + den : den);
+  }
+  function zoISO(s){
+    if(!s) return null;
+    var c = s.split("-");
+    if(c.length !== 3) return null;
+    var dt = new Date(parseInt(c[0],10), parseInt(c[1],10) - 1, parseInt(c[2],10));
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+  function popisDatumu(dt){
+    return DNI[dt.getDay()] + ", " + dt.getDate() + "." + (dt.getMonth() + 1) + "." + dt.getFullYear();
+  }
+  function sVelkym(t){ return t.charAt(0).toUpperCase() + t.slice(1); }
+  function casySlovom(n){
+    if(n === 1) return "1 freier Termin";
+    if(n > 1 && n < 5) return n + " freie Termine";
+    return n + " freie Termine";
+  }
+
+  function obnovSloty(){
+    if(!datum) return;
+    var dt = zoISO(datum.value);
+    if(!dt){
+      sloty.forEach(function(s){ s.disabled = false; });
+      if(info) info.textContent = "Wählen Sie ein Datum, dann bleiben nur die Zeiten übrig, in denen wir an dem Tag messen.";
+      return;
+    }
+    var den = dt.getDay();
+    var intervaly = MERANIE[den];
+    var dnes = new Date();
+    var jeDnes = naISO(dnes) === datum.value;
+    var volnych = 0;
+
+    sloty.forEach(function(s){
+      var h = parseInt(s.getAttribute("data-hod"), 10);
+      var vHodinach = intervaly.some(function(i){ return h >= i[0] && h < i[1]; });
+      var uzPreslo = jeDnes && h <= dnes.getHours();
+      var moznost = vHodinach && !uzPreslo;
+      s.disabled = !moznost;
+      if(!moznost && s.checked) s.checked = false;
+      if(moznost) volnych++;
+    });
+
+    if(info){
+      if(den === 0){
+        info.textContent = "Sonntags messen wir nicht. Bitte wählen Sie einen anderen Tag.";
+      } else if(volnych === 0){
+        info.textContent = "Für diesen Tag haben wir keinen freien Termin mehr. Versuchen Sie den nächsten Werktag.";
+      } else if(den === 6){
+        info.textContent = sVelkym(popisDatumu(dt)) + " — samstags messen wir nur bis 12:00, wir haben " + casySlovom(volnych) + ".";
+      } else {
+        info.textContent = sVelkym(popisDatumu(dt)) + " — wir haben " + casySlovom(volnych) + ". Die Mittagspause ist 12:00 – 13:00, der letzte Termin beginnt um 17:00.";
+      }
+    }
+  }
+
+  if(datum){
+    var dnesDt = new Date();
+    var start = new Date(dnesDt.getTime());
+    start.setDate(start.getDate() + 1);
+    while(start.getDay() === 0) start.setDate(start.getDate() + 1);
+    datum.min = naISO(dnesDt);
+    datum.value = naISO(start);
+    datum.addEventListener("change", obnovSloty);
+    datum.addEventListener("input", obnovSloty);
+    obnovSloty();
+  }
+
+  var form = d.getElementById("objednavka");
+  var hotovo = d.getElementById("objednavka-hotovo");
+  var recap = d.getElementById("objednavka-recap");
+  if(form && hotovo && recap){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var ucel = d.getElementById("ucel");
+      var vybrany = null;
+      sloty.forEach(function(s){ if(s.checked) vybrany = s.value; });
+      var dt = datum ? zoISO(datum.value) : null;
+
+      var veta = "Das Formular sendet nichts, und der Termin wird nirgends gespeichert. ";
+      if(dt && vybrany){
+        veta += "Auf einer echten Website ginge jetzt die Buchung raus: " +
+          (ucel ? ucel.options[ucel.selectedIndex].value : "Sehtest") +
+          ", " + popisDatumu(dt) + " um " + vybrany + ".";
+      } else {
+        veta += "Auf einer echten Website ginge die Buchung samt gewähltem Datum und Uhrzeit an die Optik.";
+      }
+      recap.textContent = veta;
+      hotovo.hidden = false;
+      hotovo.focus();
+      if(!jemne) hotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  }
+
+  /* ---------- 6. kontaktný formulár ---------- */
+  var kontakt = d.getElementById("kontakt");
+  var kHotovo = d.getElementById("kontakt-hotovo");
+  var kRecap = d.getElementById("kontakt-recap");
+  if(kontakt && kHotovo && kRecap){
+    kontakt.addEventListener("submit", function(e){
+      e.preventDefault();
+      var meno = d.getElementById("k-meno");
+      var hodnota = meno && meno.value ? meno.value.trim() : "";
+      var veta = "Das Formular sendet nichts, und die Nachricht wird nirgends gespeichert. ";
+      veta += hodnota
+        ? "Auf einer echten Website käme die Nachricht von " + hodnota + " im Postfach der Optik an, und die Antwort bekämen Sie innerhalb von 24 Stunden."
+        : "Auf einer echten Website käme die Nachricht im Postfach der Optik an, und die Antwort bekämen Sie innerhalb von 24 Stunden.";
+      kRecap.textContent = veta;
+      kHotovo.hidden = false;
+      kHotovo.focus();
+      if(!jemne) kHotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  }
+
+  /* ---------- 7. odhaľovanie sekcií ---------- */
+  var bloky = [].slice.call(d.querySelectorAll(".reveal"));
+  if("IntersectionObserver" in window && !jemne){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, {rootMargin:"0px 0px -5% 0px", threshold:.05});
+    bloky.forEach(function(b){ io.observe(b); });
+  } else {
+    bloky.forEach(function(b){ b.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

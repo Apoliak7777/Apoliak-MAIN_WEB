@@ -1,0 +1,2907 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/ambulancia/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/ambulancia/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/ambulancia/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/ambulancia/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/ambulancia/">
+<link rel="alternate" hreflang="de" href="https://apoliak.online/de/ukazky/ambulancia/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/ambulancia/">
+<!-- /jazyky:hreflang -->
+<title>Zahnarztpraxis Weide — Zahnmedizin in Musterstadt</title>
+<meta name="description" content="Zahnarztpraxis in Musterstadt: Behandler, Leistungen, Preisliste, was die Krankenkasse übernimmt und was Sie selbst zahlen, Sprechzeiten und Terminbuchung. Beispiel-Website von apoliak.online.">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zahnarztpraxis Weide — Zahnmedizin in Musterstadt">
+<meta property="og:description" content="Preisliste, Kassenleistungen, Sprechzeiten und Terminbuchung. Beispiel-Website, entworfen und programmiert von Alex Poliak (apoliak.online).">
+<meta property="og:locale" content="de_DE">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2040%2040'%3E%3Crect%20width='40'%20height='40'%20rx='3'%20fill='%2338493F'/%3E%3Crect%20x='10.5'%20y='8.5'%20width='19'%20height='23'%20fill='none'%20stroke='%23ECF0EC'%20stroke-width='1.5'/%3E%3Cpath%20d='M20%208.5v23M10.5%2020h19'%20stroke='%23ECF0EC'%20stroke-width='1.5'/%3E%3C/svg%3E">
+
+<script>document.documentElement.className += " js";</script>
+<style>
+/* ------------------------------------------------------------------
+   Zubná ambulancia Vrbová — ukážkový web (vymyslená ambulancia)
+   Jeden súbor, nula externých requestov, iba systémové fonty.
+   Paleta: papierové neutrály + salviová zelenosivá (akcent podniku)
+           + tlmená hlinená (len pásik a sekcia autora).
+   Plochy sú dizajnové kompozície: vrstvené gradienty, vlasové rastre,
+   geometrické výseče a typografické panely, ktoré samy nesú informáciu.
+------------------------------------------------------------------- */
+
+:root{
+  --paper:#F7F6F4;
+  --paper-2:#EFEDE8;
+  --white:#FFFFFF;
+
+  --line:#DFDCD6;
+  --line-2:#C7C3BA;
+
+  --ink:#16181B;          /* 16.2:1 na papieri */
+  --ink-soft:#55595F;     /*  6.5:1 na papieri */
+  --ink-mut:#6B6F75;      /*  5.0:1 na bielej  */
+
+  --sage:#38493F;        /*  8.7:1 na papieri; biela na ňom 9.4:1 */
+  --sage-2:#4A5F52;      /*  biela na ňom 6.8:1 */
+  --sage-050:#ECF0EC;
+  --sage-100:#D9E2DB;
+  --on-sage:#E4EAE5;     /*  5.8:1 aj na najsvetlejšom mieste tmavého gradientu */
+  --on-sage-mut:#D6DED8; /*  5.2:1 aj na najsvetlejšom mieste tmavého gradientu */
+
+  --clay:#8A4B3C;         /*  6.2:1 na papieri; biela na ňom 6.7:1 */
+  --clay-050:#F4E9E5;
+
+  --bar:#101215;
+  --bar-fg:#E7E5E1;       /* 14.8:1 na pásiku */
+  --bar-accent:#E0A392;   /*  8.7:1 na pásiku */
+
+  --r:3px;
+  --maxw:1180px;
+  --gut:clamp(20px,5vw,48px);
+  --head-h:112px;         /* JS spresní */
+
+  --sans:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype","Times New Roman",serif;
+
+  --noise:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='140'%20height='140'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.85'%20numOctaves='2'/%3E%3C/filter%3E%3Crect%20width='140'%20height='140'%20filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; }
+html,body{ overflow-x:hidden; max-width:100%; }
+/* clip nevytvára skrolovací kontajner, takže lepiaca hlavička ostáva funkčná */
+@supports (overflow:clip){
+  html,body{ overflow-x:clip; }
+}
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth; }
+}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{ max-width:100%; }
+
+h1,h2,h3,h4{
+  font-family:var(--serif);
+  font-weight:400;
+  line-height:1.14;
+  letter-spacing:-.014em;
+  margin:0;
+  color:var(--ink);
+  text-wrap:balance;
+}
+h1{ font-size:clamp(34px,5.4vw,62px); line-height:1.05; letter-spacing:-.024em; }
+h2{ font-size:clamp(26px,3.4vw,42px); line-height:1.08; letter-spacing:-.02em; }
+h3{ font-size:19px; line-height:1.28; letter-spacing:-.008em; }
+
+p{ margin:0 0 1em; }
+p:last-child{ margin-bottom:0; }
+ul,ol,dl{ margin:0; padding:0; list-style:none; }
+
+a{ color:var(--sage); }
+a:hover{ color:var(--ink); }
+
+:focus-visible{ outline:2px solid var(--sage); outline-offset:2px; }
+
+.num{ font-variant-numeric:tabular-nums; }
+
+.wrap{
+  width:100%;
+  max-width:var(--maxw);
+  margin-inline:auto;
+  padding-inline:var(--gut);
+}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:400;
+  background:var(--sage); color:#fff; padding:12px 18px; font-weight:600;
+  text-decoration:none;
+}
+.skip:focus{ left:10px; top:10px; }
+
+.section{
+  padding-block:clamp(56px,7.6vw,112px);
+  scroll-margin-top:calc(var(--head-h) + 8px);
+}
+.section--line{ border-top:1px solid var(--line); }
+.section--tint{ background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+/* tmavý pás — rytmus stránky */
+.section--dark{
+  position:relative; overflow:hidden;
+  background:linear-gradient(158deg,#26332C 0%,#38493F 54%,#42574A 100%);
+  color:var(--on-sage);
+  border-top:1px solid #212C25; border-bottom:1px solid #212C25;
+}
+.section--dark::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right, rgba(228,234,229,.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(228,234,229,.055) 1px, transparent 1px);
+  background-size:64px 64px;
+}
+.section--dark::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--noise); opacity:.16; mix-blend-mode:multiply;
+}
+.section--dark > *{ position:relative; z-index:2; }
+.section--dark h2,.section--dark h3{ color:#fff; }
+.section--dark .eyebrow{ color:var(--on-sage-mut); }
+.section--dark .eyebrow::before{ background:rgba(214,222,216,.4); }
+.section--dark .lead{ color:var(--on-sage-mut); }
+.dlink{ color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.45); font-weight:600; }
+.dlink:hover{ color:#fff; border-bottom-color:#fff; }
+.section--dark .btn--ghost{ color:#fff; border-color:rgba(255,255,255,.5); background:transparent; }
+.section--dark .btn--ghost:hover{ color:#fff; background:rgba(255,255,255,.1); border-color:#fff; }
+
+/* -------- typografické drobnosti -------- */
+.eyebrow{
+  display:flex; align-items:center; gap:11px;
+  font-family:var(--sans);
+  font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--sage); font-weight:600;
+  margin:0 0 18px;
+}
+.eyebrow::before{ content:""; width:24px; height:1px; background:var(--line-2); flex:none; }
+.eyebrow b{ font-weight:700; color:var(--ink-mut); font-variant-numeric:tabular-nums; }
+.section--dark .eyebrow b{ color:#fff; }
+.lead{ font-size:clamp(16px,1.5vw,18.5px); color:var(--ink-soft); max-width:58ch; }
+
+.sechead{
+  display:grid; grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  gap:22px clamp(32px,6vw,88px);
+  align-items:end;
+  margin-bottom:clamp(34px,4.4vw,58px);
+}
+.sechead h2{ max-width:17ch; }
+@media (max-width:860px){ .sechead{ grid-template-columns:minmax(0,1fr); align-items:start; } .sechead h2{ max-width:none; } }
+
+/* obal pre široký obsah, aby sa na mobile nič neodsekávalo */
+.tablewrap{ width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+/* ================= HORNÝ LEPIACI BLOK ================= */
+.topstack{ position:sticky; top:0; z-index:120; }
+
+.demobar{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap:5px 16px;
+  background:var(--bar); color:var(--bar-fg);
+  border-bottom:1px solid #2A2C31;
+  padding:10px var(--gut);
+  font-size:12.5px; line-height:1.5; text-align:center;
+  letter-spacing:.005em;
+}
+.demobar__tag{
+  font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  font-weight:700; color:var(--bar-accent);
+  border:1px solid #4A3A35; padding:3px 9px; border-radius:2px;
+  white-space:nowrap;
+}
+.demobar__txt{ color:#B9BCC2; }
+.demobar a{ color:var(--bar-fg); text-decoration:none; border-bottom:1px solid #55575C; white-space:nowrap; font-weight:600; }
+.demobar a:hover{ color:#fff; border-bottom-color:var(--bar-accent); }
+.demobar__sep{ color:#5E6167; }
+
+@media (max-width:700px){
+  .demobar{ font-size:11.5px; gap:4px 11px; padding:8px 14px; }
+  .demobar__sep{ display:none; }
+}
+@media (max-width:430px){
+  .demobar{ font-size:11px; gap:3px 9px; }
+  .demobar__tag{ font-size:9.5px; letter-spacing:.18em; padding:2px 7px; }
+}
+
+.nav{ background:rgba(247,246,244,.95); border-bottom:1px solid var(--line); }
+@supports (backdrop-filter:saturate(1.1)){
+  .nav{ backdrop-filter:saturate(1.15); }
+}
+.nav__in{ display:flex; align-items:center; gap:18px; min-height:64px; }
+
+.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; color:var(--ink); margin-right:auto; }
+.brand svg{ flex:none; display:block; }
+.brand__name{ font-family:var(--serif); font-size:19px; letter-spacing:.02em; display:block; line-height:1.1; }
+.brand__sub{ display:block; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); margin-top:3px; }
+
+.menu{ display:flex; align-items:center; gap:1px; }
+.menu a{
+  display:block; text-decoration:none; color:var(--ink);
+  font-size:14px; padding:9px 10px; border-radius:var(--r);
+  white-space:nowrap;
+}
+.menu a:hover{ background:var(--sage-050); color:var(--sage); }
+
+/* Objednanie a telefón sú v hlavičke na každej šírke, nikdy nie v hamburgeri. */
+.navact{ display:flex; align-items:center; gap:8px; flex:none; }
+
+.navtel{
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--white); border:1px solid var(--line-2); color:var(--ink);
+  text-decoration:none; font-size:14.5px; font-weight:600;
+  padding:10px 15px; border-radius:var(--r); white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.navtel:hover{ border-color:var(--sage); color:var(--sage); }
+.navtel svg{ flex:none; display:block; }
+.navtel .navtel__short{ display:none; }
+
+.navcta{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--sage); color:#fff; text-decoration:none;
+  font-size:14.5px; font-weight:600; padding:11px 18px; border-radius:var(--r);
+  white-space:nowrap;
+}
+.navcta:hover{ background:var(--sage-2); color:#fff; }
+
+.navtoggle{
+  display:none; align-items:center; gap:9px;
+  background:var(--white); border:1px solid var(--line-2); color:var(--ink);
+  font:inherit; font-size:14px; padding:9px 14px; border-radius:var(--r); cursor:pointer;
+}
+.navtoggle svg{ display:block; }
+
+@media (max-width:1080px){
+  .nav{ position:relative; }
+  .navtoggle{ display:inline-flex; order:2; }
+  .navact{ order:1; }
+  .menu{
+    display:none; position:absolute; left:0; right:0; top:100%;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:8px var(--gut) 16px;
+  }
+  .menu.is-open{ display:flex; }
+  .menu a{ padding:12px 8px; border-bottom:1px solid var(--line); border-radius:0; }
+  .menu li:last-child a{ border-bottom:0; }
+}
+@media (max-width:620px){
+  .nav__in{ gap:10px; }
+  .brand__sub{ display:none; }
+  .brand__name{ font-size:16.5px; }
+  .navtel{ padding:10px 12px; font-size:14px; }
+  .navtel .navtel__full{ display:none; }
+  .navtel .navtel__short{ display:inline; }
+  .navcta{ padding:11px 14px; font-size:14px; }
+  .navtoggle{ padding:10px 11px; }
+  .navtoggle .navtoggle__t{ display:none; }
+}
+@media (max-width:520px){
+  .brand > span{ display:none; }
+}
+html:not(.js) .navtoggle{ display:none; }
+html:not(.js) .nav__in{ flex-wrap:wrap; }
+html:not(.js) .menu{ display:flex; position:static; flex-direction:row; flex-wrap:wrap; padding:0 0 10px; border:0; background:none; }
+html:not(.js) .menu a{ border-bottom:0; }
+
+/* ================= DIZAJNOVÉ PLOCHY (kompozície) =================
+   Vrstvenie: gradientové pole -> geometria a vlasový raster -> obsah -> sum.
+   Každá plocha nesie informáciu, nie je to miesto na obrázok.
+------------------------------------------------------------------- */
+.canvas{
+  --hair:rgba(56,73,63,.12);
+  --hair2:rgba(56,73,63,.2);
+  --fill:rgba(56,73,63,.06);
+  position:relative; width:100%; max-width:100%;
+  display:flex; isolation:isolate; overflow:hidden;
+  border:1px solid var(--line);
+  background:linear-gradient(152deg,#F8F6F3 0%,#EAEEE9 54%,#DCE4DC 100%);
+}
+.canvas--dark{
+  --hair:rgba(228,234,229,.1);
+  --hair2:rgba(228,234,229,.16);
+  --fill:rgba(228,234,229,.05);
+  border-color:#212C25;
+  background:linear-gradient(152deg,#25322B 0%,#38493F 52%,#465C4D 100%);
+  color:var(--on-sage);
+}
+.canvas::after{
+  content:""; position:absolute; inset:0; z-index:3; pointer-events:none;
+  background-image:var(--noise); opacity:.12; mix-blend-mode:multiply;
+}
+.canvas--dark::after{ opacity:.18; }
+
+.cvtex{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+.cvtex--grid{
+  background-image:
+    linear-gradient(to right,var(--hair) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--hair) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.cvtex--rule{ background-image:repeating-linear-gradient(to bottom,var(--hair) 0 1px,transparent 1px 14px); }
+.cvtex--diag{ background-image:repeating-linear-gradient(135deg,var(--hair) 0 1px,transparent 1px 11px); }
+.cvtex--dots{ background-image:radial-gradient(var(--hair2) 1px,transparent 1.3px); background-size:15px 15px; }
+.cvtex--rings{ background-image:repeating-radial-gradient(circle at 100% 0,transparent 0 36px,var(--hair2) 36px 37px); }
+.cvtex--arc{ background-image:radial-gradient(circle at 100% 100%,var(--fill) 0 47%,transparent 47.3%); }
+.cvtex--wedge{ background-image:linear-gradient(112deg,transparent 0 54%,var(--fill) 54% 100%); }
+.cvtex--glow{ background-image:radial-gradient(120% 90% at 88% 6%,rgba(255,255,255,.05),transparent 62%); }
+
+.cvbody{
+  position:relative; z-index:2; flex:1;
+  display:flex; flex-direction:column;
+  padding:clamp(22px,3vw,34px);
+}
+.cveyebrow{
+  margin:0; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.canvas--dark .cveyebrow{ color:var(--on-sage-mut); }
+.cvdisplay{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(30px,4.4vw,50px); line-height:1.04; letter-spacing:-.02em;
+  margin:clamp(14px,2vw,20px) 0 0; color:var(--ink);
+}
+.canvas--dark .cvdisplay{ color:#fff; }
+.cvsub{ margin:14px 0 0; font-size:15px; color:var(--ink-soft); max-width:36ch; }
+.canvas--dark .cvsub{ color:var(--on-sage-mut); }
+.cvfoot{
+  margin:clamp(22px,3vw,30px) 0 0; padding-top:14px;
+  border-top:1px solid var(--hair2);
+  font-size:13.5px; color:var(--ink-soft);
+}
+.canvas--dark .cvfoot{ color:var(--on-sage-mut); }
+.cvpush{ margin-top:auto; }
+
+.cvlist{ margin:clamp(16px,2.4vw,24px) 0 0; }
+.cvlist li{
+  display:flex; align-items:baseline; gap:clamp(12px,2vw,20px);
+  padding:clamp(11px,1.6vw,15px) 0; border-top:1px solid var(--hair2);
+}
+.cvlist li:first-child{ border-top:0; padding-top:0; }
+.cvnum{
+  flex:none; font-family:var(--serif); font-size:clamp(21px,2.6vw,29px);
+  line-height:1; color:#fff; font-variant-numeric:tabular-nums;
+}
+.canvas:not(.canvas--dark) .cvnum{ color:var(--sage); }
+.cvlabel{ font-size:clamp(15px,1.5vw,17px); color:var(--on-sage); }
+.canvas:not(.canvas--dark) .cvlabel{ color:var(--ink); }
+
+.cv-hero{ min-height:430px; }
+@media (max-width:960px){ .cv-hero{ min-height:330px; } }
+.cv-addr{ min-height:320px; }
+.cv-space{ min-height:300px; }
+
+/* schematická orientačná plocha */
+.cv-plan{ min-height:360px; }
+.cv-plan .cvbody{ max-width:58%; }
+.cv-plan .cvdisplay{ font-size:clamp(23px,2.9vw,34px); }
+.cv-plan .cvsub{ font-size:14px; max-width:28ch; }
+.plan-road{ position:absolute; z-index:1; background:var(--fill); }
+.plan-road--h{ left:-4%; right:-4%; top:34%; height:64px; border-top:1px solid var(--hair2); border-bottom:1px solid var(--hair2); }
+.plan-road--v{ top:-4%; bottom:-4%; left:70%; width:54px; border-left:1px solid var(--hair2); border-right:1px solid var(--hair2); }
+.plan-road__name{
+  position:absolute; font-size:10.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:600;
+}
+.plan-road--h .plan-road__name{ left:16px; top:50%; transform:translateY(-50%); }
+.plan-road--v .plan-road__name{ top:18px; left:50%; transform:translateX(-50%); writing-mode:vertical-rl; }
+.plan-mark{
+  position:absolute; z-index:2; left:60%; top:56%;
+  display:flex; align-items:center; gap:9px;
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--sage);
+}
+.plan-mark::before{
+  content:""; width:14px; height:14px; flex:none;
+  border:1px solid var(--sage);
+  background:
+    linear-gradient(to right,transparent 0 5px,var(--sage) 5px 7px,transparent 7px),
+    linear-gradient(to bottom,transparent 0 5px,var(--sage) 5px 7px,transparent 7px);
+}
+.plan-mark span{ background:rgba(255,255,255,.9); border:1px solid var(--line); padding:3px 7px; }
+@media (max-width:520px){
+  .plan-road--v{ left:74%; width:42px; }
+  .plan-mark{ left:56%; top:52%; font-size:10px; }
+  .cv-plan .cvbody{ max-width:64%; }
+}
+
+/* ================= HERO — zrkadlený split =================
+   Údajový panel je VĽAVO a je tmavý, nadpis a text sú VPRAVO.
+------------------------------------------------------------------- */
+.hero{ padding-block:clamp(40px,5.4vw,78px) clamp(38px,4.6vw,66px); }
+.hero__grid{
+  display:grid; grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);
+  gap:clamp(28px,4.6vw,74px); align-items:stretch;
+}
+@media (max-width:980px){ .hero__grid{ grid-template-columns:minmax(0,1fr); } }
+
+/* --- ľavý údajový panel --- */
+.herocard{
+  --hair2:rgba(228,234,229,.19);
+  position:relative; overflow:hidden; isolation:isolate; display:flex;
+  background:linear-gradient(158deg,#22302A 0%,#38493F 50%,#465C4D 100%);
+  border:1px solid #212C25;
+  color:var(--on-sage);
+}
+.herocard::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:repeating-linear-gradient(to bottom,rgba(228,234,229,.07) 0 1px,transparent 1px 15px);
+}
+.herocard::after{
+  content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+  background-image:var(--noise); opacity:.18; mix-blend-mode:multiply;
+}
+.herocard__arc{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:radial-gradient(circle at 108% -6%,rgba(228,234,229,.09) 0 44%,transparent 44.4%);
+}
+.herocard__in{
+  position:relative; z-index:3; display:flex; flex-direction:column; width:100%;
+  padding:clamp(24px,3vw,38px);
+}
+/* eyebrow v tmavom paneli musí byť svetlý, inak splynie s pozadím */
+.herocard .cveyebrow{ color:var(--on-sage-mut); }
+.herocard__name{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(21px,2.2vw,27px); line-height:1.2; letter-spacing:-.015em;
+  color:#fff; margin:16px 0 0;
+}
+.herocard__addr{ margin:7px 0 0; font-size:15px; color:var(--on-sage-mut); }
+
+.herodata{ margin-top:clamp(20px,2.6vw,28px); border-top:1px solid var(--hair2); }
+.herodata > div{ padding:14px 0; border-bottom:1px solid var(--hair2); }
+.herodata dt{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--on-sage-mut); font-weight:700; margin-bottom:6px;
+}
+.herodata dd{ margin:0; font-size:16px; color:#fff; overflow-wrap:anywhere; }
+.herodata dd span{ display:block; font-size:13.5px; color:var(--on-sage-mut); margin-top:4px; }
+.herodata a{ color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.42); }
+.herodata a:hover{ color:#fff; border-bottom-color:#fff; }
+.herodata .tel{
+  font-family:var(--serif); font-size:clamp(21px,2.3vw,27px);
+  line-height:1.18; letter-spacing:.005em; font-variant-numeric:tabular-nums;
+  border-bottom-width:1px;
+}
+.herocard__foot{
+  margin-top:auto; padding-top:20px;
+  font-size:13.5px; line-height:1.55; color:var(--on-sage-mut);
+}
+.herocard__foot b{ display:block; color:#fff; font-weight:600; margin-bottom:4px; font-size:14.5px; }
+
+/* --- pravý textový stĺpec --- */
+.hero__text{ display:flex; flex-direction:column; justify-content:center; }
+.hero h1 .thin{ display:block; color:var(--sage); }
+.hero__lead{ margin-top:22px; max-width:52ch; }
+.hero__cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.hero__points{ margin-top:clamp(28px,3.2vw,40px); border-top:1px solid var(--line); }
+.hero__points li{
+  display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 18px; align-items:baseline;
+  padding:14px 0; border-bottom:1px solid var(--line);
+}
+.hero__points b{
+  font-family:var(--serif); font-weight:400; font-size:15px; color:var(--sage);
+  font-variant-numeric:tabular-nums; letter-spacing:.1em;
+}
+.hero__points span{ font-size:15px; color:var(--ink-soft); max-width:58ch; }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  font:inherit; font-size:15px; font-weight:600; letter-spacing:.01em;
+  padding:14px 24px; border-radius:var(--r);
+  text-decoration:none; border:1px solid transparent; cursor:pointer;
+}
+.btn--primary{ background:var(--sage); color:#fff; }
+.btn--primary:hover{ background:var(--sage-2); color:#fff; }
+.btn--ghost{ background:transparent; color:var(--ink); border-color:var(--line-2); }
+.btn--ghost:hover{ background:var(--white); border-color:var(--sage); color:var(--sage); }
+.btn--clay{ background:var(--clay); color:#fff; }
+.btn--clay:hover{ background:#6F3B2F; color:#fff; }
+.btn--light{ background:#fff; color:var(--sage); border-color:#fff; }
+.btn--light:hover{ background:var(--sage-050); color:var(--sage); border-color:var(--sage-050); }
+.btn--wide{ width:100%; }
+
+/* -------- fakty pod hero -------- */
+.facts{
+  border-top:1px solid var(--line);
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.facts > div{
+  padding:22px clamp(14px,2.4vw,28px) 24px;
+  border-right:1px solid var(--line);
+}
+.facts > div:last-child{ border-right:0; }
+.facts dt{
+  font-size:10.5px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:600; margin-bottom:7px;
+}
+.facts dd{ margin:0; font-size:15.5px; color:var(--ink); overflow-wrap:anywhere; }
+.facts dd span{ display:block; color:var(--ink-soft); font-size:13.5px; margin-top:3px; }
+.facts a{ text-decoration:none; border-bottom:1px solid var(--line-2); }
+@media (max-width:960px){
+  .facts{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .facts > div{ border-bottom:1px solid var(--line); }
+  .facts > div:nth-child(2n){ border-right:0; }
+  .facts > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width:520px){
+  .facts{ grid-template-columns:minmax(0,1fr); }
+  .facts > div{ border-right:0; border-bottom:1px solid var(--line); }
+  .facts > div:last-child{ border-bottom:0; }
+}
+
+/* ================= ROZSAH OŠETRENÍ ================= */
+.srv{ border-top:1px solid var(--line); }
+.srv > li{
+  display:grid;
+  grid-template-columns:auto minmax(0,7fr) minmax(0,4fr);
+  gap:6px clamp(20px,4vw,64px);
+  padding:clamp(20px,2.6vw,32px) 0;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.srv__no{
+  font-family:var(--serif); font-size:14px; line-height:1.6; color:var(--sage);
+  letter-spacing:.12em; font-variant-numeric:tabular-nums;
+}
+.srv h3{ font-size:clamp(19px,2vw,24px); }
+.srv__body p{ font-size:15px; color:var(--ink-soft); margin:9px 0 0; max-width:58ch; }
+.srv__tags{ display:flex; flex-wrap:wrap; gap:4px 20px; margin-top:13px; }
+.srv__tags li{ font-size:13.5px; color:var(--ink-mut); position:relative; padding-left:15px; }
+.srv__tags li::before{ content:""; position:absolute; left:0; top:.75em; width:9px; height:1px; background:var(--line-2); }
+.srv__meta{ font-size:14px; line-height:1.55; color:var(--ink-soft); margin:0; }
+.srv__meta b{
+  display:block; font-family:var(--serif); font-weight:400; font-size:clamp(18px,1.8vw,21px);
+  line-height:1.2; color:var(--ink); margin-bottom:6px;
+}
+@media (max-width:820px){
+  .srv > li{ grid-template-columns:auto minmax(0,1fr); }
+  .srv__meta{ grid-column:2; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }
+}
+
+/* ================= OSETRENIA A CENNIK ================= */
+.pricegroup{ margin-bottom:clamp(30px,4vw,46px); }
+.pricegroup:last-of-type{ margin-bottom:0; }
+.pricegroup__title{
+  font-family:var(--sans); font-size:11.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); font-weight:700;
+  padding-bottom:10px; border-bottom:1px solid var(--sage);
+  margin:0;
+}
+.prow{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 112px 120px;
+  gap:2px 24px;
+  align-items:baseline;
+  padding:18px 2px;
+  border-bottom:1px solid var(--line);
+}
+.prow__name{ font-size:17px; color:var(--ink); }
+.prow__desc{ grid-column:1; font-size:14.5px; color:var(--ink-soft); margin-top:4px; max-width:64ch; }
+.prow__time{ font-size:14px; color:var(--ink-soft); text-align:right; white-space:nowrap; }
+.prow__price{ font-family:var(--serif); font-size:18px; color:var(--ink); text-align:right; white-space:nowrap; }
+@media (max-width:760px){
+  .prow{ grid-template-columns:minmax(0,1fr) auto; gap:4px 16px; }
+  .prow__time{ grid-column:1; text-align:left; margin-top:6px; }
+  .prow__price{ grid-column:2; grid-row:1; }
+}
+
+/* ================= VECNÉ TABUĽKY ================= */
+.ins,.ptable{ width:100%; border-collapse:collapse; }
+.ins{ min-width:460px; }
+.ptable{ min-width:500px; }
+.ins caption,.ptable caption{
+  caption-side:bottom; text-align:left; padding-top:15px;
+  font-size:13.5px; line-height:1.55; color:var(--ink-soft); max-width:68ch;
+}
+.ins thead th,.ptable thead th{
+  font-family:var(--sans); font-weight:700;
+  font-size:10.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); text-align:left;
+  padding:0 14px 11px 2px; border-bottom:1px solid var(--sage);
+}
+.ins tbody th,.ptable tbody th{
+  font-weight:400; text-align:left; font-size:16px; color:var(--ink);
+  padding:15px 14px 15px 2px; border-bottom:1px solid var(--line);
+}
+.ins tbody td,.ptable tbody td{
+  font-size:14.5px; color:var(--ink-soft);
+  padding:15px 14px; border-bottom:1px solid var(--line);
+}
+.ins thead th:last-child,.ins tbody td:last-child,
+.ptable thead th:last-child,.ptable tbody td:last-child{ padding-right:2px; }
+.ptable thead th:last-child,.ptable tbody td:last-child{ text-align:right; white-space:nowrap; }
+.ptable tbody td:last-child{ font-family:var(--serif); font-size:18px; color:var(--ink); }
+.ins tbody td:first-of-type{ white-space:nowrap; }
+
+.notebox{
+  margin-top:clamp(26px,3vw,38px);
+  background:var(--sage-050);
+  border:1px solid var(--sage-100);
+  border-left:2px solid var(--sage);
+  padding:clamp(18px,2.4vw,26px);
+}
+.notebox h3{ font-size:17px; margin-bottom:8px; }
+.notebox p{ font-size:15px; color:var(--ink-soft); }
+.notebox--white{ background:var(--white); border-color:var(--line); border-left:2px solid var(--sage); }
+
+/* ================= TMAVÝ PÁS S ČÍSLAMI ================= */
+.band__grid{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(24px,5vw,72px); align-items:end; }
+@media (max-width:900px){ .band__grid{ grid-template-columns:minmax(0,1fr); } }
+.band__claim{ max-width:18ch; }
+.stats{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(20px,3vw,40px);
+  margin-top:clamp(30px,4vw,48px); padding-top:clamp(24px,3vw,34px);
+  border-top:1px solid rgba(214,222,216,.25);
+}
+.stat b{ display:block; font-family:var(--serif); font-weight:400; font-size:clamp(29px,4vw,44px); line-height:1; color:#fff; }
+.stat span{ display:block; margin-top:11px; font-size:14.5px; color:var(--on-sage-mut); max-width:32ch; }
+@media (max-width:760px){ .stats{ grid-template-columns:minmax(0,1fr); gap:22px; } }
+
+/* ================= PRVÁ NÁVŠTEVA ================= */
+.steps{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:900px){ .steps{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){ .steps{ grid-template-columns:minmax(0,1fr); } }
+.step{ background:var(--paper); padding:clamp(20px,2.6vw,28px); }
+.section--tint .step{ background:var(--white); }
+.step__no{
+  display:block; font-family:var(--serif); font-size:13px; color:var(--sage);
+  letter-spacing:.14em; margin-bottom:12px;
+}
+.step h3{ font-size:18px; margin-bottom:8px; }
+.step p{ font-size:14.5px; color:var(--ink-soft); margin:0; }
+
+/* ================= KARTY ================= */
+.cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:900px){ .cards{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px){ .cards{ grid-template-columns:minmax(0,1fr); } }
+.card2{ background:var(--white); padding:clamp(20px,2.6vw,30px); }
+.card2 h3{ font-size:18px; margin-bottom:9px; }
+.card2 p{ font-size:14.5px; color:var(--ink-soft); }
+.card2 ul li{ font-size:14.5px; color:var(--ink-soft); padding:5px 0 5px 15px; position:relative; }
+.card2 ul li::before{ content:""; position:absolute; left:0; top:14px; width:7px; height:1px; background:var(--line-2); }
+.card2 ul + p{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+.card2--dark{
+  background:linear-gradient(150deg,#2A382F 0%,#38493F 60%,#445A4C 100%);
+  color:var(--on-sage-mut);
+}
+.card2--dark h3{ color:#fff; }
+.card2--dark p{ color:var(--on-sage-mut); }
+.card2__big{
+  display:block; font-family:var(--serif); font-size:clamp(36px,4.6vw,52px);
+  line-height:1; color:#fff; margin-bottom:14px;
+}
+
+/* ================= HODINY A KONTAKT ================= */
+.twocol{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(30px,5vw,64px); align-items:start; }
+.twocol--wide{ grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); }
+@media (max-width:900px){ .twocol,.twocol--wide{ grid-template-columns:minmax(0,1fr); } }
+
+.blocktitle{
+  font-family:var(--sans); font-size:11.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); font-weight:700; margin:0 0 14px;
+}
+.section--dark .blocktitle{ color:var(--on-sage-mut); }
+
+.hours{ width:100%; border-collapse:collapse; }
+.hours th,.hours td{ text-align:left; padding:12px 10px; border-bottom:1px solid var(--line); font-size:15.5px; }
+.hours th{ font-weight:400; width:52%; }
+.hours td{ text-align:right; color:var(--ink-soft); }
+.hours tr[data-today="1"] th,
+.hours tr[data-today="1"] td{ background:var(--sage-050); color:var(--ink); font-weight:600; }
+.hours caption{ caption-side:bottom; text-align:left; padding-top:12px; font-size:13.5px; color:var(--ink-soft); }
+.hours .today-tag{
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--sage);
+  margin-left:8px; font-weight:700;
+}
+
+.clist{ margin-top:26px; border-top:1px solid var(--line); }
+.clist > div{ padding:14px 2px; border-bottom:1px solid var(--line); }
+.clist dt{
+  font-size:10.5px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:600; margin-bottom:5px;
+}
+.clist dd{ margin:0; font-size:16px; overflow-wrap:anywhere; }
+.clist dd a{ text-decoration:none; border-bottom:1px solid var(--line-2); font-weight:600; }
+.clist dd a:hover{ border-bottom-color:var(--sage); }
+.clist dd small{ display:block; font-size:13.5px; color:var(--ink-soft); margin-top:4px; }
+
+.soc{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.soc li{
+  font-size:14px; color:var(--ink-soft);
+  border:1px solid var(--line-2); background:var(--white);
+  padding:7px 12px; border-radius:var(--r);
+}
+.soc b{ color:var(--ink); font-weight:600; }
+
+/* -------- vecné bloky s vlasovou linkou -------- */
+.infolist{ border-top:1px solid var(--line); }
+.infolist > div{ padding:18px 0; border-bottom:1px solid var(--line); }
+.infolist h3{ font-size:17px; margin-bottom:6px; }
+.infolist p{ font-size:15px; color:var(--ink-soft); margin:0; max-width:60ch; }
+.section--dark .infolist,
+.section--dark .infolist > div{ border-color:rgba(214,222,216,.22); }
+.section--dark .infolist p{ color:var(--on-sage-mut); }
+
+.roles{ border-top:1px solid rgba(214,222,216,.22); }
+.roles li{
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 20px;
+  padding:15px 0; border-bottom:1px solid rgba(214,222,216,.22);
+  font-size:16.5px; color:#fff;
+}
+.roles li span{ font-size:14.5px; color:var(--on-sage-mut); }
+
+/* ================= OTÁZKY ================= */
+.qa{ border-top:1px solid var(--line); max-width:80ch; }
+.qa details{ border-bottom:1px solid var(--line); }
+.qa summary{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:20px;
+  padding:18px 2px; cursor:pointer; list-style:none;
+  font-family:var(--serif); font-size:18px; color:var(--ink);
+}
+.qa summary::-webkit-details-marker{ display:none; }
+.qa summary:hover{ color:var(--sage); }
+.qa .sign{ flex:none; width:14px; height:14px; margin-top:7px; position:relative; }
+.qa .sign::before,.qa .sign::after{ content:""; position:absolute; background:var(--sage); }
+.qa .sign::before{ left:0; right:0; top:6px; height:1.5px; }
+.qa .sign::after{ top:0; bottom:0; left:6px; width:1.5px; }
+.qa details[open] .sign::after{ display:none; }
+.qa .answer{ padding:0 2px 20px; color:var(--ink-soft); font-size:15.5px; max-width:68ch; }
+
+/* ================= OBJEDNANIE ================= */
+.book__grid{ display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr); gap:clamp(24px,3.4vw,44px); align-items:start; }
+@media (max-width:1000px){ .book__grid{ grid-template-columns:minmax(0,1fr); } }
+
+.card{ background:var(--white); border:1px solid var(--line); padding:clamp(20px,3vw,34px); }
+
+fieldset{ border:0; padding:0; margin:0 0 28px; }
+legend{
+  font-size:11.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); font-weight:700; padding:0 0 9px;
+  width:100%; border-bottom:1px solid var(--line); margin-bottom:14px;
+}
+.field{ margin-bottom:16px; }
+.field:last-child{ margin-bottom:0; }
+.field > label{ display:block; font-size:14px; font-weight:600; margin-bottom:6px; }
+.hint{ font-size:13px; color:var(--ink-mut); font-weight:400; }
+
+input[type=text],input[type=tel],input[type=email],input[type=date],textarea,select{
+  width:100%; font:inherit; font-size:16px; color:var(--ink);
+  background:var(--white); border:1px solid var(--line-2); border-radius:var(--r);
+  padding:11px 12px;
+}
+input::placeholder,textarea::placeholder{ color:var(--ink-mut); opacity:1; }
+textarea{ min-height:96px; resize:vertical; }
+input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-offset:1px; border-color:var(--sage); }
+
+.grid2{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 18px; }
+@media (max-width:620px){ .grid2{ grid-template-columns:minmax(0,1fr); } }
+
+.opts{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+@media (max-width:620px){ .opts{ grid-template-columns:minmax(0,1fr); } }
+.opt{ position:relative; }
+.opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+.opt label{
+  display:block; height:100%; cursor:pointer; margin:0;
+  border:1px solid var(--line-2); border-radius:var(--r);
+  padding:13px 14px; font-size:15.5px; font-weight:600;
+}
+.opt label small{ display:block; font-weight:400; font-size:13.5px; color:var(--ink-soft); margin-top:3px; }
+.opt label:hover{ border-color:var(--sage); }
+.opt input:checked + label{ border-color:var(--sage); box-shadow:inset 0 0 0 1px var(--sage); background:var(--sage-050); }
+.opt input:focus-visible + label{ outline:2px solid var(--sage); outline-offset:2px; }
+
+.chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.chip{
+  font:inherit; font-size:14px; cursor:pointer;
+  background:var(--white); border:1px solid var(--line-2); border-radius:var(--r);
+  padding:8px 13px; color:var(--ink);
+}
+.chip:hover{ border-color:var(--sage); color:var(--sage); }
+.chip[aria-pressed="true"]{ background:var(--sage); border-color:var(--sage); color:#fff; }
+
+.consent{ display:flex; gap:11px; align-items:flex-start; }
+.consent input{ margin-top:4px; width:17px; height:17px; flex:none; accent-color:var(--sage); }
+.consent label{ font-size:14.5px; font-weight:400; color:var(--ink-soft); margin:0; }
+
+.formnote{ font-size:13.5px; color:var(--ink-soft); margin-top:14px; }
+
+.summary{ background:var(--sage); color:var(--on-sage); padding:clamp(20px,2.6vw,28px); position:sticky; top:calc(var(--head-h) + 16px); }
+.summary h3{ color:#fff; font-size:19px; margin-bottom:4px; }
+.summary > p{ font-size:13.5px; color:var(--on-sage-mut); margin-bottom:18px; }
+.summary__row{ display:flex; justify-content:space-between; gap:16px; padding:11px 0; border-bottom:1px solid rgba(228,234,229,.18); }
+.summary dt{ font-size:13px; color:var(--on-sage-mut); }
+.summary dd{ margin:0; text-align:right; font-size:14.5px; color:#fff; font-weight:600; overflow-wrap:anywhere; }
+.summary dd.empty{ color:var(--on-sage-mut); font-weight:400; }
+.summary__total{ display:flex; justify-content:space-between; align-items:baseline; gap:16px; padding-top:16px; }
+.summary__total span{ font-size:13px; color:var(--on-sage-mut); }
+.summary__total b{ font-family:var(--serif); font-size:22px; color:#fff; font-weight:400; }
+.summary__note{ margin-top:14px; font-size:13px; color:var(--on-sage-mut); line-height:1.5; }
+.summary__call{
+  margin-top:16px; padding-top:14px; border-top:1px solid rgba(228,234,229,.18);
+  font-size:13px; color:var(--on-sage-mut);
+}
+.summary__call a{
+  display:block; margin-top:6px; color:#fff; text-decoration:none; font-weight:600;
+  font-family:var(--serif); font-size:19px; letter-spacing:.01em;
+  border-bottom:1px solid rgba(255,255,255,.35); width:max-content; max-width:100%;
+}
+.summary__call a:hover{ color:#fff; border-bottom-color:#fff; }
+@media (max-width:1000px){ .summary{ position:static; } }
+
+.sent{ display:none; }
+.sent.is-on{ display:block; }
+.sent h3{ font-size:clamp(21px,2.6vw,27px); margin-bottom:10px; }
+.sent > p{ color:var(--ink-soft); max-width:56ch; font-size:15.5px; }
+.sent__recap{ border:1px solid var(--line); background:var(--paper); padding:16px 18px; margin:20px 0; font-size:15px; }
+.sent__recap div{ padding:4px 0; }
+.sent__recap b{ font-weight:600; }
+.is-hidden{ display:none !important; }
+
+/* ================= AUTOR UKÁŽKY ================= */
+.author{ background:var(--paper-2); border-top:1px solid var(--line); }
+.author__card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-top:2px solid var(--clay);
+  padding:clamp(24px,3.6vw,44px);
+  display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:clamp(26px,4vw,56px); align-items:start;
+}
+@media (max-width:860px){ .author__card{ grid-template-columns:minmax(0,1fr); } }
+.author .eyebrow{ color:var(--clay); }
+.author h2{ font-size:clamp(24px,3vw,34px); }
+.author p{ color:var(--ink-soft); }
+.author strong{ color:var(--ink); font-weight:600; }
+.author__price{
+  background:var(--clay-050); border-left:2px solid var(--clay);
+  padding:13px 16px; font-size:15.5px; color:var(--ink); font-weight:600; margin:22px 0 0;
+}
+.author__cta{ display:flex; flex-wrap:wrap; gap:11px; margin-top:22px; }
+.author__cta .btn--clay{ color:#fff; }
+.author__cta .btn--ghost{ color:var(--ink); }
+.author__cta .btn--ghost:hover{ color:var(--sage); }
+.alist{ border-top:1px solid var(--line); }
+.alist > div{ padding:14px 2px; border-bottom:1px solid var(--line); }
+.alist dt{ font-size:10.5px; letter-spacing:.17em; text-transform:uppercase; color:var(--ink-soft); font-weight:600; margin-bottom:5px; }
+.alist dd{ margin:0; font-size:16px; overflow-wrap:anywhere; }
+.alist dd a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(--clay-050); font-weight:600; }
+.alist dd a:hover{ border-bottom-color:var(--clay); }
+.alist dd small{ display:block; font-size:13.5px; color:var(--ink-soft); margin-top:4px; font-weight:400; }
+.alist dd small a{ font-weight:400; }
+
+/* ================= PÄTIČKA ================= */
+.footer{ background:var(--ink); color:#C9CBCF; padding:clamp(40px,5vw,64px) 0 28px; }
+.footer__act{
+  display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+  padding-bottom:clamp(28px,3.4vw,40px); margin-bottom:clamp(28px,3.4vw,40px);
+  border-bottom:1px solid #2A2D31;
+}
+.footer__act > p{ flex:1 1 280px; margin:0; }
+.footer__act .btn{ flex:none; }
+@media (max-width:520px){ .footer__act .btn{ width:100%; } }
+.footer h3{ color:#fff; font-size:12px; letter-spacing:.19em; text-transform:uppercase; font-family:var(--sans); font-weight:700; margin-bottom:14px; }
+.footer__grid{ display:grid; grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr)); gap:32px; }
+@media (max-width:1000px){ .footer__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:620px){ .footer__grid{ grid-template-columns:minmax(0,1fr); } }
+.footer a{ color:var(--bar-fg); text-decoration:none; }
+.footer a:hover{ color:#fff; text-decoration:underline; }
+.footer li{ padding:4px 0; font-size:14.5px; overflow-wrap:anywhere; }
+.footer p{ font-size:14.5px; color:#A7ABB1; max-width:46ch; }
+.footer__brand{ display:flex; align-items:center; gap:11px; margin-bottom:16px; color:#fff; }
+.footer__brand .brand__name{ color:#fff; }
+.footer__brand .brand__sub{ color:#A7ABB1; }
+.footer small{ display:block; color:#A7ABB1; font-size:13px; }
+.footer__bottom{
+  margin-top:36px; padding-top:20px; border-top:1px solid #2A2D31;
+  display:flex; flex-wrap:wrap; gap:8px 24px; justify-content:space-between;
+  font-size:13.5px; color:#A7ABB1;
+}
+
+/* ================= ZDRAVOTNÉ POISŤOVNE — PÁS ================= */
+.payers{ background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.payers__in{
+  display:grid; grid-template-columns:minmax(0,auto) minmax(0,1fr);
+  gap:18px clamp(24px,4vw,56px); align-items:center;
+  padding-block:clamp(20px,2.6vw,30px);
+}
+@media (max-width:900px){ .payers__in{ grid-template-columns:minmax(0,1fr); } }
+.payers__lead{
+  margin:0; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.payers__lead span{
+  display:block; margin-top:7px; max-width:26ch;
+  font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; color:var(--ink-soft);
+}
+.payers__row{ display:flex; flex-wrap:wrap; gap:10px; }
+.payer{
+  flex:1 1 190px; min-width:0;
+  display:flex; align-items:center; gap:12px;
+  background:var(--white); border:1px solid var(--line); padding:11px 13px;
+}
+.payer__mark{
+  flex:none; width:40px; height:40px; display:grid; place-items:center;
+  background:var(--sage-050); border:1px solid var(--sage-100);
+  font-family:var(--serif); font-size:14px; letter-spacing:.02em; color:var(--sage);
+}
+.payer b{ display:block; font-size:14.5px; font-weight:600; line-height:1.25; color:var(--ink); }
+.payer span{ display:block; margin-top:2px; font-size:12.5px; color:var(--ink-soft); }
+
+/* ================= MIESTA PRIPRAVENÉ NA FOTOGRAFIE =================
+   Každá plocha je samostatná kompozícia: vrstvený prechod, geometria
+   a typografia, ktorá nesie číslo alebo popis. Žiadna výplň.
+------------------------------------------------------------------- */
+.obraz{ margin:0; }
+.obraz__plate{
+  position:relative; overflow:hidden; isolation:isolate;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  aspect-ratio:4/5; min-height:230px;
+  padding:clamp(14px,2vw,20px);
+  border:1px solid var(--line);
+  background:linear-gradient(154deg,#F8F7F4 0%,#EBEFEA 54%,#D9E1D9 100%);
+}
+.obraz__plate::after{
+  content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+  background-image:var(--noise); opacity:.12; mix-blend-mode:multiply;
+}
+.obraz__geo{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:
+    radial-gradient(circle at 50% 33%, rgba(255,255,255,.92) 0 21%, transparent 21.4%),
+    repeating-linear-gradient(to bottom, rgba(56,73,63,.07) 0 1px, transparent 1px 13px),
+    radial-gradient(130% 85% at 104% -4%, rgba(56,73,63,.13), transparent 58%);
+}
+.obraz__geo--plan{
+  background-image:
+    linear-gradient(to right, rgba(56,73,63,.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56,73,63,.1) 1px, transparent 1px),
+    radial-gradient(120% 90% at 8% 100%, rgba(56,73,63,.12), transparent 60%);
+  background-size:38px 38px, 38px 38px, auto;
+}
+.obraz__geo--arc{
+  background-image:
+    repeating-radial-gradient(circle at 100% 0, transparent 0 30px, rgba(56,73,63,.14) 30px 31px),
+    radial-gradient(120% 90% at 20% 10%, rgba(255,255,255,.8), transparent 62%);
+}
+.obraz__mono{
+  position:absolute; z-index:2; left:0; right:0; top:33%; transform:translateY(-50%);
+  text-align:center; font-family:var(--serif); line-height:1;
+  font-size:clamp(38px,6vw,56px); letter-spacing:.06em; color:var(--sage);
+}
+.obraz__tag{
+  position:relative; z-index:2;
+  font-size:10.5px; letter-spacing:.19em; text-transform:uppercase; font-weight:700;
+  color:var(--sage); padding-top:11px; border-top:1px solid rgba(56,73,63,.24);
+}
+.obraz__big{
+  position:relative; z-index:2; margin-top:10px;
+  font-family:var(--serif); font-size:clamp(30px,4.2vw,42px); line-height:1; color:var(--ink);
+}
+.obraz__note{ position:relative; z-index:2; margin-top:6px; font-size:13.5px; color:var(--ink-soft); }
+.obraz figcaption{ margin-top:11px; font-size:13.5px; line-height:1.55; color:var(--ink-soft); max-width:46ch; }
+.obraz--wide .obraz__plate{ aspect-ratio:4/3; min-height:200px; }
+
+/* dvojplocha na stav pred ošetrením a po ňom */
+.obraz--dvoj .obraz__plate{
+  aspect-ratio:16/10; min-height:190px;
+  display:grid; grid-template-columns:1fr 1fr; padding:0;
+}
+.obraz__half{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:clamp(14px,2vw,20px);
+  border-right:1px solid rgba(56,73,63,.24);
+}
+.obraz__half:last-child{ border-right:0; background:rgba(255,255,255,.42); }
+@media (max-width:620px){ .obraz--dvoj .obraz__plate{ aspect-ratio:4/3; } }
+.obraz__half b{ font-size:10.5px; letter-spacing:.19em; text-transform:uppercase; font-weight:700; color:var(--sage); }
+.obraz__half span{ margin-top:5px; font-size:13.5px; color:var(--ink-soft); }
+
+.obrazy{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(18px,2.4vw,28px); margin-top:clamp(28px,3.4vw,44px);
+}
+@media (max-width:900px){ .obrazy{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){ .obrazy{ grid-template-columns:minmax(0,1fr); } }
+
+/* ================= TÍM ================= */
+.team{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(20px,2.6vw,32px); }
+@media (max-width:1000px){ .team{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){
+  .team{ grid-template-columns:minmax(0,1fr); }
+  .member .obraz{ max-width:280px; }
+}
+.member h3{ margin-top:16px; font-size:18px; }
+.member__role{
+  margin:7px 0 10px; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.member p{ font-size:14.5px; color:var(--ink-soft); }
+.member__do{ margin-top:13px; border-top:1px solid var(--line); }
+.member__do li{
+  position:relative; padding:8px 0 0 15px; font-size:13.5px; color:var(--ink-soft);
+}
+.member__do li::before{ content:""; position:absolute; left:0; top:1.05em; width:8px; height:1px; background:var(--line-2); }
+
+/* ================= UKÁŽKY PRÁC ================= */
+.works{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(22px,3vw,40px); }
+@media (max-width:820px){ .works{ grid-template-columns:minmax(0,1fr); } }
+.work h3{ margin-top:16px; font-size:18px; }
+.work p{ margin-top:8px; font-size:14.5px; color:var(--ink-soft); }
+.work__meta{ margin-top:14px; border-top:1px solid var(--line); }
+.work__meta > div{
+  display:flex; justify-content:space-between; gap:16px;
+  padding:9px 0; border-bottom:1px solid var(--line); font-size:14px;
+}
+.work__meta dt{ color:var(--ink-soft); }
+.work__meta dd{ margin:0; color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
+
+/* ================= HODNOTENIA ================= */
+.reviews{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:900px){ .reviews{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:620px){ .reviews{ grid-template-columns:minmax(0,1fr); } }
+.review{ display:flex; flex-direction:column; background:var(--white); padding:clamp(20px,2.6vw,28px); margin:0; }
+.section--tint .review{ background:var(--white); }
+.stars{ display:flex; gap:3px; }
+.stars svg{ width:14px; height:14px; display:block; fill:var(--sage); }
+.review blockquote{ margin:14px 0 0; font-size:15.5px; line-height:1.6; color:var(--ink); }
+.review figcaption{ margin-top:auto; padding-top:16px; font-size:13.5px; color:var(--ink-soft); }
+.review figcaption b{ display:block; font-weight:600; color:var(--ink); font-size:14.5px; }
+
+/* ================= POHYB ================= */
+.js .rev{ opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease; }
+.js .rev.is-in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .js .rev{ opacity:1 !important; transform:none !important; }
+}
+
+/* ==================================================================
+   GARANCIA FARBY TEXTU V TLAČIDLÁCH
+   Musí stáť na konci a mať vyššiu špecificitu než pravidlá pre odkazy
+   (.footer a, .menu a, .alist dd a, .demobar a, a{...}), inak by
+   tlačidlo dostalo farbu odkazu a text by splynul s pozadím.
+================================================================== */
+.btn.btn--primary, a.btn.btn--primary,
+.btn.btn--primary:hover, a.btn.btn--primary:hover,
+.btn.btn--primary:focus, a.btn.btn--primary:focus{ color:#FFFFFF; }
+
+.btn.btn--clay, a.btn.btn--clay,
+.btn.btn--clay:hover, a.btn.btn--clay:hover,
+.btn.btn--clay:focus, a.btn.btn--clay:focus{ color:#FFFFFF; }
+
+.btn.btn--ghost, a.btn.btn--ghost,
+.btn.btn--ghost:focus, a.btn.btn--ghost:focus{ color:var(--ink); }
+.btn.btn--ghost:hover, a.btn.btn--ghost:hover{ color:var(--sage); }
+
+.section--dark .btn.btn--ghost, .section--dark a.btn.btn--ghost,
+.section--dark .btn.btn--ghost:hover, .section--dark a.btn.btn--ghost:hover,
+.section--dark .btn.btn--ghost:focus, .section--dark a.btn.btn--ghost:focus{ color:#FFFFFF; }
+
+.btn.btn--light, a.btn.btn--light,
+.btn.btn--light:hover, a.btn.btn--light:hover,
+.btn.btn--light:focus, a.btn.btn--light:focus{ color:var(--sage); }
+
+.navcta, a.navcta, .navcta:hover, a.navcta:hover, .navcta:focus{ color:#FFFFFF; }
+.navtel, a.navtel, .navtel:focus{ color:var(--ink); }
+.navtel:hover, a.navtel:hover{ color:var(--sage); }
+.navtoggle, button.navtoggle{ color:var(--ink); }
+
+/* v pätičke je pozadie takmer čierne — salviové tlačidlo by na ňom zaniklo,
+   preto tam ide svetlé tlačidlo a telefón s bielym rámom */
+.footer .btn.btn--ghost, .footer a.btn.btn--ghost,
+.footer .btn.btn--ghost:focus, .footer a.btn.btn--ghost:focus{
+  color:#FFFFFF; border-color:rgba(255,255,255,.55); background:transparent;
+}
+.footer .btn.btn--ghost:hover, .footer a.btn.btn--ghost:hover{
+  color:#FFFFFF; border-color:#FFFFFF; background:rgba(255,255,255,.1);
+}
+.footer .btn.btn--light, .footer a.btn.btn--light,
+.footer .btn.btn--light:hover, .footer a.btn.btn--light:hover,
+.footer .btn.btn--light:focus, .footer a.btn.btn--light:focus{ color:var(--sage); background:#FFFFFF; border-color:#FFFFFF; }
+.footer .btn.btn--light:hover, .footer a.btn.btn--light:hover{ background:var(--sage-050); border-color:var(--sage-050); }
+.chip{ color:var(--ink); }
+.chip:hover{ color:var(--sage); }
+.chip[aria-pressed="true"], .chip[aria-pressed="true"]:hover{ color:#FFFFFF; }
+.skip, a.skip, .skip:hover, .skip:focus{ color:#FFFFFF; }
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return v.toLocaleString('de-DE');}function __f(x){return x.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Zum Hauptinhalt springen</a>
+
+<div class="topstack">
+  <div class="demobar">
+    <span class="demobar__tag">Beispiel-Website</span>
+    <span class="demobar__txt">so eine Website baue ich auch für Sie.</span>
+    <a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a>
+    <span class="demobar__sep" aria-hidden="true">·</span>
+    <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+  </div>
+
+  <nav class="nav" aria-label="Hauptnavigation">
+    <div class="wrap nav__in">
+      <a class="brand" href="#uvod" aria-label="Zahnarztpraxis Weide, Startseite">
+        <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x=".75" y=".75" width="38.5" height="38.5" rx="2" fill="none" stroke="#38493F" stroke-width="1.5"/>
+          <rect x="10.5" y="8.5" width="19" height="23" fill="none" stroke="#38493F" stroke-width="1.2"/>
+          <path d="M20 8.5v23M10.5 20h19" stroke="#38493F" stroke-width="1.2"/>
+        </svg>
+        <span>
+          <span class="brand__name">Praxis Weide</span> <span class="brand__sub">Zahnmedizin</span>
+        </span>
+      </a>
+
+      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü öffnen">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <span class="navtoggle__t">Menü</span>
+      </button>
+
+      <ul class="menu" id="menu">
+        <li><a href="#osetrenia">Behandlungen</a></li>
+        <li><a href="#lekari">Team</a></li>
+        <li><a href="#cennik">Preise</a></li>
+        <li><a href="#otazky">FAQ</a></li>
+        <li><a href="#kontakt">Zeiten und Kontakt</a></li>
+      </ul>
+
+      <div class="navact">
+        <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+        <a class="navcta" href="#objednanie">Termin buchen</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<main id="obsah">
+
+  <!-- ================= HERO — zrkadlený split ================= -->
+  <section class="hero" id="uvod">
+    <div class="wrap hero__grid">
+
+      <!-- ĽAVÁ STRANA: tmavý údajový panel -->
+      <aside class="herocard" aria-label="Adresse, Telefon und Sprechzeiten">
+        <span class="herocard__arc" aria-hidden="true"></span>
+        <div class="herocard__in">
+          <p class="cveyebrow">Zahnmedizin · Musterstadt</p>
+          <p class="herocard__name">Zahnarztpraxis Weide</p>
+          <p class="herocard__addr">Weidenweg 8, 12345 Musterstadt</p>
+
+          <dl class="herodata">
+            <div>
+              <dt>Termine, Mobil</dt>
+              <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span>wir rufen während der Sprechzeiten zurück</span></dd>
+            </div>
+            <div>
+              <dt>Festnetz</dt>
+              <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span>Empfang, Terminbuchung und Absage</span></dd>
+            </div>
+            <div>
+              <dt>Sprechzeiten</dt>
+              <dd>Mo, Di, Do 8:00 – 17:00<span>Mi 8:00 – 15:00 · Fr 8:00 – 13:00 · Wochenende geschlossen</span></dd>
+            </div>
+            <div>
+              <dt>Eingang zur Praxis</dt>
+              <dd>Erdgeschoss, vom Hof<span>ohne Stufen, Türbreite 90 cm</span></dd>
+            </div>
+          </dl>
+
+          <p class="herocard__foot" id="status"><b>Sprechstunde an Werktagen.</b> Den ganzen Plan finden Sie im Abschnitt Sprechzeiten und Kontakt.</p>
+        </div>
+      </aside>
+
+      <!-- PRAVÁ STRANA: nadpis a text -->
+      <div class="hero__text">
+        <p class="eyebrow"><b>01</b>Praxis</p>
+        <h1>Zahnarztpraxis Weide<span class="thin">in Musterstadt</span></h1>
+        <p class="lead hero__lead">Wir behandeln Erwachsene und Kinder. Termine vergeben wir auf die Minute. Vor jeder Behandlung sagen wir Ihnen, was passiert, wie lange es dauert und was es kostet.</p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#objednanie">Termin buchen</a>
+          <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+        </div>
+
+        <ul class="hero__points">
+          <li><b>01</b><span>Prophylaxe, professionelle Zahnreinigung und Zahnerhaltung</span></li>
+          <li><b>02</b><span>Zahnersatz, Bleaching und Wurzelkanalbehandlung</span></li>
+          <li><b>03</b><span>Kinderzahnheilkunde ab dem dritten Lebensjahr</span></li>
+          <li><b>04</b><span>Schmerzsprechstunde an jedem Praxistag morgens</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= ZÁKLADNÉ ÚDAJE ================= -->
+  <section aria-label="Das Wichtigste zur Praxis">
+    <dl class="wrap facts">
+      <div>
+        <dt>Adresse</dt>
+        <dd>Weidenweg 8, 12345 Musterstadt<span>Erdgeschoss, Eingang vom Hof ohne Stufen</span></dd>
+      </div>
+      <div>
+        <dt>Mobil</dt>
+        <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span>Rückruf während der Sprechzeiten</span></dd>
+      </div>
+      <div>
+        <dt>Festnetz</dt>
+        <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span>Empfang während der Sprechzeiten</span></dd>
+      </div>
+      <div>
+        <dt>Terminbuchung</dt>
+        <dd><a href="#objednanie">Formular auf dieser Seite</a><span>wir bestätigen den Termin telefonisch innerhalb eines Werktags</span></dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ================= ZDRAVOTNÉ POISŤOVNE — PÁS ================= -->
+  <section class="payers" aria-label="Versicherungen, mit denen wir abrechnen">
+    <div class="wrap payers__in">
+      <p class="payers__lead">Krankenkassen<span>Kontrolluntersuchung und Grundversorgung rechnen wir direkt mit Ihrer Kasse ab.</span></p>
+      <ul class="payers__row">
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">25</span>
+          <span><b>Gesetzlich Versicherte</b><span>alle Krankenkassen · Kassenzulassung</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">24</span>
+          <span><b>Privatversicherte</b><span>Abrechnung nach GOZ</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">27</span>
+          <span><b>Beihilfeberechtigte</b><span>Abrechnung nach GOZ</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">EU</span>
+          <span><b>Europäische Krankenversicherungskarte</b><span>wir behandeln auch Versicherte aus anderen EU-Ländern</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= ROZSAH OŠETRENÍ ================= -->
+  <section class="section section--line" id="osetrenia">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>02</b>Behandlungen</p>
+          <h2>Unsere Behandlungen</h2>
+        </div>
+        <p class="lead">Wir decken die übliche Versorgung für Erwachsene und Kinder ab. Aufwendige chirurgische Eingriffe und Zahnspangen machen wir nicht; dafür überweisen wir an eine Praxis, mit der wir zusammenarbeiten.</p>
+      </div>
+
+      <ul class="srv rev">
+        <li>
+          <span class="srv__no">01</span>
+          <div class="srv__body">
+            <h3>Vorsorge und Diagnostik</h3>
+            <p>Erst- und Kontrolluntersuchung, Befund von Zähnen und Zahnfleisch, Röntgenaufnahme direkt im Behandlungszimmer. Am Ende steht ein schriftlicher Behandlungsplan mit Reihenfolge und Preis.</p>
+            <ul class="srv__tags">
+              <li>Erstuntersuchung</li>
+              <li>Kontrolle alle sechs Monate</li>
+              <li>Einzelzahnaufnahme</li>
+              <li>Zweitmeinung</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>30 Minuten</b>dauert die Erstuntersuchung inklusive Dokumentation</p>
+        </li>
+        <li>
+          <span class="srv__no">02</span>
+          <div class="srv__body">
+            <h3>Professionelle Zahnreinigung</h3>
+            <p>Entfernung von Zahnstein und Belägen, Pulverstrahl, Politur und Kontrolle des Zahnfleischs. Zum Schluss gehen wir gemeinsam Putztechnik und Hilfsmittel durch, die bei Ihnen sinnvoll sind.</p>
+            <ul class="srv__tags">
+              <li>Zahnstein</li>
+              <li>Pulverstrahl</li>
+              <li>Reinigung bei Zahnspange</li>
+              <li>Putztraining</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>60 Minuten</b>für die komplette Reinigung, die Dentalhygienikerin arbeitet in einem eigenen Zimmer</p>
+        </li>
+        <li>
+          <span class="srv__no">03</span>
+          <div class="srv__body">
+            <h3>Zahnerhaltung</h3>
+            <p>Kariesbehandlung mit zahnfarbenen Kompositfüllungen, Behandlung empfindlicher Zahnhälse, Wurzelkanalbehandlung und Aufbau des Zahns vor dem Zahnersatz.</p>
+            <ul class="srv__tags">
+              <li>zahnfarbene Füllungen</li>
+              <li>Wurzelkanäle</li>
+              <li>Zahnaufbau</li>
+              <li>Zahnentfernung</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>45 – 90 Minuten</b>je nach Umfang, größere Behandlungen teilen wir auf zwei Termine auf</p>
+        </li>
+        <li>
+          <span class="srv__no">04</span>
+          <div class="srv__body">
+            <h3>Zahnersatz</h3>
+            <p>Keramikkronen, Brücken und herausnehmbarer Zahnersatz. Wir arbeiten mit einem Dentallabor und planen die Termine so, dass sie aufeinander folgen und Sie nicht unnötig kommen müssen.</p>
+            <ul class="srv__tags">
+              <li>Keramikkrone</li>
+              <li>Brücke</li>
+              <li>herausnehmbarer Zahnersatz</li>
+              <li>Reparatur von Zahnersatz</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>2 – 3 Termine</b>vom Abdruck bis zum Einsetzen der fertigen Arbeit</p>
+        </li>
+        <li>
+          <span class="srv__no">05</span>
+          <div class="srv__body">
+            <h3>Kinderzahnheilkunde</h3>
+            <p>Die erste Untersuchung empfehlen wir um den dritten Geburtstag. Der erste Besuch ist oft nur ein Kennenlernen: Das Kind setzt sich auf den Stuhl, und es wird nichts gemacht. Ein Elternteil ist bei der Behandlung im Raum.</p>
+            <ul class="srv__tags">
+              <li>Kinderuntersuchung</li>
+              <li>Fissurenversiegelung</li>
+              <li>Milchzahnbehandlung</li>
+              <li>Fluoridierung</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>ab 3 Jahren</b>bei Beschwerden oder einem Zahnunfall nehmen wir Kinder jeden Alters an</p>
+        </li>
+        <li>
+          <span class="srv__no">06</span>
+          <div class="srv__body">
+            <h3>Akute Beschwerden und Ästhetik</h3>
+            <p>Für akute Schmerzen halten wir an jedem Praxistag morgens einen kurzen Block außerhalb der vergebenen Termine frei. Ästhetisch bieten wir Home-Bleaching mit individuellen Schienen und Bleaching in der Praxis an.</p>
+            <ul class="srv__tags">
+              <li>Zahnschmerzen</li>
+              <li>Zahnunfall</li>
+              <li>Home-Bleaching</li>
+              <li>Bleaching in der Praxis</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>jeden Morgen</b>Block für akute Fälle, rufen Sie gleich nach Praxisöffnung an</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= LEKÁRI A PERSONÁL ================= -->
+  <section class="section section--tint" id="lekari">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>03</b>Team</p>
+          <h2>Wer Sie behandelt</h2>
+        </div>
+        <p class="lead">Vom Plan bis zur fertigen Arbeit behandelt Sie derselbe Zahnarzt. Den Namen nennen wir bei der Terminvereinbarung und schreiben ihn auch in die Terminbestätigung.</p>
+      </div>
+
+      <ul class="team rev">
+        <li class="member">
+          <!-- FOTO: portrét MDDr. Zuzany Hruškovej v ordinácii, po pás, bez rúška -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">JH</span>
+              <span class="obraz__tag">Zahnärztin</span>
+            </div>
+          </figure>
+          <h3>Dr. med. dent. Julia Hellwig</h3>
+          <p class="member__role">Zahnärztin, Praxisinhaberin</p>
+          <p>Sie übernimmt die Erstuntersuchungen und erstellt den schriftlichen Behandlungsplan mit Preis. Schwerpunkte: Zahnerhaltung und Zahnersatz.</p>
+          <ul class="member__do">
+            <li>Erst- und Kontrolluntersuchungen</li>
+            <li>zahnfarbene Füllungen und Zahnaufbauten</li>
+            <li>Wurzelkanalbehandlung</li>
+            <li>Kronen, Brücken und herausnehmbarer Zahnersatz</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét MDDr. Adama Krajčíra pri kresle, po pás -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">AK</span>
+              <span class="obraz__tag">Zahnarzt</span>
+            </div>
+          </figure>
+          <h3>Dr. med. dent. Alexander Krämer</h3>
+          <p class="member__role">Zahnarzt, Kinder und akute Fälle</p>
+          <p>Er behandelt Kinder ab drei Jahren und betreut den morgendlichen Schmerzblock. Bei der Behandlung eines Kindes ist ein Elternteil im Raum.</p>
+          <ul class="member__do">
+            <li>Kinderuntersuchungen ab 3 Jahren</li>
+            <li>Milchzahnbehandlung und Fissurenversiegelung</li>
+            <li>akute Schmerzen und Zahnunfall</li>
+            <li>Zahnentfernungen</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét Bc. Lucie Šimkovej v ordinácii dentálnej hygieny -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">LS</span>
+              <span class="obraz__tag">Dentalhygienikerin</span>
+            </div>
+          </figure>
+          <h3>Laura Schmitt</h3>
+          <p class="member__role">Dentalhygienikerin</p>
+          <p>Sie arbeitet im zweiten Behandlungszimmer und hat pro Sitzung 60 Minuten eingeplant, bei festsitzender Zahnspange 75 Minuten.</p>
+          <ul class="member__do">
+            <li>Entfernung von Zahnstein und Belägen</li>
+            <li>Pulverstrahl und Politur</li>
+            <li>Reinigung bei festsitzender Zahnspange</li>
+            <li>Training der Putztechnik</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét Jany Bartošovej na recepcii pri objednávkovom kalendári -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--plan" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">JB</span>
+              <span class="obraz__tag">Empfang</span>
+            </div>
+          </figure>
+          <h3>Johanna Brandt</h3>
+          <p class="member__role">Empfang und Terminvergabe</p>
+          <p>Sie nimmt während der Sprechzeiten das Telefon ab, führt den Terminkalender und schickt am Vortag eine Erinnerung per SMS.</p>
+          <ul class="member__do">
+            <li>Buchung, Verschiebung und Absage von Terminen</li>
+            <li>Terminbestätigung innerhalb eines Werktags</li>
+            <li>Kopien der Patientenakte</li>
+            <li>Geschenkgutscheine und Firmenuntersuchungen</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="notebox notebox--white rev">
+        <h3>Bei jeder Behandlung eine zahnmedizinische Fachangestellte</h3>
+        <p>Bei der Behandlung sind Zahnarzt und Assistenz im Zimmer. Die Assistenz bereitet die Instrumente vor, führt die Sterilisation im Autoklaven der Klasse B durch und dokumentiert jeden Zyklus. Wir behandeln nie zwei Patienten gleichzeitig.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= UKÁŽKY PRÁC ================= -->
+  <section class="section section--line" id="prace">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>04</b>Arbeiten</p>
+          <h2>Beispielarbeiten und ihr Preis</h2>
+        </div>
+        <p class="lead">Zwei übliche Behandlungen mit Zahl der Termine und einem Preis aus den Positionen der Preisliste. Dieselbe Aufstellung erhalten Sie schriftlich vor Beginn der Arbeit.</p>
+      </div>
+
+      <div class="works rev">
+        <article class="work">
+          <!-- FOTO: predný zub pred ošetrením a po nasadení korunky, rovnaký záber a rovnaké svetlo -->
+          <figure class="obraz obraz--dvoj">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <div class="obraz__half"><b>Vorher</b><span>Zahn nach Unfall, abgebrochene Ecke und alte Füllung</span></div>
+              <div class="obraz__half"><b>Nachher</b><span>Aufbau und Keramikkrone in der Farbe der Nachbarzähne</span></div>
+            </div>
+          </figure>
+          <h3>Krone am Frontzahn</h3>
+          <p>Erster Termin: Untersuchung, Röntgen und Plan. Zweiter: Aufbau des Zahns und Abdruck für das Labor. Dritter: Anprobe und Einsetzen der fertigen Krone.</p>
+          <dl class="work__meta">
+            <div><dt>Anzahl der Termine</dt><dd>3</dd></div>
+            <div><dt>Zeit vom Abdruck bis zum Einsetzen</dt><dd>10 – 14 Tage</dd></div>
+            <div><dt>Preis laut Preisliste</dt><dd class="num">440 €</dd></div>
+            <div><dt>Gewährleistung</dt><dd>24 Monate</dd></div>
+          </dl>
+        </article>
+
+        <article class="work">
+          <!-- FOTO: chrup pred dentálnou hygienou a po nej, rovnaký záber a rovnaké svetlo -->
+          <figure class="obraz obraz--dvoj">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+              <div class="obraz__half"><b>Vorher</b><span>Zahnstein und Beläge am Zahnfleischrand</span></div>
+              <div class="obraz__half"><b>Nachher</b><span>gereinigte Zähne und Home-Bleaching mit Schienen</span></div>
+            </div>
+          </figure>
+          <h3>Zahnreinigung und Home-Bleaching</h3>
+          <p>Erster Termin: komplette Zahnreinigung und Abdruck für die Schienen. Zweiter: Übergabe von Schienen und Gel mit Anleitung. Dritter: Kontrolle des Ergebnisses nach zwei Wochen.</p>
+          <dl class="work__meta">
+            <div><dt>Anzahl der Termine</dt><dd>3</dd></div>
+            <div><dt>Dauer des Bleachings zu Hause</dt><dd>14 Tage</dd></div>
+            <div><dt>Preis laut Preisliste</dt><dd class="num">240 €</dd></div>
+            <div><dt>Kontrolle nach dem Bleaching</dt><dd>inklusive</dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CENNÍK OŠETRENÍ ================= -->
+  <section class="section section--line" id="cennik">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>05</b>Preise</p>
+          <h2>Preisliste</h2>
+        </div>
+        <p class="lead">Die Preise gelten für Selbstzahler und für Leistungen, die über die Kassenleistung hinausgehen. Ist eine Leistung Kassenleistung, zahlen Sie nur die Mehrkosten. Den genauen Betrag nennen wir vor Behandlungsbeginn, und er steht auch im schriftlichen Plan.</p>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Vorsorge und Diagnostik</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Erstuntersuchung und Behandlungsplan</span>
+            <span class="prow__time">30 Minuten</span>
+            <span class="prow__price num">ab 35 €</span>
+            <span class="prow__desc">Kontrolle von Zähnen und Zahnfleisch, Dokumentation und schriftlicher Plan der nächsten Schritte. Für Kassenpatienten sind zwei Kontrolluntersuchungen im Jahr Kassenleistung; der Preis gilt für Selbstzahler und für weitere Untersuchungen.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Kontrolluntersuchung</span>
+            <span class="prow__time">20 Minuten</span>
+            <span class="prow__price num">ab 25 €</span>
+            <span class="prow__desc">Regelmäßige Kontrolle für unsere Patienten. Für Selbstzahler und über die Kassenleistung hinaus.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Beratung ohne Behandlung</span>
+            <span class="prow__time">15 Minuten</span>
+            <span class="prow__price num">ab 20 €</span>
+            <span class="prow__desc">Zweitmeinung zu einem vorgeschlagenen Plan oder Beurteilung einer älteren Arbeit.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Röntgenaufnahme eines Zahns</span>
+            <span class="prow__time">10 Minuten</span>
+            <span class="prow__price num">ab 12 €</span>
+            <span class="prow__desc">Wir röntgen direkt im Behandlungszimmer, das Bild sehen Sie auf dem Bildschirm.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Professionelle Zahnreinigung</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Komplette professionelle Zahnreinigung</span>
+            <span class="prow__time">60 Minuten</span>
+            <span class="prow__price num">ab 60 €</span>
+            <span class="prow__desc">Entfernung von Zahnstein und Belägen, Politur, Kontrolle des Zahnfleischs.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Zahnreinigung bei festsitzender Zahnspange</span>
+            <span class="prow__time">75 Minuten</span>
+            <span class="prow__price num">ab 75 €</span>
+            <span class="prow__desc">Mehr Zeit für die Reinigung um Brackets und Draht.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Pulverstrahlreinigung</span>
+            <span class="prow__time">20 Minuten</span>
+            <span class="prow__price num">ab 20 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Training der Putztechnik</span>
+            <span class="prow__time">10 Minuten</span>
+            <span class="prow__price num">in der Zahnreinigung enthalten</span>
+            <span class="prow__desc">Wir zeigen Ihnen den Umgang mit der Zahnbürste und mit Hilfsmitteln für die Zahnzwischenräume.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Zahnerhaltung</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Kompositfüllung, einflächig</span>
+            <span class="prow__time">45 Minuten</span>
+            <span class="prow__price num">ab 55 €</span>
+            <span class="prow__desc">Kariesbehandlung mit Komposit in Schichttechnik.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Kompositfüllung, mehrflächig</span>
+            <span class="prow__time">60 Minuten</span>
+            <span class="prow__price num">ab 75 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Behandlung empfindlicher Zahnhälse</span>
+            <span class="prow__time">20 Minuten</span>
+            <span class="prow__price num">ab 25 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Wurzelkanalbehandlung</span>
+            <span class="prow__time">90 Minuten</span>
+            <span class="prow__price num">ab 120 €</span>
+            <span class="prow__desc">Je nach Umfang können zwei Termine nötig sein. Den Preis präzisieren wir nach dem Röntgenbild.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Zahnaufbau vor der Krone</span>
+            <span class="prow__time">60 Minuten</span>
+            <span class="prow__price num">ab 90 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Zahnentfernung</span>
+            <span class="prow__time">30 Minuten</span>
+            <span class="prow__price num">ab 45 €</span>
+            <span class="prow__desc">Eine einfache Zahnentfernung ist für Kassenpatienten Kassenleistung; der Preis gilt für Selbstzahler und für die chirurgische Entfernung.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Kinder und akute Fälle</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Kinderuntersuchung</span>
+            <span class="prow__time">30 Minuten</span>
+            <span class="prow__price num">ab 30 €</span>
+            <span class="prow__desc">Die erste Untersuchung empfehlen wir um den dritten Geburtstag. Das Kind schaut sich zuerst nur die Praxis an.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Fissurenversiegelung eines bleibenden Zahns</span>
+            <span class="prow__time">20 Minuten</span>
+            <span class="prow__price num">ab 25 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Milchzahnbehandlung</span>
+            <span class="prow__time">30 Minuten</span>
+            <span class="prow__price num">ab 40 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Schmerzbehandlung</span>
+            <span class="prow__time">30 Minuten</span>
+            <span class="prow__price num">ab 45 €</span>
+            <span class="prow__desc">Zuerst befreien wir Sie von den Schmerzen, die endgültige Behandlung folgt in einem weiteren Termin. Für Kassenpatienten ist die Schmerzbehandlung Kassenleistung, der Preis gilt für Selbstzahler.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Zahnersatz und Bleaching</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Keramikkrone</span>
+            <span class="prow__time">2 – 3 Termine</span>
+            <span class="prow__price num">ab 350 €</span>
+            <span class="prow__desc">Wir arbeiten mit einem Dentallabor. Die Termine planen wir so, dass sie aufeinander folgen.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Brücke, Preis pro Glied</span>
+            <span class="prow__time">3 Termine</span>
+            <span class="prow__price num">ab 300 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Herausnehmbarer Zahnersatz</span>
+            <span class="prow__time">je nach Umfang</span>
+            <span class="prow__price num">ab 420 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Reparatur von herausnehmbarem Zahnersatz</span>
+            <span class="prow__time">1 – 2 Tage</span>
+            <span class="prow__price num">ab 60 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Home-Bleaching mit individuellen Schienen</span>
+            <span class="prow__time">2 Termine</span>
+            <span class="prow__price num">ab 180 €</span>
+            <span class="prow__desc">Die Schienen fertigen wir nach Abdruck an, die Anwendung erklären wir bei der Übergabe.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Bleaching in der Praxis</span>
+            <span class="prow__time">90 Minuten</span>
+            <span class="prow__price num">ab 220 €</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="notebox rev">
+        <h3>So arbeiten wir mit der Preisliste</h3>
+        <p>Die genannten Beträge sind Untergrenzen. Den genauen Preis kennen Sie vor Beginn der Behandlung, bei Zahnersatz und Bleaching schriftlich. Zeigt sich während der Behandlung, dass mehr nötig ist, unterbrechen wir und vereinbaren zuerst den neuen Betrag. Die Preisliste auf dieser Seite ist ein Beispiel und dient der Vorführung der Website.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ZDRAVOTNÉ POISŤOVNE ================= -->
+  <section class="section section--tint" id="poistovne">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>06</b>Kostenübernahme</p>
+          <h2>Krankenkassen</h2>
+        </div>
+        <p class="lead">Wir behandeln Versicherte aller gesetzlichen Krankenkassen sowie Privatversicherte und Beihilfeberechtigte. Bei der Terminvereinbarung fragen wir, wie Sie versichert sind, und sagen vor jeder Behandlung, was die Kasse übernimmt und wie hoch Ihr Eigenanteil ist.</p>
+      </div>
+
+      <div class="twocol--wide twocol rev">
+        <div>
+          <div class="tablewrap">
+            <table class="ins">
+              <caption>Was die Kasse zahlt, richtet sich nach dem Leistungskatalog der gesetzlichen Krankenversicherung. Ändern sich die Bedingungen, informieren wir Sie bei der Terminvereinbarung.</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Versicherung</th>
+                  <th scope="col">Behandlung</th>
+                  <th scope="col">Mitbringen</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Gesetzlich versichert</th><td>ja</td><td>Versichertenkarte, auch digital</td></tr>
+                <tr><th scope="row">Privat versichert</th><td>ja</td><td>Versichertenkarte, auch digital</td></tr>
+                <tr><th scope="row">Beihilfeberechtigt</th><td>ja</td><td>Versichertenkarte, auch digital</td></tr>
+                <tr><th scope="row">Versichert in einem anderen EU-Land</th><td>mit Europäischer Karte</td><td>Europäische Krankenversicherungskarte</td></tr>
+                <tr><th scope="row">Ohne Krankenversicherung</th><td>als Selbstzahler</td><td>Ausweis</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="infolist" style="margin-top:clamp(24px,3vw,34px);">
+            <div>
+              <h3>Was die Krankenkasse zahlt</h3>
+              <p>Zwei Kontrolluntersuchungen im Jahr, einmal jährlich Zahnsteinentfernung, Kariesbehandlung mit Standardfüllung, Zahnentfernung und Schmerzbehandlung. Lassen Sie die Kontrollen ins Bonusheft eintragen — das erhöht später den Festzuschuss für Zahnersatz.</p>
+            </div>
+            <div>
+              <h3>Was Sie selbst zahlen</h3>
+              <p>Hochwertige Materialien, Kompositfüllungen in Schichttechnik, professionelle Zahnreinigung, den Eigenanteil beim Zahnersatz, Bleaching und Leistungen außerhalb des Kassenkatalogs. Die Beträge finden Sie in der <a href="#cennik">Preisliste</a>.</p>
+            </div>
+            <div>
+              <h3>Wenn Sie die Karte nicht dabeihaben</h3>
+              <p>Wir behandeln Sie auch ohne Karte. Legen Sie sie innerhalb von zehn Tagen vor oder nennen Sie uns die Daten telefonisch. Lässt sich die Versicherung nicht bestätigen, rechnen wir die Behandlung privat ab.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="canvas canvas--dark cv-hero">
+          <span class="cvtex cvtex--rings" aria-hidden="true"></span>
+          <span class="cvtex cvtex--glow" aria-hidden="true"></span>
+          <div class="cvbody">
+            <p class="cveyebrow">Bei der Terminvereinbarung fragen wir</p>
+            <ol class="cvlist">
+              <li><span class="cvnum">01</span><span class="cvlabel">Wie Sie versichert sind</span></li>
+              <li><span class="cvnum">02</span><span class="cvlabel">Ob Sie ein Bonusheft haben</span></li>
+              <li><span class="cvnum">03</span><span class="cvlabel">Welche Medikamente Sie regelmäßig einnehmen</span></li>
+              <li><span class="cvnum">04</span><span class="cvlabel">Ob Sie gegen Betäubungsmittel allergisch sind</span></li>
+            </ol>
+            <p class="cvfoot cvpush">Die Antworten tragen wir in die Akte ein und berechnen danach vorab Ihren Eigenanteil.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ČO HRADÍ POISŤOVŇA A ČO DOPLÁCATE ================= -->
+  <section class="section" id="doplatky">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>07</b>Eigenanteile</p>
+          <h2>Was die Kasse zahlt und was Sie selbst zahlen</h2>
+        </div>
+        <p class="lead">Übersicht für gesetzlich Versicherte. Ihren Eigenanteil nennen wir vor Beginn der Behandlung, er ist Teil des schriftlichen Plans.</p>
+      </div>
+
+      <div class="tablewrap rev">
+        <table class="ptable">
+          <caption>Was die Kasse zahlt, richtet sich nach dem Leistungskatalog der gesetzlichen Krankenversicherung. Selbstzahler zahlen den vollen Betrag aus der Preisliste.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Leistung</th>
+              <th scope="col">Kassenleistung</th>
+              <th scope="col">Eigenanteil</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Kontrolluntersuchung, zweimal im Jahr</th><td>Kassenleistung, Eintrag ins Bonusheft</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Dritte und jede weitere Kontrolle im Jahr</th><td>keine Kassenleistung</td><td class="num">ab 25 €</td></tr>
+            <tr><th scope="row">Röntgenaufnahme bei medizinischer Notwendigkeit</th><td>volle Kassenleistung</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Kariesbehandlung, Standardfüllung</th><td>volle Kassenleistung</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Kariesbehandlung, Kompositfüllung einflächig</th><td>Kasse zahlt die Standardfüllung</td><td class="num">30 €</td></tr>
+            <tr><th scope="row">Kariesbehandlung, Kompositfüllung mehrflächig</th><td>Kasse zahlt die Standardfüllung</td><td class="num">45 €</td></tr>
+            <tr><th scope="row">Einfache Zahnentfernung</th><td>volle Kassenleistung</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Schmerzbehandlung</th><td>volle Kassenleistung</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Wurzelkanalbehandlung</th><td>Kassenleistung bei erhaltungswürdigem Zahn</td><td class="num">Mehrkosten ab 120 €</td></tr>
+            <tr><th scope="row">Professionelle Zahnreinigung</th><td>keine Kassenleistung</td><td class="num">ab 60 €</td></tr>
+            <tr><th scope="row">Krone, Brücke, herausnehmbarer Zahnersatz</th><td>Festzuschuss der Kasse</td><td class="num">Eigenanteil ab 300 €</td></tr>
+            <tr><th scope="row">Bleaching</th><td>keine Kassenleistung</td><td class="num">ab 180 €</td></tr>
+            <tr><th scope="row">Weitere Kopie der Patientenakte</th><td>keine Kassenleistung</td><td class="num">15 €</td></tr>
+            <tr><th scope="row">Untersuchung auf Wunsch ohne medizinischen Grund</th><td>keine Kassenleistung</td><td class="num">20 €</td></tr>
+            <tr><th scope="row">Zweites und jedes weitere Nichterscheinen ohne Absage</th><td>keine Kassenleistung</td><td class="num">20 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notebox notebox--white rev">
+        <h3>Wie der Eigenanteil entsteht</h3>
+        <p>Bei der Kariesbehandlung zahlt die Krankenkasse die Standardfüllung. Möchten Sie eine Kompositfüllung in Schichttechnik, zahlen Sie nur die Mehrkosten: 30 € bei einer einflächigen und 45 € bei einer mehrflächigen Füllung. Selbstzahler zahlen den vollen Betrag aus der <a href="#cennik">Preisliste</a>, also 55 € und 75 €. Die Mehrkosten vereinbaren wir vorher schriftlich, und sie stehen auch auf der Rechnung.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TMAVÝ PÁS ================= -->
+  <section class="section section--dark" aria-labelledby="pas-h">
+    <div class="wrap">
+      <div class="band__grid">
+        <div class="rev">
+          <p class="eyebrow"><b>08</b>So arbeiten wir</p>
+          <h2 id="pas-h" class="band__claim">Wie wir mit Terminen und Preisen umgehen</h2>
+        </div>
+        <p class="lead rev">Bei uns gibt es keine Wartelisten. Jeder Patient hat einen eigenen Termin und weiß vor der Behandlung, was gemacht wird, wie lange es dauert und was es kostet. Wir planen die Termine mit Abstand, im Wartezimmer warten höchstens zwei Patienten gleichzeitig.</p>
+      </div>
+
+      <ul class="stats rev">
+        <li class="stat"><b class="num">30 Minuten</b><span>dauert die Erstuntersuchung, am Ende haben Sie einen schriftlichen Behandlungsplan</span></li>
+        <li class="stat"><b class="num">24 Stunden</b><span>genügen für Absage oder Verschiebung, den freien Termin geben wir an andere Patienten weiter</span></li>
+        <li class="stat"><b class="num">5 Tage pro Woche</b><span>Sprechstunde an Werktagen, jeden Morgen ein Block für akute Schmerzen</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= PRVÁ NÁVŠTEVA ================= -->
+  <section class="section section--tint" id="priebeh">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>09</b>Ablauf</p>
+          <h2>Erster Besuch</h2>
+        </div>
+        <p class="lead">Der erste Besuch dauert 30 bis 45 Minuten und endet mit einem Behandlungsplan. Größere Behandlungen folgen erst in weiteren Terminen.</p>
+      </div>
+
+      <ol class="steps rev">
+        <li class="step">
+          <span class="step__no">01</span>
+          <h3>Terminbuchung</h3>
+          <p>Sie füllen das Formular auf dieser Seite aus oder rufen uns an. Den Termin bestätigen wir telefonisch, meist innerhalb eines Werktags.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">02</span>
+          <h3>Anamnesebogen</h3>
+          <p>Bei Ankunft füllen Sie einen Gesundheitsfragebogen aus und nennen Ihre Medikamente. Das dauert etwa fünf Minuten.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">03</span>
+          <h3>Untersuchung</h3>
+          <p>Der Zahnarzt untersucht Zähne und Zahnfleisch. Ist ein Röntgenbild nötig, machen wir es im Behandlungszimmer und schauen es gemeinsam an.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">04</span>
+          <h3>Plan und Termine</h3>
+          <p>Sie erhalten einen schriftlichen Behandlungsplan mit dem Preis jeder Leistung. Weitere Termine vereinbaren wir nach Ihren Möglichkeiten.</p>
+        </li>
+      </ol>
+
+      <div class="notebox notebox--white rev">
+        <h3>Akute Schmerzen am selben Tag</h3>
+        <p>Rufen Sie gleich morgens unter <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich.">hier steht Ihre Nummer</span> an. Für akute Schmerzen halten wir an jedem Praxistag einen kurzen Block außerhalb der vergebenen Termine frei. Ist er belegt, vereinbaren wir den nächstmöglichen Termin und sagen Ihnen, was Sie bis dahin tun können. Bei geschwollener Wange, Fieber oder einem Zahnunfall rufen Sie bitte sofort an.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HODNOTENIA PACIENTOV ================= -->
+  <section class="section section--line" id="hodnotenia">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>10</b>Bewertungen</p>
+          <h2>Patientenbewertungen</h2>
+        </div>
+        <p class="lead">Bewerten kann jeder, der bei uns in Behandlung war. Wir bearbeiten und löschen keine Bewertungen. Unten stehen drei aus dem Google-Profil der Praxis.</p>
+      </div>
+
+      <div class="reviews rev">
+        <figure class="review">
+          <span class="stars" role="img" aria-label="5 von 5 Sternen">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+          </span>
+          <blockquote><p>Den Preis für die Krone hatte ich vor dem ersten Bohren schriftlich, und am Ende stimmte er auf den Euro genau. Die Termine für Abdruck und Einsetzen bekam ich gleich beim ersten Besuch.</p></blockquote>
+          <figcaption><b>Martina H.</b>Krone am Frontzahn, drei Termine</figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars" role="img" aria-label="5 von 5 Sternen">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+          </span>
+          <blockquote><p>Ich habe morgens um acht mit Schmerzen angerufen und saß um halb zehn schon auf dem Stuhl. Der Zahn wurde gerettet, fertig behandelt haben wir ihn eine Woche später im zweiten Termin.</p></blockquote>
+          <figcaption><b>Peter K.</b>Schmerzbehandlung am Tag des Anrufs</figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars" role="img" aria-label="4 von 5 Sternen">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z" opacity=".28"/></svg>
+          </span>
+          <blockquote><p>Meine Tochter war zum ersten Mal beim Zahnarzt, beim ersten Besuch hat sie sich nur auf den Stuhl gesetzt, und es wurde nichts gemacht. Auf den Termin haben wir drei Wochen gewartet, das ist das einzige Minus.</p></blockquote>
+          <figcaption><b>Susanne B.</b>Kinderuntersuchung, 4 Jahre</figcaption>
+        </figure>
+      </div>
+
+      <div class="notebox rev">
+        <h3>Schreiben Sie eine Bewertung bei Google</h3>
+        <p>Wenn Sie bei uns waren, öffnen Sie das Profil Zahnarztpraxis Weide bei Google und schreiben Sie eine Bewertung. Das dauert zwei Minuten und hilft anderen Patienten bei der Wahl. Waren Sie mit der Behandlung nicht zufrieden, sagen Sie es uns bitte zuerst direkt, vor Ort oder unter <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich.">hier steht Ihre Nummer</span> — einen Fehler können wir nur beheben, wenn wir davon wissen. Die Bewertungen auf dieser Seite sind Beispiele, wie die ganze Website.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OBJEDNANIE (interaktívna časť) ================= -->
+  <section class="section section--line" id="objednanie">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>11</b>Terminbuchung</p>
+          <h2>Termin für eine Behandlung</h2>
+        </div>
+        <p class="lead">Das Formular ist keine verbindliche Buchung. Die Nachricht geht an das Postfach der Praxis, und wir bestätigen den Termin telefonisch innerhalb eines Werktags. Brauchen Sie noch heute einen Termin, rufen Sie unter <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich.">hier steht Ihre Nummer</span> an.</p>
+      </div>
+
+      <div class="book__grid">
+        <div class="card rev">
+          <form id="form" novalidate>
+            <fieldset>
+              <legend>1. Behandlung</legend>
+              <ul class="opts">
+                <li class="opt">
+                  <input type="radio" id="o1" name="osetrenie" value="Erstuntersuchung" data-dur="30 Minuten" data-price="ab 35 €" checked>
+                  <label for="o1">Erstuntersuchung<small>30 Minuten · ab 35 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o2" name="osetrenie" value="Kontrolluntersuchung" data-dur="20 Minuten" data-price="ab 25 €">
+                  <label for="o2">Kontrolluntersuchung<small>20 Minuten · ab 25 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o3" name="osetrenie" value="Professionelle Zahnreinigung" data-dur="60 Minuten" data-price="ab 60 €">
+                  <label for="o3">Professionelle Zahnreinigung<small>60 Minuten · ab 60 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o4" name="osetrenie" value="Kariesbehandlung" data-dur="45 – 60 Minuten" data-price="ab 55 €">
+                  <label for="o4">Kariesbehandlung<small>45 – 60 Minuten · ab 55 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o5" name="osetrenie" value="Kinderuntersuchung" data-dur="30 Minuten" data-price="ab 30 €">
+                  <label for="o5">Kinderuntersuchung<small>30 Minuten · ab 30 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o6" name="osetrenie" value="Akute Schmerzen" data-dur="30 Minuten" data-price="ab 45 €">
+                  <label for="o6">Akute Schmerzen<small>30 Minuten · ab 45 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o7" name="osetrenie" value="Zahnersatz, Beratung" data-dur="30 Minuten" data-price="Arbeit ab 350 €">
+                  <label for="o7">Zahnersatz, Beratung<small>30 Minuten · Arbeit ab 350 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o8" name="osetrenie" value="Bleaching" data-dur="90 Minuten" data-price="ab 180 €">
+                  <label for="o8">Bleaching<small>90 Minuten · ab 180 €</small></label>
+                </li>
+              </ul>
+            </fieldset>
+
+            <fieldset>
+              <legend>2. Termin</legend>
+              <div class="grid2">
+                <div class="field">
+                  <label for="datum">Wunschdatum</label>
+                  <input type="date" id="datum" name="datum">
+                  <div class="chips" id="chips" role="group" aria-label="Die nächsten Praxistage"></div>
+                </div>
+                <div class="field">
+                  <label for="cast">Tageszeit <span class="hint">mittwochs Sprechstunde bis 15:00, freitags bis 13:00</span></label>
+                  <select id="cast" name="cast">
+                    <option value="8:00 – 11:00">8:00 – 11:00</option>
+                    <option value="11:00 – 14:00">11:00 – 14:00</option>
+                    <option value="14:00 – 17:00">14:00 – 17:00</option>
+                    <option value="Egal">Egal</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>3. Kontakt und Nachricht</legend>
+              <div class="grid2">
+                <div class="field">
+                  <label for="meno">Vor- und Nachname</label>
+                  <input type="text" id="meno" name="meno" autocomplete="name" placeholder="Vorname Nachname">
+                </div>
+                <div class="field">
+                  <label for="tel">Telefon</label>
+                  <input type="tel" id="tel" name="tel" autocomplete="tel" placeholder="Ihre Telefonnummer">
+                </div>
+              </div>
+              <div class="field">
+                <label for="pozn">Nachricht <span class="hint">Krankenkasse, Anlass des Besuchs, zeitliche Einschränkungen</span></label>
+                <textarea id="pozn" name="pozn" placeholder="Zum Beispiel: Ich bin bei der AOK versichert, bitte einen Termin nach 15:00."></textarea>
+              </div>
+              <div class="field consent">
+                <input type="checkbox" id="suhlas" name="suhlas">
+                <label for="suhlas">Mir ist bewusst, dass es sich um ein Beispielformular handelt und die Daten nicht gesendet oder gespeichert werden.</label>
+              </div>
+            </fieldset>
+
+            <button class="btn btn--primary btn--wide" type="submit">Terminanfrage senden</button>
+            <p class="formnote">Die Nachricht geht an das Postfach der Praxis, und wir antworten innerhalb eines Werktags. Dies ist eine Beispiel-Website, das Formular sendet und speichert nichts.</p>
+          </form>
+
+          <div class="sent" id="sent" role="status" aria-live="polite">
+            <h3>Nichts wurde gesendet, dies ist ein Beispiel</h3>
+            <p>So würde in der echten Version die Bestätigung nach dem Absenden aussehen. Dort ginge die Nachricht an das Postfach der Praxis, und Sie bekämen innerhalb eines Werktags eine Antwort. Hier werden keine Daten gesendet oder gespeichert.</p>
+            <div class="sent__recap" id="recap"></div>
+            <button class="btn btn--ghost" type="button" id="back">Zurück zum Formular</button>
+          </div>
+        </div>
+
+        <aside class="summary rev" aria-label="Zusammenfassung der Anfrage">
+          <h3>Zusammenfassung</h3>
+          <p>Wird beim Ausfüllen ergänzt.</p>
+          <dl>
+            <div class="summary__row"><dt>Behandlung</dt><dd id="s-serv">Erstuntersuchung</dd></div>
+            <div class="summary__row"><dt>Voraussichtliche Dauer</dt><dd id="s-dur">30 Minuten</dd></div>
+            <div class="summary__row"><dt>Datum</dt><dd id="s-date" class="empty">nicht gewählt</dd></div>
+            <div class="summary__row"><dt>Tageszeit</dt><dd id="s-part">8:00 – 11:00</dd></div>
+            <div class="summary__row"><dt>Patient</dt><dd id="s-name" class="empty">nicht ausgefüllt</dd></div>
+            <div class="summary__row"><dt>Telefon</dt><dd id="s-tel" class="empty">nicht ausgefüllt</dd></div>
+          </dl>
+          <div class="summary__total">
+            <span>Richtpreis</span>
+            <b id="s-price" class="num">ab 35 €</b>
+          </div>
+          <p class="summary__note">Den genauen Betrag nennen wir nach der Untersuchung im Behandlungsplan. Auf Nachrichten antworten wir innerhalb eines Werktags.</p>
+          <p class="summary__call">Lieber telefonisch?<span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PLATBA A STORNO ================= -->
+  <section class="section section--tint" id="platba">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>12</b>Bedingungen</p>
+          <h2>Zahlung, Gewährleistung und Absage</h2>
+        </div>
+        <p class="lead">Regeln, nach denen am Telefon am häufigsten gefragt wird. Sie gelten gleichermaßen für neue und bestehende Patienten und ändern sich während der Behandlung nicht.</p>
+      </div>
+
+      <div class="cards rev">
+        <div class="card2">
+          <h3>Terminbestätigung</h3>
+          <p>Terminanfragen bestätigen wir telefonisch innerhalb eines Werktags. Am Vortag schicken wir eine Erinnerung per SMS. Der Termin gilt erst nach unserer Bestätigung, das Absenden des Formulars allein ist keine Buchung.</p>
+        </div>
+        <div class="card2 card2--dark">
+          <h3>Absage und Verschiebung von Terminen</h3>
+          <span class="card2__big num">24 h</span>
+          <p>So viel Zeit brauchen wir, um den frei gewordenen Termin einem anderen Patienten anzubieten. Absagen oder verschieben können Sie telefonisch, auch über das Festnetz, einen Ersatztermin vereinbaren wir gleich im Gespräch.</p>
+        </div>
+        <div class="card2">
+          <h3>Zahlungsarten</h3>
+          <ul>
+            <li>bar</li>
+            <li>Karte, auch kontaktlos</li>
+            <li>Rechnung mit 14 Tagen Zahlungsziel für Vertragsfirmen</li>
+            <li>Geschenkgutschein der Praxis</li>
+          </ul>
+          <p>Bezahlt wird nach der Behandlung, nicht vorher. Eine Anzahlung nehmen wir nur beim Zahnersatz.</p>
+        </div>
+        <div class="card2">
+          <h3>Quittung</h3>
+          <p>Die Quittung erhalten Sie direkt nach der Bezahlung. Auf Wunsch stellen wir sie auf Ihren Namen aus, damit Sie die Kosten bei Ihrer Zusatzversicherung oder in der Steuererklärung geltend machen können.</p>
+        </div>
+        <div class="card2">
+          <h3>Verspätung und Nichterscheinen</h3>
+          <p>Wenn Sie sich mehr als 15 Minuten verspäten, schaffen wir womöglich nicht den ganzen geplanten Umfang und kürzen die Behandlung. Das erste Nichterscheinen berechnen wir nicht. Beim zweiten und jedem weiteren berechnen wir 20 € für die reservierte Zeit.</p>
+        </div>
+        <div class="card2">
+          <h3>Gewährleistung auf die Arbeit</h3>
+          <p>Auf Füllungen, Kronen, Brücken und herausnehmbaren Zahnersatz gilt eine Gewährleistung von 24 Monaten, wie es § 136a SGB V vorsieht. In dieser Zeit reparieren oder erneuern wir die Arbeit ohne Zuzahlung. Voraussetzung ist eine Kontrolluntersuchung alle sechs Monate. Die Gewährleistung gilt nicht bei Unfällen und nach Eingriffen eines anderen Zahnarztes.</p>
+        </div>
+        <div class="card2">
+          <h3>Anzahlung beim Zahnersatz</h3>
+          <p>Bevor wir die Arbeit beim Dentallabor bestellen, nehmen wir eine Anzahlung von 30 % des Preises. Den Rest zahlen Sie beim Einsetzen der fertigen Arbeit. Treten Sie nach Übergabe des Abdrucks an das Labor zurück, wird die Anzahlung nicht erstattet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= POUKAZY A FIRMY ================= -->
+  <section class="section" id="poukazy">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>13</b>Gutscheine</p>
+          <h2>Geschenkgutscheine und Firmenuntersuchungen</h2>
+        </div>
+        <p class="lead">Den Gutschein stellen wir für eine bestimmte Leistung oder einen gewählten Betrag aus. Für Arbeitgeber planen wir Vorsorgeuntersuchungen in einem Terminblock.</p>
+      </div>
+
+      <div class="twocol rev">
+        <div>
+          <div class="tablewrap">
+            <table class="ptable">
+              <caption>Der Gutschein gilt 12 Monate ab Ausstellung und kann auch für einen Teil der Behandlung genutzt werden. Der Restwert bleibt bis zum Verbrauch oder bis zum Ende der Gültigkeit auf dem Gutschein.</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Gutschein</th>
+                  <th scope="col">Wofür er gilt</th>
+                  <th scope="col">Wert</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Professionelle Zahnreinigung</th><td>eine komplette Sitzung</td><td class="num">60 €</td></tr>
+                <tr><th scope="row">Zahnreinigung und Pulverstrahl</th><td>eine Sitzung mit Pulverstrahl</td><td class="num">80 €</td></tr>
+                <tr><th scope="row">Home-Bleaching</th><td>Schienen und Gel für Ober- und Unterkiefer</td><td class="num">180 €</td></tr>
+                <tr><th scope="row">Wertgutschein</th><td>beliebige Leistung aus der Preisliste</td><td class="num">ab 30 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="infolist">
+            <div>
+              <h3>So bekommen Sie den Gutschein</h3>
+              <p>Rufen Sie an oder schicken Sie eine Nachricht über das Formular. Den Gutschein bereiten wir innerhalb von zwei Werktagen vor, Sie holen ihn in der Praxis ab. Bezahlt wird bei Abholung, bar oder mit Karte.</p>
+            </div>
+            <div>
+              <h3>Einlösen des Gutscheins</h3>
+              <p>Wer den Gutschein hat, bucht ganz normal einen Termin und gibt den Gutschein bei der Behandlung ab. Ist die Behandlung teurer als der Gutschein, wird die Differenz vor Ort gezahlt.</p>
+            </div>
+            <div>
+              <h3>Vorsorgeuntersuchungen für Firmen</h3>
+              <p>Für Arbeitgeber reservieren wir einen Terminblock an einem Tag, nach Absprache auch außerhalb der üblichen Sprechzeiten. Mindestens sechs Mitarbeiter, abgerechnet wird mit einer Rechnung und 14 Tagen Zahlungsziel.</p>
+            </div>
+            <div>
+              <h3>Was die Firmenuntersuchung umfasst</h3>
+              <p>Untersuchung von Zähnen und Zahnfleisch, Befund und eine schriftliche Empfehlung für jeden Mitarbeiter. Der Arbeitgeber erhält nur eine Sammelrechnung, Gesundheitsdaten bleiben zwischen Patient und Praxis.</p>
+            </div>
+          </div>
+
+          <div class="hero__cta" style="margin-top:clamp(22px,2.6vw,30px);">
+            <a class="btn btn--primary" href="#objednanie">Über das Formular schreiben</a>
+            <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AMBULANCIA A TÍM ================= -->
+  <section class="section section--line" id="ambulancia">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>14</b>Praxis</p>
+          <h2>Räume und Ausstattung</h2>
+        </div>
+        <p class="lead">Eine kleine Praxis mit zwei Behandlungsstühlen. Niemand wartet auf dem Flur, und niemand behandelt zwei Patienten gleichzeitig.</p>
+      </div>
+
+      <div class="twocol--wide twocol rev">
+        <div>
+          <div class="infolist">
+            <div>
+              <h3>Zwei Behandlungszimmer</h3>
+              <p>Eines ist für Untersuchungen und Zahnerhaltung, das andere für die professionelle Zahnreinigung. Das Röntgengerät steht direkt im Behandlungszimmer, für ein Bild müssen Sie nirgendwohin.</p>
+            </div>
+            <div>
+              <h3>Wartezimmer</h3>
+              <p>Sieben Sitzplätze, Platz für einen Kinderwagen, Trinkwasser und Garderobe. Die Kinderecke ist von den Plätzen für Erwachsene getrennt.</p>
+            </div>
+            <div>
+              <h3>Wer Sie behandelt</h3>
+              <p>Plan und fertige Arbeit betreut derselbe Zahnarzt, während der Behandlung wechseln wir nicht. Namen und Aufgaben finden Sie im Abschnitt <a href="#lekari">Wer Sie behandelt</a>.</p>
+            </div>
+            <div>
+              <h3>Sterilisation und Material</h3>
+              <p>Instrumente sterilisieren wir im Autoklaven der Klasse B und dokumentieren jeden Zyklus. Einwegmaterial verwenden wir für genau eine Behandlung. Materialien für Füllungen und Zahnersatz wählen wir nach Umfang der Arbeit und nennen sie vorab im Plan.</p>
+            </div>
+            <div>
+              <h3>Geräte in der Praxis</h3>
+              <p>Intraorales Röntgen, Ultraschallgerät zur Zahnsteinentfernung, Pulverstrahlgerät und Polymerisationslampe. Das Röntgenbild sehen Sie auf dem Bildschirm direkt am Stuhl.</p>
+            </div>
+            <div>
+              <h3>Wenn Sie Angst vor der Behandlung haben</h3>
+              <p>Sagen Sie es gleich zu Beginn. Wir passen das Tempo an, machen Pausen und erklären jeden Schritt vorher. Die erste Sitzung können wir auf Untersuchung und Plan beschränken, ohne Eingriff.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="canvas cv-space">
+          <span class="cvtex cvtex--dots" aria-hidden="true"></span>
+          <span class="cvtex cvtex--wedge" aria-hidden="true"></span>
+          <div class="cvbody">
+            <p class="cveyebrow">Die Praxis in Zahlen</p>
+            <ol class="cvlist">
+              <li><span class="cvnum">2</span><span class="cvlabel">Behandlungszimmer, Untersuchung und Zahnreinigung getrennt</span></li>
+              <li><span class="cvnum">7</span><span class="cvlabel">Sitzplätze im Wartezimmer</span></li>
+              <li><span class="cvnum">1</span><span class="cvlabel">Patient gleichzeitig im Behandlungszimmer</span></li>
+              <li><span class="cvnum">0</span><span class="cvlabel">Stufen vom Eingang bis zum Stuhl</span></li>
+            </ol>
+            <p class="cvfoot cvpush">Röntgen direkt im Behandlungszimmer · Kinderecke getrennt von den Plätzen für Erwachsene · Platz für einen Kinderwagen</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="obrazy rev">
+        <!-- FOTO: čakáreň od vchodu, so sedením a detským kútom -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo obraz__geo--plan" aria-hidden="true"></span>
+            <span class="obraz__tag">Wartezimmer</span>
+            <span class="obraz__big">Kinderecke</span>
+            <span class="obraz__note">getrennt von den Plätzen für Erwachsene</span>
+          </div>
+        </figure>
+
+        <!-- FOTO: ordinácia s kreslom a röntgenom, záber od dverí -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo" aria-hidden="true"></span>
+            <span class="obraz__tag">Behandlungszimmer</span>
+            <span class="obraz__big">Röntgen</span>
+            <span class="obraz__note">intraoral, Aufnahme ohne Weg in eine andere Praxis</span>
+          </div>
+        </figure>
+
+        <!-- FOTO: sterilizačná časť s autoklávom a zabalenými nástrojmi -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+            <span class="obraz__tag">Sterilisation</span>
+            <span class="obraz__big">Klasse B</span>
+            <span class="obraz__note">Autoklav, jeder Zyklus wird dokumentiert</span>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AKO SA K NÁM DOSTANETE ================= -->
+  <section class="section section--tint" id="doprava">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>15</b>Anfahrt</p>
+          <h2>Anfahrt und Parken</h2>
+        </div>
+        <p class="lead">Das Gebäude steht an der Ecke Weidenweg und Hauptstraße. Der Eingang zur Praxis ist vom Hof, nicht von der Hauptstraße. Wenn Sie den Eingang nicht finden, rufen Sie uns an, wir lotsen Sie hin.</p>
+      </div>
+
+      <div class="twocol rev">
+        <div class="canvas cv-plan">
+          <span class="cvtex cvtex--grid" aria-hidden="true"></span>
+          <span class="plan-road plan-road--h"><span class="plan-road__name">Hauptstraße</span></span>
+          <span class="plan-road plan-road--v"><span class="plan-road__name">Weidenweg</span></span>
+          <span class="plan-mark"><span>Eingang vom Hof</span></span>
+          <div class="cvbody">
+            <p class="cveyebrow">Orientierung</p>
+            <p class="cvdisplay cvpush">Ecke Weidenweg<br>und Hauptstraße</p>
+            <p class="cvsub">Gehen Sie durch die Durchfahrt in den Hof, zweite Tür rechts. Die Klingel ist mit dem Namen der Praxis beschriftet.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="infolist">
+            <div>
+              <h3>Adresse und Karte</h3>
+              <p>Weidenweg 8, 12345 Musterstadt. <a href="https://www.google.com/maps/search/?api=1&amp;query=Weidenweg+8%2C+12345+Musterstadt" target="_blank" rel="noopener">Adresse in Google Maps öffnen</a> und bis vor das Gebäude navigieren. Der Eingang zur Praxis ist dann vom Hof.</p>
+            </div>
+            <div>
+              <h3>Mit dem Auto und Parken</h3>
+              <p>Direkt im Hof gibt es vier Parkplätze für Patienten, einer davon für Menschen mit Schwerbehindertenausweis. Weitere freie Plätze gibt es meist im Weidenweg. Parken ist kostenlos und ohne Zeitbegrenzung.</p>
+            </div>
+            <div>
+              <h3>Mit dem Bus</h3>
+              <p>Die nächste Haltestelle ist 200 Meter vom Gebäude entfernt, tagsüber fahren die Busse aus dem Zentrum alle zwanzig Minuten. Von der Haltestelle geht es geradeaus, ohne die Hauptstraße zu überqueren.</p>
+            </div>
+            <div>
+              <h3>Barrierefreier Zugang</h3>
+              <p>Der Eingang vom Hof ist stufenlos, die Türen sind 90 cm breit. Wartezimmer, Behandlungszimmer und Toilette liegen im Erdgeschoss. Brauchen Sie Hilfe beim Eingang, rufen Sie vor Ihrer Ankunft an, und wir öffnen Ihnen die Tür.</p>
+            </div>
+            <div>
+              <h3>Mit dem Fahrrad</h3>
+              <p>Der Fahrradständer steht direkt am Hofeingang, in Sichtweite des Wartezimmerfensters.</p>
+            </div>
+            <div>
+              <h3>Wann Sie kommen sollten</h3>
+              <p>Kommen Sie fünf Minuten vor dem vereinbarten Termin, nicht früher. Beim ersten Besuch planen Sie bitte zehn Minuten extra für den Gesundheitsfragebogen am Empfang ein.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OTÁZKY ================= -->
+  <section class="section section--line" id="otazky">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>16</b>FAQ</p>
+          <h2>Häufige Fragen</h2>
+        </div>
+        <p class="lead">Wenn Sie hier keine Antwort finden, schreiben Sie Ihre Frage in die Nachricht im Formular oder fragen Sie am Telefon. Auf Nachrichten antworten wir innerhalb eines Werktags.</p>
+      </div>
+
+      <div class="qa rev">
+        <details open>
+          <summary>Was soll ich zum ersten Besuch mitbringen?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Ihre Versichertenkarte, einen Ausweis, Ihr Bonusheft und eine Liste Ihrer Medikamente. Wenn Sie ältere Röntgenbilder oder einen Bericht des vorigen Zahnarztes haben, bringen Sie sie ebenfalls mit.</p></div>
+        </details>
+        <details>
+          <summary>Nehmen Sie neue Patienten auf?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Freie Kapazitäten bestätigen wir bei der Terminvereinbarung. Schicken Sie das Formular oder rufen Sie an, wir melden uns mit dem nächsten freien Termin. Zur Zahnreinigung und bei akuten Schmerzen nehmen wir auch Patienten an, die noch nicht bei uns sind.</p></div>
+        </details>
+        <details>
+          <summary>Was zahlt die Krankenkasse?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Ein Teil der Leistungen wird von der gesetzlichen Krankenversicherung übernommen. Bei der Terminvereinbarung fragen wir nach Ihrer Versicherung und nennen bei jeder Leistung Ihren Eigenanteil.</p></div>
+        </details>
+        <details>
+          <summary>Wie wird bezahlt?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Nach der Behandlung, bar oder mit Karte. Die Quittung erhalten Sie direkt nach der Bezahlung, auf Wunsch auf Ihren Namen. Vertragsfirmen erhalten eine Rechnung mit 14 Tagen Zahlungsziel.</p></div>
+        </details>
+        <details>
+          <summary>Wie sage ich einen Termin ab oder verschiebe ihn?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>rufen Sie uns an oder über das Festnetz unter <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich.">hier steht Ihre Nummer</span>, mindestens 24 Stunden vorher. Einen Ersatztermin vereinbaren wir direkt im Gespräch. Wenn Sie uns nicht erreichen, schreiben Sie über das Formular, wir melden uns innerhalb eines Werktags.</p></div>
+        </details>
+        <details>
+          <summary>Was, wenn ich meine Versichertenkarte nicht dabeihabe?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Wir behandeln Sie auch ohne Karte. Legen Sie sie innerhalb von zehn Tagen vor oder nennen Sie uns die Daten telefonisch. Lässt sich die Versicherung nicht bestätigen, rechnen wir die Behandlung privat ab.</p></div>
+        </details>
+        <details>
+          <summary>Stellen Sie auch Geschenkgutscheine aus?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Ja. Einen Gutschein für Zahnreinigung, Bleaching oder einen Betrag ab 30 € bereiten wir innerhalb von zwei Werktagen vor, Sie holen ihn in der Praxis ab. Er gilt 12 Monate und kann auch für einen Teil der Behandlung genutzt werden.</p></div>
+        </details>
+        <details>
+          <summary>Betäuben Sie, wird es wehtun?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Bei Behandlungen, die es erfordern, geben wir eine örtliche Betäubung. Die Einstichstelle betäuben wir vorher mit einem Gel. Wenn Sie Angst haben, sagen Sie es gleich zu Beginn, und wir passen Tempo und Dauer der Sitzung an.</p></div>
+        </details>
+        <details>
+          <summary>Ab welchem Alter behandeln Sie Kinder?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Die erste Untersuchung empfehlen wir um den dritten Geburtstag, bei Beschwerden jederzeit früher. Der erste Besuch ist meist nur ein Kennenlernen der Praxis. Ein Elternteil ist bei der Behandlung im Raum.</p></div>
+        </details>
+        <details>
+          <summary>Was mache ich, wenn der Zahn heute wehtut?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Rufen Sie gleich morgens an, für akute Fälle halten wir an jedem Praxistag einen kurzen Block frei. Bei geschwollener Wange, Fieber oder einem Zahnunfall rufen Sie sofort an und sagen Sie es gleich zu Beginn des Gesprächs.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HODINY A KONTAKT ================= -->
+  <section class="section section--tint" id="kontakt">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>17</b>Kontakt</p>
+          <h2>Sprechzeiten und Kontakt</h2>
+        </div>
+        <p class="lead">Das Telefon nehmen wir während der Sprechzeiten ab. Wenn wir gerade behandeln, rufen Sie etwas später wieder an oder schreiben Sie über das Formular auf dieser Seite. Wir antworten innerhalb eines Werktags.</p>
+      </div>
+
+      <div class="twocol">
+        <div class="rev">
+          <h3 class="blocktitle">Sprechzeiten</h3>
+          <div class="tablewrap">
+            <table class="hours" id="hours">
+              <caption>Mittagspause 12:00 – 12:30. Termine planen wir so, dass die Behandlung bis zum Ende der Sprechzeit fertig ist. An gesetzlichen Feiertagen ist die Praxis geschlossen.</caption>
+              <tbody>
+                <tr data-day="1"><th scope="row">Montag</th><td>8:00 – 17:00</td></tr>
+                <tr data-day="2"><th scope="row">Dienstag</th><td>8:00 – 17:00</td></tr>
+                <tr data-day="3"><th scope="row">Mittwoch</th><td>8:00 – 15:00</td></tr>
+                <tr data-day="4"><th scope="row">Donnerstag</th><td>8:00 – 17:00</td></tr>
+                <tr data-day="5"><th scope="row">Freitag</th><td>8:00 – 13:00</td></tr>
+                <tr data-day="6"><th scope="row">Samstag</th><td>geschlossen</td></tr>
+                <tr data-day="0"><th scope="row">Sonntag</th><td>geschlossen</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <dl class="clist">
+            <div>
+              <dt>Adresse</dt>
+              <dd>Weidenweg 8, 12345 Musterstadt<small>Erdgeschoss, Eingang vom Hof · <a href="https://www.google.com/maps/search/?api=1&amp;query=Weidenweg+8%2C+12345+Musterstadt" target="_blank" rel="noopener">in Google Maps öffnen</a></small></dd>
+            </div>
+            <div>
+              <dt>Mobil</dt>
+              <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><small>Termine, Absagen und akute Fälle</small></dd>
+            </div>
+            <div>
+              <dt>Festnetz</dt>
+              <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><small>Empfang während der Sprechzeiten</small></dd>
+            </div>
+            <div>
+              <dt>Nachricht über das Formular</dt>
+              <dd><a href="#objednanie">Termin für eine Behandlung</a><small>die Nachricht geht an das Postfach der Praxis, wir antworten innerhalb eines Werktags</small></dd>
+            </div>
+            <div>
+              <dt>Soziale Medien</dt>
+              <dd>
+                <ul class="soc">
+                  <li><b>Facebook</b> · Zahnarztpraxis Weide</li>
+                  <li><b>Instagram</b> · zahnarzt.weide</li>
+                  <li><b>Google</b> · Zahnarztpraxis Weide, Musterstadt</li>
+                </ul>
+                <small>Änderungen der Sprechzeiten geben wir auch hier bekannt.</small>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="rev">
+          <div class="canvas canvas--dark cv-addr">
+            <span class="cvtex cvtex--rule" aria-hidden="true"></span>
+            <span class="cvtex cvtex--arc" aria-hidden="true"></span>
+            <div class="cvbody">
+              <p class="cveyebrow">Wo Sie uns finden</p>
+              <p class="cvdisplay">Weidenweg 8<br>Musterstadt</p>
+              <p class="cvsub">Erdgeschoss, Eingang vom Hof, zweite Tür rechts. Die Klingel ist mit dem Namen der Praxis beschriftet.</p>
+              <p class="cvfoot cvpush">Bushaltestelle 200 m · vier Parkplätze im Hof · ohne Stufen</p>
+            </div>
+          </div>
+
+          <div class="infolist" style="margin-top:26px;">
+            <div>
+              <h3>Praxisurlaub</h3>
+              <p>In den Sommerferien haben wir verkürzte Sprechzeiten, und zwischen den Feiertagen ist meist geschlossen. Die genauen Tage geben wir mindestens zwei Wochen vorher auf dieser Seite und am Telefon bekannt.</p>
+            </div>
+            <div>
+              <h3>Vertretung</h3>
+              <p>Ist die Praxis geschlossen, finden Sie an der Tür und auf dem Anrufbeantworter den Namen der Vertretungspraxis und ihre Sprechzeiten.</p>
+            </div>
+            <div>
+              <h3>Patientenakte</h3>
+              <p>Eine Kopie Ihrer Patientenakte erhalten Sie innerhalb von fünf Werktagen, die erste Kopie ist kostenlos, jede weitere kostet 15 €. Die Unterlagen vom vorigen Zahnarzt fordern wir für Sie an, dafür genügt Ihre Unterschrift beim ersten Besuch.</p>
+            </div>
+            <div>
+              <h3>Außerhalb der Sprechzeiten</h3>
+              <p>Abends, am Wochenende und an Feiertagen erreichen Sie uns nicht. Bei plötzlichen Schmerzen oder einem Zahnunfall wenden Sie sich in dieser Zeit an den zahnärztlichen Notdienst. Nachrichten aus dem Formular lesen wir gleich morgens zu Beginn des Praxistags.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KARIÉRA ================= -->
+  <section class="section section--dark" id="kariera" aria-labelledby="kariera-h">
+    <div class="wrap">
+      <div class="band__grid">
+        <div class="rev">
+          <p class="eyebrow"><b>18</b>Karriere</p>
+          <h2 id="kariera-h">Offene Stellen</h2>
+          <p class="lead" style="margin-top:18px;">Wir arbeiten an Werktagen, Wochenend- und Feiertagsdienste gibt es nicht. Behandelt wird immer ein Patient, nicht zwei gleichzeitig. Schreiben Sie uns über das Formular auf dieser Seite, und wir vereinbaren ein persönliches Gespräch; wir melden uns innerhalb einer Woche.</p>
+          <div class="hero__cta">
+            <a class="btn btn--light" href="#objednanie">Über das Formular schreiben</a>
+            <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+          </div>
+        </div>
+
+        <div class="rev">
+          <h3 class="blocktitle">Offene Stellen</h3>
+          <ul class="roles">
+            <li>Zweite Dentalhygienikerin <span>Teilzeit, drei Tage pro Woche</span></li>
+            <li>Zahnmedizinische Fachangestellte als Vertretung <span>bei Urlaub und Krankheit</span></li>
+          </ul>
+          <p class="lead" style="margin-top:22px;">Nennen Sie in der Nachricht die Stelle, die Sie interessiert, und wann Ihnen ein Anruf passt. Den Lebenslauf bringen Sie einfach zum Gespräch mit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== AUTOR UKÁŽKY — reálne kontakty, nepatria vymyslenej ambulancii ====== -->
+  <section class="section author" id="autor" aria-labelledby="autor-h">
+    <div class="wrap">
+      <div class="author__card rev">
+        <div>
+          <p class="eyebrow">Über dieses Beispiel</p>
+          <h2 id="autor-h">Gefällt Ihnen diese Website?</h2>
+          <p style="margin-top:16px;">Die Zahnarztpraxis Weide ist erfunden. Alles über diesem Abschnitt ist Beispielinhalt. Diese Website hat <strong>Alex Poliak</strong> entworfen und programmiert.</p>
+          <p>So eine Website baue ich auch für Ihr Unternehmen: mit Ihrer Preisliste, Ihren Öffnungszeiten, Ihren Bedingungen und einem funktionierenden Buchungsformular. Eine Datei, keine monatlichen Gebühren für ein Redaktionssystem.</p>
+          <p class="author__price">Websites nach Maß ab 250 EUR. Erster Entwurf in 3 Tagen. <strong>Die Beratung ist kostenlos und unverbindlich.</strong></p>
+          <div class="author__cta">
+            <a class="btn btn--clay" href="mailto:apoliak@apoliak.online">An apoliak@apoliak.online schreiben</a>
+            <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+          </div>
+        </div>
+
+        <dl class="alist">
+          <div>
+            <dt>Autor</dt>
+            <dd>Alex Poliak<small>Design, Code und Texte</small></dd>
+          </div>
+          <div>
+            <dt>E-Mail</dt>
+            <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+          </div>
+          <div>
+            <dt>Support</dt>
+            <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+          </div>
+          <div>
+            <dt>Telefon</dt>
+            <dd><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span><small>Wenn ich nicht rangehe, schreiben Sie mir, ich melde mich.</small></dd>
+          </div>
+          <div>
+            <dt>Web</dt>
+            <dd><a href="https://apoliak.online/de/" target="_blank" rel="noopener">https://apoliak.online</a></dd>
+          </div>
+          <div>
+            <dt>Preis und Termin</dt>
+            <dd>Ab 250 EUR<small>erster Entwurf in 3 Tagen, Beratung kostenlos und unverbindlich</small></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+
+  <div class="wrap">
+    <div class="footer__act">
+      <p>Den Termin bestätigen wir telefonisch innerhalb eines Werktags. Bei akuten Schmerzen rufen Sie gleich morgens an, den Block halten wir an jedem Praxistag frei.</p>
+      <a class="btn btn--light" href="#objednanie">Termin buchen</a>
+      <span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span>
+    </div>
+
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand">
+          <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+            <rect x=".75" y=".75" width="38.5" height="38.5" rx="2" fill="none" stroke="#8A8D93" stroke-width="1.5"/>
+            <rect x="10.5" y="8.5" width="19" height="23" fill="none" stroke="#8A8D93" stroke-width="1.2"/>
+            <path d="M20 8.5v23M10.5 20h19" stroke="#8A8D93" stroke-width="1.2"/>
+          </svg>
+          <span>
+            <span class="brand__name">Praxis Weide</span> <span class="brand__sub">Zahnmedizin</span>
+          </span>
+        </div>
+        <p>Erfundene Praxis, erstellt für eine Beispiel-Website. Name, Adresse, Namen, Bewertungen, Preise und Telefonnummern dienen nur der Veranschaulichung.</p>
+      </div>
+
+      <div>
+        <h3>Abschnitte</h3>
+        <ul>
+          <li><a href="#osetrenia">Unsere Behandlungen</a></li>
+          <li><a href="#lekari">Wer Sie behandelt</a></li>
+          <li><a href="#prace">Beispielarbeiten und ihr Preis</a></li>
+          <li><a href="#cennik">Preisliste</a></li>
+          <li><a href="#poistovne">Krankenkassen</a></li>
+          <li><a href="#doplatky">Was die Kasse zahlt</a></li>
+          <li><a href="#priebeh">Erster Besuch</a></li>
+          <li><a href="#hodnotenia">Patientenbewertungen</a></li>
+          <li><a href="#objednanie">Termin für eine Behandlung</a></li>
+          <li><a href="#platba">Zahlung, Gewährleistung und Absage</a></li>
+          <li><a href="#poukazy">Geschenkgutscheine</a></li>
+          <li><a href="#ambulancia">Räume und Ausstattung</a></li>
+          <li><a href="#doprava">Anfahrt und Parken</a></li>
+          <li><a href="#otazky">Häufige Fragen</a></li>
+          <li><a href="#kontakt">Sprechzeiten und Kontakt</a></li>
+          <li><a href="#kariera">Offene Stellen</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Praxis</h3>
+        <ul>
+          <li>Weidenweg 8, 12345 Musterstadt</li>
+          <li>Erdgeschoss, Eingang vom Hof</li>
+          <li><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span> — Mobil</li>
+          <li><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span> — Festnetz</li>
+          <li>Mo, Di, Do 8:00 – 17:00</li>
+          <li>Mi 8:00 – 15:00 · Fr 8:00 – 13:00</li>
+          <li>Sa, So geschlossen</li>
+          <li><small>Facebook · Instagram · Google: Zahnarztpraxis Weide</small></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Beispiel erstellt von</h3>
+        <ul>
+          <li>Alex Poliak</li>
+          <li><span class="ukazka-kontakt" title="Beispiel-Website — die Nummer fehlt absichtlich, damit niemand eine fremde Nummer anruft.">hier steht Ihre Nummer</span></li>
+          <li><a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a></li>
+          <li><a href="#autor">Kontakt zum Autor</a></li>
+          <li><small>Websites nach Maß ab 250 EUR, erster Entwurf in 3 Tagen, Beratung kostenlos und unverbindlich.</small></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>Beispiel-Website, keine echte medizinische Einrichtung.</span>
+      <span>Design und Code: <a href="https://apoliak.online/de/" target="_blank" rel="noopener">apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- výška lepiaceho bloku pre kotvy ---- */
+  var topstack = document.querySelector(".topstack");
+  function setHeadH() {
+    if (!topstack) return;
+    document.documentElement.style.setProperty("--head-h", topstack.offsetHeight + "px");
+  }
+  setHeadH();
+  window.addEventListener("resize", setHeadH);
+  if (window.ResizeObserver && topstack) { new ResizeObserver(setHeadH).observe(topstack); }
+
+  /* ---- mobilné menu ---- */
+  var toggle = document.querySelector(".navtoggle");
+  var menu = document.getElementById("menu");
+  if (toggle && menu) {
+    toggle.addEventListener("click", function () {
+      var open = menu.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    menu.addEventListener("click", function (e) {
+      if (e.target.closest("a")) {
+        menu.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && menu.classList.contains("is-open")) {
+        menu.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---- plynulé skrolovanie s odsadením hlavičky ---- */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute("href");
+    if (!id || id === "#") return;
+    var target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    var head = topstack ? topstack.offsetHeight : 0;
+    var y = target.getBoundingClientRect().top + window.pageYOffset - head - 10;
+    window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
+    if (history.replaceState) history.replaceState(null, "", id);
+    target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
+  });
+
+  /* ---- jemné odhalenie sekcií ---- */
+  var revs = [].slice.call(document.querySelectorAll(".rev"));
+  if (!("IntersectionObserver" in window) || reduce) {
+    revs.forEach(function (el) { el.classList.add("is-in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.06 });
+    revs.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---- ordinačné hodiny: dnešný deň a aktuálny stav ---- */
+  var HOURS = { 1: [8, 17], 2: [8, 17], 3: [8, 15], 4: [8, 17], 5: [8, 13], 6: null, 0: null };
+  var DAY_IN = ["am Sonntag", "am Montag", "am Dienstag", "am Mittwoch", "am Donnerstag", "am Freitag", "am Samstag"];
+  var now = new Date();
+
+  var todayRow = document.querySelector('#hours tr[data-day="' + now.getDay() + '"]');
+  if (todayRow) {
+    todayRow.setAttribute("data-today", "1");
+    todayRow.setAttribute("aria-current", "date");
+    var th = todayRow.querySelector("th");
+    if (th) {
+      var tag = document.createElement("span");
+      tag.className = "today-tag";
+      tag.textContent = "heute";
+      th.appendChild(tag);
+    }
+  }
+
+  var status = document.getElementById("status");
+  if (status) {
+    var t = HOURS[now.getDay()];
+    var h = now.getHours() + now.getMinutes() / 60;
+    var txt;
+    if (t && h >= t[0] && h < t[1]) {
+      txt = "Heute Sprechstunde bis " + t[1] + ":00.";
+    } else {
+      var next = null;
+      for (var i = 1; i <= 7; i++) {
+        var dd = (now.getDay() + i) % 7;
+        if (HOURS[dd]) { next = { day: dd, from: HOURS[dd][0] }; break; }
+      }
+      txt = next
+        ? "Jetzt geschlossen. Wir öffnen " + DAY_IN[next.day] + " um " + next.from + ":00."
+        : "Sprechstunde an Werktagen.";
+    }
+    status.textContent = "";
+    var b = document.createElement("b");
+    b.textContent = txt;
+    status.appendChild(b);
+    status.appendChild(document.createTextNode("Mittagspause 12:00 – 12:30. Den ganzen Plan finden Sie im Abschnitt Sprechzeiten und Kontakt."));
+  }
+
+  /* ---- objednávkový formulár so živým súhrnom ---- */
+  var form = document.getElementById("form");
+  if (!form) return;
+
+  var dateInput = document.getElementById("datum");
+  var chipsWrap = document.getElementById("chips");
+  var partEl = document.getElementById("cast");
+  var nameEl = document.getElementById("meno");
+  var telEl = document.getElementById("tel");
+
+  var sum = {
+    serv: document.getElementById("s-serv"),
+    dur: document.getElementById("s-dur"),
+    date: document.getElementById("s-date"),
+    part: document.getElementById("s-part"),
+    name: document.getElementById("s-name"),
+    tel: document.getElementById("s-tel"),
+    price: document.getElementById("s-price")
+  };
+
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+
+  var SK_D = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+  var SK_M = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  function pretty(v) {
+    var p = String(v).split("-");
+    if (p.length !== 3) return v;
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    if (isNaN(d.getTime())) return v;
+    return SK_D[d.getDay()] + ", " + d.getDate() + ". " + SK_M[d.getMonth()];
+  }
+
+  if (dateInput) dateInput.min = iso(now);
+
+  /* rýchly výber najbližších ordinačných dní */
+  if (chipsWrap) {
+    var made = 0, guard = 0;
+    var cur = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    while (made < 4 && guard < 30) {
+      cur.setDate(cur.getDate() + 1);
+      guard++;
+      if (!HOURS[cur.getDay()]) continue;
+      var val = iso(cur);
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chip";
+      btn.setAttribute("aria-pressed", "false");
+      btn.setAttribute("data-value", val);
+      btn.textContent = pretty(val);
+      chipsWrap.appendChild(btn);
+      made++;
+    }
+    chipsWrap.addEventListener("click", function (e) {
+      var b = e.target.closest(".chip");
+      if (!b) return;
+      if (dateInput) dateInput.value = b.getAttribute("data-value");
+      syncChips();
+      render();
+    });
+  }
+
+  function syncChips() {
+    if (!chipsWrap || !dateInput) return;
+    [].forEach.call(chipsWrap.querySelectorAll(".chip"), function (x) {
+      x.setAttribute("aria-pressed", x.getAttribute("data-value") === dateInput.value ? "true" : "false");
+    });
+  }
+
+  function setVal(el, value, fallback) {
+    if (!el) return;
+    if (value) { el.textContent = value; el.classList.remove("empty"); }
+    else { el.textContent = fallback; el.classList.add("empty"); }
+  }
+
+  function render() {
+    var picked = form.querySelector('input[name="osetrenie"]:checked');
+    if (picked) {
+      setVal(sum.serv, picked.value, "nicht gewählt");
+      setVal(sum.dur, picked.getAttribute("data-dur"), "—");
+      if (sum.price) sum.price.textContent = picked.getAttribute("data-price") || "—";
+    }
+    setVal(sum.date, dateInput && dateInput.value ? pretty(dateInput.value) : "", "nicht gewählt");
+    setVal(sum.part, partEl ? partEl.value : "", "nicht gewählt");
+    setVal(sum.name, nameEl ? nameEl.value : "", "nicht ausgefüllt");
+    setVal(sum.tel, telEl ? telEl.value : "", "nicht ausgefüllt");
+  }
+
+  form.addEventListener("input", render);
+  form.addEventListener("change", function (e) {
+    if (e.target === dateInput) syncChips();
+    render();
+  });
+  render();
+
+  /* ---- odoslanie: len ukážka, nič sa neposiela ---- */
+  var sent = document.getElementById("sent");
+  var recap = document.getElementById("recap");
+  var back = document.getElementById("back");
+
+  function row(label, value) {
+    var d = document.createElement("div");
+    var b = document.createElement("b");
+    b.textContent = label + ": ";
+    d.appendChild(b);
+    d.appendChild(document.createTextNode(value));
+    return d;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var picked = form.querySelector('input[name="osetrenie"]:checked');
+    var termin = (dateInput && dateInput.value ? pretty(dateInput.value) : "keine Präferenz")
+      + ", " + (partEl ? partEl.value : "");
+    var kto = (nameEl && nameEl.value ? nameEl.value : "nicht ausgefüllt")
+      + (telEl && telEl.value ? ", " + telEl.value : "");
+
+    if (recap) {
+      recap.textContent = "";
+      recap.appendChild(row("Behandlung", picked ? picked.value : "nicht gewählt"));
+      recap.appendChild(row("Termin", termin));
+      recap.appendChild(row("Patient", kto));
+    }
+
+    form.classList.add("is-hidden");
+    if (sent) {
+      sent.classList.add("is-on");
+      sent.setAttribute("tabindex", "-1");
+      var head = topstack ? topstack.offsetHeight : 0;
+      var y = sent.getBoundingClientRect().top + window.pageYOffset - head - 20;
+      window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
+      sent.focus({ preventScroll: true });
+    }
+  });
+
+  if (back) {
+    back.addEventListener("click", function () {
+      if (sent) sent.classList.remove("is-on");
+      form.classList.remove("is-hidden");
+      var first = form.querySelector('input[name="osetrenie"]:checked');
+      if (first) first.focus();
+    });
+  }
+})();
+</script>
+</body>
+</html>
