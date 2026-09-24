@@ -1,0 +1,2387 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/cukraren/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/cukraren/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/cukraren/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/cukraren/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/cukraren/">
+<link rel="alternate" hreflang="de" href="https://apoliak.online/de/ukazky/cukraren/">
+<link rel="alternate" hreflang="it" href="https://apoliak.online/it/ukazky/cukraren/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/cukraren/">
+<!-- /jazyky:hreflang -->
+<title>Forno e pasticceria Crosta — pane, pasticceria e torte su ordinazione</title>
+<meta name="description" content="Sito di esempio di un forno con pasticceria: pane a lievito madre da 2,60 €, dolci da 1,70 €, torte su ordinazione da 42 €, configuratore della torta con calcolo di prezzo e data, allergeni e orari. Progetto e codice di Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#2E211A">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:site_name" content="Forno e pasticceria Crosta (sito di esempio)">
+<meta property="og:title" content="Forno e pasticceria Crosta — pane, pasticceria e torte su ordinazione">
+<meta property="og:description" content="Pane a lievito madre, prodotti da forno del giorno e torte su ordinazione da 42 €. Configuratore della torta con calcolo del prezzo e della prima data utile. Sito di esempio di Alex Poliak, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='3'%20fill='%232E211A'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='19'%20fill='none'%20stroke='%23A3452C'%20stroke-width='3'/%3E%3Ctext%20x='32'%20y='42'%20font-family='Georgia,serif'%20font-size='26'%20fill='%23F0E7DA'%20text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   TOKENY — teplé neutrály (smotanová, kakaová) + tlmená tehlová
+   ============================================================ */
+:root{
+  --cocoa:#2E211A;
+  --cocoa-2:#3D2C22;
+  --cocoa-3:#6B3A26;
+  --accent:#A3452C;
+  --accent-d:#8A3823;
+  --accent-l:#E8A98C;
+  --sand:#D9C3A8;
+  --sand-2:#E8D9C4;
+
+  --bg:#FBF7F0;
+  --bg-2:#F4EDE1;
+  --paper:#FFFFFF;
+  --ink:#241B15;
+  --muted:#6A5A4E;
+  --line:#E2D7C6;
+  --line-2:#EFE7DA;
+  --line-dark:#4A3729;
+  --rule:#C9B49C;
+  --on-dark:#F0E7DA;
+  --on-dark-2:#D8CABA;
+
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --wrap:1200px;
+  --bar:44px;
+  --r:2px;
+  --measure:66ch;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   ZÁKLAD
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+body{
+  margin:0;
+  padding-top:var(--bar);
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.14;letter-spacing:-.014em;margin:0 0 .5em}
+h1{font-size:clamp(2.3rem,5.2vw,4.05rem);line-height:1.06;letter-spacing:-.022em}
+h2{font-size:clamp(1.62rem,3.1vw,2.45rem);line-height:1.1}
+h3{font-size:clamp(1.1rem,1.45vw,1.28rem);line-height:1.3}
+h4{font-size:1.02rem;line-height:1.3}
+p{margin:0 0 1em;max-width:var(--measure)}
+ul,ol{margin:0 0 1em;padding:0 0 0 1.15em}
+li{margin:0 0 .35em}
+a{color:var(--accent)}
+a:hover{color:var(--accent-d)}
+table{border-collapse:collapse;width:100%}
+img,svg{max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.on-dark :focus-visible,.demobar :focus-visible,.plate :focus-visible{outline-color:var(--accent-l)}
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:0;background:var(--cocoa);color:var(--on-dark);padding:12px 18px;z-index:300}
+.skip:focus{left:8px;top:calc(var(--bar) + 8px)}
+section{scroll-margin-top:calc(var(--bar) + 78px)}
+.sec{padding:clamp(62px,7.8vw,118px) 0}
+.sec--band{background:var(--bg-2);border-block:1px solid var(--line)}
+.sec--dark{background:var(--cocoa);color:var(--on-dark)}
+.sec--tight{padding-block:clamp(52px,6vw,86px)}
+
+/* hlavička sekcie: vlasová linka + eyebrow nad nadpisom, text vľavo */
+.head{max-width:56ch;margin:0 0 clamp(30px,3.8vw,52px)}
+.head__rule{width:46px;height:1px;background:var(--accent);margin:0 0 20px}
+.sec--dark .head__rule{background:var(--accent-l)}
+.eyebrow{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 12px}
+.sec--dark .eyebrow{color:var(--on-dark-2)}
+.lede{font-size:1.06rem;color:var(--muted);margin-bottom:0;max-width:60ch}
+.sec--dark .lede{color:var(--on-dark-2)}
+.note{font-size:.9rem;color:var(--muted);margin:0;max-width:70ch}
+.sec--dark .note{color:var(--on-dark-2)}
+.sec--dark a{color:var(--accent-l)}
+.sec--dark a:hover{color:var(--sand)}
+
+/* ============================================================
+   TLAČIDLÁ (dvojtriedne selektory, aby ich neprebil odkazový color)
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font:inherit;font-size:.96rem;font-weight:600;
+  padding:13px 24px;border:1px solid transparent;border-radius:var(--r);
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--accent);color:#FFFFFF;border-color:var(--accent)}
+.btn.btn--primary:hover{background:var(--accent-d);border-color:var(--accent-d);color:#FFFFFF}
+.btn.btn--line{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--line:hover{border-color:var(--accent);color:var(--accent)}
+.btn.btn--onlight-dark{background:var(--cocoa);color:var(--on-dark);border-color:var(--cocoa)}
+.btn.btn--onlight-dark:hover{background:var(--cocoa-2);border-color:var(--cocoa-2);color:var(--on-dark)}
+.btn.btn--sand{background:var(--sand);color:var(--cocoa);border-color:var(--sand)}
+.btn.btn--sand:hover{background:var(--sand-2);border-color:var(--sand-2);color:var(--cocoa)}
+.btn.btn--ghost-dark{background:rgba(46,33,26,.5);color:var(--on-dark);border-color:rgba(240,231,218,.45)}
+.btn.btn--ghost-dark:hover{background:rgba(46,33,26,.75);border-color:var(--sand);color:var(--sand)}
+.btn--sm{padding:9px 16px;font-size:.88rem}
+.btn--full{width:100%}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+
+/* poistka proti prebitiu farby textu tlačidla pravidlom pre odkazy
+   (napr. .foot a, .author__box a, .nav-list a majú nižšiu, ale zradnú váhu) */
+a.btn.btn--primary,a.btn.btn--primary:hover{color:#FFFFFF}
+a.btn.btn--line{color:var(--ink)}
+a.btn.btn--line:hover{color:var(--accent)}
+a.btn.btn--onlight-dark,a.btn.btn--onlight-dark:hover{color:var(--on-dark)}
+a.btn.btn--sand,a.btn.btn--sand:hover{color:var(--cocoa)}
+a.btn.btn--ghost-dark{color:var(--on-dark)}
+a.btn.btn--ghost-dark:hover{color:var(--sand)}
+
+/* ============================================================
+   PÁSIK UKÁŽKY (hore, fixný)
+   ============================================================ */
+.demobar{
+  position:fixed;top:0;left:0;right:0;z-index:200;height:var(--bar);
+  background:var(--cocoa);color:var(--on-dark);
+  border-bottom:1px solid var(--line-dark);
+  font-size:.85rem;
+}
+.demobar__in{
+  width:min(100% - 28px,var(--wrap));margin-inline:auto;height:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+}
+.demobar p{margin:0}
+.demobar__tag{
+  display:inline-block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--cocoa);background:var(--sand);padding:4px 9px;border-radius:var(--r);
+  margin-right:12px;
+}
+.demobar__links{display:flex;gap:16px;align-items:center;white-space:nowrap}
+.demobar a{color:var(--on-dark);text-decoration:underline;text-underline-offset:3px}
+.demobar a:hover{color:var(--accent-l)}
+
+/* ============================================================
+   HLAVIČKA + NAVIGÁCIA
+   ============================================================ */
+.site-head{
+  position:sticky;top:var(--bar);z-index:150;
+  background:rgba(251,247,240,.97);
+  border-bottom:1px solid var(--line);
+}
+.site-head__in{
+  width:min(100% - 40px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  min-height:72px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand__mark{
+  width:38px;height:38px;flex:0 0 38px;border-radius:var(--r);
+  background:var(--cocoa);color:var(--sand);
+  display:grid;place-items:center;font-family:var(--serif);font-size:1.22rem;
+}
+.brand__name{font-family:var(--serif);font-size:1.16rem;line-height:1.1;display:block}
+.brand__sub{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.nav-toggle{
+  display:none;align-items:center;gap:9px;background:transparent;border:1px solid var(--line);
+  border-radius:var(--r);padding:9px 14px;font:inherit;font-size:.9rem;font-weight:600;color:var(--ink);cursor:pointer;
+}
+.nav-toggle__bars{display:inline-block;width:16px;height:10px;position:relative}
+.nav-toggle__bars::before,.nav-toggle__bars::after,.nav-toggle__bars span{
+  content:"";position:absolute;left:0;right:0;height:1.5px;background:var(--ink);
+}
+.nav-toggle__bars::before{top:0}
+.nav-toggle__bars span{top:4.25px}
+.nav-toggle__bars::after{bottom:0}
+.nav-list{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0}
+.nav-list a{
+  color:var(--ink);text-decoration:none;font-size:.94rem;font-weight:600;
+  padding:6px 0;border-bottom:2px solid transparent;display:inline-block;
+}
+.nav-list a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* trvalá dvojica v hlavičke: objednávka + telefón, na mobile ostáva viditeľná */
+.head-actions{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.head-actions .btn{white-space:nowrap}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{padding:clamp(50px,6.5vw,96px) 0 clamp(56px,7vw,104px)}
+.hero__loc{
+  font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+  font-weight:700;margin:0 0 22px;max-width:none;
+  padding-bottom:18px;border-bottom:1px solid var(--line);
+}
+.hero h1{margin:0 0 .3em;max-width:16ch}
+.hero__lede{
+  font-size:clamp(1.1rem,1.75vw,1.5rem);line-height:1.5;color:var(--cocoa-2);
+  max-width:60ch;margin:0;font-family:var(--serif);
+}
+.hero .actions{margin-top:clamp(26px,3vw,38px)}
+
+/* vodorovný rad úzkych kariet pod nadpisom */
+.hstrip{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;
+  margin-top:clamp(40px,5.2vw,72px);
+}
+.hcard{
+  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--r);
+  padding:22px 20px 24px;display:flex;flex-direction:column;gap:6px;min-width:0;
+}
+.hcard::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.1;mix-blend-mode:soft-light;
+}
+.hcard--1{background:linear-gradient(160deg,#F6EFE4,#F1E7D8)}
+.hcard--2{background:linear-gradient(160deg,#F2E9DB,#ECE0CE)}
+.hcard--3{background:linear-gradient(160deg,#EFE4D3,#E7D9C4)}
+.hcard--4{background:linear-gradient(160deg,#EBDECB,#E2D2BA)}
+.hcard--5{background:linear-gradient(160deg,#E7D8C2,#DCCAB0)}
+.hcard__k{
+  position:relative;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cocoa-3);font-weight:700;margin:0;
+}
+.hcard__n{
+  position:relative;font-family:var(--serif);font-size:clamp(1.75rem,2.7vw,2.5rem);
+  line-height:1.06;letter-spacing:-.02em;color:var(--ink);margin:2px 0 0;
+}
+.hcard__t{position:relative;font-size:.88rem;line-height:1.5;color:var(--muted);margin:6px 0 0}
+.hcard__rule{position:relative;width:26px;height:1px;background:var(--accent);margin:0 0 14px}
+
+/* tabuľa "čo je kedy v pulte" — typografický panel */
+.board{
+  position:relative;overflow:hidden;border-radius:var(--r);
+  background:
+    linear-gradient(155deg,#3D2C22 0%,#2E211A 46%,#55402F 100%);
+  color:var(--on-dark);padding:clamp(26px,3.2vw,40px);
+  display:flex;flex-direction:column;gap:24px;margin-top:clamp(30px,4vw,48px);
+}
+.board::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    repeating-radial-gradient(circle at 88% 8%,rgba(240,231,218,.11) 0 1px,transparent 1px 26px),
+    repeating-linear-gradient(0deg,rgba(240,231,218,.055) 0 1px,transparent 1px 32px);
+}
+.board::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.14;mix-blend-mode:soft-light;
+}
+.board__in{position:relative}
+.board__label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-2);margin:0 0 6px;max-width:none}
+.board h3{font-size:clamp(1.25rem,1.9vw,1.55rem);color:var(--on-dark);margin:0}
+.board__list{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.board__list li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:14px 0;border-top:1px solid rgba(240,231,218,.16);
+}
+.board__list li:first-child{border-top:0}
+.board__item{display:block;font-size:1.02rem}
+.board__desc{display:block;font-size:.84rem;color:var(--on-dark-2)}
+.board__time{font-family:var(--serif);font-size:1.22rem;color:var(--accent-l);white-space:nowrap}
+.board__foot{position:relative;font-size:.85rem;color:var(--on-dark-2);margin:0;border-top:1px solid rgba(240,231,218,.16);padding-top:18px;max-width:70ch}
+
+/* ============================================================
+   OBSAHOVÉ MRIEŽKY
+   ============================================================ */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,4.2vw,66px);align-items:start}
+.two--wide{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,40px)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:clamp(24px,3vw,38px)}
+
+/* karta = vlasová linka a typografia, nie rámček */
+.card{background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;padding:20px 0 0}
+.card h3{margin-bottom:.45em}
+.card p:last-child{margin-bottom:0}
+.card--flat{border-top-color:var(--line)}
+.card ul{margin-bottom:0}
+.stack > .card{margin-bottom:30px}
+.stack > .card:last-child{margin-bottom:0}
+
+/* ============================================================
+   OBRAZOVÉ PLOCHY — pripravené miesta pre fotografie
+   ============================================================ */
+.obraz{position:relative;overflow:hidden;margin:0;border-radius:var(--r);display:flex;flex-direction:column;justify-content:flex-end}
+.obraz > *{position:relative}
+.obraz--tile{min-height:170px;padding:16px 18px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--wide{min-height:250px;padding:22px 24px;color:var(--on-dark);border:1px solid var(--line-dark)}
+.obraz--tile::after,.obraz--wide::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light;
+}
+.obraz__cap{position:relative;display:block}
+.obraz__k{display:block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-2);font-weight:700}
+.obraz__n{display:block;font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.72rem);line-height:1.1;color:#FFFFFF;margin-top:4px}
+.obraz--a{background:linear-gradient(150deg,#3D2C22,#2E211A 58%,#55402F)}
+.obraz--a::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(72deg,rgba(240,231,218,.08) 0 1px,transparent 1px 14px)}
+.obraz--b{background:linear-gradient(150deg,#55402F,#6B3A26 62%,#8A3823)}
+.obraz--b::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 78% 20%,rgba(255,255,255,.12) 0 1px,transparent 1px 18px)}
+.obraz--c{background:linear-gradient(150deg,#2E211A,#55402F 70%,#6B3A26)}
+.obraz--c::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.07) 0 1px,transparent 1px 20px)}
+.obraz--d{background:linear-gradient(150deg,#6B3A26,#8A3823 52%,#3D2C22)}
+.obraz--d::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-40deg,rgba(240,231,218,.09) 0 1px,transparent 1px 16px)}
+.obraz--e{background:linear-gradient(150deg,#3D2C22,#55402F 45%,#2E211A)}
+.obraz--e::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 22% 78%,rgba(240,231,218,.1) 0 1px,transparent 1px 22px)}
+
+/* dlaždice sortimentu */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:clamp(14px,1.8vw,22px)}
+.tile{
+  display:flex;flex-direction:column;text-decoration:none;color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden;
+  transition:border-color .16s ease;
+}
+.tile:hover{border-color:var(--accent)}
+.tile .obraz{border:0;border-radius:0}
+.tile__body{padding:15px 17px 18px;display:flex;flex-direction:column;gap:5px}
+.tile__body h3{margin:0;font-size:1.08rem;color:var(--ink)}
+.tile__body p{margin:0;font-size:.88rem;line-height:1.5;color:var(--muted);max-width:none}
+.tile:hover .tile__body h3{color:var(--accent)}
+
+/* cenový riadok s bodkovaným vodičom */
+.pl{list-style:none;margin:0;padding:0}
+.pl li{display:flex;align-items:baseline;gap:10px;padding:12px 0;border-bottom:1px dotted var(--line)}
+.pl li:last-child{border-bottom:0}
+.pl__name{flex:1 1 auto;min-width:0}
+.pl__name b{font-weight:600}
+.pl__desc{display:block;font-size:.85rem;color:var(--muted)}
+.pl__price{flex:0 0 auto;font-family:var(--serif);font-size:1.12rem;white-space:nowrap}
+.pl__tag{display:inline-block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:var(--r);padding:1px 6px;margin-left:6px;vertical-align:2px}
+
+.group{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,32px)}
+.group__head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:6px}
+.group__head h3{margin:0}
+.group__when{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* zákusky — typografický cenový panel */
+.sweet{background:transparent;border:0;display:flex;flex-direction:column}
+.sweet__plate{
+  position:relative;overflow:hidden;border-radius:var(--r);padding:24px;min-height:150px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  color:var(--on-dark);
+}
+.sweet__plate::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light;pointer-events:none}
+.sweet__plate--1{background:linear-gradient(140deg,#3D2C22,#2E211A 55%,#55402F)}
+.sweet__plate--1::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(240,231,218,.09) 0 1px,transparent 1px 10px)}
+.sweet__plate--2{background:linear-gradient(140deg,#55402F,#6B3A26 60%,#8A3823)}
+.sweet__plate--2::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 82% 18%,rgba(255,255,255,.13) 0 1px,transparent 1px 20px)}
+.sweet__plate--3{background:linear-gradient(140deg,#2E211A,#55402F 70%,#6B3A26)}
+.sweet__plate--3::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.08) 0 1px,transparent 1px 22px)}
+.sweet__cap{position:relative;display:block}
+.sweet__price{position:relative;display:block;font-family:var(--serif);font-size:2rem;line-height:1;color:#FFFFFF}
+.sweet__unit{position:relative;display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:8px}
+.sweet__body{padding:18px 0 0;display:flex;flex-direction:column;gap:8px;flex:1 1 auto}
+.sweet__body h3{margin:0}
+.sweet__body p{margin:0;font-size:.93rem;color:var(--muted)}
+.sweet__al{margin-top:auto;font-size:.78rem;letter-spacing:.04em;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+
+/* torty — technická schéma priemeru */
+.size{background:transparent;border:0;border-top:1px solid var(--rule);padding:20px 0 0;display:flex;flex-direction:column;gap:16px}
+.size__viz{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;place-items:center}
+.size__viz svg{display:block;width:100%;height:auto;max-width:210px}
+.size__rows{list-style:none;margin:0;padding:0;font-size:.92rem}
+.size__rows li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line-2)}
+.size__rows li:last-child{border-bottom:0}
+.size__rows span:first-child{color:var(--muted)}
+.size__price{font-family:var(--serif);font-size:1.9rem;line-height:1;letter-spacing:-.02em}
+
+/* ============================================================
+   KONFIGURÁTOR
+   ============================================================ */
+.cfg{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,3vw,44px);align-items:start}
+.cfg__steps{display:grid;gap:22px}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--paper);margin:0;padding:20px 22px 22px}
+legend{
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--muted);
+  padding:0 8px;margin-left:-8px;
+}
+legend b{color:var(--accent);font-weight:700}
+.opts{display:grid;gap:10px;margin-top:6px}
+.opts--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{display:block;cursor:pointer}
+.opt input{position:absolute;width:1px;height:1px;opacity:0;margin:0}
+.opt__in{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;
+  background:var(--bg);transition:border-color .15s ease,background-color .15s ease;
+}
+.opt:hover .opt__in{border-color:var(--accent)}
+.opt input:checked + .opt__in{border-color:var(--accent);background:var(--sand-2);box-shadow:inset 3px 0 0 var(--accent)}
+.opt input:focus-visible + .opt__in{outline:2px solid var(--accent);outline-offset:2px}
+.opt__t{display:block;font-weight:600;font-size:.96rem}
+.opt__s{display:block;font-size:.82rem;color:var(--muted)}
+.opt__p{flex:0 0 auto;font-size:.88rem;color:var(--muted);white-space:nowrap}
+.check{display:flex;gap:11px;align-items:flex-start;font-size:.95rem;margin-top:4px}
+.check input{margin-top:5px;accent-color:var(--accent);width:17px;height:17px}
+
+.sum{
+  position:sticky;top:calc(var(--bar) + 90px);
+  border:1px solid var(--line-dark);border-radius:var(--r);overflow:hidden;
+  background:linear-gradient(160deg,#3D2C22,#2E211A 60%,#55402F);
+  color:var(--on-dark);
+}
+.sum::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.12;mix-blend-mode:soft-light;pointer-events:none}
+.sum__in{position:relative;padding:24px}
+.sum h3{color:var(--on-dark);margin-bottom:.6em}
+.sum__list{list-style:none;margin:0 0 18px;padding:0;font-size:.92rem}
+.sum__list li{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid var(--line-dark)}
+.sum__list li span:first-child{color:var(--on-dark-2);flex:0 0 auto}
+.sum__list li span:last-child{text-align:right}
+.sum__total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:1px solid var(--accent-l);padding-top:16px;margin-top:4px}
+.sum__total b{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);font-weight:700}
+.sum__val{font-family:var(--serif);font-size:2.2rem;line-height:1;color:#FFFFFF}
+.sum__meta{font-size:.86rem;color:var(--on-dark-2);margin:14px 0 0}
+.sum__date{
+  margin:18px 0 0;padding:14px;border:1px solid var(--line-dark);border-radius:var(--r);
+  background:rgba(46,33,26,.55);
+}
+.sum__date b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);margin-bottom:5px;font-weight:700}
+.sum__date span{font-family:var(--serif);font-size:1.16rem;color:var(--accent-l)}
+
+/* ============================================================
+   ALERGÉNY
+   ============================================================ */
+.legendlist{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0 0 24px;padding:0}
+.legendlist li{font-size:.82rem;border:1px solid var(--line);background:var(--paper);border-radius:var(--r);padding:5px 10px}
+.legendlist b{color:var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 18px}
+.filter{
+  font:inherit;font-size:.88rem;font-weight:600;background:var(--paper);color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);padding:9px 15px;cursor:pointer;
+}
+.filter:hover{border-color:var(--accent);color:var(--accent)}
+.filter[aria-pressed="true"]{background:var(--cocoa);color:var(--on-dark);border-color:var(--cocoa)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--paper)}
+table.data{min-width:520px;font-size:.94rem}
+table.data th,table.data td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.data thead th{background:var(--bg-2);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+table.data tbody tr:last-child td{border-bottom:0}
+table.data td.num{font-family:var(--serif);white-space:nowrap}
+.count{font-size:.88rem;color:var(--muted);margin:12px 0 0}
+
+/* ============================================================
+   POSTUP
+   ============================================================ */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(24px,3vw,44px);background:transparent}
+.steps li{padding:20px 0 0;border-top:1px solid var(--rule);margin:0}
+.steps__n{font-family:var(--serif);font-size:2.2rem;line-height:1;color:var(--accent);display:block;margin-bottom:12px}
+.steps h3{font-size:1.05rem;margin-bottom:.4em}
+.steps p{font-size:.92rem;color:var(--muted);margin:0}
+
+/* ============================================================
+   FORMULÁR
+   ============================================================ */
+.form{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(22px,2.6vw,32px)}
+.frow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.86rem;font-weight:600}
+.field .hint{font-size:.8rem;color:var(--muted)}
+input[type=text],input[type=tel],input[type=email],input[type=date],select,textarea{
+  font:inherit;font-size:.98rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;width:100%;
+}
+textarea{min-height:112px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.done{
+  border:1px solid var(--accent);border-left:4px solid var(--accent);
+  background:var(--sand-2);color:var(--ink);border-radius:var(--r);
+  padding:18px 20px;margin:0 0 20px;
+}
+.done h3{margin-bottom:.3em;font-size:1.1rem}
+.done p{margin:0;font-size:.94rem}
+
+/* ============================================================
+   HODINY / DOPRAVA / KONTAKT
+   ============================================================ */
+.hours{list-style:none;margin:0;padding:0;font-size:1rem}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line)}
+.hours li:last-child{border-bottom:0}
+.hours li[data-closed="1"] span:last-child{color:var(--muted)}
+.hours__d{font-weight:600}
+.plan{
+  border:1px solid var(--line);border-radius:var(--r);background:var(--paper);padding:16px;
+}
+.plan svg{display:block;width:100%;height:auto}
+.kv{list-style:none;margin:0;padding:0}
+.kv li{padding:12px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;font-size:.96rem}
+.kv li:last-child{border-bottom:0}
+.kv b{font-weight:600;color:var(--muted);font-size:.86rem;letter-spacing:.04em;text-transform:uppercase}
+
+/* FAQ */
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:19px 44px 19px 0;position:relative;
+  font-family:var(--serif);font-size:1.1rem;line-height:1.35;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:var(--sans);font-size:1.35rem;color:var(--accent);line-height:1;
+}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:hover{color:var(--accent)}
+.faq__a{padding:0 44px 20px 0;color:var(--muted);font-size:.98rem}
+.faq__a p:last-child{margin-bottom:0}
+
+/* kariéra */
+.job{border-top:1px solid var(--line-dark);padding:24px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:20px}
+.job:last-of-type{border-bottom:1px solid var(--line-dark)}
+.job h3{margin-bottom:.25em;color:var(--on-dark)}
+.job__meta{font-size:.86rem;color:var(--on-dark-2);margin:0}
+.job p{margin:0 0 .6em;color:var(--on-dark-2);font-size:.96rem}
+.job ul{color:var(--on-dark-2);font-size:.96rem;margin-bottom:0}
+
+/* poukážky */
+.vouchers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:24px}
+.voucher{
+  position:relative;overflow:hidden;border:1px solid var(--line-dark);border-radius:var(--r);
+  padding:26px 22px;color:var(--on-dark);
+  background:linear-gradient(135deg,#2E211A,#55402F 65%,#6B3A26);
+}
+.voucher::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(240,231,218,.07) 0 1px,transparent 1px 12px)}
+.voucher::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.12;mix-blend-mode:soft-light}
+.voucher span,.voucher b{position:relative}
+.voucher b{display:block;font-family:var(--serif);font-size:2.4rem;line-height:1;font-weight:400;color:#FFFFFF}
+.voucher span{display:block;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-2);margin-top:10px}
+
+/* ============================================================
+   SEKCIA AUTORA
+   ============================================================ */
+.author{
+  position:relative;overflow:hidden;
+  background:linear-gradient(118deg,#2E211A 0%,#4A2B1E 52%,#8A3823 100%);
+  color:var(--on-dark);
+  padding:clamp(58px,6.6vw,98px) 0;
+  border-top:1px solid var(--sand);
+}
+.author::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(240,231,218,.06) 0 1px,transparent 1px 34px)}
+.author::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.13;mix-blend-mode:soft-light}
+.author .wrap{position:relative}
+.author__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(26px,4vw,58px);align-items:center}
+.author h2{color:#FFFFFF}
+.author p{color:var(--on-dark)}
+.author p.author__tag{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sand);font-weight:700;margin:0 0 14px}
+.author p.author__price{font-family:var(--serif);font-size:clamp(1.22rem,1.9vw,1.55rem);color:#FFFFFF;margin:0 0 18px}
+.author p.author__free{
+  display:inline-block;margin:0;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--cocoa);background:var(--sand);padding:9px 15px;border-radius:var(--r);
+  max-width:none;
+}
+.author__box{border:1px solid rgba(240,231,218,.35);border-radius:var(--r);padding:24px;background:rgba(46,33,26,.42)}
+.author__box ul{list-style:none;margin:0 0 20px;padding:0;font-size:1rem}
+.author__box li{padding:9px 0;border-bottom:1px solid rgba(240,231,218,.2)}
+.author__box li:last-of-type{border-bottom:0}
+.author__box a{color:#FFFFFF;text-decoration:underline;text-underline-offset:3px}
+.author__box a:hover{color:var(--sand)}
+
+/* ============================================================
+   PÄTIČKA
+   ============================================================ */
+.foot{background:var(--cocoa);color:var(--on-dark-2);padding:clamp(44px,5vw,66px) 0 30px;font-size:.94rem}
+.foot__cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;
+  padding-bottom:28px;margin-bottom:30px;border-bottom:1px solid var(--line-dark);
+}
+.foot__cta p{margin:0;max-width:44ch;color:var(--on-dark);font-size:1rem}
+.foot__cta .btn{flex:0 0 auto}
+.foot a.btn:hover{text-decoration:none}
+.foot__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;padding-bottom:30px;border-bottom:1px solid var(--line-dark)}
+.foot h3{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark);font-family:var(--sans);font-weight:700;margin-bottom:1em}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li{margin:0 0 8px}
+.foot a{color:var(--on-dark-2);text-decoration:none}
+.foot a:hover{color:var(--accent-l);text-decoration:underline;text-underline-offset:3px}
+.foot__bottom{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;padding-top:24px;font-size:.86rem}
+.foot__bottom p{margin:0}
+
+/* ============================================================
+   ANIMÁCIE
+   ============================================================ */
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.is-in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none}
+  *{transition-duration:.001ms !important;animation-duration:.001ms !important}
+}
+
+/* ============================================================
+   RESPONZÍVNE
+   ============================================================ */
+/* navigácia sa skladá skôr ako zvyšok, aby sa tlačidlo a telefón v hlavičke
+   nemuseli nikdy schovávať */
+@media (max-width:1120px){
+  .nav-toggle{display:inline-flex}
+  .site-head__in{position:relative;min-height:66px}
+  .nav-list{
+    display:none;position:absolute;left:0;right:0;top:100%;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:8px 20px 16px;box-shadow:0 14px 26px rgba(46,33,26,.09);
+  }
+  .nav-list[data-open="true"]{display:flex}
+  .nav-list li{border-bottom:1px solid var(--line-2)}
+  .nav-list li:last-child{border-bottom:0}
+  .nav-list a{display:block;padding:14px 0;border-bottom:0;font-size:1rem}
+  .nav-list a:hover{border-bottom-color:transparent}
+}
+@media (max-width:1040px){
+  .hstrip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cfg{grid-template-columns:1fr}
+  .sum{position:static}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero h1{max-width:none}
+  .two,.two--wide{grid-template-columns:1fr}
+  .three{grid-template-columns:1fr}
+  .hstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .job{grid-template-columns:1fr;gap:10px}
+  .author__grid{grid-template-columns:1fr}
+  .vouchers{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .hstrip{grid-template-columns:1fr;gap:0}
+  .hcard{border-radius:0;border-bottom:0}
+  .hcard:last-child{border-bottom:1px solid var(--line)}
+  .hcard__n{font-size:1.85rem}
+  /* hlavička na dva riadky: značka a menu hore, objednávka a telefón pod tým */
+  .site-head__in{flex-wrap:wrap;gap:10px 12px;padding-block:10px;min-height:0}
+  .brand{order:0}
+  .site-head__in nav{order:1}
+  .nav-toggle{order:2}
+  .head-actions{order:3;width:100%;gap:8px}
+  .head-actions .btn{flex:1 1 0;min-width:0;padding-inline:10px}
+}
+@media (max-width:640px){
+  :root{--bar:64px}
+  body{font-size:16px}
+  .demobar{font-size:.8rem}
+  .demobar__in{flex-direction:column;justify-content:center;align-items:flex-start;gap:2px;padding:6px 0}
+  .demobar__links{gap:14px}
+  .opts--2{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .foot__grid{grid-template-columns:1fr}
+  .kv li{grid-template-columns:1fr;gap:2px}
+  .sweet__price{font-size:1.75rem}
+  .board__list li{flex-direction:column;align-items:flex-start;gap:4px}
+}
+@media (max-width:420px){
+  .actions .btn{width:100%}
+  .group__head{flex-direction:column;align-items:flex-start;gap:4px}
+  .group__when{white-space:normal}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return v.toLocaleString('it-IT');}function __f(x){return x.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Vai al contenuto</a>
+
+<div class="demobar">
+  <div class="demobar__in">
+    <p><span class="demobar__tag">Sito di esempio</span>Un sito così lo realizzo anche per voi.</p>
+    <p class="demobar__links">
+      <a href="https://apoliak.online/it/">apoliak.online</a>
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+    </p>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="site-head__in">
+    <a class="brand" href="#uvod">
+      <span class="brand__mark" aria-hidden="true">C</span> <span> <strong class="brand__name">Crosta</strong> <span class="brand__sub">Forno e pasticceria</span> </span>
+    </a>
+
+    <nav aria-label="Navigazione principale">
+      <ul class="nav-list" id="hlavne-menu" data-open="false">
+        <li><a href="#sortiment">Prodotti</a></li>
+        <li><a href="#zakusky">Dolci</a></li>
+        <li><a href="#torty">Torte</a></li>
+        <li><a href="#konfigurator">Configuratore</a></li>
+        <li><a href="#alergeny">Allergeni</a></li>
+        <li><a href="#doprava">Dove siamo</a></li>
+      </ul>
+    </nav>
+
+    <div class="head-actions">
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+      <a class="btn btn--primary btn--sm head-cta" href="#objednavka">Ordina una torta</a>
+    </div>
+
+    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="hlavne-menu">
+      <span class="nav-toggle__bars" aria-hidden="true"><span></span></span>
+      Menu
+    </button>
+  </div>
+</header>
+
+<main id="obsah">
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="uvod">
+  <div class="wrap">
+    <p class="hero__loc">Via dei Fabbri 21, Parma &middot; Da martedì a sabato</p>
+    <h1>Forno e pasticceria con il nostro lievito madre</h1>
+    <p class="hero__lede">Pane, prodotti da forno e dolci li sforniamo ogni giorno direttamente in negozio, e le torte su ordinazione ve le preventivate da soli nel configuratore qui sotto.</p>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="#objednavka">Ordina una torta</a>
+      <a class="btn btn--line" href="#konfigurator">Componi la torta e scopri il prezzo</a>
+      <a class="btn btn--line" href="#doprava">Dove siamo</a>
+    </div>
+
+    <div class="hstrip">
+      <article class="hcard hcard--1">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Apertura</p>
+        <p class="hcard__n">6:30</p>
+        <p class="hcard__t">La prima infornata di panini e trecce è in banco all'apertura.</p>
+      </article>
+      <article class="hcard hcard--2">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Lievitazione</p>
+        <p class="hcard__n">24 h</p>
+        <p class="hcard__t">Tanto matura l'impasto a lievito madre a 6 °C prima di andare in forno.</p>
+      </article>
+      <article class="hcard hcard--3">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Vetrina</p>
+        <p class="hcard__n">8 tipi</p>
+        <p class="hcard__t">Di dolci e tranci, riforniti in vetrina ogni giorno dalle 9:00.</p>
+      </article>
+      <article class="hcard hcard--4">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Torte</p>
+        <p class="hcard__n">da 42 €</p>
+        <p class="hcard__t">Prezzo base di una torta da 18 cm di diametro, per otto-dieci porzioni.</p>
+      </article>
+      <article class="hcard hcard--5">
+        <span class="hcard__rule" aria-hidden="true"></span>
+        <p class="hcard__k">Tempi</p>
+        <p class="hcard__n">3 giorni</p>
+        <p class="hcard__t">Il tempo minimo per una torta su ordinazione, le decorazioni ne richiedono di più.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SORTIMENT ================= -->
+<section class="sec sec--band sec--tight" id="sortiment">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Prodotti</p>
+      <h2>Cinque famiglie di prodotti</h2>
+      <p class="lede">Per ogni famiglia trovate il prezzo più basso e l'ora da cui la merce è in banco. Con un clic arrivate al listino completo, con pesi e allergeni.</p>
+    </div>
+
+    <div class="tiles reveal">
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: rozkrojený bochník kváskového chleba na drevenej doske, detail na striedku a tmavú kôrku -->
+        <figure class="obraz obraz--tile obraz--a">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Pane</span>
+            <span class="obraz__n">da 2,60 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Pane a lievito madre</h3>
+          <p>Quattro tipi, l'impasto lievita 24 ore. In banco dalle 8:00, il pane del giorno prima a 2,20 €.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#pecivo">
+        <!-- FOTO: plech s čerstvo upečenými rožkami a pletenkami vyťahovaný z pece -->
+        <figure class="obraz obraz--tile obraz--c">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Panini</span>
+            <span class="obraz__n">da 0,45 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Panini e salato</h3>
+          <p>Panini, trecce, cornetti, focaccine. Prima infornata alle 6:30, seconda alle 10:00.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#zakusky">
+        <!-- FOTO: cukrárska vitrína zhora, rad zákuskov a rezov na papierových podložkách -->
+        <figure class="obraz obraz--tile obraz--b">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Vetrina</span>
+            <span class="obraz__n">da 1,70 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Dolci e tranci</h3>
+          <p>Otto tipi al giorno dalle 9:00. Ve lo teniamo da parte se chiamate entro le 15:00 del giorno prima.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#torty">
+        <!-- FOTO: hotová torta s krémovým povrchom zboku, vidno rovné hrany a vrstvy -->
+        <figure class="obraz obraz--tile obraz--d">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Su ordinazione</span>
+            <span class="obraz__n">da 42 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Torte su ordinazione</h3>
+          <p>Cinque misure da 8 a 36 porzioni. Tempo minimo tre giorni lavorativi.</p>
+        </div>
+      </a>
+
+      <a class="tile" href="#sezona">
+        <!-- FOTO: sezónne pečivo podľa obdobia, napríklad mazanec alebo tácka vianočných medovníkov -->
+        <figure class="obraz obraz--tile obraz--e">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Durante l'anno</span>
+            <span class="obraz__n">da 1,60 €</span>
+          </figcaption>
+        </figure>
+        <div class="tile__body">
+          <h3>Dolci di stagione</h3>
+          <p>Pasqua, stagione della frutta, noci e Natale. Ogni periodo ha la sua scadenza per gli ordini.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= O PEKÁRNI ================= -->
+<section class="sec" id="pekaren">
+  <div class="wrap">
+    <div class="two two--wide reveal">
+      <div>
+        <div class="head">
+          <div class="head__rule"></div>
+          <p class="eyebrow">Il forno</p>
+          <h2>Un piccolo laboratorio dove tutto si sforna sul posto</h2>
+        </div>
+        <p>Crosta è un forno con laboratorio di pasticceria in un'unica stanza dietro il negozio. Non abbiamo un centro di produzione né consegne di semilavorati surgelati &mdash; l'impasto lo facciamo la sera, il pane va in forno prima dell'alba e i dolci li finiamo durante la mattina.</p>
+        <p>La farina la prendiamo da un mulino a 40 chilometri, usiamo burro all'82% e uova di un allevamento della provincia. Nel pane vanno farina, acqua, sale e lievito madre. Nient'altro, per questo tra gli ingredienti non trovate miglioranti né conservanti.</p>
+        <p>I panini che avanzano li vendiamo a metà prezzo nell'ultima ora prima della chiusura. Il pane del giorno prima costa 2,20 € al mattino, qualunque sia la pezzatura.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#objednavka">Ordina una torta</a>
+          <a class="btn btn--line" href="#hodiny">Orari di apertura</a>
+        </div>
+      </div>
+      <div>
+        <!-- FOTO: pekár pri stole s rozrobeným kváskovým cestom, v pozadí otvorená pec -->
+        <figure class="obraz obraz--wide obraz--e" style="margin-bottom:30px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Il laboratorio dietro il negozio</span>
+            <span class="obraz__n">Il lievito madre lo rinfreschiamo due volte al giorno</span>
+          </figcaption>
+        </figure>
+        <div class="three" style="grid-template-columns:1fr;gap:30px">
+          <div class="card">
+            <h3>Chi sforna</h3>
+            <p class="note">Due fornai nel turno del mattino, una pasticciera per torte e dolci, una responsabile del negozio. Le torte le decora sempre la stessa persona, perché siano tutte uguali.</p>
+          </div>
+          <div class="card">
+            <h3>Ingredienti</h3>
+            <p class="note">Farine di grano e di segale di un mulino della zona, burro all'82%, cioccolato al 55 e al 70% di cacao, frutta di stagione dai coltivatori.</p>
+          </div>
+          <div class="card">
+            <h3>Confezioni</h3>
+            <p class="note">Sacchetti di carta gratis. Il vostro contenitore o sacchetto ve lo riempiamo volentieri. Le torte le mettiamo in una scatola di cartone rigida, compresa nel prezzo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DENNÉ PEČIVO ================= -->
+<section class="sec sec--band" id="pecivo">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">L'offerta del giorno</p>
+      <h2>Pane e panini</h2>
+      <p class="lede">I prezzi valgono per la vendita in negozio. Per quantità maggiori (oltre 20 panini o 5 pagnotte) ordinate il giorno prima, così sforniamo in più.</p>
+    </div>
+
+    <div class="two reveal">
+      <div class="group" style="margin-bottom:22px">
+        <div class="group__head">
+          <h3>Pane</h3>
+          <span class="group__when">In banco dalle 8:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Pane grano e segale a lievito madre 1 kg</b><span class="pl__desc">Crosta più scura, lievita 24 ore</span></span>
+            <span class="pl__price">4,60 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Pane grano e segale a lievito madre 0,5 kg</b><span class="pl__desc">Pagnotta più piccola per una o due persone</span></span>
+            <span class="pl__price">2,60 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Pane integrale di segale 1 kg</b><span class="pl__desc">Martedì, giovedì e sabato</span></span>
+            <span class="pl__price">5,20 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Pane di patate 0,8 kg</b><span class="pl__desc">Venerdì, mollica morbida</span></span>
+            <span class="pl__price">4,90 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Pane del giorno prima</b><span class="pl__desc">In vendita dal giovedì al sabato mattina</span></span>
+            <span class="pl__price">2,20 €</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group" style="margin-bottom:22px">
+        <div class="group__head">
+          <h3>Panini</h3>
+          <span class="group__when">In banco dalle 6:30</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Panino al burro, 60 g</b><span class="pl__desc">Seconda infornata alle 10:00</span></span>
+            <span class="pl__price">0,45 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Treccia ai semi di papavero, 90 g</b></span>
+            <span class="pl__price">0,90 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Cornetto al burro</b><span class="pl__desc">La sfoglia la pieghiamo a mano</span></span>
+            <span class="pl__price">1,60 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Cornetto al cioccolato</b></span>
+            <span class="pl__price">1,90 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Baguette ai cereali, 250 g</b></span>
+            <span class="pl__price">1,80 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Brioche alla ricotta</b><span class="pl__desc">Mercoledì e venerdì</span></span>
+            <span class="pl__price">1,40 €</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <div class="group__head">
+          <h3>Salato</h3>
+          <span class="group__when">Sforniamo fino alle 15:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Focaccine ai ciccioli, 100 g</b></span>
+            <span class="pl__price">1,50 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Brezel ai semi</b></span>
+            <span class="pl__price">1,20 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Strudel salato al formaggio, 150 g</b></span>
+            <span class="pl__price">2,40 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Focaccia al rosmarino, 200 g</b><span class="pl__desc">Sabato</span></span>
+            <span class="pl__price">2,80 €</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <div class="group__head">
+          <h3>Su ordinazione</h3>
+          <span class="group__when">Il giorno prima entro le 15:00</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Panini per eventi, da 20 pezzi</b><span class="pl__desc">Misto di panini, trecce, brezel</span></span>
+            <span class="pl__price">&minus;10%</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Ciotole di pane per salse, 5 pz.</b></span>
+            <span class="pl__price">14,00 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Buffet salato, 40 pezzi</b><span class="pl__desc">Mini focaccine, brezel, grissini al formaggio</span></span>
+            <span class="pl__price">26,00 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Buffet dolce, 40 pezzi</b><span class="pl__desc">Pasticcini mignon, tranci, meringhe</span></span>
+            <span class="pl__price">38,00 €</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:20px">Gli allergeni di ogni prodotto li trovate nella <a href="#alergeny">tabella degli allergeni</a>. Gli ingredienti ve li mostriamo su richiesta anche in negozio.</p>
+  </div>
+</section>
+
+<!-- ================= ZÁKUSKY ================= -->
+<section class="sec" id="zakusky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">La vetrina della pasticceria</p>
+      <h2>Dolci e tranci</h2>
+      <p class="lede">Otto tipi al giorno, dalle 9:00. I dolci non li congeliamo, quindi quello che finisce torna il giorno dopo. Se vi serve un dolce preciso, prenotatelo per telefono entro le 15:00 del giorno prima.</p>
+    </div>
+
+    <div class="cards reveal">
+      <article class="sweet">
+        <!-- FOTO: čokoládový rez zboku na tanieriku, vidno tri vrstvy korpusu a pásik višňového želé -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,60 €</span>
+            <span class="sweet__unit">al pezzo &middot; 90 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Trancio al cioccolato</h3>
+          <p>Tre strati di pan di Spagna al cacao, ganache al cioccolato 70%, un velo di gelatina di amarene.</p>
+          <p class="sweet__al">Allergeni: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: veterník s karamelovou polevou, detail na vrstvu vanilkového krému -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,20 €</span>
+            <span class="sweet__unit">al pezzo &middot; 80 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Bignè al caramello</h3>
+          <p>Pasta choux, crema alla vaniglia con latte fresco, glassa al caramello. Li sforniamo ogni giorno.</p>
+          <p class="sweet__al">Allergeni: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: punčový rez s ružovou polevou, rez cez piškótový stred -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,10 €</span>
+            <span class="sweet__unit">al pezzo &middot; 85 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Trancio punch al rum</h3>
+          <p>Un classico con i ritagli di pan di Spagna, aroma di rum e glassa rosa.</p>
+          <p class="sweet__al">Allergeni: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: medovník nakrojený tak, aby bolo vidno šesť tenkých plátov a krém medzi nimi -->
+        <figure class="obraz sweet__plate sweet__plate--2">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,40 €</span>
+            <span class="sweet__unit">al pezzo &middot; 70 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Torta al miele a strati</h3>
+          <p>Sei strati sottili, crema al caramello, lasciata riposare due giorni prima della vendita.</p>
+          <p class="sweet__al">Allergeni: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: tvarohový koláč s ovocím zhora, vidno hrubú vrstvu tvarohu a kúsky sezónneho ovocia -->
+        <figure class="obraz sweet__plate sweet__plate--1">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,30 €</span>
+            <span class="sweet__unit">al pezzo &middot; 110 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Crostata di ricotta e frutta</h3>
+          <p>Base di frolla, uno strato alto di ricotta, frutta di stagione. Da settembre con le pere, d'estate con le albicocche.</p>
+          <p class="sweet__al">Allergeni: 1, 3, 7</p>
+        </div>
+      </article>
+
+      <article class="sweet">
+        <!-- FOTO: bezlepkový mandľový rez na oddelenej podložke, detail na hrubšiu mandľovú štruktúru -->
+        <figure class="obraz sweet__plate sweet__plate--3">
+          <figcaption class="sweet__cap">
+            <span class="sweet__price">2,90 €</span>
+            <span class="sweet__unit">al pezzo &middot; 90 g</span>
+          </figcaption>
+        </figure>
+        <div class="sweet__body">
+          <h3>Trancio di mandorle senza glutine</h3>
+          <p>Farina di mandorle, crema al cioccolato, senza farina di grano aggiunta. Lo cuociamo in uno stampo separato, ma il laboratorio non è senza glutine.</p>
+          <p class="sweet__al">Allergeni: 3, 7, 8</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="two reveal" style="margin-top:clamp(34px,4vw,52px)">
+      <div class="group">
+        <div class="group__head">
+          <h3>In vetrina anche</h3>
+          <span class="group__when">A seconda del giorno</span>
+        </div>
+        <ul class="pl">
+          <li>
+            <span class="pl__name"><b>Meringa al cocco</b><span class="pl__desc">Dischi di meringa con crema al burro, martedì e venerdì</span></span>
+            <span class="pl__price">1,70 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Strudel ai semi di papavero, 100 g</b><span class="pl__desc">Lo tagliamo al momento, quanto ve ne serve</span></span>
+            <span class="pl__price">1,90 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Fagottino alla confettura</b><span class="pl__desc">Di prugne o di albicocche, mercoledì e sabato</span></span>
+            <span class="pl__price">1,30 €</span>
+          </li>
+          <li>
+            <span class="pl__name"><b>Pasticcini mignon</b><span class="pl__desc">Da 20 pezzi, ordine due giorni prima</span><span class="pl__tag">su ordinazione</span></span>
+            <span class="pl__price">0,95 €</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Prenotare un dolce</h3>
+          <p class="note">Un dolce preciso ve lo teniamo da parte se chiamate entro le 15:00 del giorno prima. Ne mettiamo da parte al massimo sei per cliente.</p>
+        </div>
+        <div class="card">
+          <h3>Come conservarli</h3>
+          <p class="note">I dolci vanno in frigorifero a 4-6 °C e si consumano entro due giorni. Quelli con crema o panna meglio in giornata.</p>
+        </div>
+        <div class="card">
+          <h3>Il banco del caffè</h3>
+          <p class="note">Con il dolce serviamo espresso a 1,60 € e cappuccino a 2,20 €. Alla finestra c'è un bancone in piedi e due tavolini da quattro. Il caffè lo serviamo dal martedì al venerdì fino alle 16:30, il sabato fino alle 12:00.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TORTY ================= -->
+<section class="sec sec--band" id="torty">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Su ordinazione</p>
+      <h2>Le torte e le loro misure</h2>
+      <p class="lede">Il prezzo indicato è la base per pan di Spagna, farcitura e una semplice copertura di crema. Gusti e decorazioni si pagano a parte, l'importo preciso lo calcola il configuratore qui sotto. Scatola rigida e candeline sono comprese.</p>
+    </div>
+
+    <!-- FOTO: hotová torta s priemerom 22 cm na cukrárskom podnose, pohľad zboku na rovný krémový povrch -->
+    <figure class="obraz obraz--wide obraz--d reveal" style="margin-bottom:clamp(26px,3.4vw,44px)">
+      <figcaption class="obraz__cap">
+        <span class="obraz__k">Ø 22 cm, tre strati, da 12 a 16 porzioni</span>
+        <span class="obraz__n">58 € nella versione base</span>
+      </figcaption>
+    </figure>
+
+    <div class="cards reveal">
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schema di una torta da 18 centimetri di diametro">
+            <circle cx="105" cy="58" r="38" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="58" r="24" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M67 58V114M143 58V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M67 114H143M67 109V119M143 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">18 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porzioni</span><span>8 &ndash; 10</span></li>
+          <li><span>Altezza</span><span>10 cm, tre strati</span></li>
+          <li><span>Tempi</span><span>3 giorni lavorativi</span></li>
+        </ul>
+        <div class="size__price">42 €</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schema di una torta da 22 centimetri di diametro">
+            <circle cx="105" cy="56" r="46" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="29" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M59 56V114M151 56V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M59 114H151M59 109V119M151 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">22 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porzioni</span><span>12 &ndash; 16</span></li>
+          <li><span>Altezza</span><span>10 cm, tre strati</span></li>
+          <li><span>Tempi</span><span>3 giorni lavorativi</span></li>
+        </ul>
+        <div class="size__price">58 €</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schema di una torta da 26 centimetri di diametro">
+            <circle cx="105" cy="55" r="53" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="55" r="34" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M52 55V114M158 55V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M52 114H158M52 109V119M158 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">26 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porzioni</span><span>18 &ndash; 24</span></li>
+          <li><span>Altezza</span><span>11 cm, quattro strati</span></li>
+          <li><span>Tempi</span><span>4 giorni lavorativi</span></li>
+        </ul>
+        <div class="size__price">76 €</div>
+      </article>
+
+      <article class="size">
+        <div class="size__viz">
+          <svg viewBox="0 0 210 150" role="img" aria-label="Schema di una torta a due piani da 22 e 16 centimetri di diametro">
+            <circle cx="105" cy="56" r="46" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="33" fill="none" stroke="#A3452C" stroke-width="1.2"/>
+            <circle cx="105" cy="56" r="18" fill="none" stroke="#C9B49C" stroke-width=".8"/>
+            <path d="M59 56V114M151 56V114" stroke="#C9B49C" stroke-width=".8" stroke-dasharray="3 4"/>
+            <path d="M59 114H151M59 109V119M151 109V119" stroke="#6A5A4E" stroke-width="1"/>
+            <text x="105" y="140" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#241B15">22 + 16 cm</text>
+          </svg>
+        </div>
+        <ul class="size__rows">
+          <li><span>Porzioni</span><span>30 &ndash; 36</span></li>
+          <li><span>Altezza</span><span>18 cm, due piani</span></li>
+          <li><span>Tempi</span><span>6 giorni lavorativi</span></li>
+        </ul>
+        <div class="size__price">138 €</div>
+      </article>
+    </div>
+
+    <div class="two reveal" style="margin-top:34px">
+      <div class="card">
+        <h3>Cosa comprende il prezzo base</h3>
+        <ul style="margin-bottom:0">
+          <li>Pan di Spagna a scelta, tre o quattro strati</li>
+          <li>Una farcitura e una semplice copertura di crema</li>
+          <li>Scatola di cartone rigida e siberino</li>
+          <li>Candeline e coltello monouso per tagliare</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Cosa si paga in più</h3>
+        <ul style="margin-bottom:0">
+          <li>Base alle noci, alle carote o senza glutine</li>
+          <li>Ganache, caramello con frutta secca, farcitura di ricotta e lamponi</li>
+          <li>Copertura in pasta di mandorle o decorazione dipinta a mano</li>
+          <li>Scritta sulla torta e consegna in città (5 €, gratis oltre 100 €)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONFIGURÁTOR ================= -->
+<section class="sec" id="konfigurator">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Calcolo interattivo</p>
+      <h2>Componete la vostra torta</h2>
+      <p class="lede">Scegliete misura, base, farcitura e copertura. Prezzo e prima data utile per il ritiro si ricalcolano subito. La composizione poi la portate nel modulo d'ordine con un clic.</p>
+    </div>
+
+    <div class="cfg">
+      <div class="cfg__steps">
+        <fieldset>
+          <legend><b>1.</b> &nbsp;Misura</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="18" data-cena="42" data-dni="3" data-porcie="10" data-popis="Ø 18 cm, 8 – 10 porzioni">
+              <span class="opt__in"><span><span class="opt__t">Ø 18 cm</span><span class="opt__s">8 &ndash; 10 porzioni</span></span><span class="opt__p">42 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="22" data-cena="58" data-dni="3" data-porcie="16" data-popis="Ø 22 cm, 12 – 16 porzioni" checked>
+              <span class="opt__in"><span><span class="opt__t">Ø 22 cm</span><span class="opt__s">12 &ndash; 16 porzioni</span></span><span class="opt__p">58 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="26" data-cena="76" data-dni="4" data-porcie="24" data-popis="Ø 26 cm, 18 – 24 porzioni">
+              <span class="opt__in"><span><span class="opt__t">Ø 26 cm</span><span class="opt__s">18 &ndash; 24 porzioni</span></span><span class="opt__p">76 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="30" data-cena="98" data-dni="4" data-porcie="32" data-popis="Ø 30 cm, 26 – 32 porzioni">
+              <span class="opt__in"><span><span class="opt__t">Ø 30 cm</span><span class="opt__s">26 &ndash; 32 porzioni</span></span><span class="opt__p">98 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-velkost" value="2216" data-cena="138" data-dni="6" data-porcie="36" data-popis="A due piani 22 + 16 cm, 30 – 36 porzioni">
+              <span class="opt__in"><span><span class="opt__t">A due piani 22 + 16 cm</span><span class="opt__s">30 &ndash; 36 porzioni</span></span><span class="opt__p">138 €</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>2.</b> &nbsp;Base</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="kakaovy" data-cena="0" data-dni="0" data-popis="base al cacao" checked>
+              <span class="opt__in"><span><span class="opt__t">Al cacao</span><span class="opt__s">Cacao olandese, morbida</span></span><span class="opt__p">compresa</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="vanilkovy" data-cena="0" data-dni="0" data-popis="base alla vaniglia">
+              <span class="opt__in"><span><span class="opt__t">Alla vaniglia</span><span class="opt__s">Pan di Spagna, delicata</span></span><span class="opt__p">compresa</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="orechovy" data-cena="6" data-dni="0" data-popis="base alle noci">
+              <span class="opt__in"><span><span class="opt__t">Alle noci</span><span class="opt__s">Noci, senza farina in più</span></span><span class="opt__p">+ 6 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="mrkvovy" data-cena="8" data-dni="0" data-popis="base alle carote">
+              <span class="opt__in"><span><span class="opt__t">Alle carote</span><span class="opt__s">Con cannella e uvetta</span></span><span class="opt__p">+ 8 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-korpus" value="bezlepkovy" data-cena="12" data-dni="1" data-popis="base al cacao senza glutine">
+              <span class="opt__in"><span><span class="opt__t">Al cacao senza glutine</span><span class="opt__s">Farina di mandorle, un giorno in più</span></span><span class="opt__p">+ 12 €</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>3.</b> &nbsp;Farcitura</legend>
+          <div class="opts opts--2">
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="maslovy" data-cena="0" data-dni="0" data-popis="crema al burro alla vaniglia" checked>
+              <span class="opt__in"><span><span class="opt__t">Crema al burro alla vaniglia</span></span><span class="opt__p">compresa</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="citron" data-cena="6" data-dni="0" data-popis="farcitura al limone">
+              <span class="opt__in"><span><span class="opt__t">Al limone</span></span><span class="opt__p">+ 6 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="ganache" data-cena="7" data-dni="0" data-popis="ganache al cioccolato">
+              <span class="opt__in"><span><span class="opt__t">Ganache al cioccolato</span></span><span class="opt__p">+ 7 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="tvaroh" data-cena="9" data-dni="0" data-popis="crema di ricotta e panna con lamponi">
+              <span class="opt__in"><span><span class="opt__t">Ricotta e panna con lamponi</span></span><span class="opt__p">+ 9 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-plnka" value="karamel" data-cena="11" data-dni="0" data-popis="caramello salato con frutta secca tostata">
+              <span class="opt__in"><span><span class="opt__t">Caramello salato con frutta secca</span></span><span class="opt__p">+ 11 €</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>4.</b> &nbsp;Copertura e decorazione</legend>
+          <div class="opts">
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="krem" data-cena="0" data-dni="0" data-popis="copertura di crema" checked>
+              <span class="opt__in"><span><span class="opt__t">Copertura di crema</span><span class="opt__s">Liscia o lavorata a spatola</span></span><span class="opt__p">compresa</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="poleva" data-cena="9" data-dni="0" data-popis="glassa al cioccolato con frutta fresca">
+              <span class="opt__in"><span><span class="opt__t">Glassa al cioccolato e frutta fresca</span><span class="opt__s">Secondo stagione</span></span><span class="opt__p">+ 9 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="marcipan" data-cena="18" data-dni="1" data-popis="copertura liscia in pasta di mandorle">
+              <span class="opt__in"><span><span class="opt__t">Copertura in pasta di mandorle</span><span class="opt__s">In tinta unita, un giorno in più</span></span><span class="opt__p">+ 18 €</span></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="cfg-povrch" value="malovany" data-cena="29" data-dni="2" data-popis="decorazione dipinta a mano">
+              <span class="opt__in"><span><span class="opt__t">Decorazione dipinta a mano</span><span class="opt__s">Soggetto da concordare, due giorni in più</span></span><span class="opt__p">+ 29 €</span></span>
+            </label>
+          </div>
+          <label class="check" style="margin-top:14px">
+            <input type="checkbox" id="cfg-napis" data-cena="4">
+            <span>Scritta sulla torta (nome, data o breve testo) &mdash; <b>+ 4 €</b></span>
+          </label>
+        </fieldset>
+      </div>
+
+      <aside class="sum" aria-label="Calcolo del prezzo della torta">
+        <div class="sum__in">
+          <h3>La vostra torta</h3>
+          <ul class="sum__list">
+            <li><span>Misura</span><span id="s-velkost">Ø 22 cm, 12 &ndash; 16 porzioni</span></li>
+            <li><span>Base</span><span id="s-korpus">base al cacao</span></li>
+            <li><span>Farcitura</span><span id="s-plnka">crema al burro alla vaniglia</span></li>
+            <li><span>Copertura</span><span id="s-povrch">copertura di crema</span></li>
+            <li><span>Scritta</span><span id="s-napis">senza scritta</span></li>
+          </ul>
+
+          <div class="sum__total">
+            <b>Prezzo totale</b>
+            <span class="sum__val" id="s-cena">58,00 €</span>
+          </div>
+          <p class="sum__meta" id="s-porcia">Circa 3,63 € a porzione con 16 porzioni. Acconto all'ordine 17,40 €.</p>
+
+          <div class="sum__date">
+            <b>Prima data utile per il ritiro</b>
+            <span id="s-termin">&mdash;</span>
+          </div>
+
+          <div class="actions" style="margin-top:20px">
+            <button class="btn btn--sand btn--full" type="button" id="cfg-prenies">Porta nell'ordine</button>
+          </div>
+          <p class="sum__meta">La data la calcoliamo da oggi, escluse la domenica e il lunedì, quando siamo chiusi. La conferma definitiva la ricevete per telefono.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEZÓNA ================= -->
+<section class="sec sec--band" id="sezona">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Durante l'anno</p>
+      <h2>Dolci di stagione</h2>
+      <p class="lede">Una parte dell'offerta cambia con la frutta e le feste. Per i prodotti di stagione gli ordini si chiudono prima, perché ne sforniamo in quantità limitata.</p>
+    </div>
+
+    <div class="cards reveal">
+      <article class="card">
+        <p class="eyebrow">Marzo &ndash; aprile</p>
+        <h3>Pasqua</h3>
+        <ul style="margin-bottom:12px">
+          <li>Colomba con uvetta, 500 g &mdash; 5,90 €</li>
+          <li>Agnello pasquale di pan di Spagna &mdash; 8,50 €</li>
+          <li>Torta pasquale al formaggio &mdash; 3,20 €</li>
+        </ul>
+        <p class="note">Gli ordini li accettiamo fino al mercoledì prima del Venerdì Santo.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Maggio &ndash; agosto</p>
+        <h3>Stagione della frutta</h3>
+        <ul style="margin-bottom:12px">
+          <li>Torta alle fragole Ø 22 cm &mdash; 67 €</li>
+          <li>Torta morbida alle albicocche, 100 g &mdash; 1,60 €</li>
+          <li>Trancio ai lamponi &mdash; 2,70 €</li>
+        </ul>
+        <p class="note">La torta alle fragole è la base da 58 € più 9 € per la frutta fresca sopra. La frutta la compriamo dai coltivatori, l'offerta cambia ogni settimana.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Settembre &ndash; novembre</p>
+        <h3>Noci e zucca</h3>
+        <ul style="margin-bottom:12px">
+          <li>Strudel di noci, 100 g &mdash; 2,10 €</li>
+          <li>Strudel ai semi di papavero, 100 g &mdash; 1,90 €</li>
+          <li>Torta di zucca alla cannella &mdash; 2,40 €</li>
+        </ul>
+        <p class="note">Gli strudel li cuociamo interi e li tagliamo in base al peso che volete.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Dicembre</p>
+        <h3>Dolci di Natale</h3>
+        <ul style="margin-bottom:12px">
+          <li>Biscotti speziati decorati &mdash; 34 € al kg</li>
+          <li>Mezzelune alla vaniglia &mdash; 29 € al kg</li>
+          <li>Treccia di Natale, 600 g &mdash; 7,40 €</li>
+        </ul>
+        <p class="note">Gli ordini per i dolci di Natale li accettiamo fino al 10 dicembre.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ALERGÉNY ================= -->
+<section class="sec" id="alergeny">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Ingredienti</p>
+      <h2>Allergeni nei prodotti</h2>
+      <p class="lede">I numeri corrispondono all'elenco degli allergeni del Reg. UE 1169/2011. Scegliete cosa volete evitare e la tabella mostra solo i prodotti adatti.</p>
+    </div>
+
+    <ul class="legendlist reveal">
+      <li><b>1</b> &ndash; cereali contenenti glutine</li>
+      <li><b>3</b> &ndash; uova</li>
+      <li><b>6</b> &ndash; soia</li>
+      <li><b>7</b> &ndash; latte</li>
+      <li><b>8</b> &ndash; frutta a guscio</li>
+      <li><b>12</b> &ndash; anidride solforosa</li>
+    </ul>
+
+    <div class="filters reveal" role="group" aria-label="Filtra i prodotti per allergeni">
+      <button class="filter" type="button" data-free="0" aria-pressed="true">Mostra tutto</button>
+      <button class="filter" type="button" data-free="1" aria-pressed="false">Senza glutine</button>
+      <button class="filter" type="button" data-free="7" aria-pressed="false">Senza latte</button>
+      <button class="filter" type="button" data-free="3" aria-pressed="false">Senza uova</button>
+      <button class="filter" type="button" data-free="8" aria-pressed="false">Senza frutta a guscio</button>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table class="data">
+        <caption class="sr">Elenco dei prodotti e degli allergeni che contengono</caption>
+        <thead>
+          <tr><th scope="col">Prodotto</th><th scope="col">Allergeni</th><th scope="col">Nota</th></tr>
+        </thead>
+        <tbody id="al-body">
+          <tr data-al="1"><td>Pane grano e segale a lievito madre</td><td class="num">1</td><td>Farina, acqua, sale, lievito madre</td></tr>
+          <tr data-al="1"><td>Pane integrale di segale</td><td class="num">1</td><td>Martedì, giovedì, sabato</td></tr>
+          <tr data-al="1,7"><td>Panino al burro</td><td class="num">1, 7</td><td>Burro all'82%</td></tr>
+          <tr data-al="1,3,7"><td>Cornetto al burro</td><td class="num">1, 3, 7</td><td>Spennellato con uovo</td></tr>
+          <tr data-al="1,7"><td>Brezel ai semi</td><td class="num">1, 7</td><td>Sesamo, lino, girasole</td></tr>
+          <tr data-al="1,3,7"><td>Focaccine ai ciccioli</td><td class="num">1, 3, 7</td><td>Ciccioli di maiale</td></tr>
+          <tr data-al="1,3,7"><td>Bignè al caramello</td><td class="num">1, 3, 7</td><td>Crema alla vaniglia con latte</td></tr>
+          <tr data-al="1,3,7,12"><td>Trancio punch al rum</td><td class="num">1, 3, 7, 12</td><td>Contiene aroma di rum</td></tr>
+          <tr data-al="1,3,7"><td>Torta al miele a strati</td><td class="num">1, 3, 7</td><td>Miele, crema al caramello</td></tr>
+          <tr data-al="1,3,7,6"><td>Trancio al cioccolato</td><td class="num">1, 3, 6, 7</td><td>Il cioccolato 70% contiene lecitina di soia</td></tr>
+          <tr data-al="3,7,8"><td>Trancio di mandorle senza glutine</td><td class="num">3, 7, 8</td><td>Senza farina di grano, il laboratorio non è senza glutine</td></tr>
+          <tr data-al="1,3,7,8"><td>Strudel di noci</td><td class="num">1, 3, 7, 8</td><td>Noci</td></tr>
+          <tr data-al="3,7"><td>Meringa al cocco</td><td class="num">3, 7</td><td>Dischi di meringa senza farina</td></tr>
+          <tr data-al="1,7"><td>Focaccia al rosmarino</td><td class="num">1, 7</td><td>Olio d'oliva, sale marino</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="count" id="al-count" role="status">Mostriamo tutti i 14 prodotti.</p>
+    <p class="note" style="margin-top:16px">Sforniamo tutto in un unico laboratorio, dove si lavorano farina e frutta a guscio. In caso di allergia grave non possiamo escludere tracce.</p>
+  </div>
+</section>
+
+<!-- ================= POSTUP ================= -->
+<section class="sec sec--band sec--tight" id="postup">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">L'ordine passo per passo</p>
+      <h2>Come funziona</h2>
+      <p class="lede">Dall'invio del messaggio al ritiro ci sono quattro passi. La data la confermiamo entro 24 ore, l'acconto si paga entro due giorni dalla conferma.</p>
+    </div>
+    <ol class="steps reveal">
+      <li>
+        <span class="steps__n">1</span>
+        <h3>Torta e data</h3>
+        <p>Scegliete misura e gusti nel configuratore o ce li scrivete con parole vostre. La data la confermiamo entro 24 ore.</p>
+      </li>
+      <li>
+        <span class="steps__n">2</span>
+        <h3>Acconto del 30%</h3>
+        <p>Dopo la conferma vi mandiamo l'importo dell'acconto. Lo pagate con bonifico o in negozio, e la data è prenotata.</p>
+      </li>
+      <li>
+        <span class="steps__n">3</span>
+        <h3>Sforniamo</h3>
+        <p>Il pan di Spagna lo cuociamo il giorno prima del ritiro, farciamo e decoriamo la mattina del ritiro, perché la torta sia fresca.</p>
+      </li>
+      <li>
+        <span class="steps__n">4</span>
+        <h3>Ritiro</h3>
+        <p>La torta la ritirate in negozio all'ora concordata. Il saldo lo pagate al ritiro, in contanti o con carta.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= OBJEDNÁVKA ================= -->
+<section class="sec" id="objednavka">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Modulo</p>
+      <h2>Ordine di torte e grandi quantità</h2>
+      <p class="lede">Compilate quello che vi serve. La risposta con la conferma di data e prezzo la ricevete entro 24 ore. Se avete fretta, chiamateci dal martedì al venerdì 8:00 &ndash; 16:00 o il sabato 8:00 &ndash; 12:00.</p>
+    </div>
+
+    <div class="two two--wide">
+      <form class="form reveal" id="objednavka-form" novalidate>
+        <div class="done" id="objednavka-hotovo" hidden tabindex="-1">
+          <h3>Messaggio inviato</h3>
+          <p>È arrivato nella casella del forno. Vi richiamiamo entro 24 ore per confermare data e prezzo. Su questa pagina di esempio i dati non vengono salvati da nessuna parte.</p>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-meno">Nome e cognome</label>
+            <input type="text" id="f-meno" name="meno" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-tel">Telefono</label>
+            <input type="tel" id="f-tel" name="telefon" autocomplete="tel" placeholder="il vostro numero di telefono">
+            <span class="hint">Vi chiamiamo a questo numero con la conferma.</span>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-typ">Cosa ordinate</label>
+            <select id="f-typ" name="typ">
+              <option value="torta">Torta su ordinazione</option>
+              <option value="zakusky">Dolci e pasticcini mignon</option>
+              <option value="pecivo">Grandi quantità di panini</option>
+              <option value="sezona">Dolci di stagione</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-cas">Ora del ritiro</label>
+            <select id="f-cas" name="cas">
+              <option>7:00 &ndash; 9:00</option>
+              <option selected>9:00 &ndash; 12:00</option>
+              <option>12:00 &ndash; 15:00</option>
+              <option>15:00 &ndash; 17:30</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="field">
+            <label for="f-datum">Data del ritiro</label>
+            <input type="date" id="f-datum" name="datum">
+            <span class="hint" id="f-datum-hint">Al più presto fra tre giorni lavorativi, esclusi domenica e lunedì.</span>
+          </div>
+          <div class="field">
+            <label for="f-pocet">Numero di porzioni o di pezzi</label>
+            <input type="text" id="f-pocet" name="pocet" placeholder="per esempio 16 porzioni">
+            <span class="hint">In base a questo vi consigliamo la misura.</span>
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom:18px">
+          <label for="f-zostava">Messaggio, torta e note</label>
+          <textarea id="f-zostava" name="zostava" placeholder="Per esempio: Ø 22 cm, base al cacao, ganache, glassa al cioccolato, scritta «Tanti auguri»."></textarea>
+          <span class="hint">Il pulsante del configuratore inserisce qui la vostra torta automaticamente.</span>
+        </div>
+
+        <label class="check" style="margin-bottom:22px">
+          <input type="checkbox" id="f-suhlas" name="suhlas">
+          <span>Acconsento al trattamento dei dati per gestire l'ordine e prendo atto delle condizioni di disdetta.</span>
+        </label>
+
+        <button class="btn btn--primary btn--full" type="submit">Invia il messaggio</button>
+        <p class="note" style="margin-top:16px">Con l'invio l'ordine non è ancora confermato. Diventa vincolante dopo la conferma della data per telefono e il pagamento di un acconto del 30% del prezzo.</p>
+      </form>
+
+      <div class="reveal stack">
+        <div class="card">
+          <h3>Più veloce per telefono</h3>
+          <p class="note">Se non siete sicuri della misura, diteci il numero di ospiti. Al telefono vi diciamo diametro, prezzo e se la data è ancora libera.</p>
+          <ul class="kv" style="margin-top:16px">
+            <li><b>Telefono</b><span><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></span></li>
+            <li><b>Quando rispondiamo</b><span>Martedì &ndash; venerdì 8:00 &ndash; 16:00, sabato 8:00 &ndash; 12:00</span></li>
+            <li><b>Indirizzo</b><span>Via dei Fabbri 21, 43121 Parma</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Cosa ci serve sapere da voi</h3>
+          <ul>
+            <li>Per quante persone deve bastare la torta</li>
+            <li>Se qualcuno tra gli ospiti non può mangiare glutine, latte o frutta a guscio</li>
+            <li>Colore o soggetto, se la torta deve abbinarsi agli addobbi</li>
+            <li>Il testo esatto della scritta, accenti compresi</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Quando rispondiamo</h3>
+          <p class="note">I messaggi del modulo li leggiamo al mattino, dopo aver riempito il banco, e di nuovo nel pomeriggio. La domenica e il lunedì siamo chiusi, i messaggi di quei giorni li gestiamo il martedì mattina.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OTVÁRACIE HODINY ================= -->
+<section class="sec sec--band" id="hodiny">
+  <div class="wrap">
+    <div class="two reveal">
+      <div>
+        <div class="head">
+          <div class="head__rule"></div>
+          <p class="eyebrow">Quando siamo aperti</p>
+          <h2>Orari di apertura</h2>
+        </div>
+        <ul class="hours">
+          <li><span class="hours__d">Lunedì</span><span>Chiuso</span></li>
+          <li><span class="hours__d">Martedì</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Mercoledì</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Giovedì</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Venerdì</span><span>6:30 &ndash; 17:30</span></li>
+          <li><span class="hours__d">Sabato</span><span>6:30 &ndash; 12:30</span></li>
+          <li><span class="hours__d">Domenica</span><span>Chiuso</span></li>
+        </ul>
+        <p class="note" style="margin-top:18px">Nei giorni festivi sforniamo con orario ridotto, gli orari li appendiamo alla porta una settimana prima. I dolci di solito finiscono circa un'ora prima della chiusura.</p>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Ritiro dopo la chiusura</h3>
+          <p class="note">Se gli orari non vi vanno bene, concordiamo il ritiro della torta ordinata dal martedì al venerdì tra le 17:30 e le 18:30. Scrivetelo nella nota dell'ordine.</p>
+        </div>
+        <div class="card">
+          <h3>Svendita serale</h3>
+          <p class="note">Nell'ultima ora prima della chiusura vendiamo i panini rimasti a metà prezzo. I dolci non sono in svendita: li teniamo al fresco fino al giorno dopo. Il pane del giorno prima costa 2,20 € al mattino.</p>
+        </div>
+        <div class="card">
+          <h3>Ferie</h3>
+          <p class="note">Una volta all'anno chiudiamo per due settimane, la data la annunciamo un mese prima sulla porta del negozio. Per quel periodo non accettiamo ordini.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="board reveal">
+      <div class="board__in">
+        <p class="board__label">La giornata</p>
+        <h3>Cosa c'è in banco e quando</h3>
+      </div>
+      <ul class="board__list board__in">
+        <li>
+          <span>
+            <span class="board__item">Panini, trecce, cornetti</span> <span class="board__desc">Prima infornata all'apertura, seconda alle 10:00</span>
+          </span>
+          <span class="board__time">6:30</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Pane a lievito madre</span> <span class="board__desc">Raffreddato, lo affettiamo su richiesta</span>
+          </span>
+          <span class="board__time">8:00</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Dolci e tranci</span> <span class="board__desc">Otto tipi, riforniamo in base alle vendite</span>
+          </span>
+          <span class="board__time">9:00</span>
+        </li>
+        <li>
+          <span>
+            <span class="board__item">Salato e focaccine</span> <span class="board__desc">Sforniamo di continuo fino alle 15:00</span>
+          </span>
+          <span class="board__time">11:00</span>
+        </li>
+      </ul>
+      <p class="board__foot">Le torte ordinate e gli ordini grandi li consegniamo in qualsiasi momento durante l'orario di apertura: basta venire al banco e dire il nome.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOPRAVA ================= -->
+<section class="sec" id="doprava">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Come arrivare</p>
+      <h2>Come arrivare</h2>
+      <p class="lede">Siamo all'angolo tra via dei Fabbri e via Municipio, in un cortile con ingresso direttamente dal marciapiede. La soglia è a filo: in negozio si entra anche con il passeggino.</p>
+    </div>
+
+    <div class="two two--wide reveal">
+      <div class="plan">
+        <svg viewBox="0 0 620 320" role="img" aria-labelledby="plan-nadpis plan-popis">
+          <title id="plan-nadpis">Schema orientativo dei dintorni del negozio</title>
+          <desc id="plan-popis">Il negozio è all'angolo tra via dei Fabbri e via Municipio, il parcheggio è davanti all'edificio, la fermata dell'autobus è 120 metri a sud.</desc>
+          <rect x="0" y="0" width="620" height="320" fill="#F4EDE1"/>
+          <g stroke="#E2D7C6" stroke-width="1">
+            <path d="M0 40H620M0 80H620M0 120H620M0 160H620M0 200H620M0 240H620M0 280H620"/>
+            <path d="M40 0V320M80 0V320M120 0V320M160 0V320M200 0V320M240 0V320M280 0V320M320 0V320M360 0V320M400 0V320M440 0V320M480 0V320M520 0V320M560 0V320M600 0V320"/>
+          </g>
+          <rect x="0" y="128" width="620" height="46" fill="#E8D9C4"/>
+          <rect x="352" y="0" width="42" height="320" fill="#E8D9C4"/>
+          <rect x="96" y="60" width="176" height="60" fill="#2E211A"/>
+          <text x="184" y="97" text-anchor="middle" font-family="Georgia,serif" font-size="19" fill="#F0E7DA">Crosta</text>
+          <rect x="96" y="24" width="176" height="26" fill="none" stroke="#A3452C" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="184" y="42" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#241B15">Parcheggio, 8 posti</text>
+          <text x="20" y="157" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Via dei Fabbri</text>
+          <text x="373" y="300" text-anchor="middle" transform="rotate(-90 373 300)" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Via Municipio</text>
+          <circle cx="373" cy="236" r="9" fill="#A3452C"/>
+          <text x="392" y="241" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Fermata bus, 120 m</text>
+          <rect x="440" y="52" width="140" height="60" fill="none" stroke="#6A5A4E" stroke-width="1"/>
+          <text x="510" y="88" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Parco comunale</text>
+          <circle cx="184" cy="140" r="7" fill="#241B15"/>
+          <text x="198" y="145" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#241B15">Ingresso del negozio</text>
+        </svg>
+      </div>
+
+      <div>
+        <ul class="kv">
+          <li><b>Indirizzo</b><span>Via dei Fabbri 21, 43121 Parma</span></li>
+          <li><b>In auto</b><span>Otto posti auto proprio davanti al negozio, la prima ora gratis. Altri posti in via Municipio, a 3 minuti a piedi.</span></li>
+          <li><b>Autobus</b><span>Fermata 120 metri a sud, le linee per il centro passano ogni 10 minuti.</span></li>
+          <li><b>Bici</b><span>Rastrelliera per quattro bici all'ingresso, sotto la tettoia.</span></li>
+          <li><b>Accessibilità</b><span>Soglia a filo, porta larga 100 cm, in negozio c'è spazio per girare con la carrozzina.</span></li>
+          <li><b>Rifornimenti</b><span>Cortile dal lato di via Municipio, vi preghiamo di lasciare libero il passaggio fino alle 9:00.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODMIENKY ================= -->
+<section class="sec sec--band" id="podmienky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Regole per gli ordini</p>
+      <h2>Pagamento, acconti e disdette</h2>
+    </div>
+
+    <div class="three reveal">
+      <div class="card">
+        <h3>Come pagate</h3>
+        <ul style="margin-bottom:0">
+          <li>Contanti</li>
+          <li>Carta di pagamento da 1 €, senza commissioni</li>
+          <li>Buoni pasto cartacei ed elettronici</li>
+          <li>Bonifico per ordini oltre 100 €</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Acconto</h3>
+        <p class="note">Per le torte e gli ordini oltre 60 € chiediamo un acconto del 30% del prezzo, da pagare entro due giorni dalla conferma. Senza acconto la data non la teniamo, perché per ogni giorno accettiamo un numero limitato di torte.</p>
+      </div>
+      <div class="card">
+        <h3>Disdetta</h3>
+        <ul style="margin-bottom:0">
+          <li>Oltre 72 ore prima: l'acconto si restituisce per intero</li>
+          <li>Da 48 a 72 ore: restituiamo metà dell'acconto</li>
+          <li>Meno di 48 ore: l'acconto resta a noi, gli ingredienti sono già comprati</li>
+          <li>Un cambio di data gratuito, se ci avvisate almeno 72 ore prima</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two reveal" style="margin-top:26px">
+      <div class="card">
+        <h3>Ritiro e trasporto</h3>
+        <p class="note">La torta la teniamo al fresco fino alla chiusura del giorno concordato. In auto appoggiatela su un piano orizzontale, non sul sedile. Dei danni dopo il ritiro non rispondiamo.</p>
+      </div>
+      <div class="card">
+        <h3>Reclami</h3>
+        <p class="note">Se qualcosa non va, fatecelo sapere il giorno del ritiro. Il prodotto difettoso lo sostituiamo o vi restituiamo i soldi. Il reclamo lo gestiamo al massimo entro 30 giorni.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VEĽKOOBCHOD ================= -->
+<section class="sec" id="velkoobchod">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Per bar e aziende</p>
+      <h2>Forniture e buffet</h2>
+      <p class="lede">Due possibilità per gli ordini grandi: fornitura giornaliera fissa e buffet per un singolo evento. Ogni giorno possiamo sfornare in più 200 panini, quindi accettiamo al massimo cinque clienti fissi.</p>
+    </div>
+
+    <div class="two two--wide reveal">
+      <div>
+        <!-- FOTO: prepravky s pečivom pripravené pri zadnom vchode na ranný rozvoz -->
+        <figure class="obraz obraz--wide obraz--c" style="margin-bottom:26px">
+          <figcaption class="obraz__cap">
+            <span class="obraz__k">Fornitura fissa</span>
+            <span class="obraz__n">Al bar entro le 8:00</span>
+          </figcaption>
+        </figure>
+        <ul class="kv">
+          <li><b>Minimo</b><span>30 panini o 10 pagnotte al giorno</span></li>
+          <li><b>Prezzo</b><span>Più basso del 20% rispetto al negozio, oltre i 60 pezzi al giorno del 25%</span></li>
+          <li><b>Consegna</b><span>A Parma dal martedì al sabato entro le 8:00. Gratis oltre i 40 pezzi al giorno, altrimenti 5 € a viaggio.</span></li>
+          <li><b>Programma</b><span>L'ordine della settimana dopo lo confermiamo entro giovedì alle 12:00</span></li>
+          <li><b>Fatturazione</b><span>Una volta al mese, pagamento a 14 giorni</span></li>
+          <li><b>Modifiche e disdetta</b><span>Il programma si cambia o si annulla con 14 giorni di preavviso, senza costi</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="group">
+          <div class="group__head">
+            <h3>Buffet per un evento</h3>
+            <span class="group__when">Tre giorni lavorativi prima</span>
+          </div>
+          <ul class="pl">
+            <li>
+              <span class="pl__name"><b>Buffet salato, 40 pezzi</b><span class="pl__desc">Mini focaccine, brezel, grissini al formaggio</span></span>
+              <span class="pl__price">26,00 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Buffet dolce, 40 pezzi</b><span class="pl__desc">Pasticcini mignon, tranci, meringhe</span></span>
+              <span class="pl__price">38,00 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Pasticcini mignon, da 20 pezzi</b><span class="pl__desc">Prezzo al pezzo, gusti da concordare</span></span>
+              <span class="pl__price">0,95 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Ciotole di pane per salse, 5 pz.</b></span>
+              <span class="pl__price">14,00 €</span>
+            </li>
+            <li>
+              <span class="pl__name"><b>Torta oltre 30 porzioni</b><span class="pl__desc">A due piani 22 + 16 cm, sei giorni lavorativi</span></span>
+              <span class="pl__price">da 138 €</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:26px">
+          <h3>Cosa vale per i buffet</h3>
+          <ul style="margin-bottom:0">
+            <li>Il numero definitivo di pezzi lo confermate al più tardi 48 ore prima dell'evento</li>
+            <li>Consegna a Parma 5 €, gratis per ordini oltre 100 €</li>
+            <li>I vassoi vanno restituiti entro tre giorni dall'evento</li>
+            <li>L'elenco degli allergeni di ogni voce lo ricevete stampato</li>
+            <li>Acconto del 30% per ordini oltre 60 €, disdetta con le stesse regole delle torte</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="#objednavka">Concorda una fornitura</a>
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= POUKÁŽKY ================= -->
+<section class="sec sec--band" id="poukazky">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Regalo</p>
+      <h2>Buoni regalo</h2>
+      <p class="lede">Buono cartaceo in busta, ve lo prepariamo sul momento in orario di apertura. Vale 12 mesi dalla data di emissione su tutta l'offerta, torte su ordinazione comprese.</p>
+    </div>
+
+    <div class="vouchers reveal">
+      <div class="voucher"><b>20 €</b><span>Per dolci e panini</span></div>
+      <div class="voucher"><b>30 €</b><span>Per una torta piccola</span></div>
+      <div class="voucher"><b>50 €</b><span>Per una torta decorata</span></div>
+    </div>
+
+    <div class="two reveal">
+      <div class="card">
+        <h3>Come si usa</h3>
+        <p class="note">Il buono lo consegnate al momento del pagamento. Se l'ordine costa di più, pagate la differenza. Se costa di meno, il resto rimane sul buono e lo usate la volta dopo.</p>
+      </div>
+      <div class="card">
+        <h3>Quando non vale</h3>
+        <p class="note">Il buono non si cambia in contanti e non vale per la svendita serale. Dopo la scadenza non possiamo più accettarlo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Domande frequenti</p>
+      <h2>Le domande più frequenti</h2>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Con quanto anticipo devo ordinare una torta?</summary>
+        <div class="faq__a"><p>Una torta semplice fino a 22 cm di diametro richiede tre giorni lavorativi. Le misure più grandi quattro, quella a due piani sei. La copertura in pasta di mandorle aggiunge un giorno, la decorazione dipinta a mano due. La prima data utile precisa la mostra il configuratore.</p></div>
+      </details>
+      <details>
+        <summary>Fate prodotti senza glutine o senza lattosio?</summary>
+        <div class="faq__a"><p>Sì, il trancio di mandorle senza glutine c'è ogni giorno e la base senza glutine per le torte costa 12 € in più. Una torta senza lattosio possiamo farla con panna vegetale, su accordo. Il laboratorio però non è separato, quindi in caso di celiachia non possiamo escludere tracce di glutine.</p></div>
+      </details>
+      <details>
+        <summary>Possiamo personalizzare la torta con un nostro modello?</summary>
+        <div class="faq__a"><p>Mandateci un'immagine o una descrizione. Colore e soggetto li adattiamo, ma copiare nei dettagli il lavoro di altri non lo promettiamo. Le decorazioni più complesse le preventiviamo a parte, sempre prima e con il vostro consenso.</p></div>
+      </details>
+      <details>
+        <summary>Quanto dura il pane a lievito madre?</summary>
+        <div class="faq__a"><p>Tre o quattro giorni. Conservatelo con il taglio verso il basso in un sacchetto di tela o in una madia, non nella plastica. Non mettetelo in frigo: lì indurisce più in fretta.</p></div>
+      </details>
+      <details>
+        <summary>Quanto dura una torta finita?</summary>
+        <div class="faq__a"><p>In frigorifero a 4-6 °C due giorni. Le torte con frutta fresca e panna consigliamo di mangiarle il giorno del ritiro. Prima di servirla lasciate la torta 30 minuti a temperatura ambiente: il sapore migliora molto.</p></div>
+      </details>
+      <details>
+        <summary>Fate consegne?</summary>
+        <div class="faq__a"><p>In città consegniamo dal martedì al venerdì tra le 9:00 e le 11:00 per 5 €. Con un ordine oltre 100 € la consegna è gratis. Fuori città non consegniamo, le torte soffrono il trasporto.</p></div>
+      </details>
+      <details>
+        <summary>Si può sedere a prendere un caffè?</summary>
+        <div class="faq__a"><p>In negozio abbiamo due tavolini da quattro posti e un bancone in piedi alla finestra. L'espresso costa 1,60 €, il cappuccino 2,20 €. Il caffè lo serviamo dal martedì al venerdì fino alle 16:30, il sabato fino alle 12:00. I posti non si prenotano.</p></div>
+      </details>
+      <details>
+        <summary>Fornite anche bar e caffetterie?</summary>
+        <div class="faq__a"><p>Sì, con almeno 30 panini al giorno e giorni fissi i prezzi sono più bassi del 20% rispetto al negozio. Tutte le condizioni, capacità compresa, le trovate nella sezione <a href="#velkoobchod">Forniture e buffet</a>.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KARIÉRA ================= -->
+<section class="sec sec--dark" id="kariera">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Lavora con noi</p>
+      <h2>Chi cerchiamo</h2>
+      <p class="lede">Due posti liberi nel turno di giorno. Domenica e lunedì sono liberi per tutta la squadra, nei festivi sforniamo con orario ridotto.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="job">
+        <div>
+          <h3>Pasticciere o pasticciera</h3>
+          <p class="job__meta">Tempo pieno &middot; inizio da concordare &middot; da 1650 € lordi al mese in base all'esperienza</p>
+        </div>
+        <div>
+          <p>Lavoro su dolci e torte, decorazione in autonomia, inizio turno alle 5:00.</p>
+          <ul>
+            <li>Almeno due anni di esperienza in pasticceria</li>
+            <li>Padronanza di creme, ganache e pasta di mandorle</li>
+            <li>Attestato HACCP</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job">
+        <div>
+          <h3>Addetto o addetta alla vendita</h3>
+          <p class="job__meta">Tempo pieno o part-time &middot; da 950 € lordi al mese</p>
+        </div>
+        <div>
+          <p>Servizio al banco, raccolta ordini, rifornimento dei prodotti e chiusura serale.</p>
+          <ul>
+            <li>Uso del registratore di cassa e dei contanti</li>
+            <li>Inizio del turno del mattino alle 6:00</li>
+            <li>Attestato HACCP</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:26px">Contattateci con il <a href="#objednavka">modulo</a> o chiamateci, oppure portate il curriculum direttamente in negozio. Rispondiamo entro una settimana e per il colloquio vi invitiamo al mattino, quando vedete il laboratorio in piena attività.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT ================= -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="head__rule"></div>
+      <p class="eyebrow">Contatti</p>
+      <h2>Telefono, indirizzo e ordini grandi</h2>
+    </div>
+
+    <div class="two reveal">
+      <div>
+        <ul class="kv">
+          <li><b>Negozio</b><span>Forno e pasticceria Crosta<br>Via dei Fabbri 21, 43121 Parma</span></li>
+          <li><b>Telefono</b><span><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></span></li>
+          <li><b>Ordini</b><span>Per telefono o con il <a href="#objednavka">modulo</a>, risposta entro 24 ore</span></li>
+          <li><b>Aperto</b><span>Martedì &ndash; venerdì 6:30 &ndash; 17:30, sabato 6:30 &ndash; 12:30</span></li>
+          <li><b>Chiuso</b><span>Domenica e lunedì</span></li>
+          <li><b>Parcheggio</b><span>Otto posti davanti al negozio, la prima ora gratis</span></li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn--primary" href="#objednavka">Scrivi con il modulo</a>
+          <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Ordini grandi</h3>
+          <p class="note">Matrimoni, eventi aziendali e buffet li concordiamo di persona. Venite in negozio dal martedì al giovedì pomeriggio, quando in laboratorio c'è meno lavoro.</p>
+        </div>
+        <div class="card">
+          <h3>Assaggio prima dell'ordine</h3>
+          <p class="note">Per una torta oltre 100 € prepariamo un assaggio di tre farciture. Concordatelo almeno una settimana prima: costa 8 € e all'ordine scaliamo questa cifra dal prezzo della torta.</p>
+        </div>
+        <div class="card">
+          <h3>Come ci accordiamo</h3>
+          <p class="note">Con il modulo scriveteci data, numero di porzioni e l'idea del gusto. Vi chiamiamo, definiamo i dettagli e vi mandiamo l'importo dell'acconto. La data la teniamo solo dopo il pagamento.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= AUTOR UKÁŽKY ================= -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap">
+    <div class="author__grid">
+      <div>
+        <p class="author__tag">Pagina di esempio</p>
+        <h2 id="autor-nadpis">Vi piace questo sito?</h2>
+        <p>Un sito così ve lo realizza <strong>Alex Poliak</strong>. Questo esempio lo ha progettato e programmato da solo, dalla prima linea al configuratore della torta che calcola prezzo e data.</p>
+        <p>Il forno Crosta è un'attività inventata, prezzi e testi servono solo come dimostrazione. Voi ricevete lo stesso sito con il vostro listino, i vostri orari e un modulo che invia davvero.</p>
+        <p class="author__price">Siti su misura da 250 EUR. Prima bozza in 3 giorni.</p>
+        <p class="author__free">Consulenza gratuita e senza impegno</p>
+      </div>
+
+      <div class="author__box">
+        <ul>
+          <li><strong>E-mail</strong><br><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></li>
+          <li><strong>Assistenza</strong><br><a href="mailto:support@apoliak.online">support@apoliak.online</a></li>
+          <li><strong>Telefono</strong><br><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></li>
+          <li><strong>Sito</strong><br><a href="https://apoliak.online/it/">https://apoliak.online</a></li>
+        </ul>
+        <div class="actions" style="margin-top:0">
+          <a class="btn btn--sand" href="https://apoliak.online/it/">Vai su apoliak.online</a>
+          <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ================= PÄTIČKA ================= -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__cta">
+      <p>Torta su ordinazione da 42 €, tempo minimo tre giorni lavorativi. Data e prezzo li confermiamo entro 24 ore.</p>
+      <a class="btn btn--primary" href="#objednavka">Ordina una torta</a>
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+    </div>
+    <div class="foot__grid">
+      <div>
+        <h3>Forno e pasticceria Crosta</h3>
+        <p>Via dei Fabbri 21<br>43121 Parma</p>
+        <p><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></p>
+        <p>Martedì &ndash; venerdì 6:30 &ndash; 17:30<br>Sabato 6:30 &ndash; 12:30<br>Domenica e lunedì chiuso</p>
+      </div>
+      <div>
+        <h3>Offerta</h3>
+        <ul>
+          <li><a href="#pecivo">Pane e panini</a></li>
+          <li><a href="#zakusky">Dolci e tranci</a></li>
+          <li><a href="#torty">Torte su ordinazione</a></li>
+          <li><a href="#sezona">Dolci di stagione</a></li>
+          <li><a href="#poukazky">Buoni regalo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Ordine</h3>
+        <ul>
+          <li><a href="#konfigurator">Configuratore della torta</a></li>
+          <li><a href="#postup">Come funziona</a></li>
+          <li><a href="#objednavka">Modulo</a></li>
+          <li><a href="#podmienky">Pagamento e disdetta</a></li>
+          <li><a href="#velkoobchod">Forniture e buffet</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Informazioni</h3>
+        <ul>
+          <li><a href="#hodiny">Orari di apertura</a></li>
+          <li><a href="#doprava">Come arrivare</a></li>
+          <li><a href="#alergeny">Allergeni</a></li>
+          <li><a href="#faq">Domande frequenti</a></li>
+          <li><a href="#kontakt">Contatti</a></li>
+          <li><a href="#kariera">Lavora con noi</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <p>Sito di esempio. Attività, prezzi e indirizzo sono inventati.</p>
+      <p>Progetto e codice: <a href="https://apoliak.online/it/">Alex Poliak &mdash; apoliak.online</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add("js");
+
+  /* ---------- mobilné menu ---------- */
+  var toggle = document.getElementById("nav-toggle");
+  var menu = document.getElementById("hlavne-menu");
+  if(toggle && menu){
+    toggle.addEventListener("click", function(){
+      var open = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", open ? "false" : "true");
+      toggle.setAttribute("aria-expanded", open ? "false" : "true");
+    });
+    menu.addEventListener("click", function(e){
+      if(e.target.tagName === "A"){
+        menu.setAttribute("data-open","false");
+        toggle.setAttribute("aria-expanded","false");
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && menu.getAttribute("data-open") === "true"){
+        menu.setAttribute("data-open","false");
+        toggle.setAttribute("aria-expanded","false");
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---------- odhalenie obsahu pri scrollovaní ---------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.06});
+    reveals.forEach(function(el){ io.observe(el); });
+  }else{
+    reveals.forEach(function(el){ el.classList.add("is-in"); });
+  }
+
+  /* ---------- pomocné funkcie ---------- */
+  var DNI = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+  var MESIACE = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+
+  function eur(n){
+    return n.toFixed(2).replace(".", ",") + " €";
+  }
+  function pridajDni(dni){
+    var d = new Date();
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate() + dni);
+    /* nedeľa (0) a pondelok (1) máme zatvorené */
+    while(d.getDay() === 0 || d.getDay() === 1){ d.setDate(d.getDate() + 1); }
+    return d;
+  }
+  function datumText(d){
+    return DNI[d.getDay()] + " " + d.getDate() + " " + MESIACE[d.getMonth()] + " " + d.getFullYear();
+  }
+  function datumISO(d){
+    var m = String(d.getMonth()+1);
+    var den = String(d.getDate());
+    if(m.length < 2){ m = "0" + m; }
+    if(den.length < 2){ den = "0" + den; }
+    return d.getFullYear() + "-" + m + "-" + den;
+  }
+
+  /* ---------- konfigurátor torty ---------- */
+  var napis = document.getElementById("cfg-napis");
+  var elCena = document.getElementById("s-cena");
+  var elPorcia = document.getElementById("s-porcia");
+  var elTermin = document.getElementById("s-termin");
+  var poleDatum = document.getElementById("f-datum");
+  var poleZostava = document.getElementById("f-zostava");
+  var poleTyp = document.getElementById("f-typ");
+  var stav = {};
+
+  function zvolene(skupina){
+    return document.querySelector('input[name="cfg-' + skupina + '"]:checked');
+  }
+
+  function prepocitaj(){
+    var v = zvolene("velkost");
+    var k = zvolene("korpus");
+    var p = zvolene("plnka");
+    var s = zvolene("povrch");
+    if(!v || !k || !p || !s){ return; }
+
+    var cena = 0, dni = 0;
+    [v,k,p,s].forEach(function(el){
+      cena += parseFloat(el.getAttribute("data-cena"));
+      dni += parseInt(el.getAttribute("data-dni"), 10);
+    });
+    var maNapis = napis && napis.checked;
+    if(maNapis){ cena += parseFloat(napis.getAttribute("data-cena")); }
+
+    var porcie = parseInt(v.getAttribute("data-porcie"), 10);
+    var termin = pridajDni(dni);
+
+    document.getElementById("s-velkost").textContent = v.getAttribute("data-popis");
+    document.getElementById("s-korpus").textContent = k.getAttribute("data-popis");
+    document.getElementById("s-plnka").textContent = p.getAttribute("data-popis");
+    document.getElementById("s-povrch").textContent = s.getAttribute("data-popis");
+    document.getElementById("s-napis").textContent = maNapis ? "sì, il testo lo indicate nell'ordine" : "senza scritta";
+
+    elCena.textContent = eur(cena);
+    elPorcia.textContent = "Circa " + eur(cena / porcie) + " a porzione con " + porcie + " porzioni. Acconto all'ordine " + eur(cena * 0.3) + ".";
+    elTermin.textContent = datumText(termin);
+
+    stav = {
+      cena: cena,
+      dni: dni,
+      termin: termin,
+      popis: v.getAttribute("data-popis") + ", " + k.getAttribute("data-popis") + ", " +
+             p.getAttribute("data-popis") + ", " + s.getAttribute("data-popis") +
+             (maNapis ? ", con scritta sulla torta" : "") + ". Prezzo indicativo " + eur(cena) + "."
+    };
+
+    if(poleDatum){
+      poleDatum.min = datumISO(termin);
+      if(!poleDatum.value || poleDatum.value < poleDatum.min){ poleDatum.value = datumISO(termin); }
+    }
+  }
+
+  var vstupy = document.querySelectorAll('input[name^="cfg-"], #cfg-napis');
+  vstupy.forEach(function(el){ el.addEventListener("change", prepocitaj); });
+  if(vstupy.length){ prepocitaj(); }
+
+  var prenies = document.getElementById("cfg-prenies");
+  if(prenies){
+    prenies.addEventListener("click", function(){
+      if(poleZostava){ poleZostava.value = stav.popis || ""; }
+      if(poleTyp){ poleTyp.value = "torta"; }
+      var cielova = document.getElementById("objednavka");
+      if(cielova){ cielova.scrollIntoView({behavior:"smooth", block:"start"}); }
+      window.setTimeout(function(){
+        var meno = document.getElementById("f-meno");
+        if(meno){ meno.focus({preventScroll:true}); }
+      }, 500);
+    });
+  }
+
+  /* ---------- filter alergénov ---------- */
+  var filtre = document.querySelectorAll(".filter");
+  var riadky = document.querySelectorAll("#al-body tr");
+  var pocet = document.getElementById("al-count");
+  if(filtre.length && riadky.length){
+    filtre.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var kod = btn.getAttribute("data-free");
+        filtre.forEach(function(b){ b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+        var viditelne = 0;
+        riadky.forEach(function(tr){
+          var zoznam = tr.getAttribute("data-al").split(",");
+          var ok = (kod === "0") || zoznam.indexOf(kod) === -1;
+          tr.hidden = !ok;
+          if(ok){ viditelne++; }
+        });
+        if(pocet){
+          pocet.textContent = (kod === "0")
+            ? "Mostriamo tutti i " + riadky.length + " prodotti."
+            : "Mostriamo " + viditelne + " su " + riadky.length + " prodotti in base al filtro scelto.";
+        }
+      });
+    });
+  }
+
+  /* ---------- objednávkový formulár ---------- */
+  var form = document.getElementById("objednavka-form");
+  var hotovo = document.getElementById("objednavka-hotovo");
+  if(form && hotovo){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      hotovo.hidden = false;
+      hotovo.focus();
+      hotovo.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  }
+})();
+</script>
+</body>
+</html>

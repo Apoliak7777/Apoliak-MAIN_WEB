@@ -1,0 +1,2621 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/barber/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/barber/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/barber/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/barber/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/barber/">
+<link rel="alternate" hreflang="de" href="https://apoliak.online/de/ukazky/barber/">
+<link rel="alternate" hreflang="it" href="https://apoliak.online/it/ukazky/barber/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/barber/">
+<!-- /jazyky:hreflang -->
+<title>Barberia Filo — barbiere da uomo, listino e prenotazione</title>
+<meta name="description" content="Sito di esempio di una barberia: taglio da 22 €, rasatura con il rasoio, cura della barba, prenotazione con scelta di servizio, durata e orario. Progetto e codice di Alex Poliak, apoliak.online.">
+<meta name="author" content="Alex Poliak — apoliak.online">
+<meta name="theme-color" content="#15181B">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:site_name" content="Barberia Filo (sito di esempio)">
+<meta property="og:title" content="Barberia Filo — barbiere da uomo, listino e prenotazione">
+<meta property="og:description" content="Taglio da 22 €, rasatura con il rasoio, cura della barba. Prenotazione con scelta di servizio, durata e orario. Sito di esempio di Alex Poliak, apoliak.online.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%2315181B'/%3E%3Crect%20x='6'%20y='6'%20width='52'%20height='52'%20fill='none'%20stroke='%23C99A5B'%20stroke-width='2'/%3E%3Ctext%20x='32'%20y='43'%20font-family='Consolas,monospace'%20font-size='30'%20font-weight='700'%20fill='%23C99A5B'%20text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   HOLIČSTVO OSTRIE — ukážkový web
+   ============================================================ */
+
+/* ---------- 1. TOKENY ---------- */
+:root{
+  /* uhlíková paleta + jediný tlmený akcent: mosadz */
+  --deep:#101215;
+  --base:#15181B;
+  --surf:#1C2024;
+  --raise:#262B31;
+
+  --brass:#C99A5B;
+  --brass-hi:#D9AE72;
+  --brass-deep:#7A5320;
+  --on-brass:#14171A;
+
+  --ink-strong:#F4F6F7;
+  --ink-body:#E4E7EA;
+  --ink-mute:#A0A7AD;
+  --hair:#303740;
+  --hair-soft:#23282E;
+
+  --plate-ink:#F4F6F7;
+  --plate-mute:#C6CCD1;
+
+  /* premenné, ktoré prepisuje svetlá sekcia .paper */
+  --bg:var(--base);
+  --card:var(--surf);
+  --ink:var(--ink-body);
+  --title:var(--ink-strong);
+  --muted:var(--ink-mute);
+  --line:var(--hair);
+  --line-soft:var(--hair-soft);
+  --acc:var(--brass);
+  --btn-bg:var(--brass);
+  --btn-fg:var(--on-brass);
+  --btn-bg-h:var(--brass-hi);
+
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:Consolas,"SF Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+  --wrap:1220px;
+
+  /* jemné zrno cez feTurbulence, generované priamo v CSS */
+  --noise:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%3E%3Cfilter%20id='z'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.82'%20numOctaves='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='180'%20height='180'%20filter='url(%23z)'/%3E%3C/svg%3E");
+}
+
+/* ---------- 2. ZÁKLAD ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+body{
+  margin:0;
+  background:var(--base);
+  color:var(--ink-body);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{color:var(--title);font-weight:700;line-height:1.12;letter-spacing:-.022em;margin:0 0 .5em}
+h1{font-size:clamp(2.05rem,4.6vw,3.5rem)}
+h2{font-size:clamp(1.62rem,3.1vw,2.5rem)}
+h3{font-size:clamp(1.06rem,1.5vw,1.26rem);line-height:1.3;letter-spacing:-.012em}
+h4{font-size:1rem;letter-spacing:.005em}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--acc);text-underline-offset:3px}
+ul,ol{margin:0;padding:0;list-style:none}
+strong{color:var(--title)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+[hidden]{display:none !important}
+
+.wrap{width:min(100% - 36px,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--brass);color:var(--on-brass);font-weight:700;padding:12px 18px;z-index:400}
+.skip:focus{left:8px;top:8px}
+section{scroll-margin-top:var(--stick,148px)}
+.sec{padding:clamp(52px,6.4vw,102px) 0;background:var(--bg);color:var(--ink)}
+.sec--deep{--bg:var(--deep)}
+.paper{
+  --bg:#E9E5DE;
+  --card:#F4F1EB;
+  --ink:#16191C;
+  --title:#0F1215;
+  --muted:#4C525A;
+  --line:#CFC9C0;
+  --line-soft:#DED9D1;
+  --acc:var(--brass-deep);
+  --btn-bg:#1C2024;
+  --btn-fg:#F2EFEA;
+  --btn-bg-h:#333A42;
+}
+.paper h1,.paper h2,.paper h3,.paper h4{color:var(--title)}
+
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lede{font-size:1.04rem;color:var(--muted);max-width:58ch}
+.note{color:var(--muted);font-size:.92rem}
+.prose p{max-width:66ch}
+
+/* tabuľky sa na úzkych displejoch posúvajú vo vlastnom ráme */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line)}
+.dtab{width:100%;border-collapse:collapse;min-width:520px;font-size:.94rem}
+.dtab caption{text-align:left;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:14px 0 0}
+.dtab th,.dtab td{text-align:left;padding:14px 22px 14px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.dtab thead th{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+.dtab th[scope="row"]{font-weight:600;color:var(--title)}
+.dtab td{color:var(--muted)}
+.dtab td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--title);font-weight:700;text-align:right;padding-right:0}
+.dtab tr:last-child th,.dtab tr:last-child td{border-bottom:0}
+
+/* ---------- 3. HLAVIČKA SEKCIE (číslovaná lišta) ---------- */
+.shead{
+  display:grid;grid-template-columns:clamp(58px,7vw,112px) minmax(0,1fr);gap:10px clamp(20px,3vw,44px);
+  border-top:1px solid var(--line);padding-top:clamp(18px,2.2vw,26px);
+  margin-bottom:clamp(30px,3.8vw,52px);
+}
+.shead__idx{
+  font-family:var(--mono);font-size:clamp(1.42rem,2.6vw,2.05rem);font-weight:700;letter-spacing:-.03em;
+  color:var(--acc);margin:0;line-height:1;padding-top:3px;font-variant-numeric:tabular-nums;
+}
+.shead__main h2{margin-bottom:.34em;max-width:22ch}
+.shead__main .lede{margin-bottom:0}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px;
+}
+
+/* ---------- 4. TLAČIDLÁ ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font:inherit;font-size:.96rem;font-weight:700;letter-spacing:.01em;
+  padding:13px 24px;border:1px solid transparent;border-radius:2px;
+  cursor:pointer;text-decoration:none;white-space:nowrap;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.btn.btn--primary{background:var(--btn-bg);color:var(--btn-fg);border-color:var(--btn-bg)}
+.btn.btn--primary:hover{background:var(--btn-bg-h);border-color:var(--btn-bg-h);color:var(--btn-fg)}
+.btn.btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.btn--ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn.btn--brass{background:var(--brass);color:var(--on-brass);border-color:var(--brass)}
+.btn.btn--brass:hover{background:var(--brass-hi);border-color:var(--brass-hi);color:var(--on-brass)}
+.btn.btn--onplate{background:transparent;color:var(--plate-ink);border-color:rgba(228,231,234,.36)}
+.btn.btn--onplate:hover{border-color:var(--brass);color:var(--brass)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- 5. LEPIACI VRCH: PÁSIK UKÁŽKY + NAVIGÁCIA ---------- */
+.topstack{position:sticky;top:0;z-index:120}
+.demobar{
+  background:#08090B;color:var(--ink-body);font-size:.86rem;font-weight:500;
+  border-bottom:1px solid var(--brass-deep);box-shadow:inset 0 2px 0 var(--brass);
+}
+.demobar__in{
+  width:min(100% - 24px,var(--wrap));margin-inline:auto;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 20px;
+  padding:11px 0 10px;text-align:center;
+}
+.demobar__tag{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;
+  font-weight:700;white-space:nowrap;color:var(--brass);
+  border:1px solid var(--brass-deep);padding:3px 9px;
+}
+.demobar a{color:var(--brass);font-weight:700;white-space:nowrap;text-decoration:none;border-bottom:1px solid rgba(201,154,91,.4)}
+.demobar a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
+
+.site-head{background:var(--deep);border-bottom:1px solid var(--hair);position:relative}
+.head__in{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink-strong);margin-right:auto}
+.brand__mark{
+  width:34px;height:34px;flex:none;border:1px solid var(--brass);
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;color:var(--brass);font-size:1rem;
+}
+.brand__txt strong{display:block;font-size:1.06rem;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;color:var(--ink-strong)}
+.brand__txt span{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute);margin-top:2px}
+.nav-list{display:flex;align-items:center;gap:1px;flex-wrap:wrap}
+.nav-list a{
+  display:block;text-decoration:none;color:var(--ink-body);
+  font-size:.92rem;padding:9px 11px;border-radius:2px;
+}
+.nav-list a:hover{color:var(--brass)}
+.nav-toggle{display:none}
+
+/* dominantná akcia + telefón: v hlavičke na každej obrazovke, aj na mobile mimo menu */
+.head__act{display:flex;align-items:center;gap:9px;flex:none}
+.head__tel{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;
+  font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.01em;
+  color:var(--brass);text-decoration:none;
+  border:1px solid var(--brass-deep);border-radius:2px;padding:12px 14px;
+  transition:border-color .16s ease,color .16s ease;
+}
+.head__tel svg{width:15px;height:15px;flex:none}
+.head__tel:hover{border-color:var(--brass);color:var(--brass-hi)}
+.btn.head__cta{padding:13px 22px}
+
+/* ---------- 6. PLOCHY: GRAFICKÉ KOMPOZÍCIE ---------- */
+.plate{
+  position:relative;overflow:hidden;isolation:isolate;display:flex;
+  background-color:#171B20;color:var(--plate-ink);
+  box-shadow:inset 0 0 0 1px rgba(228,231,234,.09);
+}
+.plate::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:var(--noise);background-size:180px 180px;opacity:.15;
+}
+.plate>*{position:relative;z-index:3}
+
+/* kruhové oblúky */
+.plate--arc{
+  background-image:
+    linear-gradient(118deg,rgba(201,154,91,.16) 0%,rgba(201,154,91,0) 48%),
+    linear-gradient(162deg,#252B33 0%,#171B20 54%,#0F1216 100%);
+}
+.plate--arc::after{
+  content:"";position:absolute;z-index:2;right:-24%;bottom:-52%;
+  width:min(130%,560px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(201,154,91,.30);
+  box-shadow:0 0 0 26px rgba(228,231,234,.035),0 0 0 27px rgba(201,154,91,.10),0 0 0 64px rgba(228,231,234,.025);
+}
+/* vlasové zvislice */
+.plate--rule{
+  background-image:
+    linear-gradient(212deg,rgba(201,154,91,.20) 0%,rgba(201,154,91,0) 44%),
+    repeating-linear-gradient(90deg,rgba(228,231,234,.085) 0 1px,rgba(0,0,0,0) 1px 18px),
+    linear-gradient(198deg,#1F242A 0%,#101317 100%);
+}
+/* bodkový raster */
+.plate--dot{
+  background-image:
+    radial-gradient(rgba(228,231,234,.16) 1px,rgba(0,0,0,0) 1.7px),
+    radial-gradient(circle at 18% 84%,rgba(201,154,91,.20),rgba(0,0,0,0) 58%),
+    linear-gradient(150deg,#232830 0%,#12161A 100%);
+  background-size:15px 15px,cover,cover;
+}
+/* šrafovanie */
+.plate--hatch{
+  background-image:
+    repeating-linear-gradient(45deg,rgba(228,231,234,.075) 0 1px,rgba(0,0,0,0) 1px 11px),
+    linear-gradient(148deg,#262B33 0%,#0F1216 100%);
+}
+/* mriežka */
+.plate--grid{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(228,231,234,.07) 0 1px,rgba(0,0,0,0) 1px 26px),
+    repeating-linear-gradient(90deg,rgba(228,231,234,.07) 0 1px,rgba(0,0,0,0) 1px 26px),
+    linear-gradient(206deg,#20252B 0%,#101317 100%);
+}
+/* sústredné kruhy */
+.plate--ring{
+  background-image:
+    repeating-radial-gradient(circle at 76% 26%,rgba(228,231,234,.11) 0 1px,rgba(0,0,0,0) 1px 20px),
+    linear-gradient(158deg,#242A31 0%,#111418 100%);
+}
+/* diagonálny klin */
+.plate--wedge{
+  background-image:
+    linear-gradient(64deg,rgba(0,0,0,0) 0 52%,rgba(201,154,91,.22) 52% 54%,rgba(0,0,0,0) 54%),
+    repeating-linear-gradient(0deg,rgba(228,231,234,.06) 0 1px,rgba(0,0,0,0) 1px 22px),
+    linear-gradient(200deg,#232830 0%,#0F1216 100%);
+}
+
+/* typografický obsah plochy */
+.plate__type{padding:clamp(18px,2.4vw,26px);flex:1 1 auto;width:100%;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+.plate__num{font-family:var(--mono);font-size:clamp(2.4rem,6vw,3.6rem);font-weight:700;line-height:.92;letter-spacing:-.03em;color:var(--brass);margin:0}
+.plate__word{
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--plate-mute);margin:0;
+}
+.plate__big{font-size:clamp(1.2rem,2.3vw,1.6rem);font-weight:700;letter-spacing:-.01em;color:var(--plate-ink);margin:0;line-height:1.16}
+
+/* ---------- 7. ÚVOD: OBÁLKA ---------- */
+.hero{background:var(--deep);border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.hero__in{padding:clamp(30px,4.2vw,62px) 0 clamp(30px,3.8vw,54px)}
+.hero__kicker{color:var(--brass);margin:0 0 clamp(14px,1.8vw,24px)}
+
+/* veľká farebná plocha, ktorú obrí nadpis čiastočne prekrýva */
+.mast{position:relative;padding-bottom:2px}
+.mast__block{
+  position:absolute;z-index:0;pointer-events:none;
+  inset:clamp(12px,2.2vw,28px) 0 clamp(2px,.6vw,8px) 26%;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(14,16,19,.16) 0 1px,rgba(0,0,0,0) 1px 26px),
+    linear-gradient(152deg,#8A5F24 0%,#5F401A 54%,#3A2611 100%);
+  border:1px solid rgba(201,154,91,.45);
+}
+.mast__block::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brass)}
+.mast__h1{position:relative;z-index:2;margin:0;letter-spacing:normal;line-height:1}
+.mast__lead{
+  display:block;font-family:var(--mono);font-weight:700;
+  font-size:clamp(.66rem,1.4vw,.84rem);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--plate-ink);line-height:1.5;margin-bottom:clamp(6px,1vw,12px);
+}
+.mast__name{
+  display:block;font-size:clamp(3.4rem,15vw,8rem);line-height:.99;
+  letter-spacing:-.045em;text-transform:uppercase;color:var(--ink-strong);
+  text-shadow:0 2px 26px rgba(8,9,11,.55);
+}
+
+.hero__corner{
+  position:relative;z-index:3;margin-top:clamp(20px,2.6vw,28px);max-width:340px;
+  background:var(--deep);border:1px solid var(--hair);border-top:2px solid var(--brass);
+  padding:15px 18px 17px;
+}
+.hero__corner .k{margin:0;font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-mute)}
+.hero__corner .v{margin:9px 0 7px;font-family:var(--mono);font-size:clamp(1.3rem,2.6vw,1.66rem);font-weight:700;letter-spacing:.005em;line-height:1.1}
+.hero__corner .v a{color:var(--brass);text-decoration:none}
+.hero__corner .v a:hover{color:var(--brass-hi)}
+.hero__corner .s{margin:0;font-size:.85rem;line-height:1.5;color:var(--ink-mute)}
+
+.hero__body{
+  margin-top:clamp(26px,3.2vw,44px);padding-top:clamp(22px,2.6vw,32px);border-top:1px solid var(--hair);
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(22px,3vw,56px);align-items:start;
+}
+.hero__lede{font-size:clamp(1.02rem,1.4vw,1.16rem);color:#C6CCD1;max-width:56ch;margin:0}
+.hero .btns{margin-top:clamp(20px,2.4vw,28px)}
+.hero__meta{margin:0;border-top:1px solid var(--hair)}
+.hero__meta li{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding:11px 0;border-bottom:1px solid var(--hair-soft);
+  font-family:var(--mono);font-size:.86rem;color:var(--ink-mute);
+}
+.hero__meta li b{font-weight:700;color:var(--ink-body);letter-spacing:.1em;text-transform:uppercase;font-size:.72rem}
+.hero__meta li span{color:var(--ink-body);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.facts{background:var(--base);border-bottom:1px solid var(--hair)}
+.facts dl{margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--hair)}
+.facts dl>div{background:var(--base);padding:clamp(18px,2.2vw,26px) clamp(16px,1.8vw,24px)}
+.facts dt{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:9px}
+.facts dd{margin:0;font-size:clamp(1rem,1.25vw,1.1rem);font-weight:600;color:var(--ink-strong);letter-spacing:-.01em}
+
+/* ---------- 8. O HOLIČSTVE ---------- */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,4vw,64px);align-items:start}
+.about>div>p{max-width:60ch}
+.about__plate{min-height:330px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chips li{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;
+  border:1px solid var(--line);color:var(--muted);padding:7px 12px;
+}
+/* ---------- 8b. OBRAZOVÉ MIESTA ---------- */
+.obraz{margin:0;display:block}
+.obraz figcaption{margin-top:11px;color:var(--muted);font-size:.9rem;max-width:44ch}
+
+/* ---------- 8c. BARBERI ---------- */
+.crew{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.bar .plate{aspect-ratio:3/4}
+.bar h3{margin:16px 0 3px}
+.bar__role{margin:0 0 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.bar__list{border-top:1px solid var(--line-soft)}
+.bar__list li{padding:9px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.91rem}
+.bar__list li b{color:var(--title);font-weight:600}
+.bar__ig{margin:12px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+
+/* ---------- 8d. GALÉRIA PRÁC ---------- */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.gal .plate{aspect-ratio:4/3}
+
+/* ---------- 9. CENNÍK ---------- */
+.pl{border-top:1px solid var(--line)}
+.pl__grp{
+  margin:clamp(26px,3.2vw,40px) 0 0;padding:12px 0 0;border-top:2px solid var(--acc);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--title);font-weight:700;
+}
+.pl>.pl__grp:first-child{margin-top:0;border-top:0;padding-top:0}
+.pl__row{
+  display:grid;grid-template-columns:minmax(0,1fr) 108px 96px 132px;
+  gap:6px 24px;align-items:baseline;padding:19px 0;border-bottom:1px solid var(--line);
+}
+.pl__row h3{margin:0 0 4px}
+.pl__row p{margin:0;color:var(--muted);font-size:.93rem;max-width:56ch}
+.pl__min,.pl__eur{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pl__min{color:var(--muted);font-size:.92rem}
+.pl__eur{font-size:1.28rem;font-weight:700;color:var(--title)}
+.pl__go{justify-self:end}
+.pl__go a{font-size:.9rem;font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.pl__go a:hover{color:var(--title);border-color:var(--title)}
+.pl__foot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.6vw,34px);margin-top:30px}
+.pl__foot div{border-top:2px solid var(--acc);padding-top:14px}
+.pl__foot h4{margin:0 0 6px}
+.pl__foot p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ---------- 10. PRIEBEH NÁVŠTEVY ---------- */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.steps li{background:var(--bg);padding:24px 22px 26px}
+.steps .n{font-family:var(--mono);font-size:.86rem;font-weight:700;color:var(--acc);display:block;margin-bottom:14px;letter-spacing:.08em}
+.steps h3{font-size:1.04rem;margin:0 0 8px}
+.steps p{margin:0;color:var(--muted);font-size:.92rem}
+.steps .t{display:block;margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--acc);letter-spacing:.06em}
+
+/* ---------- 11. PRIESTOR ---------- */
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.rooms .plate{aspect-ratio:4/3}
+.rooms h3{margin:18px 0 6px}
+.rooms p{margin:0;color:var(--muted);font-size:.94rem}
+.kit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(26px,5vw,68px);margin-top:clamp(30px,4vw,48px)}
+.kit div{padding:17px 0;border-top:1px solid var(--line-soft)}
+.kit dt{font-weight:600;color:var(--title);margin-bottom:4px}
+.kit dd{margin:0;color:var(--muted);font-size:.93rem;max-width:60ch}
+
+/* ---------- 12. PRODUKTY ---------- */
+.prods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,26px)}
+.prod{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.prod .plate{aspect-ratio:5/3}
+.prod__body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
+.prod__body h3{margin:0 0 7px;font-size:1.06rem}
+.prod__body p{margin:0 0 18px;color:var(--muted);font-size:.93rem}
+.prod__body .prod__foot{margin:auto 0 0;display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:1px solid var(--line-soft);padding-top:14px}
+.prod__foot .eur{font-family:var(--mono);font-size:1.24rem;font-weight:700;color:var(--title)}
+.prod__foot .ml{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+
+/* ---------- 13. POUKAZY ---------- */
+.vouch{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(26px,4vw,58px);align-items:center}
+.vouch__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,18px)}
+.vouch__grid .plate{aspect-ratio:3/4;display:flex}
+.vouch__grid .plate__type{justify-content:space-between}
+.rules{margin-top:22px;border-top:1px solid var(--line)}
+.rules li{padding:13px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:22px minmax(0,1fr);gap:14px;font-size:.95rem}
+.rules li b{font-family:var(--mono);color:var(--acc);font-weight:700;font-size:.86rem}
+
+/* ---------- 14. HODINY ---------- */
+.hours{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(26px,4vw,58px);align-items:start}
+.htab{border-top:1px solid var(--line);width:100%}
+.htab div{
+  display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:6px 18px;align-items:baseline;
+  padding:13px 4px;border-bottom:1px solid var(--line-soft);
+}
+.htab dt{font-weight:600;color:var(--title)}
+.htab dd{margin:0;font-family:var(--mono);color:var(--ink);font-size:.96rem}
+.htab .tagcol{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:right}
+.htab div.is-today{background:rgba(201,154,91,.10);box-shadow:inset 3px 0 0 var(--acc)}
+.htab div.is-today .tagcol{color:var(--acc)}
+.htab div.is-closed dd{color:var(--muted)}
+.status{
+  border:1px solid var(--line);border-left:3px solid var(--acc);
+  background:var(--card);padding:18px 20px;margin-bottom:22px;
+}
+.status strong{display:block;font-size:1.08rem;margin-bottom:4px}
+.status p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ---------- 15. OBJEDNANIE ---------- */
+.book{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(20px,2.6vw,30px);align-items:start}
+.panel{background:var(--surf);border:1px solid var(--hair);padding:clamp(20px,2.8vw,30px)}
+.fset{border:0;padding:0;margin:0 0 26px}
+.fset:last-of-type{margin-bottom:0}
+.fset>legend,.flabel{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-mute);padding:0;margin-bottom:12px;display:block;
+}
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+.field input,.field select,.field textarea{
+  width:100%;font:inherit;font-size:1rem;color:var(--ink-body);
+  background:var(--deep);border:1px solid var(--hair);border-radius:2px;padding:12px 13px;
+}
+.field textarea{min-height:92px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#8A9198}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brass);outline:2px solid var(--brass);outline-offset:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+
+.opts{display:grid;gap:10px}
+.opt{
+  display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:4px 14px;align-items:start;
+  border:1px solid var(--hair);padding:13px 15px;cursor:pointer;
+  transition:border-color .15s ease,background-color .15s ease;
+}
+.opt:hover{border-color:var(--brass)}
+.opt input{margin:3px 0 0;accent-color:var(--brass);width:16px;height:16px}
+.opt b{font-weight:600;color:var(--ink-strong)}
+.opt span{grid-column:2;color:var(--ink-mute);font-size:.9rem}
+.opt em{font-family:var(--mono);font-style:normal;font-size:.92rem;color:var(--brass);white-space:nowrap}
+.opt:has(input:checked){border-color:var(--brass);background:rgba(201,154,91,.09)}
+
+.chipsrow{display:flex;flex-wrap:wrap;gap:8px}
+.daychip{
+  font:inherit;font-size:.88rem;cursor:pointer;line-height:1.25;text-align:center;
+  background:var(--deep);color:var(--ink-body);border:1px solid var(--hair);border-radius:2px;
+  padding:9px 13px;min-width:74px;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.daychip b{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.daychip:hover{border-color:var(--brass)}
+.daychip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
+.daychip[aria-pressed="true"] b{color:var(--on-brass)}
+.daychip:disabled{color:#8A9198;border-color:var(--hair-soft);background:transparent;cursor:not-allowed}
+.daychip:disabled b{color:#8A9198}
+.daychip:disabled:hover{border-color:var(--hair-soft)}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.slot{
+  font:inherit;font-family:var(--mono);font-size:.95rem;cursor:pointer;
+  background:var(--deep);color:var(--ink-body);border:1px solid var(--hair);border-radius:2px;
+  padding:10px 6px;text-align:center;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.slot:hover{border-color:var(--brass);color:var(--brass)}
+.slot[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass);font-weight:700}
+.slot:disabled{color:#8A9198;border-color:var(--hair-soft);background:transparent;cursor:not-allowed;text-decoration:line-through}
+.slot:disabled:hover{color:#8A9198;border-color:var(--hair-soft)}
+.freecount{font-family:var(--mono);font-size:.82rem;color:var(--ink-mute);margin:12px 0 0}
+.warn{margin:12px 0 0;font-size:.93rem;color:#F0C08A;border-left:2px solid #F0C08A;padding-left:12px}
+
+.sum{
+  background:var(--raise);border:1px solid var(--hair);border-top:3px solid var(--brass);
+  padding:clamp(20px,2.6vw,28px);position:sticky;top:var(--stick,148px);
+}
+.sum h3{margin:0 0 18px;font-size:1.16rem}
+.sum__rows{border-top:1px solid var(--hair)}
+.sum__rows div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 16px;padding:11px 0;border-bottom:1px solid var(--hair)}
+.sum__rows dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);padding-top:3px;min-width:88px}
+.sum__rows dd{margin:0;color:var(--ink-strong);font-size:.97rem;text-align:right;justify-self:end}
+.sum__total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:20px}
+.sum__total .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute)}
+.sum__total .v{font-family:var(--mono);font-size:2.05rem;font-weight:700;line-height:1;color:var(--brass);font-variant-numeric:tabular-nums}
+.sum__note{margin:16px 0 0;font-size:.86rem;color:var(--ink-mute)}
+.consent{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;align-items:start;font-size:.92rem;color:var(--ink-mute);margin:4px 0 18px}
+.consent input{margin:3px 0 0;accent-color:var(--brass);width:16px;height:16px}
+.done{margin-top:20px;border:1px solid var(--hair);border-left:3px solid var(--brass);background:var(--deep);padding:18px 20px}
+.done strong{display:block;font-size:1.1rem;margin-bottom:6px;color:var(--ink-strong)}
+.done p{margin:0;font-size:.93rem;color:var(--ink-mute)}
+.done p+p{margin-top:8px}
+
+/* ---------- 16. PODMIENKY ---------- */
+.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.terms>div{border-top:2px solid var(--acc);padding-top:16px}
+.terms h3{margin:0 0 12px}
+.terms li{padding:10px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.94rem}
+.terms li b{color:var(--title);font-weight:600}
+.pay{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pay li{border:1px solid var(--line);padding:8px 12px;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;color:var(--muted)}
+
+/* ---------- 17. OTÁZKY ---------- */
+.faq{border-top:1px solid var(--line);max-width:900px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:18px 44px 18px 0;position:relative;
+  font-weight:600;color:var(--title);font-size:1.02rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:1.3rem;color:var(--acc);line-height:1;
+}
+.faq details[open] summary::after{content:"–"}
+.faq summary:hover{color:var(--acc)}
+.faq p{margin:0 0 18px;color:var(--muted);max-width:68ch;font-size:.96rem}
+
+/* ---------- 18. KONTAKT ---------- */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:start}
+.cdl{border-top:1px solid var(--line);margin:0}
+.cdl>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:5px 20px;padding:15px 0;border-bottom:1px solid var(--line-soft)}
+.cdl dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.cdl dd{margin:0;overflow-wrap:anywhere;color:var(--ink)}
+.route{border-top:1px solid var(--line);margin-top:8px}
+.route li{padding:16px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:26px minmax(0,1fr);gap:14px}
+.route .n{font-family:var(--mono);color:var(--acc);font-size:.86rem;font-weight:700;padding-top:2px}
+.route b{display:block;color:var(--title);margin-bottom:3px}
+.route p{margin:0;color:var(--muted);font-size:.94rem;max-width:62ch}
+.mapplate{aspect-ratio:16/10;margin-bottom:26px;display:flex}
+
+/* ---------- 18b. STAROSTLIVOSŤ DOMA ---------- */
+.care{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,72px)}
+.care>div{padding:clamp(18px,2.2vw,26px) 0;border-top:1px solid var(--line-soft)}
+.care>div:first-child,.care>div:nth-child(2){border-top:1px solid var(--line)}
+.care .n{display:block;font-family:var(--mono);font-size:.76rem;letter-spacing:.22em;color:var(--acc);margin-bottom:11px;font-weight:700}
+.care h3{margin:0 0 8px}
+.care p{margin:0;color:var(--muted);font-size:.95rem;max-width:60ch}
+
+/* ---------- 18c. KARIÉRA ---------- */
+.jobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.job{border-top:2px solid var(--acc);padding-top:18px}
+.job h3{margin:0 0 6px}
+.job .role{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.job ul{border-top:1px solid var(--line-soft)}
+.job li{padding:11px 0;border-bottom:1px solid var(--line-soft);color:var(--muted);font-size:.94rem}
+.job li b{color:var(--title);font-weight:600}
+
+/* ---------- 18d. KONTAKTNÝ FORMULÁR ---------- */
+.cform{
+  margin-top:clamp(34px,4.4vw,60px);display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(20px,2.8vw,34px);align-items:start;
+}
+.cform__side{border-top:2px solid var(--brass);padding-top:18px}
+.cform__side h3{margin:0 0 12px}
+.cform__side p{color:var(--muted);font-size:.95rem;max-width:52ch}
+.cform__side dl{margin:18px 0 0;border-top:1px solid var(--line)}
+.cform__side dl>div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:4px 18px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.cform__side dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.cform__side dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.cform__side dd a:not(.btn){color:var(--acc);font-weight:600}
+
+/* ---------- 19. AUTOR UKÁŽKY ---------- */
+.author{background:var(--raise);border-top:2px solid var(--brass);padding:clamp(46px,6vw,82px) 0;scroll-margin-top:var(--stick,148px)}
+.author__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.86fr);gap:clamp(28px,4vw,64px);align-items:start}
+.author .eyebrow{color:var(--brass)}
+.author h2{color:var(--ink-strong)}
+.author p{color:var(--ink-body);max-width:56ch}
+.author__price{border-left:2px solid var(--brass);padding-left:14px;font-weight:600;color:var(--ink-strong)}
+.author__card{background:var(--deep);border:1px solid var(--hair);padding:clamp(20px,2.6vw,30px)}
+.author__name{font-size:1.34rem;font-weight:700;color:var(--ink-strong);margin:0}
+.author__role{margin:4px 0 0;color:var(--ink-mute);font-size:.9rem}
+.author__list{margin:22px 0 0;border-top:1px solid var(--hair)}
+.author__list>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:4px 16px;padding:13px 0;border-bottom:1px solid var(--hair)}
+.author__list dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);padding-top:4px}
+.author__list dd{margin:0;overflow-wrap:anywhere;color:var(--ink-body)}
+.author__list a{color:var(--brass);font-weight:600}
+.author .btns{margin-top:24px}
+
+/* ---------- 20. PÄTA ---------- */
+.foot{background:var(--deep);border-top:1px solid var(--hair);padding:clamp(38px,4.6vw,62px) 0 clamp(28px,3vw,40px);font-size:.92rem;color:var(--ink-mute)}
+.foot__in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.95fr) minmax(0,.95fr);gap:clamp(24px,3.4vw,54px);align-items:start}
+.foot strong{display:block;color:var(--ink-strong);font-size:1.04rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px}
+.foot h3{font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin:0 0 12px;color:var(--brass)}
+.foot a:not(.btn){color:var(--ink-body);text-decoration:none;border-bottom:1px solid var(--hair)}
+.foot a:not(.btn):hover{color:var(--brass);border-bottom-color:var(--brass)}
+.foot__links{display:grid;gap:9px}
+.foot p{margin:0 0 10px;max-width:40ch;line-height:1.6}
+.foot p:last-child{margin-bottom:0}
+.foot__hours{margin:0;font-family:var(--mono);font-size:.84rem;font-variant-numeric:tabular-nums}
+.foot__hours li{padding:6px 0;border-bottom:1px solid var(--hair-soft);display:flex;justify-content:space-between;gap:14px}
+.foot__hours li:last-child{border-bottom:0}
+.foot__base{
+  margin-top:clamp(26px,3vw,40px);padding-top:18px;border-top:1px solid var(--hair);
+  display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:space-between;font-size:.86rem;
+}
+.foot__base p{margin:0;max-width:66ch}
+
+/* ---------- 21. ODHAĽOVANIE ---------- */
+html.js .rv{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+html.js .rv.in{opacity:1;transform:none}
+
+/* ---------- 22. RESPONZÍVNE ---------- */
+@media (min-width:901px){
+  .mast{min-height:clamp(226px,21vw,300px);display:flex;flex-direction:column;justify-content:center}
+  .hero__corner{
+    position:absolute;right:clamp(14px,1.8vw,26px);bottom:clamp(14px,1.8vw,26px);
+    margin:0;width:clamp(248px,22vw,304px);max-width:none;
+  }
+}
+@media (max-width:1080px){
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .book{grid-template-columns:1fr}
+  .sum{position:static}
+  .prods{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .crew{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vouch{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}
+  .hours{grid-template-columns:1fr}
+  .contact{grid-template-columns:1fr}
+  .cform{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero__body{grid-template-columns:1fr}
+  .mast__block{inset:clamp(10px,2vw,20px) 0 0 22%}
+  .care{grid-template-columns:1fr}
+  .care>div:nth-child(2){border-top:1px solid var(--line-soft)}
+  .jobs{grid-template-columns:1fr}
+  .foot__in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot__in>div:first-child{grid-column:1/-1}
+  html.js .nav-list{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--deep);border-bottom:1px solid var(--hair);
+    flex-direction:column;align-items:stretch;gap:0;padding:6px 18px 14px;
+  }
+  html.js .nav-list[data-open="false"]{display:none}
+  html.js .nav-list a{padding:13px 4px;border-bottom:1px solid var(--hair-soft);border-radius:0}
+  html.js .nav-list li:last-child a{border-bottom:0}
+  /* tlačidlo aj telefón ostávajú viditeľné, do menu sa neskrývajú */
+  .head__act{order:5;flex:1 0 100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .head__tel{padding:12px 6px}
+  .btn.head__cta{width:100%;padding:13px 10px}
+  html.js .nav-toggle{
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.92rem;font-weight:700;
+    background:transparent;border:1px solid var(--hair);color:var(--ink-body);
+    border-radius:2px;padding:9px 14px;cursor:pointer;
+  }
+  html.js .nav-toggle svg{width:16px;height:16px}
+  .shead{grid-template-columns:1fr;gap:2px}
+  .shead__idx{padding-top:0}
+  .rooms{grid-template-columns:1fr}
+  .rooms .plate{aspect-ratio:16/9}
+  .terms{grid-template-columns:1fr}
+  .pl__foot{grid-template-columns:1fr}
+  .pl__row{grid-template-columns:minmax(0,1fr) auto;gap:4px 20px}
+  .pl__row .pl__min{grid-column:1;color:var(--muted)}
+  .pl__row .pl__eur{grid-column:2;grid-row:1;text-align:right}
+  .pl__go{grid-column:2;grid-row:2;justify-self:end}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .steps{grid-template-columns:1fr}
+  .prods{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr}
+  .gal .plate{aspect-ratio:16/9}
+  .kit{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .facts dl{grid-template-columns:1fr}
+  .vouch__grid{grid-template-columns:1fr}
+  .vouch__grid .plate{aspect-ratio:16/7}
+  .cdl>div{grid-template-columns:1fr}
+  .cform__side dl>div{grid-template-columns:1fr}
+  .author__in{grid-template-columns:1fr}
+  .author__list>div{grid-template-columns:1fr}
+  .htab div{grid-template-columns:96px minmax(0,1fr);gap:4px 14px}
+  .htab .tagcol{grid-column:2;text-align:left;margin-top:2px}
+  .foot__in{grid-template-columns:1fr}
+  .foot__in>div:first-child{grid-column:auto}
+  .brand__txt span{display:none}
+  .demobar__in{padding:8px 0;font-size:.82rem;line-height:1.45;gap:2px 12px}
+  .opt{grid-template-columns:20px minmax(0,1fr)}
+  .opt em{grid-column:2;margin-top:4px}
+  .btns .btn{flex:1 1 auto}
+}
+@media (max-width:420px){
+  .demobar__tag{display:none}
+  .slots{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html.js .rv{opacity:1;transform:none}
+}
+@media print{
+  .topstack,.chipsrow,.slots{display:none}
+  body{background:#fff;color:#000}
+}
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return v.toLocaleString('it-IT');}function __f(x){return x.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+<a class="skip" href="#obsah">Vai al contenuto</a>
+
+<div class="topstack">
+  <!-- ===== PÁSIK UKÁŽKY ===== -->
+  <div class="demobar" role="complementary" aria-label="Informazioni sul sito di esempio">
+    <div class="demobar__in">
+      <span class="demobar__tag">Sito di esempio</span>
+      <span>Un sito così lo realizzo anche per voi. <a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a></span>
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+    </div>
+  </div>
+
+  <!-- ===== HLAVIČKA ===== -->
+  <header class="site-head">
+    <div class="wrap head__in">
+      <a class="brand" href="#uvod" aria-label="Barberia Filo, inizio della pagina">
+        <span class="brand__mark" aria-hidden="true">F</span> <span class="brand__txt"> <strong>Barberia Filo</strong> <span>Barbiere da uomo</span> </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hlavne-menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        Menu
+      </button>
+
+      <nav aria-label="Navigazione principale">
+        <ul class="nav-list" id="hlavne-menu" data-open="false">
+          <li><a href="#cennik">Prezzi</a></li>
+          <li><a href="#barberi">Barbieri</a></li>
+          <li><a href="#hodiny">Orari</a></li>
+          <li><a href="#kontakt">Contatti</a></li>
+        </ul>
+      </nav>
+
+      <div class="head__act">
+        <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+        <a class="btn btn--brass head__cta" href="#objednanie">Prenota</a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<main id="obsah">
+
+<!-- ===== 01 ÚVOD ===== -->
+<section class="hero" id="uvod">
+  <div class="wrap hero__in">
+    <p class="eyebrow hero__kicker">Via Corta 6, centro storico &middot; quattro poltrone &middot; taglio su appuntamento</p>
+
+    <div class="mast">
+      <span class="mast__block" aria-hidden="true"></span>
+      <h1 class="mast__h1">
+        <span class="mast__lead">Barbiere da uomo</span>
+        <span class="mast__name">Filo</span>
+      </h1>
+
+      <aside class="hero__corner" aria-label="Prenotazione telefonica">
+        <p class="k">Prenotazione</p>
+        <p class="v"><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></p>
+        <p class="s">Ci trovate al telefono in orario di apertura, fuori orario scrivete un SMS. L'appuntamento potete sceglierlo anche direttamente su questa pagina.</p>
+      </aside>
+    </div>
+
+    <div class="hero__body">
+      <div>
+        <p class="hero__lede">Taglio a forbice e a macchinetta, modellatura della barba e rasatura tradizionale con rasoio e asciugamano caldo. Lavoriamo solo su appuntamento, il blocco dura da 15 a 90 minuti a seconda del servizio.</p>
+        <div class="btns">
+          <a class="btn btn--brass" href="#objednanie">Prenota</a>
+          <a class="btn btn--ghost" href="#cennik">Vedi i prezzi</a>
+        </div>
+      </div>
+      <ul class="hero__meta" aria-label="Orari di apertura">
+        <li><b>Lunedì &ndash; mercoledì</b><span>9:00 &ndash; 19:00</span></li>
+        <li><b>Giovedì &ndash; venerdì</b><span>9:00 &ndash; 20:00</span></li>
+        <li><b>Sabato</b><span>8:00 &ndash; 14:00</span></li>
+        <li><b>Domenica</b><span>chiuso</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="wrap">
+      <dl>
+        <div><dt>Postazioni</dt><dd>4 poltrone e angolo rasatura</dd></div>
+        <div><dt>Taglio classico</dt><dd>22 € per 30 minuti</dd></div>
+        <div><dt>Prenotazione</dt><dd>sul sito o per telefono</dd></div>
+        <div><dt>Pagamento</dt><dd>carta, smartphone, contanti</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 O HOLIČSTVE ===== -->
+<section class="sec" id="onas">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">01</p>
+      <div class="shead__main">
+        <h2>La barberia</h2>
+        <p class="lede">Lavoriamo solo su appuntamento. Senza prenotazione vi serviamo solo se c'è una poltrona libera, cosa che capita soprattutto il lunedì e il martedì mattina.</p>
+      </div>
+    </header>
+
+    <div class="about">
+      <div class="rv">
+        <p>Quattro poltrone, due lavatesta e un angolo separato per la rasatura con il rasoio. Il blocco è riservato da 15 a 90 minuti a seconda del servizio e inizia all'orario concordato.</p>
+        <p>Si taglia a forbice e a macchinetta, le sfumature le rifiniamo con il rasoio. Alla prima visita guardiamo forma della testa, densità dei capelli e il tempo che dedicate alla piega a casa, e in base a questo decidiamo lunghezza e intervallo dei prossimi appuntamenti.</p>
+        <ul class="chips">
+          <li>taglio a forbice</li>
+          <li>sfumature a macchinetta</li>
+          <li>rasoio a mano libera</li>
+          <li>asciugamano caldo</li>
+          <li>cura della barba</li>
+          <li>tagli per bambini</li>
+        </ul>
+      </div>
+
+      <div class="rv">
+        <!-- FOTO: interiér holičstva — štyri kreslá pri stene so zrkadlami, tmavé drevo, mosadzné lampy -->
+        <figure class="obraz">
+          <div class="plate plate--rule about__plate">
+            <div class="plate__type">
+              <p class="plate__word">Via Corta 6, piano terra</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">poltrone lungo una parete, angolo rasatura separato</p>
+              </div>
+            </div>
+          </div>
+          <figcaption>La sala principale. L'ingresso dalla strada è senza gradino, la porta è larga 90 cm.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 CENNÍK ===== -->
+<section class="sec paper" id="cennik">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">02</p>
+      <div class="shead__main">
+        <h2>Servizi e listino</h2>
+        <p class="lede">Il tempo indicato è l'intero blocco riservato, consulenza e pulizia della postazione comprese. I prezzi sono definitivi e si pagano dopo il servizio.</p>
+      </div>
+    </header>
+
+    <div class="pl rv">
+      <p class="pl__grp">Singoli servizi</p>
+
+      <div class="pl__row">
+        <div>
+          <h3>Taglio classico da uomo</h3>
+          <p>Taglio a forbice, rifinitura dei contorni con il rasoio, lavaggio e asciugatura.</p>
+        </div>
+        <p class="pl__min">30 minuti</p>
+        <p class="pl__eur">22 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Taglio classico da uomo">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Taglio a macchinetta con sfumatura</h3>
+          <p>Lati corti con sfumatura continua, sopra rifinito a forbice.</p>
+        </div>
+        <p class="pl__min">45 minuti</p>
+        <p class="pl__eur">27 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Taglio a macchinetta con sfumatura">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Rasatura con rasoio e asciugamano caldo</h3>
+          <p>Due asciugamani caldi, sapone da barba, rasatura in due direzioni, impacco rinfrescante.</p>
+        </div>
+        <p class="pl__min">40 minuti</p>
+        <p class="pl__eur">25 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Rasatura con rasoio e asciugamano caldo">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Barba e baffi</h3>
+          <p>Accorciatura, definizione delle linee con il rasoio, trattamento con olio.</p>
+        </div>
+        <p class="pl__min">25 minuti</p>
+        <p class="pl__eur">16 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Barba e baffi">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Taglio bambini fino a 12 anni</h3>
+          <p>Taglio con calma, l'accompagnatore siede accanto alla poltrona.</p>
+        </div>
+        <p class="pl__min">25 minuti</p>
+        <p class="pl__eur">15 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Taglio bambini fino a 12 anni">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Taglio over 65</h3>
+          <p>Prezzo agevolato dal lunedì al mercoledì dalle 9:00 alle 12:00.</p>
+        </div>
+        <p class="pl__min">30 minuti</p>
+        <p class="pl__eur">17 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Taglio over 65">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Ritocco dei contorni tra un taglio e l'altro</h3>
+          <p>Rifinitura di collo e orecchie entro 14 giorni dal taglio precedente.</p>
+        </div>
+        <p class="pl__min">15 minuti</p>
+        <p class="pl__eur">9 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Ritocco dei contorni tra un taglio e l'altro">Prenota</a></p>
+      </div>
+
+      <p class="pl__grp">Pacchetti</p>
+
+      <div class="pl__row">
+        <div>
+          <h3>Taglio e barba</h3>
+          <p>Taglio classico, modellatura della barba con il rasoio, olio e balsamo. Separati 38 €.</p>
+        </div>
+        <p class="pl__min">60 minuti</p>
+        <p class="pl__eur">36 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Taglio e barba">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Taglio e rasatura con il rasoio</h3>
+          <p>Taglio classico e rasatura tradizionale con due asciugamani caldi. Separati 47 €.</p>
+        </div>
+        <p class="pl__min">70 minuti</p>
+        <p class="pl__eur">42 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Taglio e rasatura con il rasoio">Prenota</a></p>
+      </div>
+
+      <div class="pl__row">
+        <div>
+          <h3>Taglio, barba e rasatura con il rasoio</h3>
+          <p>Taglio, modellatura della barba e rasatura di collo e guance con il rasoio. Separati 63 €.</p>
+        </div>
+        <p class="pl__min">90 minuti</p>
+        <p class="pl__eur">55 €</p>
+        <p class="pl__go"><a href="#objednanie" data-sluzba="Taglio, barba e rasatura con il rasoio">Prenota</a></p>
+      </div>
+    </div>
+
+    <div class="pl__foot rv">
+      <div>
+        <h4>Opzioni della visita</h4>
+        <p>Piega con phon e prodotto +6 € e 15 minuti. Piega con asciugamano caldo e impacco +12 € e 30 minuti. L'opzione la scegliete alla prenotazione.</p>
+      </div>
+      <div>
+        <h4>Taglio con l'apprendista</h4>
+        <p>Taglio classico e taglio con sfumatura sotto la supervisione del barbiere, con uno sconto del 30%. Il tempo riservato è di 15 minuti più lungo, si prenota per telefono.</p>
+      </div>
+      <div>
+        <h4>Cosa comprende</h4>
+        <p>Consulenza, lavaggio per i servizi da 30 minuti in su, rifinitura dei contorni con il rasoio e acqua o caffè durante l'attesa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BARBERI ===== -->
+<section class="sec sec--deep" id="barberi">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">03</p>
+      <div class="shead__main">
+        <h2>Barbieri</h2>
+        <p class="lede">Il barbiere lo potete scegliere alla prenotazione. Con un nome preciso il primo orario libero di solito è qualche giorno più avanti rispetto a una poltrona qualsiasi.</p>
+      </div>
+    </header>
+
+    <div class="crew">
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri svojom kresle, tmavé pozadie, pohľad do objektívu -->
+        <figure class="obraz">
+          <div class="plate plate--arc">
+            <div class="plate__type">
+              <p class="plate__word">Poltrona 01</p>
+              <div>
+                <p class="plate__num">MA</p>
+                <p class="plate__big">taglio, barba, rasatura con il rasoio</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Marco Aiello</h3>
+        <p class="bar__role">Barbiere</p>
+        <ul class="bar__list">
+          <li><b>Fa:</b> taglio classico, taglio con sfumatura, rasatura con il rasoio.</li>
+          <li><b>Lavora:</b> dal lunedì al venerdì.</li>
+          <li><b>Più orari liberi:</b> lunedì e martedì mattina.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @filo.marco</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča pri práci, detail rúk s nožnicami -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">Poltrona 02</p>
+              <div>
+                <p class="plate__num">TB</p>
+                <p class="plate__big">sfumature, barba, modellatura</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Tommaso Benzi</h3>
+        <p class="bar__role">Barbiere</p>
+        <ul class="bar__list">
+          <li><b>Fa:</b> taglio con sfumatura, barba e baffi, pacchetti.</li>
+          <li><b>Lavora:</b> dal martedì al sabato.</li>
+          <li><b>Più orari liberi:</b> mercoledì mattina.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @filo.tommaso</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét holiča, ktorý strihá dieťa v kresle s podsedákom -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">Poltrona 03</p>
+              <div>
+                <p class="plate__num">PC</p>
+                <p class="plate__big">taglio, tagli per bambini</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Pietro Carli</h3>
+        <p class="bar__role">Barbiere</p>
+        <ul class="bar__list">
+          <li><b>Fa:</b> taglio classico, tagli per bambini dai quattro anni.</li>
+          <li><b>Lavora:</b> lunedì, mercoledì, venerdì, sabato.</li>
+          <li><b>Più orari liberi:</b> sabato dopo le 11:00.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @filo.pietro</p>
+      </article>
+
+      <article class="bar rv">
+        <!-- FOTO: portrét učňa pri príprave pracoviska -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">Poltrona 04</p>
+              <div>
+                <p class="plate__num">AS</p>
+                <p class="plate__big">taglio con la supervisione del barbiere</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Andrea Sala</h3>
+        <p class="bar__role">Apprendista</p>
+        <ul class="bar__list">
+          <li><b>Fa:</b> taglio classico e taglio con sfumatura sotto la supervisione del barbiere.</li>
+          <li><b>Prezzo:</b> più basso del 30%, tempo riservato di 15 minuti più lungo.</li>
+          <li><b>Prenotazione:</b> per telefono, non con il modulo.</li>
+        </ul>
+        <p class="bar__ig">Instagram: @filo.andrea</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NAŠA PRÁCA ===== -->
+<section class="sec" id="praca">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">04</p>
+      <div class="shead__main">
+        <h2>Il nostro lavoro</h2>
+        <p class="lede">Sei scatti dal negozio. Per ciascuno trovate servizio, durata del blocco e prezzo del listino.</p>
+      </div>
+    </header>
+
+    <div class="gal rv">
+      <!-- FOTO: detail prechodu na bokoch, pohľad zozadu na čerstvo dostrihanú hlavu -->
+      <figure class="obraz">
+        <div class="plate plate--wedge">
+          <div class="plate__type">
+            <p class="plate__word">Sfumatura</p>
+            <div>
+              <p class="plate__num">0,5</p>
+              <p class="plate__big">mm sotto, sfumatura continua fino alla lunghezza sopra</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Taglio a macchinetta con sfumatura. 45 minuti, 27 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: klasický strih nožnicami, pohľad z boku po dokončení -->
+      <figure class="obraz">
+        <div class="plate plate--grid">
+          <div class="plate__type">
+            <p class="plate__word">Forbici</p>
+            <div>
+              <p class="plate__num">30</p>
+              <p class="plate__big">minuti di appuntamento, lavaggio e asciugatura compresi</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Taglio classico da uomo con rifinitura dei contorni con il rasoio. 22 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: detail vytvarovanej brady, línia na lícach a krku -->
+      <figure class="obraz">
+        <div class="plate plate--ring">
+          <div class="plate__type">
+            <p class="plate__word">Barba</p>
+            <div>
+              <p class="plate__num">25</p>
+              <p class="plate__big">minuti per accorciare, definire la linea e l'olio</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Barba e baffi con il rasoio. 16 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: mokré holenie britvou, horúci uterák na tvári zákazníka -->
+      <figure class="obraz">
+        <div class="plate plate--arc">
+          <div class="plate__type">
+            <p class="plate__word">Rasatura</p>
+            <div>
+              <p class="plate__num">02</p>
+              <p class="plate__big">asciugamani caldi e impacco rinfrescante finale</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Rasatura tradizionale con il rasoio in due direzioni. 40 minuti, 25 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: dieťa v kresle s podsedákom počas strihu -->
+      <figure class="obraz">
+        <div class="plate plate--dot">
+          <div class="plate__type">
+            <p class="plate__word">Bambini</p>
+            <div>
+              <p class="plate__num">04</p>
+              <p class="plate__big">anni in su, rialzo per la poltrona</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Taglio bambini fino a 12 anni. 25 minuti, 15 €.</figcaption>
+      </figure>
+
+      <!-- FOTO: kút na holenie — kreslo, ohrievač uterákov, britvy na poličke -->
+      <figure class="obraz">
+        <div class="plate plate--hatch">
+          <div class="plate__type">
+            <p class="plate__word">Angolo rasatura</p>
+            <div>
+              <p class="plate__num">01</p>
+              <p class="plate__big">poltrona separata con aerazione propria</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Scaldasalviette e rasoi con lama monouso.</figcaption>
+      </figure>
+    </div>
+
+    <div class="btns rv" style="margin-top:clamp(26px,3.2vw,36px)">
+      <a class="btn btn--brass" href="#objednanie">Prenota</a>
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRIEBEH NÁVŠTEVY ===== -->
+<section class="sec sec--deep" id="navsteva">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">03</p>
+      <div class="shead__main">
+        <h2>Come si svolge la visita</h2>
+        <p class="lede">L'appuntamento dura esattamente quanto indicato nel listino. Arrivate cinque minuti prima: durante l'appuntamento non c'è spazio per aggiungere altri servizi.</p>
+      </div>
+    </header>
+
+    <ol class="steps rv">
+      <li>
+        <span class="n">Passo 01</span>
+        <h3>Arrivo e caffè</h3>
+        <p>Lasciate il cappotto e vi offriamo un caffè o dell'acqua. Se arrivate prima, aspettate in sala d'attesa, che ha sei posti.</p>
+        <span class="t">5 minuti prima dell'appuntamento</span>
+      </li>
+      <li>
+        <span class="n">Passo 02</span>
+        <h3>Consulenza</h3>
+        <p>Vediamo cosa volete cambiare, come cadono i capelli e quanto tempo dedicate loro a casa. Decidiamo la lunghezza.</p>
+        <span class="t">da 3 a 5 minuti</span>
+      </li>
+      <li>
+        <span class="n">Passo 03</span>
+        <h3>Taglio</h3>
+        <p>Forbici sopra, macchinetta sui lati, sfumature rifinite con il rasoio. Controlliamo la forma allo specchio man mano.</p>
+        <span class="t">da 15 a 40 minuti</span>
+      </li>
+      <li>
+        <span class="n">Passo 04</span>
+        <h3>Lavaggio e asciugatura</h3>
+        <p>Lavaggio al lavatesta e asciugatura, compresi nei servizi da 30 minuti in su. Il prodotto lo applichiamo e vi mostriamo come fare a casa con l'opzione estesa.</p>
+        <span class="t">10 minuti</span>
+      </li>
+      <li>
+        <span class="n">Passo 05</span>
+        <h3>Pagamento e prossimo appuntamento</h3>
+        <p>Pagate con carta o in contanti. Sul posto potete fissare subito l'appuntamento fra quattro-sei settimane.</p>
+        <span class="t">2 minuti</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== 05 PRIESTOR ===== -->
+<section class="sec" id="priestor">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">04</p>
+      <div class="shead__main">
+        <h2>Spazi e attrezzature</h2>
+        <p class="lede">Il negozio è al piano terra senza gradino, con una sala per il taglio e un angolo separato per la rasatura.</p>
+      </div>
+    </header>
+
+    <div class="rooms">
+      <article class="rv">
+        <!-- FOTO: rad štyroch kresiel so zrkadlami, pohľad pozdĺž steny -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">Postazioni</p>
+              <div>
+                <p class="plate__num">04</p>
+                <p class="plate__big">poltrone con specchio proprio</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Zona taglio</h3>
+        <p>Quattro poltrone lungo una parete, ciascuna con specchio, luce e aspirazione dei capelli dal pavimento.</p>
+      </article>
+
+      <article class="rv">
+        <!-- FOTO: umývací kút s dvomi sklápacími misami a opierkou krku -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">Lavatesta</p>
+              <div>
+                <p class="plate__num">02</p>
+                <p class="plate__big">lavatesta reclinabili con appoggio per il collo</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Zona lavaggio</h3>
+        <p>Due lavatesta con appoggio regolabile. L'acqua è a 37 °C, lo shampoo lo scegliamo in base al tipo di capelli.</p>
+      </article>
+
+      <article class="rv">
+        <!-- FOTO: čakáreň s lavicou, vešiakom a poličkou na produkty -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">Sala d'attesa</p>
+              <div>
+                <p class="plate__num">06</p>
+                <p class="plate__big">posti a sedere e attaccapanni</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <h3>Sala d'attesa</h3>
+        <p>Sei posti, attaccapanni, caricatore per il telefono e acqua da bere. D'estate è aperto il cortile con due panchine.</p>
+      </article>
+    </div>
+
+    <dl class="kit rv">
+      <div>
+        <dt>Igiene degli strumenti</dt>
+        <dd>Le lame del rasoio sono monouso. Pettini, forbici e testine delle macchinette si puliscono e si disinfettano dopo ogni cliente, mantellina e asciugamano si cambiano.</dd>
+      </div>
+      <div>
+        <dt>Ingresso senza barriere</dt>
+        <dd>Ingresso dalla strada senza gradino, porta larga 90 cm, spazio libero da ostacoli accanto alla prima poltrona.</dd>
+      </div>
+      <div>
+        <dt>Bambini</dt>
+        <dd>Rialzo per la poltrona per i bambini dai quattro anni. L'accompagnatore siede accanto per tutto il taglio.</dd>
+      </div>
+      <div>
+        <dt>Climatizzazione e aerazione</dt>
+        <dd>Climatizzatore nella sala principale, aerazione forzata nell'angolo rasatura.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ===== 06 PRODUKTY ===== -->
+<section class="sec paper" id="produkty">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">05</p>
+      <div class="shead__main">
+        <h2>Prodotti in vendita</h2>
+        <p class="lede">Vendiamo solo quello che usiamo noi al lavoro. Si compra direttamente in negozio, non abbiamo un negozio online. A ogni acquisto vi mostriamo il dosaggio.</p>
+      </div>
+    </header>
+
+    <div class="prods">
+      <article class="prod rv">
+        <!-- FOTO: téglik matnej pasty na tmavom podklade, otvorené veko -->
+        <figure class="obraz">
+          <div class="plate plate--wedge">
+            <div class="plate__type">
+              <p class="plate__word">01 &middot; Pasta</p>
+              <p class="plate__big">Pasta opaca<br>100 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Pasta opaca per capelli</h3>
+          <p>Tenuta media senza lucentezza. Adatta ai tagli corti con texture, si rimodella durante il giorno.</p>
+          <p class="prod__foot"><span class="eur">16 €</span><span class="ml">100 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: plechovka pomády s viditeľnou etiketou, bočný pohľad -->
+        <figure class="obraz">
+          <div class="plate plate--dot">
+            <div class="plate__type">
+              <p class="plate__word">02 &middot; Pomata</p>
+              <p class="plate__big">Pomata a base d'acqua<br>100 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Pomata a base d'acqua</h3>
+          <p>Tenuta forte con lucentezza, si toglie con acqua. Per pettinature all'indietro e classiche con ciuffo.</p>
+          <p class="prod__foot"><span class="eur">18 €</span><span class="ml">100 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: sklenená fľaštička oleja s kvapkadlom, odlesk svetla -->
+        <figure class="obraz">
+          <div class="plate plate--ring">
+            <div class="plate__type">
+              <p class="plate__word">03 &middot; Olio</p>
+              <p class="plate__big">Olio da barba<br>30 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Olio da barba</h3>
+          <p>Miscela di olio di jojoba e di mandorla. Tre gocce nel palmo al mattino: ammorbidisce i peli e calma la pelle.</p>
+          <p class="prod__foot"><span class="eur">14 €</span><span class="ml">30 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: téglik balzamu, vedľa neho drevený hrebeň -->
+        <figure class="obraz">
+          <div class="plate plate--hatch">
+            <div class="plate__type">
+              <p class="plate__word">04 &middot; Balsamo</p>
+              <p class="plate__big">Balsamo da barba<br>60 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Balsamo da barba</h3>
+          <p>Più denso dell'olio, tiene la forma delle barbe più lunghe. Lo consigliamo per barbe da cinque centimetri in su.</p>
+          <p class="prod__foot"><span class="eur">15 €</span><span class="ml">60 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: fľaša šampónu pri umývacej mise -->
+        <figure class="obraz">
+          <div class="plate plate--rule">
+            <div class="plate__type">
+              <p class="plate__word">05 &middot; Shampoo</p>
+              <p class="plate__big">Shampoo per capelli grassi<br>250 ml</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Shampoo per capelli grassi</h3>
+          <p>Senza siliconi, con estratto di menta. Lo stesso che usiamo per il lavaggio in negozio.</p>
+          <p class="prod__foot"><span class="eur">13 €</span><span class="ml">250 ml</span></p>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <!-- FOTO: kefa z diviačích štetín zhora, viditeľné drevené telo -->
+        <figure class="obraz">
+          <div class="plate plate--grid">
+            <div class="plate__type">
+              <p class="plate__word">06 &middot; Spazzola</p>
+              <p class="plate__big">Spazzola in setole di cinghiale<br>manico in legno</p>
+            </div>
+          </div>
+        </figure>
+        <div class="prod__body">
+          <h3>Spazzola in setole di cinghiale</h3>
+          <p>Per pettinare ogni giorno la barba e i capelli corti. Distribuisce l'olio in modo uniforme fino alle radici.</p>
+          <p class="prod__foot"><span class="eur">22 €</span><span class="ml">1 pezzo</span></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07 STAROSTLIVOSŤ DOMA ===== -->
+<section class="sec sec--deep" id="starostlivost">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">06</p>
+      <div class="shead__main">
+        <h2>Cura di capelli e barba a casa</h2>
+        <p class="lede">I passaggi che vi mostriamo durante il taglio, direttamente sui vostri capelli. Per ogni passaggio trovate dosaggio e tempi.</p>
+      </div>
+    </header>
+
+    <div class="care rv">
+      <div>
+        <span class="n">01</span>
+        <h3>Lavaggio</h3>
+        <p>Con i tagli corti basta lavare i capelli un giorno sì e uno no, con la cute grassa ogni giorno. Lo shampoo va solo sulla cute, le lunghezze si lavano da sole risciacquando. Il balsamo va sulle punte, non alle radici.</p>
+      </div>
+      <div>
+        <span class="n">02</span>
+        <h3>Asciugatura e piega</h3>
+        <p>Asciugate i capelli con il phon all'ottanta per cento circa e solo dopo applicate il prodotto. Sui capelli bagnati pasta e pomata non fanno presa e la piega cade entro un'ora. Dirigete l'aria contro il verso di crescita: la forma tiene di più.</p>
+      </div>
+      <div>
+        <span class="n">03</span>
+        <h3>Dosaggio del prodotto</h3>
+        <p>Pasta grande come un pisello per un taglio corto, come un fagiolo per un ciuffo più lungo. Scaldatela tra i palmi finché non sparisce la lucentezza e poi passatela nei capelli dalla nuca in avanti. Più prodotto non migliora la forma, appesantisce solo i capelli.</p>
+      </div>
+      <div>
+        <span class="n">04</span>
+        <h3>Barba e spazzola</h3>
+        <p>Tre gocce d'olio al mattino sulla barba asciutta, oltre i cinque centimetri usate il balsamo. Distribuite dalla pelle verso le punte e passate la spazzola: basta un minuto. Il pettine fitto va sui capelli bagnati, la spazzola sempre su quelli asciutti. I contorni su collo e guance non sistemateli a casa: tra una visita e l'altra li rifiniamo noi per 9 €.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 POUKAZY ===== -->
+<section class="sec" id="poukazy">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">07</p>
+      <div class="shead__main">
+        <h2>Buoni regalo</h2>
+        <p class="lede">Il buono lo prepariamo sul momento in negozio, stampato e con un numero proprio. Si può usare per servizi e prodotti.</p>
+      </div>
+    </header>
+
+    <div class="vouch rv">
+      <div class="vouch__grid">
+        <div class="plate plate--arc">
+          <div class="plate__type">
+            <p class="plate__word">Buono</p>
+            <div>
+              <p class="plate__num">30 €</p>
+              <p class="plate__big">taglio o cura della barba</p>
+            </div>
+          </div>
+        </div>
+        <div class="plate plate--wedge">
+          <div class="plate__type">
+            <p class="plate__word">Buono</p>
+            <div>
+              <p class="plate__num">50 €</p>
+              <p class="plate__big">taglio con barba e un prodotto</p>
+            </div>
+          </div>
+        </div>
+        <div class="plate plate--dot">
+          <div class="plate__type">
+            <p class="plate__word">Buono</p>
+            <div>
+              <p class="plate__num">80 €</p>
+              <p class="plate__big">due visite complete</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p>Il valore del buono potete deciderlo voi, da 15 € in su. Con il buono si prenota come per un appuntamento normale, basta indicare il numero del buono nella nota.</p>
+        <ul class="rules">
+          <li><b>01</b><span>Validità 12 mesi dalla data di emissione.</span></li>
+          <li><b>02</b><span>Si può usare anche in più volte, il saldo lo annotiamo sul retro.</span></li>
+          <li><b>03</b><span>Il buono è cedibile, il nome non è obbligatorio.</span></li>
+          <li><b>04</b><span>Il valore non usato non si rimborsa in contanti.</span></li>
+          <li><b>05</b><span>In caso di smarrimento possiamo bloccare il buono e rifarlo in base al numero.</span></li>
+        </ul>
+        <div class="btns" style="margin-top:26px">
+          <a class="btn btn--brass" href="#kontakt">Scriveteci un messaggio</a>
+          <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09 HODINY ===== -->
+<section class="sec paper" id="hodiny">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">08</p>
+      <div class="shead__main">
+        <h2>Orari di apertura</h2>
+        <p class="lede">L'ultimo appuntamento inizia in modo da finire entro la chiusura. Il giovedì e il venerdì abbiamo orario prolungato fino alle 20:00.</p>
+      </div>
+    </header>
+
+    <div class="hours">
+      <div class="rv">
+        <div class="status" id="stav-teraz" role="status">
+          <strong id="stav-nadpis">Orari di apertura</strong>
+          <p id="stav-text">Lun &ndash; Mer 9:00 &ndash; 19:00, Gio &ndash; Ven 9:00 &ndash; 20:00, Sab 8:00 &ndash; 14:00, domenica chiuso.</p>
+        </div>
+
+        <dl class="htab" id="tab-hodin">
+          <div data-den="1"><dt>Lunedì</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">over 65 fino alle 12:00</span></div>
+          <div data-den="2"><dt>Martedì</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">over 65 fino alle 12:00</span></div>
+          <div data-den="3"><dt>Mercoledì</dt><dd>9:00 &ndash; 19:00</dd><span class="tagcol">over 65 fino alle 12:00</span></div>
+          <div data-den="4"><dt>Giovedì</dt><dd>9:00 &ndash; 20:00</dd><span class="tagcol">orario prolungato</span></div>
+          <div data-den="5"><dt>Venerdì</dt><dd>9:00 &ndash; 20:00</dd><span class="tagcol">orario prolungato</span></div>
+          <div data-den="6"><dt>Sabato</dt><dd>8:00 &ndash; 14:00</dd><span class="tagcol">orario continuato</span></div>
+          <div data-den="0" class="is-closed"><dt>Domenica</dt><dd>chiuso</dd><span class="tagcol">&mdash;</span></div>
+        </dl>
+      </div>
+
+      <div class="rv">
+        <div class="plate plate--rule" style="aspect-ratio:4/3;display:flex">
+          <div class="plate__type">
+            <p class="plate__word">Le ore più piene</p>
+            <div>
+              <p class="plate__num">16&ndash;19</p>
+              <p class="plate__big">sono giovedì e venerdì. Se volete aspettare meno per un orario libero, provate lunedì o martedì mattina.</p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="rules" style="margin-top:22px">
+          <li><b>01</b><span>Non c'è pausa pranzo, le poltrone si danno il cambio.</span></li>
+          <li><b>02</b><span>Nei giorni festivi siamo chiusi, l'orario alternativo ve lo proponiamo il giorno prima.</span></li>
+          <li><b>03</b><span>L'ultimo appuntamento inizia da 15 a 90 minuti prima della chiusura, a seconda della durata del servizio.</span></li>
+          <li><b>04</b><span>Al <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito.">qui il vostro numero</span> ci trovate in orario di apertura, fuori orario scrivete un SMS.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 OBJEDNANIE ===== -->
+<section class="sec sec--deep" id="objednanie">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">09</p>
+      <div class="shead__main">
+        <h2>Prenotare un appuntamento</h2>
+        <p class="lede">Scegliete servizio, opzioni della visita e un orario libero. Gli orari occupati sono barrati e non si possono scegliere. La durata del blocco la calcoliamo in base alle opzioni.</p>
+      </div>
+    </header>
+
+    <div class="book">
+      <form class="panel rv" id="form-objednanie" novalidate>
+        <fieldset class="fset">
+          <legend>1. Servizio</legend>
+          <div class="field">
+            <label for="f-sluzba">Scegliete il servizio</label>
+            <select id="f-sluzba" name="sluzba">
+              <optgroup label="Singoli servizi">
+                <option value="Taglio classico da uomo" data-min="30" data-cena="22" selected>Taglio classico da uomo &mdash; 30 min, 22 €</option>
+                <option value="Taglio a macchinetta con sfumatura" data-min="45" data-cena="27">Taglio a macchinetta con sfumatura &mdash; 45 min, 27 €</option>
+                <option value="Rasatura con rasoio e asciugamano caldo" data-min="40" data-cena="25">Rasatura con il rasoio &mdash; 40 min, 25 €</option>
+                <option value="Barba e baffi" data-min="25" data-cena="16">Barba e baffi &mdash; 25 min, 16 €</option>
+                <option value="Taglio bambini fino a 12 anni" data-min="25" data-cena="15">Taglio bambini fino a 12 anni &mdash; 25 min, 15 €</option>
+                <option value="Taglio over 65" data-min="30" data-cena="17">Taglio over 65 &mdash; 30 min, 17 €</option>
+                <option value="Ritocco dei contorni tra un taglio e l'altro" data-min="15" data-cena="9">Ritocco dei contorni &mdash; 15 min, 9 €</option>
+              </optgroup>
+              <optgroup label="Pacchetti">
+                <option value="Taglio e barba" data-min="60" data-cena="36">Taglio e barba &mdash; 60 min, 36 €</option>
+                <option value="Taglio e rasatura con il rasoio" data-min="70" data-cena="42">Taglio e rasatura con il rasoio &mdash; 70 min, 42 €</option>
+                <option value="Taglio, barba e rasatura con il rasoio" data-min="90" data-cena="55">Taglio, barba e rasatura con il rasoio &mdash; 90 min, 55 €</option>
+              </optgroup>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>2. Barbiere</legend>
+          <div class="field">
+            <label for="f-holic">Scegliete il barbiere</label>
+            <select id="f-holic" name="holic">
+              <option value="Qualsiasi barbiere" data-dni="1,2,3,4,5,6" selected>Qualsiasi barbiere &mdash; più orari liberi</option>
+              <option value="Marco Aiello" data-dni="1,2,3,4,5">Marco Aiello &mdash; dal lunedì al venerdì</option>
+              <option value="Tommaso Benzi" data-dni="2,3,4,5,6">Tommaso Benzi &mdash; dal martedì al sabato</option>
+              <option value="Pietro Carli" data-dni="1,3,5,6">Pietro Carli &mdash; lunedì, mercoledì, venerdì, sabato</option>
+            </select>
+          </div>
+          <p class="note" style="margin:10px 0 0">Il taglio con l'apprendista, scontato del 30%, si prenota per telefono.</p>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>3. Opzioni e durata</legend>
+          <div class="opts">
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Base" data-min="0" data-cena="0" checked>
+              <b>Base</b>
+              <em>+0 min</em>
+              <span>Solo il servizio, senza aggiunte.</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Esteso" data-min="15" data-cena="6">
+              <b>Esteso</b>
+              <em>+15 min &middot; +6 €</em>
+              <span>Piega con phon e prodotto, con dimostrazione di come farla a casa.</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="rozsah" value="Completo" data-min="30" data-cena="12">
+              <b>Completo</b>
+              <em>+30 min &middot; +12 €</em>
+              <span>Piega, asciugamano caldo e impacco rinfrescante finale.</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>4. Giorno</legend>
+          <div class="chipsrow" id="obj-dni" role="group" aria-label="Scelta del giorno">
+            <p class="note" style="margin:0">Senza JavaScript attivo l'appuntamento lo fissiamo per telefono in orario di apertura.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>5. Orario di inizio</legend>
+          <div class="slots" id="obj-casy" role="group" aria-label="Scelta dell'orario">
+            <p class="note" style="grid-column:1/-1;margin:0">Gli orari liberi ve li diciamo al telefono, oppure vi rispondiamo via SMS entro la chiusura.</p>
+          </div>
+          <p class="freecount" id="obj-pocet" role="status"></p>
+          <p class="warn" id="obj-varovanie" role="status" hidden></p>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>6. Contatti</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-meno">Nome e cognome</label>
+              <input type="text" id="f-meno" name="meno" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="f-tel">Telefono</label>
+              <input type="tel" id="f-tel" name="telefon" autocomplete="tel" placeholder="il vostro numero di telefono">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-pozn">Nota</label>
+            <textarea id="f-pozn" name="poznamka" placeholder="Numero del buono regalo, prima visita, taglio con l'apprendista"></textarea>
+          </div>
+        </fieldset>
+
+        <label class="consent">
+          <input type="checkbox" id="f-suhlas" name="suhlas">
+          <span>Acconsento al trattamento dei dati indicati per fissare l'appuntamento.</span>
+        </label>
+
+        <button class="btn btn--brass" type="submit" style="width:100%">Invia la prenotazione</button>
+        <p class="sum__note">Questo è un sito di esempio. Il modulo non invia nulla e non salva alcun dato.</p>
+
+        <div class="done" id="obj-hotovo" hidden tabindex="-1">
+          <strong>Ecco come sarebbe la conferma</strong>
+          <p id="obj-hotovo-detail">Su un sito vero adesso partirebbe un SMS di conferma al cliente e l'appuntamento comparirebbe nell'agenda della barberia.</p>
+          <p>Qui non è stato inviato nulla e non è stato creato nessun appuntamento. Se volete un sito così per la vostra attività, scrivete su <a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a>.</p>
+        </div>
+      </form>
+
+      <aside class="sum rv" aria-label="Riepilogo della prenotazione">
+        <h3>Riepilogo dell'appuntamento</h3>
+        <dl class="sum__rows">
+          <div><dt>Servizio</dt><dd id="s-sluzba">Taglio classico da uomo</dd></div>
+          <div><dt>Barbiere</dt><dd id="s-holic">Qualsiasi barbiere</dd></div>
+          <div><dt>Opzioni</dt><dd id="s-rozsah">Base</dd></div>
+          <div><dt>Durata</dt><dd id="s-dlzka">30 minuti</dd></div>
+          <div><dt>Giorno</dt><dd id="s-den">non scelta</dd></div>
+          <div><dt>Orario</dt><dd id="s-cas">non scelta</dd></div>
+        </dl>
+        <div class="sum__total">
+          <span class="l">Prezzo totale</span>
+          <span class="v" id="s-cena">22 €</span>
+        </div>
+        <p class="sum__note">Il prezzo è definitivo. Si paga sul posto con carta o in contanti, oppure con un buono regalo.</p>
+        <p class="sum__note">La disdetta è gratuita fino a quattro ore prima dell'appuntamento.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 PODMIENKY ===== -->
+<section class="sec" id="podmienky">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">10</p>
+      <div class="shead__main">
+        <h2>Disdette e ritardi</h2>
+        <p class="lede">Teniamo le regole semplici, perché gli orari funzionino per tutti. Valgono allo stesso modo per le prenotazioni sul sito e per telefono.</p>
+      </div>
+    </header>
+
+    <div class="terms rv">
+      <div>
+        <h3>Disdetta</h3>
+        <ul>
+          <li><b>Fino a 4 ore</b> prima dell'appuntamento gratis, per telefono o via SMS.</li>
+          <li><b>Meno di 4 ore</b> prima l'appuntamento decade senza costi, ma ce lo annotiamo.</li>
+          <li><b>Due assenze</b> senza avviso: il prossimo appuntamento lo confermiamo solo dopo un acconto di 10 €.</li>
+          <li><b>L'acconto</b> si scala dal prezzo del servizio alla visita successiva.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Ritardi</h3>
+        <ul>
+          <li><b>Fino a 10 minuti</b> accorciamo il servizio perché stia nel blocco originale.</li>
+          <li><b>Oltre 10 minuti</b> l'appuntamento decade e vi proponiamo il primo orario libero.</li>
+          <li><b>Senza prenotazione</b> vi serviamo solo se c'è una poltrona libera.</li>
+          <li><b>Arrivare prima</b> va benissimo, aspettate in sala d'attesa, che ha sei posti.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Spostamenti e recuperi</h3>
+        <ul>
+          <li><b>Spostare l'appuntamento</b> è gratis se lo comunicate almeno 4 ore prima.</li>
+          <li><b>L'orario liberato</b> lo offriamo al primo in attesa per quel giorno.</li>
+          <li><b>Nei festivi</b> siamo chiusi, l'orario alternativo lo proponiamo il giorno prima.</li>
+          <li><b>Se il taglio non vi soddisfa</b> lo sistemiamo entro 7 giorni dalla visita, senza costi.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 PLATBA ===== -->
+<section class="sec sec--deep" id="platba">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">11</p>
+      <div class="shead__main">
+        <h2>Pagamento, scontrino e supplementi</h2>
+        <p class="lede">Si paga solo dopo il servizio, alla prenotazione non chiediamo acconti. Il prezzo del listino è definitivo, l'unica cosa che lo cambia sono le opzioni scelte prima.</p>
+      </div>
+    </header>
+
+    <div class="terms rv">
+      <div>
+        <h3>Come si paga</h3>
+        <ul>
+          <li><b>Dopo il servizio</b> alla poltrona o alla cassa, dove c'è posto.</li>
+          <li><b>Nessun importo minimo</b> per la carta: con la carta si paga anche il ritocco dei contorni da 9 €.</li>
+          <li><b>Il buono regalo</b> copre servizi e prodotti, il resto lo pagate in altro modo.</li>
+          <li><b>La mancia</b> non è attesa né compresa nel prezzo.</li>
+        </ul>
+        <ul class="pay">
+          <li>contanti</li>
+          <li>carta di pagamento</li>
+          <li>contactless con lo smartphone</li>
+          <li>buono regalo</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Scontrino e prezzo</h3>
+        <ul>
+          <li><b>Lo scontrino</b> lo ricevete sempre, anche pagando con il buono.</li>
+          <li><b>I prezzi del listino</b> sono definitivi, non si aggiunge nulla.</li>
+          <li><b>Le opzioni della visita</b> le scegliete alla prenotazione e le vedete nel riepilogo.</li>
+          <li><b>Cambiare durante l'appuntamento</b> non è possibile, il blocco è riservato esattamente per la durata concordata.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Sconti</h3>
+        <ul>
+          <li><b>Il taglio con l'apprendista</b> è scontato del 30%, il tempo riservato è di 15 minuti più lungo.</li>
+          <li><b>Gli over 65</b> pagano 17 € dal lunedì al mercoledì dalle 9:00 alle 12:00.</li>
+          <li><b>I bambini fino a 12 anni</b> pagano 15 € in qualsiasi giorno.</li>
+          <li><b>Gli sconti non si sommano</b>, vale sempre quello più conveniente.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tw rv" style="margin-top:clamp(30px,4vw,46px)">
+      <table class="dtab">
+        <caption>Opzioni della visita e supplementi</caption>
+        <thead>
+          <tr>
+            <th scope="col">Opzioni</th>
+            <th scope="col">Cosa si aggiunge</th>
+            <th scope="col">Tempo in più</th>
+            <th scope="col">Supplemento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Base</th>
+            <td>Solo il servizio da listino, consulenza e rifinitura dei contorni comprese.</td>
+            <td class="num">+0 min</td>
+            <td class="num">0 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Esteso</th>
+            <td>Lavaggio al lavatesta e piega, con dimostrazione di come farla a casa.</td>
+            <td class="num">+15 min</td>
+            <td class="num">6 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Completo</th>
+            <td>Lavaggio, piega, asciugamano caldo e impacco rinfrescante finale.</td>
+            <td class="num">+30 min</td>
+            <td class="num">12 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Taglio con l'apprendista</th>
+            <td>Lo stesso servizio sotto la supervisione diretta del barbiere, che rifinisce il lavoro.</td>
+            <td class="num">+15 min</td>
+            <td class="num">&minus;30%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 OTÁZKY ===== -->
+<section class="sec paper" id="otazky">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">12</p>
+      <div class="shead__main">
+        <h2>Domande frequenti</h2>
+        <p class="lede">Se qui non trovate la risposta, chiamateci in orario di apertura o scrivete con il modulo nella sezione contatti.</p>
+      </div>
+    </header>
+
+    <div class="faq rv">
+      <details>
+        <summary>Devo prenotare prima?</summary>
+        <p>Lo consigliamo. Lavoriamo su appuntamenti precisi e senza prenotazione vi serviamo solo se c'è una poltrona libera. Le probabilità più alte sono il lunedì e il martedì mattina, le più basse il giovedì e il venerdì dopo le 16:00.</p>
+      </details>
+      <details>
+        <summary>Quanto dura il taglio e cosa comprende?</summary>
+        <p>Il taglio classico ha 30 minuti riservati, il taglio con sfumatura 45 minuti e taglio e barba 60 minuti. Il prezzo comprende consulenza, rifinitura dei contorni con il rasoio e, per i servizi oltre i 30 minuti, anche il lavaggio. Lavaggio e piega con un servizio più breve costano 6 € in più e allungano l'appuntamento di 15 minuti.</p>
+      </details>
+      <details>
+        <summary>Tagliate anche i capelli ai bambini?</summary>
+        <p>Sì, i bambini fino a 12 anni per 15 € con 25 minuti riservati. Abbiamo un rialzo per la poltrona per i bambini dai quattro anni. L'accompagnatore siede accanto per tutto il taglio. Per il primo taglio prenotate un po' di tempo in più: adattiamo il ritmo al bambino.</p>
+      </details>
+      <details>
+        <summary>Cosa significa taglio con l'apprendista?</summary>
+        <p>Lo stesso servizio lo fa l'apprendista sotto la supervisione diretta del barbiere, che controlla e rifinisce il lavoro. Il prezzo è più basso del 30% e il tempo riservato è di 15 minuti più lungo. Se il risultato non vi soddisfa, lo completiamo subito senza costi.</p>
+      </details>
+      <details>
+        <summary>Come prepararsi alla rasatura con il rasoio?</summary>
+        <p>Venite con almeno due giorni di barba e non radetevi a casa il giorno dell'appuntamento. Se avete la pelle irritata, acne o piccoli tagli recenti, ditelo all'inizio: in quel caso rimandiamo la rasatura o ci limitiamo ai contorni.</p>
+      </details>
+      <details>
+        <summary>Posso pagare con la carta?</summary>
+        <p>Sì, accettiamo carte di pagamento e pagamenti contactless con lo smartphone, oltre a contanti e buoni regalo. Non chiediamo acconti, si paga solo dopo il servizio. Lo scontrino lo ricevete sempre.</p>
+      </details>
+      <details>
+        <summary>Ogni quanto devo tagliare i capelli?</summary>
+        <p>Con i tagli corti sfumati la forma è migliore da tre a cinque settimane, con quelli più lunghi da sei a otto. Tra un taglio e l'altro possiamo rifinire collo e orecchie per 9 €, se dal taglio precedente non sono passati più di 14 giorni.</p>
+      </details>
+      <details>
+        <summary>Si può prenotare un barbiere preciso?</summary>
+        <p>Sì, scrivetelo nella nota della prenotazione o ditelo al telefono. Con un barbiere preciso il primo orario libero di solito è qualche giorno più avanti rispetto a una poltrona qualsiasi.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 KARIÉRA ===== -->
+<section class="sec sec--deep" id="kariera">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">13</p>
+      <div class="shead__main">
+        <h2>Lavorare in barberia</h2>
+        <p class="lede">Abbiamo quattro poltrone e una la occupiamo man mano. Cerchiamo un barbiere a tempo pieno e un apprendista che voglia imparare tutto il mestiere, dal lavaggio al rasoio.</p>
+      </div>
+    </header>
+
+    <div class="jobs rv">
+      <div class="job">
+        <h3>Barbiere</h3>
+        <p class="role">Tempo pieno &middot; poltrona propria</p>
+        <ul>
+          <li><b>Cosa fate:</b> taglio a forbice e a macchinetta, sfumature, modellatura della barba e rasatura con il rasoio.</li>
+          <li><b>Cosa chiediamo:</b> autonomia nel taglio classico e voglia di imparare da noi la rasatura tradizionale.</li>
+          <li><b>Cosa ricevete:</b> una poltrona vostra, strumenti e prodotti del negozio, agenda degli appuntamenti fissa.</li>
+          <li><b>Orario:</b> cinque giorni a settimana, un sabato su due libero, domenica sempre libera.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <h3>Apprendista</h3>
+        <p class="role">Formazione direttamente in negozio</p>
+        <ul>
+          <li><b>Cosa fate:</b> lavaggi, preparazione della postazione, poi pian piano il taglio sotto la supervisione del barbiere.</li>
+          <li><b>Cosa chiediamo:</b> precisione, ordine e voglia di ripetere un gesto finché non viene bene.</li>
+          <li><b>Cosa ricevete:</b> formazione dal primo giorno su clienti veri con il listino scontato.</li>
+          <li><b>Orario:</b> da concordare con la scuola, almeno tre giorni a settimana.</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="route rv" style="margin-top:clamp(28px,3.6vw,44px)">
+      <li>
+        <span class="n">01</span>
+        <span><b>Contattateci</b><p>Scrivete con il modulo qui sotto o chiamateci. Bastano nome, telefono e una frase su dove avete tagliato finora.</p></span>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <span><b>Un breve incontro</b><p>Vediamo cosa sapete fare e cosa volete fare. Dura una ventina di minuti, meglio il lunedì o il martedì mattina.</p></span>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <span><b>Giornata di prova alla poltrona</b><p>Lavorate una giornata normale con la nostra agenda. Strumenti e prodotti ve li diamo noi.</p></span>
+      </li>
+      <li>
+        <span class="n">04</span>
+        <span><b>Accordo</b><p>Retribuzione e orario li vediamo di persona dopo la giornata di prova. La risposta ve la diamo entro tre giorni lavorativi, in ogni caso.</p></span>
+      </li>
+    </ul>
+
+    <div class="btns rv" style="margin-top:clamp(26px,3.2vw,36px)">
+      <a class="btn btn--brass" href="#kontakt">Scriveteci un messaggio</a>
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 15 KONTAKT ===== -->
+<section class="sec" id="kontakt">
+  <div class="wrap">
+    <header class="shead rv">
+      <p class="shead__idx">14</p>
+      <div class="shead__main">
+        <h2>Dove siamo, parcheggio e contatti</h2>
+        <p class="lede">Il negozio è in zona pedonale, al piano terra di un palazzo d'angolo. L'ingresso è direttamente dalla strada, senza gradino.</p>
+      </div>
+    </header>
+
+    <div class="contact">
+      <div class="rv">
+        <dl class="cdl">
+          <div>
+            <dt>Indirizzo</dt>
+            <dd>Barberia Filo<br>Via Corta 6, centro storico</dd>
+          </div>
+          <div>
+            <dt>Telefono</dt>
+            <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></dd>
+          </div>
+          <div>
+            <dt>Aperto</dt>
+            <dd>Lun &ndash; Mer 9:00 &ndash; 19:00<br>Gio &ndash; Ven 9:00 &ndash; 20:00<br>Sab 8:00 &ndash; 14:00, Dom chiuso</dd>
+          </div>
+          <div>
+            <dt>Prenotazione</dt>
+            <dd>con il modulo su questa pagina, per telefono o via SMS</dd>
+          </div>
+          <div>
+            <dt>Parcheggio</dt>
+            <dd>parcheggio multipiano a 120 m, la prima ora 1 €<br>in centro sosta a pagamento dalle 8:00 alle 18:00</dd>
+          </div>
+          <div>
+            <dt>Pagamento</dt>
+            <dd>contanti, carta, smartphone, buono regalo</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rv">
+        <div class="plate plate--grid mapplate">
+          <div class="plate__type">
+            <p class="plate__word">Zona pedonale</p>
+            <div>
+              <p class="plate__num">3 min</p>
+              <p class="plate__big">a piedi dalla fermata dei bus, 120 m dal parcheggio multipiano</p>
+            </div>
+          </div>
+        </div>
+
+        <h3>Come arrivare</h3>
+        <ul class="route">
+          <li>
+            <span class="n">01</span>
+            <span><b>A piedi</b><p>Dalla via pedonale principale svoltate alla fontana nella stradina laterale. Il negozio è all'angolo, secondo ingresso a sinistra.</p></span>
+          </li>
+          <li>
+            <span class="n">02</span>
+            <span><b>Con i mezzi pubblici</b><p>La fermata più vicina è a tre minuti a piedi. Dalla fermata passate il sottopasso e tenetevi sul lato sinistro della piazza.</p></span>
+          </li>
+          <li>
+            <span class="n">03</span>
+            <span><b>In auto e parcheggio</b><p>Il parcheggio multipiano è a 120 m, la prima ora costa 1 €. Nelle strade del centro la sosta è a pagamento dalle 8:00 alle 18:00.</p></span>
+          </li>
+          <li>
+            <span class="n">04</span>
+            <span><b>In bicicletta</b><p>La rastrelliera per quattro bici è proprio davanti all'ingresso. Il monopattino potete lasciarlo in sala d'attesa, vicino all'attaccapanni.</p></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cform">
+      <form class="panel rv" id="form-sprava" novalidate>
+        <fieldset class="fset">
+          <legend>Scriveteci</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="k-meno">Nome e cognome</label>
+              <input type="text" id="k-meno" name="meno" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="k-tel">Telefono</label>
+              <input type="tel" id="k-tel" name="telefon" autocomplete="tel" placeholder="il vostro numero di telefono" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="k-sprava">Messaggio</label>
+            <textarea id="k-sprava" name="sprava" required placeholder="Per esempio: vorrei taglio e barba sabato mattina, oppure mi interessa lavorare come barbiere."></textarea>
+          </div>
+        </fieldset>
+
+        <label class="consent">
+          <input type="checkbox" id="k-suhlas" name="suhlas">
+          <span>Acconsento al trattamento dei dati indicati per ricevere una risposta a questo messaggio.</span>
+        </label>
+
+        <button class="btn btn--brass" type="submit" style="width:100%">Invia il messaggio</button>
+        <p class="warn" id="sprava-chyba" role="status" hidden></p>
+        <p class="sum__note">Questo è un sito di esempio. Il modulo non invia nulla e non salva alcun dato.</p>
+
+        <div class="done" id="sprava-hotovo" hidden tabindex="-1">
+          <strong>Ecco come sarebbe la conferma</strong>
+          <p>Su un sito vero il messaggio partirebbe adesso verso la casella della barberia e voi ricevereste una conferma di ricezione.</p>
+          <p>Qui non è stato inviato nulla. Se volete un sito così per la vostra attività, scrivete su <a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a>.</p>
+        </div>
+      </form>
+
+      <div class="cform__side rv">
+        <h3>Come funziona</h3>
+        <p>Il messaggio del modulo arriva nella casella della barberia. Rispondiamo entro 24 ore, di solito per telefono o via SMS al numero indicato. Nel weekend rispondiamo il sabato fino alle 14:00, altrimenti il lunedì mattina.</p>
+        <p>Se vi serve un appuntamento per oggi o domani, meglio chiamare direttamente in orario di apertura.</p>
+        <dl>
+          <div>
+            <dt>Telefono</dt>
+            <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></dd>
+          </div>
+          <div>
+            <dt>Indirizzo</dt>
+            <dd>Via Corta 6, centro storico</dd>
+          </div>
+          <div>
+            <dt>Risposta</dt>
+            <dd>entro 24 ore nei giorni di apertura</dd>
+          </div>
+        </dl>
+        <div class="btns" style="margin-top:22px">
+          <a class="btn btn--ghost" href="#objednanie">Scegli l'appuntamento sul sito</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== AUTOR UKÁŽKY — jediné reálne kontaktné údaje na tejto stránke ===== -->
+<aside class="author" id="autor" aria-labelledby="autor-nadpis">
+  <div class="wrap author__in">
+    <div class="rv">
+      <p class="eyebrow">Autore dell'esempio</p>
+      <h2 id="autor-nadpis">Vi piace questo sito?</h2>
+      <p>La Barberia Filo è un'attività inventata e tutti i suoi dati, prezzi e indirizzo compresi, sono di esempio. Questa pagina l'ha progettata e programmata Alex Poliak. Un sito uguale lo realizzo anche per la vostra attività, con i vostri testi, prezzi e foto.</p>
+      <p>La consulenza è gratuita e senza impegno. Vediamo di cosa ha bisogno la vostra attività e vi dico subito se ha senso e quanto costerà.</p>
+      <p class="author__price">Siti su misura da 250 €. Prima bozza in 3 giorni. Consulenza gratuita e senza impegno.</p>
+    </div>
+
+    <div class="author__card rv">
+      <p class="author__name">Alex Poliak</p>
+      <p class="author__role">Progettazione e programmazione di siti web</p>
+      <dl class="author__list">
+        <div>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Assistenza</dt>
+          <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Telefono</dt>
+          <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></dd>
+        </div>
+        <div>
+          <dt>Sito</dt>
+          <dd><a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a></dd>
+        </div>
+        <div>
+          <dt>Prezzo</dt>
+          <dd>da 250 €, prima bozza in 3 giorni</dd>
+        </div>
+      </dl>
+      <div class="btns">
+        <a class="btn btn--brass" href="mailto:apoliak@apoliak.online?subject=Interesse%20per%20un%20sito">Scrivi un'e-mail</a>
+        <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== PÄTA ===== -->
+<footer class="foot">
+
+  <div class="wrap">
+    <div class="foot__in">
+      <div>
+        <strong>Barberia Filo</strong>
+        <p>Barbiere da uomo, Via Corta 6, centro storico. Quattro poltrone, taglio su appuntamento, rasatura tradizionale con il rasoio.</p>
+        <p>Prenotazioni e domande: <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></p>
+      </div>
+
+      <div>
+        <h3>Orari di apertura</h3>
+        <ul class="foot__hours">
+          <li><span>Lun &ndash; Mer</span><span>9:00 &ndash; 19:00</span></li>
+          <li><span>Gio &ndash; Ven</span><span>9:00 &ndash; 20:00</span></li>
+          <li><span>Sabato</span><span>8:00 &ndash; 14:00</span></li>
+          <li><span>Domenica</span><span>chiuso</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Contenuti della pagina</h3>
+        <ul class="foot__links">
+          <li><a href="#cennik">Servizi e listino</a></li>
+          <li><a href="#navsteva">La visita</a></li>
+          <li><a href="#produkty">Prodotti in vendita</a></li>
+          <li><a href="#poukazy">Buoni regalo</a></li>
+          <li><a href="#objednanie">Prenotare un appuntamento</a></li>
+          <li><a href="#podmienky">Condizioni di disdetta</a></li>
+          <li><a href="#platba">Pagamento e supplementi</a></li>
+          <li><a href="#kariera">Lavorare in barberia</a></li>
+          <li><a href="#kontakt">Contatti e parcheggio</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__base">
+      <p>Sito di esempio senza un negozio reale. Nome, indirizzo, telefono, orari e prezzi sono inventati.</p>
+      <p>Progetto e codice: <a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var d = document;
+  var root = d.documentElement;
+  root.className += " js";
+  var jemne = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- výška lepiaceho vrchu ---------- */
+  var stack = d.querySelector(".topstack");
+  function meraj(){
+    if(!stack) return;
+    root.style.setProperty("--stick", (stack.offsetHeight + 16) + "px");
+  }
+  meraj();
+  window.addEventListener("resize", meraj);
+  window.addEventListener("load", meraj);
+  /* pásik sa pri úzkych displejoch zalomí do viacerých riadkov, výšku preto sledujeme priebežne */
+  if(stack && "ResizeObserver" in window){
+    new ResizeObserver(meraj).observe(stack);
+  }
+
+  /* ---------- mobilné menu ---------- */
+  var tog = d.querySelector(".nav-toggle");
+  var menu = d.getElementById("hlavne-menu");
+  function zavri(){
+    if(!tog || !menu) return;
+    menu.setAttribute("data-open", "false");
+    tog.setAttribute("aria-expanded", "false");
+  }
+  if(tog && menu){
+    tog.addEventListener("click", function(){
+      var otv = menu.getAttribute("data-open") === "true";
+      menu.setAttribute("data-open", otv ? "false" : "true");
+      tog.setAttribute("aria-expanded", otv ? "false" : "true");
+      meraj();
+    });
+  }
+  d.addEventListener("keydown", function(e){ if(e.key === "Escape") zavri(); });
+
+  /* ============================================================
+     OBJEDNÁVANIE TERMÍNU
+     ============================================================ */
+  var sluzba = d.getElementById("f-sluzba");
+  var rozsahy = [].slice.call(d.querySelectorAll('input[name="rozsah"]'));
+  var boxDni = d.getElementById("obj-dni");
+  var boxCasy = d.getElementById("obj-casy");
+  var pocetTxt = d.getElementById("obj-pocet");
+  var varovanie = d.getElementById("obj-varovanie");
+
+  var vyst = {
+    sluzba: d.getElementById("s-sluzba"),
+    rozsah: d.getElementById("s-rozsah"),
+    dlzka: d.getElementById("s-dlzka"),
+    den: d.getElementById("s-den"),
+    cas: d.getElementById("s-cas"),
+    cena: d.getElementById("s-cena")
+  };
+
+  /* otváracie hodiny v minútach od polnoci, index = getDay() */
+  var HODINY = [null, [540,1140], [540,1140], [540,1140], [540,1200], [540,1200], [480,840]];
+  var KROK = 30;                 /* termíny začínajú každú polhodinu */
+  var PREDSTIH = 60;             /* v ten istý deň sa dá objednať najskôr o hodinu */
+  var DNI_KR = ["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
+  var DNI = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+  var DNI_V = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+
+  var vybranyDen = null;   /* Date */
+  var vybranyCas = null;   /* minúty od polnoci */
+
+  function cas(m){
+    var h = Math.floor(m / 60), mi = m % 60;
+    return h + ":" + (mi < 10 ? "0" + mi : mi);
+  }
+  function kluc(dt){
+    return dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+  }
+  function minutySlovom(n){
+    if(n === 1) return "1 minuto";
+    if(n >= 2 && n <= 4) return n + " minuti";
+    return n + " minuti";
+  }
+  function terminovSlovom(n){
+    if(n === 1) return "1 orario libero";
+    if(n >= 2 && n <= 4) return n + " orari liberi";
+    return n + " orari liberi";
+  }
+
+  /* stabilný pseudonáhodný rozvrh obsadenosti pre daný deň */
+  function hash(s){
+    var h = 2166136261;
+    for(var i = 0; i < s.length; i++){
+      h ^= s.charCodeAt(i);
+      h = (h * 16777619) >>> 0;
+    }
+    return h;
+  }
+  function obsadeny(dt, m){
+    return hash(kluc(dt) + "|" + m) % 100 < 27;
+  }
+
+  function trvanie(){
+    var zaklad = parseInt(sluzba.options[sluzba.selectedIndex].getAttribute("data-min"), 10);
+    var extra = 0;
+    rozsahy.forEach(function(r){ if(r.checked) extra = parseInt(r.getAttribute("data-min"), 10); });
+    return zaklad + extra;
+  }
+  function cenaSpolu(){
+    var zaklad = parseInt(sluzba.options[sluzba.selectedIndex].getAttribute("data-cena"), 10);
+    var extra = 0;
+    rozsahy.forEach(function(r){ if(r.checked) extra = parseInt(r.getAttribute("data-cena"), 10); });
+    return zaklad + extra;
+  }
+  function nazovRozsahu(){
+    var v = "Base";
+    rozsahy.forEach(function(r){ if(r.checked) v = r.value; });
+    return v;
+  }
+
+  function volny(dt, start, dlzka){
+    var h = HODINY[dt.getDay()];
+    if(!h) return false;
+    if(start < h[0] || start + dlzka > h[1]) return false;
+    var teraz = new Date();
+    if(kluc(dt) === kluc(teraz)){
+      var m = teraz.getHours() * 60 + teraz.getMinutes();
+      if(start < m + PREDSTIH) return false;
+    }
+    for(var m2 = start; m2 < start + dlzka; m2 += KROK){
+      if(obsadeny(dt, Math.floor(m2 / KROK) * KROK)) return false;
+    }
+    return true;
+  }
+
+  /* zoznam najbližších otvorených dní */
+  function otvoreneDni(pocet){
+    var zoznam = [], dt = new Date();
+    dt.setHours(0, 0, 0, 0);
+    for(var i = 0; i < 21 && zoznam.length < pocet; i++){
+      var kandidat = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + i);
+      if(HODINY[kandidat.getDay()]) zoznam.push(kandidat);
+    }
+    return zoznam;
+  }
+
+  function vykresliDni(){
+    if(!boxDni) return;
+    boxDni.innerHTML = "";
+    var dni = otvoreneDni(7);
+    dni.forEach(function(dt, i){
+      var b = d.createElement("button");
+      b.type = "button";
+      b.className = "daychip";
+      b.setAttribute("aria-pressed", "false");
+      b.innerHTML = "<b>" + DNI_KR[dt.getDay()] + "</b>" + dt.getDate() + "/" + (dt.getMonth() + 1);
+      b.setAttribute("aria-label", DNI[dt.getDay()] + " " + dt.getDate() + "/" + (dt.getMonth() + 1));
+      b.addEventListener("click", function(){
+        vybranyDen = dt;
+        vybranyCas = null;
+        vykresliDni();
+        vykresliCasy();
+        prepis();
+      });
+      if(vybranyDen && kluc(vybranyDen) === kluc(dt)) b.setAttribute("aria-pressed", "true");
+      boxDni.appendChild(b);
+      if(i === 0 && !vybranyDen){
+        vybranyDen = dt;
+        b.setAttribute("aria-pressed", "true");
+      }
+    });
+  }
+
+  function vykresliCasy(){
+    if(!boxCasy || !vybranyDen) return;
+    boxCasy.innerHTML = "";
+    var h = HODINY[vybranyDen.getDay()];
+    var dlzka = trvanie();
+    var volnych = 0;
+    /* po zmene služby alebo rozsahu už zvolený čas nemusí vyhovovať dlhšiemu bloku */
+    if(vybranyCas !== null && !volny(vybranyDen, vybranyCas, dlzka)) vybranyCas = null;
+    for(var m = h[0]; m + dlzka <= h[1]; m += KROK){
+      (function(start){
+        var ok = volny(vybranyDen, start, dlzka);
+        var b = d.createElement("button");
+        b.type = "button";
+        b.className = "slot";
+        b.textContent = cas(start);
+        if(ok){
+          volnych++;
+          b.setAttribute("aria-pressed", String(vybranyCas === start));
+          b.addEventListener("click", function(){
+            vybranyCas = start;
+            vykresliCasy();
+            prepis();
+            if(varovanie) varovanie.hidden = true;
+          });
+        } else {
+          b.disabled = true;
+          b.setAttribute("aria-label", cas(start) + " occupato");
+        }
+        boxCasy.appendChild(b);
+      })(m);
+    }
+    if(pocetTxt){
+      pocetTxt.textContent = volnych > 0
+        ? terminovSlovom(volnych) + " " + DNI_V[vybranyDen.getDay()] + " " + vybranyDen.getDate() + "/" + (vybranyDen.getMonth() + 1) + ", blocco di " + minutySlovom(dlzka)
+        : "In questo giorno non c'è più un blocco libero di " + minutySlovom(dlzka) + ". Provate un altro giorno o un'opzione più breve.";
+    }
+  }
+
+  function prepis(){
+    if(!vyst.sluzba) return;
+    var dlzka = trvanie();
+    vyst.sluzba.textContent = sluzba.value;
+    vyst.rozsah.textContent = nazovRozsahu();
+    vyst.dlzka.textContent = minutySlovom(dlzka);
+    vyst.cena.textContent = cenaSpolu() + " €";
+    vyst.den.textContent = vybranyDen
+      ? DNI[vybranyDen.getDay()] + " " + vybranyDen.getDate() + "/" + (vybranyDen.getMonth() + 1)
+      : "non scelta";
+    vyst.cas.textContent = vybranyCas !== null
+      ? cas(vybranyCas) + " – " + cas(vybranyCas + dlzka)
+      : "non scelta";
+  }
+
+  if(sluzba && boxDni && boxCasy){
+    vykresliDni();
+    vykresliCasy();
+    prepis();
+    sluzba.addEventListener("change", function(){ vykresliCasy(); prepis(); });
+    rozsahy.forEach(function(r){
+      r.addEventListener("change", function(){ vykresliCasy(); prepis(); });
+    });
+  }
+
+  /* ---------- odoslanie (iba ukážka) ---------- */
+  var form = d.getElementById("form-objednanie");
+  var hotovo = d.getElementById("obj-hotovo");
+  var hotovoDetail = d.getElementById("obj-hotovo-detail");
+  if(form && hotovo){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      if(vybranyCas === null){
+        if(varovanie){
+          varovanie.textContent = "Scegliete l'orario di inizio, per favore. Gli orari barrati sono già occupati.";
+          varovanie.hidden = false;
+        }
+        if(boxCasy){
+          var prvy = boxCasy.querySelector(".slot:not([disabled])");
+          if(prvy) prvy.focus();
+        }
+        return;
+      }
+      if(varovanie) varovanie.hidden = true;
+      var dlzka = trvanie();
+      if(hotovoDetail){
+        hotovoDetail.textContent =
+          "Su un sito vero adesso partirebbe la conferma dell'appuntamento " +
+          DNI_V[vybranyDen.getDay()] + " " + vybranyDen.getDate() + "/" + (vybranyDen.getMonth() + 1) + " alle " +
+          cas(vybranyCas) + " – " + cas(vybranyCas + dlzka) + ", " + sluzba.value.toLowerCase() +
+          ", opzione " + nazovRozsahu().toLowerCase() + ", prezzo " + cenaSpolu() + " €.";
+      }
+      hotovo.hidden = false;
+      hotovo.focus();
+      if(!jemne) hotovo.scrollIntoView({behavior: "smooth", block: "center"});
+    });
+  }
+
+  /* ---------- kontaktný formulár (iba ukážka) ---------- */
+  var kform = d.getElementById("form-sprava");
+  var kHotovo = d.getElementById("sprava-hotovo");
+  var kChyba = d.getElementById("sprava-chyba");
+  if(kform && kHotovo){
+    kform.addEventListener("submit", function(e){
+      e.preventDefault();
+      var meno = d.getElementById("k-meno");
+      var tel = d.getElementById("k-tel");
+      var text = d.getElementById("k-sprava");
+      var prazdne = [meno, tel, text].filter(function(pole){ return !pole || !pole.value.trim(); });
+      if(prazdne.length){
+        if(kChyba){
+          kChyba.textContent = "Compilate nome, telefono e testo del messaggio, per favore.";
+          kChyba.hidden = false;
+        }
+        if(prazdne[0]) prazdne[0].focus();
+        return;
+      }
+      if(kChyba) kChyba.hidden = true;
+      kHotovo.hidden = false;
+      kHotovo.focus();
+      if(!jemne) kHotovo.scrollIntoView({behavior: "smooth", block: "center"});
+    });
+  }
+
+  /* ============================================================
+     OTVÁRACIE HODINY: dnešný riadok a aktuálny stav
+     ============================================================ */
+  (function(){
+    var tab = d.getElementById("tab-hodin");
+    var nadpis = d.getElementById("stav-nadpis");
+    var text = d.getElementById("stav-text");
+    if(!tab || !nadpis || !text) return;
+
+    var teraz = new Date();
+    var den = teraz.getDay();
+    var min = teraz.getHours() * 60 + teraz.getMinutes();
+
+    var riadok = tab.querySelector('[data-den="' + den + '"]');
+    if(riadok) riadok.className += " is-today";
+
+    var dnes = HODINY[den];
+    if(dnes && min >= dnes[0] && min < dnes[1]){
+      nadpis.textContent = "Ora aperto";
+      text.textContent = "Oggi tagliamo fino alle " + cas(dnes[1]) + ". L'ultimo appuntamento inizia da 15 a 90 minuti prima della chiusura, a seconda del servizio.";
+      return;
+    }
+    if(dnes && min < dnes[0]){
+      nadpis.textContent = "Oggi apriamo alle " + cas(dnes[0]);
+      text.textContent = "Oggi tagliamo dalle " + cas(dnes[0]) + " alle " + cas(dnes[1]) + ". L'appuntamento potete sceglierlo qui sotto nel modulo di prenotazione.";
+      return;
+    }
+    for(var i = 1; i <= 7; i++){
+      var d2 = (den + i) % 7;
+      if(HODINY[d2]){
+        nadpis.textContent = "Ora chiuso";
+        text.textContent = "Riapriamo " + (i === 1 ? "domani, " : "") + DNI_V[d2] + " alle " + cas(HODINY[d2][0]) + ". Potete prenotare con il modulo in qualsiasi momento.";
+        return;
+      }
+    }
+  })();
+
+  /* ---------- plynulé skrolovanie a predvyplnenie služby ---------- */
+  d.addEventListener("click", function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if(!a) return;
+    var id = a.getAttribute("href");
+    if(id === "#") return;
+    var ciel = d.querySelector(id);
+    if(!ciel) return;
+    e.preventDefault();
+    zavri();
+    ciel.scrollIntoView({behavior: jemne ? "auto" : "smooth", block: "start"});
+    if(history.replaceState) history.replaceState(null, "", id);
+
+    var chce = a.getAttribute("data-sluzba");
+    if(chce && sluzba){
+      for(var i = 0; i < sluzba.options.length; i++){
+        if(sluzba.options[i].value === chce){ sluzba.selectedIndex = i; break; }
+      }
+      vykresliCasy();
+      prepis();
+      setTimeout(function(){
+        try{ sluzba.focus({preventScroll: true}); }catch(err){ sluzba.focus(); }
+      }, jemne ? 0 : 460);
+    }
+  });
+
+  /* ---------- odhaľovanie blokov ---------- */
+  var bloky = [].slice.call(d.querySelectorAll(".rv"));
+  if("IntersectionObserver" in window && !jemne){
+    var io = new IntersectionObserver(function(zaznamy){
+      zaznamy.forEach(function(z){
+        if(z.isIntersecting){ z.target.classList.add("in"); io.unobserve(z.target); }
+      });
+    }, {rootMargin: "0px 0px -6% 0px", threshold: .04});
+    bloky.forEach(function(b){ io.observe(b); });
+  } else {
+    bloky.forEach(function(b){ b.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

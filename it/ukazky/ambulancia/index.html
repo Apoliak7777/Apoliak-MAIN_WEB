@@ -1,0 +1,2908 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jazyky:hreflang -->
+<link rel="alternate" hreflang="sk" href="https://apoliak.online/ukazky/ambulancia/">
+<link rel="alternate" hreflang="cs" href="https://apoliak.online/cs/ukazky/ambulancia/">
+<link rel="alternate" hreflang="hu" href="https://apoliak.online/hu/ukazky/ambulancia/">
+<link rel="alternate" hreflang="pl" href="https://apoliak.online/pl/ukazky/ambulancia/">
+<link rel="alternate" hreflang="en" href="https://apoliak.online/en/ukazky/ambulancia/">
+<link rel="alternate" hreflang="de" href="https://apoliak.online/de/ukazky/ambulancia/">
+<link rel="alternate" hreflang="it" href="https://apoliak.online/it/ukazky/ambulancia/">
+<link rel="alternate" hreflang="x-default" href="https://apoliak.online/ukazky/ambulancia/">
+<!-- /jazyky:hreflang -->
+<title>Studio dentistico Salice — studio odontoiatrico privato, Soave</title>
+<meta name="description" content="Studio dentistico privato a Soave: dentisti, cure offerte, listino con i prezzi, cosa copre il fondo sanitario e cosa pagate voi, orari e prenotazione. Sito di esempio di apoliak.online.">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Studio dentistico Salice — studio odontoiatrico privato, Soave">
+<meta property="og:description" content="Listino delle cure, copertura dei fondi sanitari, orari e prenotazione. Sito di esempio progettato e programmato da Alex Poliak (apoliak.online).">
+<meta property="og:locale" content="it_IT">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2040%2040'%3E%3Crect%20width='40'%20height='40'%20rx='3'%20fill='%2338493F'/%3E%3Crect%20x='10.5'%20y='8.5'%20width='19'%20height='23'%20fill='none'%20stroke='%23ECF0EC'%20stroke-width='1.5'/%3E%3Cpath%20d='M20%208.5v23M10.5%2020h19'%20stroke='%23ECF0EC'%20stroke-width='1.5'/%3E%3C/svg%3E">
+
+<script>document.documentElement.className += " js";</script>
+<style>
+/* ------------------------------------------------------------------
+   Zubná ambulancia Vrbová — ukážkový web (vymyslená ambulancia)
+   Jeden súbor, nula externých requestov, iba systémové fonty.
+   Paleta: papierové neutrály + salviová zelenosivá (akcent podniku)
+           + tlmená hlinená (len pásik a sekcia autora).
+   Plochy sú dizajnové kompozície: vrstvené gradienty, vlasové rastre,
+   geometrické výseče a typografické panely, ktoré samy nesú informáciu.
+------------------------------------------------------------------- */
+
+:root{
+  --paper:#F7F6F4;
+  --paper-2:#EFEDE8;
+  --white:#FFFFFF;
+
+  --line:#DFDCD6;
+  --line-2:#C7C3BA;
+
+  --ink:#16181B;          /* 16.2:1 na papieri */
+  --ink-soft:#55595F;     /*  6.5:1 na papieri */
+  --ink-mut:#6B6F75;      /*  5.0:1 na bielej  */
+
+  --sage:#38493F;        /*  8.7:1 na papieri; biela na ňom 9.4:1 */
+  --sage-2:#4A5F52;      /*  biela na ňom 6.8:1 */
+  --sage-050:#ECF0EC;
+  --sage-100:#D9E2DB;
+  --on-sage:#E4EAE5;     /*  5.8:1 aj na najsvetlejšom mieste tmavého gradientu */
+  --on-sage-mut:#D6DED8; /*  5.2:1 aj na najsvetlejšom mieste tmavého gradientu */
+
+  --clay:#8A4B3C;         /*  6.2:1 na papieri; biela na ňom 6.7:1 */
+  --clay-050:#F4E9E5;
+
+  --bar:#101215;
+  --bar-fg:#E7E5E1;       /* 14.8:1 na pásiku */
+  --bar-accent:#E0A392;   /*  8.7:1 na pásiku */
+
+  --r:3px;
+  --maxw:1180px;
+  --gut:clamp(20px,5vw,48px);
+  --head-h:112px;         /* JS spresní */
+
+  --sans:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype","Times New Roman",serif;
+
+  --noise:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='140'%20height='140'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.85'%20numOctaves='2'/%3E%3C/filter%3E%3Crect%20width='140'%20height='140'%20filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; }
+html,body{ overflow-x:hidden; max-width:100%; }
+/* clip nevytvára skrolovací kontajner, takže lepiaca hlavička ostáva funkčná */
+@supports (overflow:clip){
+  html,body{ overflow-x:clip; }
+}
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth; }
+}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{ max-width:100%; }
+
+h1,h2,h3,h4{
+  font-family:var(--serif);
+  font-weight:400;
+  line-height:1.14;
+  letter-spacing:-.014em;
+  margin:0;
+  color:var(--ink);
+  text-wrap:balance;
+}
+h1{ font-size:clamp(34px,5.4vw,62px); line-height:1.05; letter-spacing:-.024em; }
+h2{ font-size:clamp(26px,3.4vw,42px); line-height:1.08; letter-spacing:-.02em; }
+h3{ font-size:19px; line-height:1.28; letter-spacing:-.008em; }
+
+p{ margin:0 0 1em; }
+p:last-child{ margin-bottom:0; }
+ul,ol,dl{ margin:0; padding:0; list-style:none; }
+
+a{ color:var(--sage); }
+a:hover{ color:var(--ink); }
+
+:focus-visible{ outline:2px solid var(--sage); outline-offset:2px; }
+
+.num{ font-variant-numeric:tabular-nums; }
+
+.wrap{
+  width:100%;
+  max-width:var(--maxw);
+  margin-inline:auto;
+  padding-inline:var(--gut);
+}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:400;
+  background:var(--sage); color:#fff; padding:12px 18px; font-weight:600;
+  text-decoration:none;
+}
+.skip:focus{ left:10px; top:10px; }
+
+.section{
+  padding-block:clamp(56px,7.6vw,112px);
+  scroll-margin-top:calc(var(--head-h) + 8px);
+}
+.section--line{ border-top:1px solid var(--line); }
+.section--tint{ background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+/* tmavý pás — rytmus stránky */
+.section--dark{
+  position:relative; overflow:hidden;
+  background:linear-gradient(158deg,#26332C 0%,#38493F 54%,#42574A 100%);
+  color:var(--on-sage);
+  border-top:1px solid #212C25; border-bottom:1px solid #212C25;
+}
+.section--dark::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right, rgba(228,234,229,.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(228,234,229,.055) 1px, transparent 1px);
+  background-size:64px 64px;
+}
+.section--dark::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--noise); opacity:.16; mix-blend-mode:multiply;
+}
+.section--dark > *{ position:relative; z-index:2; }
+.section--dark h2,.section--dark h3{ color:#fff; }
+.section--dark .eyebrow{ color:var(--on-sage-mut); }
+.section--dark .eyebrow::before{ background:rgba(214,222,216,.4); }
+.section--dark .lead{ color:var(--on-sage-mut); }
+.dlink{ color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.45); font-weight:600; }
+.dlink:hover{ color:#fff; border-bottom-color:#fff; }
+.section--dark .btn--ghost{ color:#fff; border-color:rgba(255,255,255,.5); background:transparent; }
+.section--dark .btn--ghost:hover{ color:#fff; background:rgba(255,255,255,.1); border-color:#fff; }
+
+/* -------- typografické drobnosti -------- */
+.eyebrow{
+  display:flex; align-items:center; gap:11px;
+  font-family:var(--sans);
+  font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--sage); font-weight:600;
+  margin:0 0 18px;
+}
+.eyebrow::before{ content:""; width:24px; height:1px; background:var(--line-2); flex:none; }
+.eyebrow b{ font-weight:700; color:var(--ink-mut); font-variant-numeric:tabular-nums; }
+.section--dark .eyebrow b{ color:#fff; }
+.lead{ font-size:clamp(16px,1.5vw,18.5px); color:var(--ink-soft); max-width:58ch; }
+
+.sechead{
+  display:grid; grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  gap:22px clamp(32px,6vw,88px);
+  align-items:end;
+  margin-bottom:clamp(34px,4.4vw,58px);
+}
+.sechead h2{ max-width:17ch; }
+@media (max-width:860px){ .sechead{ grid-template-columns:minmax(0,1fr); align-items:start; } .sechead h2{ max-width:none; } }
+
+/* obal pre široký obsah, aby sa na mobile nič neodsekávalo */
+.tablewrap{ width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+/* ================= HORNÝ LEPIACI BLOK ================= */
+.topstack{ position:sticky; top:0; z-index:120; }
+
+.demobar{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap:5px 16px;
+  background:var(--bar); color:var(--bar-fg);
+  border-bottom:1px solid #2A2C31;
+  padding:10px var(--gut);
+  font-size:12.5px; line-height:1.5; text-align:center;
+  letter-spacing:.005em;
+}
+.demobar__tag{
+  font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  font-weight:700; color:var(--bar-accent);
+  border:1px solid #4A3A35; padding:3px 9px; border-radius:2px;
+  white-space:nowrap;
+}
+.demobar__txt{ color:#B9BCC2; }
+.demobar a{ color:var(--bar-fg); text-decoration:none; border-bottom:1px solid #55575C; white-space:nowrap; font-weight:600; }
+.demobar a:hover{ color:#fff; border-bottom-color:var(--bar-accent); }
+.demobar__sep{ color:#5E6167; }
+
+@media (max-width:700px){
+  .demobar{ font-size:11.5px; gap:4px 11px; padding:8px 14px; }
+  .demobar__sep{ display:none; }
+}
+@media (max-width:430px){
+  .demobar{ font-size:11px; gap:3px 9px; }
+  .demobar__tag{ font-size:9.5px; letter-spacing:.18em; padding:2px 7px; }
+}
+
+.nav{ background:rgba(247,246,244,.95); border-bottom:1px solid var(--line); }
+@supports (backdrop-filter:saturate(1.1)){
+  .nav{ backdrop-filter:saturate(1.15); }
+}
+.nav__in{ display:flex; align-items:center; gap:18px; min-height:64px; }
+
+.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; color:var(--ink); margin-right:auto; }
+.brand svg{ flex:none; display:block; }
+.brand__name{ font-family:var(--serif); font-size:19px; letter-spacing:.02em; display:block; line-height:1.1; }
+.brand__sub{ display:block; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); margin-top:3px; }
+
+.menu{ display:flex; align-items:center; gap:1px; }
+.menu a{
+  display:block; text-decoration:none; color:var(--ink);
+  font-size:14px; padding:9px 10px; border-radius:var(--r);
+  white-space:nowrap;
+}
+.menu a:hover{ background:var(--sage-050); color:var(--sage); }
+
+/* Objednanie a telefón sú v hlavičke na každej šírke, nikdy nie v hamburgeri. */
+.navact{ display:flex; align-items:center; gap:8px; flex:none; }
+
+.navtel{
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--white); border:1px solid var(--line-2); color:var(--ink);
+  text-decoration:none; font-size:14.5px; font-weight:600;
+  padding:10px 15px; border-radius:var(--r); white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.navtel:hover{ border-color:var(--sage); color:var(--sage); }
+.navtel svg{ flex:none; display:block; }
+.navtel .navtel__short{ display:none; }
+
+.navcta{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--sage); color:#fff; text-decoration:none;
+  font-size:14.5px; font-weight:600; padding:11px 18px; border-radius:var(--r);
+  white-space:nowrap;
+}
+.navcta:hover{ background:var(--sage-2); color:#fff; }
+
+.navtoggle{
+  display:none; align-items:center; gap:9px;
+  background:var(--white); border:1px solid var(--line-2); color:var(--ink);
+  font:inherit; font-size:14px; padding:9px 14px; border-radius:var(--r); cursor:pointer;
+}
+.navtoggle svg{ display:block; }
+
+@media (max-width:1080px){
+  .nav{ position:relative; }
+  .navtoggle{ display:inline-flex; order:2; }
+  .navact{ order:1; }
+  .menu{
+    display:none; position:absolute; left:0; right:0; top:100%;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:8px var(--gut) 16px;
+  }
+  .menu.is-open{ display:flex; }
+  .menu a{ padding:12px 8px; border-bottom:1px solid var(--line); border-radius:0; }
+  .menu li:last-child a{ border-bottom:0; }
+}
+@media (max-width:620px){
+  .nav__in{ gap:10px; }
+  .brand__sub{ display:none; }
+  .brand__name{ font-size:16.5px; }
+  .navtel{ padding:10px 12px; font-size:14px; }
+  .navtel .navtel__full{ display:none; }
+  .navtel .navtel__short{ display:inline; }
+  .navcta{ padding:11px 14px; font-size:14px; }
+  .navtoggle{ padding:10px 11px; }
+  .navtoggle .navtoggle__t{ display:none; }
+}
+@media (max-width:520px){
+  .brand > span{ display:none; }
+}
+html:not(.js) .navtoggle{ display:none; }
+html:not(.js) .nav__in{ flex-wrap:wrap; }
+html:not(.js) .menu{ display:flex; position:static; flex-direction:row; flex-wrap:wrap; padding:0 0 10px; border:0; background:none; }
+html:not(.js) .menu a{ border-bottom:0; }
+
+/* ================= DIZAJNOVÉ PLOCHY (kompozície) =================
+   Vrstvenie: gradientové pole -> geometria a vlasový raster -> obsah -> sum.
+   Každá plocha nesie informáciu, nie je to miesto na obrázok.
+------------------------------------------------------------------- */
+.canvas{
+  --hair:rgba(56,73,63,.12);
+  --hair2:rgba(56,73,63,.2);
+  --fill:rgba(56,73,63,.06);
+  position:relative; width:100%; max-width:100%;
+  display:flex; isolation:isolate; overflow:hidden;
+  border:1px solid var(--line);
+  background:linear-gradient(152deg,#F8F6F3 0%,#EAEEE9 54%,#DCE4DC 100%);
+}
+.canvas--dark{
+  --hair:rgba(228,234,229,.1);
+  --hair2:rgba(228,234,229,.16);
+  --fill:rgba(228,234,229,.05);
+  border-color:#212C25;
+  background:linear-gradient(152deg,#25322B 0%,#38493F 52%,#465C4D 100%);
+  color:var(--on-sage);
+}
+.canvas::after{
+  content:""; position:absolute; inset:0; z-index:3; pointer-events:none;
+  background-image:var(--noise); opacity:.12; mix-blend-mode:multiply;
+}
+.canvas--dark::after{ opacity:.18; }
+
+.cvtex{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+.cvtex--grid{
+  background-image:
+    linear-gradient(to right,var(--hair) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--hair) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.cvtex--rule{ background-image:repeating-linear-gradient(to bottom,var(--hair) 0 1px,transparent 1px 14px); }
+.cvtex--diag{ background-image:repeating-linear-gradient(135deg,var(--hair) 0 1px,transparent 1px 11px); }
+.cvtex--dots{ background-image:radial-gradient(var(--hair2) 1px,transparent 1.3px); background-size:15px 15px; }
+.cvtex--rings{ background-image:repeating-radial-gradient(circle at 100% 0,transparent 0 36px,var(--hair2) 36px 37px); }
+.cvtex--arc{ background-image:radial-gradient(circle at 100% 100%,var(--fill) 0 47%,transparent 47.3%); }
+.cvtex--wedge{ background-image:linear-gradient(112deg,transparent 0 54%,var(--fill) 54% 100%); }
+.cvtex--glow{ background-image:radial-gradient(120% 90% at 88% 6%,rgba(255,255,255,.05),transparent 62%); }
+
+.cvbody{
+  position:relative; z-index:2; flex:1;
+  display:flex; flex-direction:column;
+  padding:clamp(22px,3vw,34px);
+}
+.cveyebrow{
+  margin:0; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.canvas--dark .cveyebrow{ color:var(--on-sage-mut); }
+.cvdisplay{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(30px,4.4vw,50px); line-height:1.04; letter-spacing:-.02em;
+  margin:clamp(14px,2vw,20px) 0 0; color:var(--ink);
+}
+.canvas--dark .cvdisplay{ color:#fff; }
+.cvsub{ margin:14px 0 0; font-size:15px; color:var(--ink-soft); max-width:36ch; }
+.canvas--dark .cvsub{ color:var(--on-sage-mut); }
+.cvfoot{
+  margin:clamp(22px,3vw,30px) 0 0; padding-top:14px;
+  border-top:1px solid var(--hair2);
+  font-size:13.5px; color:var(--ink-soft);
+}
+.canvas--dark .cvfoot{ color:var(--on-sage-mut); }
+.cvpush{ margin-top:auto; }
+
+.cvlist{ margin:clamp(16px,2.4vw,24px) 0 0; }
+.cvlist li{
+  display:flex; align-items:baseline; gap:clamp(12px,2vw,20px);
+  padding:clamp(11px,1.6vw,15px) 0; border-top:1px solid var(--hair2);
+}
+.cvlist li:first-child{ border-top:0; padding-top:0; }
+.cvnum{
+  flex:none; font-family:var(--serif); font-size:clamp(21px,2.6vw,29px);
+  line-height:1; color:#fff; font-variant-numeric:tabular-nums;
+}
+.canvas:not(.canvas--dark) .cvnum{ color:var(--sage); }
+.cvlabel{ font-size:clamp(15px,1.5vw,17px); color:var(--on-sage); }
+.canvas:not(.canvas--dark) .cvlabel{ color:var(--ink); }
+
+.cv-hero{ min-height:430px; }
+@media (max-width:960px){ .cv-hero{ min-height:330px; } }
+.cv-addr{ min-height:320px; }
+.cv-space{ min-height:300px; }
+
+/* schematická orientačná plocha */
+.cv-plan{ min-height:360px; }
+.cv-plan .cvbody{ max-width:58%; }
+.cv-plan .cvdisplay{ font-size:clamp(23px,2.9vw,34px); }
+.cv-plan .cvsub{ font-size:14px; max-width:28ch; }
+.plan-road{ position:absolute; z-index:1; background:var(--fill); }
+.plan-road--h{ left:-4%; right:-4%; top:34%; height:64px; border-top:1px solid var(--hair2); border-bottom:1px solid var(--hair2); }
+.plan-road--v{ top:-4%; bottom:-4%; left:70%; width:54px; border-left:1px solid var(--hair2); border-right:1px solid var(--hair2); }
+.plan-road__name{
+  position:absolute; font-size:10.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:600;
+}
+.plan-road--h .plan-road__name{ left:16px; top:50%; transform:translateY(-50%); }
+.plan-road--v .plan-road__name{ top:18px; left:50%; transform:translateX(-50%); writing-mode:vertical-rl; }
+.plan-mark{
+  position:absolute; z-index:2; left:60%; top:56%;
+  display:flex; align-items:center; gap:9px;
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--sage);
+}
+.plan-mark::before{
+  content:""; width:14px; height:14px; flex:none;
+  border:1px solid var(--sage);
+  background:
+    linear-gradient(to right,transparent 0 5px,var(--sage) 5px 7px,transparent 7px),
+    linear-gradient(to bottom,transparent 0 5px,var(--sage) 5px 7px,transparent 7px);
+}
+.plan-mark span{ background:rgba(255,255,255,.9); border:1px solid var(--line); padding:3px 7px; }
+@media (max-width:520px){
+  .plan-road--v{ left:74%; width:42px; }
+  .plan-mark{ left:56%; top:52%; font-size:10px; }
+  .cv-plan .cvbody{ max-width:64%; }
+}
+
+/* ================= HERO — zrkadlený split =================
+   Údajový panel je VĽAVO a je tmavý, nadpis a text sú VPRAVO.
+------------------------------------------------------------------- */
+.hero{ padding-block:clamp(40px,5.4vw,78px) clamp(38px,4.6vw,66px); }
+.hero__grid{
+  display:grid; grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);
+  gap:clamp(28px,4.6vw,74px); align-items:stretch;
+}
+@media (max-width:980px){ .hero__grid{ grid-template-columns:minmax(0,1fr); } }
+
+/* --- ľavý údajový panel --- */
+.herocard{
+  --hair2:rgba(228,234,229,.19);
+  position:relative; overflow:hidden; isolation:isolate; display:flex;
+  background:linear-gradient(158deg,#22302A 0%,#38493F 50%,#465C4D 100%);
+  border:1px solid #212C25;
+  color:var(--on-sage);
+}
+.herocard::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:repeating-linear-gradient(to bottom,rgba(228,234,229,.07) 0 1px,transparent 1px 15px);
+}
+.herocard::after{
+  content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+  background-image:var(--noise); opacity:.18; mix-blend-mode:multiply;
+}
+.herocard__arc{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:radial-gradient(circle at 108% -6%,rgba(228,234,229,.09) 0 44%,transparent 44.4%);
+}
+.herocard__in{
+  position:relative; z-index:3; display:flex; flex-direction:column; width:100%;
+  padding:clamp(24px,3vw,38px);
+}
+/* eyebrow v tmavom paneli musí byť svetlý, inak splynie s pozadím */
+.herocard .cveyebrow{ color:var(--on-sage-mut); }
+.herocard__name{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(21px,2.2vw,27px); line-height:1.2; letter-spacing:-.015em;
+  color:#fff; margin:16px 0 0;
+}
+.herocard__addr{ margin:7px 0 0; font-size:15px; color:var(--on-sage-mut); }
+
+.herodata{ margin-top:clamp(20px,2.6vw,28px); border-top:1px solid var(--hair2); }
+.herodata > div{ padding:14px 0; border-bottom:1px solid var(--hair2); }
+.herodata dt{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--on-sage-mut); font-weight:700; margin-bottom:6px;
+}
+.herodata dd{ margin:0; font-size:16px; color:#fff; overflow-wrap:anywhere; }
+.herodata dd span{ display:block; font-size:13.5px; color:var(--on-sage-mut); margin-top:4px; }
+.herodata a{ color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.42); }
+.herodata a:hover{ color:#fff; border-bottom-color:#fff; }
+.herodata .tel{
+  font-family:var(--serif); font-size:clamp(21px,2.3vw,27px);
+  line-height:1.18; letter-spacing:.005em; font-variant-numeric:tabular-nums;
+  border-bottom-width:1px;
+}
+.herocard__foot{
+  margin-top:auto; padding-top:20px;
+  font-size:13.5px; line-height:1.55; color:var(--on-sage-mut);
+}
+.herocard__foot b{ display:block; color:#fff; font-weight:600; margin-bottom:4px; font-size:14.5px; }
+
+/* --- pravý textový stĺpec --- */
+.hero__text{ display:flex; flex-direction:column; justify-content:center; }
+.hero h1 .thin{ display:block; color:var(--sage); }
+.hero__lead{ margin-top:22px; max-width:52ch; }
+.hero__cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.hero__points{ margin-top:clamp(28px,3.2vw,40px); border-top:1px solid var(--line); }
+.hero__points li{
+  display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 18px; align-items:baseline;
+  padding:14px 0; border-bottom:1px solid var(--line);
+}
+.hero__points b{
+  font-family:var(--serif); font-weight:400; font-size:15px; color:var(--sage);
+  font-variant-numeric:tabular-nums; letter-spacing:.1em;
+}
+.hero__points span{ font-size:15px; color:var(--ink-soft); max-width:58ch; }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  font:inherit; font-size:15px; font-weight:600; letter-spacing:.01em;
+  padding:14px 24px; border-radius:var(--r);
+  text-decoration:none; border:1px solid transparent; cursor:pointer;
+}
+.btn--primary{ background:var(--sage); color:#fff; }
+.btn--primary:hover{ background:var(--sage-2); color:#fff; }
+.btn--ghost{ background:transparent; color:var(--ink); border-color:var(--line-2); }
+.btn--ghost:hover{ background:var(--white); border-color:var(--sage); color:var(--sage); }
+.btn--clay{ background:var(--clay); color:#fff; }
+.btn--clay:hover{ background:#6F3B2F; color:#fff; }
+.btn--light{ background:#fff; color:var(--sage); border-color:#fff; }
+.btn--light:hover{ background:var(--sage-050); color:var(--sage); border-color:var(--sage-050); }
+.btn--wide{ width:100%; }
+
+/* -------- fakty pod hero -------- */
+.facts{
+  border-top:1px solid var(--line);
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.facts > div{
+  padding:22px clamp(14px,2.4vw,28px) 24px;
+  border-right:1px solid var(--line);
+}
+.facts > div:last-child{ border-right:0; }
+.facts dt{
+  font-size:10.5px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:600; margin-bottom:7px;
+}
+.facts dd{ margin:0; font-size:15.5px; color:var(--ink); overflow-wrap:anywhere; }
+.facts dd span{ display:block; color:var(--ink-soft); font-size:13.5px; margin-top:3px; }
+.facts a{ text-decoration:none; border-bottom:1px solid var(--line-2); }
+@media (max-width:960px){
+  .facts{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .facts > div{ border-bottom:1px solid var(--line); }
+  .facts > div:nth-child(2n){ border-right:0; }
+  .facts > div:nth-last-child(-n+2){ border-bottom:0; }
+}
+@media (max-width:520px){
+  .facts{ grid-template-columns:minmax(0,1fr); }
+  .facts > div{ border-right:0; border-bottom:1px solid var(--line); }
+  .facts > div:last-child{ border-bottom:0; }
+}
+
+/* ================= ROZSAH OŠETRENÍ ================= */
+.srv{ border-top:1px solid var(--line); }
+.srv > li{
+  display:grid;
+  grid-template-columns:auto minmax(0,7fr) minmax(0,4fr);
+  gap:6px clamp(20px,4vw,64px);
+  padding:clamp(20px,2.6vw,32px) 0;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.srv__no{
+  font-family:var(--serif); font-size:14px; line-height:1.6; color:var(--sage);
+  letter-spacing:.12em; font-variant-numeric:tabular-nums;
+}
+.srv h3{ font-size:clamp(19px,2vw,24px); }
+.srv__body p{ font-size:15px; color:var(--ink-soft); margin:9px 0 0; max-width:58ch; }
+.srv__tags{ display:flex; flex-wrap:wrap; gap:4px 20px; margin-top:13px; }
+.srv__tags li{ font-size:13.5px; color:var(--ink-mut); position:relative; padding-left:15px; }
+.srv__tags li::before{ content:""; position:absolute; left:0; top:.75em; width:9px; height:1px; background:var(--line-2); }
+.srv__meta{ font-size:14px; line-height:1.55; color:var(--ink-soft); margin:0; }
+.srv__meta b{
+  display:block; font-family:var(--serif); font-weight:400; font-size:clamp(18px,1.8vw,21px);
+  line-height:1.2; color:var(--ink); margin-bottom:6px;
+}
+@media (max-width:820px){
+  .srv > li{ grid-template-columns:auto minmax(0,1fr); }
+  .srv__meta{ grid-column:2; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }
+}
+
+/* ================= OSETRENIA A CENNIK ================= */
+.pricegroup{ margin-bottom:clamp(30px,4vw,46px); }
+.pricegroup:last-of-type{ margin-bottom:0; }
+.pricegroup__title{
+  font-family:var(--sans); font-size:11.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); font-weight:700;
+  padding-bottom:10px; border-bottom:1px solid var(--sage);
+  margin:0;
+}
+.prow{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 112px 120px;
+  gap:2px 24px;
+  align-items:baseline;
+  padding:18px 2px;
+  border-bottom:1px solid var(--line);
+}
+.prow__name{ font-size:17px; color:var(--ink); }
+.prow__desc{ grid-column:1; font-size:14.5px; color:var(--ink-soft); margin-top:4px; max-width:64ch; }
+.prow__time{ font-size:14px; color:var(--ink-soft); text-align:right; white-space:nowrap; }
+.prow__price{ font-family:var(--serif); font-size:18px; color:var(--ink); text-align:right; white-space:nowrap; }
+@media (max-width:760px){
+  .prow{ grid-template-columns:minmax(0,1fr) auto; gap:4px 16px; }
+  .prow__time{ grid-column:1; text-align:left; margin-top:6px; }
+  .prow__price{ grid-column:2; grid-row:1; }
+}
+
+/* ================= VECNÉ TABUĽKY ================= */
+.ins,.ptable{ width:100%; border-collapse:collapse; }
+.ins{ min-width:460px; }
+.ptable{ min-width:500px; }
+.ins caption,.ptable caption{
+  caption-side:bottom; text-align:left; padding-top:15px;
+  font-size:13.5px; line-height:1.55; color:var(--ink-soft); max-width:68ch;
+}
+.ins thead th,.ptable thead th{
+  font-family:var(--sans); font-weight:700;
+  font-size:10.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); text-align:left;
+  padding:0 14px 11px 2px; border-bottom:1px solid var(--sage);
+}
+.ins tbody th,.ptable tbody th{
+  font-weight:400; text-align:left; font-size:16px; color:var(--ink);
+  padding:15px 14px 15px 2px; border-bottom:1px solid var(--line);
+}
+.ins tbody td,.ptable tbody td{
+  font-size:14.5px; color:var(--ink-soft);
+  padding:15px 14px; border-bottom:1px solid var(--line);
+}
+.ins thead th:last-child,.ins tbody td:last-child,
+.ptable thead th:last-child,.ptable tbody td:last-child{ padding-right:2px; }
+.ptable thead th:last-child,.ptable tbody td:last-child{ text-align:right; white-space:nowrap; }
+.ptable tbody td:last-child{ font-family:var(--serif); font-size:18px; color:var(--ink); }
+.ins tbody td:first-of-type{ white-space:nowrap; }
+
+.notebox{
+  margin-top:clamp(26px,3vw,38px);
+  background:var(--sage-050);
+  border:1px solid var(--sage-100);
+  border-left:2px solid var(--sage);
+  padding:clamp(18px,2.4vw,26px);
+}
+.notebox h3{ font-size:17px; margin-bottom:8px; }
+.notebox p{ font-size:15px; color:var(--ink-soft); }
+.notebox--white{ background:var(--white); border-color:var(--line); border-left:2px solid var(--sage); }
+
+/* ================= TMAVÝ PÁS S ČÍSLAMI ================= */
+.band__grid{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(24px,5vw,72px); align-items:end; }
+@media (max-width:900px){ .band__grid{ grid-template-columns:minmax(0,1fr); } }
+.band__claim{ max-width:18ch; }
+.stats{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(20px,3vw,40px);
+  margin-top:clamp(30px,4vw,48px); padding-top:clamp(24px,3vw,34px);
+  border-top:1px solid rgba(214,222,216,.25);
+}
+.stat b{ display:block; font-family:var(--serif); font-weight:400; font-size:clamp(29px,4vw,44px); line-height:1; color:#fff; }
+.stat span{ display:block; margin-top:11px; font-size:14.5px; color:var(--on-sage-mut); max-width:32ch; }
+@media (max-width:760px){ .stats{ grid-template-columns:minmax(0,1fr); gap:22px; } }
+
+/* ================= PRVÁ NÁVŠTEVA ================= */
+.steps{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:900px){ .steps{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){ .steps{ grid-template-columns:minmax(0,1fr); } }
+.step{ background:var(--paper); padding:clamp(20px,2.6vw,28px); }
+.section--tint .step{ background:var(--white); }
+.step__no{
+  display:block; font-family:var(--serif); font-size:13px; color:var(--sage);
+  letter-spacing:.14em; margin-bottom:12px;
+}
+.step h3{ font-size:18px; margin-bottom:8px; }
+.step p{ font-size:14.5px; color:var(--ink-soft); margin:0; }
+
+/* ================= KARTY ================= */
+.cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:900px){ .cards{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px){ .cards{ grid-template-columns:minmax(0,1fr); } }
+.card2{ background:var(--white); padding:clamp(20px,2.6vw,30px); }
+.card2 h3{ font-size:18px; margin-bottom:9px; }
+.card2 p{ font-size:14.5px; color:var(--ink-soft); }
+.card2 ul li{ font-size:14.5px; color:var(--ink-soft); padding:5px 0 5px 15px; position:relative; }
+.card2 ul li::before{ content:""; position:absolute; left:0; top:14px; width:7px; height:1px; background:var(--line-2); }
+.card2 ul + p{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+.card2--dark{
+  background:linear-gradient(150deg,#2A382F 0%,#38493F 60%,#445A4C 100%);
+  color:var(--on-sage-mut);
+}
+.card2--dark h3{ color:#fff; }
+.card2--dark p{ color:var(--on-sage-mut); }
+.card2__big{
+  display:block; font-family:var(--serif); font-size:clamp(36px,4.6vw,52px);
+  line-height:1; color:#fff; margin-bottom:14px;
+}
+
+/* ================= HODINY A KONTAKT ================= */
+.twocol{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(30px,5vw,64px); align-items:start; }
+.twocol--wide{ grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); }
+@media (max-width:900px){ .twocol,.twocol--wide{ grid-template-columns:minmax(0,1fr); } }
+
+.blocktitle{
+  font-family:var(--sans); font-size:11.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); font-weight:700; margin:0 0 14px;
+}
+.section--dark .blocktitle{ color:var(--on-sage-mut); }
+
+.hours{ width:100%; border-collapse:collapse; }
+.hours th,.hours td{ text-align:left; padding:12px 10px; border-bottom:1px solid var(--line); font-size:15.5px; }
+.hours th{ font-weight:400; width:52%; }
+.hours td{ text-align:right; color:var(--ink-soft); }
+.hours tr[data-today="1"] th,
+.hours tr[data-today="1"] td{ background:var(--sage-050); color:var(--ink); font-weight:600; }
+.hours caption{ caption-side:bottom; text-align:left; padding-top:12px; font-size:13.5px; color:var(--ink-soft); }
+.hours .today-tag{
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--sage);
+  margin-left:8px; font-weight:700;
+}
+
+.clist{ margin-top:26px; border-top:1px solid var(--line); }
+.clist > div{ padding:14px 2px; border-bottom:1px solid var(--line); }
+.clist dt{
+  font-size:10.5px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:600; margin-bottom:5px;
+}
+.clist dd{ margin:0; font-size:16px; overflow-wrap:anywhere; }
+.clist dd a{ text-decoration:none; border-bottom:1px solid var(--line-2); font-weight:600; }
+.clist dd a:hover{ border-bottom-color:var(--sage); }
+.clist dd small{ display:block; font-size:13.5px; color:var(--ink-soft); margin-top:4px; }
+
+.soc{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.soc li{
+  font-size:14px; color:var(--ink-soft);
+  border:1px solid var(--line-2); background:var(--white);
+  padding:7px 12px; border-radius:var(--r);
+}
+.soc b{ color:var(--ink); font-weight:600; }
+
+/* -------- vecné bloky s vlasovou linkou -------- */
+.infolist{ border-top:1px solid var(--line); }
+.infolist > div{ padding:18px 0; border-bottom:1px solid var(--line); }
+.infolist h3{ font-size:17px; margin-bottom:6px; }
+.infolist p{ font-size:15px; color:var(--ink-soft); margin:0; max-width:60ch; }
+.section--dark .infolist,
+.section--dark .infolist > div{ border-color:rgba(214,222,216,.22); }
+.section--dark .infolist p{ color:var(--on-sage-mut); }
+
+.roles{ border-top:1px solid rgba(214,222,216,.22); }
+.roles li{
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 20px;
+  padding:15px 0; border-bottom:1px solid rgba(214,222,216,.22);
+  font-size:16.5px; color:#fff;
+}
+.roles li span{ font-size:14.5px; color:var(--on-sage-mut); }
+
+/* ================= OTÁZKY ================= */
+.qa{ border-top:1px solid var(--line); max-width:80ch; }
+.qa details{ border-bottom:1px solid var(--line); }
+.qa summary{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:20px;
+  padding:18px 2px; cursor:pointer; list-style:none;
+  font-family:var(--serif); font-size:18px; color:var(--ink);
+}
+.qa summary::-webkit-details-marker{ display:none; }
+.qa summary:hover{ color:var(--sage); }
+.qa .sign{ flex:none; width:14px; height:14px; margin-top:7px; position:relative; }
+.qa .sign::before,.qa .sign::after{ content:""; position:absolute; background:var(--sage); }
+.qa .sign::before{ left:0; right:0; top:6px; height:1.5px; }
+.qa .sign::after{ top:0; bottom:0; left:6px; width:1.5px; }
+.qa details[open] .sign::after{ display:none; }
+.qa .answer{ padding:0 2px 20px; color:var(--ink-soft); font-size:15.5px; max-width:68ch; }
+
+/* ================= OBJEDNANIE ================= */
+.book__grid{ display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr); gap:clamp(24px,3.4vw,44px); align-items:start; }
+@media (max-width:1000px){ .book__grid{ grid-template-columns:minmax(0,1fr); } }
+
+.card{ background:var(--white); border:1px solid var(--line); padding:clamp(20px,3vw,34px); }
+
+fieldset{ border:0; padding:0; margin:0 0 28px; }
+legend{
+  font-size:11.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sage); font-weight:700; padding:0 0 9px;
+  width:100%; border-bottom:1px solid var(--line); margin-bottom:14px;
+}
+.field{ margin-bottom:16px; }
+.field:last-child{ margin-bottom:0; }
+.field > label{ display:block; font-size:14px; font-weight:600; margin-bottom:6px; }
+.hint{ font-size:13px; color:var(--ink-mut); font-weight:400; }
+
+input[type=text],input[type=tel],input[type=email],input[type=date],textarea,select{
+  width:100%; font:inherit; font-size:16px; color:var(--ink);
+  background:var(--white); border:1px solid var(--line-2); border-radius:var(--r);
+  padding:11px 12px;
+}
+input::placeholder,textarea::placeholder{ color:var(--ink-mut); opacity:1; }
+textarea{ min-height:96px; resize:vertical; }
+input:focus,textarea:focus,select:focus{ outline:2px solid var(--sage); outline-offset:1px; border-color:var(--sage); }
+
+.grid2{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 18px; }
+@media (max-width:620px){ .grid2{ grid-template-columns:minmax(0,1fr); } }
+
+.opts{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+@media (max-width:620px){ .opts{ grid-template-columns:minmax(0,1fr); } }
+.opt{ position:relative; }
+.opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+.opt label{
+  display:block; height:100%; cursor:pointer; margin:0;
+  border:1px solid var(--line-2); border-radius:var(--r);
+  padding:13px 14px; font-size:15.5px; font-weight:600;
+}
+.opt label small{ display:block; font-weight:400; font-size:13.5px; color:var(--ink-soft); margin-top:3px; }
+.opt label:hover{ border-color:var(--sage); }
+.opt input:checked + label{ border-color:var(--sage); box-shadow:inset 0 0 0 1px var(--sage); background:var(--sage-050); }
+.opt input:focus-visible + label{ outline:2px solid var(--sage); outline-offset:2px; }
+
+.chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.chip{
+  font:inherit; font-size:14px; cursor:pointer;
+  background:var(--white); border:1px solid var(--line-2); border-radius:var(--r);
+  padding:8px 13px; color:var(--ink);
+}
+.chip:hover{ border-color:var(--sage); color:var(--sage); }
+.chip[aria-pressed="true"]{ background:var(--sage); border-color:var(--sage); color:#fff; }
+
+.consent{ display:flex; gap:11px; align-items:flex-start; }
+.consent input{ margin-top:4px; width:17px; height:17px; flex:none; accent-color:var(--sage); }
+.consent label{ font-size:14.5px; font-weight:400; color:var(--ink-soft); margin:0; }
+
+.formnote{ font-size:13.5px; color:var(--ink-soft); margin-top:14px; }
+
+.summary{ background:var(--sage); color:var(--on-sage); padding:clamp(20px,2.6vw,28px); position:sticky; top:calc(var(--head-h) + 16px); }
+.summary h3{ color:#fff; font-size:19px; margin-bottom:4px; }
+.summary > p{ font-size:13.5px; color:var(--on-sage-mut); margin-bottom:18px; }
+.summary__row{ display:flex; justify-content:space-between; gap:16px; padding:11px 0; border-bottom:1px solid rgba(228,234,229,.18); }
+.summary dt{ font-size:13px; color:var(--on-sage-mut); }
+.summary dd{ margin:0; text-align:right; font-size:14.5px; color:#fff; font-weight:600; overflow-wrap:anywhere; }
+.summary dd.empty{ color:var(--on-sage-mut); font-weight:400; }
+.summary__total{ display:flex; justify-content:space-between; align-items:baseline; gap:16px; padding-top:16px; }
+.summary__total span{ font-size:13px; color:var(--on-sage-mut); }
+.summary__total b{ font-family:var(--serif); font-size:22px; color:#fff; font-weight:400; }
+.summary__note{ margin-top:14px; font-size:13px; color:var(--on-sage-mut); line-height:1.5; }
+.summary__call{
+  margin-top:16px; padding-top:14px; border-top:1px solid rgba(228,234,229,.18);
+  font-size:13px; color:var(--on-sage-mut);
+}
+.summary__call a{
+  display:block; margin-top:6px; color:#fff; text-decoration:none; font-weight:600;
+  font-family:var(--serif); font-size:19px; letter-spacing:.01em;
+  border-bottom:1px solid rgba(255,255,255,.35); width:max-content; max-width:100%;
+}
+.summary__call a:hover{ color:#fff; border-bottom-color:#fff; }
+@media (max-width:1000px){ .summary{ position:static; } }
+
+.sent{ display:none; }
+.sent.is-on{ display:block; }
+.sent h3{ font-size:clamp(21px,2.6vw,27px); margin-bottom:10px; }
+.sent > p{ color:var(--ink-soft); max-width:56ch; font-size:15.5px; }
+.sent__recap{ border:1px solid var(--line); background:var(--paper); padding:16px 18px; margin:20px 0; font-size:15px; }
+.sent__recap div{ padding:4px 0; }
+.sent__recap b{ font-weight:600; }
+.is-hidden{ display:none !important; }
+
+/* ================= AUTOR UKÁŽKY ================= */
+.author{ background:var(--paper-2); border-top:1px solid var(--line); }
+.author__card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-top:2px solid var(--clay);
+  padding:clamp(24px,3.6vw,44px);
+  display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:clamp(26px,4vw,56px); align-items:start;
+}
+@media (max-width:860px){ .author__card{ grid-template-columns:minmax(0,1fr); } }
+.author .eyebrow{ color:var(--clay); }
+.author h2{ font-size:clamp(24px,3vw,34px); }
+.author p{ color:var(--ink-soft); }
+.author strong{ color:var(--ink); font-weight:600; }
+.author__price{
+  background:var(--clay-050); border-left:2px solid var(--clay);
+  padding:13px 16px; font-size:15.5px; color:var(--ink); font-weight:600; margin:22px 0 0;
+}
+.author__cta{ display:flex; flex-wrap:wrap; gap:11px; margin-top:22px; }
+.author__cta .btn--clay{ color:#fff; }
+.author__cta .btn--ghost{ color:var(--ink); }
+.author__cta .btn--ghost:hover{ color:var(--sage); }
+.alist{ border-top:1px solid var(--line); }
+.alist > div{ padding:14px 2px; border-bottom:1px solid var(--line); }
+.alist dt{ font-size:10.5px; letter-spacing:.17em; text-transform:uppercase; color:var(--ink-soft); font-weight:600; margin-bottom:5px; }
+.alist dd{ margin:0; font-size:16px; overflow-wrap:anywhere; }
+.alist dd a{ color:var(--clay); text-decoration:none; border-bottom:1px solid var(--clay-050); font-weight:600; }
+.alist dd a:hover{ border-bottom-color:var(--clay); }
+.alist dd small{ display:block; font-size:13.5px; color:var(--ink-soft); margin-top:4px; font-weight:400; }
+.alist dd small a{ font-weight:400; }
+
+/* ================= PÄTIČKA ================= */
+.footer{ background:var(--ink); color:#C9CBCF; padding:clamp(40px,5vw,64px) 0 28px; }
+.footer__act{
+  display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+  padding-bottom:clamp(28px,3.4vw,40px); margin-bottom:clamp(28px,3.4vw,40px);
+  border-bottom:1px solid #2A2D31;
+}
+.footer__act > p{ flex:1 1 280px; margin:0; }
+.footer__act .btn{ flex:none; }
+@media (max-width:520px){ .footer__act .btn{ width:100%; } }
+.footer h3{ color:#fff; font-size:12px; letter-spacing:.19em; text-transform:uppercase; font-family:var(--sans); font-weight:700; margin-bottom:14px; }
+.footer__grid{ display:grid; grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr)); gap:32px; }
+@media (max-width:1000px){ .footer__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:620px){ .footer__grid{ grid-template-columns:minmax(0,1fr); } }
+.footer a{ color:var(--bar-fg); text-decoration:none; }
+.footer a:hover{ color:#fff; text-decoration:underline; }
+.footer li{ padding:4px 0; font-size:14.5px; overflow-wrap:anywhere; }
+.footer p{ font-size:14.5px; color:#A7ABB1; max-width:46ch; }
+.footer__brand{ display:flex; align-items:center; gap:11px; margin-bottom:16px; color:#fff; }
+.footer__brand .brand__name{ color:#fff; }
+.footer__brand .brand__sub{ color:#A7ABB1; }
+.footer small{ display:block; color:#A7ABB1; font-size:13px; }
+.footer__bottom{
+  margin-top:36px; padding-top:20px; border-top:1px solid #2A2D31;
+  display:flex; flex-wrap:wrap; gap:8px 24px; justify-content:space-between;
+  font-size:13.5px; color:#A7ABB1;
+}
+
+/* ================= ZDRAVOTNÉ POISŤOVNE — PÁS ================= */
+.payers{ background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.payers__in{
+  display:grid; grid-template-columns:minmax(0,auto) minmax(0,1fr);
+  gap:18px clamp(24px,4vw,56px); align-items:center;
+  padding-block:clamp(20px,2.6vw,30px);
+}
+@media (max-width:900px){ .payers__in{ grid-template-columns:minmax(0,1fr); } }
+.payers__lead{
+  margin:0; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.payers__lead span{
+  display:block; margin-top:7px; max-width:26ch;
+  font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; color:var(--ink-soft);
+}
+.payers__row{ display:flex; flex-wrap:wrap; gap:10px; }
+.payer{
+  flex:1 1 190px; min-width:0;
+  display:flex; align-items:center; gap:12px;
+  background:var(--white); border:1px solid var(--line); padding:11px 13px;
+}
+.payer__mark{
+  flex:none; width:40px; height:40px; display:grid; place-items:center;
+  background:var(--sage-050); border:1px solid var(--sage-100);
+  font-family:var(--serif); font-size:14px; letter-spacing:.02em; color:var(--sage);
+}
+.payer b{ display:block; font-size:14.5px; font-weight:600; line-height:1.25; color:var(--ink); }
+.payer span{ display:block; margin-top:2px; font-size:12.5px; color:var(--ink-soft); }
+
+/* ================= MIESTA PRIPRAVENÉ NA FOTOGRAFIE =================
+   Každá plocha je samostatná kompozícia: vrstvený prechod, geometria
+   a typografia, ktorá nesie číslo alebo popis. Žiadna výplň.
+------------------------------------------------------------------- */
+.obraz{ margin:0; }
+.obraz__plate{
+  position:relative; overflow:hidden; isolation:isolate;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  aspect-ratio:4/5; min-height:230px;
+  padding:clamp(14px,2vw,20px);
+  border:1px solid var(--line);
+  background:linear-gradient(154deg,#F8F7F4 0%,#EBEFEA 54%,#D9E1D9 100%);
+}
+.obraz__plate::after{
+  content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+  background-image:var(--noise); opacity:.12; mix-blend-mode:multiply;
+}
+.obraz__geo{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:
+    radial-gradient(circle at 50% 33%, rgba(255,255,255,.92) 0 21%, transparent 21.4%),
+    repeating-linear-gradient(to bottom, rgba(56,73,63,.07) 0 1px, transparent 1px 13px),
+    radial-gradient(130% 85% at 104% -4%, rgba(56,73,63,.13), transparent 58%);
+}
+.obraz__geo--plan{
+  background-image:
+    linear-gradient(to right, rgba(56,73,63,.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56,73,63,.1) 1px, transparent 1px),
+    radial-gradient(120% 90% at 8% 100%, rgba(56,73,63,.12), transparent 60%);
+  background-size:38px 38px, 38px 38px, auto;
+}
+.obraz__geo--arc{
+  background-image:
+    repeating-radial-gradient(circle at 100% 0, transparent 0 30px, rgba(56,73,63,.14) 30px 31px),
+    radial-gradient(120% 90% at 20% 10%, rgba(255,255,255,.8), transparent 62%);
+}
+.obraz__mono{
+  position:absolute; z-index:2; left:0; right:0; top:33%; transform:translateY(-50%);
+  text-align:center; font-family:var(--serif); line-height:1;
+  font-size:clamp(38px,6vw,56px); letter-spacing:.06em; color:var(--sage);
+}
+.obraz__tag{
+  position:relative; z-index:2;
+  font-size:10.5px; letter-spacing:.19em; text-transform:uppercase; font-weight:700;
+  color:var(--sage); padding-top:11px; border-top:1px solid rgba(56,73,63,.24);
+}
+.obraz__big{
+  position:relative; z-index:2; margin-top:10px;
+  font-family:var(--serif); font-size:clamp(30px,4.2vw,42px); line-height:1; color:var(--ink);
+}
+.obraz__note{ position:relative; z-index:2; margin-top:6px; font-size:13.5px; color:var(--ink-soft); }
+.obraz figcaption{ margin-top:11px; font-size:13.5px; line-height:1.55; color:var(--ink-soft); max-width:46ch; }
+.obraz--wide .obraz__plate{ aspect-ratio:4/3; min-height:200px; }
+
+/* dvojplocha na stav pred ošetrením a po ňom */
+.obraz--dvoj .obraz__plate{
+  aspect-ratio:16/10; min-height:190px;
+  display:grid; grid-template-columns:1fr 1fr; padding:0;
+}
+.obraz__half{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:clamp(14px,2vw,20px);
+  border-right:1px solid rgba(56,73,63,.24);
+}
+.obraz__half:last-child{ border-right:0; background:rgba(255,255,255,.42); }
+@media (max-width:620px){ .obraz--dvoj .obraz__plate{ aspect-ratio:4/3; } }
+.obraz__half b{ font-size:10.5px; letter-spacing:.19em; text-transform:uppercase; font-weight:700; color:var(--sage); }
+.obraz__half span{ margin-top:5px; font-size:13.5px; color:var(--ink-soft); }
+
+.obrazy{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(18px,2.4vw,28px); margin-top:clamp(28px,3.4vw,44px);
+}
+@media (max-width:900px){ .obrazy{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){ .obrazy{ grid-template-columns:minmax(0,1fr); } }
+
+/* ================= TÍM ================= */
+.team{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(20px,2.6vw,32px); }
+@media (max-width:1000px){ .team{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px){
+  .team{ grid-template-columns:minmax(0,1fr); }
+  .member .obraz{ max-width:280px; }
+}
+.member h3{ margin-top:16px; font-size:18px; }
+.member__role{
+  margin:7px 0 10px; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  font-weight:700; color:var(--sage);
+}
+.member p{ font-size:14.5px; color:var(--ink-soft); }
+.member__do{ margin-top:13px; border-top:1px solid var(--line); }
+.member__do li{
+  position:relative; padding:8px 0 0 15px; font-size:13.5px; color:var(--ink-soft);
+}
+.member__do li::before{ content:""; position:absolute; left:0; top:1.05em; width:8px; height:1px; background:var(--line-2); }
+
+/* ================= UKÁŽKY PRÁC ================= */
+.works{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(22px,3vw,40px); }
+@media (max-width:820px){ .works{ grid-template-columns:minmax(0,1fr); } }
+.work h3{ margin-top:16px; font-size:18px; }
+.work p{ margin-top:8px; font-size:14.5px; color:var(--ink-soft); }
+.work__meta{ margin-top:14px; border-top:1px solid var(--line); }
+.work__meta > div{
+  display:flex; justify-content:space-between; gap:16px;
+  padding:9px 0; border-bottom:1px solid var(--line); font-size:14px;
+}
+.work__meta dt{ color:var(--ink-soft); }
+.work__meta dd{ margin:0; color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
+
+/* ================= HODNOTENIA ================= */
+.reviews{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:900px){ .reviews{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:620px){ .reviews{ grid-template-columns:minmax(0,1fr); } }
+.review{ display:flex; flex-direction:column; background:var(--white); padding:clamp(20px,2.6vw,28px); margin:0; }
+.section--tint .review{ background:var(--white); }
+.stars{ display:flex; gap:3px; }
+.stars svg{ width:14px; height:14px; display:block; fill:var(--sage); }
+.review blockquote{ margin:14px 0 0; font-size:15.5px; line-height:1.6; color:var(--ink); }
+.review figcaption{ margin-top:auto; padding-top:16px; font-size:13.5px; color:var(--ink-soft); }
+.review figcaption b{ display:block; font-weight:600; color:var(--ink); font-size:14.5px; }
+
+/* ================= POHYB ================= */
+.js .rev{ opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease; }
+.js .rev.is-in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .js .rev{ opacity:1 !important; transform:none !important; }
+}
+
+/* ==================================================================
+   GARANCIA FARBY TEXTU V TLAČIDLÁCH
+   Musí stáť na konci a mať vyššiu špecificitu než pravidlá pre odkazy
+   (.footer a, .menu a, .alist dd a, .demobar a, a{...}), inak by
+   tlačidlo dostalo farbu odkazu a text by splynul s pozadím.
+================================================================== */
+.btn.btn--primary, a.btn.btn--primary,
+.btn.btn--primary:hover, a.btn.btn--primary:hover,
+.btn.btn--primary:focus, a.btn.btn--primary:focus{ color:#FFFFFF; }
+
+.btn.btn--clay, a.btn.btn--clay,
+.btn.btn--clay:hover, a.btn.btn--clay:hover,
+.btn.btn--clay:focus, a.btn.btn--clay:focus{ color:#FFFFFF; }
+
+.btn.btn--ghost, a.btn.btn--ghost,
+.btn.btn--ghost:focus, a.btn.btn--ghost:focus{ color:var(--ink); }
+.btn.btn--ghost:hover, a.btn.btn--ghost:hover{ color:var(--sage); }
+
+.section--dark .btn.btn--ghost, .section--dark a.btn.btn--ghost,
+.section--dark .btn.btn--ghost:hover, .section--dark a.btn.btn--ghost:hover,
+.section--dark .btn.btn--ghost:focus, .section--dark a.btn.btn--ghost:focus{ color:#FFFFFF; }
+
+.btn.btn--light, a.btn.btn--light,
+.btn.btn--light:hover, a.btn.btn--light:hover,
+.btn.btn--light:focus, a.btn.btn--light:focus{ color:var(--sage); }
+
+.navcta, a.navcta, .navcta:hover, a.navcta:hover, .navcta:focus{ color:#FFFFFF; }
+.navtel, a.navtel, .navtel:focus{ color:var(--ink); }
+.navtel:hover, a.navtel:hover{ color:var(--sage); }
+.navtoggle, button.navtoggle{ color:var(--ink); }
+
+/* v pätičke je pozadie takmer čierne — salviové tlačidlo by na ňom zaniklo,
+   preto tam ide svetlé tlačidlo a telefón s bielym rámom */
+.footer .btn.btn--ghost, .footer a.btn.btn--ghost,
+.footer .btn.btn--ghost:focus, .footer a.btn.btn--ghost:focus{
+  color:#FFFFFF; border-color:rgba(255,255,255,.55); background:transparent;
+}
+.footer .btn.btn--ghost:hover, .footer a.btn.btn--ghost:hover{
+  color:#FFFFFF; border-color:#FFFFFF; background:rgba(255,255,255,.1);
+}
+.footer .btn.btn--light, .footer a.btn.btn--light,
+.footer .btn.btn--light:hover, .footer a.btn.btn--light:hover,
+.footer .btn.btn--light:focus, .footer a.btn.btn--light:focus{ color:var(--sage); background:#FFFFFF; border-color:#FFFFFF; }
+.footer .btn.btn--light:hover, .footer a.btn.btn--light:hover{ background:var(--sage-050); border-color:var(--sage-050); }
+.chip{ color:var(--ink); }
+.chip:hover{ color:var(--sage); }
+.chip[aria-pressed="true"], .chip[aria-pressed="true"]:hover{ color:#FFFFFF; }
+.skip, a.skip, .skip:hover, .skip:focus{ color:#FFFFFF; }
+
+/* zástupný text namiesto vymysleného kontaktu */
+.ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+</style>
+<!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x);return v.toLocaleString('it-IT');}function __f(x){return x.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});}function __p(x){return x;}function __c(x){return x;}var __m="€";</script>
+</head>
+<body>
+
+<a class="skip" href="#obsah">Vai al contenuto principale</a>
+
+<div class="topstack">
+  <div class="demobar">
+    <span class="demobar__tag">Sito di esempio</span>
+    <span class="demobar__txt">un sito così lo realizzo anche per voi.</span>
+    <a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a>
+    <span class="demobar__sep" aria-hidden="true">·</span>
+    <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+  </div>
+
+  <nav class="nav" aria-label="Navigazione principale">
+    <div class="wrap nav__in">
+      <a class="brand" href="#uvod" aria-label="Studio Salice, inizio della pagina">
+        <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x=".75" y=".75" width="38.5" height="38.5" rx="2" fill="none" stroke="#38493F" stroke-width="1.5"/>
+          <rect x="10.5" y="8.5" width="19" height="23" fill="none" stroke="#38493F" stroke-width="1.2"/>
+          <path d="M20 8.5v23M10.5 20h19" stroke="#38493F" stroke-width="1.2"/>
+        </svg>
+        <span>
+          <span class="brand__name">Studio Salice</span> <span class="brand__sub">Odontoiatria</span>
+        </span>
+      </a>
+
+      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <span class="navtoggle__t">Menu</span>
+      </button>
+
+      <ul class="menu" id="menu">
+        <li><a href="#osetrenia">Cure</a></li>
+        <li><a href="#lekari">Dentisti</a></li>
+        <li><a href="#cennik">Prezzi</a></li>
+        <li><a href="#otazky">Domande</a></li>
+        <li><a href="#kontakt">Orari e contatti</a></li>
+      </ul>
+
+      <div class="navact">
+        <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+        <a class="navcta" href="#objednanie">Prenota</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<main id="obsah">
+
+  <!-- ================= HERO — zrkadlený split ================= -->
+  <section class="hero" id="uvod">
+    <div class="wrap hero__grid">
+
+      <!-- ĽAVÁ STRANA: tmavý údajový panel -->
+      <aside class="herocard" aria-label="Indirizzo, telefono e orari dello studio">
+        <span class="herocard__arc" aria-hidden="true"></span>
+        <div class="herocard__in">
+          <p class="cveyebrow">Odontoiatria · Soave</p>
+          <p class="herocard__name">Studio dentistico Salice</p>
+          <p class="herocard__addr">Via dei Salici 8, 37038 Soave (VR)</p>
+
+          <dl class="herodata">
+            <div>
+              <dt>Prenotazioni, cellulare</dt>
+              <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><span>vi richiamiamo durante l'orario di apertura</span></dd>
+            </div>
+            <div>
+              <dt>Telefono fisso</dt>
+              <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><span>reception, prenotazioni e disdette</span></dd>
+            </div>
+            <div>
+              <dt>Orari dello studio</dt>
+              <dd>Lun, Mar, Gio 8:00 – 17:00<span>Mer 8:00 – 15:00 · Ven 8:00 – 13:00 · weekend chiuso</span></dd>
+            </div>
+            <div>
+              <dt>Ingresso allo studio</dt>
+              <dd>Piano terra, dal cortile<span>senza gradini, porta larga 90 cm</span></dd>
+            </div>
+          </dl>
+
+          <p class="herocard__foot" id="status"><b>Siamo aperti nei giorni feriali.</b> Il calendario completo è nella sezione Orari e contatti.</p>
+        </div>
+      </aside>
+
+      <!-- PRAVÁ STRANA: nadpis a text -->
+      <div class="hero__text">
+        <p class="eyebrow"><b>01</b>Lo studio</p>
+        <h1>Studio dentistico privato<span class="thin">a Soave</span></h1>
+        <p class="lead hero__lead">Curiamo adulti e bambini. Diamo appuntamenti a orario preciso. Prima di ogni prestazione vi diciamo cosa faremo, quanto durerà e quanto costerà.</p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#objednanie">Prenota</a>
+          <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+        </div>
+
+        <ul class="hero__points">
+          <li><b>01</b><span>Prevenzione, igiene dentale e odontoiatria conservativa</span></li>
+          <li><b>02</b><span>Protesi, sbiancamento e cure canalari</span></li>
+          <li><b>03</b><span>Odontoiatria pediatrica dai tre anni</span></li>
+          <li><b>04</b><span>Ogni mattina di apertura una fascia per il dolore acuto</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= ZÁKLADNÉ ÚDAJE ================= -->
+  <section aria-label="Dati principali dello studio">
+    <dl class="wrap facts">
+      <div>
+        <dt>Indirizzo</dt>
+        <dd>Via dei Salici 8, 37038 Soave (VR)<span>piano terra, ingresso dal cortile senza gradini</span></dd>
+      </div>
+      <div>
+        <dt>Cellulare</dt>
+        <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><span>vi richiamiamo in orario di apertura</span></dd>
+      </div>
+      <div>
+        <dt>Telefono fisso</dt>
+        <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><span>reception in orario di apertura</span></dd>
+      </div>
+      <div>
+        <dt>Prenotazione</dt>
+        <dd><a href="#objednanie">Il modulo su questa pagina</a><span>confermiamo l'appuntamento per telefono entro un giorno lavorativo</span></dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ================= ZDRAVOTNÉ POISŤOVNE — PÁS ================= -->
+  <section class="payers" aria-label="Fondi sanitari con cui siamo convenzionati">
+    <div class="wrap payers__in">
+      <p class="payers__lead">Fondi convenzionati<span>Con i fondi in forma diretta visita e cure di base le fatturiamo direttamente al fondo.</span></p>
+      <ul class="payers__row">
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">25</span>
+          <span><b>Fondi sanitari di categoria</b><span>forma diretta · odontoiatria</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">24</span>
+          <span><b>Assicurazioni sanitarie</b><span>forma diretta o rimborso · odontoiatria</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">27</span>
+          <span><b>Fondi e casse aziendali</b><span>rimborso con fattura · odontoiatria</span></span>
+        </li>
+        <li class="payer">
+          <span class="payer__mark" aria-hidden="true">UE</span>
+          <span><b>Pazienti da altri paesi UE</b><span>curiamo anche chi è in vacanza sul lago o in collina</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= ROZSAH OŠETRENÍ ================= -->
+  <section class="section section--line" id="osetrenia">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>02</b>Cure</p>
+          <h2>Le cure che offriamo</h2>
+        </div>
+        <p class="lead">Copriamo la cura ordinaria dei denti di adulti e bambini. Gli interventi chirurgici complessi e gli apparecchi ortodontici non li facciamo: per quelli vi indirizziamo a uno studio con cui collaboriamo.</p>
+      </div>
+
+      <ul class="srv rev">
+        <li>
+          <span class="srv__no">01</span>
+          <div class="srv__body">
+            <h3>Prevenzione e diagnosi</h3>
+            <p>Prima visita e visita di controllo, valutazione di denti e gengive, radiografia direttamente in studio. Alla fine avete un piano di cura scritto con l'ordine dei passaggi e il prezzo.</p>
+            <ul class="srv__tags">
+              <li>prima visita</li>
+              <li>controllo ogni sei mesi</li>
+              <li>radiografia di un dente</li>
+              <li>secondo parere</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>30 minuti</b>dura la prima visita, compresa la cartella clinica</p>
+        </li>
+        <li>
+          <span class="srv__no">02</span>
+          <div class="srv__body">
+            <h3>Igiene dentale</h3>
+            <p>Rimozione di tartaro e placca, air polishing, lucidatura e controllo delle gengive. Alla fine rivediamo insieme la tecnica di pulizia e gli strumenti che hanno senso per voi.</p>
+            <ul class="srv__tags">
+              <li>tartaro</li>
+              <li>air polishing</li>
+              <li>igiene con l'apparecchio</li>
+              <li>istruzioni per la pulizia</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>60 minuti</b>riservati all'igiene completa, l'igienista lavora in uno studio separato</p>
+        </li>
+        <li>
+          <span class="srv__no">03</span>
+          <div class="srv__body">
+            <h3>Odontoiatria conservativa</h3>
+            <p>Cura della carie con otturazione estetica in composito, trattamento dei colletti sensibili, cure canalari e ricostruzione del dente prima della protesi.</p>
+            <ul class="srv__tags">
+              <li>otturazioni estetiche</li>
+              <li>cure canalari</li>
+              <li>ricostruzione del dente</li>
+              <li>estrazione</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>45 – 90 minuti</b>in base all'estensione, le cure più ampie le dividiamo in due sedute</p>
+        </li>
+        <li>
+          <span class="srv__no">04</span>
+          <div class="srv__body">
+            <h3>Protesi</h3>
+            <p>Corone in ceramica, ponti e protesi mobili. Lavoriamo con un solo laboratorio odontotecnico e fissiamo le sedute in modo che si susseguano senza viaggi inutili.</p>
+            <ul class="srv__tags">
+              <li>corona in ceramica</li>
+              <li>ponte</li>
+              <li>protesi mobile</li>
+              <li>riparazione della protesi</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>2 – 3 sedute</b>dall'impronta alla posa del lavoro finito</p>
+        </li>
+        <li>
+          <span class="srv__no">05</span>
+          <div class="srv__body">
+            <h3>Odontoiatria pediatrica</h3>
+            <p>La prima visita la consigliamo verso i tre anni. Il primo appuntamento serve solo a conoscere lo studio: il bambino si siede sulla poltrona e non si fa niente. Il genitore resta nella stanza durante la cura.</p>
+            <ul class="srv__tags">
+              <li>visita del bambino</li>
+              <li>sigillatura dei solchi</li>
+              <li>cura del dente da latte</li>
+              <li>fluoroprofilassi</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>dai 3 anni</b>per problemi o traumi dentali accogliamo bambini di ogni età</p>
+        </li>
+        <li>
+          <span class="srv__no">06</span>
+          <div class="srv__body">
+            <h3>Urgenze ed estetica</h3>
+            <p>Per il dolore acuto teniamo ogni mattina di apertura una breve fascia fuori dagli appuntamenti. Tra le prestazioni estetiche facciamo lo sbiancamento domiciliare con mascherine su misura e lo sbiancamento in studio.</p>
+            <ul class="srv__tags">
+              <li>mal di denti</li>
+              <li>trauma dentale</li>
+              <li>sbiancamento domiciliare</li>
+              <li>sbiancamento in studio</li>
+            </ul>
+          </div>
+          <p class="srv__meta"><b>ogni mattina</b>fascia per le urgenze, chiamate appena apre lo studio</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= LEKÁRI A PERSONÁL ================= -->
+  <section class="section section--tint" id="lekari">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>03</b>Dentisti</p>
+          <h2>Chi vi curerà</h2>
+        </div>
+        <p class="lead">La cura la segue lo stesso dentista, dal piano al lavoro finito. Il nome ve lo diciamo al momento della prenotazione e lo scriviamo anche nella conferma dell'appuntamento.</p>
+      </div>
+
+      <ul class="team rev">
+        <li class="member">
+          <!-- FOTO: portrét MDDr. Zuzany Hruškovej v ordinácii, po pás, bez rúška -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">SP</span>
+              <span class="obraz__tag">Dentista</span>
+            </div>
+          </figure>
+          <h3>Dott.ssa Susanna Peri</h3>
+          <p class="member__role">Dentista, titolare dello studio</p>
+          <p>Fa le prime visite e prepara il piano di cura scritto con il prezzo. Si occupa di odontoiatria conservativa e di protesi.</p>
+          <ul class="member__do">
+            <li>prime visite e visite di controllo</li>
+            <li>otturazioni estetiche e ricostruzioni</li>
+            <li>cure canalari</li>
+            <li>corone, ponti e protesi mobili</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét MDDr. Adama Krajčíra pri kresle, po pás -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">AS</span>
+              <span class="obraz__tag">Dentista</span>
+            </div>
+          </figure>
+          <h3>Dott. Adamo Sarti</h3>
+          <p class="member__role">Dentista, bambini e urgenze</p>
+          <p>Cura i bambini dai tre anni e segue la fascia mattutina per il dolore acuto. Durante la cura del bambino il genitore resta nella stanza.</p>
+          <ul class="member__do">
+            <li>visite dei bambini dai 3 anni</li>
+            <li>cura dei denti da latte e sigillature</li>
+            <li>dolore acuto e traumi dentali</li>
+            <li>estrazioni</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét Bc. Lucie Šimkovej v ordinácii dentálnej hygieny -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">LS</span>
+              <span class="obraz__tag">Igienista dentale</span>
+            </div>
+          </figure>
+          <h3>Dott.ssa Lucia Simoni</h3>
+          <p class="member__role">Igienista dentale</p>
+          <p>Lavora nel secondo studio e ha 60 minuti riservati per ogni seduta, 75 minuti con l'apparecchio fisso.</p>
+          <ul class="member__do">
+            <li>rimozione di tartaro e placca</li>
+            <li>air polishing e lucidatura</li>
+            <li>igiene con l'apparecchio fisso</li>
+            <li>istruzioni sulla tecnica di pulizia</li>
+          </ul>
+        </li>
+
+        <li class="member">
+          <!-- FOTO: portrét Jany Bartošovej na recepcii pri objednávkovom kalendári -->
+          <figure class="obraz">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--plan" aria-hidden="true"></span>
+              <span class="obraz__mono" aria-hidden="true">GB</span>
+              <span class="obraz__tag">Reception</span>
+            </div>
+          </figure>
+          <h3>Gianna Bartoli</h3>
+          <p class="member__role">Reception e prenotazioni</p>
+          <p>Risponde al telefono in orario di apertura, gestisce il calendario e il giorno prima manda un promemoria via SMS.</p>
+          <ul class="member__do">
+            <li>prenotazione, spostamento e disdetta</li>
+            <li>conferma dell'appuntamento entro un giorno lavorativo</li>
+            <li>copie della cartella clinica</li>
+            <li>buoni regalo e visite aziendali</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="notebox notebox--white rev">
+        <h3>Un'assistente alla poltrona a ogni cura</h3>
+        <p>Durante la prestazione in studio ci sono il dentista e l'assistente. L'assistente prepara gli strumenti, gestisce la sterilizzazione in autoclave di classe B e registra ogni ciclo. Non curiamo mai due pazienti insieme.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= UKÁŽKY PRÁC ================= -->
+  <section class="section section--line" id="prace">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>04</b>Lavori</p>
+          <h2>Esempi di lavori e il loro prezzo</h2>
+        </div>
+        <p class="lead">Due trattamenti frequenti con il numero di sedute e il prezzo composto dalle voci del listino. Lo stesso dettaglio lo ricevete per iscritto prima di iniziare.</p>
+      </div>
+
+      <div class="works rev">
+        <article class="work">
+          <!-- FOTO: predný zub pred ošetrením a po nasadení korunky, rovnaký záber a rovnaké svetlo -->
+          <figure class="obraz obraz--dvoj">
+            <div class="obraz__plate">
+              <span class="obraz__geo" aria-hidden="true"></span>
+              <div class="obraz__half"><b>Prima</b><span>dente dopo un trauma, angolo scheggiato e vecchia otturazione</span></div>
+              <div class="obraz__half"><b>Dopo</b><span>ricostruzione e corona in ceramica del colore dei denti vicini</span></div>
+            </div>
+          </figure>
+          <h3>Corona su un dente anteriore</h3>
+          <p>Prima seduta: visita, radiografia e piano. Seconda: ricostruzione del dente e impronta per il laboratorio. Terza: prova e posa della corona finita.</p>
+          <dl class="work__meta">
+            <div><dt>Numero di sedute</dt><dd>3</dd></div>
+            <div><dt>Tempo dall'impronta alla posa</dt><dd>10 – 14 giorni</dd></div>
+            <div><dt>Prezzo da listino</dt><dd class="num">440 €</dd></div>
+            <div><dt>Garanzia sul lavoro</dt><dd>24 mesi</dd></div>
+          </dl>
+        </article>
+
+        <article class="work">
+          <!-- FOTO: chrup pred dentálnou hygienou a po nej, rovnaký záber a rovnaké svetlo -->
+          <figure class="obraz obraz--dvoj">
+            <div class="obraz__plate">
+              <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+              <div class="obraz__half"><b>Prima</b><span>tartaro e placca sopra il bordo della gengiva</span></div>
+              <div class="obraz__half"><b>Dopo</b><span>denti puliti e sbiancamento domiciliare con mascherine</span></div>
+            </div>
+          </figure>
+          <h3>Igiene e sbiancamento domiciliare</h3>
+          <p>Prima seduta: igiene completa e impronta per le mascherine. Seconda: consegna delle mascherine e del gel con le istruzioni. Terza: controllo del risultato dopo due settimane.</p>
+          <dl class="work__meta">
+            <div><dt>Numero di sedute</dt><dd>3</dd></div>
+            <div><dt>Durata dello sbiancamento a casa</dt><dd>14 giorni</dd></div>
+            <div><dt>Prezzo da listino</dt><dd class="num">240 €</dd></div>
+            <div><dt>Controllo dopo lo sbiancamento</dt><dd>compreso</dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CENNÍK OŠETRENÍ ================= -->
+  <section class="section section--line" id="cennik">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>05</b>Prezzi</p>
+          <h2>Listino delle cure</h2>
+        </div>
+        <p class="lead">I prezzi valgono per i pazienti privati. Se avete un fondo sanitario, pagate solo la parte che il fondo non copre. L'importo preciso ve lo diciamo prima della cura e lo trovate anche nel piano scritto.</p>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Prevenzione e diagnosi</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Prima visita e piano di cura</span>
+            <span class="prow__time">30 minuti</span>
+            <span class="prow__price num">da 35 €</span>
+            <span class="prow__desc">Controllo di denti e gengive, cartella clinica e piano scritto dei passi successivi. Molti fondi sanitari coprono una visita di controllo all'anno; il prezzo vale per i pazienti privati e per la seconda visita dell'anno.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Visita di controllo</span>
+            <span class="prow__time">20 minuti</span>
+            <span class="prow__price num">da 25 €</span>
+            <span class="prow__desc">Controllo periodico per i pazienti già seguiti da noi. Per i privati e oltre la visita coperta dal fondo.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Consulenza senza cura</span>
+            <span class="prow__time">15 minuti</span>
+            <span class="prow__price num">da 20 €</span>
+            <span class="prow__desc">Secondo parere su un piano proposto o valutazione di un vecchio lavoro.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Radiografia di un dente</span>
+            <span class="prow__time">10 minuti</span>
+            <span class="prow__price num">da 12 €</span>
+            <span class="prow__desc">La radiografia la facciamo direttamente in studio e la guardate subito sullo schermo.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Igiene dentale</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Igiene dentale completa</span>
+            <span class="prow__time">60 minuti</span>
+            <span class="prow__price num">da 60 €</span>
+            <span class="prow__desc">Rimozione di tartaro e placca, lucidatura, controllo delle gengive.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Igiene con apparecchio fisso</span>
+            <span class="prow__time">75 minuti</span>
+            <span class="prow__price num">da 75 €</span>
+            <span class="prow__desc">Più tempo per pulire intorno ad attacchi e filo.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Air polishing</span>
+            <span class="prow__time">20 minuti</span>
+            <span class="prow__price num">da 20 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Istruzioni sulla tecnica di pulizia</span>
+            <span class="prow__time">10 minuti</span>
+            <span class="prow__price num">compreso nell'igiene</span>
+            <span class="prow__desc">Vi mostriamo come usare lo spazzolino e gli strumenti per gli spazi tra i denti.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Odontoiatria conservativa</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Otturazione estetica, una superficie</span>
+            <span class="prow__time">45 minuti</span>
+            <span class="prow__price num">da 55 €</span>
+            <span class="prow__desc">Cura della carie con composito fotopolimerizzabile.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Otturazione estetica, più superfici</span>
+            <span class="prow__time">60 minuti</span>
+            <span class="prow__price num">da 75 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Trattamento dei colletti sensibili</span>
+            <span class="prow__time">20 minuti</span>
+            <span class="prow__price num">da 25 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Cura canalare</span>
+            <span class="prow__time">90 minuti</span>
+            <span class="prow__price num">da 120 €</span>
+            <span class="prow__desc">In base all'estensione può richiedere due sedute. Il prezzo lo precisiamo dopo la radiografia.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Ricostruzione del dente prima della corona</span>
+            <span class="prow__time">60 minuti</span>
+            <span class="prow__price num">da 90 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Estrazione del dente</span>
+            <span class="prow__time">30 minuti</span>
+            <span class="prow__price num">da 45 €</span>
+            <span class="prow__desc">L'estrazione semplice è coperta da molti fondi sanitari; il prezzo vale per i pazienti privati e per l'estrazione chirurgica.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Bambini e urgenze</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Visita del bambino</span>
+            <span class="prow__time">30 minuti</span>
+            <span class="prow__price num">da 30 €</span>
+            <span class="prow__desc">La prima visita la consigliamo verso i tre anni. All'inizio il bambino si limita a guardare lo studio.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Sigillatura dei solchi di un dente permanente</span>
+            <span class="prow__time">20 minuti</span>
+            <span class="prow__price num">da 25 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Cura del dente da latte</span>
+            <span class="prow__time">30 minuti</span>
+            <span class="prow__price num">da 40 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Cura urgente per il dolore</span>
+            <span class="prow__time">30 minuti</span>
+            <span class="prow__price num">da 45 €</span>
+            <span class="prow__desc">Il primo obiettivo è togliervi il dolore, la cura definitiva la completiamo in un appuntamento successivo. Molti fondi sanitari coprono la cura urgente; il prezzo vale per i pazienti privati.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pricegroup rev">
+        <h3 class="pricegroup__title">Protesi e sbiancamento</h3>
+        <ul>
+          <li class="prow">
+            <span class="prow__name">Corona in ceramica</span>
+            <span class="prow__time">2 – 3 sedute</span>
+            <span class="prow__price num">da 350 €</span>
+            <span class="prow__desc">Lavoriamo con un laboratorio odontotecnico. Fissiamo le sedute in modo che si susseguano.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Ponte, prezzo per elemento</span>
+            <span class="prow__time">3 sedute</span>
+            <span class="prow__price num">da 300 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Protesi mobile</span>
+            <span class="prow__time">in base all'estensione</span>
+            <span class="prow__price num">da 420 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Riparazione della protesi mobile</span>
+            <span class="prow__time">1 – 2 giorni</span>
+            <span class="prow__price num">da 60 €</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Sbiancamento domiciliare con mascherine su misura</span>
+            <span class="prow__time">2 sedute</span>
+            <span class="prow__price num">da 180 €</span>
+            <span class="prow__desc">Le mascherine le realizziamo dall'impronta e vi spieghiamo come usarle alla consegna.</span>
+          </li>
+          <li class="prow">
+            <span class="prow__name">Sbiancamento in studio</span>
+            <span class="prow__time">90 minuti</span>
+            <span class="prow__price num">da 220 €</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="notebox rev">
+        <h3>Come usiamo il listino</h3>
+        <p>Gli importi indicati sono prezzi minimi. Il prezzo esatto lo conoscete prima della prestazione; per protesi e sbiancamento lo ricevete per iscritto. Se durante la cura emerge che serve un intervento più ampio, ci fermiamo e prima concordiamo il nuovo importo. Il listino di questa pagina è un esempio e serve solo a mostrare il sito.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ZDRAVOTNÉ POISŤOVNE ================= -->
+  <section class="section section--tint" id="poistovne">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>06</b>Copertura</p>
+          <h2>Fondi sanitari</h2>
+        </div>
+        <p class="lead">Siamo convenzionati con i principali fondi sanitari integrativi e assicurazioni sanitarie. Al momento della prenotazione vi chiediamo se avete un fondo e quale, e per ogni prestazione vi diciamo in anticipo cosa è coperto e quanto resta a vostro carico.</p>
+      </div>
+
+      <div class="twocol--wide twocol rev">
+        <div>
+          <div class="tablewrap">
+            <table class="ins">
+              <caption>La copertura dipende dal piano sanitario del vostro fondo. Se le condizioni del fondo cambiano, ve lo diciamo quando prenotate.</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Fondo o assicurazione</th>
+                  <th scope="col">Convenzione</th>
+                  <th scope="col">Cosa portare alla visita</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Fondi sanitari di categoria</th><td>sì</td><td>tessera del fondo, anche in app</td></tr>
+                <tr><th scope="row">Assicurazioni sanitarie</th><td>sì</td><td>tessera del fondo, anche in app</td></tr>
+                <tr><th scope="row">Fondi e casse aziendali</th><td>sì</td><td>tessera del fondo, anche in app</td></tr>
+                <tr><th scope="row">Paziente da un altro paese UE</th><td>come paziente privato</td><td>documento d'identità e tessera TEAM</td></tr>
+                <tr><th scope="row">Senza fondo sanitario</th><td>paziente privato</td><td>documento d'identità e codice fiscale</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="infolist" style="margin-top:clamp(24px,3vw,34px);">
+            <div>
+              <h3>Cosa copre di solito un fondo</h3>
+              <p>Una visita di controllo all'anno, la cura della carie nella versione di base, l'estrazione e la cura urgente per il dolore. Le condizioni precise dipendono dal piano del vostro fondo: le verifichiamo noi al momento della prenotazione.</p>
+            </div>
+            <div>
+              <h3>Cosa paga il paziente</h3>
+              <p>Materiali di qualità superiore, otturazioni estetiche in composito, igiene dentale, protesi, sbiancamento e le prestazioni non comprese nel piano del fondo. Gli importi sono nel <a href="#cennik">listino delle cure</a>.</p>
+            </div>
+            <div>
+              <h3>Se non avete con voi la tessera del fondo</h3>
+              <p>Vi curiamo lo stesso. Il numero di iscrizione al fondo lo aggiungete alla visita successiva o ce lo dettate al telefono. Se la copertura non viene confermata, la prestazione la fatturiamo come a un paziente privato.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="canvas canvas--dark cv-hero">
+          <span class="cvtex cvtex--rings" aria-hidden="true"></span>
+          <span class="cvtex cvtex--glow" aria-hidden="true"></span>
+          <div class="cvbody">
+            <p class="cveyebrow">Quando prenotate vi chiediamo</p>
+            <ol class="cvlist">
+              <li><span class="cvnum">01</span><span class="cvlabel">Se avete un fondo sanitario e quale</span></li>
+              <li><span class="cvnum">02</span><span class="cvlabel">Se l'anno scorso avete fatto la visita di controllo</span></li>
+              <li><span class="cvnum">03</span><span class="cvlabel">Quali farmaci prendete regolarmente</span></li>
+              <li><span class="cvnum">04</span><span class="cvlabel">Se siete allergici all'anestetico</span></li>
+            </ol>
+            <p class="cvfoot cvpush">Le risposte le annotiamo in cartella e in base a queste calcoliamo in anticipo quanto pagherete.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ČO HRADÍ POISŤOVŇA A ČO DOPLÁCATE ================= -->
+  <section class="section" id="doplatky">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>07</b>Quota a carico</p>
+          <h2>Cosa copre il fondo e cosa pagate voi</h2>
+        </div>
+        <p class="lead">Panoramica per chi ha un fondo convenzionato. La quota a vostro carico ve la diciamo prima della cura e fa parte del piano scritto.</p>
+      </div>
+
+      <div class="tablewrap rev">
+        <table class="ptable">
+          <caption>La copertura dipende dal piano sanitario e dalle condizioni del vostro fondo. Il paziente privato paga l'intero importo del listino delle cure.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Prestazione</th>
+              <th scope="col">Copertura del fondo</th>
+              <th scope="col">A carico del paziente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Visita di controllo, una volta all'anno</th><td>coperta dalla maggior parte dei piani</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Seconda visita e successive nello stesso anno</th><td>non coperta</td><td class="num">da 25 €</td></tr>
+            <tr><th scope="row">Radiografia prescritta dal dentista</th><td>coperta per intero</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Carie, otturazione di base</th><td>coperta per intero</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Carie, otturazione estetica su una superficie</th><td>coperta la versione di base</td><td class="num">30 €</td></tr>
+            <tr><th scope="row">Carie, otturazione estetica su più superfici</th><td>coperta la versione di base</td><td class="num">45 €</td></tr>
+            <tr><th scope="row">Estrazione semplice</th><td>coperta per intero</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Cura urgente per il dolore</th><td>coperta per intero</td><td class="num">0 €</td></tr>
+            <tr><th scope="row">Cura canalare</th><td>non coperta</td><td class="num">da 120 €</td></tr>
+            <tr><th scope="row">Igiene dentale</th><td>non coperta</td><td class="num">da 60 €</td></tr>
+            <tr><th scope="row">Corona, ponte, protesi mobile</th><td>non coperta</td><td class="num">da 300 €</td></tr>
+            <tr><th scope="row">Sbiancamento dei denti</th><td>non coperta</td><td class="num">da 180 €</td></tr>
+            <tr><th scope="row">Copia della cartella clinica</th><td>non coperta</td><td class="num">15 €</td></tr>
+            <tr><th scope="row">Visita su richiesta del paziente senza indicazione clinica</th><td>non coperta</td><td class="num">20 €</td></tr>
+            <tr><th scope="row">Seconda mancata presentazione senza disdetta e successive</th><td>non coperta</td><td class="num">20 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notebox notebox--white rev">
+        <h3>Come nasce la quota a vostro carico</h3>
+        <p>Per la carie il fondo copre l'otturazione di base. Se volete l'otturazione estetica in composito, pagate solo la differenza: 30 € su una superficie e 45 € su più superfici. Il paziente privato paga l'intero importo del <a href="#cennik">listino delle cure</a>, cioè 55 € e 75 €. La differenza ve la diciamo prima della cura e la indichiamo anche in fattura.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TMAVÝ PÁS ================= -->
+  <section class="section section--dark" aria-labelledby="pas-h">
+    <div class="wrap">
+      <div class="band__grid">
+        <div class="rev">
+          <p class="eyebrow"><b>08</b>Come lavoriamo</p>
+          <h2 id="pas-h" class="band__claim">Come gestiamo appuntamenti e prezzi</h2>
+        </div>
+        <p class="lead rev">Non lavoriamo ad accesso libero in ordine di arrivo. Ogni paziente ha il suo appuntamento e prima della prestazione sa cosa si farà, quanto durerà e quanto pagherà. Distanziamo gli appuntamenti: in sala d'attesa ci sono al massimo due pazienti prenotati alla volta.</p>
+      </div>
+
+      <ul class="stats rev">
+        <li class="stat"><b class="num">30 minuti</b><span>dura la prima visita, alla fine avete il piano di cura scritto</span></li>
+        <li class="stat"><b class="num">24 ore</b><span>bastano per disdire o spostare l'appuntamento, il posto libero lo diamo a un altro paziente</span></li>
+        <li class="stat"><b class="num">5 giorni su 7</b><span>siamo aperti nei giorni feriali, ogni mattina teniamo una fascia per il dolore acuto</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= PRVÁ NÁVŠTEVA ================= -->
+  <section class="section section--tint" id="priebeh">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>09</b>Come si svolge</p>
+          <h2>Prima visita</h2>
+        </div>
+        <p class="lead">La prima visita dura da 30 a 45 minuti e si chiude con il piano di cura. Le prestazioni più ampie le facciamo negli appuntamenti successivi.</p>
+      </div>
+
+      <ol class="steps rev">
+        <li class="step">
+          <span class="step__no">01</span>
+          <h3>Prenotazione</h3>
+          <p>Compilate il modulo su questa pagina oppure chiamateci. L'appuntamento lo confermiamo per telefono, di solito entro un giorno lavorativo.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">02</span>
+          <h3>Questionario iniziale</h3>
+          <p>All'arrivo compilate un questionario sulla salute e indicate i farmaci che prendete. Ci vogliono circa cinque minuti.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">03</span>
+          <h3>Visita</h3>
+          <p>Il dentista controlla denti e gengive. Se serve una radiografia, la facciamo in studio e la guardiamo insieme.</p>
+        </li>
+        <li class="step">
+          <span class="step__no">04</span>
+          <h3>Piano e appuntamenti</h3>
+          <p>Ricevete un piano di cura scritto con il prezzo di ogni prestazione. Gli appuntamenti successivi li fissiamo in base ai vostri impegni.</p>
+        </li>
+      </ol>
+
+      <div class="notebox notebox--white rev">
+        <h3>Dolore acuto il giorno stesso</h3>
+        <p>Chiamate al mattino presto il <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito.">qui il vostro numero</span>. Per il dolore acuto teniamo ogni giorno di apertura una breve fascia fuori dagli appuntamenti. Se è piena, fissiamo il primo orario possibile e vi diciamo cosa fare nel frattempo. In caso di gonfiore al viso, febbre o trauma a un dente chiamate subito.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HODNOTENIA PACIENTOV ================= -->
+  <section class="section section--line" id="hodnotenia">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>10</b>Recensioni</p>
+          <h2>Recensioni dei pazienti</h2>
+        </div>
+        <p class="lead">La recensione può scriverla chiunque sia stato curato da noi. Non le modifichiamo e non le cancelliamo. Qui sotto ne trovate tre dal profilo dello studio su Google.</p>
+      </div>
+
+      <div class="reviews rev">
+        <figure class="review">
+          <span class="stars" role="img" aria-label="5 stelle su 5">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+          </span>
+          <blockquote><p>Il prezzo della corona l'avevo per iscritto prima di iniziare e alla fine era esatto all'euro. Le date per l'impronta e per la posa me le hanno date già alla prima visita.</p></blockquote>
+          <figcaption><b>Martina R.</b>Corona su un dente anteriore, tre sedute</figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars" role="img" aria-label="5 stelle su 5">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+          </span>
+          <blockquote><p>Ho chiamato alle otto con il mal di denti e alle nove e mezza ero già sulla poltrona. Il dente si è salvato, lo abbiamo sistemato del tutto una settimana dopo.</p></blockquote>
+          <figcaption><b>Pietro C.</b>Cura urgente il giorno stesso della telefonata</figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars" role="img" aria-label="4 stelle su 5">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.6l2.5 5.3 5.5.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.5-.8z" opacity=".28"/></svg>
+          </span>
+          <blockquote><p>Mia figlia era dal dentista per la prima volta: il primo appuntamento è servito solo a sedersi sulla poltrona, senza fare niente. Per l'appuntamento abbiamo aspettato tre settimane, è l'unico punto negativo.</p></blockquote>
+          <figcaption><b>Susanna B.</b>Visita della bambina, 4 anni</figcaption>
+        </figure>
+      </div>
+
+      <div class="notebox rev">
+        <h3>Scrivete una recensione su Google</h3>
+        <p>Se siete stati da noi, aprite il profilo Studio Salice su Google e scrivete una recensione. Ci vogliono due minuti e aiuta gli altri pazienti a scegliere. Se invece non siete rimasti soddisfatti, ditecelo prima direttamente, in studio o al <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito.">qui il vostro numero</span> — un errore possiamo correggerlo solo se lo conosciamo. Le recensioni su questa pagina sono di esempio, come tutto il sito.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OBJEDNANIE (interaktívna časť) ================= -->
+  <section class="section section--line" id="objednanie">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>11</b>Prenotazione</p>
+          <h2>Prenotazione della cura</h2>
+        </div>
+        <p class="lead">Il modulo non è una prenotazione vincolante. Il messaggio arriva nella casella dello studio e l'appuntamento lo confermiamo per telefono entro un giorno lavorativo. Se vi serve un appuntamento per oggi, chiamate il <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito.">qui il vostro numero</span>.</p>
+      </div>
+
+      <div class="book__grid">
+        <div class="card rev">
+          <form id="form" novalidate>
+            <fieldset>
+              <legend>1. Cura</legend>
+              <ul class="opts">
+                <li class="opt">
+                  <input type="radio" id="o1" name="osetrenie" value="Prima visita" data-dur="30 minuti" data-price="da 35 €" checked>
+                  <label for="o1">Prima visita<small>30 minuti · da 35 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o2" name="osetrenie" value="Visita di controllo" data-dur="20 minuti" data-price="da 25 €">
+                  <label for="o2">Visita di controllo<small>20 minuti · da 25 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o3" name="osetrenie" value="Igiene dentale" data-dur="60 minuti" data-price="da 60 €">
+                  <label for="o3">Igiene dentale<small>60 minuti · da 60 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o4" name="osetrenie" value="Cura della carie" data-dur="45 – 60 minuti" data-price="da 55 €">
+                  <label for="o4">Cura della carie<small>45 – 60 minuti · da 55 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o5" name="osetrenie" value="Visita del bambino" data-dur="30 minuti" data-price="da 30 €">
+                  <label for="o5">Visita del bambino<small>30 minuti · da 30 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o6" name="osetrenie" value="Dolore acuto" data-dur="30 minuti" data-price="da 45 €">
+                  <label for="o6">Dolore acuto<small>30 minuti · da 45 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o7" name="osetrenie" value="Protesi, consulenza" data-dur="30 minuti" data-price="lavoro da 350 €">
+                  <label for="o7">Protesi, consulenza<small>30 minuti · lavoro da 350 €</small></label>
+                </li>
+                <li class="opt">
+                  <input type="radio" id="o8" name="osetrenie" value="Sbiancamento dei denti" data-dur="90 minuti" data-price="da 180 €">
+                  <label for="o8">Sbiancamento dei denti<small>90 minuti · da 180 €</small></label>
+                </li>
+              </ul>
+            </fieldset>
+
+            <fieldset>
+              <legend>2. Data</legend>
+              <div class="grid2">
+                <div class="field">
+                  <label for="datum">Data preferita</label>
+                  <input type="date" id="datum" name="datum">
+                  <div class="chips" id="chips" role="group" aria-label="Prossimi giorni di apertura"></div>
+                </div>
+                <div class="field">
+                  <label for="cast">Momento della giornata <span class="hint">il mercoledì siamo aperti fino alle 15:00, il venerdì fino alle 13:00</span></label>
+                  <select id="cast" name="cast">
+                    <option value="8:00 – 11:00">8:00 – 11:00</option>
+                    <option value="11:00 – 14:00">11:00 – 14:00</option>
+                    <option value="14:00 – 17:00">14:00 – 17:00</option>
+                    <option value="In qualsiasi momento">In qualsiasi momento</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>3. Contatti e messaggio</legend>
+              <div class="grid2">
+                <div class="field">
+                  <label for="meno">Nome e cognome</label>
+                  <input type="text" id="meno" name="meno" autocomplete="name" placeholder="Nome Cognome">
+                </div>
+                <div class="field">
+                  <label for="tel">Telefono</label>
+                  <input type="tel" id="tel" name="tel" autocomplete="tel" placeholder="il vostro numero di telefono">
+                </div>
+              </div>
+              <div class="field">
+                <label for="pozn">Messaggio <span class="hint">fondo sanitario, motivo della visita, vincoli di orario</span></label>
+                <textarea id="pozn" name="pozn" placeholder="Per esempio: ho un fondo sanitario aziendale, preferisco un appuntamento dopo le 15:00."></textarea>
+              </div>
+              <div class="field consent">
+                <input type="checkbox" id="suhlas" name="suhlas">
+                <label for="suhlas">Prendo atto che si tratta di un modulo di esempio e che i dati non vengono inviati né salvati.</label>
+              </div>
+            </fieldset>
+
+            <button class="btn btn--primary btn--wide" type="submit">Invia la richiesta di appuntamento</button>
+            <p class="formnote">Il messaggio arriva nella casella dello studio e rispondiamo entro un giorno lavorativo. Questo è un sito di esempio, il modulo non invia né salva nulla.</p>
+          </form>
+
+          <div class="sent" id="sent" role="status" aria-live="polite">
+            <h3>Non è stato inviato nulla, è un esempio</h3>
+            <p>Così apparirebbe la conferma dopo l'invio nella versione reale. Nella versione reale il messaggio arriva nella casella dello studio e la risposta la ricevete entro un giorno lavorativo. Qui non viene inviato né salvato nessun dato.</p>
+            <div class="sent__recap" id="recap"></div>
+            <button class="btn btn--ghost" type="button" id="back">Torna al modulo</button>
+          </div>
+        </div>
+
+        <aside class="summary rev" aria-label="Riepilogo della prenotazione">
+          <h3>Riepilogo</h3>
+          <p>Si completa mentre compilate il modulo.</p>
+          <dl>
+            <div class="summary__row"><dt>Cura</dt><dd id="s-serv">Prima visita</dd></div>
+            <div class="summary__row"><dt>Durata prevista</dt><dd id="s-dur">30 minuti</dd></div>
+            <div class="summary__row"><dt>Data</dt><dd id="s-date" class="empty">non scelta</dd></div>
+            <div class="summary__row"><dt>Momento della giornata</dt><dd id="s-part">8:00 – 11:00</dd></div>
+            <div class="summary__row"><dt>Paziente</dt><dd id="s-name" class="empty">non compilato</dd></div>
+            <div class="summary__row"><dt>Telefono</dt><dd id="s-tel" class="empty">non compilato</dd></div>
+          </dl>
+          <div class="summary__total">
+            <span>Prezzo indicativo</span>
+            <b id="s-price" class="num">da 35 €</b>
+          </div>
+          <p class="summary__note">L'importo esatto lo indichiamo nel piano di cura dopo la visita. Al messaggio inviato rispondiamo entro un giorno lavorativo.</p>
+          <p class="summary__call">Preferite telefonare?<span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PLATBA A STORNO ================= -->
+  <section class="section section--tint" id="platba">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>12</b>Condizioni</p>
+          <h2>Pagamento, garanzia e disdetta</h2>
+        </div>
+        <p class="lead">Le regole su cui ci chiedete più spesso al telefono. Valgono allo stesso modo per i nuovi pazienti e per quelli già seguiti e non le cambiamo durante la cura.</p>
+      </div>
+
+      <div class="cards rev">
+        <div class="card2">
+          <h3>Conferma dell'appuntamento</h3>
+          <p>La prenotazione la confermiamo per telefono entro un giorno lavorativo. Il giorno prima mandiamo un promemoria via SMS. L'appuntamento vale solo dopo la nostra conferma: il semplice invio del modulo non crea una prenotazione.</p>
+        </div>
+        <div class="card2 card2--dark">
+          <h3>Disdetta e spostamento</h3>
+          <span class="card2__big num">24 h</span>
+          <p>Tanto tempo ci serve per offrire l'orario liberato a un altro paziente. Disdire o spostare si può per telefono, anche al numero fisso; l'orario alternativo lo fissiamo subito durante la chiamata.</p>
+        </div>
+        <div class="card2">
+          <h3>Modalità di pagamento</h3>
+          <ul>
+            <li>contanti</li>
+            <li>carta di pagamento, anche contactless</li>
+            <li>fattura con pagamento a 14 giorni per le aziende convenzionate</li>
+            <li>buono regalo dello studio</li>
+          </ul>
+          <p>Si paga dopo la cura, non in anticipo. L'acconto lo chiediamo solo per le protesi.</p>
+        </div>
+        <div class="card2">
+          <h3>Fattura del pagamento</h3>
+          <p>La fattura la ricevete subito dopo il pagamento, intestata a voi con il codice fiscale: così potete chiedere il rimborso al fondo sanitario o portare la spesa in detrazione al 19% nel 730.</p>
+        </div>
+        <div class="card2">
+          <h3>Ritardo e mancata presentazione</h3>
+          <p>Se arrivate con più di 15 minuti di ritardo, potremmo non riuscire a fare tutto il previsto e accorciamo la cura. La prima mancata presentazione non la addebitiamo. Dalla seconda addebitiamo 20 € per il tempo riservato.</p>
+        </div>
+        <div class="card2">
+          <h3>Garanzia sul lavoro eseguito</h3>
+          <p>Su corone, ponti e protesi mobili la garanzia è di 24 mesi, sulle otturazioni di 12 mesi. In garanzia ripariamo o rifacciamo il lavoro senza costi aggiuntivi. La condizione è una visita di controllo ogni sei mesi. La garanzia non copre traumi e interventi di un altro dentista.</p>
+        </div>
+        <div class="card2">
+          <h3>Acconto per le protesi</h3>
+          <p>Prima di ordinare il lavoro al laboratorio odontotecnico chiediamo un acconto del 30% del prezzo. Il resto lo pagate alla posa del lavoro finito. Se rinunciate dopo l'invio dell'impronta al laboratorio, l'acconto non viene restituito.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= POUKAZY A FIRMY ================= -->
+  <section class="section" id="poukazy">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>13</b>Buoni</p>
+          <h2>Buoni regalo e visite aziendali</h2>
+        </div>
+        <p class="lead">Il buono lo prepariamo per una prestazione precisa o per un importo a scelta. Per i datori di lavoro organizziamo le visite di prevenzione in una fascia di appuntamenti.</p>
+      </div>
+
+      <div class="twocol rev">
+        <div>
+          <div class="tablewrap">
+            <table class="ptable">
+              <caption>Il buono vale 12 mesi dall'emissione e si può usare anche per una parte della cura. Il valore restante rimane sul buono fino a esaurimento o alla scadenza.</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Buono</th>
+                  <th scope="col">Per cosa si usa</th>
+                  <th scope="col">Valore</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Igiene dentale</th><td>una seduta completa</td><td class="num">60 €</td></tr>
+                <tr><th scope="row">Igiene e air polishing</th><td>una seduta con air polishing</td><td class="num">80 €</td></tr>
+                <tr><th scope="row">Sbiancamento domiciliare</th><td>mascherine e gel per entrambe le arcate</td><td class="num">180 €</td></tr>
+                <tr><th scope="row">Buono a importo</th><td>qualsiasi prestazione del listino</td><td class="num">da 30 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="infolist">
+            <div>
+              <h3>Come ottenere il buono</h3>
+              <p>Chiamate o mandate un messaggio con il modulo. Il buono lo prepariamo entro due giorni lavorativi e lo ritirate in studio. Si paga al ritiro, in contanti o con carta.</p>
+            </div>
+            <div>
+              <h3>Come usare il buono</h3>
+              <p>Chi ha il buono prenota come sempre e lo consegna al momento della cura. Se il prezzo della cura supera il valore del buono, la differenza si paga in studio.</p>
+            </div>
+            <div>
+              <h3>Visite di prevenzione aziendali</h3>
+              <p>Per i datori di lavoro riserviamo una fascia di appuntamenti in un solo giorno, su accordo anche fuori orario. Il minimo è di sei dipendenti; si paga con un'unica fattura a 14 giorni.</p>
+            </div>
+            <div>
+              <h3>Cosa comprende la visita aziendale</h3>
+              <p>Visita di denti e gengive, valutazione e consiglio scritto per ogni dipendente. Il datore di lavoro riceve solo la fattura complessiva: i dati sanitari restano tra il paziente e lo studio.</p>
+            </div>
+          </div>
+
+          <div class="hero__cta" style="margin-top:clamp(22px,2.6vw,30px);">
+            <a class="btn btn--primary" href="#objednanie">Scrivi con il modulo</a>
+            <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AMBULANCIA A TÍM ================= -->
+  <section class="section section--line" id="ambulancia">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>14</b>Lo studio</p>
+          <h2>Spazi e attrezzature</h2>
+        </div>
+        <p class="lead">Un piccolo studio con due poltrone. Nessuno aspetta in corridoio e nessuno cura due pazienti insieme.</p>
+      </div>
+
+      <div class="twocol--wide twocol rev">
+        <div>
+          <div class="infolist">
+            <div>
+              <h3>Due studi</h3>
+              <p>Uno è per visite e cure conservative, l'altro per l'igiene dentale. La radiografia la facciamo direttamente in studio, non si va da nessun'altra parte.</p>
+            </div>
+            <div>
+              <h3>Sala d'attesa</h3>
+              <p>Sette posti a sedere, spazio per il passeggino, acqua da bere e attaccapanni. L'angolo per i bambini è separato dai posti per gli adulti.</p>
+            </div>
+            <div>
+              <h3>Chi vi cura</h3>
+              <p>Il piano e il lavoro finito li segue lo stesso dentista: durante il piano non ci alterniamo. Nomi e compiti sono nella sezione <a href="#lekari">Chi vi curerà</a>.</p>
+            </div>
+            <div>
+              <h3>Sterilizzazione e materiali</h3>
+              <p>Gli strumenti li sterilizziamo in autoclave di classe B e registriamo ogni ciclo. Il materiale monouso lo usiamo per una sola cura. I materiali per otturazioni e protesi li scegliamo in base al lavoro e li indichiamo in anticipo nel piano.</p>
+            </div>
+            <div>
+              <h3>Apparecchiature in studio</h3>
+              <p>Radiografico endorale, ablatore a ultrasuoni per il tartaro, air polishing e lampada fotopolimerizzatrice. La radiografia la vedete sullo schermo direttamente dalla poltrona.</p>
+            </div>
+            <div>
+              <h3>Se la cura vi mette ansia</h3>
+              <p>Ditelo subito all'inizio. Adattiamo il ritmo, facciamo pause e spieghiamo ogni passo in anticipo. La prima seduta possiamo limitarla alla visita e al piano, senza interventi.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="canvas cv-space">
+          <span class="cvtex cvtex--dots" aria-hidden="true"></span>
+          <span class="cvtex cvtex--wedge" aria-hidden="true"></span>
+          <div class="cvbody">
+            <p class="cveyebrow">Lo studio in numeri</p>
+            <ol class="cvlist">
+              <li><span class="cvnum">2</span><span class="cvlabel">studi, visite e igiene separate</span></li>
+              <li><span class="cvnum">7</span><span class="cvlabel">posti a sedere in sala d'attesa</span></li>
+              <li><span class="cvnum">1</span><span class="cvlabel">paziente in studio alla volta</span></li>
+              <li><span class="cvnum">0</span><span class="cvlabel">gradini dall'ingresso alla poltrona</span></li>
+            </ol>
+            <p class="cvfoot cvpush">Radiografia direttamente in studio · angolo bambini separato dagli adulti · spazio per il passeggino</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="obrazy rev">
+        <!-- FOTO: čakáreň od vchodu, so sedením a detským kútom -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo obraz__geo--plan" aria-hidden="true"></span>
+            <span class="obraz__tag">Sala d'attesa</span>
+            <span class="obraz__big">Angolo bambini</span>
+            <span class="obraz__note">separato dai posti per gli adulti</span>
+          </div>
+        </figure>
+
+        <!-- FOTO: ordinácia s kreslom a röntgenom, záber od dverí -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo" aria-hidden="true"></span>
+            <span class="obraz__tag">Studio</span>
+            <span class="obraz__big">Radiografia</span>
+            <span class="obraz__note">endorale, senza dover andare altrove</span>
+          </div>
+        </figure>
+
+        <!-- FOTO: sterilizačná časť s autoklávom a zabalenými nástrojmi -->
+        <figure class="obraz obraz--wide">
+          <div class="obraz__plate">
+            <span class="obraz__geo obraz__geo--arc" aria-hidden="true"></span>
+            <span class="obraz__tag">Sterilizzazione</span>
+            <span class="obraz__big">Classe B</span>
+            <span class="obraz__note">autoclave, registriamo ogni ciclo</span>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AKO SA K NÁM DOSTANETE ================= -->
+  <section class="section section--tint" id="doprava">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>15</b>Come arrivare</p>
+          <h2>Come arrivare e dove parcheggiare</h2>
+        </div>
+        <p class="lead">L'edificio è all'angolo tra via dei Salici e via Roma. L'ingresso dello studio è dal cortile, non dalla strada principale. Se non lo trovate, chiamateci e vi guidiamo.</p>
+      </div>
+
+      <div class="twocol rev">
+        <div class="canvas cv-plan">
+          <span class="cvtex cvtex--grid" aria-hidden="true"></span>
+          <span class="plan-road plan-road--h"><span class="plan-road__name">Via Roma</span></span>
+          <span class="plan-road plan-road--v"><span class="plan-road__name">Via dei Salici</span></span>
+          <span class="plan-mark"><span>Ingresso dal cortile</span></span>
+          <div class="cvbody">
+            <p class="cveyebrow">Orientamento</p>
+            <p class="cvdisplay cvpush">Angolo via dei Salici<br>e via Roma</p>
+            <p class="cvsub">Passate sotto l'androne nel cortile, seconda porta a destra. Il campanello porta il nome dello studio.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="infolist">
+            <div>
+              <h3>Indirizzo e mappa</h3>
+              <p>Via dei Salici 8, 37038 Soave (VR). <a href="https://www.google.com/maps/search/?api=1&amp;query=Via+dei+Salici+8%2C+37038+Soave+VR" target="_blank" rel="noopener">Aprite l'indirizzo su Google Maps</a> e fatevi guidare fino all'edificio. L'ingresso dello studio poi è dal cortile.</p>
+            </div>
+            <div>
+              <h3>In auto e parcheggio</h3>
+              <p>Nel cortile ci sono quattro posti auto riservati ai pazienti, uno è riservato ai titolari del contrassegno disabili. Altri posti liberi di solito si trovano in via dei Salici. Il parcheggio è gratuito e senza limiti di tempo.</p>
+            </div>
+            <div>
+              <h3>In autobus</h3>
+              <p>La fermata più vicina è a 200 metri dall'edificio, dal centro passa una corsa ogni venti minuti durante il giorno. Dalla fermata si arriva dritti, senza attraversare la strada principale.</p>
+            </div>
+            <div>
+              <h3>Accesso senza barriere</h3>
+              <p>L'ingresso dal cortile è senza gradini e la porta è larga 90 cm. Sala d'attesa, studi e bagno sono al piano terra. Se vi serve aiuto per entrare, chiamate prima di arrivare e vi apriamo.</p>
+            </div>
+            <div>
+              <h3>In bicicletta</h3>
+              <p>La rastrelliera per le bici è subito all'ingresso del cortile, visibile dalla finestra della sala d'attesa.</p>
+            </div>
+            <div>
+              <h3>Quando arrivare</h3>
+              <p>Arrivate cinque minuti prima dell'orario concordato, non prima. Alla prima visita calcolate dieci minuti in più per compilare il questionario sulla salute alla reception.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OTÁZKY ================= -->
+  <section class="section section--line" id="otazky">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>16</b>Domande</p>
+          <h2>Domande frequenti</h2>
+        </div>
+        <p class="lead">Se qui non trovate la risposta, scrivetela nel messaggio del modulo o chiedetela al telefono. Ai messaggi rispondiamo entro un giorno lavorativo.</p>
+      </div>
+
+      <div class="qa rev">
+        <details open>
+          <summary>Cosa devo portare alla prima visita?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>La tessera del fondo sanitario se ce l'avete, un documento d'identità, il codice fiscale e l'elenco dei farmaci che prendete. Se avete vecchie radiografie o una relazione del dentista precedente, portate anche quelle.</p></div>
+        </details>
+        <details>
+          <summary>Accettate nuovi pazienti?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>La disponibilità la confermiamo alla prenotazione. Mandate il modulo o chiamate e vi proponiamo il primo appuntamento libero. Per l'igiene dentale e le urgenze accettiamo anche pazienti non ancora seguiti da noi.</p></div>
+        </details>
+        <details>
+          <summary>Cosa copre il fondo sanitario?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Una parte delle prestazioni è coperta dal vostro fondo sanitario o dall'assicurazione. Quando prenotate vi chiediamo quale avete e per ogni prestazione indichiamo la quota a vostro carico.</p></div>
+        </details>
+        <details>
+          <summary>Come si paga?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Dopo la cura, in contanti o con carta. La fattura la ricevete subito dopo il pagamento, intestata a voi con il codice fiscale per la detrazione nel 730. Alle aziende convenzionate emettiamo fattura con pagamento a 14 giorni.</p></div>
+        </details>
+        <details>
+          <summary>Come disdico o sposto l'appuntamento?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>chiamateci o chiamate il numero fisso <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito.">qui il vostro numero</span> almeno 24 ore prima. L'orario alternativo lo fissiamo durante la telefonata. Se non riuscite a parlarci, mandate un messaggio con il modulo e vi rispondiamo entro un giorno lavorativo.</p></div>
+        </details>
+        <details>
+          <summary>E se non ho con me la tessera del fondo?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Vi curiamo lo stesso. Il numero di iscrizione al fondo lo aggiungete alla visita successiva o ce lo dettate al telefono. Se la copertura non viene confermata, la prestazione la fatturiamo come a un paziente privato.</p></div>
+        </details>
+        <details>
+          <summary>Preparate buoni regalo?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Sì. Il buono per l'igiene dentale, lo sbiancamento o un importo a scelta da 30 € lo prepariamo entro due giorni lavorativi e lo ritirate in studio. Vale 12 mesi e si può usare anche per una parte della cura.</p></div>
+        </details>
+        <details>
+          <summary>Usate l'anestesia? Farà male?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Per le prestazioni che lo richiedono facciamo l'anestesia locale. Il punto dell'iniezione lo addormentiamo prima con un gel. Se la cura vi mette ansia, ditelo subito all'inizio e adattiamo ritmo e durata della seduta.</p></div>
+        </details>
+        <details>
+          <summary>Da che età curate i bambini?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>La prima visita la consigliamo verso i tre anni, in caso di problemi anche prima. Il primo appuntamento serve solo a conoscere lo studio. Il genitore resta nella stanza durante la cura.</p></div>
+        </details>
+        <details>
+          <summary>Cosa faccio se il dente mi fa male oggi?<span class="sign" aria-hidden="true"></span></summary>
+          <div class="answer"><p>Chiamate al mattino presto: per le urgenze teniamo ogni giorno di apertura una breve fascia. In caso di gonfiore al viso, febbre o trauma a un dente chiamate subito e ditelo all'inizio della telefonata.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HODINY A KONTAKT ================= -->
+  <section class="section section--tint" id="kontakt">
+    <div class="wrap">
+      <div class="sechead rev">
+        <div>
+          <p class="eyebrow"><b>17</b>Contatti</p>
+          <h2>Orari e contatti</h2>
+        </div>
+        <p class="lead">Rispondiamo al telefono in orario di apertura. Se stiamo curando un paziente, richiamate poco dopo o mandate un messaggio con il modulo su questa pagina. Rispondiamo entro un giorno lavorativo.</p>
+      </div>
+
+      <div class="twocol">
+        <div class="rev">
+          <h3 class="blocktitle">Orari dello studio</h3>
+          <div class="tablewrap">
+            <table class="hours" id="hours">
+              <caption>Pausa pranzo 12:00 – 12:30. Fissiamo gli appuntamenti in modo che la cura finisca entro l'orario di chiusura. Nei giorni festivi lo studio è chiuso.</caption>
+              <tbody>
+                <tr data-day="1"><th scope="row">Lunedì</th><td>8:00 – 17:00</td></tr>
+                <tr data-day="2"><th scope="row">Martedì</th><td>8:00 – 17:00</td></tr>
+                <tr data-day="3"><th scope="row">Mercoledì</th><td>8:00 – 15:00</td></tr>
+                <tr data-day="4"><th scope="row">Giovedì</th><td>8:00 – 17:00</td></tr>
+                <tr data-day="5"><th scope="row">Venerdì</th><td>8:00 – 13:00</td></tr>
+                <tr data-day="6"><th scope="row">Sabato</th><td>chiuso</td></tr>
+                <tr data-day="0"><th scope="row">Domenica</th><td>chiuso</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <dl class="clist">
+            <div>
+              <dt>Indirizzo</dt>
+              <dd>Via dei Salici 8, 37038 Soave (VR)<small>piano terra, ingresso dal cortile · <a href="https://www.google.com/maps/search/?api=1&amp;query=Via+dei+Salici+8%2C+37038+Soave+VR" target="_blank" rel="noopener">apri su Google Maps</a></small></dd>
+            </div>
+            <div>
+              <dt>Cellulare</dt>
+              <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><small>prenotazioni, disdette e urgenze</small></dd>
+            </div>
+            <div>
+              <dt>Telefono fisso</dt>
+              <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><small>reception in orario di apertura</small></dd>
+            </div>
+            <div>
+              <dt>Messaggio con il modulo</dt>
+              <dd><a href="#objednanie">Prenotazione della cura</a><small>il messaggio arriva nella casella dello studio, rispondiamo entro un giorno lavorativo</small></dd>
+            </div>
+            <div>
+              <dt>Social</dt>
+              <dd>
+                <ul class="soc">
+                  <li><b>Facebook</b> · Studio Salice</li>
+                  <li><b>Instagram</b> · studio.salice</li>
+                  <li><b>Google</b> · Studio dentistico Salice, Soave</li>
+                </ul>
+                <small>Anche qui pubblichiamo gli avvisi sui cambi di orario.</small>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="rev">
+          <div class="canvas canvas--dark cv-addr">
+            <span class="cvtex cvtex--rule" aria-hidden="true"></span>
+            <span class="cvtex cvtex--arc" aria-hidden="true"></span>
+            <div class="cvbody">
+              <p class="cveyebrow">Dove siamo</p>
+              <p class="cvdisplay">Via dei Salici 8<br>Soave</p>
+              <p class="cvsub">Piano terra, ingresso dal cortile, seconda porta a destra. Il campanello porta il nome dello studio.</p>
+              <p class="cvfoot cvpush">Fermata dell'autobus a 200 m · quattro posti auto nel cortile · senza gradini</p>
+            </div>
+          </div>
+
+          <div class="infolist" style="margin-top:26px;">
+            <div>
+              <h3>Periodi di chiusura</h3>
+              <p>D'estate siamo aperti con orario ridotto e tra Natale e l'Epifania di solito siamo chiusi. I giorni precisi li annunciamo su questa pagina e al telefono con almeno due settimane di anticipo.</p>
+            </div>
+            <div>
+              <h3>Sostituzioni</h3>
+              <p>Se lo studio è chiuso, sulla porta e nella segreteria telefonica trovate il nome dello studio che ci sostituisce e i suoi orari.</p>
+            </div>
+            <div>
+              <h3>Cartella clinica</h3>
+              <p>La copia della cartella clinica la prepariamo entro cinque giorni lavorativi dalla richiesta, al costo di 15 €. Il passaggio dei dati dal dentista precedente lo gestiamo noi, basta una firma alla prima visita.</p>
+            </div>
+            <div>
+              <h3>Fuori orario</h3>
+              <p>La sera, nel weekend e nei giorni festivi non ci trovate. In caso di dolore improvviso o trauma a un dente in quegli orari rivolgetevi al pronto soccorso odontoiatrico più vicino. Il messaggio del modulo lo leggiamo al mattino all'apertura.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KARIÉRA ================= -->
+  <section class="section section--dark" id="kariera" aria-labelledby="kariera-h">
+    <div class="wrap">
+      <div class="band__grid">
+        <div class="rev">
+          <p class="eyebrow"><b>18</b>Lavora con noi</p>
+          <h2 id="kariera-h">Posizioni aperte</h2>
+          <p class="lead" style="margin-top:18px;">Siamo aperti nei giorni feriali, niente weekend né festivi. Si lavora su un paziente alla volta, non su due insieme. Scriveteci con il modulo su questa pagina e fissiamo un incontro; vi rispondiamo entro una settimana.</p>
+          <div class="hero__cta">
+            <a class="btn btn--light" href="#objednanie">Scrivi con il modulo</a>
+            <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+          </div>
+        </div>
+
+        <div class="rev">
+          <h3 class="blocktitle">Posizioni aperte</h3>
+          <ul class="roles">
+            <li>Seconda igienista dentale <span>part-time, tre giorni a settimana</span></li>
+            <li>Assistente di studio odontoiatrico, sostituzione <span>durante ferie e malattie</span></li>
+          </ul>
+          <p class="lead" style="margin-top:22px;">Nel messaggio indicate la posizione che vi interessa e quando preferite essere chiamati. Il curriculum basta portarlo all'incontro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== AUTOR UKÁŽKY — reálne kontakty, nepatria vymyslenej ambulancii ====== -->
+  <section class="section author" id="autor" aria-labelledby="autor-h">
+    <div class="wrap">
+      <div class="author__card rev">
+        <div>
+          <p class="eyebrow">Autore dell'esempio</p>
+          <h2 id="autor-h">Vi piace questo sito?</h2>
+          <p style="margin-top:16px;">Lo Studio dentistico Salice è inventato. Tutto ciò che sta sopra questa sezione è contenuto di esempio. Questo sito lo ha progettato e programmato <strong>Alex Poliak</strong>.</p>
+          <p>Un sito così lo realizzo anche per la vostra attività: con il vostro listino, i vostri orari, le vostre condizioni e un modulo di prenotazione funzionante. Un unico file, nessun canone mensile per un CMS.</p>
+          <p class="author__price">Siti su misura da 250 EUR. Prima bozza in 3 giorni. <strong>La consulenza è gratuita e senza impegno.</strong></p>
+          <div class="author__cta">
+            <a class="btn btn--clay" href="mailto:apoliak@apoliak.online">Scrivi ad apoliak@apoliak.online</a>
+            <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+          </div>
+        </div>
+
+        <dl class="alist">
+          <div>
+            <dt>Autore</dt>
+            <dd>Alex Poliak<small>progetto, codice e testi</small></dd>
+          </div>
+          <div>
+            <dt>E-mail</dt>
+            <dd><a href="mailto:apoliak@apoliak.online">apoliak@apoliak.online</a></dd>
+          </div>
+          <div>
+            <dt>Assistenza</dt>
+            <dd><a href="mailto:support@apoliak.online">support@apoliak.online</a></dd>
+          </div>
+          <div>
+            <dt>Telefono</dt>
+            <dd><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span><small>Se non rispondo, scrivetemi e vi richiamo.</small></dd>
+          </div>
+          <div>
+            <dt>Sito</dt>
+            <dd><a href="https://apoliak.online/it/" target="_blank" rel="noopener">https://apoliak.online</a></dd>
+          </div>
+          <div>
+            <dt>Prezzo e tempi</dt>
+            <dd>Da 250 EUR<small>prima bozza in 3 giorni, consulenza gratuita e senza impegno</small></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+
+  <div class="wrap">
+    <div class="footer__act">
+      <p>L'appuntamento lo confermiamo per telefono entro un giorno lavorativo. Per il dolore acuto chiamate al mattino presto: la fascia per le urgenze c'è ogni giorno di apertura.</p>
+      <a class="btn btn--light" href="#objednanie">Prenota</a>
+      <span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span>
+    </div>
+
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand">
+          <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+            <rect x=".75" y=".75" width="38.5" height="38.5" rx="2" fill="none" stroke="#8A8D93" stroke-width="1.5"/>
+            <rect x="10.5" y="8.5" width="19" height="23" fill="none" stroke="#8A8D93" stroke-width="1.2"/>
+            <path d="M20 8.5v23M10.5 20h19" stroke="#8A8D93" stroke-width="1.2"/>
+          </svg>
+          <span>
+            <span class="brand__name">Studio Salice</span> <span class="brand__sub">Odontoiatria</span>
+          </span>
+        </div>
+        <p>Studio inventato, creato per mostrare il sito. Nome, indirizzo, nomi, recensioni, prezzi e numeri di telefono sono illustrativi.</p>
+      </div>
+
+      <div>
+        <h3>Sezioni</h3>
+        <ul>
+          <li><a href="#osetrenia">Le cure che offriamo</a></li>
+          <li><a href="#lekari">Chi vi curerà</a></li>
+          <li><a href="#prace">Esempi di lavori e il loro prezzo</a></li>
+          <li><a href="#cennik">Listino delle cure</a></li>
+          <li><a href="#poistovne">Fondi sanitari</a></li>
+          <li><a href="#doplatky">Cosa copre il fondo</a></li>
+          <li><a href="#priebeh">Prima visita</a></li>
+          <li><a href="#hodnotenia">Recensioni dei pazienti</a></li>
+          <li><a href="#objednanie">Prenotazione della cura</a></li>
+          <li><a href="#platba">Pagamento, garanzia e disdetta</a></li>
+          <li><a href="#poukazy">Buoni regalo</a></li>
+          <li><a href="#ambulancia">Spazi e attrezzature</a></li>
+          <li><a href="#doprava">Come arrivare e parcheggio</a></li>
+          <li><a href="#otazky">Domande frequenti</a></li>
+          <li><a href="#kontakt">Orari e contatti</a></li>
+          <li><a href="#kariera">Posizioni aperte</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Lo studio</h3>
+        <ul>
+          <li>Via dei Salici 8, 37038 Soave (VR)</li>
+          <li>piano terra, ingresso dal cortile</li>
+          <li><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span> — cellulare</li>
+          <li><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span> — fisso</li>
+          <li>Lun, Mar, Gio 8:00 – 17:00</li>
+          <li>Mer 8:00 – 15:00 · Ven 8:00 – 13:00</li>
+          <li>Sab, Dom chiuso</li>
+          <li><small>Facebook · Instagram · Google: Studio Salice</small></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Esempio realizzato da</h3>
+        <ul>
+          <li>Alex Poliak</li>
+          <li><span class="ukazka-kontakt" title="Sito di esempio — il numero è omesso di proposito, perché nessuno chiami il numero di qualcun altro.">qui il vostro numero</span></li>
+          <li><a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a></li>
+          <li><a href="#autor">Contatta l'autore</a></li>
+          <li><small>Siti su misura da 250 EUR, prima bozza in 3 giorni, consulenza gratuita e senza impegno.</small></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>Sito di esempio, non si tratta di una vera struttura sanitaria.</span>
+      <span>Progetto e codice: <a href="https://apoliak.online/it/" target="_blank" rel="noopener">apoliak.online</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- výška lepiaceho bloku pre kotvy ---- */
+  var topstack = document.querySelector(".topstack");
+  function setHeadH() {
+    if (!topstack) return;
+    document.documentElement.style.setProperty("--head-h", topstack.offsetHeight + "px");
+  }
+  setHeadH();
+  window.addEventListener("resize", setHeadH);
+  if (window.ResizeObserver && topstack) { new ResizeObserver(setHeadH).observe(topstack); }
+
+  /* ---- mobilné menu ---- */
+  var toggle = document.querySelector(".navtoggle");
+  var menu = document.getElementById("menu");
+  if (toggle && menu) {
+    toggle.addEventListener("click", function () {
+      var open = menu.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    menu.addEventListener("click", function (e) {
+      if (e.target.closest("a")) {
+        menu.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && menu.classList.contains("is-open")) {
+        menu.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---- plynulé skrolovanie s odsadením hlavičky ---- */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute("href");
+    if (!id || id === "#") return;
+    var target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    var head = topstack ? topstack.offsetHeight : 0;
+    var y = target.getBoundingClientRect().top + window.pageYOffset - head - 10;
+    window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
+    if (history.replaceState) history.replaceState(null, "", id);
+    target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
+  });
+
+  /* ---- jemné odhalenie sekcií ---- */
+  var revs = [].slice.call(document.querySelectorAll(".rev"));
+  if (!("IntersectionObserver" in window) || reduce) {
+    revs.forEach(function (el) { el.classList.add("is-in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.06 });
+    revs.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---- ordinačné hodiny: dnešný deň a aktuálny stav ---- */
+  var HOURS = { 1: [8, 17], 2: [8, 17], 3: [8, 15], 4: [8, 17], 5: [8, 13], 6: null, 0: null };
+  var DAY_IN = ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"];
+  var now = new Date();
+
+  var todayRow = document.querySelector('#hours tr[data-day="' + now.getDay() + '"]');
+  if (todayRow) {
+    todayRow.setAttribute("data-today", "1");
+    todayRow.setAttribute("aria-current", "date");
+    var th = todayRow.querySelector("th");
+    if (th) {
+      var tag = document.createElement("span");
+      tag.className = "today-tag";
+      tag.textContent = "oggi";
+      th.appendChild(tag);
+    }
+  }
+
+  var status = document.getElementById("status");
+  if (status) {
+    var t = HOURS[now.getDay()];
+    var h = now.getHours() + now.getMinutes() / 60;
+    var txt;
+    if (t && h >= t[0] && h < t[1]) {
+      txt = "Oggi siamo aperti fino alle " + t[1] + ":00.";
+    } else {
+      var next = null;
+      for (var i = 1; i <= 7; i++) {
+        var dd = (now.getDay() + i) % 7;
+        if (HOURS[dd]) { next = { day: dd, from: HOURS[dd][0] }; break; }
+      }
+      txt = next
+        ? "Ora è chiuso. Riapriamo " + DAY_IN[next.day] + " alle " + next.from + ":00."
+        : "Siamo aperti nei giorni feriali.";
+    }
+    status.textContent = "";
+    var b = document.createElement("b");
+    b.textContent = txt;
+    status.appendChild(b);
+    status.appendChild(document.createTextNode("Pausa pranzo 12:00 – 12:30. Il calendario completo è nella sezione Orari e contatti."));
+  }
+
+  /* ---- objednávkový formulár so živým súhrnom ---- */
+  var form = document.getElementById("form");
+  if (!form) return;
+
+  var dateInput = document.getElementById("datum");
+  var chipsWrap = document.getElementById("chips");
+  var partEl = document.getElementById("cast");
+  var nameEl = document.getElementById("meno");
+  var telEl = document.getElementById("tel");
+
+  var sum = {
+    serv: document.getElementById("s-serv"),
+    dur: document.getElementById("s-dur"),
+    date: document.getElementById("s-date"),
+    part: document.getElementById("s-part"),
+    name: document.getElementById("s-name"),
+    tel: document.getElementById("s-tel"),
+    price: document.getElementById("s-price")
+  };
+
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+
+  var SK_D = ["dom", "lun", "mar", "mer", "gio", "ven", "sab"];
+  var SK_M = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+  function pretty(v) {
+    var p = String(v).split("-");
+    if (p.length !== 3) return v;
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    if (isNaN(d.getTime())) return v;
+    return SK_D[d.getDay()] + " " + d.getDate() + " " + SK_M[d.getMonth()];
+  }
+
+  if (dateInput) dateInput.min = iso(now);
+
+  /* rýchly výber najbližších ordinačných dní */
+  if (chipsWrap) {
+    var made = 0, guard = 0;
+    var cur = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    while (made < 4 && guard < 30) {
+      cur.setDate(cur.getDate() + 1);
+      guard++;
+      if (!HOURS[cur.getDay()]) continue;
+      var val = iso(cur);
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chip";
+      btn.setAttribute("aria-pressed", "false");
+      btn.setAttribute("data-value", val);
+      btn.textContent = pretty(val);
+      chipsWrap.appendChild(btn);
+      made++;
+    }
+    chipsWrap.addEventListener("click", function (e) {
+      var b = e.target.closest(".chip");
+      if (!b) return;
+      if (dateInput) dateInput.value = b.getAttribute("data-value");
+      syncChips();
+      render();
+    });
+  }
+
+  function syncChips() {
+    if (!chipsWrap || !dateInput) return;
+    [].forEach.call(chipsWrap.querySelectorAll(".chip"), function (x) {
+      x.setAttribute("aria-pressed", x.getAttribute("data-value") === dateInput.value ? "true" : "false");
+    });
+  }
+
+  function setVal(el, value, fallback) {
+    if (!el) return;
+    if (value) { el.textContent = value; el.classList.remove("empty"); }
+    else { el.textContent = fallback; el.classList.add("empty"); }
+  }
+
+  function render() {
+    var picked = form.querySelector('input[name="osetrenie"]:checked');
+    if (picked) {
+      setVal(sum.serv, picked.value, "non scelta");
+      setVal(sum.dur, picked.getAttribute("data-dur"), "—");
+      if (sum.price) sum.price.textContent = picked.getAttribute("data-price") || "—";
+    }
+    setVal(sum.date, dateInput && dateInput.value ? pretty(dateInput.value) : "", "non scelta");
+    setVal(sum.part, partEl ? partEl.value : "", "non scelto");
+    setVal(sum.name, nameEl ? nameEl.value : "", "non compilato");
+    setVal(sum.tel, telEl ? telEl.value : "", "non compilato");
+  }
+
+  form.addEventListener("input", render);
+  form.addEventListener("change", function (e) {
+    if (e.target === dateInput) syncChips();
+    render();
+  });
+  render();
+
+  /* ---- odoslanie: len ukážka, nič sa neposiela ---- */
+  var sent = document.getElementById("sent");
+  var recap = document.getElementById("recap");
+  var back = document.getElementById("back");
+
+  function row(label, value) {
+    var d = document.createElement("div");
+    var b = document.createElement("b");
+    b.textContent = label + ": ";
+    d.appendChild(b);
+    d.appendChild(document.createTextNode(value));
+    return d;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var picked = form.querySelector('input[name="osetrenie"]:checked');
+    var termin = (dateInput && dateInput.value ? pretty(dateInput.value) : "nessuna preferenza")
+      + ", " + (partEl ? partEl.value : "");
+    var kto = (nameEl && nameEl.value ? nameEl.value : "non compilato")
+      + (telEl && telEl.value ? ", " + telEl.value : "");
+
+    if (recap) {
+      recap.textContent = "";
+      recap.appendChild(row("Cura", picked ? picked.value : "non scelta"));
+      recap.appendChild(row("Appuntamento", termin));
+      recap.appendChild(row("Paziente", kto));
+    }
+
+    form.classList.add("is-hidden");
+    if (sent) {
+      sent.classList.add("is-on");
+      sent.setAttribute("tabindex", "-1");
+      var head = topstack ? topstack.offsetHeight : 0;
+      var y = sent.getBoundingClientRect().top + window.pageYOffset - head - 20;
+      window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
+      sent.focus({ preventScroll: true });
+    }
+  });
+
+  if (back) {
+    back.addEventListener("click", function () {
+      if (sent) sent.classList.remove("is-on");
+      form.classList.remove("is-hidden");
+      var first = form.querySelector('input[name="osetrenie"]:checked');
+      if (first) first.focus();
+    });
+  }
+})();
+</script>
+</body>
+</html>

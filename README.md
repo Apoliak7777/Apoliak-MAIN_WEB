@@ -63,8 +63,8 @@ Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne webfon
 - ♿ **Prístupnosť podľa WCAG AA** - kontrastné pomery sú overené a zapísané pri tokenoch, stránka má skip-link, jeden `h1`, viditeľné focus stavy a `scroll-padding-top`, aby kotvy nekončili pod sticky hlavičkou.
 - 👁️ **Odhalenie sekcií pri scrollovaní** - `IntersectionObserver` pridáva triedu `.in` prvkom `.rv`. Efekt sa aktivuje len ak inline skript v hlavičke nastaví triedu `js` na `<html>`, takže bez JavaScriptu je obsah normálne viditeľný.
 - 🐢 **Rešpekt k `prefers-reduced-motion`** - pri zapnutom nastavení sa obsah odhalí naraz a prechody sa vypnú.
-- 🔍 **SEO a zdieľanie** - canonical URL, Open Graph aj Twitter Card, `og-image.png` (a `og-image-cs.png`, `og-image-hu.png`, `og-image-pl.png`, `og-image-en.png`, `og-image-de.png`) v rozmere 1200 × 630, štruktúrované dáta schema.org `ProfessionalService`, `sitemap.xml`, `robots.txt` a inline SVG favicon.
-- 🌍 **Slovenčina, čeština, maďarčina, poľština, angličtina a nemčina na jednej doméne** - česká verzia je v `/cs/` (kurz 25 Kč/€), maďarská v `/hu/` (kurz 400 Ft/€), poľská v `/pl/` (kurz 4,35 zł/€), anglická v `/en/` (pre Írsko, ceny ostávajú v eurách), nemecká v `/de/` (pre Nemecko a Rakúsko, ceny ostávajú v eurách), všetky vrátane 44 ukážok, s prepočítanými cenami a miestnymi reáliami. Prepínač jazyka je v hlavičke, vyhľadávače dostávajú `hreflang` v hlavičke aj v `sitemap.xml`. Slovenské súbory ostávajú zdrojom pravdy - preklady sa z nich generujú, takže sa verzie nemôžu rozísť.
+- 🔍 **SEO a zdieľanie** - canonical URL, Open Graph aj Twitter Card, `og-image.png` (a `og-image-cs.png`, `og-image-hu.png`, `og-image-pl.png`, `og-image-en.png`, `og-image-de.png`, `og-image-it.png`) v rozmere 1200 × 630, štruktúrované dáta schema.org `ProfessionalService`, `sitemap.xml`, `robots.txt` a inline SVG favicon.
+- 🌍 **Slovenčina, čeština, maďarčina, poľština, angličtina, nemčina a taliančina na jednej doméne** - česká verzia je v `/cs/` (kurz 25 Kč/€), maďarská v `/hu/` (kurz 400 Ft/€), poľská v `/pl/` (kurz 4,35 zł/€), anglická v `/en/` (pre Írsko, ceny ostávajú v eurách), nemecká v `/de/` (pre Nemecko a Rakúsko, ceny ostávajú v eurách), talianska v `/it/` (pre Taliansko, ceny ostávajú v eurách), všetky vrátane 44 ukážok, s prepočítanými cenami a miestnymi reáliami. Prepínač jazyka je v hlavičke, vyhľadávače dostávajú `hreflang` v hlavičke aj v `sitemap.xml`. Slovenské súbory ostávajú zdrojom pravdy - preklady sa z nich generujú, takže sa verzie nemôžu rozísť.
 - 🚧 **Vlastná 404 stránka** - `404.html` v rovnakom dizajne s odkazmi späť na hlavnú stránku a do galérie.
 - 🔒 **Zásady ochrany osobných údajov** - samostatná stránka `ochrana-osobnych-udajov.html`.
 - 📅 **Automatický rok v pätičke** - `script.js` zapíše aktuálny rok do `#rok`, netreba ho ručne aktualizovať.
@@ -179,6 +179,11 @@ Apoliak-MAIN_WEB/
 │   ├── ukazky/                   # galéria a všetkých 44 ukážok po nemecky
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
+├── it/                           # talianska verzia celého webu vrátane 44 ukážok (pre Taliansko)
+│   ├── index.html                # rovnaká stránka po taliansky
+│   ├── ukazky/                   # galéria a všetkých 44 ukážok po taliansky
+│   ├── 404.html
+│   └── ochrana-osobnych-udajov.html
 ├── 404.html                      # vlastná stránka pre neexistujúce adresy
 ├── ochrana-osobnych-udajov.html  # zásady ochrany osobných údajov
 ├── og-image.png                  # náhľad pri zdieľaní, 1200 × 630
@@ -187,7 +192,8 @@ Apoliak-MAIN_WEB/
 ├── og-image-pl.png               # to isté pre poľskú verziu
 ├── og-image-en.png               # to isté pre anglickú verziu
 ├── og-image-de.png               # to isté pre nemeckú verziu
-├── sitemap.xml                   # mapa stránok (všetkých šesť jazykových verzií + hreflang)
+├── og-image-it.png               # to isté pre taliansku verziu
+├── sitemap.xml                   # mapa stránok (všetkých sedem jazykových verzií + hreflang)
 ├── robots.txt                    # pravidlá pre roboty
 ├── CNAME                         # vlastná doména pre GitHub Pages
 ├── .nojekyll                     # vypnutie Jekyll spracovania na Pages
