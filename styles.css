@@ -263,13 +263,10 @@ section{position:relative;padding-block:clamp(52px,8vw,104px)}
 /* Iframe nemá v HTML src (dopĺňa ho script.js náhodným výberom). Bez JavaScriptu by tu
    stál prázdny about:blank rám — skryje sa a ukážku dodá <iframe> v <noscript>. */
 html:not(.js) #hs-iframe{display:none}
-/* prepnutie odvetvia: rám stmavne, nová ukážka sa prelína */
+/* prepnutie odvetvia: rám stmavne, nová ukážka sa prelína. Kým sa načítava, v ráme je
+   kostra stránky s preletujúcim leskom (sekcia 56) — bez textu, aby sedela v každom jazyku. */
 .hs-frame .shot--live iframe{transition:opacity .35s ease}
 .hero-show.nacitava .shot--live iframe{opacity:0}
-.hero-show.nacitava .shot::after{
-  content:"Načítavam ukážku…";position:absolute;inset:0;display:grid;place-items:center;
-  color:var(--mut);font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;
-}
 /* Pod 960 px sa ukážka v ráme renderuje v šírke 1000 px namiesto 1400, aby písmo ostalo čitateľné.
    script.js si základ mierky číta z offsetWidth iframu, takže stačí toto pravidlo. */
 @media (max-width:959px){.hs-frame .shot--live iframe{width:1000px;height:625px}}
@@ -578,7 +575,8 @@ html:not(.js) #hs-iframe{display:none}
 /* ---------- 31 · obmedzený pohyb ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .js .rv{opacity:1 !important;transform:none !important;transition:none}
+  /* sekcie sa pri obmedzenom pohybe len prelínajú, bez posunu (od 24.09.2026) */
+  .js .rv{transform:none !important;transition:opacity .6s ease}
   .btn,.uk,.balik,.c-line,.qa summary::after{transition:none !important}
   .btn-1:hover,.uk:hover,.balik:hover{transform:none !important}
 }
@@ -862,3 +860,352 @@ html:not(.js) #hs-iframe{display:none}
 @media (max-width:479px){
   html:not([lang="sk"]) .top .tel{font-size:0;gap:0;padding:13px 12px}
 }
+
+/* ---------- 56 · pohyb a efekty (24.09.2026) ----------
+   Alex: „aby to viac predávalo, viac animácií, aby ľudia videli, že som v tom fakt dobrý"
+   — a všetko, čo na stránke je, aj veľkosti, má ostať. Toto je preto len vrstva navrch:
+   nadpis nabieha po slovách, rám s ukážkou sa nakláňa za myšou a odvetvia sa samy striedajú,
+   čísla nabiehajú od nuly, sekcie sa odhaľujú postupne, pod kurzorom svieti karta,
+   tlačidlá majú lesk a otázky sa rozbaľujú plynulo.
+   Prvky, ktoré dopĺňa script.js (pilulka pod chipom, kurzor v adrese, lišta čítania),
+   nemajú text, takže jazykové verzie netreba prekladať nanovo.
+
+   Triedy: .skript = script.js beží (dovtedy držia obsah viditeľný poistky nižšie),
+   .in = sekcia je na obrazovke, .sl = slovo nadpisu, .svetlo = karta so žiarou pod myšou.
+   Pri prefers-reduced-motion (má ho aj Alexov počítač) ostávajú prelínania, počítadlá
+   a efekty pod kurzorom — žiadny posun, náklon ani nič, čo sa hýbe samo dookola. */
+
+@keyframes vstup{from{opacity:0;transform:translateY(18px)}}
+@keyframes vstup-bok{from{opacity:0;transform:translateX(-14px)}}
+@keyframes prelinanie{from{opacity:0}}
+@keyframes poistka{to{opacity:1;transform:none}}
+
+/* poistky: keby sa script.js nenačítal, skrytý obsah sa po chvíli ukáže aj bez neho */
+.js:not(.skript) .rv,
+.js:not(.skript) .hero--show h1,
+.js:not(.skript) .pas .fakty > div,
+.js:not(.skript) .pas-list li{animation:poistka .4s 2.4s forwards}
+
+/* hlavička: po odscrollovaní sklo s tieňom, dole zlatá lišta, ako ďaleko je čitateľ */
+.top{transition:background-color .3s ease,box-shadow .3s ease}
+.top.skrol{
+  background:rgba(19,16,16,.84);
+  -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);
+  box-shadow:0 16px 36px -24px rgba(0,0,0,.95);
+}
+.top-prog{
+  position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none;
+  transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,var(--brass-lo),var(--brass-hi));
+  box-shadow:0 0 12px rgba(233,180,95,.5);
+}
+/* navigácia: podčiarknutie sa vysunie zľava a drží sa pri sekcii, ktorú práve čítate */
+.top nav a{position:relative;transition:color .2s ease}
+.top nav a:hover{border-bottom-color:transparent}
+.top nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--brass);
+  transform:scaleX(0);transform-origin:0 50%;transition:transform .35s cubic-bezier(.2,.7,.2,1);
+}
+.top nav a:hover::after,.top nav a.akt::after{transform:none}
+.top nav a.akt{color:var(--brass)}
+
+/* tlačidlá: plné majú preletujúci lesk, obrysové sa pri myši zaplnia zľava */
+.btn-1,.top-cta,.bar-btn{position:relative;overflow:hidden;isolation:isolate}
+.btn-1::after,.top-cta::after,.bar-btn::after{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(105deg,transparent 32%,rgba(255,248,232,.55) 50%,transparent 68%);
+  transform:translateX(-115%);transition:transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.btn-1:hover::after,.btn-1:focus-visible::after,.top-cta:hover::after{transform:translateX(115%)}
+.btn-2{
+  background-image:linear-gradient(90deg,rgba(233,180,95,.13),rgba(233,180,95,.13));
+  background-repeat:no-repeat;background-size:0 100%;
+  transition:transform .18s ease,background-size .5s cubic-bezier(.2,.7,.2,1),border-color .18s ease,color .18s ease;
+}
+.btn-2:hover{background-size:100% 100%}
+/* hlavné tlačidlo v hero a lišta na mobile sa raz za čas samy zalesknú */
+.hero--show .cta-row .btn-1::after{animation:lesk 7s 2.8s infinite}
+.bar-btn::after{animation:lesk 6s 1.5s infinite}
+@keyframes lesk{0%{transform:translateX(-115%)}16%,100%{transform:translateX(115%)}}
+
+/* ---- hero ---- */
+/* jemná mriežka ako na výkrese za rámom a žiara, ktorá pomaly dýcha */
+.hero--show::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(233,180,95,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(233,180,95,.055) 1px,transparent 1px);
+  background-size:64px 64px;background-position:center top;
+  -webkit-mask-image:radial-gradient(ellipse 55% 60% at 74% 40%,#000 10%,transparent 72%);
+  mask-image:radial-gradient(ellipse 55% 60% at 74% 40%,#000 10%,transparent 72%);
+}
+@media (max-width:959px){
+  .hero--show::after{
+    -webkit-mask-image:radial-gradient(ellipse 80% 45% at 50% 70%,#000 10%,transparent 72%);
+    mask-image:radial-gradient(ellipse 80% 45% at 50% 70%,#000 10%,transparent 72%);
+  }
+}
+.hero--show::before,.zaver::before,.vyh-sec::before{animation:dych 10s ease-in-out infinite alternate}
+@keyframes dych{from{opacity:.7;scale:1}to{opacity:1;scale:1.08}}
+
+/* ľavý stĺpec nabieha zhora nadol: štítok s čiarou, nadpis po slovách, text, tlačidlá */
+.hero--show .hero-txt > *{animation:vstup .9s cubic-bezier(.2,.7,.2,1) backwards}
+.hero--show .hero-txt > .lead{animation-delay:.6s}
+.hero--show .hero-txt > .cta-row{animation-delay:.75s}
+.hero--show .hero-txt > .cta-micro{animation-delay:.9s}
+.hero--show .eyebrow::after{transform-origin:0 50%;animation:ciara 1.4s .35s cubic-bezier(.6,0,.2,1) backwards}
+@keyframes ciara{from{transform:scaleX(0)}}
+.hero--show .hero-txt > h1{animation:none}
+.js .hero--show h1{opacity:0}
+.js .hero--show h1.rozdelene{opacity:1}
+.hero--show h1 .sl{
+  display:inline-block;
+  animation:slovo 1s cubic-bezier(.2,.7,.2,1) backwards;
+  animation-delay:calc(.12s + var(--i,0) * 75ms);
+}
+@keyframes slovo{from{opacity:0;transform:translateY(.45em);filter:blur(12px)}}
+/* zlatá linka sa dokreslí pod kurzívou v nadpise hero a pod kurzívou v nadpisoch sekcií;
+   tenká a ku koncu sa stráca, aby nevyzerala ako odkaz */
+.hero--show h1 em,.rv h2 em{
+  background:linear-gradient(90deg,var(--brass-lo),var(--brass-hi) 55%,rgba(242,194,115,0)) no-repeat 0 97%/0 .045em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+}
+.hero--show h1.rozdelene em{animation:podciarkni 1.2s 1.05s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes podciarkni{to{background-size:100% .045em}}
+.rv h2 em{transition:background-size 1.1s cubic-bezier(.6,0,.2,1) .45s}
+.rv.in h2 em{background-size:100% .045em}
+.js:not(.skript) .rv h2 em{background-size:100% .045em}
+
+/* rám s ukážkou sa vyklopí zo sklonu, dva rámy za ním sa vysunú ako balíček kariet */
+.hero--show .hs-stage{animation:ram 1.2s .3s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes ram{from{opacity:0;transform:perspective(1400px) translateY(34px) rotateX(9deg) scale(.97)}}
+.hero--show .hs-stage::before{animation:balicek 1s 1.15s cubic-bezier(.2,.7,.2,1) backwards}
+.hero--show .hs-stage::after{animation:balicek 1s 1.3s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes balicek{from{opacity:0;transform:none}}
+.hero--show .hs-pick{animation:vstup .9s .8s cubic-bezier(.2,.7,.2,1) backwards}
+.hero--show .hs-cap{animation:vstup .9s .95s cubic-bezier(.2,.7,.2,1) backwards}
+.hero--show .hs-note{animation:vstup .9s 1.05s cubic-bezier(.2,.7,.2,1) backwards}
+.hs-stage::before,.hs-stage::after{transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .55s ease}
+@media (hover:hover) and (min-width:640px){
+  .hs-stage:hover::before{transform:translate(16px,14px) rotate(1.2deg)}
+  .hs-stage:hover::after{transform:translate(32px,27px) rotate(2.4deg);opacity:.55}
+}
+/* náklon za myšou (uhly a miesto odlesku dopĺňa script.js) */
+.hs-frame{position:relative;transition:transform .6s cubic-bezier(.2,.7,.2,1),border-color .2s ease,box-shadow .4s ease}
+.hs-stage.tilt .hs-frame{
+  transform:perspective(1300px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-4px);
+  transition:transform .14s linear,border-color .2s ease,box-shadow .4s ease;
+  border-color:rgba(233,180,95,.55);
+  box-shadow:0 54px 100px -40px rgba(233,180,95,.36),0 30px 60px -30px rgba(0,0,0,.95);
+}
+.hs-frame::after{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(560px circle at var(--gx,50%) var(--gy,0%),rgba(255,238,210,.12),transparent 50%);
+  opacity:0;transition:opacity .4s ease;
+}
+.hs-stage.tilt .hs-frame::after{opacity:1}
+/* kým sa ukážka načítava: kostra stránky a cez ňu preletuje lesk */
+.hero-show.nacitava .shot::before{
+  content:"";position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(#2e241e,#2e241e) 6% 9%/20% 3.4% no-repeat,
+    linear-gradient(#2e241e,#2e241e) 94% 9%/36% 3.4% no-repeat,
+    linear-gradient(#3a2d25,#3a2d25) 6% 30%/50% 8% no-repeat,
+    linear-gradient(#3a2d25,#3a2d25) 6% 42%/38% 8% no-repeat,
+    linear-gradient(#2a211c,#2a211c) 6% 58%/44% 3% no-repeat,
+    linear-gradient(#2a211c,#2a211c) 6% 65%/40% 3% no-repeat,
+    linear-gradient(#5a4230,#5a4230) 6% 80%/15% 7% no-repeat,
+    linear-gradient(#271f1a,#271f1a) 94% 46%/34% 44% no-repeat,
+    #1b1512;
+}
+.hero-show.nacitava .shot::after{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:60%;z-index:2;
+  background:linear-gradient(100deg,transparent,rgba(233,180,95,.1) 50%,transparent);
+  animation:kostra 1.25s ease-in-out infinite;
+}
+@keyframes kostra{from{transform:translateX(-100%)}to{transform:translateX(170%)}}
+/* kurzor za adresou v lište rámu */
+.hs-kurzor{
+  display:inline-block;width:1px;height:1.2em;margin-left:2px;vertical-align:-.25em;
+  background:var(--brass);animation:blik 1.05s steps(1) infinite;
+}
+@keyframes blik{50%{opacity:0}}
+/* chipy: zlatá pilulka prejde k vybranému odvetviu, pásik v nej meria čas do ďalšieho */
+.hs-chips{position:relative}
+.hs-chips.s-ind .hs-chip{position:relative;z-index:1;transition:border-color .18s ease,color .35s ease,background .18s ease}
+/* text vybraného chipu stmavne až keď k nemu pilulka dorazí, inak by na chvíľu zmizol na tmavom podklade */
+.hs-chips.s-ind .hs-chip[aria-current="true"]{background:transparent;border-color:transparent;transition:color .3s ease .22s}
+.hs-ind{
+  position:absolute;left:0;top:0;z-index:0;pointer-events:none;border-radius:999px;overflow:hidden;
+  background:linear-gradient(160deg,var(--brass-hi),var(--brass-lo));
+  box-shadow:0 10px 26px -12px rgba(233,180,95,.75);
+  transition:transform .6s cubic-bezier(.2,.8,.2,1),width .6s cubic-bezier(.2,.8,.2,1),height .6s ease;
+}
+.hs-ind.bez{transition:none}
+.hs-ind i{
+  position:absolute;left:0;right:0;bottom:0;height:3px;
+  background:rgba(29,20,9,.32);transform-origin:0 50%;transform:scaleX(0);
+}
+.hs-ind.bezi i{animation:hs-cas 9s linear forwards}
+.hero-show:hover .hs-ind i,.hero-show:focus-within .hs-ind i,
+.hero-show.pauza .hs-ind i,.hero-show.skryte .hs-ind i,.hero-show.nacitava .hs-ind i{animation-play-state:paused}
+@keyframes hs-cas{to{transform:none}}
+/* popis ukážky sa pri prepnutí prelne */
+.hs-cap-txt.prelin{animation:vstup .6s cubic-bezier(.2,.7,.2,1)}
+.hs-cta svg,.hs-open-pill svg{transition:transform .25s ease}
+.hs-cta:hover svg{transform:translateX(4px)}
+.hs-open:hover .hs-open-pill svg{transform:translate(2px,-2px)}
+
+/* ---- pás pod hero: čísla nabiehajú, podniky sa zjavujú jeden po druhom, hranou letí lúč ---- */
+.pas{overflow:hidden}
+.pas::before{
+  content:"";position:absolute;left:0;top:0;height:1px;width:28%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--brass),transparent);
+  animation:luc 8s 1.5s ease-in-out infinite backwards;
+}
+@keyframes luc{0%{transform:translateX(-100%)}55%,100%{transform:translateX(460%)}}
+.js .pas:not(.in) .fakty > div,.js .pas:not(.in) .pas-list li{opacity:0}
+.js .pas.in .fakty > div{animation:vstup .8s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0) * 130ms)}
+.js .pas.in .pas-list li{animation:vstup .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.25s + var(--i,0) * 45ms)}
+.pas-list li{transition:color .2s ease}
+.pas-list li:hover{color:var(--brass)}
+.pas-list li::after{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.pas-list li:hover::after{transform:rotate(225deg)}
+
+/* ---- štítky sekcií: kosoštvorec sa pri odhalení roztočí ---- */
+.sec-tag::before{transition:transform .9s cubic-bezier(.2,.7,.2,1) .15s}
+.skript .rv:not(.in) .sec-tag::before{transform:rotate(-135deg) scale(0)}
+
+/* ---- výhody a služby: body nabiehajú zľava, deliaca čiara sa dokreslí zhora ---- */
+.skript .rv:not(.in) .dv-list li{opacity:0}
+.js .rv.in .dv-list li{animation:vstup-bok .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.25s + var(--i,0) * 90ms)}
+.dv-list li{transition:background-color .3s ease}
+.dv-list li::before{transition:color .3s ease}
+.dv-list li:hover{background-color:rgba(233,180,95,.04)}
+.dv-list li:hover::before{color:var(--brass)}
+@media (min-width:960px){
+  .skript .dvojica .dv-pol + .dv-pol{position:relative;border-left-color:transparent}
+  .skript .dvojica .dv-pol + .dv-pol::before{
+    content:"";position:absolute;left:-1px;top:0;bottom:0;width:1px;
+    background:linear-gradient(180deg,var(--brass-lo),var(--line) 35%,var(--line));
+    transform:scaleY(0);transform-origin:50% 0;transition:transform 1.5s cubic-bezier(.6,0,.2,1) .2s;
+  }
+  .skript .dvojica.in .dv-pol + .dv-pol::before{transform:none}
+}
+
+/* ---- cenník: karty nabiehajú po jednej, fajky sa odškrtávajú, bodky k cenám sa dokreslia ---- */
+.skript .rv:not(.in) .balik{opacity:0}
+.js .rv.in .balik{animation:vstup .85s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0) * 130ms)}
+.skript .rv:not(.in) .balik-list li::before{transform:rotate(-45deg) scale(0)}
+.js .rv.in .balik-list li::before{
+  animation:fajka .5s cubic-bezier(.3,1.7,.5,1) backwards;
+  animation-delay:calc(.6s + var(--i,0) * 130ms + var(--j,0) * 80ms);
+}
+@keyframes fajka{from{transform:rotate(-45deg) scale(0)}}
+/* Standard: okolo karty obieha zlatý lesk */
+@property --uhol{syntax:"<angle>";inherits:false;initial-value:0deg}
+.balik--top,.balik--top:hover{border-color:transparent}
+.balik--top{
+  background:
+    linear-gradient(170deg,rgba(233,180,95,.1),transparent 48%) padding-box,
+    linear-gradient(var(--panel),var(--panel)) padding-box,
+    conic-gradient(from var(--uhol),var(--brass-lo),rgba(233,180,95,.16) 20%,var(--brass-hi) 46%,rgba(233,180,95,.16) 72%,var(--brass-lo)) border-box;
+  animation:obrys 7s linear infinite;
+}
+@keyframes obrys{to{--uhol:360deg}}
+.js .rv.in .balik--top{animation:vstup .85s cubic-bezier(.2,.7,.2,1) backwards,obrys 7s linear infinite;animation-delay:calc(var(--i,0) * 130ms),0s}
+.balik-flag{overflow:hidden;isolation:isolate}
+.balik-flag::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,250,235,.6) 50%,transparent 70%);
+  transform:translateX(-120%);animation:lesk 5s 2s infinite;
+}
+.extras .x .d{transform-origin:0 50%}
+.skript .rv:not(.in) .extras .x .d{transform:translateY(-.28em) scaleX(0)}
+.js .rv.in .extras .x .d{animation:bodky 1s cubic-bezier(.6,0,.2,1) backwards;animation-delay:calc(.2s + var(--i,0) * 120ms)}
+@keyframes bodky{from{transform:translateY(-.28em) scaleX(0)}}
+
+/* ---- postup: kroky sa rozsvietia jeden za druhým a nad nimi sa natiahne zlatá čiara ---- */
+.flow{position:relative}
+.flow > div{position:relative;transition:background-color .3s ease}
+.flow > div:hover{background-color:var(--panel)}
+.flow .k{transition:color .3s ease,letter-spacing .3s ease}
+.flow > div:hover .k{color:var(--brass-hi);letter-spacing:.28em}
+.skript .flow::before{
+  content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:2px;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,var(--brass-lo),var(--brass-hi) 55%,var(--brass-lo));
+  transform:scaleX(0);transform-origin:0 50%;transition:transform 1.9s cubic-bezier(.6,0,.2,1) .25s;
+}
+.skript .flow.in::before{transform:none}
+.skript .flow.rv:not(.in) > div{opacity:0}
+.js .flow.rv.in > div{animation:vstup .8s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.15s + var(--i,0) * 170ms)}
+
+/* ---- časté otázky: nabiehajú po jednej, otvorená má zlatú hranu a rozbalí sa plynulo ---- */
+.skript .faq.rv:not(.in) > .qa{opacity:0}
+.js .faq.rv.in > .qa{animation:vstup .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.1s + var(--i,0) * 55ms)}
+.qa{position:relative}
+.qa::before{
+  content:"";position:absolute;left:0;top:-1px;bottom:-1px;width:2px;background:var(--brass);
+  transform:scaleY(0);transform-origin:50% 0;transition:transform .4s cubic-bezier(.2,.7,.2,1);
+}
+.qa[open]::before{transform:none}
+.qa summary,.qa p{transition:padding-left .35s cubic-bezier(.2,.7,.2,1),color .2s ease}
+.qa[open] summary{color:var(--brass);padding-left:16px}
+.qa[open] p{padding-left:16px}
+@supports (interpolate-size:allow-keywords) and selector(::details-content){
+  .qa{interpolate-size:allow-keywords}
+  .qa::details-content{
+    block-size:0;overflow-y:clip;
+    transition:block-size .45s cubic-bezier(.2,.7,.2,1),content-visibility .45s allow-discrete;
+  }
+  .qa[open]::details-content{block-size:auto}
+}
+
+/* ---- kontakt: vrchná hrana sa rozžiari, body nabiehajú, adresa sa podčiarkne ---- */
+.kontakt-blok{position:relative}
+.skript .kontakt-blok::after{
+  content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:2px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--brass-hi) 50%,transparent);
+  transform:scaleX(0);transition:transform 1.5s cubic-bezier(.6,0,.2,1) .3s;
+}
+.skript .kontakt-blok.in::after{transform:none}
+.skript .rv:not(.in) .kb-zoznam li,.skript .rv:not(.in) .kb-konz-list li{opacity:0}
+.js .rv.in .kb-zoznam li,.js .rv.in .kb-konz-list li{animation:vstup-bok .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.35s + var(--i,0) * 90ms)}
+.kb-mail{
+  border-bottom:0;padding-bottom:6px;
+  background:
+    linear-gradient(var(--brass-hi),var(--brass-hi)) no-repeat 0 100%/0 2px,
+    linear-gradient(rgba(233,180,95,.35),rgba(233,180,95,.35)) no-repeat 0 100%/100% 2px;
+  transition:color .2s ease,background-size .55s cubic-bezier(.2,.7,.2,1);
+}
+.kb-mail:hover{background-size:100% 2px,100% 2px}
+
+/* ---- svetlo pod kurzorom (triedu .svetlo pridáva script.js len pri myši) ---- */
+.svetlo{position:relative;isolation:isolate}
+.svetlo::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(233,180,95,.11),transparent 62%);
+  opacity:0;transition:opacity .35s ease;
+}
+.svetlo:hover::before{opacity:1}
+
+/* ---- obmedzený pohyb: len prelínanie, nič sa neposúva ani samo netočí ---- */
+@media (prefers-reduced-motion:reduce){
+  .hero--show::before,.zaver::before,.vyh-sec::before,.pas::before,
+  .hero--show .cta-row .btn-1::after,.bar-btn::after,.balik-flag::after,
+  .hero--show .eyebrow::after,.hs-kurzor{animation:none}
+  .balik--top,.js .rv.in .balik--top{animation:none}
+  .js .rv.in .balik--top{animation:prelinanie .8s ease backwards;animation-delay:calc(var(--i,0) * 130ms)}
+  .hero--show .hero-txt > *,.hero--show .hs-stage,.hero--show .hs-stage::before,.hero--show .hs-stage::after,
+  .hero--show .hs-pick,.hero--show .hs-cap,.hero--show .hs-note,.hs-cap-txt.prelin,
+  .js .pas.in .fakty > div,.js .pas.in .pas-list li,
+  .js .rv.in .dv-list li,.js .rv.in .balik,.js .flow.rv.in > div,.js .faq.rv.in > .qa,
+  .js .rv.in .kb-zoznam li,.js .rv.in .kb-konz-list li{animation-name:prelinanie}
+  .hero--show h1 .sl{animation-name:slovo-tichy}
+  .hero-show.nacitava .shot::after{animation:none;opacity:0}
+  .hs-ind,.hs-frame,.hs-stage::before,.hs-stage::after,.qa summary,.qa p,.qa::before,
+  .pas-list li::after,.flow .k,.sec-tag::before{transition:none}
+  .hs-stage:hover::before,.hs-stage:hover::after{transform:none}
+  .skript .rv:not(.in) .sec-tag::before{transform:rotate(45deg)}
+}
+@keyframes slovo-tichy{from{opacity:0;filter:blur(10px)}}
