@@ -56,14 +56,14 @@ The site makes not a single external network request: no CDN, no third-party web
 - 🏪 **44 demo websites** - complete sites for fictional businesses, each a single self-contained HTML file with its own palette, typography and working interaction (see [Demo websites](#-demo-websites)).
 - 🔎 **Filterable gallery** - `ukazky/index.html` sorts the demos by category; the filters toggle `hidden` on the cards, keep `aria-pressed` in sync and announce how many demos are showing in a live text.
 - 🖼️ **Live previews in the gallery** - the frame on every card runs the demo itself in a 1280 px wide `<iframe>` (1000 px in a narrow frame), scaled down with `transform: scale()`; `script.js` derives the factor from the frame's real width. A preview can therefore never go stale against its demo, and every language version of the gallery shows its own translated demos. The frames are `loading="lazy"`, `pointer-events: none` and out of the tab order.
-- 📸 **Home page with demo screenshots** - the intro shows a screenshot of the restaurant demo and the salon demo on a phone, the `#ukazky` section nine more screenshots (WebP at 800 and 1280 px, swiped sideways on mobile) and links to industries that preselect a gallery filter (`ukazky/#remeslo`). `node _PRACA/nahlady_domov.js` regenerates the screenshots and the sharing preview.
+- 📸 **Home page with demo screenshots** - the intro shows a screenshot of the restaurant demo and the salon demo on a phone, the `#ukazky` section nine more screenshots (WebP at 800 and 1280 px, swiped sideways on mobile) and links to industries that preselect a gallery filter (`ukazky/#remeslo`). `node _PRACA/nahlady_domov.js` regenerates the screenshots and the sharing previews (a language version with `--jazyk cs` and so on; screenshots of the translated demos go to `cs/domov/obrazky/`).
 - 🧮 **Price calculator in the pricing section** - four packages as choices, add-ons (extra subpages, copywriting, maintenance) and a "Your set-up" box with the total and lead time. Nothing is submitted: the selection is turned into a message for e-mail, WhatsApp, SMS or the clipboard. Prices and copy live in `data-*` attributes so the translation tool can translate them.
 - 🎛️ **Interactions without libraries** - menu switching, a pizza builder, schedule filtering, appointment booking, price calculators and a shopping cart are all written in plain JavaScript.
-- 🎨 **Light design without a template** - a paper background, ink-coloured text and a single accent, yellow (buttons, a label, the contact band), set in one typeface, Schibsted Grotesk. The home page has its own `domov/domov.css`; the gallery, the 404, the privacy page and the language versions take the same tokens from `styles.css`. Until the new home page is translated, the language versions keep the original home page (a live demo in a frame with six industries, benefits and services, pricing as three cards) in the new look.
+- 🎨 **Light design without a template** - a paper background, ink-coloured text and a single accent, yellow (buttons, a label, the contact band), set in one typeface, Schibsted Grotesk. The home page (translated ones included) has its own `domov/domov.css`; the gallery, the 404 and the privacy page take the same tokens from `styles.css`.
 - ✉️ **Direct contact instead of a form** - there is no form. Through `mailto:` a form would promise a send it can only deliver for a visitor with a configured mail client; anyone reading mail in a browser tab would click and get nothing. In its place stand the address in large type, buttons for e-mail, phone, WhatsApp and SMS, and a short list of what to put in the message. WhatsApp is a plain `wa.me` link with a pre-filled line in the page's language (an icon in the bottom bar on mobile), and the e-mail templates also ask where the visitor heard about me.
 - ♿ **WCAG AA accessibility** - contrast ratios are verified and noted next to the tokens; the page has a skip link, a single `h1`, visible focus states and `scroll-padding-top` so anchors do not land under the sticky header.
 - 🐢 **No entrance animations** - the content is visible as soon as the page loads, and nothing moves, tilts or rotates on its own. With `prefers-reduced-motion` the short button and card transitions and the smooth scrolling to anchors are switched off as well.
-- 🔍 **SEO and sharing** - canonical URL, Open Graph and Twitter Card tags, 1200 × 630 sharing previews (`domov/og-domov.png` for the home page, `og-image.png` for the gallery, `og-image-cs.png`, `og-image-hu.png`, `og-image-pl.png`, `og-image-en.png`, `og-image-de.png` and `og-image-it.png` for the language versions), schema.org `ProfessionalService` structured data, `sitemap.xml`, `robots.txt` and an inline SVG favicon.
+- 🔍 **SEO and sharing** - canonical URL, Open Graph and Twitter Card tags, 1200 × 630 sharing previews (`domov/og-domov.png` and `cs/domov/og-domov.png` … `it/domov/og-domov.png` for the home page, `og-image.png` and `og-image-cs.png` … `og-image-it.png` for the gallery, all light like the site), schema.org `ProfessionalService` structured data, `sitemap.xml`, `robots.txt` and an inline SVG favicon.
 - 🌍 **Slovak, Czech, Hungarian, Polish, English, German and Italian on one domain** - the Czech version lives in `/cs/` (rate 25 CZK/€), the Hungarian one in `/hu/` (rate 400 HUF/€), the Polish one in `/pl/` (rate 4.35 PLN/€), the English one in `/en/` (written for Ireland, prices stay in euro), the German one in `/de/` (written for Germany and Austria, prices stay in euro) and the Italian one in `/it/` (written for Italy, prices stay in euro). Each includes all 44 demos, with prices converted and local facts in place of Slovak ones. The language switcher sits in the header, search engines get `hreflang` in the head and in `sitemap.xml`. The Slovak files stay the source of truth - the translations are generated from them, so the versions cannot drift apart.
 - 🚧 **Custom 404 page** - `404.html` in the same design, linking back to the home page and the gallery.
 - 🔒 **Privacy policy** - a dedicated `ochrana-osobnych-udajov.html` page.
@@ -111,9 +111,9 @@ Apoliak-MAIN_WEB/
 │   ├── pisma/                    # Schibsted Grotesk as woff2 plus the OFL licence
 │   ├── obrazky/                  # demo screenshots as WebP
 │   └── og-domov.png              # home page sharing preview, 1200 × 630
-├── styles.css                    # shared styles for the gallery, 404,
-│                                 # privacy page and language versions (32 KB)
-├── script.js                     # shared script for those pages (8 KB)
+├── styles.css                    # shared styles for the gallery, 404 and
+│                                 # privacy page in every language (15 KB)
+├── script.js                     # shared script for those pages (5 KB)
 ├── ukazky/                       # "ukazky" = demos
 │   ├── index.html                # demo gallery with filtering (55 KB)
 │   ├── restauracia/index.html    # 44 standalone demo sites,
@@ -137,32 +137,38 @@ Apoliak-MAIN_WEB/
 │   ├── uctovnictvo/index.html
 │   └── advokat/index.html
 ├── cs/                           # Czech version of the whole site, all 44 demos
-│   ├── index.html                # home page in Czech, still in the original layout
+│   ├── index.html                # home page in Czech
+│   ├── domov/                    # screenshots of the translated demos and the sharing preview
 │   ├── ukazky/                   # gallery and all 44 demos in Czech
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── hu/                           # Hungarian version of the whole site, all 44 demos
-│   ├── index.html                # home page in Hungarian, still in the original layout
+│   ├── index.html                # home page in Hungarian
+│   ├── domov/                    # screenshots of the translated demos and the sharing preview
 │   ├── ukazky/                   # gallery and all 44 demos in Hungarian
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── pl/                           # Polish version of the whole site, all 44 demos
-│   ├── index.html                # home page in Polish, still in the original layout
+│   ├── index.html                # home page in Polish
+│   ├── domov/                    # screenshots of the translated demos and the sharing preview
 │   ├── ukazky/                   # gallery and all 44 demos in Polish
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── en/                           # English version of the whole site, all 44 demos (for Ireland)
-│   ├── index.html                # home page in English, still in the original layout
+│   ├── index.html                # home page in English
+│   ├── domov/                    # screenshots of the translated demos and the sharing preview
 │   ├── ukazky/                   # gallery and all 44 demos in English
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── de/                           # German version of the whole site, all 44 demos (Germany and Austria)
-│   ├── index.html                # home page in German, still in the original layout
+│   ├── index.html                # home page in German
+│   ├── domov/                    # screenshots of the translated demos and the sharing preview
 │   ├── ukazky/                   # gallery and all 44 demos in German
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── it/                           # Italian version of the whole site, all 44 demos (Italy)
-│   ├── index.html                # home page in Italian, still in the original layout
+│   ├── index.html                # home page in Italian
+│   ├── domov/                    # screenshots of the translated demos and the sharing preview
 │   ├── ukazky/                   # gallery and all 44 demos in Italian
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
@@ -190,7 +196,7 @@ The `ukazky/` folder comes to roughly 1.9 MB in total. No builds, no node_module
 
 ## ⚙️ Configuration and design tokens
 
-The project has no configuration system - no `.env`, no environment variables. The look is changed by editing the CSS custom properties in the `:root` block: the home page in `domov/domov.css`, the gallery, 404, privacy page and language versions in `styles.css`. Both files carry the same tokens, so a colour change has to be made in both.
+The project has no configuration system - no `.env`, no environment variables. The look is changed by editing the CSS custom properties in the `:root` block: the home page (in every language) in `domov/domov.css`, the gallery, 404 and privacy page in `styles.css`. Both files carry the same tokens, so a colour change has to be made in both.
 
 | Token           | Value                                   | Meaning                                                |
 | --------------- | --------------------------------------- | ------------------------------------------------------ |
@@ -242,7 +248,7 @@ Content lives directly in the HTML:
 | -           | Footer         | Both addresses, GitHub, privacy policy, automatic year          |
 | -           | Mobile bar     | Call, WhatsApp and Send an enquiry below 960 px wide            |
 
-Navigation across the home page is same-page via hash links; the screenshots, the industry links and the "Všetkých 44 ukážok" button lead to the gallery. The gallery, the demos, the 404 and the privacy page are separate addresses. Until the new home page is translated, the language versions keep the original home page (a live demo in a frame, benefits and services, pricing as three cards, contact in one card) in the new look.
+Navigation across the home page is same-page via hash links; the screenshots, the industry links and the "Všetkých 44 ukážok" button lead to the gallery. The gallery, the demos, the 404 and the privacy page are separate addresses. The language versions have the same home page in translation, with the calculator and screenshots of the translated demos.
 
 ### Pricing shown on the site
 

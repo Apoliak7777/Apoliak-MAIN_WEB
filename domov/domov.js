@@ -19,6 +19,14 @@
         jazyk.querySelector("summary").focus();
       }
     });
+    // pri prepnutí jazyka ostane kotva (#cennik ostane #cennik), sekcie majú vo všetkých jazykoch rovnaké id
+    Array.prototype.forEach.call(jazyk.querySelectorAll(".jazyk-menu a"), function (a) {
+      a.addEventListener("click", function () {
+        var zaklad = a.getAttribute("data-zaklad") || a.getAttribute("href");
+        a.setAttribute("data-zaklad", zaklad);
+        a.setAttribute("href", zaklad + (window.location.hash || ""));
+      });
+    });
   }
 
   var kalk = document.getElementById("kalk");
@@ -42,7 +50,13 @@
   var kopia = document.getElementById("z-kopia");
   var textSpravy = "";
 
-  function eur(n) { return n.toLocaleString("sk-SK"); }
+  // jazykové verzie (/cs/ … /it/) zdieľajú tento súbor: zápis čísel a množné čísla podľa <html lang>
+  var LOKALITA = {
+    sk: "sk-SK", cs: "cs-CZ", hu: "hu-HU", pl: "pl-PL", en: "en-IE", de: "de-DE", it: "it-IT"
+  }[document.documentElement.lang] || "sk-SK";
+  var pravidla = window.Intl && Intl.PluralRules ? new Intl.PluralRules(LOKALITA) : null;
+
+  function eur(n) { return n.toLocaleString(LOKALITA); }
 
   function dosad(sablona, hodnoty) {
     return sablona.replace(/\{(\w+)\}/g, function (cela, kluc) {
@@ -50,11 +64,11 @@
     });
   }
 
-  // 1 stránka · 2 až 4 stránky · 5 a viac stránok
+  // 1 stránka · 2 až 4 stránky · 5 a viac stránok; poľština má tvar „few“ aj pri 22 až 24
   function tvar(n, tvary) {
     var t = tvary.split("|");
-    if (n === 1) return t[0];
-    return n >= 2 && n <= 4 ? t[1] : t[2];
+    var druh = pravidla ? pravidla.select(n) : (n === 1 ? "one" : n >= 2 && n <= 4 ? "few" : "other");
+    return druh === "one" ? t[0] : druh === "few" ? t[1] : t[2];
   }
 
   function pocetPodstranok() {

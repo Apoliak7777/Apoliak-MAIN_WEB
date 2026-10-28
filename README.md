@@ -56,14 +56,14 @@ Stránka nerobí ani jeden externý network request: žiadne CDN, žiadne cudzie
 - 🏪 **44 ukážkových webov** - kompletné weby vymyslených podnikov, každý ako jeden sebestačný HTML súbor s vlastnou paletou, typografiou a funkčnou interakciou (pozri [Ukážkové weby](#-ukážkové-weby)).
 - 🔎 **Galéria s filtrovaním** - `ukazky/index.html` triedi ukážky podľa kategórie; filtre prepínajú `hidden` na kartách, držia `aria-pressed` v synchrone a hlásia počet zobrazených ukážok do živého textu.
 - 🖼️ **Živé náhľady v galérii** - v ráme každej karty beží samotná ukážka v `<iframe>` široká 1280 px (v úzkom ráme 1000 px), zmenšená cez `transform: scale()`; mierku dopočíta `script.js` z reálnej šírky rámu. Náhľad tak nemôže zostarnúť voči ukážke a každá jazyková verzia galérie ukazuje svoje preložené ukážky. Rámy sú `loading="lazy"`, `pointer-events: none` a mimo poradia tabulátora.
-- 📸 **Hlavná stránka so snímkami ukážok** - úvod ukazuje snímku reštaurácie a mobil salónu, sekcia `#ukazky` deväť ďalších snímok (WebP 800 a 1280 px, na mobile sa posúvajú do strany) a odkazy na odvetvia, ktoré v galérii predvolia filter (`ukazky/#remeslo`). Snímky aj náhľad pri zdieľaní prerobí `node _PRACA/nahlady_domov.js`.
+- 📸 **Hlavná stránka so snímkami ukážok** - úvod ukazuje snímku reštaurácie a mobil salónu, sekcia `#ukazky` deväť ďalších snímok (WebP 800 a 1280 px, na mobile sa posúvajú do strany) a odkazy na odvetvia, ktoré v galérii predvolia filter (`ukazky/#remeslo`). Snímky aj náhľady pri zdieľaní prerobí `node _PRACA/nahlady_domov.js` (jazykovú verziu `--jazyk cs` a pod., snímky preložených ukážok idú do `cs/domov/obrazky/`).
 - 🧮 **Kalkulačka ceny v cenníku** - štyri balíčky ako voľby, doplnky (ďalšie podstránky, texty, údržba) a „Vaša zostava“ so súčtom a termínom. Nič neodosiela: z výberu poskladá text do e-mailu, WhatsAppu, SMS alebo schránky. Ceny a texty sú v atribútoch `data-*`, aby ich vedel preložiť prekladový nástroj.
 - 🎛️ **Interaktívne prvky bez knižníc** - prepínanie jedálneho lístka, konfigurátor pizze, filtrovanie rozvrhu, objednávanie termínov, cenové kalkulačky a nákupný košík sú napísané v čistom JavaScripte.
-- 🎨 **Svetlý dizajn bez šablóny** - papierové pozadie, atramentový text a jediný akcent, žltá (tlačidlá, štítok, kontaktný pás), jedno písmo Schibsted Grotesk. Hlavná stránka má vlastné `domov/domov.css`, galéria, 404, ochrana údajov a jazykové verzie berú tie isté tokeny zo `styles.css`. Jazykové verzie majú zatiaľ pôvodnú hlavnú stránku (živá ukážka v ráme so šiestimi odvetviami, výhody a služby, cenník v troch kartách) v novom vzhľade, kým sa nepreloží nová.
+- 🎨 **Svetlý dizajn bez šablóny** - papierové pozadie, atramentový text a jediný akcent, žltá (tlačidlá, štítok, kontaktný pás), jedno písmo Schibsted Grotesk. Hlavná stránka (aj preložené jazykové) má vlastné `domov/domov.css`, galéria, 404 a ochrana údajov berú tie isté tokeny zo `styles.css`.
 - ✉️ **Priamy kontakt namiesto formulára** - stránka nemá formulár. Ten by cez `mailto:` slúboval odoslanie, ktoré vie splniť len u návštevníka s nastaveným e-mailovým programom; kto má poštu vo webovom prehliadači, tomu by kliknutie neurobilo nič. Namiesto neho stojí adresa veľkým písmom, tlačidlá na e-mail, telefón, WhatsApp a SMS a zoznam toho, čo do správy napísať. WhatsApp je obyčajný odkaz na `wa.me` s predvyplnenou vetou v jazyku stránky (na mobile ikona v spodnej lište), e-mailové šablóny sa pýtajú aj na to, odkiaľ o mne záujemca vie.
 - ♿ **Prístupnosť podľa WCAG AA** - kontrastné pomery sú overené a zapísané pri tokenoch, stránka má skip-link, jeden `h1`, viditeľné focus stavy a `scroll-padding-top`, aby kotvy nekončili pod sticky hlavičkou.
 - 🐢 **Bez nabiehacích animácií** - obsah je viditeľný hneď po načítaní, nič sa samo nehýbe, nenakláňa ani nestrieda. Pri `prefers-reduced-motion` sa vypnú aj krátke prechody tlačidiel a kariet a plynulé posúvanie ku kotvám.
-- 🔍 **SEO a zdieľanie** - canonical URL, Open Graph aj Twitter Card, náhľady pri zdieľaní v rozmere 1200 × 630 (`domov/og-domov.png` pre hlavnú stránku, `og-image.png` pre galériu, `og-image-cs.png`, `og-image-hu.png`, `og-image-pl.png`, `og-image-en.png`, `og-image-de.png` a `og-image-it.png` pre jazykové verzie), štruktúrované dáta schema.org `ProfessionalService`, `sitemap.xml`, `robots.txt` a inline SVG favicon.
+- 🔍 **SEO a zdieľanie** - canonical URL, Open Graph aj Twitter Card, náhľady pri zdieľaní v rozmere 1200 × 630 (`domov/og-domov.png` a `cs/domov/og-domov.png` … `it/domov/og-domov.png` pre hlavnú stránku, `og-image.png` a `og-image-cs.png` … `og-image-it.png` pre galériu, všetky svetlé ako web), štruktúrované dáta schema.org `ProfessionalService`, `sitemap.xml`, `robots.txt` a inline SVG favicon.
 - 🌍 **Slovenčina, čeština, maďarčina, poľština, angličtina, nemčina a taliančina na jednej doméne** - česká verzia je v `/cs/` (kurz 25 Kč/€), maďarská v `/hu/` (kurz 400 Ft/€), poľská v `/pl/` (kurz 4,35 zł/€), anglická v `/en/` (pre Írsko, ceny ostávajú v eurách), nemecká v `/de/` (pre Nemecko a Rakúsko, ceny ostávajú v eurách), talianska v `/it/` (pre Taliansko, ceny ostávajú v eurách), všetky vrátane 44 ukážok, s prepočítanými cenami a miestnymi reáliami. Prepínač jazyka je v hlavičke, vyhľadávače dostávajú `hreflang` v hlavičke aj v `sitemap.xml`. Slovenské súbory ostávajú zdrojom pravdy - preklady sa z nich generujú, takže sa verzie nemôžu rozísť.
 - 🚧 **Vlastná 404 stránka** - `404.html` v rovnakom dizajne s odkazmi späť na hlavnú stránku a do galérie.
 - 🔒 **Zásady ochrany osobných údajov** - samostatná stránka `ochrana-osobnych-udajov.html`.
@@ -111,9 +111,9 @@ Apoliak-MAIN_WEB/
 │   ├── pisma/                    # Schibsted Grotesk vo woff2 a licencia OFL
 │   ├── obrazky/                  # snímky ukážok vo WebP
 │   └── og-domov.png              # náhľad hlavnej stránky pri zdieľaní, 1200 × 630
-├── styles.css                    # spoločné štýly galérie, 404, ochrany
-│                                 # údajov a jazykových verzií (32 KB)
-├── script.js                     # spoločný skript týchto stránok (8 KB)
+├── styles.css                    # spoločné štýly galérie, 404 a ochrany
+│                                 # údajov vo všetkých jazykoch (15 KB)
+├── script.js                     # spoločný skript týchto stránok (5 KB)
 ├── ukazky/
 │   ├── index.html                # galéria ukážok s filtrovaním (55 KB)
 │   ├── advokat/index.html
@@ -161,32 +161,38 @@ Apoliak-MAIN_WEB/
 │   ├── zabava/index.html
 │   └── zamocnictvo/index.html
 ├── cs/                           # česká verzia celého webu vrátane 44 ukážok
-│   ├── index.html                # hlavná stránka po česky, zatiaľ v pôvodnom rozložení
+│   ├── index.html                # hlavná stránka po česky
+│   ├── domov/                    # snímky preložených ukážok a náhľad pri zdieľaní
 │   ├── ukazky/                   # galéria a všetkých 44 ukážok po česky
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── hu/                           # maďarská verzia celého webu vrátane 44 ukážok
-│   ├── index.html                # hlavná stránka po maďarsky, zatiaľ v pôvodnom rozložení
+│   ├── index.html                # hlavná stránka po maďarsky
+│   ├── domov/                    # snímky preložených ukážok a náhľad pri zdieľaní
 │   ├── ukazky/                   # galéria a všetkých 44 ukážok po maďarsky
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── pl/                           # poľská verzia celého webu vrátane 44 ukážok
-│   ├── index.html                # hlavná stránka po poľsky, zatiaľ v pôvodnom rozložení
+│   ├── index.html                # hlavná stránka po poľsky
+│   ├── domov/                    # snímky preložených ukážok a náhľad pri zdieľaní
 │   ├── ukazky/                   # galéria a všetkých 44 ukážok po poľsky
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── en/                           # anglická verzia celého webu vrátane 44 ukážok (pre Írsko)
-│   ├── index.html                # hlavná stránka po anglicky, zatiaľ v pôvodnom rozložení
+│   ├── index.html                # hlavná stránka po anglicky
+│   ├── domov/                    # snímky preložených ukážok a náhľad pri zdieľaní
 │   ├── ukazky/                   # galéria a všetkých 44 ukážok po anglicky
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── de/                           # nemecká verzia celého webu vrátane 44 ukážok (pre Nemecko a Rakúsko)
-│   ├── index.html                # hlavná stránka po nemecky, zatiaľ v pôvodnom rozložení
+│   ├── index.html                # hlavná stránka po nemecky
+│   ├── domov/                    # snímky preložených ukážok a náhľad pri zdieľaní
 │   ├── ukazky/                   # galéria a všetkých 44 ukážok po nemecky
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
 ├── it/                           # talianska verzia celého webu vrátane 44 ukážok (pre Taliansko)
-│   ├── index.html                # hlavná stránka po taliansky, zatiaľ v pôvodnom rozložení
+│   ├── index.html                # hlavná stránka po taliansky
+│   ├── domov/                    # snímky preložených ukážok a náhľad pri zdieľaní
 │   ├── ukazky/                   # galéria a všetkých 44 ukážok po taliansky
 │   ├── 404.html
 │   └── ochrana-osobnych-udajov.html
@@ -214,7 +220,7 @@ Priečinok `ukazky/` má spolu asi 4,5 MB. Žiadne buildy, žiadne node_modules,
 
 ## ⚙️ Konfigurácia a dizajnové tokeny
 
-Projekt nemá konfiguračný systém - žiadne `.env`, žiadne env premenné. Vizuál sa mení editovaním CSS custom properties v bloku `:root`: hlavná stránka v `domov/domov.css`, galéria, 404, ochrana údajov a jazykové verzie v `styles.css`. Oba súbory majú tie isté tokeny, pri zmene farby treba upraviť obidva.
+Projekt nemá konfiguračný systém - žiadne `.env`, žiadne env premenné. Vizuál sa mení editovaním CSS custom properties v bloku `:root`: hlavná stránka (vo všetkých jazykoch) v `domov/domov.css`, galéria, 404 a ochrana údajov v `styles.css`. Oba súbory majú tie isté tokeny, pri zmene farby treba upraviť obidva.
 
 | Token           | Hodnota                                 | Význam                                                  |
 | --------------- | --------------------------------------- | ------------------------------------------------------- |
@@ -266,7 +272,7 @@ Obsahové veci sa menia priamo v HTML:
 | -           | Pätička         | Obe adresy, GitHub, ochrana osobných údajov, automatický rok        |
 | -           | Lišta na mobile | Zavolať, WhatsApp a Napísať dopyt pod 960 px šírky                  |
 
-Navigácia po hlavnej stránke je same-page cez hash odkazy; do galérie vedú snímky, odkazy na odvetvia a tlačidlo „Všetkých 44 ukážok“. Galéria, ukážky, 404 a stránka ochrany údajov sú samostatné adresy. Jazykové verzie majú zatiaľ pôvodnú hlavnú stránku (živá ukážka v ráme, výhody a služby, cenník v troch kartách, kontakt v jednej karte) v novom vzhľade, kým sa nová nepreloží.
+Navigácia po hlavnej stránke je same-page cez hash odkazy; do galérie vedú snímky, odkazy na odvetvia a tlačidlo „Všetkých 44 ukážok“. Galéria, ukážky, 404 a stránka ochrany údajov sú samostatné adresy. Jazykové verzie majú tú istú hlavnú stránku v preklade, s kalkulačkou aj snímkami preložených ukážok.
 
 ### Cenník na webe
 
