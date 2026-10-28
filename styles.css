@@ -1,1235 +1,869 @@
 /* ============================================================
    apoliak.online — spoločné štýly
-   Hlavná stránka, galéria ukážok, 404 a ochrana osobných údajov.
-   Bez externých požiadaviek: systémové fonty, CSS a inline SVG.
+   Galéria ukážok, zakazky/, 404, ochrana údajov a jazykové verzie (/cs/ … /it/).
+   Hlavná stránka má vlastný domov/domov.css; odtiaľto sú prevzaté farby, písmo,
+   tlačidlá a karty, aby celý web vyzeral rovnako.
+   Jedna svetlá téma, žiadne písmo ani skript z cudzieho servera
+   a nič sa pri načítaní neskrýva ani nenabieha.
    ============================================================ */
 
-/* ---------- 01 · reset a základ ---------- */
-*,*::before,*::after{box-sizing:border-box}
-html{
-  overflow-x:clip;              /* clip, nie hidden — sticky hlavička ostáva funkčná */
-  scroll-behavior:smooth;
-  -webkit-text-size-adjust:100%;
-  scroll-padding-top:96px;
+/* písmo leží pri hlavnej stránke, cesta je relatívna k tomuto súboru v koreni webu */
+@font-face {
+  font-family: "Schibsted Grotesk";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("domov/pisma/schibsted-grotesk-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-body,h1,h2,h3,h4,p,figure,figcaption,ul,ol,li,dl,dd,fieldset,legend{margin:0;padding:0}
-ul,ol{list-style:none}
-fieldset{border:0}
-img,svg{display:block;max-width:100%}
-a{color:inherit}
-button,input,select,textarea{font:inherit;color:inherit}
-
-:root{
-  --bg:#131010;
-  --bg-2:#1a1513;
-  --panel:#201916;
-  --panel-2:#271e1a;
-  --line:#3a2d26;
-  --line-soft:#2b211c;
-  --ink:#f7f0e7;        /* 18,9:1 na --bg */
-  --ink-2:#e6dcd0;      /* 14,3:1 na --bg */
-  --mut:#c9bcac;        /* 10,1:1 na --bg */
-  --brass:#e9b45f;      /* 10,1:1 na --bg */
-  --brass-lo:#c8913c;
-  --brass-hi:#f2c273;
-  --on-brass:#1d1409;   /*  6,5:1 na --brass-lo */
-  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-  --serif:Georgia,"Iowan Old Style",Cambria,"Times New Roman",serif;
-  --mono:ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,"Liberation Mono",monospace;
-  --pad:clamp(18px,5vw,56px);
-  --maxw:1220px;
+@font-face {
+  font-family: "Schibsted Grotesk";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("domov/pisma/schibsted-grotesk-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-body{
-  overflow-x:clip;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--sans);
-  font-size:clamp(16px,1.05vw,17.5px);
-  line-height:1.62;
-  position:relative;
-  min-height:100vh;
-}
-/* jemné zrno, aby tmavé plochy nepôsobili ploché */
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.045;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.wrap{position:relative;z-index:1;width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad)}
-::selection{background:var(--brass);color:#1a1210}
-:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:2px}
-
-.skip{
-  position:absolute;left:-9999px;top:0;z-index:200;
-  background:var(--brass);color:var(--on-brass);padding:12px 18px;font-weight:600;text-decoration:none;
-}
-.skip:focus{left:8px;top:8px}
-
-/* ---------- 02 · typografia ---------- */
-h1{
-  font-family:var(--serif);font-weight:700;
-  font-size:clamp(2.05rem,6.1vw,4.15rem);
-  line-height:1.1;letter-spacing:-.02em;
-  text-wrap:balance;overflow-wrap:break-word;hyphens:none;
-}
-h1 em{font-style:italic;color:var(--brass)}
-h2{
-  font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.75rem,4.2vw,2.9rem);
-  line-height:1.14;letter-spacing:-.015em;text-wrap:balance;
-}
-h2 em{font-style:italic;color:var(--brass)}
-h3{font-family:var(--serif);font-weight:700;letter-spacing:-.01em;line-height:1.2}
-.lead{margin-top:24px;max-width:58ch;font-size:clamp(1.08rem,1.6vw,1.26rem);color:var(--ink-2);font-weight:450}
-.lead b{color:var(--ink);font-weight:600}
-.sec-tag{
-  display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--brass);margin-bottom:14px;
-}
-.sec-head{max-width:64ch}
-.sec-head p{margin-top:16px;color:var(--ink-2);max-width:60ch;font-size:1.02rem}
-.note{color:var(--mut);font-size:.92rem}
-
-section{position:relative;padding-block:clamp(52px,8vw,104px)}
-.band{background:linear-gradient(180deg,rgba(233,180,95,.035),transparent 160px),var(--bg-2);border-block:1px solid var(--line-soft)}
-
-/* ---------- 03 · tlačidlá ---------- */
-.btn{
-  display:inline-flex;align-items:center;gap:10px;text-decoration:none;
-  padding:14px 24px;border-radius:2px;font-size:1rem;font-weight:700;letter-spacing:.01em;
-  border:1px solid transparent;cursor:pointer;
-  transition:transform .18s ease,background .18s ease,border-color .18s ease,color .18s ease;
-}
-.btn-1{background:linear-gradient(160deg,var(--brass-hi),var(--brass-lo));color:var(--on-brass);box-shadow:0 10px 30px -14px rgba(233,180,95,.65)}
-.btn-1:hover{transform:translateY(-2px)}
-.btn-2{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
-.btn-2:hover{border-color:var(--brass);color:var(--brass)}
-.btn svg{width:15px;height:15px;fill:currentColor;flex:none}
-
-/* ---------- 04 · hlavička ---------- */
-.top{
-  position:sticky;top:0;z-index:60;
-  background:rgba(19,16,16,.96);
-  border-bottom:1px solid var(--line-soft);
-}
-.top-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px clamp(14px,3vw,34px);padding-block:8px}
-.brand{
-  display:flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap;
-  font-family:var(--serif);font-size:1.04rem;letter-spacing:.01em;
-}
-.brand .mark{
-  width:27px;height:27px;flex:none;border-radius:8px;display:grid;place-items:center;
-  background:linear-gradient(150deg,var(--brass-hi),var(--brass-lo));
-  color:var(--on-brass);font-family:var(--serif);font-size:15px;line-height:1;padding-bottom:2px;
-}
-.top nav{
-  order:3;width:100%;display:flex;flex-wrap:wrap;gap:2px 16px;
-  font-size:.82rem;padding-top:6px;border-top:1px solid var(--line-soft);
-}
-.top nav a{text-decoration:none;color:var(--ink-2);padding:2px 0;border-bottom:1px solid transparent}
-.top nav a:hover{color:var(--brass);border-bottom-color:var(--brass)}
-.top .tel{
-  margin-left:auto;text-decoration:none;font-size:.88rem;white-space:nowrap;
-  border:1px solid var(--line);border-radius:999px;padding:8px 15px;color:var(--ink);background:var(--panel);
-  display:inline-flex;align-items:center;gap:8px;
-}
-.top .tel svg{width:13px;height:13px;fill:var(--brass);flex:none}
-.top .tel:hover{border-color:var(--brass);color:var(--brass)}
-@media (min-width:920px){
-  .top-in{flex-wrap:nowrap;padding-block:0;min-height:62px}
-  .top nav{order:0;width:auto;margin-left:auto;padding-top:0;border-top:0;gap:26px;font-size:.9rem}
-  .top .tel{margin-left:0}
+:root {
+  --papier: #fbfaf7;
+  --papier-2: #f3f1eb;
+  --biela: #ffffff;
+  --atrament: #16181b;
+  --text: #33373d;
+  --tlmene: #62676f;
+  --ciara: #e4e1d9;
+  --ciara-2: #cfcbc0;
+  --zlta: #ffd23f;
+  --zlta-svetla: #fff3c2;
+  --tien: 0 1px 2px rgba(22, 24, 27, .06), 0 10px 28px rgba(22, 24, 27, .10);
+  --pismo: "Schibsted Grotesk", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  color-scheme: light;
 }
 
-/* ---------- 45 · výzva v lepiacej hlavičke (len široké obrazovky) ----------
-   Vložiť za sekciu 04. Na mobile to rieši lišta .bar-cta. Hranica 1100 px:
-   pod ňou sa brand, šesť odkazov, telefón a tlačidlo do jedného riadku nezmestia
-   a hlavička by sa zalomila (scroll-padding-top 96 px počíta s jedným riadkom).
-   Od pridania glóbusu (sekcia 55) je hranica 1200 px, pri 1100 px sa už nezmestil. */
-.top-cta{display:none}
-@media (min-width:1200px){
-  .top-in{gap:8px 22px}
-  .top nav{gap:20px}
-  .top-cta{
-    display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap;
-    font-size:.86rem;font-weight:700;padding:9px 16px;border-radius:2px;
-    color:var(--on-brass);background:linear-gradient(160deg,var(--brass-hi),var(--brass-lo));
-    box-shadow:0 8px 24px -14px rgba(233,180,95,.7);transition:transform .18s ease;
+/* ── základ ── */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+@media (min-width: 1100px) { html { scroll-padding-top: 84px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body, h1, h2, h3, h4, p, figure, figcaption, ul, ol, li, dl, dd, fieldset, legend { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+fieldset { border: 0; }
+img, svg { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* pätička krátkej stránky (404) sedí dole, nie v polovici okna */
+body {
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  min-height: 100vh;
+  background: var(--papier);
+  color: var(--text);
+  font-family: var(--pismo);
+  font-size: 17px;
+  line-height: 1.6;
+}
+main { flex: 1 0 auto; }
+
+h1, h2, h3 { color: var(--atrament); font-weight: 800; text-wrap: balance; }
+h1 {
+  font-size: clamp(40px, 5.6vw, 72px);
+  line-height: 1;
+  letter-spacing: -.035em;
+  overflow-wrap: break-word;
+}
+h2 {
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -.03em;
+}
+h3 { font-size: 20px; line-height: 1.25; letter-spacing: -.01em; font-weight: 700; }
+/* zvýraznené slovo v nadpise ostáva obyčajným textom: bez kurzívy, farby aj podčiarknutia */
+h1 em, h2 em { font-style: normal; color: inherit; }
+b, strong { color: var(--atrament); font-weight: 700; }
+a { color: var(--atrament); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--zlta); text-decoration-thickness: 3px; }
+::selection { background: var(--zlta); color: var(--atrament); }
+:focus-visible { outline: 3px solid var(--atrament); outline-offset: 3px; }
+
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
+@media (min-width: 640px) { .wrap { width: min(1200px, 100% - 56px); } }
+
+.skip {
+  position: absolute;
+  left: 12px; top: -60px;
+  z-index: 50;
+  padding: 10px 16px;
+  background: var(--atrament);
+  color: var(--biela);
+  border-radius: 8px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.skip:focus { top: 12px; }
+
+/* štítky nad nadpismi a „živý náhľad" — nový vzhľad ich nemá */
+.eyebrow, .sec-tag, .hs-tag { display: none; }
+
+section { position: relative; padding-block: 64px; }
+@media (min-width: 960px) { section { padding-block: 96px; } }
+.band { background: var(--papier-2); border-block: 1px solid var(--ciara); }
+
+.lead {
+  max-width: 36em;
+  margin-top: 24px;
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.55;
+}
+.inline-link { color: var(--atrament); }
+
+/* ── tlačidlá ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 0 22px;
+  border: 1.5px solid var(--atrament);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--atrament);
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.15;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.btn:hover { background: var(--atrament); color: var(--papier); text-decoration: none; }
+.btn-1 { background: var(--zlta); }
+.btn-1:hover { background: var(--atrament); color: var(--zlta); }
+.btn-lg { min-height: 54px; padding: 0 24px; }
+.btn svg { width: 15px; height: 15px; flex: none; fill: currentColor; }
+.btn-wa svg { width: 19px; height: 19px; }
+.ico-wa { flex: none; fill: currentColor; }
+.ico-wa .wa-bublina { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+@media (max-width: 479px) { .cta-row .btn { flex: 1 1 100%; } }
+.cta-micro { margin-top: 14px; color: var(--tlmene); font-size: 15px; }
+.cta-micro a { font-weight: 650; white-space: nowrap; }
+
+/* ── hlavička ── */
+.top {
+  position: relative;
+  z-index: 20;
+  background: var(--papier);
+  border-bottom: 1px solid var(--ciara);
+}
+/* lepí sa až tam, kde má hlavička jeden riadok */
+@media (min-width: 1100px) { .top { position: sticky; top: 0; } }
+
+.top-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  min-height: 64px;
+  padding: 12px 0 0;
+}
+@media (min-width: 1100px) { .top-in { flex-wrap: nowrap; padding: 0; } }
+
+.brand {
+  margin-right: auto;
+  color: var(--atrament);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.015em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.brand:hover { text-decoration: none; }
+.brand .mark { display: none; }
+
+.top nav {
+  order: 5;
+  display: flex;
+  flex-basis: 100%;
+  gap: 4px 20px;
+  overflow-x: auto;
+  padding: 2px 0 12px;
+  scrollbar-width: none;
+}
+.top nav::-webkit-scrollbar { display: none; }
+.top nav a {
+  flex: none;
+  color: var(--text);
+  font-size: 15.5px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.top nav a:hover { color: var(--atrament); text-decoration: underline; text-decoration-color: var(--zlta); text-decoration-thickness: 3px; }
+@media (min-width: 1100px) {
+  .top nav { order: 0; flex-basis: auto; overflow: visible; padding: 0; margin-right: 8px; gap: 22px; }
+}
+
+.top .tel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--atrament);
+  font-size: 15.5px;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.top .tel svg { display: none; width: 17px; height: 17px; fill: currentColor; }
+.top .tel:hover { text-decoration: underline; text-decoration-color: var(--zlta); text-decoration-thickness: 3px; }
+/* úzky mobil: z čísla ostane ikona v rámčeku (cudzie jazyky majú číslo dlhšie o predvoľbu +421) */
+@media (max-width: 479px) {
+  html:not([lang="sk"]) .top .tel { width: 40px; height: 40px; border: 1px solid var(--ciara-2); border-radius: 8px; font-size: 0; }
+  html:not([lang="sk"]) .top .tel svg { display: block; }
+}
+@media (max-width: 379px) {
+  .top .tel { width: 40px; height: 40px; border: 1px solid var(--ciara-2); border-radius: 8px; font-size: 0; }
+  .top .tel svg { display: block; }
+}
+/* na hlavnej stránke jazykových verzií je telefón aj v lište dole */
+@media (max-width: 719px) { body:has(.bar-cta) .top .tel { display: none; } }
+
+.top-cta { display: none; }
+@media (min-width: 1200px) {
+  .top-cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 16px;
+    background: var(--zlta);
+    border: 1.5px solid var(--atrament);
+    border-radius: 10px;
+    color: var(--atrament);
+    font-size: 15px;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
   }
-  .top-cta:hover{transform:translateY(-1px)}
+  .top-cta:hover { background: var(--atrament); color: var(--zlta); }
 }
-@media (prefers-reduced-motion:reduce){.top-cta{transition:none}}
 
-/* ---------- 05 · hero ----------
-   Základ (.hero, .hero::before, .eyebrow, .cta-row) zdieľa galéria ukazky/,
-   preto ostáva bez zmeny. Všetko nové je viazané na modifikátor .hero--show,
-   ktorý má len hlavná stránka. Pôvodné .hero-in{max-width:20ch} a
-   .hero-wide{max-width:none} sa rušia — práve max-width:none rozťahovalo hero
-   cez celé okno bez limitu 1220 px a nechávalo pravú polovicu prázdnu. */
-.hero{padding-top:clamp(44px,7vw,88px);padding-bottom:clamp(26px,4vw,48px);overflow:hidden}
-.hero::before{
-  content:"";position:absolute;left:50%;top:-16%;transform:translateX(-50%);
-  width:min(1400px,150vw);height:min(760px,90vw);pointer-events:none;z-index:0;
-  background:radial-gradient(50% 50% at 50% 50%,rgba(233,180,95,.15),rgba(233,180,95,.04) 45%,transparent 72%);
+/* jazykový prepínač — blok medzi značkami jazyky:prepinac skladá _PRACA/preklad */
+.jazyk { position: relative; flex: none; }
+.jazyk summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--ciara-2);
+  border-radius: 8px;
+  color: var(--atrament);
+  font-size: 14px;
+  font-weight: 650;
+  list-style: none;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
 }
-.hero-in{position:relative;z-index:1}
-.hero h1{max-width:18ch}
-.eyebrow{
-  font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--brass);display:flex;align-items:center;gap:12px;margin-bottom:20px;
+.jazyk summary::-webkit-details-marker { display: none; }
+.jazyk summary::marker { content: ""; }
+.jazyk summary:hover, .jazyk[open] summary { border-color: var(--atrament); }
+.jazyk summary svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.jazyk-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 40;
+  min-width: 190px;
+  padding: 6px;
+  background: var(--biela);
+  border: 1px solid var(--ciara-2);
+  border-radius: 10px;
+  box-shadow: var(--tien);
 }
-.eyebrow::after{content:"";height:1px;flex:1;max-width:130px;background:linear-gradient(90deg,var(--brass-lo),transparent)}
-.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-.cta-micro a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid rgba(233,180,95,.45);white-space:nowrap}
-.cta-micro a:hover{color:var(--brass);border-bottom-color:var(--brass)}
+.jazyk-menu a {
+  display: flex;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--atrament);
+  font-size: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.jazyk-menu a:hover { background: var(--papier-2); }
+.jazyk-menu a[aria-current] { background: var(--zlta-svetla); }
+.jazyk-menu b { width: 26px; font-weight: 700; }
 
-/* hlavná stránka: text vľavo, živá ukážka vpravo */
-.hero--show{padding-top:clamp(36px,5.5vw,72px);padding-bottom:clamp(34px,5vw,64px)}
-.hero-grid{display:grid;gap:clamp(34px,5vw,56px);align-items:center}
-.hero-txt{min-width:0}
-.hero--show h1{max-width:16ch}
-@media (min-width:960px){
-  .hero-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(36px,5vw,72px)}
-  .hero--show h1{font-size:clamp(2.3rem,3.7vw,3.5rem);max-width:15ch}
-  .hero--show .lead{max-width:46ch}
-  /* obe tlačidlá v jednom riadku aj v ľavom stĺpci (~530 px) */
-  .hero--show .cta-row .btn-lg{padding-inline:26px}
-  /* žiara ide za rám ukážky, nie za text; galéria si necháva stredovú */
-  .hero--show::before{
-    left:auto;right:-14%;top:-34%;transform:none;
-    width:min(1100px,125vw);height:min(900px,125vw);
-    background:radial-gradient(50% 50% at 50% 50%,rgba(233,180,95,.17),rgba(233,180,95,.045) 45%,transparent 72%);
+/* ── úvod galérie a zákaziek ── */
+.hero { padding-top: 32px; padding-bottom: 56px; }
+@media (min-width: 960px) { .hero { padding-top: 56px; padding-bottom: 80px; } }
+.hero h1 { max-width: 13em; }
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  color: var(--atrament);
+  font-size: 15.5px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.back svg { width: 14px; height: 14px; fill: currentColor; transform: rotate(180deg); }
+.back:hover { text-decoration: underline; text-decoration-color: var(--zlta); text-decoration-thickness: 3px; }
+
+/* výzva pod úvodom galérie a na konci zákaziek: nadpis a text vľavo, tlačidlá vpravo */
+.sec-head { max-width: 64ch; }
+.sec-head p { max-width: 60ch; margin-top: 16px; }
+section.band:has(> .sec-head) { padding-block: 48px; }
+.band > .sec-head { max-width: none; }
+.band > .sec-head > h2 { max-width: 20em; font-size: clamp(28px, 3vw, 40px); }
+@media (min-width: 960px) {
+  section.band:has(> .sec-head) { padding-block: 64px; }
+  .band > .sec-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0 56px; }
+  .band > .sec-head > h2 { grid-column: 1; grid-row: 1; }
+  .band > .sec-head > p { grid-column: 1; grid-row: 2; }
+  .band > .sec-head > .cta-row { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
+}
+
+/* ── filtre ── */
+.filtre { display: none; }
+.js .filtre { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; }
+@media (min-width: 960px) { .js .filtre { margin-top: 56px; } }
+/* zakazky/: filtre idú hneď pod úvod, medzeru robí jeho spodný okraj */
+.js .hero + section:not(.band) .filtre { margin-top: 0; }
+.filt {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  background: var(--biela);
+  border: 1px solid var(--ciara-2);
+  border-radius: 8px;
+  color: var(--atrament);
+  font-size: 15px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+@media (max-width: 639px) {
+  .js .filtre { gap: 6px; }
+  .filt { min-height: 36px; padding: 0 11px; font-size: 14.5px; }
+}
+.filt:hover { border-color: var(--atrament); background: var(--zlta-svetla); }
+.filt[aria-pressed="true"] { background: var(--zlta); border-color: var(--atrament); box-shadow: inset 0 0 0 .5px var(--atrament); font-weight: 700; }
+.filt-info { margin-top: 14px; color: var(--tlmene); font-size: 14.5px; }
+.filt-info:empty { display: none; }
+
+/* ── karty ukážok a zákaziek ── */
+.uk-grid { display: grid; gap: 40px 24px; margin-top: 28px; }
+@media (min-width: 640px) { .uk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .uk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.uk { position: relative; display: flex; flex-direction: column; }
+.uk[hidden] { display: none; }
+.frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--papier-2);
+  border: 1px solid var(--ciara-2);
+  border-radius: 10px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+/* lišta s bodkami a adresou napodobňovala okno prehliadača — v novom vzhľade nie je */
+.frame .bar { display: none; }
+.uk:hover .frame { transform: translateY(-3px); box-shadow: var(--tien); }
+
+.shot { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; background: var(--papier-2); }
+/* živý náhľad: v ráme beží samotná ukážka v šírke 1280 px (ako snímky na hlavnej stránke),
+   zmenšená; mierku --shot-s dopočíta script.js zo skutočnej šírky rámu */
+.shot--live { position: relative; overflow: hidden; }
+.shot--live iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 800px;
+  border: 0;
+  transform-origin: 0 0;
+  transform: scale(var(--shot-s, .28));
+  pointer-events: none;
+}
+/* v úzkom ráme sa ukážka kreslí v šírke 1000 px, aby písmo ostalo čitateľnejšie */
+@media (max-width: 639px) { .shot--live iframe { width: 1000px; height: 625px; } }
+.shot--img { object-fit: cover; object-position: top; }
+
+.uk-body { display: flex; flex: 1; flex-direction: column; margin-top: 14px; }
+.uk-typ { color: var(--tlmene); font-size: 14px; }
+.uk h3 { margin-top: 2px; font-size: 19px; line-height: 1.3; }
+.uk-int { flex: 1; margin-top: 4px; font-size: 15.5px; line-height: 1.5; }
+.uk-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  color: var(--atrament);
+  font-size: 15.5px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.uk-cta svg { width: 13px; height: 13px; flex: none; fill: currentColor; }
+.uk-cta::after { content: ""; position: absolute; inset: 0; }   /* celá karta je klikateľná */
+.uk:hover .uk-cta { text-decoration-color: var(--zlta); text-decoration-thickness: 3px; }
+
+.uk-akcie { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; margin-top: 12px; }
+.uk-akcie .uk-cta { margin-top: 0; }
+/* odkaz na zdrojový kód leží nad ::after celej karty, inak by sa naň nedalo kliknúť */
+.uk-repo { position: relative; z-index: 1; color: var(--tlmene); font-size: 14.5px; white-space: nowrap; }
+
+/* ── 404 a ochrana údajov ── */
+.oops { padding-block: 64px 88px; }
+@media (min-width: 960px) { .oops { padding-block: 104px 128px; } }
+.oops-code { margin-bottom: 16px; color: var(--tlmene); font-size: 16px; font-weight: 650; }
+.oops h1 { max-width: 12em; }
+.oops p { max-width: 36em; margin-top: 18px; }
+.oops .actions { display: flex; flex-wrap: wrap; gap: 12px; max-width: none; margin-top: 30px; }
+@media (max-width: 479px) { .oops .actions .btn { flex: 1 1 100%; } }
+
+.doc { padding-block: 40px 80px; }
+@media (min-width: 960px) { .doc { padding-block: 64px 112px; } }
+.doc h1 { max-width: 14em; font-size: clamp(36px, 5vw, 60px); }
+.doc h2 { max-width: 30em; margin-top: 40px; font-size: 22px; line-height: 1.25; letter-spacing: -.015em; }
+.doc p { max-width: 40em; margin-top: 12px; }
+.doc .stamp { margin-top: 14px; color: var(--tlmene); font-size: 14.5px; }
+
+/* ── pätička ── */
+.foot { padding: 28px 0 32px; border-top: 1px solid var(--ciara); color: var(--tlmene); font-size: 14.5px; }
+.foot-in { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; }
+.foot-in a { color: var(--text); white-space: nowrap; }
+.foot-in .r { flex-basis: 100%; }
+@media (min-width: 960px) { .foot-in .r { flex-basis: auto; margin-left: auto; } }
+
+/* ============================================================
+   Hlavná stránka jazykových verzií (/cs/ … /it/).
+   Má ešte pôvodné rozloženie, kým sa nepreloží nová hlavná stránka;
+   vzhľad má už nový.
+   ============================================================ */
+
+/* ── úvod: text vľavo, ukážka v ráme vpravo ── */
+.hero--show { padding-top: 36px; padding-bottom: 60px; }
+@media (min-width: 960px) { .hero--show { padding-top: 72px; padding-bottom: 88px; } }
+.hero-grid { display: grid; gap: 44px; }
+@media (min-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); align-items: center; gap: 56px; }
+}
+.hero-txt { min-width: 0; }
+.hero--show h1 { max-width: none; font-size: clamp(38px, 4.3vw, 60px); }
+
+.hero-show { position: relative; min-width: 0; }
+.hs-stage { position: relative; }
+.hs-frame { border-radius: 12px; box-shadow: var(--tien); }
+.frame .live { display: none; }
+/* celý rám je jeden odkaz, viditeľné je len tlačidlo v rohu */
+.hs-open { position: absolute; inset: 0; z-index: 2; display: block; border-radius: 12px; color: inherit; text-decoration: none; }
+.hs-open-pill {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  background: var(--biela);
+  border: 1.5px solid var(--atrament);
+  border-radius: 8px;
+  color: var(--atrament);
+  font-size: 14.5px;
+  font-weight: 650;
+}
+.hs-open-pill svg { width: 12px; height: 12px; flex: none; fill: currentColor; }
+.hs-open:hover .hs-open-pill { background: var(--zlta); }
+/* iframe nemá v HTML src (dopĺňa ho script.js); bez JavaScriptu ukážku dodá <noscript> */
+html:not(.js) #hs-iframe { display: none; }
+
+.hs-pick { margin-top: 22px; }
+.hs-pick-k { display: block; margin-bottom: 10px; color: var(--atrament); font-size: 15px; font-weight: 700; }
+.hs-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.hs-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  background: var(--biela);
+  border: 1px solid var(--ciara-2);
+  border-radius: 8px;
+  color: var(--atrament);
+  font-size: 15px;
+  line-height: 1.2;
+  text-decoration: none;
+}
+.hs-chip:hover { border-color: var(--atrament); background: var(--zlta-svetla); }
+.hs-chip[aria-current="true"] { background: var(--zlta); border-color: var(--atrament); font-weight: 700; }
+
+.hs-cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px 24px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ciara-2);
+}
+.hs-cap-txt { flex: 1 1 280px; min-width: 0; }
+.hs-nazov { display: block; color: var(--atrament); font-size: 19px; font-weight: 700; line-height: 1.3; }
+.hs-int { display: block; margin-top: 2px; font-size: 15.5px; line-height: 1.5; }
+.hs-cta { flex: 0 1 auto; display: inline-flex; align-items: center; gap: 8px; font-size: 15.5px; font-weight: 650; }
+.hs-cta svg { width: 13px; height: 13px; flex: none; fill: currentColor; }
+.hs-note { max-width: 56ch; margin-top: 12px; color: var(--tlmene); font-size: 14px; line-height: 1.45; }
+
+/* ── pás pod úvodom: tri fakty a podniky ── */
+.pas { padding-block: 28px; background: var(--papier-2); border-block: 1px solid var(--ciara); }
+.pas-in { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.fakty { display: grid; gap: 10px 0; }
+.fakty div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.fakty .v { color: var(--atrament); font-size: clamp(19px, 2vw, 23px); font-weight: 800; letter-spacing: -.01em; white-space: nowrap; }
+.fakty .d { color: var(--tlmene); font-size: 14px; }
+.pas-k { margin-bottom: 8px; color: var(--atrament); font-size: 15px; font-weight: 700; }
+.pas-list { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; }
+.pas-list li { display: flex; align-items: center; gap: 12px; padding-right: 12px; font-size: 16px; white-space: nowrap; }
+.pas-list li::after { content: ""; width: 4px; height: 4px; flex: none; border-radius: 50%; background: var(--tlmene); }
+.pas-list li:last-child { padding-right: 0; }
+.pas-list li:last-child::after { display: none; }
+/* dlhé maďarské a poľské názvy („Villanyszerelők és vízvezeték-szerelők") sa do úzkeho mobilu nezmestia celé */
+@media (max-width: 479px) { .pas-list li { white-space: normal; } }
+@media (min-width: 640px) {
+  .fakty { grid-template-columns: repeat(3, auto); justify-content: start; gap: 0 32px; }
+  .fakty div { display: block; }
+  .fakty div + div { padding-left: 32px; border-left: 1px solid var(--ciara-2); }
+  .fakty .d { display: block; margin-top: 2px; }
+}
+@media (min-width: 960px) {
+  .pas-in { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 56px; }
+  .fakty { grid-template-columns: 1fr; gap: 12px 0; }
+  .fakty div + div { padding-left: 0; border-left: 0; padding-top: 12px; border-top: 1px solid var(--ciara-2); }
+  .pas-seg { padding-left: 56px; border-left: 1px solid var(--ciara-2); }
+}
+
+/* ── hlavičky sekcií ── */
+.sec-head--split { max-width: none; }
+@media (min-width: 960px) {
+  .sec-head--split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: end; gap: 0 64px; }
+  .sec-head--split p { margin-top: 0; }
+}
+#postup, #otazky { border-top: 1px solid var(--ciara); }
+
+/* ── výhody a služby ── */
+.dvojica { display: grid; gap: 48px; }
+.dv-pol { min-width: 0; }
+.dv-pol h2 { font-size: clamp(30px, 3.2vw, 44px); }
+.dv-list { margin-top: 26px; border-top: 1.5px solid var(--atrament); }
+.dv-list li {
+  position: relative;
+  padding: 14px 0 14px 32px;
+  border-bottom: 1px solid var(--ciara-2);
+  font-size: 16px;
+  line-height: 1.55;
+}
+.dv-list li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 21px;
+  width: 12px;
+  height: 7px;
+  border-left: 2.5px solid var(--atrament);
+  border-bottom: 2.5px solid var(--atrament);
+  transform: rotate(-45deg);
+}
+.dv-incl {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: var(--biela);
+  border: 1px solid var(--ciara-2);
+  border-radius: 12px;
+  font-size: 15.5px;
+}
+.dv-cta { margin-top: 24px; }
+@media (min-width: 960px) {
+  .dvojica { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 0; }
+  .dv-pol:first-child { padding-right: 56px; }
+  .dv-pol + .dv-pol { padding-left: 56px; border-left: 1px solid var(--ciara-2); }
+}
+@media (max-width: 959px) { .dv-pol + .dv-pol { padding-top: 40px; border-top: 1px solid var(--ciara-2); } }
+
+/* ── cenník ── */
+.baliky { display: grid; gap: 16px; margin-top: 36px; }
+@media (min-width: 960px) { .baliky { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; } }
+.balik {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 22px 22px;
+  background: var(--biela);
+  border: 1.5px solid var(--ciara-2);
+  border-radius: 14px;
+  transition: border-color .15s ease;
+}
+.balik:hover { border-color: var(--atrament); }
+.balik--top { border-color: var(--atrament); box-shadow: inset 0 0 0 1.5px var(--atrament); }
+.balik-flag {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  padding: 2px 9px;
+  background: var(--zlta);
+  border: 1.5px solid var(--atrament);
+  border-radius: 6px;
+  color: var(--atrament);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.balik-k { display: block; color: var(--atrament); font-size: 22px; font-weight: 800; letter-spacing: -.01em; line-height: 1.2; }
+.balik-cena {
+  margin-top: 12px;
+  color: var(--atrament);
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.balik-cena .od { margin-right: .3em; font-size: 17px; font-weight: 600; letter-spacing: 0; }
+.balik-trh { margin-top: 8px; color: var(--tlmene); font-size: 14px; }
+.balik-trh b { color: var(--text); font-weight: 600; }
+.balik-pre { margin-top: 14px; font-size: 15.5px; line-height: 1.5; }
+.balik-list {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ciara);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.balik-list li { position: relative; padding-left: 22px; }
+.balik-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .42em;
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid var(--atrament);
+  border-bottom: 2px solid var(--atrament);
+  transform: rotate(-45deg);
+}
+.balik-cas { display: block; margin-top: 16px; color: var(--atrament); font-size: 14.5px; font-weight: 650; }
+.balik-btn { width: 100%; margin-top: 14px; }
+
+/* e-shop stojí mimo balíčkov */
+.eshop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+  margin-top: 16px;
+  padding: 22px 24px;
+  background: var(--biela);
+  border: 1.5px solid var(--ciara-2);
+  border-radius: 14px;
+}
+.eshop-txt { flex: 1 1 420px; min-width: 0; }
+.eshop-txt p { max-width: 72ch; margin-top: 6px; font-size: 15.5px; }
+.eshop-txt p b { margin-right: 4px; font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+.eshop-btn { flex: none; }
+@media (max-width: 639px) { .eshop-btn { flex: 1 1 100%; } }
+
+.doplnky { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--ciara-2); }
+.extras-t { color: var(--atrament); font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+.extras { display: grid; gap: 10px; margin-top: 14px; }
+@media (min-width: 700px) { .extras { grid-template-columns: 1fr 1fr; gap: 10px 40px; } }
+.extras .x { display: flex; align-items: baseline; gap: 10px; font-size: 16px; }
+.extras .x .d { flex: 1; border-bottom: 1.5px dotted var(--ciara-2); transform: translateY(-.28em); }
+.extras .x .p { color: var(--atrament); font-weight: 700; white-space: nowrap; }
+.doplnky-note { max-width: 80ch; margin-top: 18px; color: var(--tlmene); font-size: 14.5px; }
+
+/* ── postup ── */
+.flow { display: grid; gap: 28px; margin-top: 40px; }
+@media (min-width: 640px) { .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 32px; } }
+@media (min-width: 1000px) { .flow { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.flow > div { padding-top: 16px; border-top: 1.5px solid var(--atrament); }
+.flow .k { display: block; color: var(--tlmene); font-size: 14px; font-weight: 650; }
+.flow .v { display: block; margin-top: 4px; color: var(--atrament); font-size: 21px; font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
+.flow .d { display: block; margin-top: 8px; font-size: 15.5px; line-height: 1.55; }
+.flow .you { display: block; margin-top: 10px; color: var(--tlmene); font-size: 14.5px; }
+
+/* ── časté otázky ── */
+@media (min-width: 960px) {
+  .faq-wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: start; gap: 64px; }
+  .faq-wrap .sec-head { position: sticky; top: 100px; }
+  .faq-wrap .faq { margin-top: 0; }
+}
+.faq { margin-top: 32px; border-top: 1.5px solid var(--atrament); }
+.qa { border-bottom: 1px solid var(--ciara-2); }
+.qa summary {
+  position: relative;
+  padding: 20px 44px 20px 0;
+  color: var(--atrament);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  list-style: none;
+  cursor: pointer;
+}
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::after {
+  content: "+";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+.qa[open] summary::after { content: "\2212"; }
+.qa summary:hover { text-decoration: underline; text-decoration-color: var(--zlta); text-decoration-thickness: 3px; text-underline-offset: 4px; }
+.qa p { max-width: 62ch; padding: 0 0 22px; }
+.qa p + p { margin-top: -8px; }
+
+/* ── kontakt: žltý pás ako na hlavnej stránke ── */
+.zaver { background: var(--zlta); border-block: 0; }
+.kontakt-hlava p { color: var(--atrament); }
+.kontakt-hlava a:hover { text-decoration-color: var(--atrament); }
+.sec-head--zaver { max-width: 72ch; }
+.kontakt-hlava { display: grid; gap: 28px; }
+@media (min-width: 960px) {
+  .kontakt-hlava { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: end; gap: 64px; }
+}
+.kh-omne { max-width: 52ch; font-size: 16px; }
+.kh-omne p + p { margin-top: 10px; }
+
+.kontakt-blok {
+  display: grid;
+  gap: 32px;
+  margin-top: 40px;
+  padding: 26px 22px;
+  background: var(--papier);
+  border: 1.5px solid var(--atrament);
+  border-radius: 14px;
+}
+@media (min-width: 900px) {
+  .kontakt-blok { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 40px; padding: 36px; }
+}
+.kb-lab { display: block; margin-bottom: 12px; color: var(--atrament); font-size: 20px; font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
+.kb-mail {
+  display: inline-block;
+  color: var(--atrament);
+  font-size: clamp(24px, 3.6vw, 40px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  overflow-wrap: anywhere;
+}
+.kb-mail:hover { text-decoration-thickness: 5px; }
+.kb-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+@media (max-width: 639px) { .kb-cta .btn { flex: 1 1 100%; } }
+.kb-note { max-width: 52ch; margin-top: 18px; font-size: 15.5px; }
+.kb-zoznam { display: grid; gap: 8px; margin-bottom: 16px; }
+.kb-zoznam li, .kb-konz-list li { position: relative; padding-left: 22px; line-height: 1.55; }
+.kb-zoznam li::before, .kb-konz-list li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: .62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--atrament);
+}
+.kb-p { max-width: 52ch; color: var(--tlmene); font-size: 15px; }
+.kb-konz, .kb-pata { grid-column: 1 / -1; border-top: 1px solid var(--ciara-2); }
+.kb-konz { padding-top: 26px; }
+.kb-konz-list { display: grid; gap: 8px; }
+@media (min-width: 720px) { .kb-konz-list { grid-template-columns: 1fr 1fr; gap: 8px 32px; } }
+.kb-konz .kb-p { max-width: none; margin-top: 14px; }
+.kb-pata { display: flex; flex-wrap: wrap; gap: 0 48px; }
+.c-line { flex: 1 1 260px; display: flex; flex-wrap: wrap; align-items: baseline; padding-block: 16px; text-decoration: none; }
+.c-line .k { order: 1; color: var(--atrament); font-size: 15px; font-weight: 700; }
+.c-line .n { order: 2; color: var(--tlmene); font-size: 14px; }
+.c-line .n::before { content: "·"; margin-inline: 6px; }
+.c-line .v {
+  order: 3;
+  flex-basis: 100%;
+  margin-top: 4px;
+  color: var(--atrament);
+  font-size: 17px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.c-line:hover .v { text-decoration-color: var(--zlta); text-decoration-thickness: 3px; }
+
+/* ── lišta na mobile: telefón, WhatsApp a dopyt na dosah palca ── */
+.bar-cta { display: none; }
+@media (max-width: 959px) {
+  body:has(.bar-cta) { padding-bottom: 76px; }
+  .bar-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    background: var(--papier);
+    border-top: 1px solid var(--ciara-2);
   }
-}
-/* Medzi 960 a 1199 px má ľavý stĺpec len 420–500 px a dve veľké tlačidlá sa doň
-   vedľa seba nezmestia (potrebujú ~500 px). Namiesto jedného širšieho a druhého
-   užšieho pod ním stoja obe v plnej šírke stĺpca — to isté na mobile pod 640 px,
-   kde sa lámu vždy. Od 1200 px sú v jednom riadku. */
-@media (min-width:960px) and (max-width:1199px),(max-width:639px){
-  .hero--show .cta-row .btn{flex:1 1 100%;justify-content:center;text-align:center}
-}
-@media (max-width:639px){
-  .kb-cta .btn,.dv-cta .btn{flex:1 1 100%;justify-content:center;text-align:center}
-}
-
-/* pravý stĺpec: rám so živou ukážkou */
-.hero-show{position:relative;min-width:0}
-.hs-stage{position:relative;isolation:isolate}
-/* dva naznačené rámy za hlavným — „takýchto je 44". Len okraj, žiadny obsah. */
-.hs-stage::before,.hs-stage::after{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  border:1px solid var(--line);border-radius:8px;background:rgba(19,16,16,.6);
-}
-.hs-stage::before{transform:translate(10px,10px);opacity:.8}
-.hs-stage::after{transform:translate(20px,20px);opacity:.4}
-.hs-frame{
-  box-shadow:0 44px 90px -40px rgba(233,180,95,.28),0 30px 60px -30px rgba(0,0,0,.95);
-  transition:transform .25s cubic-bezier(.2,.7,.2,1),border-color .2s ease;
-}
-.hs-stage:hover .hs-frame,.hs-stage:focus-within .hs-frame{transform:translateY(-4px);border-color:rgba(233,180,95,.55)}
-/* mono štítok vysunutý nad ľavý horný roh rámu */
-.hs-tag{
-  position:absolute;top:-13px;left:14px;z-index:3;pointer-events:none;
-  display:inline-flex;align-items:center;gap:7px;
-  font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--brass);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 11px;
-}
-.hs-tag i{width:6px;height:6px;border-radius:50%;background:#8fae7d;animation:live-pulz 2.2s ease-out infinite}
-@keyframes live-pulz{
-  0%{box-shadow:0 0 0 0 rgba(143,174,125,.55)}
-  70%{box-shadow:0 0 0 7px rgba(143,174,125,0)}
-  100%{box-shadow:0 0 0 0 rgba(143,174,125,0)}
-}
-/* štítok „naživo" v lište rámu — používa ho hero aj karty v sekcii Ukážky */
-.frame .live{
-  margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:5px;
-  font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8fae7d;
-}
-.frame .live::before{content:"";width:5px;height:5px;border-radius:50%;background:#8fae7d}
-/* Celý rám je jeden odkaz: priehľadná plocha cez celý .hs-stage, viditeľná je len pilulka v rohu.
-   Iframe ostáva v <div>, nie v <a> — platné HTML, iframe má pointer-events:none. */
-.hs-open{position:absolute;inset:0;z-index:2;display:block;text-decoration:none;color:inherit;border-radius:8px;outline-offset:6px}
-.hs-open-pill{
-  position:absolute;right:12px;bottom:12px;
-  display:inline-flex;align-items:center;gap:7px;
-  font-size:.82rem;font-weight:700;color:var(--on-brass);
-  background:linear-gradient(160deg,var(--brass-hi),var(--brass-lo));
-  padding:9px 14px;border-radius:2px;box-shadow:0 10px 30px -14px rgba(233,180,95,.65);
-  opacity:.92;transition:opacity .2s ease,transform .2s ease;
-}
-.hs-open-pill svg{width:12px;height:12px;fill:currentColor;flex:none}
-.hs-open:hover .hs-open-pill,.hs-open:focus-visible .hs-open-pill{opacity:1;transform:translateY(-2px)}
-/* Iframe nemá v HTML src (dopĺňa ho script.js náhodným výberom). Bez JavaScriptu by tu
-   stál prázdny about:blank rám — skryje sa a ukážku dodá <iframe> v <noscript>. */
-html:not(.js) #hs-iframe{display:none}
-/* prepnutie odvetvia: rám stmavne, nová ukážka sa prelína. Kým sa načítava, v ráme je
-   kostra stránky s preletujúcim leskom (sekcia 56) — bez textu, aby sedela v každom jazyku. */
-.hs-frame .shot--live iframe{transition:opacity .35s ease}
-.hero-show.nacitava .shot--live iframe{opacity:0}
-/* Pod 960 px sa ukážka v ráme renderuje v šírke 1000 px namiesto 1400, aby písmo ostalo čitateľné.
-   script.js si základ mierky číta z offsetWidth iframu, takže stačí toto pravidlo. */
-@media (max-width:959px){.hs-frame .shot--live iframe{width:1000px;height:625px}}
-@media (max-width:639px){
-  .hs-stage::after{display:none}
-  .hs-stage::before{transform:translate(8px,8px)}
-}
-
-/* chipy odvetví pod rámom */
-.hs-pick{margin-top:22px}
-.hs-pick-k{
-  display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--brass);margin-bottom:10px;
-}
-.hs-chips{display:flex;flex-wrap:wrap;gap:8px}
-.hs-chip{
-  text-decoration:none;font-size:.86rem;line-height:1.2;color:var(--ink-2);
-  border:1px solid var(--line);border-radius:999px;padding:8px 14px;
-  background:rgba(255,255,255,.02);
-  transition:border-color .18s ease,color .18s ease,background .18s ease;
-}
-.hs-chip:hover{border-color:var(--brass);color:var(--brass)}
-.hs-chip[aria-current="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass);font-weight:600}
-
-/* titulok ukážky, ktorý sa prepína s chipom, a výzva priamo pri dôkaze */
-.hs-cap{
-  margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft);
-  display:flex;flex-wrap:wrap;gap:10px 24px;align-items:flex-end;justify-content:space-between;
-}
-.hs-cap-txt{flex:1 1 280px;min-width:0}
-.hs-nazov{display:block;font-family:var(--serif);font-weight:700;font-size:1.14rem;letter-spacing:-.01em}
-.hs-int{display:block;margin-top:4px;color:var(--ink-2);font-size:.9rem;max-width:54ch}
-.hs-cta{
-  flex:none;text-decoration:none;color:var(--brass);font-size:.9rem;font-weight:600;
-  display:inline-flex;align-items:center;gap:8px;padding-bottom:2px;
-  border-bottom:1px solid rgba(233,180,95,.45);transition:color .18s ease,border-color .18s ease;
-}
-.hs-cta svg{width:12px;height:12px;fill:currentColor;flex:none}
-.hs-cta:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
-.hs-note{margin-top:12px;font-size:.84rem;color:var(--mut);max-width:56ch}
-
-@media (prefers-reduced-motion:reduce){
-  .hs-tag i{animation:none}
-  .hs-frame,.hs-open-pill,.hs-chip,.hs-cta,.hs-frame .shot--live iframe{transition:none}
-  .hs-stage:hover .hs-frame,.hs-stage:focus-within .hs-frame{transform:none}
-  .hs-open:hover .hs-open-pill{transform:none}
-}
-
-/* ---------- 06 · pás pod hero: tri fakty a podniky, pre ktoré robím weby ----------
-   Alex 12.09.2026: fakt „0 € / mesiac" z hero vyhodiť a zvyšné tri fakty spojiť
-   so zoznamom podnikov do jedného pásu. Zoznam stojí — pôvodný bežiaci pás pri
-   obmedzenom pohybe aj tak stál zalomený, takto ho všetci vidia rovnako.
-   Pod 640 px je každý fakt jeden riadok (číslo a popis vedľa seba), od 640 px
-   tri fakty v riadku s deličmi nad zoznamom, od 960 px fakty vľavo pod sebou
-   a zoznam vpravo, medzi nimi zvislá čiara ako v sekcii výhod. */
-.pas{
-  border-block:1px solid var(--line-soft);background:var(--bg-2);
-  position:relative;z-index:1;padding-block:clamp(22px,3vw,36px);
-}
-.pas-in{display:grid;gap:clamp(18px,3vw,28px)}
-.fakty{display:grid;gap:8px 0}
-.fakty div{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
-.fakty .v{font-family:var(--serif);font-weight:700;font-size:clamp(1.22rem,2vw,1.62rem);color:var(--brass);white-space:nowrap}
-.fakty .d{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
-.pas-k{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:8px}
-.pas-list{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0}
-.pas-list li{
-  display:flex;align-items:center;gap:clamp(12px,1.5vw,20px);padding-right:clamp(12px,1.5vw,20px);
-  font-family:var(--serif);font-size:clamp(1rem,1.4vw,1.18rem);color:var(--ink-2);white-space:nowrap;
-}
-.pas-list li::after{content:"";width:5px;height:5px;flex:none;background:var(--brass);transform:rotate(45deg)}
-.pas-list li:last-child{padding-right:0}
-.pas-list li:last-child::after{display:none}
-@media (min-width:640px){
-  .fakty{grid-template-columns:repeat(3,auto);justify-content:start;gap:0 clamp(24px,4vw,56px)}
-  .fakty div{display:block}
-  .fakty div + div{border-left:1px solid var(--line-soft);padding-left:clamp(24px,4vw,56px)}
-  .fakty .d{display:block;margin-top:4px}
-}
-@media (min-width:960px){
-  .pas-in{grid-template-columns:auto minmax(0,1fr);gap:clamp(32px,4vw,60px);align-items:center}
-  .fakty{grid-template-columns:1fr;gap:12px 0}
-  .fakty div + div{border-left:0;padding-left:0;border-top:1px solid var(--line-soft);padding-top:12px}
-  .pas-seg{border-left:1px solid var(--line-soft);padding-left:clamp(32px,4vw,60px)}
-}
-
-/* ---------- 07 · rám prehliadača + náhľad ---------- */
-.frame{
-  border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#1d1714;
-  box-shadow:0 30px 60px -38px rgba(0,0,0,.95);
-}
-.frame .bar{
-  display:flex;align-items:center;gap:8px;padding:7px 10px;
-  background:#241c18;border-bottom:1px solid rgba(255,255,255,.06);
-}
-.frame .dots{display:flex;gap:4px;flex:none}
-.frame .dots i{width:7px;height:7px;border-radius:50%;background:#4a3b32;display:block}
-.frame .url{
-  flex:1;min-width:0;display:flex;align-items:center;gap:6px;
-  background:#100c0b;border-radius:999px;color:#a99c8d;
-  font-family:var(--mono);font-size:10px;letter-spacing:.02em;padding:3px 10px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.frame .url svg{width:8px;height:8px;fill:#8fae7d;flex:none}
-.shot{display:block;width:100%;height:auto;aspect-ratio:320/200;background:#0d0a09;font-family:var(--sans)}
-/* Živý náhľad: v ráme beží samotná ukážka, zmenšená. Nemá ako zostarnúť —
-   vždy ukazuje presne to, čo návštevník uvidí po kliknutí. */
-.shot--live{position:relative;overflow:hidden}
-.shot--live iframe{
-  position:absolute;top:0;left:0;width:1400px;height:875px;border:0;
-  transform-origin:0 0;transform:scale(var(--shot-s,.27));
-  pointer-events:none;
-}
-.frame--lg .bar{padding:9px 13px;gap:10px}
-.frame--lg .url{font-size:11.5px;padding:4px 12px}
-.frame--lg .dots i{width:8px;height:8px}
-
-/* ---------- 08 · mriežka ukážok ---------- */
-.uk-grid{display:grid;gap:clamp(20px,2.6vw,30px);margin-top:clamp(32px,4vw,52px)}
-@media (min-width:760px){.uk-grid{grid-template-columns:repeat(2,1fr)}}
-@media (min-width:1180px){.uk-grid{grid-template-columns:repeat(3,1fr)}}
-.uk-grid--lg{gap:clamp(26px,3.4vw,44px)}
-@media (min-width:860px){.uk-grid--lg{grid-template-columns:repeat(2,1fr)}}
-@media (min-width:1180px){.uk-grid--lg{grid-template-columns:repeat(2,1fr)}}
-
-.uk{
-  position:relative;display:flex;flex-direction:column;gap:16px;
-  background:var(--panel);border:1px solid var(--line-soft);padding:clamp(14px,1.8vw,18px);
-  transition:border-color .2s ease,transform .2s ease;
-}
-.uk:hover{border-color:rgba(233,180,95,.45);transform:translateY(-3px)}
-.uk:focus-within{border-color:var(--brass)}
-.uk-body{display:flex;flex-direction:column;gap:8px;flex:1;padding-inline:2px}
-.uk-typ{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass)}
-.uk h3{font-size:1.3rem}
-.uk-int{color:var(--ink-2);font-size:.96rem;flex:1}
-/* Najdôležitejšie kliknutie na stránke — musí vyzerať ako tlačidlo, nie ako odkaz */
-.uk-cta{
-  align-self:stretch;margin-top:10px;text-decoration:none;color:var(--brass);
-  font-size:.9rem;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  border:1px solid var(--brass-lo);border-radius:2px;padding:11px 18px;
-  transition:background .18s ease,color .18s ease,border-color .18s ease;
-}
-.uk-cta::after{content:"";position:absolute;inset:0}   /* celá karta je klikateľná */
-.uk-cta svg{width:12px;height:12px;fill:currentColor;flex:none}
-.uk:hover .uk-cta,.uk-cta:focus-visible{
-  background:linear-gradient(160deg,var(--brass-hi),var(--brass-lo));
-  color:var(--on-brass);border-color:var(--brass-hi);
-}
-
-/* ---------- 09 · filtre v galérii ---------- */
-.filtre{display:none}
-.js .filtre{
-  display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(26px,3vw,38px);
-  padding-bottom:clamp(6px,1vw,10px);
-}
-.filt{
-  background:transparent;border:1px solid var(--line);color:var(--ink-2);
-  padding:9px 17px;border-radius:999px;font-size:.88rem;cursor:pointer;
-  transition:border-color .18s ease,color .18s ease,background .18s ease;
-}
-.filt:hover{border-color:var(--brass);color:var(--brass)}
-.filt[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass);font-weight:600}
-.uk[hidden]{display:none}
-.filt-info{margin-top:16px;font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;color:var(--mut)}
-
-/* ---------- 11 · cenník: doplnky ---------- */
-.extras-t{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mut);margin-top:clamp(28px,3.4vw,44px)}
-.extras{margin-top:16px;display:grid;gap:12px}
-@media (min-width:700px){.extras{grid-template-columns:1fr 1fr;gap:12px 40px}}
-.extras .x{display:flex;align-items:baseline;gap:10px;font-size:.94rem}
-.extras .x .n{color:var(--ink-2)}
-.extras .x .d{flex:1;border-bottom:1px dotted rgba(214,196,170,.3);transform:translateY(-.28em)}
-.extras .x .p{color:var(--brass);font-family:var(--mono);font-size:.85rem;white-space:nowrap}
-
-/* ---------- 12 · postup ---------- */
-.flow{margin-top:clamp(32px,4vw,52px);display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
-@media (min-width:620px){.flow{grid-template-columns:1fr 1fr}}
-@media (min-width:1000px){.flow{grid-template-columns:repeat(4,1fr)}}
-.flow div{background:var(--bg);padding:clamp(18px,2.4vw,26px)}
-.band .flow div{background:var(--bg-2)}
-.flow .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--brass)}
-.flow .v{display:block;font-family:var(--serif);font-size:1.24rem;margin-top:8px}
-.flow .d{display:block;font-size:.92rem;color:var(--ink-2);margin-top:6px}
-
-/* ---------- 15 · časté otázky ---------- */
-.faq{margin-top:clamp(30px,3.6vw,46px);border-top:1px solid var(--line)}
-.qa{border-bottom:1px solid var(--line)}
-.qa summary{
-  list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;
-  padding-block:clamp(16px,2.2vw,20px);
-  font-family:var(--serif);font-weight:700;font-size:clamp(1.1rem,2.1vw,1.34rem);color:var(--ink);
-}
-.qa summary::-webkit-details-marker{display:none}
-.qa summary::after{
-  content:"";flex:none;margin-left:auto;width:9px;height:9px;
-  border-right:2px solid var(--brass);border-bottom:2px solid var(--brass);
-  transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s ease;
-}
-.qa[open] summary::after{transform:rotate(-135deg)}
-.qa summary:hover{color:var(--brass)}
-.qa p{color:var(--ink-2);max-width:70ch;padding-bottom:clamp(18px,2.4vw,24px);font-size:.98rem}
-.qa p + p{padding-top:0;margin-top:-8px}
-
-.c-lines{border-top:1px solid var(--line)}
-.c-line{
-  display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 18px;
-  border-bottom:1px solid var(--line);padding-block:clamp(14px,2.2vw,20px);text-decoration:none;
-  transition:padding-left .2s ease,color .2s ease;
-}
-.c-line:hover{padding-left:10px;color:var(--brass)}
-.c-line .k{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);width:96px;flex:none}
-.c-line .v{font-family:var(--serif);font-size:clamp(1.08rem,2.4vw,1.4rem);word-break:break-word}
-.c-line .n{margin-left:auto;font-size:.8rem;color:var(--mut);font-family:var(--mono)}
-
-/* ---------- 47 · časté otázky v dvoch stĺpcoch s lepiacou hlavičkou ---------- */
-@media (min-width:960px){
-  .faq-wrap{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:clamp(32px,5vw,72px);align-items:start}
-  .faq-wrap .sec-head{position:sticky;top:96px}
-  .faq-wrap .faq{margin-top:0}
-}
-
-/* ---------- 17 · pätička ---------- */
-.foot{border-top:1px solid var(--line-soft);padding-block:32px;background:var(--bg-2)}
-.foot-in{display:flex;flex-wrap:wrap;gap:12px 26px;align-items:center;font-size:.85rem;color:var(--mut)}
-.foot-in a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line)}
-.foot-in a:hover{color:var(--brass);border-bottom-color:var(--brass)}
-.foot-in .r{margin-left:auto}
-
-/* ---------- 18 · dokumentové stránky (404, ochrana údajov) ---------- */
-.doc{padding-block:clamp(48px,7vw,92px);max-width:74ch}
-.doc h1{font-size:clamp(1.9rem,4.6vw,3rem)}
-.doc h2{font-size:clamp(1.2rem,2.4vw,1.5rem);margin-top:clamp(28px,3.4vw,42px)}
-.doc p{margin-top:14px;color:var(--ink-2)}
-.doc p a{color:var(--brass)}
-.doc .stamp{font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;color:var(--mut);text-transform:none;margin-top:12px}
-.back{
-  display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--brass);
-  font-size:.88rem;margin-bottom:clamp(22px,3vw,34px);
-}
-.back svg{width:13px;height:13px;fill:currentColor;transform:rotate(180deg)}
-.back:hover{color:var(--brass-hi)}
-.oops{padding-block:clamp(60px,11vw,140px);max-width:60ch}
-.oops-code{font-family:var(--mono);font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);margin-bottom:16px}
-.oops p{color:var(--ink-2);margin-top:16px}
-.oops .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-
-/* ---------- 19 · odhalenie pri scrollovaní (len keď beží JS) ---------- */
-.js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
-.js .rv.in{opacity:1;transform:none}
-
-/* ---------- 20 · žiara za sekciou výhod a služieb ---------- */
-.vyh-sec{overflow:hidden}
-.vyh-sec::before{
-  content:"";position:absolute;left:50%;top:-22%;transform:translateX(-50%);
-  width:min(1280px,150vw);height:min(680px,88vw);pointer-events:none;z-index:0;
-  background:radial-gradient(50% 50% at 50% 50%,rgba(233,180,95,.11),rgba(233,180,95,.03) 45%,transparent 72%);
-}
-
-/* ---------- 22 · postup: čo potrebujem od klienta ---------- */
-.flow .you{
-  display:block;margin-top:14px;padding-top:11px;border-top:1px solid var(--line-soft);
-  font-family:var(--mono);font-size:.73rem;letter-spacing:.03em;line-height:1.65;color:var(--brass);
-}
-
-/* ---------- 24 · veľké tlačidlo ---------- */
-.btn-lg{padding:17px 32px;font-size:1.02rem}
-
-/* ---------- 26 · kontakt ako záver stránky ---------- */
-.zaver{overflow:hidden}
-.zaver::before{
-  content:"";position:absolute;left:50%;top:-26%;transform:translateX(-50%);
-  width:min(1320px,155vw);height:min(720px,92vw);pointer-events:none;z-index:0;
-  background:radial-gradient(50% 50% at 50% 50%,rgba(233,180,95,.13),rgba(233,180,95,.035) 45%,transparent 72%);
-}
-.sec-head--zaver{max-width:72ch}
-.sec-head--zaver p{max-width:68ch}
-.sec-head--zaver p b{color:var(--ink);font-weight:600}
-.c-note{margin-top:22px;color:var(--mut);font-size:.9rem;max-width:46ch}
-
-/* ---------- 27 · odkaz vnútri odseku ----------
-   Vlastná trieda, nie potomkový selektor (.blok a), aby nikdy neprebila
-   farbu textu tlačidlám, ktoré v tom istom bloku stoja. */
-.inline-link{
-  color:var(--brass);text-decoration:none;
-  border-bottom:1px solid rgba(233,180,95,.45);
-  transition:color .18s ease,border-color .18s ease;
-}
-.inline-link:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
-
-/* ---------- 50 · kontakt ako jedna karta ----------
-   Adresa a tlačidlá vľavo, „čo mi napísať" vpravo, pod nimi cez celú šírku
-   „čo dostanete" a v päte karty podpora a GitHub. Predtým to boli dva bloky
-   s dvoma tlačidlami Zavolať a dvoma mailovými — Alex ich chcel dokopy. */
-.kb-konz,.kb-pata{grid-column:1/-1;border-top:1px solid var(--line)}
-.kb-konz{padding-top:clamp(20px,2.6vw,28px)}
-.kb-konz-list{display:grid;gap:10px}
-@media (min-width:720px){.kb-konz-list{grid-template-columns:1fr 1fr;gap:10px 30px}}
-/* odrážka absolútne, nie ako flex položka — pri flexe by sa dlhá veta roztrhla */
-.kb-konz-list li{position:relative;padding-left:16px;color:var(--ink-2);font-size:.94rem;line-height:1.6;max-width:52ch}
-.kb-konz-list li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;background:var(--brass);transform:rotate(45deg)}
-.kb-konz .kb-p{margin-top:16px;max-width:none}
-.kb-pata{display:flex;flex-wrap:wrap;gap:0 clamp(24px,4vw,56px)}
-.kb-pata .c-line{flex:1 1 260px;border-bottom:0}
-
-/* ---------- 31 · obmedzený pohyb ---------- */
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  /* sekcie sa pri obmedzenom pohybe len prelínajú, bez posunu (od 24.09.2026) */
-  .js .rv{transform:none !important;transition:opacity .6s ease}
-  .btn,.uk,.balik,.c-line,.qa summary::after{transition:none !important}
-  .btn-1:hover,.uk:hover,.balik:hover{transform:none !important}
-}
-
-/* ---------- 32 · mikrotext pod hlavným tlačidlom ---------- */
-.cta-micro{
-  margin-top:14px;font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;
-  color:var(--mut);
-}
-
-/* ---------- 39 · lišta s výzvou na mobile ----------
-   Na malej obrazovke je telefón a dopyt vždy na dosah palca. */
-.bar-cta{display:none}
-@media (max-width:719px){
-  .bar-cta{
-    position:fixed;left:0;right:0;bottom:0;z-index:70;
-    display:flex;gap:8px;align-items:center;
-    padding:9px calc(10px + env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left));
-    background:rgba(19,16,16,.97);border-top:1px solid var(--line);
-    box-shadow:0 -12px 30px -20px #000;
-    transform:translateY(110%);transition:transform .3s cubic-bezier(.2,.7,.2,1);
+  .bar-tel, .bar-wa, .bar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    border: 1.5px solid var(--atrament);
+    border-radius: 10px;
+    color: var(--atrament);
+    font-size: 15.5px;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
   }
-  .bar-cta.vidno{transform:none}
-  .bar-tel{
-    flex:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;
-    border:1px solid var(--line);border-radius:2px;padding:12px 15px;
-    font-size:.9rem;font-weight:600;color:var(--ink);background:var(--panel);
-  }
-  .bar-tel svg{width:14px;height:14px;fill:var(--brass);flex:none}
-  .bar-btn{
-    flex:1;text-align:center;text-decoration:none;border-radius:2px;padding:12px 14px;
-    font-size:.94rem;font-weight:600;color:var(--on-brass);
-    background:linear-gradient(160deg,var(--brass-hi),var(--brass-lo));
-  }
-  /* aby lišta neprekryla koniec pätičky */
-  body{padding-bottom:72px}
+  .bar-tel { flex: none; gap: 8px; padding: 0 14px; }
+  .bar-tel svg { width: 16px; height: 16px; fill: currentColor; }
+  .bar-wa { flex: none; width: 50px; }
+  .bar-wa svg { width: 22px; height: 22px; }
+  .bar-btn { flex: 1; min-width: 0; padding: 0 12px; background: var(--zlta); line-height: 1.2; text-align: center; white-space: normal; }
+}
+@media (max-width: 479px) {
+  .bar-tel { width: 50px; padding: 0; font-size: 0; gap: 0; }
+  .bar-tel svg { width: 19px; height: 19px; }
 }
 
-/* ---------- 40 · pätička s dvoma adresami ---------- */
-.foot-in a{white-space:nowrap}
-
-@media (prefers-reduced-motion:reduce){
-  .bar-cta{transition:none}
-}
-
-/* ---------- 42 · kontaktné riadky s dlhými adresami ----------
-   support@apoliak.online je dlhšia než ostatné hodnoty a zhadzovala
-   si poznámku vpravo na vlastný riadok. */
-.c-line{gap:4px 14px}
-.c-line .v{font-size:clamp(1rem,2.1vw,1.28rem);flex:1 1 auto;min-width:0}
-.c-line .n{flex:none;white-space:nowrap}
-
-/* ---------- 43 · priamy kontakt namiesto formulára ----------
-   Formulár otváral mailto: a u návštevníka bez nastaveného e-mailového
-   programu neurobil nič — sľuboval odoslanie, ktoré nevedel splniť.
-   Namiesto neho stojí adresa, ktorú si vie každý prečítať aj prepísať. */
-.kontakt-blok{
-  margin-top:clamp(26px,3.4vw,40px);
-  display:grid;gap:clamp(26px,3.4vw,48px);
-  border:1px solid var(--line);background:var(--panel);
-  padding:clamp(22px,3.4vw,40px);
-}
-@media (min-width:900px){.kontakt-blok{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
-.kb-lab{
-  display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--brass);margin-bottom:14px;
-}
-.kb-mail{
-  display:inline-block;font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.34rem,4.2vw,2.5rem);line-height:1.15;letter-spacing:-.01em;
-  color:var(--brass);text-decoration:none;word-break:break-word;
-  border-bottom:2px solid rgba(233,180,95,.35);padding-bottom:4px;
-}
-.kb-mail:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
-.kb-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(22px,2.8vw,30px)}
-.kb-note{margin-top:18px;color:var(--ink-2);font-size:.96rem;max-width:52ch}
-.kb-zoznam{display:grid;gap:11px;margin-bottom:18px}
-.kb-zoznam li{
-  position:relative;padding-left:19px;color:var(--ink);font-size:1rem;line-height:1.55;
-}
-.kb-zoznam li::before{
-  content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;
-  background:var(--brass);transform:rotate(45deg);
-}
-.kb-p{color:var(--mut);font-size:.93rem;max-width:46ch}
-
-/* ---------- 44 · kontaktné riadky v užšom stĺpci ----------
-   Serif má v Georgii staré štýlové číslice, takže „Apoliak7777" skákalo
-   pod účiaru. Hodnoty preto idú bezpätkovým rezom a popisok vľavo je užší,
-   aby sa dlhá adresa aj s poznámkou zmestila do jedného riadku. */
-.c-line .v{
-  font-family:var(--sans);font-weight:600;
-  font-size:clamp(.96rem,1.7vw,1.1rem);letter-spacing:.005em;
-}
-/* V užšom stĺpci sa popisok, adresa a poznámka do jedného riadku nezmestia,
-   tak popisok s poznámkou stoja nad adresou. */
-.kb-pata .c-line{
-  display:flex;flex-wrap:wrap;align-items:baseline;gap:0;
-  padding-block:clamp(13px,1.8vw,17px);
-}
-.kb-pata .c-line:hover{padding-left:0}
-.kb-pata .c-line .k{order:1;width:auto;font-size:.66rem;letter-spacing:.16em}
-.kb-pata .c-line .n{
-  order:2;margin-left:0;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
-}
-.kb-pata .c-line .n::before{content:"·";margin-inline:6px}
-.kb-pata .c-line .v{order:3;flex-basis:100%;margin-top:8px}
-
-/* ---------- 49 · rytmus hlavičiek: rozdelená (h2 vľavo, odsek vpravo) + štítok s kosoštvorcom ---------- */
-.sec-tag{display:flex;align-items:center;gap:10px}
-.sec-tag::before{content:"";width:5px;height:5px;flex:none;background:var(--brass);transform:rotate(45deg)}
-.sec-head--split{max-width:none}
-@media (min-width:900px){
-  .sec-head--split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0 clamp(32px,5vw,72px);align-items:end}
-  .sec-head--split .sec-tag{grid-column:1/-1}
-  .sec-head--split p{margin-top:0;max-width:44ch;padding-bottom:.35em}
-}
-
-/* ---------- 51 · výhody a služby v jednej sekcii, predelené čiarou ----------
-   Alex: „toto by som spojil, predelil čiarou, že polka bude tam a druhá tam."
-   Vľavo šesť dôvodov, vpravo tri druhy zákaziek (#sluzby ostáva kotvou pre
-   odkazy z galérie a dokumentových stránok). Položka = tučný začiatok + jedna
-   veta, číslo kreslí CSS počítadlo. Pod 960 px stoja polovice pod sebou
-   a čiara je vodorovná. */
-.dvojica{display:grid;gap:clamp(34px,5vw,56px)}
-.dv-pol{min-width:0}
-.dv-list{margin-top:clamp(22px,2.6vw,30px);counter-reset:dv;border-top:1px solid var(--line-soft)}
-.dv-list li{
-  counter-increment:dv;position:relative;
-  padding:clamp(13px,1.7vw,17px) 0 clamp(13px,1.7vw,17px) 50px;
-  border-bottom:1px solid var(--line-soft);color:var(--ink-2);font-size:.97rem;line-height:1.6;
-}
-.dv-list li::before{
-  content:counter(dv,decimal-leading-zero);position:absolute;left:0;top:clamp(11px,1.5vw,15px);
-  font-family:var(--serif);font-style:italic;font-size:1.45rem;line-height:1.3;color:rgba(233,180,95,.6);
-}
-.dv-list li b{color:var(--ink);font-family:var(--serif);font-weight:700;font-size:1.06rem;letter-spacing:-.005em}
-.dv-incl{
-  margin-top:20px;font-size:.92rem;color:var(--ink-2);
-  border-left:2px solid var(--brass-lo);padding:8px 0 8px 14px;
-  background:linear-gradient(90deg,rgba(233,180,95,.07),transparent 72%);
-}
-.dv-incl b{color:var(--ink);font-weight:600}
-.dv-cta{margin-top:24px}
-.dv-cta .btn{padding:13px 18px}   /* obe tlačidlá sa zmestia do jedného riadku pravej polovice */
-@media (min-width:960px){
-  .dvojica{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0}
-  .dv-pol:first-child{padding-right:clamp(32px,4.5vw,64px)}
-  .dv-pol + .dv-pol{border-left:1px solid var(--line);padding-left:clamp(32px,4.5vw,64px)}
-}
-@media (max-width:959px){
-  .dv-pol + .dv-pol{border-top:1px solid var(--line);padding-top:clamp(30px,4vw,40px)}
-}
-
-/* ---------- 52 · cenník ako tri karty vedľa seba ----------
-   Namiesto jednej vysokej karty s rozbaľovacími zoznamami tri karty s piatimi
-   bodmi, Standard zvýraznený. Doplnky pod nimi v pôvodnom bodkovanom zápise. */
-.baliky{margin-top:clamp(30px,3.6vw,46px);display:grid;gap:clamp(16px,2vw,24px)}
-@media (min-width:960px){.baliky{grid-template-columns:repeat(3,1fr);align-items:stretch}}   /* pod 960 px by karty mali ~250 px, text by sa lámal po troch slovách */
-.balik{
-  position:relative;display:flex;flex-direction:column;
-  background:var(--panel);border:1px solid var(--line);padding:clamp(22px,2.6vw,32px);
-  transition:border-color .2s ease,transform .2s ease;
-}
-.balik:hover{border-color:rgba(233,180,95,.45);transform:translateY(-3px)}
-.balik--top{
-  border-color:var(--brass-lo);
-  background:linear-gradient(170deg,rgba(233,180,95,.1),transparent 48%),var(--panel);
-  box-shadow:0 30px 60px -40px rgba(233,180,95,.4);
-}
-.balik-flag{
-  position:absolute;top:-11px;left:clamp(22px,2.6vw,32px);
-  font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--on-brass);background:var(--brass);padding:4px 10px;border-radius:2px;white-space:nowrap;
-}
-.balik-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass)}
-.balik-cena{
-  margin-top:10px;font-family:var(--serif);font-weight:700;
-  font-size:clamp(2rem,3vw,2.6rem);line-height:1;letter-spacing:-.01em;color:var(--ink);white-space:nowrap;
-}
-.balik-cena .od{font-family:var(--sans);font-size:.42em;font-weight:400;letter-spacing:.02em;color:var(--mut);margin-right:.5em;vertical-align:.5em}
-.balik-pre{margin-top:14px;color:var(--ink-2);font-size:.95rem;line-height:1.6}
-.balik-list{margin-top:18px;padding-top:18px;border-top:1px solid var(--line-soft);display:grid;gap:9px;align-content:start;flex:1}
-.balik-list li{position:relative;padding-left:20px;font-size:.93rem;color:var(--ink-2);line-height:1.55}
-.balik-list li::before{                      /* odfajknutie kreslené rámčekom, nie znakom */
-  content:"";position:absolute;left:0;top:.5em;width:9px;height:5px;
-  border-left:1.6px solid var(--brass);border-bottom:1.6px solid var(--brass);transform:rotate(-45deg);
-}
-.balik-cas{display:block;margin-top:18px;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
-.balik-btn{margin-top:16px;justify-content:center;text-align:center}
-/* porovnanie s bežnou cenou na trhu — z verejných cenníkov slovenských tvorcov webov, sept. 2026 */
-.balik-trh{margin-top:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
-.balik-trh b{color:var(--ink-2);font-weight:400}
-/* e-shop stojí mimo Pro — pri 890 € by bol košík s platbami zadarmo */
-.eshop{
-  margin-top:clamp(16px,2vw,24px);display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between;
-  border:1px solid var(--line);border-left:3px solid var(--brass);
-  background:linear-gradient(100deg,rgba(233,180,95,.08),transparent 60%),var(--panel);
-  padding:clamp(18px,2.4vw,26px) clamp(20px,2.6vw,32px);
-}
-.eshop-txt{flex:1 1 420px;min-width:0}
-.eshop-txt p{margin-top:8px;color:var(--ink-2);font-size:.95rem;line-height:1.6;max-width:72ch}
-.eshop-txt p b{color:var(--ink);font-family:var(--serif);font-size:1.3rem;font-weight:700;margin-right:2px}
-.eshop-btn{flex:none}
-@media (max-width:639px){.eshop-btn{flex:1 1 100%;justify-content:center}}
-.doplnky{margin-top:clamp(28px,3.4vw,44px);padding-top:clamp(22px,2.6vw,30px);border-top:1px solid var(--line-soft)}
-.doplnky .extras-t{margin-top:0}
-.doplnky-note{margin-top:18px;color:var(--mut);font-size:.9rem;max-width:80ch}
-
-/* ---------- 53 · kontakt s krátkym „o mne" v hlavičke ----------
-   Samostatná sekcia „O mne" bola podľa Alexa navyše — tri vety o tom, kto web
-   robí, stoja vpravo od nadpisu kontaktu a odkaz na ukážky nahrádza referencie. */
-.kontakt-hlava{display:grid;gap:clamp(24px,3vw,40px)}
-.kh-omne{
-  border-left:2px solid var(--brass-lo);padding-left:clamp(16px,2vw,24px);
-  color:var(--ink-2);font-size:.95rem;line-height:1.65;max-width:52ch;
-}
-.kh-omne p + p{margin-top:10px}
-.kh-omne b{color:var(--ink);font-family:var(--serif);font-weight:700;font-size:1.05rem}
-@media (min-width:900px){
-  .kontakt-hlava{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(32px,5vw,72px);align-items:end}
-  .kh-omne{max-width:none}
-}
-
-/* ---------- 54 · zákazky a projekty (zakazky/) ----------
-   Nezverejnená stránka bez odkazu z webu — posiela sa osobne. Karty berú mriežku
-   a rám z galérie ukážok; namiesto živého iframe je v ráme uložený obrázok
-   (klientsky web sa môže zmeniť alebo vloženie do rámu zakázať a stránka by
-   ťahala cudzie zdroje). Patrí sem len to, čo beží online — nič, čo má iba
-   odkaz na zdrojový kód. */
-.shot--img{object-fit:cover;object-position:top}
-.uk-akcie{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:10px}
-.uk-akcie .uk-cta{flex:1 1 auto;margin-top:0}
-.uk-repo{
-  position:relative;z-index:1;   /* nad ::after celej karty, inak by sa naň nedalo kliknúť */
-  font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;white-space:nowrap;
-  color:var(--mut);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;
-}
-.uk-repo:hover{color:var(--brass);border-bottom-color:var(--brass)}
-
-/* ---------- 55 · prepínač jazykov v hlavičke ----------
-   Glóbus so skratkou jazyka. Je to <details>, takže sa otvorí aj bez JavaScriptu;
-   script.js ho zatvára klikom mimo a Escape. Pod 920 px stojí vpravo za telefónom,
-   od 920 px úplne vpravo za tlačidlom konzultácie. Bloky v HTML dopĺňa
-   _PRACA/preklad/preklad.py (značky <!-- jazyky:prepinac -->), ručne sa nepíšu. */
-.jazyk{position:relative;flex:none}
-.jazyk summary{
-  list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
-  border:1px solid var(--line);border-radius:999px;padding:7px 12px 7px 10px;
-  background:var(--panel);color:var(--ink);font-size:.8rem;font-weight:600;letter-spacing:.06em;
-  white-space:nowrap;-webkit-user-select:none;user-select:none;
-}
-.jazyk summary::-webkit-details-marker{display:none}
-.jazyk summary::marker{content:""}
-.jazyk summary svg{width:16px;height:16px;fill:none;stroke:var(--brass);stroke-width:1.5;flex:none}
-.jazyk summary:hover,.jazyk[open] summary{border-color:var(--brass);color:var(--brass)}
-.jazyk-menu{
-  position:absolute;right:0;top:calc(100% + 8px);z-index:80;min-width:184px;
-  background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px;
-  box-shadow:0 18px 40px -18px #000;
-}
-.jazyk-menu a{
-  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:2px;
-  text-decoration:none;color:var(--ink-2);font-size:.92rem;white-space:nowrap;
-}
-.jazyk-menu a b{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--mut);font-weight:600;min-width:2.1em}
-.jazyk-menu a:hover{background:var(--panel-2);color:var(--brass)}
-.jazyk-menu a[aria-current]{color:var(--ink)}
-.jazyk-menu a[aria-current] b{color:var(--brass)}
-/* Glóbus zaberá miesto, ktoré v hlavičke predtým nebolo: pod 920 px ostáva len ikona
-   (skratka je v menu) a medzi 920 a 1199 px sa zúžia medzery v navigácii. Cudzie jazyky
-   majú číslo s predvoľbou +421, ktoré je o štyri znaky dlhšie — na telefóne sa z neho
-   stane ikona, volať sa dá aj z lišty dole. */
-@media (max-width:919px){
-  .jazyk summary{padding:8px 9px}
-  .jazyk summary span{display:none}
-}
-@media (min-width:920px) and (max-width:1199px){
-  .top nav{gap:18px}
-}
-@media (max-width:479px){
-  html:not([lang="sk"]) .top .tel{font-size:0;gap:0;padding:13px 12px}
-}
-
-/* ---------- 56 · pohyb a efekty (24.09.2026) ----------
-   Alex: „aby to viac predávalo, viac animácií, aby ľudia videli, že som v tom fakt dobrý"
-   — a všetko, čo na stránke je, aj veľkosti, má ostať. Toto je preto len vrstva navrch:
-   nadpis nabieha po slovách, rám s ukážkou sa nakláňa za myšou a odvetvia sa samy striedajú,
-   čísla nabiehajú od nuly, sekcie sa odhaľujú postupne, pod kurzorom svieti karta,
-   tlačidlá majú lesk a otázky sa rozbaľujú plynulo.
-   Prvky, ktoré dopĺňa script.js (pilulka pod chipom, kurzor v adrese, lišta čítania),
-   nemajú text, takže jazykové verzie netreba prekladať nanovo.
-
-   Triedy: .skript = script.js beží (dovtedy držia obsah viditeľný poistky nižšie),
-   .in = sekcia je na obrazovke, .sl = slovo nadpisu, .svetlo = karta so žiarou pod myšou.
-   Pri prefers-reduced-motion (má ho aj Alexov počítač) ostávajú prelínania, počítadlá
-   a efekty pod kurzorom — žiadny posun, náklon ani nič, čo sa hýbe samo dookola. */
-
-@keyframes vstup{from{opacity:0;transform:translateY(18px)}}
-@keyframes vstup-bok{from{opacity:0;transform:translateX(-14px)}}
-@keyframes prelinanie{from{opacity:0}}
-@keyframes poistka{to{opacity:1;transform:none}}
-
-/* poistky: keby sa script.js nenačítal, skrytý obsah sa po chvíli ukáže aj bez neho */
-.js:not(.skript) .rv,
-.js:not(.skript) .hero--show h1,
-.js:not(.skript) .pas .fakty > div,
-.js:not(.skript) .pas-list li{animation:poistka .4s 2.4s forwards}
-
-/* hlavička: po odscrollovaní sklo s tieňom, dole zlatá lišta, ako ďaleko je čitateľ */
-.top{transition:background-color .3s ease,box-shadow .3s ease}
-.top.skrol{
-  background:rgba(19,16,16,.84);
-  -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);
-  box-shadow:0 16px 36px -24px rgba(0,0,0,.95);
-}
-.top-prog{
-  position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none;
-  transform-origin:0 50%;transform:scaleX(0);
-  background:linear-gradient(90deg,var(--brass-lo),var(--brass-hi));
-  box-shadow:0 0 12px rgba(233,180,95,.5);
-}
-/* navigácia: podčiarknutie sa vysunie zľava a drží sa pri sekcii, ktorú práve čítate */
-.top nav a{position:relative;transition:color .2s ease}
-.top nav a:hover{border-bottom-color:transparent}
-.top nav a::after{
-  content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--brass);
-  transform:scaleX(0);transform-origin:0 50%;transition:transform .35s cubic-bezier(.2,.7,.2,1);
-}
-.top nav a:hover::after,.top nav a.akt::after{transform:none}
-.top nav a.akt{color:var(--brass)}
-
-/* tlačidlá: plné majú preletujúci lesk, obrysové sa pri myši zaplnia zľava */
-.btn-1,.top-cta,.bar-btn{position:relative;overflow:hidden;isolation:isolate}
-.btn-1::after,.top-cta::after,.bar-btn::after{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:linear-gradient(105deg,transparent 32%,rgba(255,248,232,.55) 50%,transparent 68%);
-  transform:translateX(-115%);transition:transform .8s cubic-bezier(.2,.7,.2,1);
-}
-.btn-1:hover::after,.btn-1:focus-visible::after,.top-cta:hover::after{transform:translateX(115%)}
-.btn-2{
-  background-image:linear-gradient(90deg,rgba(233,180,95,.13),rgba(233,180,95,.13));
-  background-repeat:no-repeat;background-size:0 100%;
-  transition:transform .18s ease,background-size .5s cubic-bezier(.2,.7,.2,1),border-color .18s ease,color .18s ease;
-}
-.btn-2:hover{background-size:100% 100%}
-/* hlavné tlačidlo v hero a lišta na mobile sa raz za čas samy zalesknú */
-.hero--show .cta-row .btn-1::after{animation:lesk 7s 2.8s infinite}
-.bar-btn::after{animation:lesk 6s 1.5s infinite}
-@keyframes lesk{0%{transform:translateX(-115%)}16%,100%{transform:translateX(115%)}}
-
-/* ---- hero ---- */
-/* jemná mriežka ako na výkrese za rámom a žiara, ktorá pomaly dýcha */
-.hero--show::after{
-  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(233,180,95,.055) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(233,180,95,.055) 1px,transparent 1px);
-  background-size:64px 64px;background-position:center top;
-  -webkit-mask-image:radial-gradient(ellipse 55% 60% at 74% 40%,#000 10%,transparent 72%);
-  mask-image:radial-gradient(ellipse 55% 60% at 74% 40%,#000 10%,transparent 72%);
-}
-@media (max-width:959px){
-  .hero--show::after{
-    -webkit-mask-image:radial-gradient(ellipse 80% 45% at 50% 70%,#000 10%,transparent 72%);
-    mask-image:radial-gradient(ellipse 80% 45% at 50% 70%,#000 10%,transparent 72%);
-  }
-}
-.hero--show::before,.zaver::before,.vyh-sec::before{animation:dych 10s ease-in-out infinite alternate}
-@keyframes dych{from{opacity:.7;scale:1}to{opacity:1;scale:1.08}}
-
-/* ľavý stĺpec nabieha zhora nadol: štítok s čiarou, nadpis po slovách, text, tlačidlá */
-.hero--show .hero-txt > *{animation:vstup .9s cubic-bezier(.2,.7,.2,1) backwards}
-.hero--show .hero-txt > .lead{animation-delay:.6s}
-.hero--show .hero-txt > .cta-row{animation-delay:.75s}
-.hero--show .hero-txt > .cta-micro{animation-delay:.9s}
-.hero--show .eyebrow::after{transform-origin:0 50%;animation:ciara 1.4s .35s cubic-bezier(.6,0,.2,1) backwards}
-@keyframes ciara{from{transform:scaleX(0)}}
-.hero--show .hero-txt > h1{animation:none}
-.js .hero--show h1{opacity:0}
-.js .hero--show h1.rozdelene{opacity:1}
-.hero--show h1 .sl{
-  display:inline-block;
-  animation:slovo 1s cubic-bezier(.2,.7,.2,1) backwards;
-  animation-delay:calc(.12s + var(--i,0) * 75ms);
-}
-@keyframes slovo{from{opacity:0;transform:translateY(.45em);filter:blur(12px)}}
-/* zlatá linka sa dokreslí pod kurzívou v nadpise hero a pod kurzívou v nadpisoch sekcií;
-   tenká a ku koncu sa stráca, aby nevyzerala ako odkaz */
-.hero--show h1 em,.rv h2 em{
-  background:linear-gradient(90deg,var(--brass-lo),var(--brass-hi) 55%,rgba(242,194,115,0)) no-repeat 0 97%/0 .045em;
-  -webkit-box-decoration-break:clone;box-decoration-break:clone;
-}
-.hero--show h1.rozdelene em{animation:podciarkni 1.2s 1.05s cubic-bezier(.6,0,.2,1) forwards}
-@keyframes podciarkni{to{background-size:100% .045em}}
-.rv h2 em{transition:background-size 1.1s cubic-bezier(.6,0,.2,1) .45s}
-.rv.in h2 em{background-size:100% .045em}
-.js:not(.skript) .rv h2 em{background-size:100% .045em}
-
-/* rám s ukážkou sa vyklopí zo sklonu, dva rámy za ním sa vysunú ako balíček kariet */
-.hero--show .hs-stage{animation:ram 1.2s .3s cubic-bezier(.2,.7,.2,1) backwards}
-@keyframes ram{from{opacity:0;transform:perspective(1400px) translateY(34px) rotateX(9deg) scale(.97)}}
-.hero--show .hs-stage::before{animation:balicek 1s 1.15s cubic-bezier(.2,.7,.2,1) backwards}
-.hero--show .hs-stage::after{animation:balicek 1s 1.3s cubic-bezier(.2,.7,.2,1) backwards}
-@keyframes balicek{from{opacity:0;transform:none}}
-.hero--show .hs-pick{animation:vstup .9s .8s cubic-bezier(.2,.7,.2,1) backwards}
-.hero--show .hs-cap{animation:vstup .9s .95s cubic-bezier(.2,.7,.2,1) backwards}
-.hero--show .hs-note{animation:vstup .9s 1.05s cubic-bezier(.2,.7,.2,1) backwards}
-.hs-stage::before,.hs-stage::after{transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .55s ease}
-@media (hover:hover) and (min-width:640px){
-  .hs-stage:hover::before{transform:translate(16px,14px) rotate(1.2deg)}
-  .hs-stage:hover::after{transform:translate(32px,27px) rotate(2.4deg);opacity:.55}
-}
-/* náklon za myšou (uhly a miesto odlesku dopĺňa script.js) */
-.hs-frame{position:relative;transition:transform .6s cubic-bezier(.2,.7,.2,1),border-color .2s ease,box-shadow .4s ease}
-.hs-stage.tilt .hs-frame{
-  transform:perspective(1300px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-4px);
-  transition:transform .14s linear,border-color .2s ease,box-shadow .4s ease;
-  border-color:rgba(233,180,95,.55);
-  box-shadow:0 54px 100px -40px rgba(233,180,95,.36),0 30px 60px -30px rgba(0,0,0,.95);
-}
-.hs-frame::after{
-  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;
-  background:radial-gradient(560px circle at var(--gx,50%) var(--gy,0%),rgba(255,238,210,.12),transparent 50%);
-  opacity:0;transition:opacity .4s ease;
-}
-.hs-stage.tilt .hs-frame::after{opacity:1}
-/* kým sa ukážka načítava: kostra stránky a cez ňu preletuje lesk */
-.hero-show.nacitava .shot::before{
-  content:"";position:absolute;inset:0;z-index:1;
-  background:
-    linear-gradient(#2e241e,#2e241e) 6% 9%/20% 3.4% no-repeat,
-    linear-gradient(#2e241e,#2e241e) 94% 9%/36% 3.4% no-repeat,
-    linear-gradient(#3a2d25,#3a2d25) 6% 30%/50% 8% no-repeat,
-    linear-gradient(#3a2d25,#3a2d25) 6% 42%/38% 8% no-repeat,
-    linear-gradient(#2a211c,#2a211c) 6% 58%/44% 3% no-repeat,
-    linear-gradient(#2a211c,#2a211c) 6% 65%/40% 3% no-repeat,
-    linear-gradient(#5a4230,#5a4230) 6% 80%/15% 7% no-repeat,
-    linear-gradient(#271f1a,#271f1a) 94% 46%/34% 44% no-repeat,
-    #1b1512;
-}
-.hero-show.nacitava .shot::after{
-  content:"";position:absolute;top:0;bottom:0;left:0;width:60%;z-index:2;
-  background:linear-gradient(100deg,transparent,rgba(233,180,95,.1) 50%,transparent);
-  animation:kostra 1.25s ease-in-out infinite;
-}
-@keyframes kostra{from{transform:translateX(-100%)}to{transform:translateX(170%)}}
-/* kurzor za adresou v lište rámu */
-.hs-kurzor{
-  display:inline-block;width:1px;height:1.2em;margin-left:2px;vertical-align:-.25em;
-  background:var(--brass);animation:blik 1.05s steps(1) infinite;
-}
-@keyframes blik{50%{opacity:0}}
-/* chipy: zlatá pilulka prejde k vybranému odvetviu, pásik v nej meria čas do ďalšieho */
-.hs-chips{position:relative}
-.hs-chips.s-ind .hs-chip{position:relative;z-index:1;transition:border-color .18s ease,color .35s ease,background .18s ease}
-/* text vybraného chipu stmavne až keď k nemu pilulka dorazí, inak by na chvíľu zmizol na tmavom podklade */
-.hs-chips.s-ind .hs-chip[aria-current="true"]{background:transparent;border-color:transparent;transition:color .3s ease .22s}
-.hs-ind{
-  position:absolute;left:0;top:0;z-index:0;pointer-events:none;border-radius:999px;overflow:hidden;
-  background:linear-gradient(160deg,var(--brass-hi),var(--brass-lo));
-  box-shadow:0 10px 26px -12px rgba(233,180,95,.75);
-  transition:transform .6s cubic-bezier(.2,.8,.2,1),width .6s cubic-bezier(.2,.8,.2,1),height .6s ease;
-}
-.hs-ind.bez{transition:none}
-.hs-ind i{
-  position:absolute;left:0;right:0;bottom:0;height:3px;
-  background:rgba(29,20,9,.32);transform-origin:0 50%;transform:scaleX(0);
-}
-.hs-ind.bezi i{animation:hs-cas 9s linear forwards}
-.hero-show:hover .hs-ind i,.hero-show:focus-within .hs-ind i,
-.hero-show.pauza .hs-ind i,.hero-show.skryte .hs-ind i,.hero-show.nacitava .hs-ind i{animation-play-state:paused}
-@keyframes hs-cas{to{transform:none}}
-/* popis ukážky sa pri prepnutí prelne */
-.hs-cap-txt.prelin{animation:vstup .6s cubic-bezier(.2,.7,.2,1)}
-.hs-cta svg,.hs-open-pill svg{transition:transform .25s ease}
-.hs-cta:hover svg{transform:translateX(4px)}
-.hs-open:hover .hs-open-pill svg{transform:translate(2px,-2px)}
-
-/* ---- pás pod hero: čísla nabiehajú, podniky sa zjavujú jeden po druhom, hranou letí lúč ---- */
-.pas{overflow:hidden}
-.pas::before{
-  content:"";position:absolute;left:0;top:0;height:1px;width:28%;pointer-events:none;
-  background:linear-gradient(90deg,transparent,var(--brass),transparent);
-  animation:luc 8s 1.5s ease-in-out infinite backwards;
-}
-@keyframes luc{0%{transform:translateX(-100%)}55%,100%{transform:translateX(460%)}}
-.js .pas:not(.in) .fakty > div,.js .pas:not(.in) .pas-list li{opacity:0}
-.js .pas.in .fakty > div{animation:vstup .8s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0) * 130ms)}
-.js .pas.in .pas-list li{animation:vstup .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.25s + var(--i,0) * 45ms)}
-.pas-list li{transition:color .2s ease}
-.pas-list li:hover{color:var(--brass)}
-.pas-list li::after{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
-.pas-list li:hover::after{transform:rotate(225deg)}
-
-/* ---- štítky sekcií: kosoštvorec sa pri odhalení roztočí ---- */
-.sec-tag::before{transition:transform .9s cubic-bezier(.2,.7,.2,1) .15s}
-.skript .rv:not(.in) .sec-tag::before{transform:rotate(-135deg) scale(0)}
-
-/* ---- výhody a služby: body nabiehajú zľava, deliaca čiara sa dokreslí zhora ---- */
-.skript .rv:not(.in) .dv-list li{opacity:0}
-.js .rv.in .dv-list li{animation:vstup-bok .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.25s + var(--i,0) * 90ms)}
-.dv-list li{transition:background-color .3s ease}
-.dv-list li::before{transition:color .3s ease}
-.dv-list li:hover{background-color:rgba(233,180,95,.04)}
-.dv-list li:hover::before{color:var(--brass)}
-@media (min-width:960px){
-  .skript .dvojica .dv-pol + .dv-pol{position:relative;border-left-color:transparent}
-  .skript .dvojica .dv-pol + .dv-pol::before{
-    content:"";position:absolute;left:-1px;top:0;bottom:0;width:1px;
-    background:linear-gradient(180deg,var(--brass-lo),var(--line) 35%,var(--line));
-    transform:scaleY(0);transform-origin:50% 0;transition:transform 1.5s cubic-bezier(.6,0,.2,1) .2s;
-  }
-  .skript .dvojica.in .dv-pol + .dv-pol::before{transform:none}
-}
-
-/* ---- cenník: karty nabiehajú po jednej, fajky sa odškrtávajú, bodky k cenám sa dokreslia ---- */
-.skript .rv:not(.in) .balik{opacity:0}
-.js .rv.in .balik{animation:vstup .85s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0) * 130ms)}
-.skript .rv:not(.in) .balik-list li::before{transform:rotate(-45deg) scale(0)}
-.js .rv.in .balik-list li::before{
-  animation:fajka .5s cubic-bezier(.3,1.7,.5,1) backwards;
-  animation-delay:calc(.6s + var(--i,0) * 130ms + var(--j,0) * 80ms);
-}
-@keyframes fajka{from{transform:rotate(-45deg) scale(0)}}
-/* Standard: okolo karty obieha zlatý lesk */
-@property --uhol{syntax:"<angle>";inherits:false;initial-value:0deg}
-.balik--top,.balik--top:hover{border-color:transparent}
-.balik--top{
-  background:
-    linear-gradient(170deg,rgba(233,180,95,.1),transparent 48%) padding-box,
-    linear-gradient(var(--panel),var(--panel)) padding-box,
-    conic-gradient(from var(--uhol),var(--brass-lo),rgba(233,180,95,.16) 20%,var(--brass-hi) 46%,rgba(233,180,95,.16) 72%,var(--brass-lo)) border-box;
-  animation:obrys 7s linear infinite;
-}
-@keyframes obrys{to{--uhol:360deg}}
-.js .rv.in .balik--top{animation:vstup .85s cubic-bezier(.2,.7,.2,1) backwards,obrys 7s linear infinite;animation-delay:calc(var(--i,0) * 130ms),0s}
-.balik-flag{overflow:hidden;isolation:isolate}
-.balik-flag::after{
-  content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(105deg,transparent 30%,rgba(255,250,235,.6) 50%,transparent 70%);
-  transform:translateX(-120%);animation:lesk 5s 2s infinite;
-}
-.extras .x .d{transform-origin:0 50%}
-.skript .rv:not(.in) .extras .x .d{transform:translateY(-.28em) scaleX(0)}
-.js .rv.in .extras .x .d{animation:bodky 1s cubic-bezier(.6,0,.2,1) backwards;animation-delay:calc(.2s + var(--i,0) * 120ms)}
-@keyframes bodky{from{transform:translateY(-.28em) scaleX(0)}}
-
-/* ---- postup: kroky sa rozsvietia jeden za druhým a nad nimi sa natiahne zlatá čiara ---- */
-.flow{position:relative}
-.flow > div{position:relative;transition:background-color .3s ease}
-.flow > div:hover{background-color:var(--panel)}
-.flow .k{transition:color .3s ease,letter-spacing .3s ease}
-.flow > div:hover .k{color:var(--brass-hi);letter-spacing:.28em}
-.skript .flow::before{
-  content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:2px;z-index:2;pointer-events:none;
-  background:linear-gradient(90deg,var(--brass-lo),var(--brass-hi) 55%,var(--brass-lo));
-  transform:scaleX(0);transform-origin:0 50%;transition:transform 1.9s cubic-bezier(.6,0,.2,1) .25s;
-}
-.skript .flow.in::before{transform:none}
-.skript .flow.rv:not(.in) > div{opacity:0}
-.js .flow.rv.in > div{animation:vstup .8s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.15s + var(--i,0) * 170ms)}
-
-/* ---- časté otázky: nabiehajú po jednej, otvorená má zlatú hranu a rozbalí sa plynulo ---- */
-.skript .faq.rv:not(.in) > .qa{opacity:0}
-.js .faq.rv.in > .qa{animation:vstup .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.1s + var(--i,0) * 55ms)}
-.qa{position:relative}
-.qa::before{
-  content:"";position:absolute;left:0;top:-1px;bottom:-1px;width:2px;background:var(--brass);
-  transform:scaleY(0);transform-origin:50% 0;transition:transform .4s cubic-bezier(.2,.7,.2,1);
-}
-.qa[open]::before{transform:none}
-.qa summary,.qa p{transition:padding-left .35s cubic-bezier(.2,.7,.2,1),color .2s ease}
-.qa[open] summary{color:var(--brass);padding-left:16px}
-.qa[open] p{padding-left:16px}
-@supports (interpolate-size:allow-keywords) and selector(::details-content){
-  .qa{interpolate-size:allow-keywords}
-  .qa::details-content{
-    block-size:0;overflow-y:clip;
-    transition:block-size .45s cubic-bezier(.2,.7,.2,1),content-visibility .45s allow-discrete;
-  }
-  .qa[open]::details-content{block-size:auto}
-}
-
-/* ---- kontakt: vrchná hrana sa rozžiari, body nabiehajú, adresa sa podčiarkne ---- */
-.kontakt-blok{position:relative}
-.skript .kontakt-blok::after{
-  content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:2px;pointer-events:none;
-  background:linear-gradient(90deg,transparent,var(--brass-hi) 50%,transparent);
-  transform:scaleX(0);transition:transform 1.5s cubic-bezier(.6,0,.2,1) .3s;
-}
-.skript .kontakt-blok.in::after{transform:none}
-.skript .rv:not(.in) .kb-zoznam li,.skript .rv:not(.in) .kb-konz-list li{opacity:0}
-.js .rv.in .kb-zoznam li,.js .rv.in .kb-konz-list li{animation:vstup-bok .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(.35s + var(--i,0) * 90ms)}
-.kb-mail{
-  border-bottom:0;padding-bottom:6px;
-  background:
-    linear-gradient(var(--brass-hi),var(--brass-hi)) no-repeat 0 100%/0 2px,
-    linear-gradient(rgba(233,180,95,.35),rgba(233,180,95,.35)) no-repeat 0 100%/100% 2px;
-  transition:color .2s ease,background-size .55s cubic-bezier(.2,.7,.2,1);
-}
-.kb-mail:hover{background-size:100% 2px,100% 2px}
-
-/* ---- svetlo pod kurzorom (triedu .svetlo pridáva script.js len pri myši) ---- */
-.svetlo{position:relative;isolation:isolate}
-.svetlo::before{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(233,180,95,.11),transparent 62%);
-  opacity:0;transition:opacity .35s ease;
-}
-.svetlo:hover::before{opacity:1}
-
-/* ---- obmedzený pohyb: len prelínanie, nič sa neposúva ani samo netočí ---- */
-@media (prefers-reduced-motion:reduce){
-  .hero--show::before,.zaver::before,.vyh-sec::before,.pas::before,
-  .hero--show .cta-row .btn-1::after,.bar-btn::after,.balik-flag::after,
-  .hero--show .eyebrow::after,.hs-kurzor{animation:none}
-  .balik--top,.js .rv.in .balik--top{animation:none}
-  .js .rv.in .balik--top{animation:prelinanie .8s ease backwards;animation-delay:calc(var(--i,0) * 130ms)}
-  .hero--show .hero-txt > *,.hero--show .hs-stage,.hero--show .hs-stage::before,.hero--show .hs-stage::after,
-  .hero--show .hs-pick,.hero--show .hs-cap,.hero--show .hs-note,.hs-cap-txt.prelin,
-  .js .pas.in .fakty > div,.js .pas.in .pas-list li,
-  .js .rv.in .dv-list li,.js .rv.in .balik,.js .flow.rv.in > div,.js .faq.rv.in > .qa,
-  .js .rv.in .kb-zoznam li,.js .rv.in .kb-konz-list li{animation-name:prelinanie}
-  .hero--show h1 .sl{animation-name:slovo-tichy}
-  .hero-show.nacitava .shot::after{animation:none;opacity:0}
-  .hs-ind,.hs-frame,.hs-stage::before,.hs-stage::after,.qa summary,.qa p,.qa::before,
-  .pas-list li::after,.flow .k,.sec-tag::before{transition:none}
-  .hs-stage:hover::before,.hs-stage:hover::after{transform:none}
-  .skript .rv:not(.in) .sec-tag::before{transform:rotate(45deg)}
-}
-@keyframes slovo-tichy{from{opacity:0;filter:blur(10px)}}
-
-/* ---------- 57 · WhatsApp (24.09.2026) ----------
-   Alex: napísať cez WhatsApp je pre malé podniky jednoduchšie než e-mail. Je to obyčajný
-   odkaz na wa.me s predvyplnenou vetou (v každom jazyku ju prekladá <jazyk>/nahrady.py),
-   stránka tým nenačíta nič cudzie. V kontakte tlačidlo za telefónom, na mobile ikona v lište. */
-.ico-wa{flex:none;fill:currentColor}
-.ico-wa .wa-bublina{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round}
-.btn-wa svg{width:18px;height:18px;color:#6fd08c}
-.btn-wa:hover svg{color:#86e0a1}
-@media (max-width:719px){
-  .bar-wa{
-    flex:none;display:inline-flex;align-items:center;justify-content:center;align-self:stretch;
-    width:48px;border:1px solid var(--line);border-radius:2px;background:var(--panel);color:#6fd08c;
-    text-decoration:none;
-  }
-  .bar-wa svg{width:21px;height:21px}
-}
-/* Pod 480 px sa „Zavolať", ikona WhatsApp a „Napísať · odpoveď do 24 h" do jedného riadku
-   nezmestia (poľština a nemčina ani pri 390 px) a zlaté tlačidlo by sa zalomilo na dva riadky.
-   Telefón preto stojí ako ikona vedľa WhatsAppu; text ostáva v kóde pre čítačky (font-size:0). */
-@media (max-width:479px){
-  .bar-tel{font-size:0;gap:0;padding:0;width:48px;justify-content:center;align-self:stretch}
-  .bar-tel svg{width:19px;height:19px}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+  .uk:hover .frame { transform: none; }
 }
