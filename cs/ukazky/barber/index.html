@@ -757,6 +757,52 @@ html.js .rv.in{opacity:1;transform:none}
 
 /* zástupný text namiesto vymysleného kontaktu */
 .ukazka-kontakt{font-style:normal;opacity:.75;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help}
+
+/* ==========================================================================
+   Prerobené 28.10.2026: svetlý vzhľad so skutočnými fotkami (Unsplash), bez zrna,
+   vzorov, strojového písma a štítkov veľkými písmenami. Pôvodné pravidlá vyššie
+   ostali, tu sa len prebíjajú.
+   ========================================================================== */
+:root{
+  --deep:#F2EEE8;--base:#FFFFFF;--surf:#F8F6F2;--raise:#EEE9E1;
+  --brass:#8A5A24;--brass-hi:#6E4519;--brass-deep:#6E4519;--on-brass:#FFFFFF;
+  --ink-strong:#16191C;--ink-body:#2F343A;--ink-mute:#5A6168;
+  --hair:#DAD4CA;--hair-soft:#E9E4DC;--plate-ink:#16191C;--plate-mute:#5A6168;
+  --mono:var(--sans);--noise:none;
+}
+*,*::before,*::after{text-transform:none!important;letter-spacing:normal!important}
+.rv{opacity:1!important;transform:none!important;transition:none!important}
+.paper{--bg:#F6F3EE;--card:#FFFFFF;--btn-bg:var(--brass);--btn-fg:#FFFFFF;--btn-bg-h:var(--brass-hi)}
+.demobar{background:#202326;color:#C3C7CC;border-bottom:0;box-shadow:none}
+.demobar a{color:#fff;border-bottom-color:rgba(255,255,255,.4)}
+.demobar a:hover{color:#fff;border-bottom-color:#fff}
+.demobar__tag{color:#fff;border:0;padding:0}
+.shead{display:block}
+.shead__idx{display:none}
+.eyebrow{font-size:.95rem;color:var(--ink-mute)}
+.hero{background:var(--deep)}
+.hero__in--foto{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,60px);align-items:center}
+@media (max-width:960px){.hero__in--foto{grid-template-columns:1fr}}
+.hero__kicker{font-size:.98rem;font-weight:600;color:var(--brass)}
+.mast__h1{font-size:clamp(2.1rem,4.2vw,3.1rem);line-height:1.12;margin:0 0 18px;color:var(--ink-strong)}
+.mast__lead,.mast__name{display:inline;font:inherit;color:inherit;text-shadow:none;margin:0;line-height:inherit}
+.hero__lede{color:var(--ink-body)}
+.hero__meta{margin-top:24px;max-width:440px}
+.hero__meta li b{font-size:.92rem}
+.hero__foto{margin:0}
+.hero__foto img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:8px}
+.facts dt{font-size:.88rem}
+.obraz--foto{margin:0}
+.obraz--foto img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:6px}
+.bar__role,.bar__ig{font-size:.9rem}
+.prod__foot .eur{font-size:1.15rem}
+/* zvyšné grafické plochy (poukazy, najvyťaženejší čas) sú obyčajné svetlé karty bez vzorov */
+.plate{background:var(--surf)!important;background-image:none!important;box-shadow:none!important;border:1px solid var(--hair);border-radius:6px;color:var(--ink-strong)}
+.plate::before,.plate::after{display:none!important}
+.plate__word{color:var(--ink-mute)}
+.plate__num{font-size:clamp(2rem,4.4vw,2.8rem)}
+.plate__big{color:var(--ink-strong);font-size:clamp(1.05rem,1.8vw,1.3rem)}
+.vouch__grid .plate{aspect-ratio:auto;min-height:220px}
 </style>
 <!-- prepocet meny --><script data-preklad="nie">function __k(x){var v=Math.round(x*25);return v.toLocaleString('cs-CZ');}function __f(x){return Math.round(x).toLocaleString('cs-CZ');}function __p(x){return Math.round(x*25/5)*5;}function __c(x){return x*25;}var __m="Kč";</script>
 </head>
@@ -806,38 +852,27 @@ html.js .rv.in{opacity:1;transform:none}
 
 <!-- ===== 01 ÚVOD ===== -->
 <section class="hero" id="uvod">
-  <div class="wrap hero__in">
-    <p class="eyebrow hero__kicker">Krátká 6, historické centrum &middot; čtyři křesla &middot; střih na objednaný čas</p>
-
-    <div class="mast">
-      <span class="mast__block" aria-hidden="true"></span>
+  <div class="wrap hero__in hero__in--foto">
+    <div class="hero__text">
+      <p class="eyebrow hero__kicker">Krátká 6, historické centrum &middot; čtyři křesla &middot; střih na objednaný čas</p>
       <h1 class="mast__h1">
         <span class="mast__lead">Pánské holičství</span>
         <span class="mast__name">Ostří</span>
       </h1>
-
-      <aside class="hero__corner" aria-label="Objednání telefonicky">
-        <p class="k">Objednání</p>
-        <p class="v"><span class="ukazka-kontakt" title="Ukázkový web — číslo je záměrně vynechané, aby nikdo nevolal na cizí číslo.">tady bude vaše číslo</span></p>
-        <p class="s">Dovoláte se během otevírací doby, mimo ni napište SMS. Termín si můžete vybrat i přímo na této stránce.</p>
-      </aside>
-    </div>
-
-    <div class="hero__body">
-      <div>
-        <p class="hero__lede">Střih nůžkami i strojkem, tvarování vousů a klasické mokré holení břitvou s horkým ručníkem. Pracujeme výhradně na objednané termíny, blok je podle služby 15 až 90 minut.</p>
-        <div class="btns">
-          <a class="btn btn--brass" href="#objednanie">Objednat se</a>
-          <a class="btn btn--ghost" href="#cennik">Podívat se na ceník</a>
-        </div>
-      </div>
+      <p class="hero__lede">Střih nůžkami i strojkem, tvarování vousů a klasické mokré holení břitvou s horkým ručníkem. Pracujeme výhradně na objednané termíny, blok je podle služby 15 až 90 minut.</p>
+      <div class="btns">
+            <a class="btn btn--brass" href="#objednanie">Objednat se</a>
+            <a class="btn btn--ghost" href="#cennik">Podívat se na ceník</a>
+          </div>
       <ul class="hero__meta" aria-label="Otevírací doba">
-        <li><b>Pondělí &ndash; středa</b><span>9:00 &ndash; 19:00</span></li>
-        <li><b>Čtvrtek &ndash; pátek</b><span>9:00 &ndash; 20:00</span></li>
-        <li><b>Sobota</b><span>8:00 &ndash; 14:00</span></li>
-        <li><b>Neděle</b><span>zavřeno</span></li>
-      </ul>
+          <li><b>Pondělí &ndash; středa</b><span>9:00 &ndash; 19:00</span></li>
+          <li><b>Čtvrtek &ndash; pátek</b><span>9:00 &ndash; 20:00</span></li>
+          <li><b>Sobota</b><span>8:00 &ndash; 14:00</span></li>
+          <li><b>Neděle</b><span>zavřeno</span></li>
+        </ul>
     </div>
+    <!-- foto z Unsplash: photo-1792735207211-a96ca7e6ea77 -->
+    <figure class="hero__foto"><img src="/ukazky/barber/foto/barber-hero-1200.webp" srcset="/ukazky/barber/foto/barber-hero-640.webp 640w, /ukazky/barber/foto/barber-hero-1200.webp 1200w" sizes="(min-width: 960px) 560px, 100vw" width="1200" height="900" alt="Interiér holičství se čtyřmi křesly a zrcadly"></figure>
   </div>
 
   <div class="facts">
@@ -878,17 +913,8 @@ html.js .rv.in{opacity:1;transform:none}
       </div>
 
       <div class="rv">
-        <!-- FOTO: interiér holičstva — štyri kreslá pri stene so zrkadlami, tmavé drevo, mosadzné lampy -->
-        <figure class="obraz">
-          <div class="plate plate--rule about__plate">
-            <div class="plate__type">
-              <p class="plate__word">Krátká 6, přízemí</p>
-              <div>
-                <p class="plate__num">04</p>
-                <p class="plate__big">křesla u jedné stěny, kout na holení oddělený</p>
-              </div>
-            </div>
-          </div>
+        <!-- foto z Unsplash: photo-1781455793310-8427c96454c7 -->
+        <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-interier-1200.webp" srcset="/ukazky/barber/foto/barber-interier-640.webp 640w, /ukazky/barber/foto/barber-interier-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async">
           <figcaption>Hlavní místnost. Vstup z ulice je bez schodu, dveře mají 90 cm.</figcaption>
         </figure>
       </div>
@@ -1043,18 +1069,6 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="crew">
       <article class="bar rv">
-        <!-- FOTO: portrét holiča pri svojom kresle, tmavé pozadie, pohľad do objektívu -->
-        <figure class="obraz">
-          <div class="plate plate--arc">
-            <div class="plate__type">
-              <p class="plate__word">Křeslo 01</p>
-              <div>
-                <p class="plate__num">MH</p>
-                <p class="plate__big">střih, vousy, holení břitvou</p>
-              </div>
-            </div>
-          </div>
-        </figure>
         <h3>Marek Hajduk</h3>
         <p class="bar__role">Holič</p>
         <ul class="bar__list">
@@ -1066,18 +1080,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="bar rv">
-        <!-- FOTO: portrét holiča pri práci, detail rúk s nožnicami -->
-        <figure class="obraz">
-          <div class="plate plate--rule">
-            <div class="plate__type">
-              <p class="plate__word">Křeslo 02</p>
-              <div>
-                <p class="plate__num">TB</p>
-                <p class="plate__big">přechody, vousy, tvarování</p>
-              </div>
-            </div>
-          </div>
-        </figure>
         <h3>Tomáš Bencúr</h3>
         <p class="bar__role">Holič</p>
         <ul class="bar__list">
@@ -1089,18 +1091,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="bar rv">
-        <!-- FOTO: portrét holiča, ktorý strihá dieťa v kresle s podsedákom -->
-        <figure class="obraz">
-          <div class="plate plate--dot">
-            <div class="plate__type">
-              <p class="plate__word">Křeslo 03</p>
-              <div>
-                <p class="plate__num">PK</p>
-                <p class="plate__big">střih, dětské střihy</p>
-              </div>
-            </div>
-          </div>
-        </figure>
         <h3>Petr Krajčí</h3>
         <p class="bar__role">Holič</p>
         <ul class="bar__list">
@@ -1112,18 +1102,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="bar rv">
-        <!-- FOTO: portrét učňa pri príprave pracoviska -->
-        <figure class="obraz">
-          <div class="plate plate--hatch">
-            <div class="plate__type">
-              <p class="plate__word">Křeslo 04</p>
-              <div>
-                <p class="plate__num">AŠ</p>
-                <p class="plate__big">střih pod dohledem holiče</p>
-              </div>
-            </div>
-          </div>
-        </figure>
         <h3>Adam Šimko</h3>
         <p class="bar__role">Učeň</p>
         <ul class="bar__list">
@@ -1149,87 +1127,33 @@ html.js .rv.in{opacity:1;transform:none}
     </header>
 
     <div class="gal rv">
-      <!-- FOTO: detail prechodu na bokoch, pohľad zozadu na čerstvo dostrihanú hlavu -->
-      <figure class="obraz">
-        <div class="plate plate--wedge">
-          <div class="plate__type">
-            <p class="plate__word">Přechod</p>
-            <div>
-              <p class="plate__num">0,5</p>
-              <p class="plate__big">mm dole, plynulý náběh do délky vršku</p>
-            </div>
-          </div>
-        </div>
+      <!-- foto z Unsplash: photo-1568339434343-2a640a1a9946 -->
+      <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-prechod-1200.webp" srcset="/ukazky/barber/foto/barber-prechod-640.webp 640w, /ukazky/barber/foto/barber-prechod-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async">
         <figcaption>Střih strojkem s přechodem. 45 minut, 675 Kč.</figcaption>
       </figure>
 
-      <!-- FOTO: klasický strih nožnicami, pohľad z boku po dokončení -->
-      <figure class="obraz">
-        <div class="plate plate--grid">
-          <div class="plate__type">
-            <p class="plate__word">Nůžky</p>
-            <div>
-              <p class="plate__num">30</p>
-              <p class="plate__big">minutový blok včetně umytí a vysušení</p>
-            </div>
-          </div>
-        </div>
+      <!-- foto z Unsplash: photo-1761931403667-a6753db21f32 -->
+      <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-noznice-1200.webp" srcset="/ukazky/barber/foto/barber-noznice-640.webp 640w, /ukazky/barber/foto/barber-noznice-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async">
         <figcaption>Klasický pánský střih s dočištěním kontur břitvou. 550 Kč.</figcaption>
       </figure>
 
-      <!-- FOTO: detail vytvarovanej brady, línia na lícach a krku -->
-      <figure class="obraz">
-        <div class="plate plate--ring">
-          <div class="plate__type">
-            <p class="plate__word">Vousy</p>
-            <div>
-              <p class="plate__num">25</p>
-              <p class="plate__big">minut na zkrácení, linku a olej</p>
-            </div>
-          </div>
-        </div>
+      <!-- foto z Unsplash: photo-1503951914875-452162b0f3f1 -->
+      <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-brada-1200.webp" srcset="/ukazky/barber/foto/barber-brada-640.webp 640w, /ukazky/barber/foto/barber-brada-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async">
         <figcaption>Úprava vousů a kníru břitvou. 400 Kč.</figcaption>
       </figure>
 
-      <!-- FOTO: mokré holenie britvou, horúci uterák na tvári zákazníka -->
-      <figure class="obraz">
-        <div class="plate plate--arc">
-          <div class="plate__type">
-            <p class="plate__word">Holení</p>
-            <div>
-              <p class="plate__num">02</p>
-              <p class="plate__big">horké ručníky a chladivý zábal na závěr</p>
-            </div>
-          </div>
-        </div>
+      <!-- foto z Unsplash: photo-1739302493888-6f96cbc37105 -->
+      <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-holenie-1200.webp" srcset="/ukazky/barber/foto/barber-holenie-640.webp 640w, /ukazky/barber/foto/barber-holenie-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async">
         <figcaption>Mokré holení břitvou ve dvou směrech. 40 minut, 625 Kč.</figcaption>
       </figure>
 
-      <!-- FOTO: dieťa v kresle s podsedákom počas strihu -->
-      <figure class="obraz">
-        <div class="plate plate--dot">
-          <div class="plate__type">
-            <p class="plate__word">Děti</p>
-            <div>
-              <p class="plate__num">04</p>
-              <p class="plate__big">roky a víc, podsedák do křesla</p>
-            </div>
-          </div>
-        </div>
+      <!-- foto z Unsplash: photo-1735150949874-ec9c9c82b2c4 -->
+      <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-strih-1200.webp" srcset="/ukazky/barber/foto/barber-strih-640.webp 640w, /ukazky/barber/foto/barber-strih-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async">
         <figcaption>Dětský střih do 12 let. 25 minut, 375 Kč.</figcaption>
       </figure>
 
-      <!-- FOTO: kút na holenie — kreslo, ohrievač uterákov, britvy na poličke -->
-      <figure class="obraz">
-        <div class="plate plate--hatch">
-          <div class="plate__type">
-            <p class="plate__word">Kout na holení</p>
-            <div>
-              <p class="plate__num">01</p>
-              <p class="plate__big">oddělené křeslo s vlastním větráním</p>
-            </div>
-          </div>
-        </div>
+      <!-- foto z Unsplash: photo-1778676688264-2a5db8886ab3 -->
+      <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-kut-1200.webp" srcset="/ukazky/barber/foto/barber-kut-640.webp 640w, /ukazky/barber/foto/barber-kut-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async">
         <figcaption>Ohřívač ručníků a břitvy s jednorázovou čepelí.</figcaption>
       </figure>
     </div>
@@ -1300,52 +1224,22 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="rooms">
       <article class="rv">
-        <!-- FOTO: rad štyroch kresiel so zrkadlami, pohľad pozdĺž steny -->
-        <figure class="obraz">
-          <div class="plate plate--grid">
-            <div class="plate__type">
-              <p class="plate__word">Pracoviště</p>
-              <div>
-                <p class="plate__num">04</p>
-                <p class="plate__big">křesla s vlastním zrcadlem</p>
-              </div>
-            </div>
-          </div>
-        </figure>
+        <!-- foto z Unsplash: photo-1792523227995-9ac04cf1d94d -->
+        <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-kresla-1200.webp" srcset="/ukazky/barber/foto/barber-kresla-640.webp 640w, /ukazky/barber/foto/barber-kresla-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async"></figure>
         <h3>Stříhací část</h3>
         <p>Čtyři křesla podél jedné stěny, každé s vlastním zrcadlem, osvětlením a odsáváním vlasů z podlahy.</p>
       </article>
 
       <article class="rv">
-        <!-- FOTO: umývací kút s dvomi sklápacími misami a opierkou krku -->
-        <figure class="obraz">
-          <div class="plate plate--ring">
-            <div class="plate__type">
-              <p class="plate__word">Mycí mísy</p>
-              <div>
-                <p class="plate__num">02</p>
-                <p class="plate__big">sklápěcí mísy s opěrkou krku</p>
-              </div>
-            </div>
-          </div>
-        </figure>
+        <!-- foto z Unsplash: photo-1787880172059-1c52decb1ca9 -->
+        <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-umyvanie-1200.webp" srcset="/ukazky/barber/foto/barber-umyvanie-640.webp 640w, /ukazky/barber/foto/barber-umyvanie-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async"></figure>
         <h3>Mycí kout</h3>
         <p>Dvě mísy s nastavitelnou opěrkou. Voda se temperuje na 37 °C, šampon vybíráme podle typu vlasů.</p>
       </article>
 
       <article class="rv">
-        <!-- FOTO: čakáreň s lavicou, vešiakom a poličkou na produkty -->
-        <figure class="obraz">
-          <div class="plate plate--hatch">
-            <div class="plate__type">
-              <p class="plate__word">Čekárna</p>
-              <div>
-                <p class="plate__num">06</p>
-                <p class="plate__big">míst k sezení a věšák</p>
-              </div>
-            </div>
-          </div>
-        </figure>
+        <!-- foto z Unsplash: photo-1781925856343-c97d0d44f94c -->
+        <figure class="obraz--foto obraz"><img src="/ukazky/barber/foto/barber-cakaren-1200.webp" srcset="/ukazky/barber/foto/barber-cakaren-640.webp 640w, /ukazky/barber/foto/barber-cakaren-1200.webp 1200w" sizes="(min-width: 960px) 600px, 100vw" width="1200" height="900" alt="" loading="lazy" decoding="async"></figure>
         <h3>Čekárna</h3>
         <p>Šest míst, věšák, nabíječka na telefon a pitná voda. V létě je otevřený dvůr se dvěma lavičkami.</p>
       </article>
@@ -1385,15 +1279,6 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="prods">
       <article class="prod rv">
-        <!-- FOTO: téglik matnej pasty na tmavom podklade, otvorené veko -->
-        <figure class="obraz">
-          <div class="plate plate--wedge">
-            <div class="plate__type">
-              <p class="plate__word">01 &middot; Pasta</p>
-              <p class="plate__big">Matná pasta<br>100 ml</p>
-            </div>
-          </div>
-        </figure>
         <div class="prod__body">
           <h3>Matná pasta na vlasy</h3>
           <p>Střední fixace bez lesku. Vhodná na kratší střihy s texturou, dá se přeformovat během dne.</p>
@@ -1402,15 +1287,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <!-- FOTO: plechovka pomády s viditeľnou etiketou, bočný pohľad -->
-        <figure class="obraz">
-          <div class="plate plate--dot">
-            <div class="plate__type">
-              <p class="plate__word">02 &middot; Pomáda</p>
-              <p class="plate__big">Pomáda na vodní bázi<br>100 ml</p>
-            </div>
-          </div>
-        </figure>
         <div class="prod__body">
           <h3>Pomáda na vodní bázi</h3>
           <p>Silná fixace s leskem, smyje se obyčejnou vodou. Na sčesané a klasické účesy s patkou.</p>
@@ -1419,15 +1295,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <!-- FOTO: sklenená fľaštička oleja s kvapkadlom, odlesk svetla -->
-        <figure class="obraz">
-          <div class="plate plate--ring">
-            <div class="plate__type">
-              <p class="plate__word">03 &middot; Olej</p>
-              <p class="plate__big">Olej na vousy<br>30 ml</p>
-            </div>
-          </div>
-        </figure>
         <div class="prod__body">
           <h3>Olej na vousy</h3>
           <p>Směs jojobového a mandlového oleje. Tři kapky do dlaně ráno, změkčí chloupky a zklidní pokožku.</p>
@@ -1436,15 +1303,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <!-- FOTO: téglik balzamu, vedľa neho drevený hrebeň -->
-        <figure class="obraz">
-          <div class="plate plate--hatch">
-            <div class="plate__type">
-              <p class="plate__word">04 &middot; Balzám</p>
-              <p class="plate__big">Balzám na vousy<br>60 ml</p>
-            </div>
-          </div>
-        </figure>
         <div class="prod__body">
           <h3>Balzám na vousy</h3>
           <p>Hustší než olej, drží tvar delších vousů. Doporučujeme na vousy od pěti centimetrů.</p>
@@ -1453,15 +1311,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <!-- FOTO: fľaša šampónu pri umývacej mise -->
-        <figure class="obraz">
-          <div class="plate plate--rule">
-            <div class="plate__type">
-              <p class="plate__word">05 &middot; Šampon</p>
-              <p class="plate__big">Šampon na mastné vlasy<br>250 ml</p>
-            </div>
-          </div>
-        </figure>
         <div class="prod__body">
           <h3>Šampon na mastné vlasy</h3>
           <p>Bez silikonů, s mátovým výtažkem. Ten samý, který používáme při mytí v provozovně.</p>
@@ -1470,15 +1319,6 @@ html.js .rv.in{opacity:1;transform:none}
       </article>
 
       <article class="prod rv">
-        <!-- FOTO: kefa z diviačích štetín zhora, viditeľné drevené telo -->
-        <figure class="obraz">
-          <div class="plate plate--grid">
-            <div class="plate__type">
-              <p class="plate__word">06 &middot; Kartáč</p>
-              <p class="plate__big">Kartáč z kančích štětin<br>dřevěné tělo</p>
-            </div>
-          </div>
-        </figure>
         <div class="prod__body">
           <h3>Kartáč z kančích štětin</h3>
           <p>Na denní česání vousů i kratších vlasů. Rozetře olej rovnoměrně až ke kořínkům.</p>
