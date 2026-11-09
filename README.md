@@ -391,6 +391,6 @@ GPL-3.0 je silné copyleft licencovanie určené pre softvér. Aplikované na te
 
 <div align="center">
 
-Vytvoril **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
+Vytvoril **Apoliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
 
 </div>

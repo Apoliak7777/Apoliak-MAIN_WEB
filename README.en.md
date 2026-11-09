@@ -367,6 +367,6 @@ GPL-3.0 is a strong copyleft license intended for software. Applied to this webs
 
 <div align="center">
 
-Built by **Alex Poliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
+Built by **Apoliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
 
 </div>
