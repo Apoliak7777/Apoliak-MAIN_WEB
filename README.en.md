@@ -226,7 +226,6 @@ Content lives directly in the HTML:
 | Service, process, "about me" and FAQ copy       | the `#sluzby`, `#postup`, `#vyhody`, `#otazky` sections |
 | E-mail and phone number                         | the `#kontakt` section and the JSON-LD block in `<head>` |
 | Main address and phone                          | `#kontakt`, header, mobile bar, footer and JSON-LD     |
-| Support address for clients                     | `support@apoliak.online` in `#kontakt`, footer, demos  |
 | `<title>`, meta description, OG and Twitter tags | the `<head>` of each page                             |
 | Structured data                                 | the JSON-LD block in the home page `<head>`            |
 | Domain for GitHub Pages                         | the `CNAME` file (plus `sitemap.xml` and canonical URL) |
@@ -367,6 +366,6 @@ GPL-3.0 is a strong copyleft license intended for software. Applied to this webs
 
 <div align="center">
 
-Built by **Apoliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
+Built by **Apoliak** - [info@apoliak.sk](mailto:info@apoliak.sk) - 0902 464 022
 
 </div>

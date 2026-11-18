@@ -250,7 +250,6 @@ Obsahové veci sa menia priamo v HTML:
 | Texty služieb, postupu, „O mne“ a otázok      | sekcie `#sluzby`, `#postup`, `#vyhody`, `#otazky`   |
 | E-mail a telefón                              | sekcia `#kontakt` a JSON-LD blok v `<head>`         |
 | Hlavná adresa a telefón                       | `#kontakt`, hlavička, lišta na mobile, patička a JSON-LD |
-| Adresa podpory pre klientov                   | `support@apoliak.online` v `#kontakt`, patičke a ukážkach |
 | `<title>`, meta description, OG a Twitter tagy | `<head>` každej stránky                            |
 | Štruktúrované dáta                            | JSON-LD blok v `<head>` hlavnej stránky             |
 | Doména pre GitHub Pages                       | súbor `CNAME` (plus `sitemap.xml` a canonical URL)  |
@@ -391,6 +390,6 @@ GPL-3.0 je silné copyleft licencovanie určené pre softvér. Aplikované na te
 
 <div align="center">
 
-Vytvoril **Apoliak**, Bratislava - [GitHub](https://github.com/Apoliak7777) - [apoliak@apoliak.online](mailto:apoliak@apoliak.online) - 0902 464 022
+Vytvoril **Apoliak** - [info@apoliak.sk](mailto:info@apoliak.sk) - 0902 464 022
 
 </div>
