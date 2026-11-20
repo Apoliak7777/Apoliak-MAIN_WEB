@@ -390,6 +390,6 @@ GPL-3.0 je silné copyleft licencovanie určené pre softvér. Aplikované na te
 
 <div align="center">
 
-Vytvoril **Apoliak** - [info@apoliak.sk](mailto:info@apoliak.sk) - 0902 464 022
+Vytvoril **Apoliak** - [kontakt@apoliak.online](mailto:kontakt@apoliak.online) - 0902 464 022
 
 </div>

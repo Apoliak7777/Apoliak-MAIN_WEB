@@ -366,6 +366,6 @@ GPL-3.0 is a strong copyleft license intended for software. Applied to this webs
 
 <div align="center">
 
-Built by **Apoliak** - [info@apoliak.sk](mailto:info@apoliak.sk) - 0902 464 022
+Built by **Apoliak** - [kontakt@apoliak.online](mailto:kontakt@apoliak.online) - 0902 464 022
 
 </div>

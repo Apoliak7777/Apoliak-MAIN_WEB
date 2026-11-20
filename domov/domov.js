@@ -32,7 +32,7 @@
   var kalk = document.getElementById("kalk");
   if (!kalk) return;
 
-  var MAIL = "info@apoliak.sk";
+  var MAIL = "kontakt@apoliak.online";
   var TEL = "421902464022";
   var MAX_PODSTRANOK = 30;
   var d = kalk.dataset;
